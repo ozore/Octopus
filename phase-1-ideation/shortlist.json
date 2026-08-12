@@ -1,0 +1,146 @@
+[
+  {
+    "name": "DutyLens",
+    "one_liner": "Upload your import catalog and get every SKU's correct HTS code with cited CBP precedent, true landed cost with all stacked tariffs, and an alert the moment a rate changes.",
+    "summary": "Small US importers ($50k\u2013$50M) lost the $800 de minimis exemption (Aug 2025) and now need a correct 10-digit HTS code, stacked duty rate and 'reasonable care' documentation on every SKU. Per Christensen's Jobs-to-be-Done, the job is 'tell me my true landed cost and don't let CBP fine me.' Wedge is a Hormozi Grand Slam Offer: a $1,500 Tariff Exposure Audit delivered in 3\u20135 days, converting to $99\u2013499/mo SKU monitoring (Ramanujam's willingness-to-pay-first pricing). Moat is a RAG index (Lewis et al. 2020) over 220k CBP CROSS rulings, the HTS schedule and Federal Register 301/232/122 actions. Distribution per Weinberg & Mares' Bullseye: Shopify App Store plus FBA seller communities. First revenue 10\u201320 days.",
+    "merged_from": [
+      "Tariffly",
+      "DutyRadar",
+      "DutyLens (dev-llm)",
+      "DutyLens (bi-trends)",
+      "DutyDesk",
+      "ClearHS",
+      "TariffPilot"
+    ],
+    "best_evidence": [
+      "https://apps.shopify.com/hclassify?locale=it",
+      "https://www.ghy.com/trade-compliance/us-to-end-de-minimis-exemption-for-low-value-imports-on-august-29/",
+      "https://www.dhl.com/discover/en-us/global-logistics-advice/logistics-insights/the-end-of-de-minimis-exemption-meaning-for-your-business",
+      "https://www.markastrausslaw.com/customs-fraud/ceratizit-usa-llc-pays-54-4-million-in-false-claims-act-settlement/",
+      "https://gingercontrol.com/blog/best-automated-hts-classification-tools",
+      "https://www.eezyimport.com/glossary/cross-custom-rulings-online-search-system/"
+    ]
+  },
+  {
+    "name": "WageLens",
+    "one_liner": "Type in your project's county and craft, get the legally correct prevailing-wage rate, and auto-generate the weekly WH-347 certified payroll report.",
+    "summary": "Small specialty subcontractors on federal/state prevailing-wage jobs must map every worker to the right Davis-Bacon county-and-craft rate weekly and file WH-347; misclassification is the most common violation ($13,508 per violation, back wages, three-year debarment), and a 2023 DOL rule pushes prime-contractor liability downstream. Deep-and-narrow per Paul Graham: lookup plus auto-filled WH-347, not a payroll suite. $79\u201399/mo sub tier, $299/mo GC tier, transparently priced against incumbents' quote-gated $175\u20132,000/mo (April Dunford: position against the competitive alternative). Moat is a versioned archive of SAM.gov wage determinations by county/craft/date plus SF-1444 conformance precedent. SAM.gov and USASpending award feeds give a warm outbound list; weekly payroll deadlines force a close inside 30 days.",
+    "merged_from": [
+      "WageBridge",
+      "WagePilot",
+      "WageLine",
+      "WageLens"
+    ],
+    "best_evidence": [
+      "https://davisbaconrates.com/certified-payroll-software",
+      "https://www.dol.gov/agencies/whd/government-contracts/construction/faq/conformance",
+      "https://www.points-north.com/trends-and-insights/the-real-cost-of-davis-bacon-violations",
+      "https://www.myconstructionpayroll.com/post/are-you-liable-for-your-subcontractor-s-certified-payroll-mistakes-new-davis-bacon-rules-say-yes",
+      "https://www.certifiedpayrollpro.com/certified-payroll-for-small-contractors",
+      "https://www.dol.gov/agencies/whd/forms/wh347"
+    ]
+  },
+  {
+    "name": "StateReady",
+    "one_liner": "Never let a technician's license, CE, bond or insurance lapse again \u2014 and get a step-by-step playbook for getting licensed in your next state.",
+    "summary": "Multi-state trade contractors (HVAC/electrical/plumbing, 5\u2013100 techs) must track per-state license, CE, bond and insurance renewals and decode reciprocity when entering a new state; a lapse halts permit pulls and can void job insurance. Hormozi-style offer ladder: free 'license lapse risk audit' \u2192 $149\u2013599/mo tracking \u2192 $750\u20131,500 one-time state-expansion report. Willingness to pay is observed, not asserted (Fitzpatrick's Mom Test standard): LicensedTrades.com already sells $199\u20131,199/mo and concierge filers charge per state. Moat is a normalized 50-state \u00d7 trade licensing/CE/reciprocity database scraped from board PDFs \u2014 the scattered data NASCLA only publishes as static directories. Beachhead per Moore: PE-backed trade roll-ups actively entering new states. Revenue in ~30 days.",
+    "merged_from": [
+      "TradeCred",
+      "LicenseIQ",
+      "License Radar",
+      "StateReady",
+      "StateSwitch",
+      "LicenseStack",
+      "Renewly",
+      "StormClear"
+    ],
+    "best_evidence": [
+      "https://licensedtrades.com/",
+      "https://licenseroadmap.com/blog/best-contractor-license-tracking-software",
+      "https://apiprocessing.com/nationwide-contractor-licensing/",
+      "https://www.harborcompliance.com/compliance-solutions-construction-firms",
+      "https://www.nascla.org/",
+      "https://forums.mikeholt.com/threads/multi-state-licensing-help.2557395/"
+    ]
+  },
+  {
+    "name": "ScopeIQ",
+    "one_liner": "Tell us your state and your procedures, and get a cited answer on who can inject what, under whose supervision, and which ownership structure is legal \u2014 plus the paperwork.",
+    "summary": "Med spa owners and nurse injectors face 50 different CPOM/ownership, delegation and supervision regimes that change yearly (California's 2026 MSO rewrite); errors risk cease-and-desist orders, six-figure fines and criminal exposure. AmSpa's 3,000+ members paying $395\u2013845/yr and attorneys charging $3,500\u201310,000 per structuring question are Mom-Test-grade evidence of money already spent. Entry offer is a $499\u2013999 one-time state launch compliance report \u2014 fast cash, no procurement \u2014 upsold to $99\u2013499/mo multi-state monitoring, per Ramanujam's willingness-to-pay-first ladder. Moat: a continuously updated, cited 50-state scope/CPOM/delegation database with change alerts, which static $197 PDF kits structurally cannot match. Sell into owner Facebook groups and MSOs signing new-state leases; first revenue inside 30 days.",
+    "merged_from": [
+      "SpaComply",
+      "Scopewise",
+      "SpaSentinel",
+      "ScopeIQ"
+    ],
+    "best_evidence": [
+      "https://americanmedspa.org/membership-faqs",
+      "https://medspastandards.com/blog/med-spa-regulations-by-state",
+      "https://www.inhouse.ai/med-spa-compliance/penalties-for-cpom-violations",
+      "https://brewsterlawtx.com/medical-spa/texas-med-spa-business-structure/2517-2/",
+      "https://qualiphy.me/new-california-laws-impacting-msos-in-2026-what-every-med-spa-and-wellness-clinic-needs-to-know/",
+      "https://www.hklaw.com/en/insights/publications/2026/08/medical-spa-compliance-under-the-microscope"
+    ]
+  },
+  {
+    "name": "StayLegal",
+    "one_liner": "Give us your rental's address and we file your short-term-rental permit for you, then keep it renewed as the city's rules change.",
+    "summary": "Over 100 US cities require STR permits ($50\u2013925 fees, inspections, renewals) spread across municipal PDFs, with fines up to $5,000 per stay while cities buy Granicus enforcement software to hunt unpermitted listings. Existing tools only inform; per Hormozi's value equation, actually filing collapses effort and time delay, which is where the price lives: $149\u2013249 one-time per property plus $19\u201329/mo monitoring, validated against Avalara MyLodgeTax's $27/mo/property + $299 setup for the tax slice alone. Moat: a scraped, structured ordinance-and-form database per jurisdiction that compounds city by city. Delivery starts as Ries' concierge MVP, sold into r/AirBnBHosts, BiggerPockets and host Facebook groups; paying customer in 2\u20133 weeks.",
+    "merged_from": [
+      "PermitPilot (pm-ai)",
+      "StayLegal",
+      "PermitPilot (vc-bootstrap)"
+    ],
+    "best_evidence": [
+      "https://strhub.com/product/avalara-mylodgetax-2/",
+      "https://www.avalara.com/mylodgetax/en/blog/2026/02/Short-term-rental-operators-can-spend-100-hours-a-year-on-lodging-tax-compliance.html",
+      "https://hospitable.com/airbnb-restrictions",
+      "https://www.strcomply.us/blog/strrequirements-com-alternatives-3",
+      "https://granicus.com/solution/govservice/host-compliance",
+      "https://beancount.io/blog/2026/07/13/short-term-rental-registration-licensing-compliance-guide"
+    ]
+  },
+  {
+    "name": "Reinstate",
+    "one_liner": "Paste your Amazon or Walmart suspension notice and get a submission-ready Plan of Action in minutes, drafted from the policies and appeal patterns that actually get sellers reinstated.",
+    "summary": "Suspended marketplace sellers are in maximum-urgency, maximum-willingness-to-pay mode; Riverbend Consulting services 400+ appeals monthly at $1,000+ with 10,000 sellers served and sells monitoring subscriptions \u2014 Mom Test evidence of money already changing hands, not stated interest. Reinstate drafts a customized Plan of Action from the notice: $39\u201379/mo monitoring plus a $299\u2013499 rush human-reviewed appeal. Market pull is visible daily in Seller Central forums, satisfying Andreessen's 'only thing that matters' test. Moat: a structured corpus of policy text, suspension reason codes and anonymized winning appeal patterns, retrieved per Lewis et al.'s RAG. Distribution is Weinberg & Mares' community channel \u2014 answer live 'just got suspended' posts with a free draft. Revenue in days.",
+    "merged_from": [
+      "Reinstate"
+    ],
+    "best_evidence": [
+      "http://riverbendconsulting.com/",
+      "https://sellercentral.amazon.com/seller-forums/"
+    ]
+  },
+  {
+    "name": "Recoup",
+    "one_liner": "We read the bills your counterparties send you, find the overcharges and underpayments, and take a cut of the money we get back.",
+    "summary": "Multi-unit tenants receive CAM reconciliation statements where roughly 40% contain errors and audits recover 15\u201320% of annual CAM, yet the contractual audit window closes in 90 days\u201312 months. Recoup ingests lease plus statement, flags overcharges and drafts the dispute, sold at the industry-norm 30\u201350% contingency so there is no budget approval step \u2014 Hormozi's risk reversal maximizing perceived likelihood of achievement. The same engine extends to insurance carrier commission statements, PBM remittances and ocean detention/demurrage invoices; CAM is the Moore beachhead. Moat: an accumulating structured dataset of which landlords and property managers systematically over-bill which expense categories. A free first-pass audit of three statements converts inside 30 days.",
+    "merged_from": [
+      "Recoup (bi-market, CAM audit)",
+      "Recoup (pm-b2b-saas, insurance commissions)",
+      "MacGuard",
+      "FreeTime"
+    ],
+    "best_evidence": [
+      "https://www.springbord.com/blog/cam-recovery-audit-explained-how-tenants-identify-and-recover-cam-overpayments/",
+      "https://www.camaudit.io/resources/dispute-recovery",
+      "https://invoicedataextraction.com/blog/us-cam-reconciliation-tenant-audit",
+      "https://unlockedcrm.ai/blog/insurance-commission-reconciliation-guide",
+      "https://www.freightwaves.com/news/tag/demurrage-and-detention",
+      "https://pharmacyauditpro.com/"
+    ]
+  },
+  {
+    "name": "Certly",
+    "one_liner": "An AI compliance clerk that reads every vendor's certificate of insurance, checks it against your contract requirements, and chases the renewal before it lapses.",
+    "summary": "Small property managers (50\u2013500 units) and GCs (20\u2013150 subs) verify every vendor's ACORD 25 certificate against contract limits, additional-insured status and waiver language by hand in spreadsheets; gaps surface only at claim time. TrustLayer and myCOI (16 years, 45M+ documents processed) prove the category is funded and monetized, but both are demo-gated enterprise \u2014 a classic down-market self-serve wedge per Poyar/OpenView's PLG research and Christensen's low-end disruption. $99\u2013299/mo self-serve, tiered by certificates tracked. Moat: extraction patterns across hundreds of non-standard carrier PDF layouts plus state- and lease-specific requirement templates, improving with every document. A free COI audit reliably surfaces an already-expired policy, and that finding is the close. Revenue under 30 days.",
+    "merged_from": [
+      "Certly"
+    ],
+    "best_evidence": [
+      "https://www.trustlayer.io/",
+      "https://www.illumend.ai/"
+    ]
+  }
+]
