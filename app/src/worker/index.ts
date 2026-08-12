@@ -26,6 +26,7 @@ import type { JobKind } from '../lib/db/queue';
 import type { Job } from '../lib/db/schema';
 import { getAdapters } from '../lib/adapters';
 import { registerAllHandlers } from '../lib/queue/worker-registration';
+import { buildHandlerOptions } from './composition';
 import { getEnv } from '../env';
 
 type Handler = (db: Db, job: Job) => Promise<void>;
@@ -87,11 +88,17 @@ export async function runWorker(): Promise<void> {
   const env = getEnv(); // Boot-time config validation — fail fast (factor III).
   const db = await getDb();
 
-  // Wire the engine jobs owned by data/billing/email/outcome-capture
-  // (queue/worker-registration.ts). `render_pdf`, `escalation_review` and
-  // `cache_rewarm` belong to other workstreams and are deliberately left
-  // unregistered — see that module's header comment.
-  registerAllHandlers(registerHandler, getAdapters());
+  // Wire the jobs owned by data/billing/email/outcome-capture
+  // (queue/worker-registration.ts), with their engine-backed seams filled in by
+  // the composition root (./composition.ts) — notably ADR-006's requirement that
+  // an inbound Shield notice go through the SAME classifier as a pasted one.
+  // `render_pdf`, `escalation_review` and `cache_rewarm` belong to other
+  // workstreams and are deliberately left unregistered; the "no handler
+  // registered" failure is the loud signal for those.
+  //
+  // Loading the corpus here also makes it a BOOT-time failure: a worker that
+  // cannot read `corpus/` must not start and quietly take jobs it will fail.
+  registerAllHandlers(registerHandler, getAdapters(), await buildHandlerOptions());
 
   log('info', 'worker.start', {
     worker_id: env.WORKER_ID,

@@ -26,8 +26,8 @@ import { GOLDEN_SET } from '@/lib/engine/evals';
 
 import { GET } from './route';
 
-afterEach(() => {
-  resetCaseStore();
+afterEach(async () => {
+  await resetCaseStore();
   resetRuns();
 });
 
@@ -54,7 +54,7 @@ function request(caseId: string): Promise<Response> {
 
 describe('GET /api/appeal/{caseId}/stream', () => {
   it('narrates a fresh case from the first stage to done', async () => {
-    const record = createCase(notice());
+    const record = await createCase(notice());
     const events = await drain(await request(record.id));
 
     expect(events.some((e) => e.type === 'stage')).toBe(true);
@@ -62,7 +62,7 @@ describe('GET /api/appeal/{caseId}/stream', () => {
   });
 
   it('replays the whole run to a reader who reconnects after it finished', async () => {
-    const record = createCase(notice());
+    const record = await createCase(notice());
     const run = ensureRun(record);
     await new Promise<void>((resolve) => {
       subscribe(run, (event) => event.type === 'done' && resolve());
@@ -79,7 +79,7 @@ describe('GET /api/appeal/{caseId}/stream', () => {
   });
 
   it('sends event-stream headers with buffering disabled end to end', async () => {
-    const record = createCase(notice());
+    const record = await createCase(notice());
     const response = await request(record.id);
 
     expect(response.headers.get('content-type')).toMatch(/text\/event-stream/);

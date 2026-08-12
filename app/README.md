@@ -13,41 +13,79 @@ Those two documents plus [`CORPUS_DESIGN.md`](../phase-2-build/architecture/CORP
 
 ```
 app/
+├── corpus/                        # the knowledge base as CONTENT (CORPUS_DESIGN.md)
+│   ├── taxonomy.json              #   L1 — 33 reason codes
+│   ├── L2-policy-clauses/*.md     #   L2 — our summaries of real policy, never bulk source
+│   ├── L3-appeal-patterns/        #   L3 — one appeal pattern per code
+│   ├── L4-outcomes/               #   L4 — 0 records at launch, by design
+│   └── ontology/*.json            #   the JSON Schemas gate G1 validates every record against
 ├── src/
 │   ├── env.ts                     # Twelve-Factor III — config from env, Zod-validated at boot
 │   ├── app/                       # Next.js App Router (the `web` process)
-│   │   ├── layout.tsx             # loads design-system.css once; renders the B11 disclaimer
-│   │   ├── page.tsx               # the Decoder: one textarea, one button (N4 — no signup)
-│   │   └── api/health/route.ts    # reports the release's corpus/model attribution stamps
+│   │   ├── (app)/                 #   appeal, case, plan, ops, monitoring screens
+│   │   ├── _lib/
+│   │   │   ├── case-store.ts      #   the read model over lib/db — assembles one CaseRecord
+│   │   │   ├── actions.ts         #   server actions; the only mutations the UI can perform
+│   │   │   ├── engine-runtime.ts  #   the web tier's single call into the engine
+│   │   │   ├── appeal-run.ts      #   one narrated pipeline run per case
+│   │   │   └── run-registry.ts    #   replayable SSE runs (a reload must not re-bill)
+│   │   └── api/                   #   /api/health, /api/appeal/[caseId]/stream (SSE)
 │   ├── lib/
 │   │   ├── adapters/              # every vendor SDK import in the codebase lives here
-│   │   │   ├── anthropic.ts       #   interface: StructuredRequest | CitedRequest (never both)
-│   │   │   ├── anthropic.live.ts  #   @anthropic-ai/sdk
-│   │   │   ├── anthropic.mock.ts  #   recorded responses + cache-hit accounting
-│   │   │   ├── stripe.{ts,live,mock}.ts
+│   │   │   ├── anthropic.{ts,live,mock}.ts   # StructuredRequest | CitedRequest, never both
+│   │   │   ├── stripe.{ts,live,mock}.ts      # hosted Checkout only — no method takes a PAN
 │   │   │   ├── resend.{ts,live,mock}.ts
-│   │   │   ├── notice-source.ts   #   ADR-006 seam: SP-API becomes a 4th adapter
-│   │   │   ├── notice-source.mock.ts
-│   │   │   └── index.ts           #   the single composition root
+│   │   │   ├── notice-source.ts   #   ADR-006 seam: SP-API would become a 4th adapter
+│   │   │   └── index.ts           #   the vendor composition root
+│   │   ├── corpus/                # the knowledge base as CODE — loader, retrieval, gates
+│   │   │   ├── load.ts            #   the ONLY module here that touches the filesystem
+│   │   │   ├── retrieval.ts       #   code-keyed lookup; no vectors, no chunking (ADR-003)
+│   │   │   ├── ontology.ts        #   gate G1 — records vs. their JSON Schemas
+│   │   │   └── gates.ts           #   the rest of CORPUS_DESIGN §7, as pure functions
+│   │   ├── engine/                # classify → retrieve → draft → critique (LLM_ENGINE.md)
+│   │   │   ├── pipeline.ts        #   owns the ordering and both escalation exits
+│   │   │   ├── citation-gate.ts   #   I2 — the ONLY construction path for a CitedClause
+│   │   │   └── evals/             #   golden set + recorded responses (offline, free)
 │   │   ├── db/
-│   │   │   ├── schema.ts          # the complete data model (ARCHITECTURE §5)
-│   │   │   ├── index.ts           # postgres-js client; PGlite dev/test fallback
-│   │   │   └── queue.ts           # FOR UPDATE SKIP LOCKED (ADR-005)
-│   │   └── domain/
-│   │       ├── reason-codes.ts    # 33 codes + UNCLASSIFIED, triage dispositions
-│   │       └── types.ts           # the stage-to-stage contracts (LLM_ENGINE §5)
-│   ├── scripts/migrate.ts         # Twelve-Factor XII admin process
+│   │   │   ├── schema.ts          #   the complete data model (ARCHITECTURE §5)
+│   │   │   ├── case-state-machine.ts  # every cases.status write goes through here
+│   │   │   ├── repositories/      #   one module per table
+│   │   │   ├── migrations.ts      #   reads the committed SQL as data (journal order)
+│   │   │   ├── index.ts           #   postgres-js client; PGlite dev/test fallback
+│   │   │   └── queue.ts           #   FOR UPDATE SKIP LOCKED (ADR-005)
+│   │   ├── billing/               # Checkout, webhook-as-truth, refunds, Shield (ADR-007)
+│   │   ├── email/                 # outbound templates, the D3/D10/D21 sequence, inbound
+│   │   ├── outcome-capture/       # consent → redaction → promotion into L4 (ADR-008)
+│   │   ├── queue/                 # job payloads + handler registration
+│   │   └── domain/                # reason-codes.ts, types.ts — the stage-to-stage contracts
+│   ├── scripts/
+│   │   ├── migrate.ts             # Twelve-Factor XII admin process
+│   │   └── corpus-check.ts        # the corpus build gate (all of CORPUS_DESIGN §7)
 │   ├── styles/                    # design-system.css (copied from identity/), app.css
-│   └── worker/index.ts            # the `worker` process entrypoint
+│   └── worker/
+│       ├── index.ts               # the `worker` process entrypoint — the claim loop
+│       └── composition.ts         # its composition root: engine-backed job seams
 ├── drizzle/                       # generated SQL migrations, committed
 ├── tests/                         # vitest — offline, no keys
 ├── e2e/                           # playwright
-├── Dockerfile                     # one immutable image, corpus hash baked at build
+├── Dockerfile                     # one immutable image; corpus content ships in it
 ├── fly.toml                       # two process groups: web ×2, worker ×1
 └── .env.example                   # every var that varies between deploys
 ```
 
 **One app, not a monorepo.** Per ADR-001: one repository, one language, one dependency graph, one CI lane, one on-call surface. The workflow engine is an **in-process library**, not a service — there is no network hop between pipeline stages.
+
+### How the pieces are wired
+
+There are exactly three composition roots, and everything else is dependency-injected:
+
+| Root | Binds |
+|---|---|
+| `src/lib/adapters/index.ts` | the vendor surfaces, by `ADAPTER_MODE` |
+| `src/worker/composition.ts` | the engine into the worker's job handlers — notably ADR-006's requirement that inbound Shield mail run through the **same** classifier as a pasted notice |
+| `src/app/_lib/engine-runtime.ts` | the engine into the web tier, with a witness on the corpus port so the SSE stream can name the reason code the moment stage 1 decides it |
+
+The web tier's path is **frontend → server action → `case-store` → `lib/db`**, and **never** to a vendor SDK. Checkout in particular goes through `lib/billing/createCheckoutForCase`, which validates the case's origin status and writes the `payments` row the webhook later looks up by session id — the webhook, not the redirect, is what unlocks a case (ADR-007).
 
 ---
 
@@ -60,13 +98,26 @@ npm run dev                         # web process  → http://localhost:3000
 npm run worker:dev                  # worker process (separate terminal)
 ```
 
-**Without any credentials at all:**
+**Without any credentials at all — a fresh checkout, nothing installed but `npm ci`:**
 
 ```bash
 ADAPTER_MODE=mock DATABASE_DRIVER=pglite npm run dev
 ```
 
-`ADAPTER_MODE=mock` binds the in-repo fakes for Anthropic, Stripe, Resend and `NoticeSource`; `DATABASE_DRIVER=pglite` runs an in-process Postgres. Both are **rejected in production** by `src/env.ts` — dev/prod parity (factor X) is preserved because the same schema, the same migrations and the same Drizzle queries run on both engines.
+`ADAPTER_MODE=mock` binds the in-repo fakes for Anthropic, Stripe, Resend and `NoticeSource`; `DATABASE_DRIVER=pglite` runs an in-process Postgres **with the committed migrations applied at first connection**, so the screens work end to end with no container and no keys. Both are **rejected in production** by `src/env.ts` — dev/prod parity (factor X) is preserved because the same schema, the same migrations and the same Drizzle queries run on both engines.
+
+What that mode actually exercises, so its limits are known rather than discovered: the real pipeline, the real corpus, the real state machine, the real billing module and the real webhook handler. What it does not have is a live model (responses are replayed from the golden set) and a live Stripe (the return from Checkout synthesises the `checkout.session.completed` event **that Stripe would send, metadata included**, and drives it through the production `handleStripeWebhook` — the same signature check and the same idempotency).
+
+### The corpus
+
+```bash
+npm run corpus:check                        # all of CORPUS_DESIGN §7, non-zero exit on violation
+npm run corpus:check -- --manifest build/manifest.json
+```
+
+The corpus is **content on disk** (`corpus/`) read once at boot and memoised, not a fetched resource. `corpus:check` is the CI gate over it and prints the `prompt_bundle_hash` to stamp on the release; the hash is derived from content only, so a deploy that changes no policy text keeps the warm prompt cache. It also prints `codes_not_draftable` — the honest half. Today that is `AMZ.OPS.DROPSHIP`, whose only governing source is jurisdiction-caveated and therefore excluded from US drafting by gate G7.
+
+`corpus/` ships in the image: Next traces it into the standalone output (`outputFileTracingIncludes`) and the Dockerfile copies it for the worker, which runs from source. A process that cannot read it refuses to serve rather than quietly substituting the synthetic fixture corpus.
 
 ### Database
 
@@ -84,9 +135,22 @@ Migrations are plain SQL files in version control. Generating one is a developer
 
 ```bash
 npm run typecheck                   # tsc --noEmit
-npm test                            # vitest — unit + integration
+npm test                            # vitest — 239 tests across 20 files, ~50s
+npm test -- tests/integration.test.ts   # just the cross-module seams
 npm run test:e2e                    # playwright (starts a local server with mock adapters)
 ```
+
+What the suite covers, by layer:
+
+| File(s) | What breaks if it fails |
+|---|---|
+| `tests/corpus.test.ts` | the parser, and every CORPUS_DESIGN §7 gate against the committed corpus |
+| `src/lib/engine/citations.invariant.test.ts` | I2 — a policy reference reaching the UI without a citation object |
+| `src/lib/engine/evals/golden-set.test.ts` | classification and drafting against recorded responses |
+| `tests/case-state-machine.test.ts` | an illegal `cases.status` edge becoming a silent UPDATE |
+| `tests/billing.test.ts`, `email.test.ts`, `outcome-capture.test.ts`, `queue.test.ts` | the data/billing modules against real Postgres constraints (PGlite) |
+| `src/app/_lib/appeal-run.test.ts`, `api/.../stream/route.test.ts` | the narrated run and the SSE rejoin path |
+| **`tests/integration.test.ts`** | **the seams between modules** — the corpus actually loading in the running process, inbound Shield mail reaching the classifier, the web tier's checkout producing a row the webhook can find, and every migration being applied |
 
 **Every test runs with no network access and no real API keys.** This is a hard rule, not a convenience:
 
@@ -99,10 +163,12 @@ The mocks are faithful about the things the pipeline branches on — `stop_reaso
 ### The blocking CI order
 
 ```
-typecheck → unit → citation invariant → golden-set eval → corpus:build → docker build → migrate → deploy
+typecheck → unit → citation invariant → golden-set eval → corpus:check → next build → docker build → migrate → deploy
 ```
 
-Two of those steps block the deploy on purpose: `citations.invariant.test.ts` (ADR-004/ADR-102) and the ~53-notice golden-set eval (B10). Without evals in CI, every prompt change is a coin flip — and a prompt change is the most common change this codebase will ever see.
+Three of those steps block the deploy on purpose: `citations.invariant.test.ts` (ADR-004/ADR-102), the golden-set eval (B10), and `corpus:check`. Without evals in CI, every prompt change is a coin flip — and a prompt change is the most common change this codebase will ever see. Without `corpus:check`, a corpus edit that breaks a citation chain reaches a paying seller.
+
+`next build` is in the blocking order for a reason learned the hard way: the web bundle can differ from what `tsc` and `vitest` see. A dynamic `import(specifier)` typechecks, passes every test under `tsx`, and compiles under webpack into a module that throws — which is exactly how the corpus came to be unreachable from the web tier while all three green lights stayed on. `tests/integration.test.ts` now asserts the real corpus loads, and the build runs in CI rather than only at deploy.
 
 ---
 

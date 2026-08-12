@@ -9,25 +9,27 @@
  * fallback (db/index.ts's header comment).
  */
 
-import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
 import { PGlite } from '@electric-sql/pglite';
 import { drizzle } from 'drizzle-orm/pglite';
 
 import type { Db } from '../../src/lib/db';
+import { readMigrationStatements } from '../../src/lib/db/migrations';
 import { schema } from '../../src/lib/db/schema';
 
-const MIGRATION_PATH = path.resolve(__dirname, '../../drizzle/0000_init.sql');
+/**
+ * EVERY migration, in journal order — not just `0000_init.sql`, and read
+ * through the SAME helper the app's own PGlite fallback uses. Naming one file
+ * here was silently wrong the moment a second migration existed: the tests would
+ * keep passing against the original schema while production moved on, which is
+ * exactly the dev/prod skew (factor X) this harness exists to prevent.
+ */
+const MIGRATIONS_DIR = path.resolve(__dirname, '../../drizzle');
 
 export async function createTestDb(): Promise<{ client: PGlite; db: Db }> {
   const client = new PGlite();
-  const sql = readFileSync(MIGRATION_PATH, 'utf8');
-  const statements = sql
-    .split('--> statement-breakpoint')
-    .map((s) => s.trim())
-    .filter(Boolean);
-  for (const statement of statements) {
+  for (const statement of readMigrationStatements(MIGRATIONS_DIR)) {
     await client.exec(statement);
   }
   const db = drizzle(client, { schema }) as Db;

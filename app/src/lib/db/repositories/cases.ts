@@ -7,7 +7,7 @@
  * written here as a bare UPDATE).
  */
 
-import { desc, eq } from 'drizzle-orm';
+import { and, desc, eq, isNotNull, isNull } from 'drizzle-orm';
 
 import type { Db } from '../index';
 import { cases } from '../schema';
@@ -156,6 +156,73 @@ export async function markDocumentReady(
  *  system, not by goodwill (ARCHITECTURE.md §3.5). */
 export async function markRefunded(db: Db, caseId: string): Promise<CaseRow> {
   return transitionCase(db, caseId, 'refunded');
+}
+
+/**
+ * The /ops queue's two actions (ARCHITECTURE.md §3.6). Neither is a status
+ * transition — a claimed case and an unclaimed one are both `escalated`, and a
+ * resolved one stays `escalated` until the reviewer delivers, at which point
+ * `markDocumentReady` moves it. Keeping them off the state machine is what makes
+ * "who is working this" answerable without inventing lifecycle states that
+ * USER_JOURNEY.md §4 does not draw.
+ */
+export async function claimEscalation(
+  db: Db,
+  caseId: string,
+  reviewerId: string,
+): Promise<CaseRow | undefined> {
+  const [updated] = await db
+    .update(cases)
+    .set({ escalationClaimedBy: reviewerId, escalationClaimedAt: new Date(), updatedAt: new Date() })
+    .where(eq(cases.id, caseId))
+    .returning();
+  return updated;
+}
+
+export async function resolveEscalation(
+  db: Db,
+  caseId: string,
+  resolution: string,
+): Promise<CaseRow | undefined> {
+  const [updated] = await db
+    .update(cases)
+    .set({ escalationResolvedAt: new Date(), escalationResolution: resolution, updatedAt: new Date() })
+    .where(eq(cases.id, caseId))
+    .returning();
+  return updated;
+}
+
+/** The open queue: escalated and not yet resolved, oldest first — a seller who
+ *  has been waiting longest is seen first, which is the only fair order for a
+ *  queue whose cost to the customer is measured in dark days. */
+export async function listOpenEscalations(db: Db): Promise<CaseRow[]> {
+  return db
+    .select()
+    .from(cases)
+    .where(and(eq(cases.status, 'escalated'), isNull(cases.escalationResolvedAt)))
+    .orderBy(cases.escalatedAt);
+}
+
+export async function listResolvedEscalations(db: Db): Promise<CaseRow[]> {
+  return db
+    .select()
+    .from(cases)
+    .where(isNotNull(cases.escalationResolvedAt))
+    .orderBy(desc(cases.escalationResolvedAt));
+}
+
+/** Records that the SELLER submitted the appeal. We send nothing anywhere (I4);
+ *  this is the clock the D3/D10/D21 follow-up sequence is timed from (B9). */
+export async function recordSubmitted(
+  db: Db,
+  caseId: string,
+  submittedAt: Date = new Date(),
+): Promise<void> {
+  await db.update(cases).set({ submittedAt, updatedAt: new Date() }).where(eq(cases.id, caseId));
+}
+
+export async function listRecentCases(db: Db, limit = 100): Promise<CaseRow[]> {
+  return db.select().from(cases).orderBy(desc(cases.createdAt)).limit(limit);
 }
 
 /** Revising: the seller asks the MACHINE to try again with notes. Stages 3-4

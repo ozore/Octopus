@@ -34,6 +34,19 @@ async function createPglite(): Promise<{ db: Db; close: () => Promise<void> }> {
   const { PGlite } = await import('@electric-sql/pglite');
   const { drizzle: drizzlePglite } = await import('drizzle-orm/pglite');
   const client = new PGlite();
+
+  // A fresh PGlite instance is an EMPTY database, so the committed migrations
+  // are applied here. Without this the dev fallback exists in name only: the
+  // first query from a page or a server action fails on a missing relation, and
+  // `npm run dev` on a fresh checkout — the whole point of the fallback — does
+  // not work. Production never reaches this branch (src/env.ts rejects pglite
+  // when NODE_ENV=production), so this is not a migration path that can be
+  // taken by a real deploy.
+  const { readMigrationStatements } = await import('./migrations');
+  for (const statement of readMigrationStatements()) {
+    await client.exec(statement);
+  }
+
   return {
     db: drizzlePglite(client, { schema }) as Db,
     close: async () => {

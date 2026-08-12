@@ -28,7 +28,7 @@ export async function GET(
   context: { params: Promise<{ caseId: string }> },
 ): Promise<Response> {
   const { caseId } = await context.params;
-  const record = getCase(caseId);
+  const record = await getCase(caseId);
 
   if (!record) {
     return new Response('Unknown case.', { status: 404 });

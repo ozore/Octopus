@@ -89,4 +89,47 @@ export class MockStripeAdapter implements StripeAdapter {
   sign(payload: string): string {
     return createHmac('sha256', this.webhookSecret).update(payload).digest('hex');
   }
+
+  /**
+   * The `checkout.session.completed` event Stripe WOULD send for a session this
+   * adapter created — including the session metadata, with the same keys
+   * `stripe.live.ts` writes.
+   *
+   * This exists because a hand-rolled event is a silent liar. Fulfilment reads
+   * consent off `metadata.consent_granted` (ADR-008 ¶1), so an event built by
+   * hand with only `case_id` fulfils the payment and quietly drops the seller's
+   * consent — the purchase looks fine and the outcome corpus never gets the row
+   * it was promised. Anything simulating Stripe locally must therefore simulate
+   * the payload, not an approximation of it.
+   */
+  completedSessionEvent(sessionId: string): StripeWebhookEvent {
+    const found = this.sessions.get(sessionId);
+    if (!found) throw new Error(`MockStripeAdapter: unknown session ${sessionId}`);
+    const { request } = found;
+    return {
+      id: `evt_test_${sessionId}`,
+      type: 'checkout.session.completed',
+      data: {
+        object: {
+          id: sessionId,
+          amount_total: found.amountCents,
+          currency: found.currency,
+          client_reference_id: request.caseId,
+          metadata: {
+            case_id: request.caseId,
+            tier: request.tier,
+            consent_granted: String(request.consent?.granted ?? false),
+            consent_text_version: request.consent?.textVersion ?? '',
+            ...(request.metadata ?? {}),
+          },
+        },
+      },
+    };
+  }
+
+  /** The signed (payload, signature) pair for the event above. */
+  signedCompletedSession(sessionId: string): { payload: string; signature: string } {
+    const payload = JSON.stringify(this.completedSessionEvent(sessionId));
+    return { payload, signature: this.sign(payload) };
+  }
 }

@@ -51,7 +51,7 @@ export default async function PlanPage({
   // redirect, so reloading this URL cannot unlock anything twice.
   if (sessionId) await recordCheckoutReturn(caseId, sessionId);
 
-  const record = getCase(caseId);
+  const record = await getCase(caseId);
   if (!record) notFound();
 
   if (!record.sections || !record.clauses) {

@@ -51,9 +51,11 @@ export default async function OpsPage({
   const key = typeof query.key === 'string' ? query.key : '';
   if (!authorised(key)) notFound();
 
-  const open = listEscalations();
-  const resolved = listResolvedEscalations();
-  const all = listCases();
+  const [open, resolved, all] = await Promise.all([
+    listEscalations(),
+    listResolvedEscalations(),
+    listCases(),
+  ]);
 
   return (
     <div className="cw-ops">

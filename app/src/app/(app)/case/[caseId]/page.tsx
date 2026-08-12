@@ -163,7 +163,7 @@ function timeline(record: CaseRecord): TimelineNode[] {
 
 export default async function CasePage({ params }: { params: Promise<{ caseId: string }> }) {
   const { caseId } = await params;
-  const record = getCase(caseId);
+  const record = await getCase(caseId);
   if (!record) notFound();
 
   const head = headline(record);

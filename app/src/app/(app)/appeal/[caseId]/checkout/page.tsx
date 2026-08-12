@@ -39,7 +39,7 @@ export default async function CheckoutHandoffPage({
   const query = await searchParams;
   const sessionId = typeof query.session === 'string' ? query.session : '';
 
-  const record = getCase(caseId);
+  const record = await getCase(caseId);
   if (!record) notFound();
   // In live mode nobody arrives here; if they do, it is not a page to serve.
   if (adapterMode() === 'live') notFound();

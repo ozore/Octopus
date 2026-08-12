@@ -60,6 +60,10 @@
     "refer_out_note": {
       "type": "string",
       "description": "Present on refer_out codes. We do not draft these; the pattern exists so the free critique can explain WHY we route the case to counsel rather than silently refusing (the AppealDesk differentiator, §3.2)."
+    },
+    "notes": {
+      "type": "string",
+      "description": "What a human working this code needs to know that the structured fields cannot carry — a recorded corpus gap, a triage judgment, or which seed observation shaped an anti-pattern. Read by the loader (`build.ts` -> `AppealPattern.notes`) and declared here because gate G1 validates what the corpus actually contains, not a subset of it."
     }
   },
   "$defs": {

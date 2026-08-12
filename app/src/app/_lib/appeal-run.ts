@@ -73,7 +73,10 @@ export function ensureRun(record: CaseRecord): Run {
   if (existing) return existing;
 
   // A case that already carries a result was run in an earlier process life (or
-  // an earlier tab). Replay it rather than re-billing three model calls.
+  // an earlier tab). Replay it rather than re-billing three model calls. This is
+  // now durable across a restart rather than merely across a tab: the record is
+  // assembled from Postgres, so a seller who comes back tomorrow still sees the
+  // preview they were shown today.
   if (record.status !== 'intake') {
     const replay = startRun(record.id, async (emit) => {
       for (const event of terminalEvents(record)) {
@@ -84,7 +87,7 @@ export function ensureRun(record: CaseRecord): Run {
   }
 
   return startRun(record.id, async (emit) => {
-    updateCase(record.id, { status: 'classifying' });
+    await updateCase(record.id, { status: 'classifying' });
 
     const notice: NoticeDocument = {
       caseId: record.id,
@@ -103,7 +106,7 @@ export function ensureRun(record: CaseRecord): Run {
       const plainEnglish = REASON_CODE_TABLE[code].plainEnglish;
       const marketplace: Marketplace = result.classification.marketplace;
 
-      updateCase(record.id, {
+      await updateCase(record.id, {
         status: 'preview_ready',
         marketplace,
         classification: { code, plainEnglish, confidence: result.classification.confidence },
@@ -145,7 +148,7 @@ export function ensureRun(record: CaseRecord): Run {
         REFUSED_CATEGORIES.has(topCandidate));
     const disposition = refused ? 'refer_out' : 'human_tier';
 
-    updateCase(record.id, {
+    await updateCase(record.id, {
       status: 'escalated',
       escalation: {
         reason: result.reason,
@@ -167,7 +170,7 @@ export function ensureRun(record: CaseRecord): Run {
   });
 }
 
-export function ensureRunById(caseId: string): Run | undefined {
-  const record = getCase(caseId);
+export async function ensureRunById(caseId: string): Promise<Run | undefined> {
+  const record = await getCase(caseId);
   return record ? ensureRun(record) : undefined;
 }

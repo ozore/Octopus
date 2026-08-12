@@ -40,9 +40,9 @@ function daysLeft(iso: string): number {
   return Math.max(0, Math.ceil((new Date(iso).getTime() - Date.now()) / 864e5));
 }
 
-function pickCase(explicit: string | undefined): CaseRecord | undefined {
+async function pickCase(explicit: string | undefined): Promise<CaseRecord | undefined> {
   if (explicit) return getCase(explicit);
-  return listCases().find((c) => c.shield);
+  return (await listCases()).find((c) => c.shield);
 }
 
 export default async function MonitoringPage({
@@ -51,7 +51,7 @@ export default async function MonitoringPage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const query = await searchParams;
-  const record = pickCase(typeof query.case === 'string' ? query.case : undefined);
+  const record = await pickCase(typeof query.case === 'string' ? query.case : undefined);
   const shield = record?.shield;
   const address = shield ? await shieldAddressFor(shield.ingestToken) : null;
   const cancelled = Boolean(shield?.cancelledAt);

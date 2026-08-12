@@ -83,6 +83,16 @@ const EnvSchema = z
     // --- Corpus attribution (ADR-003 / ADR-008), baked at build time --------
     CORPUS_RELEASE: z.coerce.number().int().nonnegative().default(0),
     PROMPT_BUNDLE_HASH: z.string().default('unbuilt'),
+    /** Where `src/lib/corpus/load.ts` reads the corpus content directory from.
+     *  Unset means `{cwd}/corpus`, which is what both process types get from the
+     *  image. It exists so a test or a one-off can point at a fixture tree
+     *  without a checkout, not so a deploy can swap corpora at run time — that
+     *  would break attribution (ADR-008 ¶3). */
+    CORPUS_DIR: z.string().optional(),
+    /** Stamped into the page as NEXT_PUBLIC_BUILD_SHA by next.config.mjs. Read
+     *  at BUILD time, not run time (factor V); declared here so the set of
+     *  variables this codebase reads is complete in one place. */
+    BUILD_SHA: z.string().default('dev'),
     /** Prompt-cache TTL. 5m is the default; the scheduler switches to 1h only
      *  during an observed traffic burst (LLM_ENGINE.md §3.3). */
     CORPUS_CACHE_TTL: z.enum(['5m', '1h']).default('5m'),
@@ -91,6 +101,11 @@ const EnvSchema = z
     WORKER_POLL_INTERVAL_MS: z.coerce.number().int().positive().default(2000),
     WORKER_BATCH_SIZE: z.coerce.number().int().positive().default(5),
     WORKER_ID: z.string().default('worker-local'),
+    /** Test seam. `src/worker/index.ts` reads this one RAW, at module scope,
+     *  because it decides whether the poll loop starts at all — i.e. it must be
+     *  answerable before `getEnv()` has validated anything. It is declared here
+     *  so the variable is documented and so `parseEnv` rejects a typo in it. */
+    CLAUSEWRIGHT_WORKER_AUTOSTART: bool(true),
 
     // --- Ops console auth boundary (ARCHITECTURE §3.1, N4) ------------------
     OPS_SHARED_SECRET: z.string().optional(),

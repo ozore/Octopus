@@ -218,6 +218,35 @@ export const cases = pgTable(
     escalatedAt: timestamp('escalated_at', { withTimezone: true }),
     escalationReason: escalationReasonEnum('escalation_reason'),
     escalationDetail: text('escalation_detail'),
+
+    /**
+     * The /ops queue's claim and resolution (ARCHITECTURE §3.6).
+     *
+     * `case-state-machine.ts`'s reconciliation note routes HumanQueued and
+     * HumanReviewed through `status = 'escalated'` and puts the queue/review
+     * distinction in `human_edits` rows. That works once a human has EDITED a
+     * draft — but a case escalated out of `classifying` has no draft to attach
+     * an edit to, and the reviewer still has to be able to claim it so two
+     * people do not work the same seller's case. These four columns are that
+     * missing half; they carry no status of their own, so the state machine is
+     * untouched and `status` remains the single source of lifecycle truth.
+     */
+    escalationClaimedBy: text('escalation_claimed_by'),
+    escalationClaimedAt: timestamp('escalation_claimed_at', { withTimezone: true }),
+    escalationResolvedAt: timestamp('escalation_resolved_at', { withTimezone: true }),
+    escalationResolution: text('escalation_resolution'),
+
+    /**
+     * The seller's own report of what they did with the document, and what the
+     * marketplace said back. USER_JOURNEY §4's Submitted / DecisionPending /
+     * Reinstated / Rejected states — which the reconciliation note assigns to
+     * `outcome_reports`, where the decision itself still lives. What could not
+     * live there is the *submission* moment: `outcome_reports` is created when a
+     * decision is reported, so without this column the window between "I sent
+     * it" and "they answered" is unrepresentable, and that window is precisely
+     * what the D3/D10/D21 follow-up sequence is timed from (B9).
+     */
+    submittedAt: timestamp('submitted_at', { withTimezone: true }),
   },
   (t) => [
     index('cases_status_idx').on(t.status),

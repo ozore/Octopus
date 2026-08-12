@@ -30,8 +30,8 @@ import { createCase, getCase, resetCaseStore } from './case-store';
 import { STAGE_KEYS, type ProgressEvent } from './progress';
 import { resetRuns, subscribe } from './run-registry';
 
-afterEach(() => {
-  resetCaseStore();
+afterEach(async () => {
+  await resetCaseStore();
   resetRuns();
 });
 
@@ -43,7 +43,7 @@ function fixtureNotice(id: string): string {
 
 /** Drives one case to completion and returns everything the stream emitted. */
 async function runCase(notice: string): Promise<ProgressEvent[]> {
-  const record = createCase(notice);
+  const record = await createCase(notice);
   const run = ensureRun(record);
   return new Promise((resolve) => {
     const events: ProgressEvent[] = [];
@@ -123,7 +123,7 @@ describe('a drafted case', () => {
     if (preview?.type !== 'preview') throw new Error('no preview');
 
     // Ground truth, resolved exactly as the runtime resolves it: a checkout that
-    // has run `corpus:build` serves the built corpus, one that has not serves
+    // can read `corpus/` serves the built corpus, one that cannot serves
     // the engine's fixture corpus. Either is legal outside production — what is
     // NOT legal is a preview that fails to say which one it was, because a
     // screen presenting fixture policy text as corpus text is the same defect
@@ -139,17 +139,52 @@ describe('a drafted case', () => {
   });
 
   it('leaves the case in preview_ready with its result persisted', async () => {
-    const record = createCase(fixtureNotice('GS-01'));
+    const record = await createCase(fixtureNotice('GS-01'));
     const run = ensureRun(record);
     await new Promise<void>((resolve) => {
       subscribe(run, (e) => e.type === 'done' && resolve());
     });
 
-    const after = getCase(record.id);
+    const after = await getCase(record.id);
     expect(after?.status).toBe('preview_ready');
     expect(after?.classification?.code).toBeTruthy();
     expect(after?.sections?.rootCause).toBeTruthy();
     expect(after?.critique).toBeTruthy();
+  });
+
+  /**
+   * THE RELOAD, not the first render. Everything above reads the run's live
+   * event stream; this reads the case back out of the database the way a seller
+   * returning tomorrow does. The two must agree, and the failure mode is
+   * specific: a field written under one key and read under another survives
+   * every in-memory test and produces a blank panel only for the seller who
+   * comes back — the one person who has already been told the work is done.
+   */
+  it('reassembles the same preview from the database on a later read', async () => {
+    const record = await createCase(fixtureNotice('GS-01'));
+    const run = ensureRun(record);
+    const live = await new Promise<ProgressEvent[]>((resolve) => {
+      const events: ProgressEvent[] = [];
+      subscribe(run, (e) => {
+        events.push(e);
+        if (e.type === 'done') resolve(events);
+      });
+    });
+    const preview = live.find((e) => e.type === 'preview');
+    if (preview?.type !== 'preview') throw new Error('no preview');
+
+    const after = await getCase(record.id);
+    expect(after?.classification?.code).toBe(preview.preview.reasonCode);
+    expect(after?.sections).toEqual(preview.preview.sections);
+    expect(after?.clauses).toEqual(preview.preview.clauses);
+    expect(after?.critique?.readinessScore).toBe(preview.preview.critique.readinessScore);
+
+    // Every criterion still resolves to a human label — the rubric is re-derived
+    // from the corpus rather than copied into the operational database.
+    expect(Object.keys(after?.rubricLabels ?? {}).length).toBeGreaterThan(0);
+    for (const criterion of after!.critique!.criteria) {
+      expect(after!.rubricLabels![criterion.id]).toBeTruthy();
+    }
   });
 });
 
@@ -178,7 +213,7 @@ describe('a refused category', () => {
 
 describe('the run registry', () => {
   it('runs a case once, however many readers attach', async () => {
-    const record = createCase(fixtureNotice('GS-01'));
+    const record = await createCase(fixtureNotice('GS-01'));
 
     const first = ensureRun(record);
     const second = ensureRun(record);

@@ -47,8 +47,20 @@ export type CanonicalRecord = {
   record: unknown;
 };
 
-function asArray(value: unknown): unknown[] {
-  return Array.isArray(value) ? value : [];
+/**
+ * A record collection, however the file spells it.
+ *
+ * `taxonomy.json#/codes` is an array; `appeal-patterns.json#/patterns` is an
+ * object keyed by reason code. Treating only the array form as a collection is
+ * how a schema gate becomes VACUOUS — it validates zero patterns and reports
+ * zero violations, which is indistinguishable from success. That is exactly what
+ * the first draft of this file did, and the count assertion in `corpus.test.ts`
+ * is what caught it; both halves are kept deliberately.
+ */
+function asCollection(value: unknown): unknown[] {
+  if (Array.isArray(value)) return value;
+  if (value && typeof value === 'object') return Object.values(value as Record<string, unknown>);
+  return [];
 }
 
 function asRecord(value: unknown): Record<string, unknown> {
@@ -102,19 +114,19 @@ export function canonicalRecords(raw: RawCorpus): CanonicalRecord[] {
   const out: CanonicalRecord[] = [];
 
   const taxonomy = asRecord(JSON.parse(raw.taxonomy));
-  for (const code of asArray(taxonomy['codes'])) {
+  for (const code of asCollection(taxonomy['codes'])) {
     const id = String(asRecord(code)['code'] ?? '(unnamed code)');
     out.push({ schema: 'schema.reason_code.json', id, record: code });
   }
 
   const patterns = asRecord(JSON.parse(raw.patterns));
-  for (const pattern of asArray(patterns['patterns'])) {
+  for (const pattern of asCollection(patterns['patterns'])) {
     const id = String(asRecord(pattern)['code'] ?? '(unnamed pattern)');
     out.push({ schema: 'schema.appeal_pattern.json', id, record: pattern });
   }
 
   const seeds = asRecord(JSON.parse(raw.seeds));
-  for (const seed of asArray(seeds['observations'])) {
+  for (const seed of asCollection(seeds['observations'])) {
     const id = String(asRecord(seed)['seed_id'] ?? '(unnamed seed)');
     out.push({ schema: 'schema.seed_observation.json', id, record: seed });
   }

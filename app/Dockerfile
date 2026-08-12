@@ -54,6 +54,12 @@ COPY --from=build --chown=nextjs:nodejs /app/public ./public
 COPY --from=build --chown=nextjs:nodejs /app/src ./src
 COPY --from=build --chown=nextjs:nodejs /app/drizzle ./drizzle
 COPY --from=build --chown=nextjs:nodejs /app/drizzle.config.ts /app/tsconfig.json /app/package.json ./
+# The corpus CONTENT, not just the code that reads it. `src/lib/corpus/load.ts`
+# reads this directory at first use; the web process gets it through Next's file
+# tracing (next.config.mjs `outputFileTracingIncludes`) and the worker, which
+# runs from source, needs it here. An image without it boots into "corpus
+# unreadable" — which is the correct, loud failure, and this is what prevents it.
+COPY --from=build --chown=nextjs:nodejs /app/corpus ./corpus
 
 USER nextjs
 EXPOSE 3000

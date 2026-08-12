@@ -3,8 +3,9 @@
 /**
  * Server actions — the only mutations the UI can perform.
  *
- * Spec: ARCHITECTURE.md §3.1 (web app), §3.5 (billing), §3.6 (escalation queue),
- * §3.8 (Shield), USER_JOURNEY.md §4 (the case state machine).
+ * Spec: ARCHITECTURE.md §3.1 (web app), §3.5 / ADR-007 (billing), §3.6
+ * (escalation queue), §3.8 / ADR-006 (Shield), USER_JOURNEY.md §4 (the case
+ * state machine), ADR-008 ¶1 (consent).
  *
  * THREE INVARIANTS LIVE IN WHAT THESE FUNCTIONS DO NOT DO:
  *
@@ -19,15 +20,30 @@
  *    let a seller argue an inconsistent case across drafts without noticing
  *    (USER_JOURNEY §7.5 — the slice is frozen for the life of the case).
  *
- *  - **ADR-007.** `startCheckout` creates a hosted session and nothing more. The
- *    redirect back from Checkout is *not* the source of truth for payment; the
- *    webhook is. `recordCheckoutReturn` therefore says "recorded", and the /case
- *    screen shows the state as such, so a seller who bookmarks the success URL
+ *  - **ADR-007.** `startCheckout` creates a hosted session and a PENDING payment
+ *    row, and nothing more. The redirect back from Checkout is not the source of
+ *    truth for payment; the webhook is. `recordCheckoutReturn` therefore reads
+ *    state rather than granting it, so a seller who bookmarks the success URL
  *    cannot unlock a case by reloading it.
+ *
+ * WHAT CHANGED AT INTEGRATION, and why it is not a refactor: these actions used
+ * to call `adapters.billing.createCheckoutSession` directly and then write the
+ * result into an in-process map. That skipped `billing/checkout.ts` entirely —
+ * so no `payments` row was ever created, which meant the webhook had nothing to
+ * find and `fulfillCheckoutSession` would have thrown on every real purchase,
+ * and it skipped `VALID_ORIGIN_STATUSES`, so a case could start a Checkout from
+ * any state at all. Both are now the billing module's job, which is where the
+ * rules were written down in the first place.
  */
 
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+
+import { getDb } from '@/lib/db';
+import { getAdapters } from '@/lib/adapters';
+import { createCheckoutForCase, InvalidCheckoutStateError } from '@/lib/billing';
+import { handleStripeWebhook } from '@/lib/billing/webhook';
+import * as paymentsRepo from '@/lib/db/repositories/payments';
 
 import {
   claimEscalation,
@@ -36,7 +52,7 @@ import {
   resolveEscalation,
   updateCase,
 } from './case-store';
-import { adapterMode, appBaseUrl, billingAdapter, shieldIngestDomain } from './runtime-env';
+import { adapterMode, appBaseUrl, shieldIngestDomain } from './runtime-env';
 
 function str(formData: FormData, key: string): string {
   const value = formData.get(key);
@@ -58,7 +74,7 @@ export async function startAppeal(formData: FormData): Promise<void> {
     // no-JavaScript path, and it must not create a case it cannot classify.
     redirect('/appeal?tooShort=1');
   }
-  const record = createCase(notice);
+  const record = await createCase(notice);
   redirect(`/appeal/${record.id}`);
 }
 
@@ -70,70 +86,77 @@ export async function startCheckout(formData: FormData): Promise<void> {
   const caseId = str(formData, 'caseId');
   const tier = str(formData, 'tier') === 'rescue_human' ? 'rescue_human' : 'rescue';
   const consentGranted = str(formData, 'consent') === 'on';
-  const record = getCase(caseId);
+
+  const record = await getCase(caseId);
   if (!record) redirect('/appeal');
 
   const base = appBaseUrl();
-  const billing = await billingAdapter();
-  const session = await billing.createCheckoutSession({
-    caseId,
-    tier,
-    successUrl: `${base}/case/${caseId}/plan?session={CHECKOUT_SESSION_ID}`,
-    cancelUrl: `${base}/appeal/${caseId}`,
-    // D6: the card is kept so 30 days of Shield can be included with zero extra
-    // decision at the moment of panic. The retention decision lands 30 days
-    // later, at relief (peak-end rule).
-    saveCardForFutureUse: true,
-    // ADR-008 ¶1: consent rides as metadata and is SEPARABLE from the purchase —
-    // declining must not block or degrade it, so it is never a required field.
-    consent: { granted: consentGranted, textVersion: 'outcome-consent-v1' },
-  });
+  const db = await getDb();
 
-  updateCase(caseId, { status: 'awaiting_payment' });
+  let session;
+  try {
+    ({ session } = await createCheckoutForCase(db, getAdapters(), {
+      caseId,
+      tier,
+      successUrl: `${base}/case/${caseId}/plan?session={CHECKOUT_SESSION_ID}`,
+      cancelUrl: `${base}/appeal/${caseId}`,
+      // ADR-008 ¶1: consent rides as metadata and is SEPARABLE from the
+      // purchase — declining must not block or degrade it, so it is never a
+      // required field. `fulfillCheckoutSession` reads it back off the session.
+      consent: { granted: consentGranted, textVersion: 'outcome-consent-v1' },
+    }));
+  } catch (error) {
+    // The origin-status rule is the billing module's (VALID_ORIGIN_STATUSES).
+    // A case that is not previewable cannot buy, and the honest answer is the
+    // case's own screen, not a Stripe page it should never have reached.
+    if (error instanceof InvalidCheckoutStateError) redirect(`/appeal/${caseId}`);
+    throw error;
+  }
 
   if (adapterMode() === 'live') {
     // Hosted Checkout. No card data ever reaches us (SAQ-A).
     redirect(session.url);
   }
   // Mock mode has no Stripe to redirect to. The handoff still went through the
-  // adapter; the stand-in page below shows the session it produced.
+  // adapter and the payment row still exists; the stand-in page shows it.
   redirect(`/appeal/${caseId}/checkout?session=${encodeURIComponent(session.id)}`);
 }
 
 /**
- * The return from Checkout. Records the session against the case so the
- * delivered document can be reached; it does NOT assert that Stripe confirmed
- * the charge — `checkout.session.completed` does that, in the webhook handler.
+ * The return from Checkout.
+ *
+ * In LIVE mode this grants nothing: it reads whether the webhook has already
+ * fulfilled the session, because the webhook is the source of truth (ADR-007)
+ * and the redirect is just a browser that happens to have arrived first.
+ *
+ * In MOCK mode there is no Stripe to call our webhook, so the same event is
+ * synthesised and driven through the REAL `handleStripeWebhook` path — signed
+ * with the mock adapter's own HMAC, so the signature check runs too. That keeps
+ * the local flow honest: development exercises the production fulfilment code
+ * rather than a parallel shortcut that could quietly diverge from it.
  */
 export async function recordCheckoutReturn(caseId: string, sessionId: string): Promise<void> {
-  const record = getCase(caseId);
-  if (!record || record.payment) return;
-  const billing = await billingAdapter();
-  let amountCents = 14900;
-  try {
-    const session = await billing.retrieveSession(sessionId);
-    amountCents = session.amountCents;
-  } catch {
-    // An unknown session id is not an error the seller can act on; the case
-    // simply stays unpaid and the paywall stays where it was.
-    return;
-  }
-  const now = new Date().toISOString();
-  updateCase(caseId, {
-    status: 'delivered',
-    payment: {
-      tier: amountCents >= 39900 ? 'rescue_human' : 'rescue',
-      sessionId,
-      amountCents,
-      paidAt: now,
-    },
-    // D6 — 30 days of Shield are included, card on file, no new decision now.
-    shield: {
-      ingestToken: caseId.replace(/^case_/, ''),
-      includedUntil: new Date(Date.now() + 30 * 864e5).toISOString(),
-      cardOnFile: true,
-    },
-  });
+  const db = await getDb();
+  const adapters = getAdapters();
+
+  const payment = await paymentsRepo.getPaymentBySessionId(db, sessionId);
+  if (!payment || payment.caseId !== caseId) return;
+  if (payment.status === 'paid') return; // The webhook already did this.
+
+  if (adapterMode() === 'live') return; // Only the webhook may unlock a case.
+
+  // The mock builds the event Stripe WOULD send, metadata and all, rather than
+  // an approximation of it — fulfilment reads consent off that metadata
+  // (ADR-008 ¶1), so a hand-rolled payload would fulfil the purchase and
+  // silently drop the seller's consent.
+  const { payload, signature } = (
+    adapters.billing as unknown as {
+      signedCompletedSession(id: string): { payload: string; signature: string };
+    }
+  ).signedCompletedSession(sessionId);
+  await handleStripeWebhook(db, adapters, payload, signature);
+
+  revalidatePath(`/case/${caseId}`);
 }
 
 // ---------------------------------------------------------------------------
@@ -142,7 +165,7 @@ export async function recordCheckoutReturn(caseId: string, sessionId: string): P
 
 export async function markSubmitted(formData: FormData): Promise<void> {
   const caseId = str(formData, 'caseId');
-  updateCase(caseId, { status: 'decision_pending', submittedAt: new Date().toISOString() });
+  await updateCase(caseId, { submittedAt: new Date().toISOString() });
   revalidatePath(`/case/${caseId}`);
   redirect(`/case/${caseId}`);
 }
@@ -150,15 +173,16 @@ export async function markSubmitted(formData: FormData): Promise<void> {
 export async function reportOutcome(formData: FormData): Promise<void> {
   const caseId = str(formData, 'caseId');
   const decision = str(formData, 'decision');
+
   if (decision === 'reinstated') {
-    updateCase(caseId, { status: 'reinstated', decision: 'reinstated' });
+    await updateCase(caseId, { decision: 'reinstated' });
   } else if (decision === 'rejected') {
     // J2. The rejection does not end the case; it triggers the outcome
     // guarantee, and the escalation is created here rather than waiting for the
     // seller to find a support link (USER_JOURNEY §2.1, Nielsen #6).
-    updateCase(caseId, {
-      status: 'escalated',
+    await updateCase(caseId, {
       decision: 'rejected',
+      status: 'escalated',
       escalation: {
         reason: 'seller_choice',
         detail: 'First submission rejected — free human review under the outcome guarantee.',
@@ -167,7 +191,7 @@ export async function reportOutcome(formData: FormData): Promise<void> {
       },
     });
   } else {
-    updateCase(caseId, { decision: 'no_response' });
+    await updateCase(caseId, { decision: 'no_response' });
   }
   revalidatePath(`/case/${caseId}`);
 }
@@ -178,9 +202,9 @@ export async function reportOutcome(formData: FormData): Promise<void> {
  */
 export async function requestHumanReview(formData: FormData): Promise<void> {
   const caseId = str(formData, 'caseId');
-  const record = getCase(caseId);
+  const record = await getCase(caseId);
   if (!record) return;
-  updateCase(caseId, {
+  await updateCase(caseId, {
     status: 'escalated',
     escalation: record.escalation ?? {
       reason: 'seller_choice',
@@ -200,14 +224,14 @@ export async function requestHumanReview(formData: FormData): Promise<void> {
 export async function claimCase(formData: FormData): Promise<void> {
   const caseId = str(formData, 'caseId');
   const reviewer = str(formData, 'reviewer') || 'unassigned';
-  claimEscalation(caseId, reviewer);
+  await claimEscalation(caseId, reviewer);
   revalidatePath('/ops');
 }
 
 export async function resolveCase(formData: FormData): Promise<void> {
   const caseId = str(formData, 'caseId');
   const note = str(formData, 'resolution') || 'Reviewed and returned to the seller.';
-  resolveEscalation(caseId, note);
+  await resolveEscalation(caseId, note);
   revalidatePath('/ops');
   revalidatePath(`/case/${caseId}`);
 }
@@ -218,9 +242,9 @@ export async function resolveCase(formData: FormData): Promise<void> {
 
 export async function confirmForwarding(formData: FormData): Promise<void> {
   const caseId = str(formData, 'caseId');
-  const record = getCase(caseId);
+  const record = await getCase(caseId);
   if (!record?.shield) return;
-  updateCase(caseId, {
+  await updateCase(caseId, {
     shield: { ...record.shield, forwardingConfirmedAt: new Date().toISOString() },
   });
   revalidatePath('/settings/monitoring');
@@ -235,9 +259,9 @@ export async function confirmForwarding(formData: FormData): Promise<void> {
 export async function setShieldState(formData: FormData): Promise<void> {
   const caseId = str(formData, 'caseId');
   const keep = str(formData, 'keep') === 'yes';
-  const record = getCase(caseId);
+  const record = await getCase(caseId);
   if (!record?.shield) return;
-  updateCase(caseId, {
+  await updateCase(caseId, {
     shield: keep
       ? { ...record.shield, cancelledAt: undefined }
       : { ...record.shield, cancelledAt: new Date().toISOString() },

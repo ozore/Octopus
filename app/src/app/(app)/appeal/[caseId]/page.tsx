@@ -31,7 +31,7 @@ export default async function AppealCasePage({
   params: Promise<{ caseId: string }>;
 }) {
   const { caseId } = await params;
-  const record = getCase(caseId);
+  const record = await getCase(caseId);
   if (!record) notFound();
 
   // A paid case belongs on the delivered document, not back at the paywall.
