@@ -490,6 +490,22 @@
     box-shadow: var(--cw-elev-3), var(--cw-glass-specular);
   }
 
+  /* ------------------------------------------------------------------------
+     §7  MAT-0 — the OPAQUE material level.
+     Not a fallback and not a degraded card: the level a surface takes when the
+     viewport's three-glass budget is already spent. Same tokens, same
+     geometry, no compositing cost. Certified in §4.5 (it IS the opaque row).
+     Composes onto .cw-card and .cw-price via the :not() guards below.
+     ---------------------------------------------------------------------- */
+  .cw-mat-0 {
+    background-color: var(--cw-mat-opaque);
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+    border: 1px solid var(--cw-hairline);
+    background-clip: padding-box;
+    box-shadow: var(--cw-elev-1);
+  }
+
   /* §7 fallback — where backdrop-filter is unsupported the surface goes fully
      OPAQUE. A tint alone over a visible gradient is both ugly and unprovable
      for contrast, so we never ship the half-measure. */
@@ -512,7 +528,7 @@
     border-radius: var(--cw-radius-lg);
     /* extends .cw-mat-2 — apply both classes, or compose in the component */
   }
-  .cw-card:not(.cw-mat-1):not(.cw-mat-3) {
+  .cw-card:not(.cw-mat-0):not(.cw-mat-1):not(.cw-mat-3) {
     background-color: rgb(var(--cw-mat-tint) / var(--cw-mat-2-alpha));
     -webkit-backdrop-filter: blur(var(--cw-mat-2-blur)) saturate(var(--cw-mat-2-sat));
             backdrop-filter: blur(var(--cw-mat-2-blur)) saturate(var(--cw-mat-2-sat));
@@ -903,17 +919,20 @@
      §8.6  PRICING CARD
      No scarcity furniture. No "was $299". No expiry. (P5 / X1)
      ---------------------------------------------------------------------- */
+  .cw-price:not(.cw-mat-0) {
+    background-color: rgb(var(--cw-mat-tint) / var(--cw-mat-2-alpha));
+    -webkit-backdrop-filter: blur(var(--cw-mat-2-blur)) saturate(var(--cw-mat-2-sat));
+            backdrop-filter: blur(var(--cw-mat-2-blur)) saturate(var(--cw-mat-2-sat));
+    border: 1px solid var(--cw-glass-edge);
+    box-shadow: var(--cw-elev-2), var(--cw-glass-specular);
+  }
+
   .cw-price {
     display: flex;
     flex-direction: column;
     gap: var(--cw-space-4);
     padding: var(--cw-space-6);
     border-radius: var(--cw-radius-lg);
-    background-color: rgb(var(--cw-mat-tint) / var(--cw-mat-2-alpha));
-    -webkit-backdrop-filter: blur(var(--cw-mat-2-blur)) saturate(var(--cw-mat-2-sat));
-            backdrop-filter: blur(var(--cw-mat-2-blur)) saturate(var(--cw-mat-2-sat));
-    border: 1px solid var(--cw-glass-edge);
-    box-shadow: var(--cw-elev-2), var(--cw-glass-specular);
   }
 
   .cw-price__tier {
@@ -1291,7 +1310,7 @@
     background-image: none;                     /* remove the ambient field */
   }
 
-  .cw-mat-1, .cw-mat-2, .cw-mat-3,
+  .cw-mat-0, .cw-mat-1, .cw-mat-2, .cw-mat-3,
   .cw-card, .cw-price, .cw-sheet, .cw-header {
     background-color: var(--cw-mat-opaque) !important;
     -webkit-backdrop-filter: none !important;
@@ -1358,7 +1377,7 @@
    component structure survives because hierarchy is carried by borders too.
    ========================================================================== */
 @media (forced-colors: active) {
-  .cw-mat-1, .cw-mat-2, .cw-mat-3,
+  .cw-mat-0, .cw-mat-1, .cw-mat-2, .cw-mat-3,
   .cw-card, .cw-price, .cw-sheet, .cw-header,
   .cw-cite, .cw-loss, .cw-card--inset {
     background-color: Canvas;
@@ -1398,7 +1417,7 @@
     font-size: 11pt;
   }
   .cw-header, .cw-btn, .cw-sheet, .cw-progress, .cw-sla-clock, .cw-loss { display: none !important; }
-  .cw-mat-1, .cw-mat-2, .cw-mat-3, .cw-card, .cw-price {
+  .cw-mat-0, .cw-mat-1, .cw-mat-2, .cw-mat-3, .cw-card, .cw-price {
     background: none !important;
     -webkit-backdrop-filter: none !important;
             backdrop-filter: none !important;

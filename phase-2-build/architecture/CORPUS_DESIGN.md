@@ -315,7 +315,7 @@ L1–L3 are buildable by agents in a day (§3.7 Day 1). L4 is the asset.
 
 `UNCLASSIFIED` is a **first-class outcome, not an error** (B2, R3). It must be reachable, tested, and instrumented. R3 names misclassification as the highest technical damage in the plan — a confidently wrong document burns the seller's one good attempt, which is worse than no product. The design response is that low confidence converts to the $399 human tier rather than guessing.
 
-> **Hypothesis, not a finding:** the per-code `classifier_floor` values, the `severity_band` assignments, and the `triage_disposition` split are **our judgment calls**. No published benchmark sets a confidence threshold for this task. They must be calibrated against the B10 golden set (~40 hand-labelled notices) and revised, not assumed correct. The initial floor is a uniform 0.75 pending that calibration.
+> **Hypothesis, not a finding:** the per-code `classifier_floor` values, the `severity_band` assignments, and the `triage_disposition` split are **our judgment calls**. No published benchmark sets a confidence threshold for this task. They must be calibrated against the B10 golden set (~53 hand-labelled notices, one per code plus specialist slices — `LLM_ENGINE.md` §8.1) and revised, not assumed correct. The initial floor is a uniform 0.75 pending that calibration.
 
 ### 3.3 Record schemas
 
@@ -963,19 +963,24 @@ On promotion: the L3 record's `provenance` flips `authored → promoted_from_L4`
 
 This respects both mechanisms. Anthropic's prompt caching is a **prefix match** — any byte change anywhere in the prefix invalidates everything after it, and render order is `tools → system → messages` ([prompt caching docs](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)). So stable content must physically precede volatile content: the corpus index goes in `system`, the per-case documents go in `messages`, after the breakpoint.
 
-**Cost, computed.** Cache reads are billed at ~0.1× base input; writes at 1.25× (5-minute TTL) or 2× (1-hour TTL). At Claude Opus 5's $5/MTok input, a **~45,000-token** cached prefix (30 L1 records + index + rubric) costs:
+**Cost, computed — per stage, at each stage's own model rate.**
 
-| Operation | Multiplier | Cost |
-|---|---|---|
-| Cache read (per draft) | 0.1× → $0.50/MTok | **$0.023** |
-| Cache write, 5-min TTL | 1.25× → $6.25/MTok | $0.28 |
-| Cache write, 1-hour TTL | 2× → $10.00/MTok | $0.45 |
+> ⚠️ **The token budget is owned by `LLM_ENGINE.md` §3.2**, which replaced the single ~45,000-token bundle assumed by an earlier draft of this section with **per-stage corpus slices** (**E3**) and mixed model tiers (**ADR-101**: Sonnet 5 on classify and critique, Opus 5 on draft). The figures below are recomputed from that table; a `~45k` prefix figure anywhere in this repo is stale.
 
-Against a $149 price, marginal inference cost per draft is **cents** — confirming §2.2 and §5.8 of the dossier with an actual number rather than an assertion. Use the **1-hour TTL during traffic bursts from a forum post**: break-even on the 1h TTL needs ~3 reads (2× write + 0.2× ≈ 2.2× vs 3× uncached), which a burst comfortably clears.
+Cache reads are billed at ~0.1× base input; writes at 1.25× (5-minute TTL) or 2× (1-hour TTL). Base input is **$5/MTok on Opus 5** and **$2/MTok on Sonnet 5** (LLM_ENGINE §2.1, re-verified 2026-08-12).
+
+| Cached prefix | Model | Tokens | Read (0.1×) | Write, 5-min (1.25×) | Write, 1-hour (2×) |
+|---|---|---:|---:|---:|---:|
+| Stage 1 — classify (L1 taxonomy, 33 codes) | Sonnet 5 | ~14,000 | $0.0028 | $0.035 | $0.056 |
+| Stage 3 — draft (system prefix + per-code document set) | Opus 5 | ~8,000 | $0.0040 | $0.050 | $0.080 |
+| Stage 4 — critique (rubric) | Sonnet 5 | ~4,000 | $0.0008 | $0.010 | $0.016 |
+| **Whole pipeline** | | **~26,000** | **$0.008** | **$0.095** | **$0.152** |
+
+Against a $149 price, marginal inference cost per case is **cents** — confirming §2.2 and §5.8 of the dossier with an actual number rather than an assertion. (These are the *cache* line items only; the full per-case figure including uncached tail and output tokens is **$0.18–0.27**, computed in `LLM_ENGINE.md` §2.4.) Use the **1-hour TTL during traffic bursts from a forum post**: break-even on the 1h TTL needs ~3 reads (2× write + 0.2× ≈ 2.2× vs 3× uncached), which a burst comfortably clears.
 
 **Cache-hostile things the corpus build must never do** (each is a CI check, §7): no timestamp, build id, or UUID in the cached prefix; deterministic serialisation (sorted keys) so identical content produces identical bytes; a frozen record order. Verify with `usage.cache_read_input_tokens` — if it is zero across repeated requests, a silent invalidator is at work.
 
-**Prefix minimum.** Claude Opus 5's minimum cacheable prefix is **512 tokens** (down from 1024 on Opus 4.8); shorter prefixes silently fail to cache with no error. Our prefix is ~45k, far above it — but the build should assert the floor rather than assume it.
+**Prefix minimum.** Claude Opus 5's minimum cacheable prefix is **512 tokens** (down from 1024 on Opus 4.8); **Sonnet 5's is 1024**. Shorter prefixes silently fail to cache with no error. Per-stage slicing makes this a live check rather than a formality: our **smallest** cached prefix is stage 3's ~3,000-token system prefix on Opus 5, and the smallest Sonnet prefix is stage 4's ~4,000 — both clear their floors, but the build asserts each stage against **its own model's** minimum rather than assuming one number covers the pipeline.
 
 ### 5.2 Citation packaging — how B4 becomes structurally satisfiable
 
@@ -1015,18 +1020,27 @@ This is a *good* forcing function: it makes the classify/draft split architectur
 
 ### 5.4 Token budget
 
-| Component | Records | Est. tokens |
-|---|---|---|
-| System prompt + drafting rubric + disclaimers | — | ~4,000 |
-| L1 reason-code taxonomy (all 33, full) | 33 | ~13,000 |
-| Retrieval index (code → clause ids → pattern) | — | ~2,000 |
-| **Cached prefix subtotal** | | **~19,000** |
-| L2 clauses selected per request (3–8 × ~250) | 3–8 | ~750–2,000 |
-| L3 pattern for the classified code | 1 | ~600 |
-| Seller's pasted notice | 1 | ~500–3,000 |
-| **Per-request subtotal** | | **~1,850–5,600** |
+> **Owned by `LLM_ENGINE.md` §3.2.** This table restates that budget in corpus terms; it does not set it. If the two ever disagree, §3.2 is correct and this table is stale.
 
-Comfortable inside a 1M context window with room for the corpus to grow several-fold. **The build asserts a hard ceiling on the cached prefix and fails if exceeded** (§3.7 stage 6) — a corpus that silently grows past the budget would degrade cache economics without any visible error.
+The budget is **per stage**, not one bundle. Each stage carries only the slice it can actually use (**E3**), which is what dissolved the cache-fragmentation objection to mixed model tiers (LLM_ENGINE §2.5).
+
+| Cached prefix | Corpus content | Records | Est. tokens | Model |
+|---|---|---:|---:|---|
+| **Stage 1 — classify** | Routing instructions + refusal policy (~1,000) + **full L1 taxonomy** (~400/record) | 33 | **~14,000** | Sonnet 5 |
+| **Stage 3 — draft (system)** | POA construction rules, three-section schema, style + naming constraints | — | **~3,000** | Opus 5 |
+| **Stage 3 — draft (per-code docs)** | L2 clauses (3–8 × ~250) + the one L3 pattern (~600), `citations` enabled, own breakpoint | 4–9 | **~5,000** | Opus 5 |
+| **Stage 4 — critique** | Evaluator instructions + rubric schema + the one per-code rubric | 1 | **~4,000** | Sonnet 5 |
+| **Cached total** | | | **~26,000** | 18k Sonnet · 8k Opus |
+
+| Per-request tail (never cached) | Est. tokens |
+|---|---:|
+| Seller's pasted notice | ~500–3,000 |
+| Per-stage instruction text | ~1,350–2,600 |
+| **Per-request subtotal** | **~1,850–5,600** |
+
+**Two things changed from the single-bundle draft**, both consequences of **E3** and worth naming so the delta is auditable: the previously-budgeted **retrieval index (~2,000) is gone from every prompt** — stage 2 is a pure code-keyed lookup and no model is ever shown an index — and the drafting rubric moved out of the shared prefix into stage 4's own prefix, where the critique actually consumes it.
+
+Comfortable inside a 1M context window with room for the corpus to grow several-fold. **The build asserts a hard ceiling on each stage's cached prefix, against that stage's own model minimum, and fails if either bound is broken** (§3.7 stage 6) — a corpus that silently grows past the budget would degrade cache economics without any visible error.
 
 ### 5.5 When to add machinery — numeric triggers
 
@@ -1087,7 +1101,7 @@ Per P5, every rule that can be a test is one. These run in CI and **fail the bui
 
 G12 is the one that matters most. It is the difference between "cites the exact policy clause" being an enforceable property of the codebase and being a marketing adjective. Per NAMING.md §3.3, this is what makes the brand promise unable to silently rot — the invariant fails the build before it fails a customer.
 
-**Golden set (B10).** ~40 hand-labelled notices in CI, producing a confusion matrix over the 33 codes plus `UNCLASSIFIED`. The eval harness is the mechanism Anthropic's *Writing Tools for Agents* prescribes — run evaluations programmatically and iterate ([Writing Tools for Agents](https://www.anthropic.com/engineering/writing-tools-for-agents)). Without it, every corpus edit is a coin flip. Ground-truth labelling is **human-required**, not agent work.
+**Golden set (B10).** ~53 hand-labelled notices in CI — **one per code** plus ambiguous, refused-category, Walmart and adversarial slices — producing a confusion matrix over the 33 codes plus `UNCLASSIFIED` **with every row populated**. Coverage is asserted by a build-emitted manifest, and fixtures authored from an L1 record rather than sourced from a real notice are marked `synthetic` and reported separately (`LLM_ENGINE.md` §8.1). The eval harness is the mechanism Anthropic's *Writing Tools for Agents* prescribes — run evaluations programmatically and iterate ([Writing Tools for Agents](https://www.anthropic.com/engineering/writing-tools-for-agents)). Without it, every corpus edit is a coin flip. Ground-truth labelling is **human-required**, not agent work.
 
 ---
 

@@ -5,7 +5,7 @@
 **Reviewer posture:** adversarial. The job is to find where the documents contradict the dossier, contradict each other, or claim something the product does not yet do — not to praise coherence.
 **Date:** 2026-08-12
 
-**Headline:** the corpus of Phase-2 documents is unusually disciplined — **all ten binding decisions pass**, and there is no instance of the failure mode the dossier warned about most loudly (marketing the outcome corpus we do not hold). The defects are of a different class: **two binding documents disagreeing about what to build**, **a spec that does not match its own implementation**, and **one public page describing a monitoring mechanism that v1 does not ship**. Four were critical and have been fixed in place; the rest are listed below with owners.
+**Headline:** the corpus of Phase-2 documents is unusually disciplined — **all ten binding decisions pass**, and there is no instance of the failure mode the dossier warned about most loudly (marketing the outcome corpus we do not hold). The defects are of a different class: **two binding documents disagreeing about what to build**, **a spec that does not match its own implementation**, and **one public page describing a monitoring mechanism that v1 does not ship**. Four were critical and have been fixed in place; **all six HIGH findings (H-3–H-8) have since been resolved in place** (§4, §10); the medium and low findings are listed below with owners.
 
 ---
 
@@ -24,10 +24,12 @@
 | **D9** | Workflow not agent; no vector DB; no SP-API in v1 | ✅ Pass — three independent confirmations |
 | **D10** | Outcome corpus cut last | ✅ Pass |
 | — | Mermaid diagrams present and syntactically valid | ⚠️ 13 diagrams, 1 defect — **fixed** |
-| — | Landing page renders plausibly; follows the design system | ⚠️ Renders; 2 conformance defects (1 fixed, 1 listed) |
+| — | Landing page renders plausibly; follows the design system | ✅ Renders; 2 conformance defects, **both fixed** (C-4, H-8) |
 | — | Citations invariant is genuinely code-level | ✅ Pass — strongest part of the build |
 
-**Counts:** 4 critical (all fixed) · 2 high-severity factual errors (fixed) · 6 high (listed) · 8 medium · 5 low.
+**Counts:** 4 critical (all fixed) · 2 high-severity factual errors (fixed) · **6 high (all resolved — §4)** · 8 medium · 5 low.
+
+**Of the six HIGH findings, five were defects and one was not.** H-3 alleged an unverified pricing claim; re-fetching the live source confirmed the design document and convicted the *cached reference* the review had trusted. That asymmetry is the review's own most useful result: the artifact that looks authoritative because it is local is the one most likely to be stale.
 
 ---
 
@@ -122,27 +124,69 @@ The spec documented `--cw-mat-tint` as `#FFFFFF` / `#26333F` and showed a `color
 
 ---
 
-## 4. HIGH — listed, not fixed (require a decision or an owner)
+## 4. HIGH — all six resolved in place (2026-08-12)
 
-### H-3 · The Sonnet 5 price-permanence claim is the most consequential unverified fact in the engine design
-`LLM_ENGINE.md` §2.1 states as a verified correction that Sonnet 5's $2/$10 rate *"is now the standard price"* and that the scheduled increase to $3/$15 on 2026-09-01 *"will not occur"*, then builds the entire §2.4 cost model on it — including the load-bearing *"$2.69 to acquire one paying customer"* figure. The in-repo Claude API reference still carries **$3.00/$15.00 with $2.00/$10.00 introductory through 2026-08-31**. The document is dated **nineteen days** before that expiry.
+**Status: H-3 through H-8 are closed.** Each entry below states the finding as it stood, then the resolution as shipped. Two resolutions changed a *document* to match reality; three changed reality to match a *rule*; one (H-3) confirmed the document and corrected the reviewer.
 
-The financial exposure is trivial (a 50% rise on two Sonnet stages is cents against $149; the pipeline stays >94% margin either way). The *documentary* exposure is not: a binding document asserts as verified a price change that the reference contradicts, and §2.4's arithmetic would be quietly wrong. **Action:** re-fetch pricing on the build day; if the increase stands, restate §2.1 correction #1 as a dated observation and re-run the §2.4 table. Never quote the "permanently" wording externally.
+### H-3 · The Sonnet 5 price-permanence claim — ✅ **VERIFIED, the document was right**
+**Finding.** `LLM_ENGINE.md` §2.1 stated as a verified correction that Sonnet 5's $2/$10 rate *"is now the standard price"* and that the scheduled increase to $3/$15 on 2026-09-01 *"will not occur"*, then built the §2.4 cost model on it — including the load-bearing *"$2.69 to acquire one paying customer"* figure. The in-repo Claude API reference carried **$3.00/$15.00 with $2.00/$10.00 introductory through 2026-08-31**, dated **nineteen days** before that expiry.
 
-### H-4 · Reason-code count drifts across three documents
-LLM_ENGINE says *"~25 labels"* (§2.2, §2.3, ADR-101); ARCHITECTURE says *"~20–30 codes"*; CORPUS_DESIGN now says **33**. CORPUS_DESIGN is the owning document and firmed the number deliberately. The drift matters because LLM_ENGINE's ~14k L1 prefix estimate and its classifier-accuracy argument are both sized against ~25. **Action:** propagate 33 into LLM_ENGINE and ARCHITECTURE, and re-baseline the L1 token estimate with `count_tokens` once L1 exists (Q-E1 already says to).
+**Resolution — the live source was re-fetched, and it confirms the engine document verbatim.** `platform.claude.com/docs/en/about-claude/pricing` carries the note:
 
-### H-5 · The golden set cannot satisfy its own coverage claim
-`LLM_ENGINE.md` §8.1 allocates *"~20 clear single-code notices, spread across the L1 taxonomy — every code represented at least once"* out of ~40 total. With 33 codes this is arithmetically impossible, and it is the slice that anchors the confusion matrix that gates every deploy. **Action:** either raise the clear-notice slice to ≥33 (taking the set to ~55) or drop the every-code claim and state the coverage target honestly. Do not leave a blocking CI gate resting on an impossible premise.
+> *"The $2/$10 per million input/output token pricing for Claude Sonnet 5, announced at launch as introductory pricing through August 31, 2026, is now the standard price. The previously scheduled increase to $3/$15 per million input/output tokens on September 1, 2026 will not occur."*
 
-### H-6 · The cached-prefix token budget contradicts itself inside one document
-`CORPUS_DESIGN.md` §5.1 computes its cost table from a *"~45,000-token cached prefix"*; §5.4's own budget table totals the cached prefix at **~19,000**. ARCHITECTURE §6.2 said ~45k per stage; LLM_ENGINE §3.2 says 14k / 3k+5k / 4k. Three documents, four numbers. Worse, §5.1's per-read and per-write costs are computed at **Opus 5 rates for stages ADR-101 moved to Sonnet 5**. **Action:** LLM_ENGINE §3.2 should be declared the single owner of the token budget; CORPUS_DESIGN §5.1 and §5.4 reconciled to it; all cost tables recomputed per-stage at the stage's own model rate. Every figure stays an estimate until the build-time `count_tokens` assertion runs — which is the real control and is already specified.
+**The in-repo reference is the stale artifact, not the design document** — it was cached 2026-06-24, before the 2026-08-11 announcement. Every other rate in §2.1 was re-verified against the same page (Opus 5 $5/$25, Fable 5 $10/$50, Haiku 4.5 $1/$5, all cache columns), as were §2.2's model facts against the Models overview (Opus 5 knowledge cutoff May 2026, latency tiers *Moderate* / *Fast*, Haiku 4.5's lack of adaptive thinking) and the 512/1024/4096 prefix minimums against the Prompt caching page. **§2.4's arithmetic stands unchanged.**
 
-### H-7 · The landing page advertises a guarantee that ARCHITECTURE says must not yet be advertised
-The page states the 10-minute time guarantee in four places (hero card, Rescue tier, Proof card, FAQ). `ARCHITECTURE.md` §9 **Q9** is explicit: *"the automatic-refund job must exist before the guarantee is advertised."* Right now the page could ship before the job does — and an unhonoured unconditional guarantee is precisely the trust failure the whole positioning is built to avoid. **Action:** add the SLO-refund job to the launch gate alongside G2–G5, and treat "page goes live" as blocked on it. This is a sequencing rule, not a copy change — the guarantee is correct and should lead.
+What did change: §2.1 now quotes its source verbatim with a fetch date, names the stale-cache disagreement and says which wins, and **forbids the word "permanently" externally** — the published wording describes a cancelled increase, not a perpetual commitment. New **Q-E9** re-frames every published model fact as a *dated observation with an expiry*, to be re-fetched on the build day. §2.1 also now separates what documentation can verify (prices, IDs, limits) from what it never could (our token estimates, our classifier accuracy, our modelled costs) — the latter stay hypotheses in §9.
 
-### H-8 · The landing page violates the design system's own performance guard
-`DESIGN_SYSTEM.md` §7 sets a hard, review-enforced limit: *"no more than three translucent surfaces composited in one viewport."* The landing page composites **four** in at least two viewports — the sticky L1 header plus three `.cw-card` step cards ("What happens after you paste"), and the header plus three `.cw-price` cards (pricing grid). `backdrop-filter` compounds badly, and the buyer is on mobile data at 2am, which is the exact scenario the guard was written for. **Action:** pick one — demote the step cards to `.cw-card--quiet`, render the price cards on the opaque inset surface, or measure on the real build (§11 already flags the limit as an unmeasured judgment) and amend the guard with the number. Do not leave the system and its flagship page in contradiction.
+*The reviewer's instinct was right and its conclusion was wrong: the correct response to "a binding document contradicts a cached reference" is to re-fetch the source, not to assume the cache.*
+
+### H-4 · Reason-code count drift — ✅ **RESOLVED: 33, from CORPUS_DESIGN's own table**
+**Finding.** LLM_ENGINE said *"~25 labels"*; ARCHITECTURE said *"~20–30 codes"*; CORPUS_DESIGN said **33**.
+
+**Resolution.** The canonical count is **33 plus `UNCLASSIFIED`**, taken from the actual §3.2 taxonomy tables (Amazon authenticity/IP 7 + Code of Conduct 10 + performance/compliance 10 + Walmart 6). CORPUS_DESIGN §3.2 is now named as the owning table, and 33 is propagated to every dependent claim: LLM_ENGINE **E2**, §2.2 (routing over 33 labels), §3.2 (the L1 prefix is now shown as **33 × ~400 ≈ 13,000** + ~1,000 instructions, which is where the ~14,000 estimate comes from), §3.3 (a **33-entry** per-code cache pool); ARCHITECTURE §3.2, §3.3 L1/L3 record counts, and ADR-002's context. The number is now arithmetic with a visible derivation rather than an assertion repeated at three different values.
+
+### H-5 · The golden set could not satisfy its own coverage claim — ✅ **RESOLVED: the set grew to ~53**
+**Finding.** `LLM_ENGINE.md` §8.1 allocated *"~20 clear single-code notices … every code represented at least once"* out of ~40 total. With 33 codes that is impossible, and it anchors the confusion matrix gating every deploy.
+
+**Resolution — the size is now derived from the taxonomy instead of chosen.** The single-code slice is **33 notices, one per code**, taking the set to **~53**. The reasoning is stated in the document: a blocking CI gate with blind matrix rows is *worse* than no gate, because it reports green for a code it never tested. Three supporting controls were added so the coverage claim is checkable rather than aspirational:
+
+- every fixture carries `provenance: real | synthetic`, a synthetic one being authored from that code's L1 record;
+- `corpus:build` emits a **coverage manifest** and **fails below 33/33**, reporting the real/synthetic split per code;
+- the nightly Sonnet-vs-Opus comparison behind **ADR-101's** promotion rule scores the **real subset only** — a model-tier decision must not turn on notices we wrote ourselves.
+
+Propagated to §8.2 (33-code matrix, every row populated), ADR-101's promotion rule, §6.1's Q5 reference, CORPUS_DESIGN §3.2 and §8, and ARCHITECTURE §7.2, §8 and Q5.
+
+### H-6 · The cached-prefix token budget contradicted itself — ✅ **RESOLVED: one owner, per-stage rates**
+**Finding.** CORPUS_DESIGN §5.1 computed from a *"~45,000-token cached prefix"*; §5.4 totalled **~19,000**; ARCHITECTURE §6.2 said ~45k per stage; LLM_ENGINE §3.2 said 14k / 3k+5k / 4k. Three documents, four numbers — and §5.1's costs were computed at **Opus 5 rates for stages ADR-101 moved to Sonnet 5**.
+
+**Resolution.** **`LLM_ENGINE.md` §3.2 is now the declared single owner of the token budget**, stated in that document's header and repeated as a deferral notice in CORPUS_DESIGN §5.1/§5.4 and ARCHITECTURE §6.2/Q2. §3.2 gained a decomposition table so each figure can be checked: 14k classify (1k instructions + 33 × ~400) · 3k draft system + 5k per-code documents · 4k critique · **~26,000 cached across the pipeline**, split 18k Sonnet / 8k Opus. CORPUS_DESIGN §5.1's cost table is recomputed **per stage at that stage's own model rate** — $0.008 read / $0.095 5-min write / $0.152 1-hour write for the whole pipeline — and §5.4 is now a per-stage restatement rather than a rival budget.
+
+Two real reconciliations fell out of it, both consequences of **E3** that had never been written down: the **retrieval index (~2,000) is gone from every prompt** (stage 2 is a code-keyed lookup; no model is ever shown an index), and the drafting rubric moved into stage 4's prefix where the critique actually consumes it. The prefix-minimum check also became per-model — each stage asserts against *its own* model's floor (512 Opus / 1024 Sonnet) rather than one number standing in for the pipeline.
+
+### H-7 · A guarantee advertised ahead of the job that honours it — ✅ **RESOLVED: removed from the page**
+**Finding.** The page stated the 10-minute time guarantee in four places. `ARCHITECTURE.md` §9 **Q9**: *"the automatic-refund job must exist before the guarantee is advertised."*
+
+**Resolution — the claim came off the page; ARCHITECTURE's rule stands.** The review's suggested fix (ship the page, gate the launch) inverts the safety property: it leaves the unbacked promise in the artifact and relies on a process step to catch it. **All four instances are removed**, plus a fifth in the pricing FAQ that the review missed:
+
+| Where | Was | Now |
+|---|---|---|
+| Proof card 03 | "Three guarantees… in your inbox in 10 minutes or it is free" | "**Two** guarantees" — revisions and free human review; the draft is described as *written while you wait* |
+| Rescue tier bullet | "Plan of Action in under 10 minutes" | "Plan of Action, **written while you wait**" |
+| Rescue guarantee line | "In your inbox in 10 minutes or it is free" | "Unlimited revisions until you are reinstated or you tell us to stop" |
+| FAQ *"Can you guarantee I get reinstated?"* | Time guarantee listed among the three | Removed — **and the absence is explained**: *"a guarantee is only worth the refund behind it, and ours pays out automatically or not at all"* |
+| FAQ *"Why $149 when there is a $97 tool?"* | "…the time guarantee…" | "…the human tier standing behind the hard cases…" |
+
+The last row is the one that matters for voice: the page already refuses to publish a win rate and says so out loud, so refusing to publish a guarantee and saying why is the *same* move on the same page — it reads as consistency, not retreat. ARCHITECTURE §9 now carries **G6**, an explicit launch gate binding the copy to the code: no surface states a delivery-time guarantee until the automatic SLO-refund job is running in production **and has been exercised on a deliberately-breached test case**. The 10-minute SLO itself still ships and is still measured; what is withheld is the promise, not the measurement.
+
+### H-8 · The landing page violated the design system's own performance guard — ✅ **RESOLVED: the page moved, not the guard**
+**Finding.** `DESIGN_SYSTEM.md` §7 caps a viewport at **three translucent surfaces**; the page composited four in at least two viewports (sticky header + three `.cw-card` step cards; header + three `.cw-price` cards).
+
+**Resolution.** The review offered three options; two of them were unavailable on inspection. `.cw-card--quiet` only removes the *shadow* — the `backdrop-filter` survives, so demoting to it would have left the guard broken while looking fixed. Amending the guard from a number we have not measured would have been reasoning backwards from the page.
+
+So the system gained the missing level: **`.cw-mat-0`, the opaque material** — same tokens, same geometry, same hairline, no compositing cost, rendering on `--cw-mat-opaque`, which *is* the already-certified opaque row from §4.5. `.cw-card` and `.cw-price` apply their glass through a `:not(.cw-mat-0)` guard, so the class removes the material rather than layering over it. The three step cards and three pricing cards now carry it. **Every viewport of the page is at one translucent surface against a budget of three.**
+
+§7 also gained the **counting rule** whose absence caused the defect: the sticky header is glass and is present in *every* viewport, so a full-width grid of three glass cards is already four. Count the header first. §11's honesty note is retained and extended — the limit is still an unmeasured judgment, and the correct response to an unmeasured limit is to respect it until measured, not to widen it to fit the page in front of you.
 
 ---
 
@@ -204,7 +248,7 @@ The diagrams are also *substantively* right, which is rarer than syntactic valid
 | §7 — no bespoke `backdrop-filter` outside the system | ✅ The `cw.page` layer composes system classes only. |
 | §10 — cascade layers, semantic tokens only | ✅ `@layer cw.page` declared after the system layers; no primitive-token references in page CSS. |
 | X1 — no scarcity furniture | ✅ No countdown, no "N viewing", no fake anchor. The only urgency device is the loss counter. |
-| §7 — ≤3 translucent surfaces per viewport | ❌ **Four in two viewports (H-8).** |
+| §7 — ≤3 translucent surfaces per viewport | ✅ **Fixed (H-8).** Step cards and pricing cards now take `.cw-mat-0`; one translucent surface (the header) per viewport. |
 
 **Copy conformance — passes.** No emoji, no exclamation marks, no success rate, no autonomy claim, no "legal clause", no professional-advisor title. "Not legal advice" appears in the header *and* the footer disclaimer. The footer adds an unaffiliated-with-Amazon/Walmart statement that no upstream document required — a genuinely good addition. Voice matches BRAND's R-1/R-3 registers, and the "we" versus "you" ratio passes P5.
 
@@ -233,8 +277,21 @@ Adversarial reviews are usually most useful for what they catch. Three absences 
 | H-1 | `architecture/ARCHITECTURE.md` §3.2, ADR-004 | "four model calls" → three (stage 2 is a pure function) |
 | H-2 | `architecture/CORPUS_DESIGN.md` ×5 | Reason-code count 32 → 33 |
 
-**Owned elsewhere:** H-3 through H-8 need a decision; M-1 through M-8 and L-1 through L-5 are queued. The two that should block the build starting are **M-1** (clear the name before the `cw-` prefix is load-bearing) and **H-7** (do not publish the time guarantee before the refund job exists).
+**Applied in the H-3–H-8 resolution pass (2026-08-12):**
+
+| # | File | Change |
+|---|---|---|
+| H-3 | `architecture/LLM_ENGINE.md` §2.1, header, §9 | Pricing **re-verified live** against `platform.claude.com` — the document was correct and the cached in-repo reference is stale. Source quoted verbatim with fetch date; the stale-cache disagreement named and adjudicated; "permanently" barred from external use; verified-vs-hypothesis boundary stated explicitly; new **Q-E9** makes every published model fact a dated observation with a build-day re-fetch |
+| H-4 | `architecture/LLM_ENGINE.md` ×4, `architecture/ARCHITECTURE.md` ×4 | Reason-code count → **33** everywhere, sourced from CORPUS_DESIGN §3.2; L1 prefix estimate given a visible derivation (33 × ~400 + ~1,000) |
+| H-5 | `architecture/LLM_ENGINE.md` §8.1–8.2, ADR-101, §6.1; `CORPUS_DESIGN.md` §3.2, §8; `ARCHITECTURE.md` §7.2, §8, Q5 | Golden set **~40 → ~53**, single-code slice → **33 (one per code)**; `provenance: real \| synthetic`; build-emitted coverage manifest failing below 33/33; promotion rule scored on the real subset only |
+| H-6 | `architecture/LLM_ENGINE.md` §3.2 + header; `CORPUS_DESIGN.md` §5.1, §5.4; `ARCHITECTURE.md` §6.2, ADR-003, Q2 | **LLM_ENGINE §3.2 declared single owner** of the token budget; per-stage decomposition added (~26k cached, 18k Sonnet / 8k Opus); CORPUS_DESIGN cost table recomputed **per stage at that stage's model rate**; retrieval index removed from the budget (stage 2 shows no model an index); prefix-minimum assertion made per-model |
+| H-7 | `identity/landing/index.html` ×5; `architecture/ARCHITECTURE.md` §9 | Time guarantee **removed from all public copy** (four instances the review found, plus a fifth in the pricing FAQ it missed); its absence explained on-page in the same register as the win-rate refusal; new launch gate **G6** binds the claim to the running refund job |
+| H-8 | `identity/design-system.css`, `identity/landing/index.html` (system + inlined copy), `identity/DESIGN_SYSTEM.md` §7, §11 | New **`.cw-mat-0` opaque material level**; `.cw-card` / `.cw-price` glass moved behind a `:not(.cw-mat-0)` guard; step and pricing cards demoted → **one translucent surface per viewport**; §7 gained the header-counts-first counting rule |
+
+*The two CSS copies (`design-system.css` and the inlined block in `index.html`) were patched together and verified byte-identical across the system layers — see **L-2**, which is why that check is not optional.*
+
+**Owned elsewhere:** M-1 through M-8 and L-1 through L-5 are queued. **The one that should still block the build starting is M-1** — clear the name before the `cw-` prefix is load-bearing. H-7's blocking concern is discharged: the guarantee is no longer on the page, and **G6** now gates its return on the refund job rather than on someone remembering.
 
 ---
 
-**Document status:** review of record for Phase 2. Fixes applied are noted in §10; every other finding is open and owned. Where this review conflicts with a Phase-2 document, the Phase-2 document wins only once its owner has answered the finding.
+**Document status:** review of record for Phase 2. Fixes applied are noted in §10; **§4's six HIGH findings are closed**; every other finding is open and owned. Where this review conflicts with a Phase-2 document, the Phase-2 document wins only once its owner has answered the finding.

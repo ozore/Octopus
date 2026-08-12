@@ -524,6 +524,22 @@
     box-shadow: var(--cw-elev-3), var(--cw-glass-specular);
   }
 
+  /* ------------------------------------------------------------------------
+     §7  MAT-0 — the OPAQUE material level.
+     Not a fallback and not a degraded card: the level a surface takes when the
+     viewport's three-glass budget is already spent. Same tokens, same
+     geometry, no compositing cost. Certified in §4.5 (it IS the opaque row).
+     Composes onto .cw-card and .cw-price via the :not() guards below.
+     ---------------------------------------------------------------------- */
+  .cw-mat-0 {
+    background-color: var(--cw-mat-opaque);
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+    border: 1px solid var(--cw-hairline);
+    background-clip: padding-box;
+    box-shadow: var(--cw-elev-1);
+  }
+
   /* §7 fallback — where backdrop-filter is unsupported the surface goes fully
      OPAQUE. A tint alone over a visible gradient is both ugly and unprovable
      for contrast, so we never ship the half-measure. */
@@ -546,7 +562,7 @@
     border-radius: var(--cw-radius-lg);
     /* extends .cw-mat-2 — apply both classes, or compose in the component */
   }
-  .cw-card:not(.cw-mat-1):not(.cw-mat-3) {
+  .cw-card:not(.cw-mat-0):not(.cw-mat-1):not(.cw-mat-3) {
     background-color: rgb(var(--cw-mat-tint) / var(--cw-mat-2-alpha));
     -webkit-backdrop-filter: blur(var(--cw-mat-2-blur)) saturate(var(--cw-mat-2-sat));
             backdrop-filter: blur(var(--cw-mat-2-blur)) saturate(var(--cw-mat-2-sat));
@@ -937,17 +953,20 @@
      §8.6  PRICING CARD
      No scarcity furniture. No "was $299". No expiry. (P5 / X1)
      ---------------------------------------------------------------------- */
+  .cw-price:not(.cw-mat-0) {
+    background-color: rgb(var(--cw-mat-tint) / var(--cw-mat-2-alpha));
+    -webkit-backdrop-filter: blur(var(--cw-mat-2-blur)) saturate(var(--cw-mat-2-sat));
+            backdrop-filter: blur(var(--cw-mat-2-blur)) saturate(var(--cw-mat-2-sat));
+    border: 1px solid var(--cw-glass-edge);
+    box-shadow: var(--cw-elev-2), var(--cw-glass-specular);
+  }
+
   .cw-price {
     display: flex;
     flex-direction: column;
     gap: var(--cw-space-4);
     padding: var(--cw-space-6);
     border-radius: var(--cw-radius-lg);
-    background-color: rgb(var(--cw-mat-tint) / var(--cw-mat-2-alpha));
-    -webkit-backdrop-filter: blur(var(--cw-mat-2-blur)) saturate(var(--cw-mat-2-sat));
-            backdrop-filter: blur(var(--cw-mat-2-blur)) saturate(var(--cw-mat-2-sat));
-    border: 1px solid var(--cw-glass-edge);
-    box-shadow: var(--cw-elev-2), var(--cw-glass-specular);
   }
 
   .cw-price__tier {
@@ -1325,7 +1344,7 @@
     background-image: none;                     /* remove the ambient field */
   }
 
-  .cw-mat-1, .cw-mat-2, .cw-mat-3,
+  .cw-mat-0, .cw-mat-1, .cw-mat-2, .cw-mat-3,
   .cw-card, .cw-price, .cw-sheet, .cw-header {
     background-color: var(--cw-mat-opaque) !important;
     -webkit-backdrop-filter: none !important;
@@ -1392,7 +1411,7 @@
    component structure survives because hierarchy is carried by borders too.
    ========================================================================== */
 @media (forced-colors: active) {
-  .cw-mat-1, .cw-mat-2, .cw-mat-3,
+  .cw-mat-0, .cw-mat-1, .cw-mat-2, .cw-mat-3,
   .cw-card, .cw-price, .cw-sheet, .cw-header,
   .cw-cite, .cw-loss, .cw-card--inset {
     background-color: Canvas;
@@ -1432,7 +1451,7 @@
     font-size: 11pt;
   }
   .cw-header, .cw-btn, .cw-sheet, .cw-progress, .cw-sla-clock, .cw-loss { display: none !important; }
-  .cw-mat-1, .cw-mat-2, .cw-mat-3, .cw-card, .cw-price {
+  .cw-mat-0, .cw-mat-1, .cw-mat-2, .cw-mat-3, .cw-card, .cw-price {
     background: none !important;
     -webkit-backdrop-filter: none !important;
             backdrop-filter: none !important;
@@ -1912,7 +1931,9 @@
   </section>
 
   <!-- ====================================================================
-       HOW IT WORKS — three glass cards mirroring the real pipeline.
+       HOW IT WORKS — three cards mirroring the real pipeline.
+       MAT-0 (opaque): the sticky L1 header is already the viewport's glass, and
+       DESIGN_SYSTEM §7 caps a viewport at three translucent surfaces.
        ==================================================================== -->
   <section class="cw-lp-section" aria-labelledby="how-title">
     <div class="cw-shell">
@@ -1925,7 +1946,7 @@
       </div>
 
       <ol class="cw-lp-grid-3">
-        <li class="cw-card cw-lp-step">
+        <li class="cw-card cw-mat-0 cw-lp-step">
           <span class="cw-lp-step__n">Step 01</span>
           <h3 class="cw-card__title">Your reason code, read out of your own notice</h3>
           <p class="cw-lp-step__body">
@@ -1935,7 +1956,7 @@
           </p>
         </li>
 
-        <li class="cw-card cw-lp-step">
+        <li class="cw-card cw-mat-0 cw-lp-step">
           <span class="cw-lp-step__n">Step 02</span>
           <h3 class="cw-card__title">The policy clause, quoted, before you decide anything</h3>
           <p class="cw-lp-step__body">
@@ -1945,7 +1966,7 @@
           </p>
         </li>
 
-        <li class="cw-card cw-lp-step">
+        <li class="cw-card cw-mat-0 cw-lp-step">
           <span class="cw-lp-step__n">Step 03</span>
           <h3 class="cw-card__title">A drafted Plan of Action, and a list of what it still lacks</h3>
           <p class="cw-lp-step__body">
@@ -1968,6 +1989,8 @@
   <!-- ====================================================================
        PROOF — L4 stack in the binding order of BRAND §3.3:
        1 cited clause · 2 honest triage · 3 guarantees · 4 the human tier.
+       The time guarantee is NOT advertised here — ARCHITECTURE.md §9 G6 gates it on the
+       automatic SLO-refund job existing in production.
        No glass in this section; the citation is opaque tint (§2 rule 2).
        ==================================================================== -->
   <section class="cw-lp-section" aria-labelledby="proof-title">
@@ -2019,12 +2042,13 @@
 
           <div class="cw-card--inset cw-lp-proof__item">
             <span class="cw-lp-proof__rank">Proof 03</span>
-            <h3 class="cw-lp-proof__h">Three guarantees, and one thing nobody can guarantee</h3>
+            <h3 class="cw-lp-proof__h">Two guarantees, and one thing nobody can guarantee</h3>
             <p class="cw-lp-proof__p">
-              Your draft is in your inbox in 10 minutes or it is free. Revisions are unlimited
-              until you are reinstated or you tell us to stop. If your first submission is
-              rejected, your human review is free. No one can guarantee reinstatement — Amazon
-              and Walmart decide that. What is guaranteed is the draft, the clause and the time.
+              Revisions are unlimited until you are reinstated or you tell us to stop. If your
+              first submission is rejected, your human review is free. No one can guarantee
+              reinstatement — Amazon and Walmart decide that. Your draft is written while you
+              wait, in the session you are already in, but we do not put a guarantee on the
+              clock until the refund that would back it runs by itself.
             </p>
           </div>
 
@@ -2092,7 +2116,7 @@
 
       <div class="cw-lp-price-grid">
 
-        <section class="cw-price" aria-labelledby="tier-decoder">
+        <section class="cw-price cw-mat-0" aria-labelledby="tier-decoder">
           <div class="cw-lp-price__head">
             <h3 class="cw-price__tier" id="tier-decoder">Decoder</h3>
           </div>
@@ -2109,7 +2133,7 @@
           <p class="cw-price__guarantee">Nothing is charged now or later unless you choose a tier.</p>
         </section>
 
-        <section class="cw-price cw-price--recommended" aria-labelledby="tier-rescue">
+        <section class="cw-price cw-mat-0 cw-price--recommended" aria-labelledby="tier-rescue">
           <div class="cw-lp-price__head">
             <h3 class="cw-price__tier" id="tier-rescue">Rescue</h3>
             <span class="cw-chip cw-chip--recommend">Recommended for a first suspension</span>
@@ -2117,7 +2141,7 @@
           <p class="cw-price__amount">$149<span class="cw-price__unit"> one-time</span></p>
           <p class="cw-price__role">The complete Plan of Action, drafted and critiqued.</p>
           <ul class="cw-price__list">
-            <li class="cw-price__item"><span>Complete policy-cited Plan of Action in under 10 minutes</span></li>
+            <li class="cw-price__item"><span>Complete policy-cited Plan of Action, written while you wait</span></li>
             <li class="cw-price__item"><span>Rejection-Risk Scorer on your own draft</span></li>
             <li class="cw-price__item"><span>Unlimited revisions</span></li>
             <li class="cw-price__item"><span>Evidence Kit and Reason Code Playbook</span></li>
@@ -2125,12 +2149,12 @@
           </ul>
           <a class="cw-btn cw-btn--secondary cw-btn--block" href="#paste">Start with your notice</a>
           <p class="cw-price__guarantee">
-            In your inbox in 10 minutes or it is free. You choose this after you have read your
-            reason code, your clause and your critique — not before.
+            Unlimited revisions until you are reinstated or you tell us to stop. You choose this
+            after you have read your reason code, your clause and your critique — not before.
           </p>
         </section>
 
-        <section class="cw-price" aria-labelledby="tier-human">
+        <section class="cw-price cw-mat-0" aria-labelledby="tier-human">
           <div class="cw-lp-price__head">
             <h3 class="cw-price__tier" id="tier-human">Rescue + Human</h3>
           </div>
@@ -2218,10 +2242,15 @@
               you something they do not control.
             </p>
             <p>
-              What is guaranteed is narrower and entirely in our hands: your draft is in your
-              inbox within 10 minutes or it costs nothing; revisions continue until you are
-              reinstated or you tell us to stop; and if your first submission is rejected, your
-              human review is free.
+              What is guaranteed is narrower and entirely in our hands: revisions continue until
+              you are reinstated or you tell us to stop, and if your first submission is
+              rejected, your human review is free.
+            </p>
+            <p>
+              You may notice there is no delivery-time guarantee on this page. Drafting takes
+              minutes, not days, and we could say so with a number — but a guarantee is only
+              worth the refund behind it, and ours pays out automatically or not at all. The
+              number goes up when that job is running, not before.
             </p>
           </div>
         </details>
@@ -2257,8 +2286,9 @@
               and that tier is why the $149 one exists at the price it does.
             </p>
             <p>
-              The $52 difference buys unlimited revisions, the Evidence Kit, the time guarantee,
-              30 days of Shield, and the clause on screen before you pay. If none of that is worth
+              The $52 difference buys unlimited revisions, the Evidence Kit, the human tier
+              standing behind the hard cases, 30 days of Shield, and the clause on screen before
+              you pay. If none of that is worth
               $52 to you, the free Decoder still tells you your reason code and shows you your
               clause, and you are welcome to take it and write the appeal yourself.
             </p>

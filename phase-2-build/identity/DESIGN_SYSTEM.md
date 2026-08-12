@@ -440,9 +440,19 @@ Three levels, one implementation, per **P2**.
 
 | Level | Alpha (L / D) | Blur | Saturate | Elevation |
 |---|---|---|---|---|
+| **L0 opaque** — `.cw-mat-0` | *opaque* (`--cw-mat-opaque`) | none | none | `--cw-elev-1` |
 | **L1 veil** | `0.62 / 0.55` | `20px` | `180%` | `--cw-elev-1` |
 | **L2 card** | `0.72 / 0.62` | `28px` | `160%` | `--cw-elev-2` |
 | **L3 sheet** | `0.86 / 0.80` | `40px` | `140%` | `--cw-elev-3` |
+
+**L0 is the level a surface takes when the viewport's glass budget is spent.** It is not a fallback and not a degraded card — same tokens, same geometry, same hairline, zero compositing cost. It exists because the alternative, when a layout needs a fourth and fifth card, is either to break the performance guard below or to invent a bespoke one-off surface in a page layer; L0 makes "this card is not glass" a *system* decision with a name, expressible in markup:
+
+```html
+<li class="cw-card cw-mat-0">…</li>     <!-- opaque card  -->
+<section class="cw-price cw-mat-0">…</section>  <!-- opaque pricing card -->
+```
+
+`.cw-card` and `.cw-price` both apply their glass through a `:not(.cw-mat-0)` guard, so adding the class removes the material rather than layering over it — there is no `backdrop-filter` left to pay for, and no specificity fight. **Contrast needs no separate certification:** L0 renders on `--cw-mat-opaque`, which *is* the opaque row already certified in §4.5 and already the target of the `@supports`, reduced-transparency and forced-colors paths.
 
 **Why saturation *decreases* as the material thickens.** A thin veil should let the backdrop's colour life through, so it lifts saturation. A thick sheet has taken modal precedence and should read as nearly its own surface, so it pulls saturation back toward neutral. This mirrors HIG's distinction between thinner and thicker materials expressing different degrees of separation from the content behind them.
 
@@ -457,6 +467,10 @@ Three levels, one implementation, per **P2**.
 `--cw-mat-opaque` is `#F7F9FC` light / `#1C2836` dark, both certified in §4.5. **The opaque path is the source of truth for contrast**; the glass path is verified to be no worse than it.
 
 **Performance guard.** `backdrop-filter` is expensive and compounds badly. Hard limits, enforced in review: **no more than three translucent surfaces composited in one viewport**, **no glass on scroll-driven or animated surfaces**, and **no glass inside a `position: fixed` element that also transforms**. Each glass surface carries `will-change: backdrop-filter` only while it is animating in, never persistently.
+
+**Counting rule, because the guard was being read too loosely.** The sticky header is a translucent surface and it is present in *every* viewport — so a full-width grid of three glass cards is already four, not three. Count the header first, then the content surfaces; if the layout needs more than two more, the extras take **`.cw-mat-0`**. Nested surfaces (`.cw-card--inset`), the citation (`.cw-cite`) and the loss counter (`.cw-loss`) are opaque by construction and never count.
+
+Applied to the flagship page: `landing/index.html` composites the header plus **opaque** step cards and **opaque** pricing cards — one translucent surface per viewport, against a budget of three. The guard and the page it governs now agree, which they did not before the 2026-08-12 review (H-8).
 
 ---
 
@@ -663,7 +677,7 @@ Per the literature-grounding standard applied throughout Phase 2, the following 
 - **Amber rather than red for the readiness critique** (**P4.1**). This follows `USER_JOURNEY.md §8.4`, which is itself flagged there as a design constraint rather than a sourced finding. **Hypothesis, inherited.**
 - **17px rather than 16px base size** (§5.2). Directionally supported by general legibility guidance; the specific step is a judgment. **Hypothesis.**
 - **The green bloom at the bottom of the ambient field** (§4.4). Pure design judgment. **Not a finding.**
-- **The three-surfaces-per-viewport performance guard** (§7). A conservative limit from general `backdrop-filter` cost characteristics, not from a measurement on our own stack. **Measure it on the real build in the Day-4 performance pass** (`IDEA_DOSSIER.md §7.6`) and revise.
+- **The three-surfaces-per-viewport performance guard** (§7). A conservative limit from general `backdrop-filter` cost characteristics, not from a measurement on our own stack. **Measure it on the real build in the Day-4 performance pass** (`IDEA_DOSSIER.md §7.6`) and revise. Note what changed on 2026-08-12: the landing page was brought *inside* the guard (via `.cw-mat-0`) rather than the guard being loosened to fit the page. If measurement later shows four or five surfaces are cheap on our stack, raise the number then — but a system and its flagship page must not sit in contradiction while the question is open, and the honest resolution of an unmeasured limit is to respect it.
 - **Open question:** whether the `slow` timeline state should also fire a push/email at a threshold, or remain in-page only. Deferred to the build; the component supports either.
 
 ---

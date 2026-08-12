@@ -11,7 +11,9 @@
 - `/home/user/Octopus/phase-2-build/architecture/ARCHITECTURE.md` — invariants **I1–I5**, **ADR-001–008**. This document refines **ADR-002**, **ADR-003** and **ADR-004** at the prompt/model layer; where it conflicts, **§2.6 (ADR-101)** and **§4.4 (ADR-102)** state what they supersede and why.
 - `/home/user/Octopus/phase-2-build/identity/NAMING.md` — naming invariants 1–7, binding on all model-authored copy.
 
-**Verification note.** Every model ID, price and API constraint in this document was fetched live from `platform.claude.com` on 2026-08-12 (Models overview, Pricing, Citations). Two figures differ from what a stale cache would give — see §2.1. Anything not verified in-session is explicitly flagged as a hypothesis in §9.
+**Verification note.** Every model ID, price and API constraint in this document was fetched live from `platform.claude.com` on 2026-08-12 (Models overview, Pricing, Prompt caching, Citations) and **re-verified on 2026-08-12 during adversarial design review**. Two figures differ from what a stale cache would give — see §2.1, which now names its source verbatim and says which cached references disagree and why. Anything not verified in-session is explicitly flagged as a hypothesis in §9.
+
+**Ownership note.** This document is the **single owner of the engine's token budget** (§3.2). `CORPUS_DESIGN.md` §5.1 and §5.4 and `ARCHITECTURE.md` §6.2 defer to it; where any of them carries a different figure, §3.2 wins and the other document is stale. It is also the owner of the **reason-code count as used by the engine**, which it takes from `CORPUS_DESIGN.md` §3.2 — the owning document for the taxonomy itself — currently **33 codes plus `UNCLASSIFIED`**.
 
 ---
 
@@ -22,7 +24,7 @@ Everything below is elaboration. These are the calls.
 | # | Decision | Rationale | Traces to |
 |---|---|---|---|
 | **E1** | **Three named workflow patterns, composed in code — routing, prompt chaining, evaluator-optimizer. No agent loop, no model-driven control flow.** | Anthropic, [*Building Effective Agents*](https://www.anthropic.com/engineering/building-effective-agents): workflows "orchestrate LLMs and tools through predefined code paths"; agents "dynamically direct their own processes." Guidance is to "find the simplest solution possible" and reach for agents only when simpler approaches demonstrably fail. Ours is a fixed pipeline over a closed taxonomy. | D9, N7, I1, ADR-002 |
-| **E2** | **Mixed model tiers: `claude-sonnet-5` for classify and critique, `claude-opus-5` for drafting.** Chosen on **latency and risk allocation, not cost** — cost difference is ~$0.10/case (§2.4). | Drafting is the step that burns the seller's one appeal attempt (R3); classification is closed-set routing over ~25 labels where Sonnet 5 is at or near ceiling and is a full latency tier faster. | D7, R3; §2 |
+| **E2** | **Mixed model tiers: `claude-sonnet-5` for classify and critique, `claude-opus-5` for drafting.** Chosen on **latency and risk allocation, not cost** — cost difference is ~$0.10/case (§2.4). | Drafting is the step that burns the seller's one appeal attempt (R3); classification is closed-set routing over a closed 33-code taxonomy (CORPUS_DESIGN §3.2) where Sonnet 5 is at or near ceiling and is a full latency tier faster. | D7, R3; §2 |
 | **E3** | **Per-stage corpus slices, not one bundle in every call.** Classification gets the whole L1 taxonomy (it must, to route); drafting gets one reason code's L2/L3 slice as **citable documents**; critique gets one code's rubric. | The stages need different knowledge. Shipping a single 45k bundle to all four calls pays for context nobody reads and is the *cause* of the cache-fragmentation objection, not the cure. Refines **ADR-003**. | I3, ADR-003; §3 |
 | **E4** | **The citation gate is an allowlist on `document_index`, not merely "a citation object exists."** Citations must be enabled on **all or none** of a request's documents, so the seller's untrusted notice is necessarily citable. A citation pointing at the notice is an **injection signal**, not a policy reference. | Anthropic [Citations](https://platform.claude.com/docs/en/build-with-claude/citations): *"citations must be enabled on all or none of the documents within a request."* Without the allowlist, **I2 is satisfiable by a hallucination** (§4.4). | B4, R4, R10, I2, ADR-004 |
 | **E5** | **L2 policy records ship as custom-content documents, one content block per clause.** Citations then return `content_block_location` with a **content-block index**, which is a direct index into our clause array. | Same source: *"For custom content documents: Your provided content blocks are used as-is and no further chunking is done"* and citations *"include the content block index range (0-indexed)."* `clause_id` resolution becomes a total function, not a char-offset match. Supersedes the `char_location` assumption in ARCHITECTURE §3.4. | B4, I2; §4.2 |
@@ -96,8 +98,16 @@ flowchart TB
 
 **Two corrections a stale cache would have gotten wrong, both material:**
 
-1. **Sonnet 5 is $2/$10, permanently.** The $2/$10 rate was announced as introductory pricing through 2026-08-31; Anthropic has since confirmed *"this is now the standard price. The previously scheduled increase to $3/$15 per million input/output tokens on September 1, 2026 will not occur."* Our cost model must not assume a 50% price rise nineteen days from now. **Sonnet 5 is 2.5× cheaper than Opus 5 on input and output alike.**
-2. **Opus 5's minimum cacheable prefix is 512 tokens** (down from 1024 on Opus 4.8); **Sonnet 5's is 1024.** Both are far below our smallest cached prefix (§3), so every stage caches — but the model ID is pinned precisely because this minimum is *not monotonic across generations* (Opus 4.6 requires 4096).
+1. **Sonnet 5 is $2/$10, and the scheduled September rise is cancelled.** Verbatim from the Pricing page, re-fetched **2026-08-12** and again on **2026-08-12 during design review**:
+
+   > *"The $2/$10 per million input/output token pricing for Claude Sonnet 5, announced at launch as introductory pricing through August 31, 2026, is now the standard price. The previously scheduled increase to $3/$15 per million input/output tokens on September 1, 2026 will not occur."*
+
+   Our cost model must not assume a 50% price rise nineteen days from now. **Sonnet 5 is 2.5× cheaper than Opus 5 on input and output alike.**
+
+   **Provenance, stated precisely, because a stale reference disagrees.** Any in-repo or bundled Claude API reference cached **before 2026-08-11** still carries the pre-announcement row ($3/$15 standard, $2/$10 introductory through 2026-08-31). That row is not wrong for its date; it is out of date. **The live Pricing page supersedes any cached copy**, and this row is re-verified on the build day rather than trusted — see §9 **Q-E9**. Do not quote the word *"permanently"* externally: the published wording is *"is now the standard price"* and *"will not occur"*, which is a statement about a cancelled increase, not a perpetual commitment.
+2. **Opus 5's minimum cacheable prefix is 512 tokens** (down from 1024 on Opus 4.8); **Sonnet 5's is 1024.** Both are far below our smallest cached prefix (§3.2, the ~3,000-token stage-3 system prefix), so every stage caches — but the model ID is pinned precisely because this minimum is *not monotonic across generations* (Opus 4.6 requires 4096). Re-verified against the [Prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) page on 2026-08-12.
+
+**What was verified, and what was not.** Re-fetched live on 2026-08-12: every rate in the table above (Pricing); every model ID, context window, max-output figure, latency tier and knowledge cutoff in §2.2 (Models overview — Opus 5 *"Moderate"* / Sonnet 5 *"Fast"*, Sonnet 5 *"the best combination of speed and intelligence"*, Opus 5 knowledge cutoff **May 2026**, Haiku 4.5 **no adaptive thinking**); the cache multipliers and per-model prefix minimums (Prompt caching). **Not verifiable from documentation and therefore hypotheses, not findings:** every claim about *our* workload — token estimates (**Q-E1**), classification accuracy at either tier (**Q-E5**), Sonnet-tier critique quality (**Q-E2**), and the modelled costs in §2.4 (**Q-E4**). Those are flagged in §9 and none of them is a published fact.
 
 **Rejected outright:** `claude-fable-5` — 2× Opus 5's price for a capability tier this workload cannot use, and it requires 30-day data retention, which collides with the deletion-on-request commitments in **ADR-008** and §8.4(d) of the dossier. `claude-haiku-4-5` for classification — its 200k context is adequate, but it is the one current model with **no adaptive thinking**, and reason-code disambiguation (inauthentic vs. IP-complaint vs. Section 3) is exactly where a little reasoning earns its keep. Haiku remains the fallback if §8 measures Sonnet 5 as over-provisioned.
 
@@ -105,7 +115,7 @@ flowchart TB
 
 | Stage | Pattern (Anthropic) | Model | Key parameters | Why this tier |
 |---|---|---|---|---|
-| **1. Classify** | **Routing** — "classifies an input and directs it to a specialized followup task" | **`claude-sonnet-5`** | `output_config.format` (strict JSON Schema), `output_config.effort: "medium"`, `thinking: {type:"adaptive"}` | Closed-set routing over ~25 labels with the full taxonomy in context. Sonnet 5 is documented as *"the best combination of speed and intelligence"* and is a **full latency tier faster** than Opus 5. This call sits on the critical path before a single pixel renders. |
+| **1. Classify** | **Routing** — "classifies an input and directs it to a specialized followup task" | **`claude-sonnet-5`** | `output_config.format` (strict JSON Schema), `output_config.effort: "medium"`, `thinking: {type:"adaptive"}` | Closed-set routing over **33 labels plus `UNCLASSIFIED`** (CORPUS_DESIGN §3.2) with the full taxonomy in context. Sonnet 5 is documented as *"the best combination of speed and intelligence"* and is a **full latency tier faster** than Opus 5. This call sits on the critical path before a single pixel renders. |
 | **2. Retrieve** | *(not a model call)* | — | — | Pure function `ReasonCode → CorpusSlice`. Deterministic, unit-testable, zero latency, zero cost. Lewis et al. 2020 ([arXiv:2005.11401](https://arxiv.org/abs/2005.11401)) is the warrant for retrieval-grounding; **the retriever being dumb is a feature** — a mis-retrieval would be invisible to the citation gate. |
 | **3. Draft** | **Prompt chaining** — "decomposes a task into a sequence of steps, where each LLM call processes the output of the previous one" | **`claude-opus-5`** | `citations: {enabled: true}` on **every** document, **no** `output_config.format`, `effort: "high"`, thinking **on**, `max_tokens: 16000` | The one step where a defect costs the customer their appeal (**R3**). Opus 5 is the current tier "for complex agentic coding and enterprise work." Its **May 2026 knowledge cutoff** is the most recent of any model — useful marginally, though we ground in the corpus and never lean on parametric policy knowledge (that is the whole point of **B3**). |
 | **4. Critique** | **Evaluator-optimizer** — "one LLM call generates a response while another provides evaluation and feedback" | **`claude-sonnet-5`** | `output_config.format` (rubric JSON), `effort: "high"`, `thinking: {type:"adaptive"}` | Rubric scoring against a per-code checklist is **verification, not open-ended judgment**. And a different model family gives **decorrelated errors**: a drafter critiquing itself shares its own blind spots. Flagged as a hypothesis in §9 — Q-E2. |
@@ -163,7 +173,7 @@ Meanwhile two facts push the other way. Sonnet 5 sits a **full latency tier** ab
 **Consequences.**
 - *Positive:* Time-to-first-rendered-stage drops to the fastest tier available with adaptive thinking. Spend concentrates on the one call that can burn a customer's appeal. Stage 4 gains decorrelated-error properties from a different model family. Total cached tokens fall.
 - *Negative:* Two model families to keep prompts calibrated against, two sets of release notes to track, two cache pools to alarm on. Stage-1 and stage-4 quality now depend on a tier we have asserted is sufficient rather than measured. Sonnet 5 also uses the **newer tokenizer (~30% more tokens for the same text)** while sharing it with Opus 5 — consistent across our stages, but any token budget carried over from a pre-4.7-generation model must be re-baselined with `count_tokens`, never scaled by hand.
-- *Falsifiable, with a pre-committed rule:* stage 1 runs on Sonnet 5 **only while the golden set says it may**. If classifier accuracy on the 40-notice set is **more than 2 percentage points below** the same set scored on Opus 5, stage 1 is promoted to Opus 5 and this ADR is amended. The comparison runs in the nightly live-model eval (§8.3), so the decision is re-tested continuously rather than defended.
+- *Falsifiable, with a pre-committed rule:* stage 1 runs on Sonnet 5 **only while the golden set says it may**. If classifier accuracy on the **real** subset of the ~53-notice golden set (§8.1) is **more than 2 percentage points below** the same subset scored on Opus 5, stage 1 is promoted to Opus 5 and this ADR is amended. The comparison runs in the nightly live-model eval (§8.3), so the decision is re-tested continuously rather than defended.
 - *Revisit when:* the promotion rule above fires; or measured p50 shows classification is no longer the critical-path constraint; or Sonnet-tier critique is shown by §8.4 to miss deficiencies Opus-tier critique catches.
 
 ---
@@ -182,18 +192,32 @@ and **nothing volatile is ever interpolated above the breakpoint.** No timestamp
 
 | Stage | Cached prefix (breakpoint here) | Est. tokens | Per-request tail (never cached) | Est. tokens |
 |---|---|---:|---|---:|
-| **1. Classify** | System: routing instructions + refusal policy + **full L1 taxonomy** (~25 codes: canonical name, notice trigger phrases, required evidence, typical failure modes) | **~14,000** | Notice as a `document` block + the classify instruction | ~2,000 |
+| **1. Classify** | System: routing instructions + refusal policy + **full L1 taxonomy** (**33 codes** × ~400 tokens: canonical name, notice trigger phrases, required evidence, typical failure modes) | **~14,000** | Notice as a `document` block + the classify instruction | ~2,000 |
 | **3. Draft** | System: POA construction rules, three-section schema, style constraints, naming invariants (§7.3) | ~3,000 | **Documents:** notice + L2 clause records + L3 pattern record, all `citations: {enabled: true}`, each with its own `cache_control` | ~5,000 docs + ~2,300 fresh |
 | **4. Critique** | System: evaluator instructions + rubric JSON schema + **per-code rubric** | ~4,000 | The draft under review | ~2,500 |
 
-Corpus totals are **estimates until L1–L3 exist** (dossier §8.1: 20–30 + 30–60 + 20–30 records). The real control is the build-time assertion (**ADR-003** step 4): `corpus:build` counts tokens with `count_tokens` — never a character heuristic — and **fails the build** above the ceiling.
+**This table is the single owner of the engine's token budget.** `CORPUS_DESIGN.md` §5.1 and §5.4 and `ARCHITECTURE.md` §6.2 are reconciled to it and defer to it; a figure that disagrees with this table is stale, not an alternative estimate.
+
+**How the three prefixes decompose**, so the numbers can be checked rather than believed:
+
+| Stage | Prefix contents | Est. tokens | Model / cache pool |
+|---|---|---:|---|
+| 1 | Routing instructions + refusal policy (~1,000) + L1 taxonomy, **33 codes × ~400** (~13,000) | **~14,000** | Sonnet 5 |
+| 3 | POA construction rules, three-section schema, style constraints, naming invariants | **~3,000** | Opus 5 |
+| 3 | Per-code document set — L2 clauses (3–8) + L3 pattern, `citations` enabled, its own breakpoint (§3.3) | **~5,000** | Opus 5, 33-entry pool |
+| 4 | Evaluator instructions + rubric JSON schema + per-code rubric | **~4,000** | Sonnet 5 |
+| | **Total cached across the pipeline** | **~26,000** | 18,000 Sonnet · 8,000 Opus |
+
+The L1 line (~13,000 for 33 codes) is the same figure `CORPUS_DESIGN.md` §5.4 carries; the retrieval index that document previously budgeted at ~2,000 is **gone from every prompt** — stage 2 is a pure code lookup (**E3**, §2.5), so no model is ever shown an index.
+
+Corpus totals are **estimates until L1–L3 exist** (CORPUS_DESIGN §3.1: 33 + ~60 + 33 records). The real control is the build-time assertion (**ADR-003** step 4): `corpus:build` counts tokens with `count_tokens` — never a character heuristic — and **fails the build** above the ceiling.
 
 ### 3.3 Two-level caching on the draft stage
 
 The draft stage has two independently stable layers, and they deserve separate breakpoints:
 
 1. **The system prefix** (~3k) — identical for every case, every code. Warm essentially always.
-2. **The per-code document set** (~5k) — identical for every case *sharing a reason code*. There are ~25 codes, so this is a 25-entry cache pool.
+2. **The per-code document set** (~5k) — identical for every case *sharing a reason code*. There are **33 codes**, so this is a 33-entry cache pool.
 
 Citations and caching compose: *"The citation blocks generated in responses cannot be cached directly, but the source documents they reference can be cached. To optimize performance, apply `cache_control` to your top-level document content blocks."* We do exactly that.
 
@@ -424,7 +448,7 @@ This is the artifact shown **free, pre-paywall**. Per dossier §7.1, A4 is a *co
 - A **false escalation** costs reviewer time and converts to the **$399 tier** — the dossier is explicit that this "turns the worst failure mode into the differentiated revenue line."
 - A **confident misclassification** produces a confidently-wrong document that burns the seller's one appeal attempt. **R3** calls this "worse than no product."
 
-So τ and δ are set at the operating point that bounds the confident-wrong rate on the golden set, accepting whatever escalation rate that implies — a Neyman-Pearson-style constraint rather than an accuracy maximisation. This closes **Q5** ("must be calibrated against the 40-notice golden set, not guessed") with a stated method rather than a number. **The numbers themselves remain unset until the golden set exists** and are flagged in §9.
+So τ and δ are set at the operating point that bounds the confident-wrong rate on the golden set, accepting whatever escalation rate that implies — a Neyman-Pearson-style constraint rather than an accuracy maximisation. This closes **Q5** ("must be calibrated against the golden set, not guessed" — the set is now ~53 notices, §8.1) with a stated method rather than a number. **The numbers themselves remain unset until the golden set exists** and are flagged in §9.
 
 **Refused categories are a separate, earlier gate.** IP, counterfeit, linked accounts, fraud, Section 3 abuse and GPSR-adjacent codes route out **before payment**, regardless of confidence — to the $399 tier or a tracked attorney referral. Honest triage before payment is also the control on adverse selection (Akerlof 1970, *QJE*) that makes the guarantee stack in dossier §6.3 safe to offer: triage and a strong refund guarantee are complements, not alternatives.
 
@@ -548,17 +572,27 @@ Without this, every prompt change is a coin flip — and a prompt change is the 
 
 ### 8.1 The golden set
 
-**~40 hand-labelled notices**, and the labelling is **human-required** work (dossier §7.6): agents can crawl and structure, but ground truth on a reason code is a judgment call that defines correctness for everything downstream. Per Karpathy's [*Software 2.0*](https://karpathy.medium.com/software-2-0-a64152b37c35), *"the dataset that defines the desirable behavior"* is the primary artifact — the golden set is that dataset for the engine, as L4 is for the corpus.
+**~53 hand-labelled notices**, and the labelling is **human-required** work (dossier §7.6): agents can crawl and structure, but ground truth on a reason code is a judgment call that defines correctness for everything downstream. Per Karpathy's [*Software 2.0*](https://karpathy.medium.com/software-2-0-a64152b37c35), *"the dataset that defines the desirable behavior"* is the primary artifact — the golden set is that dataset for the engine, as L4 is for the corpus.
+
+**The size is derived, not chosen.** The single-code slice must cover **every one of the 33 codes** or the confusion matrix in §8.2 has blind rows, and a blocking CI gate with blind rows is worse than no gate — it reports green for a code it never tested. One notice per code is therefore the floor, and 33 + 20 specialist notices is where the set lands. An earlier draft of this section allocated ~20 notices to that slice while claiming full coverage; with 33 codes that is arithmetically impossible, and the claim is what changed, not the arithmetic.
 
 Composition is deliberate, not a convenience sample:
 
 | Slice | n | Purpose |
 |---|---:|---|
-| Clear single-code notices, spread across the L1 taxonomy | ~20 | Baseline accuracy; every code represented at least once |
+| Clear single-code notices — **one per L1 code** | **33** | Baseline accuracy; **every code represented at least once**, which is now true rather than asserted |
 | **Genuinely ambiguous** (two plausible codes) | ~6 | Calibrates **δ**, the margin threshold — the case §6.1 says is most dangerous |
 | **Refused categories** (IP, counterfeit, linked accounts, fraud) | ~5 | Asserts the pre-payment triage gate fires |
-| Walmart notices | ~4 | v1.1 readiness; different vocabulary, same three-part structure |
+| Walmart notices *(beyond the 6 Walmart codes in the single-code slice)* | ~4 | v1.1 readiness; different vocabulary, same three-part structure |
 | **Adversarial** (injection, 50k-char paste, non-English, garbage, unsupported platform) | ~5 | §8.5 |
+| | **~53** | |
+
+**Coverage is a manifest, not a hope.** Real deactivation notices for rare codes (`AMZ.COC.RANK_ABUSE`, `WMT.AGREEMENT.RETAILER`) may not be sourceable before the build. The rule, pre-committed:
+
+- Every fixture carries `provenance: real | synthetic`. A **synthetic** fixture is authored from that code's L1 record — its trigger phrases and required evidence — and is explicitly *not* evidence that the classifier handles real notices for that code.
+- `corpus:build` emits a **coverage manifest** asserting 33/33 codes present, with the real/synthetic split per code. **Coverage below 33/33 fails the build**; a synthetic fixture satisfies coverage but is reported separately.
+- The confusion matrix (§8.2) is rendered with synthetic rows visually distinguished, and the nightly Sonnet-vs-Opus comparison behind **ADR-101's** promotion rule is scored on the **real** subset only — a promotion decision must not turn on notices we wrote ourselves.
+- Replacing a synthetic fixture with a real notice is a corpus-release event, not a silent edit.
 
 Notices are **redacted before they enter the repo** — the same gate that governs L4 (**ADR-008**): a real notice carries merchant tokens, case IDs, legal names and addresses. A golden set is not an exemption from **R15**.
 
@@ -567,7 +601,7 @@ Notices are **redacted before they enter the repo** — the same gate that gover
 Against **recorded model responses**, so the suite is deterministic and free:
 
 1. **Citation invariant** — the golden set plus two injected fixtures (an uncited clause; a notice-sourced citation). Neither may reach rendered output. **Blocking.**
-2. **Classifier confusion matrix** — a regression on any previously-correct code blocks the deploy. Reported as a matrix, never as a single accuracy number: the codes are not equally consequential, and a matrix shows *which* confusion appeared.
+2. **Classifier confusion matrix** — **33 codes plus `UNCLASSIFIED`**, every row populated (§8.1's coverage manifest is what guarantees that). A regression on any previously-correct code blocks the deploy. Reported as a matrix, never as a single accuracy number: the codes are not equally consequential, and a matrix shows *which* confusion appeared.
 3. **Schema conformance** — every recorded response validates against its Zod contract (§5).
 4. **Escalation correctness** — every refused-category and ambiguous fixture must escalate. A pipeline that quietly stops escalating is the R3 failure re-entering by the back door.
 5. **Corpus build** — schema validation, deterministic serialisation, `count_tokens` budget assertion, hash stability.
@@ -607,6 +641,7 @@ Recorded so Phase 2 does not mistake absence of evidence for evidence. **Q-numbe
 | **Q-E5** | **`claude-sonnet-5` classification accuracy vs `claude-opus-5`** | **Unmeasured.** The whole of **ADR-101's** stage-1 assignment rests on it. Mitigated by the nightly comparison and the pre-committed 2-point promotion rule — this is the one hypothesis with an automatic reversal path. |
 | **Q-E6** | **Deferred-sections cost lever** | **Documented, not built.** The free Decoder runs the full pipeline; generating only the root-cause section pre-paywall would cut free-session cost materially. **Not worth building at ~$175/month of inference** (§2.4). Revisit if free sessions exceed ~5,000/month, where it becomes ~$1,300/month. Named here so it is a decision, not an oversight. |
 | **Q-E7** | **Three-call draft chain (one call per POA section)** | **Considered and rejected.** It would give per-section citation attribution and cheaper previews, but costs serial latency against a <60s p50 target and breaks streaming continuity — the preview would stutter between sections. Revisit if sentinel parse failures (§5.4) prove common in production. |
+| **Q-E9** | **Published model facts in §2.1 / §2.2** | **Verified, with an expiry.** Re-fetched live from `platform.claude.com` on 2026-08-12 (Pricing, Models overview, Prompt caching) — including the Sonnet 5 pricing note verbatim. Published facts are *dated observations, not permanent properties*: **re-fetch on the build day** and on every model-ID change, and never quote the pricing note externally in stronger words than it uses ("is now the standard price", "will not occur"). A cached reference older than 2026-08-11 disagrees on the Sonnet 5 row and is superseded, not authoritative. |
 | **Q-E8** | **`notice_contains_instructions` and `injectionSignals`** | **Logged, not acted on.** We have no baseline rate, so any threshold would be invented. They exist so the first attack is *observed* rather than discovered later. |
 
 ---

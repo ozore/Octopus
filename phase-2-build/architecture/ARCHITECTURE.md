@@ -144,7 +144,7 @@ Three of Anthropic's named workflow patterns, composed in code:
 
 | Stage | Pattern | Model configuration | Notes |
 |---|---|---|---|
-| **1. Classify** (`B2`) | **Routing** — "classifies an input and directs it to a specialized followup task" | `output_config.format` (JSON Schema, strict), `output_config.effort: "medium"` | ~20–30 reason codes across Amazon (Section 3, inauthentic, IP complaint, safety, restricted product, ODR, late shipment, linked account, dropship, review manipulation, verification) and Walmart performance-standard equivalents. Emits `{ code, confidence, evidence_spans[] }` and a **first-class `UNCLASSIFIED`**. Structured outputs are used here precisely *because* citations are not needed at this stage — the two features are mutually exclusive on one call (see below). |
+| **1. Classify** (`B2`) | **Routing** — "classifies an input and directs it to a specialized followup task" | `output_config.format` (JSON Schema, strict), `output_config.effort: "medium"` | **33 reason codes** — the taxonomy is owned and enumerated by `CORPUS_DESIGN.md` §3.2 (Amazon authenticity/IP 7, Code of Conduct 10, performance/compliance 10; Walmart 6) — plus `UNCLASSIFIED`. Emits `{ code, confidence, evidence_spans[] }` and a **first-class `UNCLASSIFIED`**. Structured outputs are used here precisely *because* citations are not needed at this stage — the two features are mutually exclusive on one call (see below). |
 | **2. Retrieve** (`B3`) | *(not a model call)* | — | Pure function: `ReasonCode → { policyDocs[], patternDocs[], taxonomyRecord }`. Deterministic, unit-testable, zero latency, zero cost. The retrieval-augmented framing is Lewis et al. 2020 ([arXiv:2005.11401](https://arxiv.org/abs/2005.11401)) — retrieval-augmented generation produces *"more specific, diverse and factual language than a state-of-the-art parametric-only seq2seq baseline."* Factuality is the axis we sell; **the retriever being dumb and deterministic is a feature**, because a mis-retrieval here would be invisible to the citation gate. |
 | **3. Draft** (`B5`) | **Prompt chaining** — "decomposes a task into a sequence of steps, where each LLM call processes the output of the previous one" | `citations: { enabled: true }` on every document block; **no** `output_config.format`; `effort: "high"`; adaptive thinking (on by default on Opus 5); `max_tokens` sized for thinking **plus** a 3-part document | Produces the three-part POA — root cause / immediate corrective actions / preventive measures — specialised per reason code. Walmart's own guidance requires "a written business plan of action describing the violation and the steps you plan to take," so the same three-part skeleton serves both marketplaces. |
 | **4. Critique** (`B6`) | **Evaluator-optimizer** — "one LLM call generates a response while another provides evaluation and feedback in a loop" | `output_config.format` (rubric JSON), `effort: "high"` | Scores the draft against the per-code rubric and names concrete deficiencies: *"no supplier invoices referenced," "no measurable preventive control," "apologetic tone / blames Amazon."* **Shown free, pre-paywall.** This is the visible proof of quality that makes A4 testable and the part a generic chat prompt does not produce. |
@@ -164,9 +164,9 @@ Four layers, two very different storage strategies.
 
 | Layer | Content | Storage | Volume at launch |
 |---|---|---|---|
-| **L1 — Reason-code taxonomy** | Canonical name, notice trigger phrases, required evidence, typical failure modes | **Version-controlled files in the repo** (`corpus/l1/*.yaml`), typed and schema-validated at build | 20–30 records |
+| **L1 — Reason-code taxonomy** | Canonical name, notice trigger phrases, required evidence, typical failure modes | **Version-controlled files in the repo** (`corpus/l1/*.yaml`), typed and schema-validated at build | **33 records** (CORPUS_DESIGN §3.2) |
 | **L2 — Policy summaries** | **Our own** structured summary of each governing policy, keyed to a canonical clause id + source URL | Repo (`corpus/l2/*.yaml`) | 30–60 records |
-| **L3 — Structural appeal patterns** | Per code: what a strong root-cause / corrective / preventive section contains; anti-patterns | Repo (`corpus/l3/*.yaml`) | 20–30 records |
+| **L3 — Structural appeal patterns** | Per code: what a strong root-cause / corrective / preventive section contains; anti-patterns | Repo (`corpus/l3/*.yaml`) | **33 records**, 1:1 with L1 |
 | **L4 — Outcome corpus** | Consented, redacted `(notice → draft → reported outcome)` triples | **Postgres** — mutable, consent-gated, per-record deletable | **0 at launch** |
 
 **Why L1–L3 live in git and not in the database.** They are *code* in the Software 2.0 sense: they define model behaviour, they must be reviewed before they change behaviour, they must be revertable, and — decisively — they must be **byte-stable** to keep the prompt cache warm (**ADR-003**). A corpus edited through an admin UI is a corpus that silently invalidates the cache and silently changes the product, with no diff and no reviewer.
@@ -217,7 +217,7 @@ Per NAMING.md §3.3: this makes Clausewright *"the rare brand promise that canno
 - **Stripe Checkout (hosted)** for both `Rescue` ($149) and `Rescue + Human` ($399). Hosted, so no card data touches us and PCI scope is SAQ-A.
 - **Card on file for Shield.** Checkout creates a `Customer` and saves the payment method (`setup_future_usage`). Per **D6**, 30 days of Shield are *included* with every Rescue — zero incremental decision under panic — and the retention decision lands 30 days later at the moment of relief (the peak-end rule: Fredrickson & Kahneman 1993, *JPSP*). The Poyar/OpenView benchmark for card-on-file trial conversion (~30% vs ~6% without) is the reason the attach assumption A5 is defensible; it is also an assumption we are instrumenting, not asserting.
 - **Webhooks are the source of truth**, not the redirect. `checkout.session.completed` unlocks the case, sends the magic link, and — if the consent checkbox was ticked — creates the consent record. The webhook handler is **idempotent on `event.id`** (a `stripe_event` table with a unique constraint); Stripe retries, and a double-unlock that double-sends the outcome sequence would poison L4 and annoy a paying customer.
-- **The 10-minute time guarantee** ("your draft is in your inbox in 10 minutes or it's free") is measured in code: `paid_at → document_ready_at`, persisted per case, with an automatic refund job if the SLO is breached. Per Hormozi's guarantee taxonomy this is the *unconditional* guarantee and the lead differentiator — nobody else in the category offers a time guarantee — so it must be machine-verifiable rather than a claim we audit by hand.
+- **The 10-minute time guarantee** ("your draft is in your inbox in 10 minutes or it's free") is measured in code: `paid_at → document_ready_at`, persisted per case, with an automatic refund job if the SLO is breached. Per Hormozi's guarantee taxonomy this is the *unconditional* guarantee and the lead differentiator — nobody else in the category offers a time guarantee — so it must be machine-verifiable rather than a claim we audit by hand. **Advertising it is gated on G6 (§9):** the measurement ships from day one, the *promise* does not appear on any surface until the refund job is running and has been exercised on a breached test case. As of 2026-08-12 the landing page carries no time guarantee.
 - **No stored PANs, no subscription logic in v1 beyond the Stripe-managed Shield price.** Refunds are issued through Stripe, not modelled in our schema.
 
 ### 3.6 Human escalation queue (`B8`, `I5`)
@@ -482,7 +482,7 @@ flowchart TB
 
     subgraph ci["GitHub Actions — build · release · run"]
         direction LR
-        b1["typecheck + unit"] --> b2["<b>citation invariant test</b><br/><i>blocking</i>"] --> b3["<b>golden-set eval</b><br/>~40 labelled notices,<br/>confusion matrix<br/><i>blocking on regression</i>"] --> b4["corpus:build<br/>validate · hash ·<br/>token-budget assert"] --> b5["docker build<br/><i>immutable image</i>"] --> b6["migrate (one-off) →<br/>deploy release"]
+        b1["typecheck + unit"] --> b2["<b>citation invariant test</b><br/><i>blocking</i>"] --> b3["<b>golden-set eval</b><br/>~53 labelled notices,<br/>33-code confusion matrix<br/><i>blocking on regression</i>"] --> b4["corpus:build<br/>validate · hash ·<br/>token-budget assert"] --> b5["docker build<br/><i>immutable image</i>"] --> b6["migrate (one-off) →<br/>deploy release"]
     end
 
     subgraph saas["Attached backing services (Twelve-Factor IV)"]
@@ -613,7 +613,7 @@ At `claude-opus-5` list pricing ($5 / $25 per MTok; cache reads $0.50/MTok), tha
 
 **Cache economics and hygiene.** Prompt-cache reads cost 0.1× base input; writes cost 1.25× at the 5-minute TTL and 2× at the 1-hour TTL. Break-even is two requests on the 5-minute TTL and three on the 1-hour. Operationally that means:
 - **Default to the 5-minute TTL**, and switch the scheduler to a 1-hour TTL re-warm during a traffic burst from a forum post — bursty traffic with idle gaps is exactly the case the 1-hour TTL exists for.
-- **The minimum cacheable prefix on `claude-opus-5` is 512 tokens**, well below our ~45k bundle — but the minimum is *not* monotonic across model generations, so the model ID is pinned and a model change is an ADR, not a config tweak.
+- **The minimum cacheable prefix on `claude-opus-5` is 512 tokens** and on `claude-sonnet-5` is 1024, both well below the smallest per-stage prefix we ship (~3k) — but the minimum is *not* monotonic across model generations, so the model ID is pinned and a model change is an ADR, not a config tweak.
 - **`usage.cache_read_input_tokens` is logged on every call and alarmed on.** Zero cache reads across repeated requests means a silent invalidator has crept into the prefix — a timestamp, a per-request id, an unsorted serialisation, or a changed tool list. This is a 10× cost regression with no functional symptom, which is exactly the class of bug that hides.
 - **Render order is `tools` → `system` → `messages`.** The corpus bundle sits in the frozen system prefix; the notice and anything per-request sits after the last breakpoint. Nothing volatile is ever interpolated above the bundle.
 
@@ -631,7 +631,7 @@ At `claude-opus-5` list pricing ($5 / $25 per MTok; cache reads $0.50/MTok), tha
 
 ### 6.4 Evals (B10)
 
-`~40 hand-labelled notices` in CI, run against recorded model responses for determinism, with a nightly live-model run:
+`~53 hand-labelled notices` in CI — one per reason code plus ambiguous, refused-category, Walmart and adversarial slices (`LLM_ENGINE.md` §8.1) — run against recorded model responses for determinism, with a nightly live-model run:
 - **Classifier:** confusion matrix vs. ground truth; a regression on any previously-correct code blocks the deploy.
 - **Draft quality:** LLM-as-judge against the per-code rubric, plus human review of 10 per release.
 - **Citation invariant:** the blocking adversarial test (`§3.4`).
@@ -667,7 +667,7 @@ Per Anthropic's [*Writing Tools for Agents*](https://www.anthropic.com/engineeri
 
 **Status:** Accepted · **Implements:** D9, N7, B2, B5, B6, B8, R3, I1, I5
 
-**Context.** Anthropic's *Building Effective Agents* draws the line: **workflows** "orchestrate LLMs and tools through predefined code paths," while **agents** "dynamically direct their own processes and tool usage." Its guidance is to "find the simplest solution possible" and to reach for agentic systems only when simpler approaches demonstrably fail, because agents "trade latency and cost for better task performance." Our task is a fixed pipeline over a closed taxonomy of ~20–30 reason codes: classify the notice, look up the governing policy, write a three-part document, critique it. There is no open-ended search and no plan the model must invent.
+**Context.** Anthropic's *Building Effective Agents* draws the line: **workflows** "orchestrate LLMs and tools through predefined code paths," while **agents** "dynamically direct their own processes and tool usage." Its guidance is to "find the simplest solution possible" and to reach for agentic systems only when simpler approaches demonstrably fail, because agents "trade latency and cost for better task performance." Our task is a fixed pipeline over a closed taxonomy of **33 reason codes**: classify the notice, look up the governing policy, write a three-part document, critique it. There is no open-ended search and no plan the model must invent.
 
 Separately, **R3 names the highest-damage technical failure mode**: a confident misclassification produces a confidently wrong document and burns the seller's one appeal attempt. That is worse than no product at all.
 
@@ -689,7 +689,7 @@ No autonomous loop, no dynamic tool selection, no model-driven control flow. The
 
 **Status:** Accepted · **Implements:** D9, N5, I3
 
-**Context.** The reflex architecture for "retrieval-grounded drafting" is embeddings + a vector store + chunking + similarity tuning + a reranker. That reflex is calibrated for corpora that do not fit in context. Ours does not have that problem: L1–L3 are 70–120 curated records, on the order of 45k tokens. Meanwhile Anthropic's prompt caching prices **cache reads at 0.1× base input** — $0.50/MTok against $5/MTok on `claude-opus-5` — with a 5-minute default TTL and a 1-hour option at 2× write, and a minimum cacheable prefix of 512 tokens on this model. And the retrieval key is not fuzzy: the classifier has already produced an exact reason code, which is the only key retrieval needs.
+**Context.** The reflex architecture for "retrieval-grounded drafting" is embeddings + a vector store + chunking + similarity tuning + a reranker. That reflex is calibrated for corpora that do not fit in context. Ours does not have that problem: L1–L3 are **~126 curated records** (33 + ~60 + 33), and no single call carries all of them — the largest cached prefix is ~14k tokens and the pipeline's cached total is ~26k (`LLM_ENGINE.md` §3.2, which owns this budget). Meanwhile Anthropic's prompt caching prices **cache reads at 0.1× base input** — $0.50/MTok against $5/MTok on `claude-opus-5` — with a 5-minute default TTL and a 1-hour option at 2× write, and a minimum cacheable prefix of 512 tokens on this model. And the retrieval key is not fuzzy: the classifier has already produced an exact reason code, which is the only key retrieval needs.
 
 **Decision.** No vector database, no embeddings, no chunking in v1. The corpus is compiled at **build** time into a single deterministically-serialised bundle with a content hash, placed in the frozen system prefix behind a `cache_control` breakpoint. Retrieval is a pure in-process function `ReasonCode → CorpusSlice`. Cache hygiene is treated as an operational invariant: nothing volatile is interpolated above the bundle, serialisation is key-sorted, the model ID is pinned, and `usage.cache_read_input_tokens` is logged and alarmed on every call.
 
@@ -824,14 +824,20 @@ Recorded so Phase 2 does not mistake absence of evidence for evidence.
 | # | Item | Status |
 |---|---|---|
 | Q1 | Inference COGS of $0.20–0.45/appeal | **Modelled from list pricing, not measured.** Verify on the first 20 real cases before quoting a margin |
-| Q2 | Corpus bundle at ~45k tokens | Estimate. The build's token-budget assertion is the real control; set the ceiling once L1–L3 exist |
+| Q2 | Corpus token budget | **Superseded and reconciled.** `LLM_ENGINE.md` §3.2 owns the budget: ~14k classify / ~3k+5k draft / ~4k critique, ~26k cached across the pipeline. Still an estimate until L1–L3 exist; the build's per-stage `count_tokens` assertion is the real control |
 | Q3 | Email-forward monitoring configuration drop-off | **Unmeasured hypothesis.** The single biggest risk to Shield delivery (**ADR-006**) |
 | Q4 | Storefront-liveness "suspension radar" | **Hypothesis, feature-flagged off.** Scraping feasibility, ToS, contact-data availability, CAN-SPAM/GDPR all unverified |
-| Q5 | Classifier confidence threshold for escalation | Must be calibrated against the 40-notice golden set, not guessed. Escalating too eagerly wastes reviewer time; too rarely triggers **R3** |
+| Q5 | Classifier confidence threshold for escalation | Must be calibrated against the ~53-notice golden set, not guessed. Escalating too eagerly wastes reviewer time; too rarely triggers **R3** |
 | Q6 | Automated redaction recall on real notices | Unknown. Human spot-check on the first ~100 is the control (**ADR-008**) |
 | Q7 | *Thomson Reuters v. Ross*, *Meta v. Bright Data* | **Recalled, not verified.** Counsel must confirm before we rely on the §8.4(c) reasoning |
 | Q8 | "Amazon March 2026 Agent Policy" (**R6**, gate G3) | Sourced only from a competitor's marketing. May govern this product category. **Locate the primary source before launch** |
-| Q9 | 10-minute SLO achievability at p95 | Modelled at 40–120s for the pipeline; the guarantee has 8+ minutes of headroom, but the automatic-refund job must exist before the guarantee is advertised |
+| Q9 | 10-minute SLO achievability at p95 | Modelled at 40–120s for the pipeline; the guarantee has 8+ minutes of headroom, but **the automatic-refund job must exist before the guarantee is advertised**. **Enforced, not merely noted:** the time guarantee has been **removed from all public copy** (`identity/landing/index.html`, 2026-08-12 design review, H-7). Re-advertising it is gated on **G6** below. The SLO itself still ships — `paid_at → document_ready_at` is measured from day one; what is withheld is the *promise*, not the measurement |
+
+**G6 — the gate that governs the time guarantee.** The launch gates G1–G5 come from the dossier; this one is architectural and is added here because it binds a code artifact to a copy claim:
+
+> **G6.** The automatic SLO-refund job (`sla_breach` → Stripe refund → seller notification, idempotent on `case_id`) must be **running in production and exercised on a deliberately-breached test case** before any surface — landing page, pricing card, FAQ, email, forum reply — states a delivery-time guarantee. Until then, copy may describe *what the product does* ("your draft is written while you wait") but must not promise a remedy we cannot pay automatically.
+
+The reasoning is the same one **D2** applies to the corpus: do not market an asset we do not hold. An unhonoured unconditional guarantee is a worse trust failure than a slower promise, and it would land on the surface a stranger reads first.
 
 ---
 
