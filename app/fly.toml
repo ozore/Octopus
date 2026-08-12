@@ -1,0 +1,90 @@
+## Clausewright — Fly.io deployment.
+##
+## Spec: ARCHITECTURE.md ADR-001 and §4.4 (deployment view). One org, one app,
+## one immutable release: `web` machine ×2 and `worker` machine ×1 in a primary
+## region, against one managed PostgreSQL 16 instance.
+##
+## What this file deliberately does NOT contain, per §4.4: a load balancer we
+## configure, a Redis instance, a container orchestrator, a separate staging
+## cluster (staging is a second Fly app from the same image with test-mode
+## config), a bastion host, or a service mesh. Two machines and a database.
+##
+## Secrets are set with `fly secrets set` and arrive as env vars (Twelve-Factor
+## III). Nothing secret belongs in this file.
+
+app = "clausewright"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+## Twelve-Factor VIII — the process formation IS the concurrency model.
+[processes]
+  web = "node server.js"
+  worker = "npm run worker"
+
+[env]
+  NODE_ENV = "production"
+  PORT = "3000"
+  DATABASE_DRIVER = "postgres"
+  ADAPTER_MODE = "live"
+  APP_BASE_URL = "https://clausewright.com"
+  SHIELD_INGEST_DOMAIN = "in.clausewright.com"
+  ## Model IDs are pinned. A change here is an ADR and a corpus-release bump,
+  ## never a config tweak — outcome attribution depends on it (ADR-101/ADR-008).
+  MODEL_CLASSIFY = "claude-sonnet-5"
+  MODEL_DRAFT = "claude-opus-5"
+  MODEL_CRITIQUE = "claude-sonnet-5"
+  CORPUS_CACHE_TTL = "5m"
+  ## G6 (ARCHITECTURE §9): no surface states a delivery-time guarantee until the
+  ## automatic SLO-refund job is running in production and has been exercised on
+  ## a deliberately-breached test case. The SLO is measured regardless.
+  TIME_GUARANTEE_ADVERTISED = "false"
+  ## ADR-006 third source: hypothesis, off until counsel review (Q4).
+  FEATURE_STOREFRONT_RADAR = "false"
+
+[http_service]
+  processes = ["web"]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = false
+  ## Never scale the web process to zero: a cold start in front of a seller who
+  ## is losing revenue by the hour is the one latency we control and choose not
+  ## to spend.
+  min_machines_running = 2
+
+  ## SSE passthrough: the preview streams for 40–120s, so no idle-connection
+  ## timeout may sit below the pipeline's p95 (ARCHITECTURE §6.2).
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 50
+    hard_limit = 100
+
+[[vm]]
+  processes = ["web"]
+  size = "shared-cpu-1x"
+  memory = "1gb"
+
+## The worker renders PDFs with headless Chromium and runs the redaction
+## pipeline, so it gets a dedicated CPU and more memory than a web machine.
+[[vm]]
+  processes = ["worker"]
+  size = "shared-cpu-2x"
+  memory = "2gb"
+
+## Migrations are a Twelve-Factor XII one-off process in an identical release
+## image, run before the new release takes traffic.
+[deploy]
+  release_command = "npm run db:migrate"
+  strategy = "rolling"
+
+[checks]
+  [checks.web_http]
+    type = "http"
+    processes = ["web"]
+    port = 3000
+    method = "get"
+    path = "/api/health"
+    interval = "15s"
+    timeout = "5s"
+    grace_period = "10s"
