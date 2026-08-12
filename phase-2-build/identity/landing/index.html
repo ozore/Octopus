@@ -1,0 +1,2462 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Clausewright — Suspension Defense Copilot for Amazon and Walmart Sellers</title>
+<meta name="description" content="Suspension defense copilot for Amazon and Walmart sellers. Paste your deactivation notice and see your reason code and the exact policy clause you were charged under — free, before you pay anything.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F4F7FB">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0A1017">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Clausewright — Suspension Defense Copilot for Amazon and Walmart Sellers">
+<meta property="og:description" content="Every day dark costs you a day’s sales. Get back to selling — with the exact policy clause on your side.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2032%2032'%3E%3Crect%20width%3D'32'%20height%3D'32'%20rx%3D'7'%20fill%3D'%2316704D'%2F%3E%3Ctext%20x%3D'16'%20y%3D'23'%20font-family%3D'ui-sans-serif%2Csystem-ui%2Csans-serif'%20font-size%3D'21'%20font-weight%3D'600'%20text-anchor%3D'middle'%20fill%3D'%23FFFFFF'%3Ec%3C%2Ftext%3E%3C%2Fsvg%3E">
+
+<script>
+/* Applied before first paint so an explicit theme choice never flashes.
+   Three states, per DESIGN_SYSTEM §10: system (no attribute), light, dark. */
+(function () {
+  try {
+    var m = localStorage.getItem("cw-theme");
+    if (m === "light" || m === "dark") {
+      document.documentElement.setAttribute("data-theme", m);
+    }
+  } catch (e) { /* storage unavailable — system preference stands */ }
+})();
+</script>
+
+<style>
+/* ==========================================================================
+   INLINED: /home/user/Octopus/phase-2-build/identity/design-system.css
+   Verbatim. Do not edit here — edit the source file and re-inline.
+   ========================================================================== */
+/* ==========================================================================
+   CLAUSEWRIGHT — DESIGN SYSTEM v1
+   Suspension Defense Copilot for Amazon and Walmart sellers
+
+   Spec: /home/user/Octopus/phase-2-build/identity/DESIGN_SYSTEM.md
+   Every value here is traceable to a numbered section of that document.
+
+   Governing constraints:
+     - Apple HIG (Liquid Glass): content first, translucency for hierarchy,
+       depth by layered material, concentric radii, 44pt targets.
+     - Nielsen's 10 usability heuristics (esp. #1 status, #5 error prevention).
+     - WCAG 2.1 AA, certified against a BOUNDED worst-case composite (§2).
+
+   No imports. No build step. No external requests. Load once in the root layout.
+   ========================================================================== */
+
+@layer cw.reset, cw.tokens, cw.base, cw.components, cw.utilities;
+
+/* ==========================================================================
+   RESET  (minimal; the artifact host may already apply one)
+   ========================================================================== */
+@layer cw.reset {
+  *,
+  *::before,
+  *::after { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+  body,
+  h1, h2, h3, h4, h5, h6,
+  p, figure, blockquote, dl, dd, ol, ul { margin: 0; }
+
+  ol[class], ul[class] { padding: 0; list-style: none; }
+
+  img, svg, video, canvas { display: block; max-inline-size: 100%; height: auto; }
+
+  input, button, textarea, select { font: inherit; color: inherit; }
+
+  button { background: none; border: 0; }
+
+  :where(a) { color: inherit; }
+}
+
+/* ==========================================================================
+   TOKENS — TIER 1: PRIMITIVES  (§4.2)
+   Components must NEVER reference these directly. Use the semantic tier.
+   ========================================================================== */
+@layer cw.tokens {
+  :root {
+    /* -- Slate (blue-slate base, hue ~215) ------------------------------- */
+    --cw-slate-50:   #F5F7FB;   /* light L2 worst-case composite            */
+    --cw-slate-100:  #E8EEF6;   /* light inset surface                      */
+    --cw-slate-200:  #DCE4EF;   /* light backdrop FLOOR (§2) / hairline     */
+    --cw-slate-300:  #B0BCCD;   /* light divider                            */
+    --cw-slate-400:  #8494AB;   /* light disabled ink                       */
+    --cw-slate-450:  #748399;   /* light field border — 3.52:1 worst case   */
+    --cw-slate-500:  #5F7189;   /* light tertiary ink — 4.56:1 worst case   */
+    --cw-slate-550:  #758AA3;   /* dark  field border — 3.74:1 worst case   */
+    --cw-slate-600:  #47586E;
+    --cw-slate-700:  #334357;   /* light secondary ink — 9.23:1 worst case  */
+    --cw-slate-800:  #26333F;   /* DARK MATERIAL TINT                       */
+    --cw-slate-900:  #16212D;   /* light primary ink — 14.89:1 worst case   */
+    --cw-slate-950:  #0A1017;   /* dark canvas                              */
+    --cw-slate-1000: #070C12;   /* dark backdrop FLOOR (§2)                 */
+
+    /* -- Mist (dark-side inks; authored independently — A12) ------------- */
+    --cw-mist-100: #F2F6FA;     /* dark primary   — 12.21:1 worst case      */
+    --cw-mist-200: #C7D3E0;     /* dark secondary —  8.73:1 worst case      */
+    --cw-mist-300: #9AAABC;     /* dark tertiary  —  5.59:1 worst case      */
+    --cw-mist-400: #6A7D96;     /* dark disabled                            */
+
+    /* -- Recovery green (hue ~158) --------------------------------------- */
+    --cw-green-100:  #CDEBDC;
+    --cw-green-200:  #A3D9BF;
+    --cw-green-300:  #6FC29C;   /* dark accent ink  — 6.23:1 worst case     */
+    --cw-green-400:  #43B486;   /* dark CTA hover   — 7.38:1 on ink-1000    */
+    --cw-green-450:  #35A97A;   /* dark CTA fill    — 6.46:1 on ink-1000    */
+    --cw-green-500:  #2E9E71;   /* dark CTA active  — 5.68:1 on ink-1000    */
+    --cw-green-600:  #16704D;   /* light CTA fill / accent — 6.07:1 w/ #fff */
+    --cw-green-700:  #125C41;   /* light CTA hover  — 7.98:1 w/ #fff        */
+    --cw-green-800:  #11593E;   /* light CTA active — 8.33:1 w/ #fff        */
+    --cw-green-1000: #06120C;   /* ink on dark green fills                  */
+
+    /* -- Azure (the CITATION hue, and nothing else; hue ~205) ------------ */
+    --cw-azure-200: #A6CFEC;
+    --cw-azure-300: #79B4DC;    /* dark citation ink — 5.92:1 worst case    */
+    --cw-azure-600: #185A88;
+    --cw-azure-700: #12456A;    /* light citation ink — 9.21:1 worst case   */
+
+    /* -- Ochre-amber (critique / risk — NEVER red, see P4) --------------- */
+    --cw-amber-200: #F0CE8C;
+    --cw-amber-300: #E0B25C;    /* dark caution ink — 6.75:1 worst case     */
+    --cw-amber-600: #A06A02;
+    --cw-amber-700: #8A5A00;    /* light caution ink — 5.42:1 worst case    */
+
+    /* -- Rose (DESTRUCTIVE / SYSTEM FAILURE ONLY — P4.2) ----------------- */
+    --cw-rose-300: #E89189;     /* dark danger ink — 5.58:1 worst case      */
+    --cw-rose-600: #A3302A;     /* light danger ink — 6.37:1 worst case     */
+    --cw-rose-700: #8A2822;
+  }
+
+  /* ========================================================================
+     TOKENS — TIER 2: SEMANTIC  (§4.3)   ***LIGHT IS THE BARE :root***
+     Every colour has its definition HERE. Media/attribute blocks below only
+     REDEFINE. Nothing is ever defined for the first time inside a query.
+     ====================================================================== */
+  :root {
+    color-scheme: light dark;
+
+    /* -- Ground & the Bounded Backdrop band (§2) ------------------------- */
+    --cw-canvas:          #F4F7FB;
+    --cw-backdrop-floor:  var(--cw-slate-200);   /* #DCE4EF */
+    --cw-backdrop-ceil:   #FFFFFF;
+    --cw-bloom-cool:      rgba(120, 152, 196, 0.16);
+    --cw-bloom-warm:      rgba(31, 138, 96, 0.09);
+
+    /* -- Material (§7) --------------------------------------------------- */
+    --cw-mat-tint:     255 255 255;   /* space-separated for rgb() alpha    */
+    --cw-mat-1-alpha:  0.62;
+    --cw-mat-2-alpha:  0.72;
+    --cw-mat-3-alpha:  0.86;
+    --cw-mat-1-blur:   20px;
+    --cw-mat-2-blur:   28px;
+    --cw-mat-3-blur:   40px;
+    --cw-mat-1-sat:    180%;
+    --cw-mat-2-sat:    160%;
+    --cw-mat-3-sat:    140%;
+    /* The opaque rendering. SOURCE OF TRUTH for contrast; glass is verified
+       to be no worse than this. Used by @supports and reduced-transparency. */
+    --cw-mat-opaque:   #F7F9FC;
+
+    --cw-glass-edge:      rgba(255, 255, 255, 0.55);
+    --cw-glass-specular:  inset 0 1px 0 rgba(255, 255, 255, 0.65);
+
+    /* -- Surfaces -------------------------------------------------------- */
+    --cw-surface-inset:  var(--cw-slate-100);    /* OPAQUE — no nested glass */
+    --cw-surface-sunken: #EDF2F8;
+
+    /* -- Ink ------------------------------------------------------------- */
+    --cw-ink:           var(--cw-slate-900);
+    --cw-ink-2:         var(--cw-slate-700);
+    --cw-ink-3:         var(--cw-slate-500);     /* floor for body text     */
+    --cw-ink-disabled:  var(--cw-slate-400);     /* non-informational only  */
+
+    /* -- Lines ----------------------------------------------------------- */
+    --cw-border:    var(--cw-slate-450);   /* meaningful boundary, >=3:1    */
+    --cw-hairline:  var(--cw-slate-200);   /* decorative separator only     */
+
+    /* -- Accents --------------------------------------------------------- */
+    --cw-accent:          var(--cw-green-600);
+    --cw-accent-strong:   var(--cw-green-800);
+    --cw-accent-fill:     var(--cw-green-600);
+    --cw-accent-fill-hov: var(--cw-green-700);
+    --cw-accent-fill-act: var(--cw-green-800);
+    --cw-accent-on-fill:  #FFFFFF;
+    --cw-accent-tint:     #DFEAEA;   /* certified 6.78:1 with green-800     */
+
+    --cw-cite:        var(--cw-azure-700);
+    --cw-cite-edge:   var(--cw-azure-600);
+    --cw-cite-tint:   #DFE7F0;       /* certified 8.07:1 with --cw-cite     */
+
+    --cw-caution:       var(--cw-amber-700);
+    --cw-caution-edge:  var(--cw-amber-600);
+    --cw-caution-tint:  #F6EEDE;
+
+    --cw-danger:       var(--cw-rose-600);
+    --cw-danger-act:   var(--cw-rose-700);
+    --cw-danger-tint:  #F7E6E4;
+
+    /* -- Focus (A5) ------------------------------------------------------ */
+    --cw-ring:         var(--cw-green-600);
+    --cw-ring-halo:    #FFFFFF;
+    --cw-ring-width:   2px;
+    --cw-ring-offset:  2px;
+
+    /* -- Elevation (§6.3) — deliberately weak; the material does the work - */
+    --cw-elev-1: 0 1px 2px rgba(22, 33, 45, 0.06), 0 4px 12px rgba(22, 33, 45, 0.05);
+    --cw-elev-2: 0 2px 4px rgba(22, 33, 45, 0.07), 0 12px 28px rgba(22, 33, 45, 0.08);
+    --cw-elev-3: 0 4px 8px rgba(22, 33, 45, 0.09), 0 28px 64px rgba(22, 33, 45, 0.12);
+
+    /* -- Typography (§5) ------------------------------------------------- */
+    --cw-font-ui:  ui-sans-serif, -apple-system, BlinkMacSystemFont,
+                   "Segoe UI Variable Text", "Segoe UI", Roboto,
+                   "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    --cw-font-doc: ui-serif, Charter, "Bitstream Charter", "Iowan Old Style",
+                   "Source Serif Pro", Georgia, "Times New Roman", serif;
+    --cw-font-mono: ui-monospace, SFMono-Regular, "SF Mono", "Cascadia Mono",
+                    "Roboto Mono", Menlo, Consolas, monospace;
+
+    --cw-text-2xs:  0.75rem;    /* 12px */
+    --cw-text-xs:   0.8125rem;  /* 13px */
+    --cw-text-sm:   0.9375rem;  /* 15px */
+    --cw-text-base: 1.0625rem;  /* 17px — the default (§5.2) */
+    --cw-text-lg:   1.25rem;    /* 20px */
+    --cw-text-xl:   1.5rem;     /* 24px */
+    --cw-text-2xl:  1.875rem;   /* 30px */
+    --cw-text-3xl:  2.375rem;   /* 38px */
+    --cw-text-4xl:  3rem;       /* 48px */
+
+    --cw-lh-tight:   1.2;
+    --cw-lh-snug:    1.4;
+    --cw-lh-normal:  1.6;
+    --cw-lh-relaxed: 1.75;
+
+    --cw-measure:     68ch;
+    --cw-measure-doc: 62ch;
+
+    /* -- Space (§6.1) — 4px grid, 8px rhythm ----------------------------- */
+    --cw-space-0:  0;
+    --cw-space-1:  0.25rem;
+    --cw-space-2:  0.5rem;
+    --cw-space-3:  0.75rem;
+    --cw-space-4:  1rem;
+    --cw-space-5:  1.5rem;
+    --cw-space-6:  2rem;
+    --cw-space-7:  2.5rem;
+    --cw-space-8:  3rem;
+    --cw-space-9:  4rem;
+    --cw-space-10: 6rem;
+
+    /* -- Radius (§6.2) — concentric: nested = parent − inset ------------- */
+    --cw-radius-xs:   0.375rem;
+    --cw-radius-sm:   0.625rem;
+    --cw-radius-md:   0.875rem;
+    --cw-radius-lg:   1.25rem;
+    --cw-radius-xl:   1.75rem;
+    --cw-radius-full: 999rem;
+
+    /* -- Motion (§6.4) — nothing loops ----------------------------------- */
+    --cw-dur-1: 120ms;
+    --cw-dur-2: 220ms;
+    --cw-dur-3: 420ms;
+    --cw-ease-out:    cubic-bezier(0.2, 0.8, 0.25, 1);
+    --cw-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* -- Layout ---------------------------------------------------------- */
+    --cw-target-min:  2.75rem;   /* 44px — A7 / HIG */
+    --cw-shell-max:   72rem;
+    --cw-z-base:      0;
+    --cw-z-raised:    10;
+    --cw-z-header:    100;
+    --cw-z-sheet:     500;
+    --cw-z-toast:     900;
+  }
+
+  /* ========================================================================
+     DARK — system preference. Guarded so an explicit light choice wins.
+     REDEFINES ONLY. (§10 theme resolution, three states.)
+     ====================================================================== */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --cw-canvas:          var(--cw-slate-950);   /* #0A1017 */
+      --cw-backdrop-floor:  var(--cw-slate-1000);  /* #070C12 */
+      --cw-backdrop-ceil:   #1B2A3A;
+      --cw-bloom-cool:      rgba(84, 128, 180, 0.18);
+      --cw-bloom-warm:      rgba(53, 169, 122, 0.10);
+
+      --cw-mat-tint:    38 51 63;      /* --cw-slate-800 */
+      --cw-mat-1-alpha: 0.55;
+      --cw-mat-2-alpha: 0.62;
+      --cw-mat-3-alpha: 0.80;
+      --cw-mat-opaque:  #1C2836;
+
+      --cw-glass-edge:     rgba(255, 255, 255, 0.10);
+      --cw-glass-specular: inset 0 1px 0 rgba(255, 255, 255, 0.10);
+
+      --cw-surface-inset:  #151F2A;
+      --cw-surface-sunken: #101922;
+
+      --cw-ink:           var(--cw-mist-100);
+      --cw-ink-2:         var(--cw-mist-200);
+      --cw-ink-3:         var(--cw-mist-300);
+      --cw-ink-disabled:  var(--cw-mist-400);
+
+      --cw-border:   var(--cw-slate-550);
+      --cw-hairline: #33445A;
+
+      --cw-accent:          var(--cw-green-300);
+      --cw-accent-strong:   var(--cw-green-200);
+      --cw-accent-fill:     var(--cw-green-450);
+      --cw-accent-fill-hov: var(--cw-green-400);
+      --cw-accent-fill-act: var(--cw-green-500);
+      --cw-accent-on-fill:  var(--cw-green-1000);
+      --cw-accent-tint:     #2D444A;   /* certified 6.50:1 with green-200 */
+
+      --cw-cite:       var(--cw-azure-300);
+      --cw-cite-edge:  var(--cw-azure-300);
+      --cw-cite-tint:  #2E4253;        /* certified 6.31:1 with azure-200 */
+
+      --cw-caution:      var(--cw-amber-300);
+      --cw-caution-edge: var(--cw-amber-300);
+      --cw-caution-tint: #3A3427;
+
+      --cw-danger:      var(--cw-rose-300);
+      --cw-danger-act:  var(--cw-rose-300);
+      --cw-danger-tint: #3D2A29;
+
+      --cw-ring:      #5FD3A3;   /* 7.27:1 on the L2 dark composite */
+      --cw-ring-halo: var(--cw-canvas);
+
+      --cw-elev-1: 0 1px 2px rgba(0, 0, 0, 0.40), 0 4px 14px rgba(0, 0, 0, 0.30);
+      --cw-elev-2: 0 2px 6px rgba(0, 0, 0, 0.46), 0 14px 34px rgba(0, 0, 0, 0.38);
+      --cw-elev-3: 0 4px 10px rgba(0, 0, 0, 0.52), 0 30px 70px rgba(0, 0, 0, 0.48);
+    }
+  }
+
+  /* ========================================================================
+     DARK — explicit toggle. Identical redefinition, higher precedence, so the
+     toggle wins in BOTH directions regardless of the system setting.
+     ====================================================================== */
+  :root[data-theme="dark"] {
+    --cw-canvas:          var(--cw-slate-950);
+    --cw-backdrop-floor:  var(--cw-slate-1000);
+    --cw-backdrop-ceil:   #1B2A3A;
+    --cw-bloom-cool:      rgba(84, 128, 180, 0.18);
+    --cw-bloom-warm:      rgba(53, 169, 122, 0.10);
+
+    --cw-mat-tint:    38 51 63;
+    --cw-mat-1-alpha: 0.55;
+    --cw-mat-2-alpha: 0.62;
+    --cw-mat-3-alpha: 0.80;
+    --cw-mat-opaque:  #1C2836;
+
+    --cw-glass-edge:     rgba(255, 255, 255, 0.10);
+    --cw-glass-specular: inset 0 1px 0 rgba(255, 255, 255, 0.10);
+
+    --cw-surface-inset:  #151F2A;
+    --cw-surface-sunken: #101922;
+
+    --cw-ink:           var(--cw-mist-100);
+    --cw-ink-2:         var(--cw-mist-200);
+    --cw-ink-3:         var(--cw-mist-300);
+    --cw-ink-disabled:  var(--cw-mist-400);
+
+    --cw-border:   var(--cw-slate-550);
+    --cw-hairline: #33445A;
+
+    --cw-accent:          var(--cw-green-300);
+    --cw-accent-strong:   var(--cw-green-200);
+    --cw-accent-fill:     var(--cw-green-450);
+    --cw-accent-fill-hov: var(--cw-green-400);
+    --cw-accent-fill-act: var(--cw-green-500);
+    --cw-accent-on-fill:  var(--cw-green-1000);
+    --cw-accent-tint:     #2D444A;
+
+    --cw-cite:       var(--cw-azure-300);
+    --cw-cite-edge:  var(--cw-azure-300);
+    --cw-cite-tint:  #2E4253;
+
+    --cw-caution:      var(--cw-amber-300);
+    --cw-caution-edge: var(--cw-amber-300);
+    --cw-caution-tint: #3A3427;
+
+    --cw-danger:      var(--cw-rose-300);
+    --cw-danger-act:  var(--cw-rose-300);
+    --cw-danger-tint: #3D2A29;
+
+    --cw-ring:      #5FD3A3;
+    --cw-ring-halo: var(--cw-canvas);
+
+    --cw-elev-1: 0 1px 2px rgba(0, 0, 0, 0.40), 0 4px 14px rgba(0, 0, 0, 0.30);
+    --cw-elev-2: 0 2px 6px rgba(0, 0, 0, 0.46), 0 14px 34px rgba(0, 0, 0, 0.38);
+    --cw-elev-3: 0 4px 10px rgba(0, 0, 0, 0.52), 0 30px 70px rgba(0, 0, 0, 0.48);
+  }
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+@layer cw.base {
+  html { block-size: 100%; }
+
+  body {
+    min-block-size: 100%;
+    margin: 0;
+    font-family: var(--cw-font-ui);
+    font-size: var(--cw-text-base);
+    line-height: var(--cw-lh-normal);
+    color: var(--cw-ink);
+
+    /* The page ground is ALWAYS painted explicitly — a transparent body
+       borrows the host's theme and breaks the bounded backdrop band (§2). */
+    background-color: var(--cw-canvas);
+
+    /* The ambient field (§4.4). Fixed, so the composite behind any glass
+       surface stays stable under scroll; stops drawn only from inside the
+       declared band, which is what makes the worst case computable. */
+    background-image:
+      radial-gradient(90ch 70ch at 12% -10%,  var(--cw-bloom-cool) 0%, transparent 62%),
+      radial-gradient(80ch 60ch at 92% 108%,  var(--cw-bloom-warm) 0%, transparent 60%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    font-weight: 600;
+    line-height: var(--cw-lh-tight);
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  h1 { font-size: var(--cw-text-3xl); letter-spacing: -0.02em; }
+  h2 { font-size: var(--cw-text-2xl); }
+  h3 { font-size: var(--cw-text-xl); letter-spacing: -0.01em; }
+  h4 { font-size: var(--cw-text-lg); letter-spacing: -0.005em; }
+
+  p { max-inline-size: var(--cw-measure); text-wrap: pretty; }
+
+  a {
+    color: var(--cw-cite);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    transition: text-decoration-thickness var(--cw-dur-1) var(--cw-ease-out);
+  }
+  a:hover { text-decoration-thickness: 2px; }
+
+  strong, b { font-weight: 600; }
+
+  small { font-size: var(--cw-text-sm); }
+
+  ::selection {
+    background-color: var(--cw-accent-tint);
+    color: var(--cw-ink);
+  }
+
+  /* A5 — focus is never removed without a replacement in the same rule.
+     TWO-PART RING: an accent outline plus a halo ring in the surface colour,
+     so the indicator survives on glass, on the accent fill, and on the inset
+     surface alike. The halo is a box-shadow so it follows border-radius. */
+  :focus-visible {
+    outline: var(--cw-ring-width) solid var(--cw-ring);
+    outline-offset: var(--cw-ring-offset);
+    box-shadow: 0 0 0 calc(var(--cw-ring-offset)) var(--cw-ring-halo);
+  }
+  /* Elements whose own box-shadow carries elevation keep it and append the
+     halo, rather than having it clobbered by the rule above. */
+  .cw-card:focus-visible,
+  .cw-price:focus-visible,
+  .cw-sheet:focus-visible {
+    box-shadow: 0 0 0 var(--cw-ring-offset) var(--cw-ring-halo), var(--cw-elev-2);
+  }
+  .cw-btn--primary:focus-visible {
+    box-shadow: 0 0 0 var(--cw-ring-offset) var(--cw-ring-halo), var(--cw-elev-1);
+  }
+
+  /* Fallback for engines without :focus-visible. */
+  @supports not selector(:focus-visible) {
+    :focus {
+      outline: var(--cw-ring-width) solid var(--cw-ring);
+      outline-offset: var(--cw-ring-offset);
+    }
+  }
+}
+
+/* ==========================================================================
+   COMPONENTS
+   ========================================================================== */
+@layer cw.components {
+
+  /* ------------------------------------------------------------------------
+     §7  THE MATERIAL SYSTEM — three levels, one implementation.
+     A bespoke backdrop-filter anywhere else in the codebase is a review fail.
+     ---------------------------------------------------------------------- */
+  .cw-mat-1,
+  .cw-mat-2,
+  .cw-mat-3 {
+    border: 1px solid var(--cw-glass-edge);
+    background-clip: padding-box;
+  }
+
+  .cw-mat-1 {
+    background-color: rgb(var(--cw-mat-tint) / var(--cw-mat-1-alpha));
+    -webkit-backdrop-filter: blur(var(--cw-mat-1-blur)) saturate(var(--cw-mat-1-sat));
+            backdrop-filter: blur(var(--cw-mat-1-blur)) saturate(var(--cw-mat-1-sat));
+    box-shadow: var(--cw-elev-1), var(--cw-glass-specular);
+  }
+  .cw-mat-2 {
+    background-color: rgb(var(--cw-mat-tint) / var(--cw-mat-2-alpha));
+    -webkit-backdrop-filter: blur(var(--cw-mat-2-blur)) saturate(var(--cw-mat-2-sat));
+            backdrop-filter: blur(var(--cw-mat-2-blur)) saturate(var(--cw-mat-2-sat));
+    box-shadow: var(--cw-elev-2), var(--cw-glass-specular);
+  }
+  .cw-mat-3 {
+    background-color: rgb(var(--cw-mat-tint) / var(--cw-mat-3-alpha));
+    -webkit-backdrop-filter: blur(var(--cw-mat-3-blur)) saturate(var(--cw-mat-3-sat));
+            backdrop-filter: blur(var(--cw-mat-3-blur)) saturate(var(--cw-mat-3-sat));
+    box-shadow: var(--cw-elev-3), var(--cw-glass-specular);
+  }
+
+  /* §7 fallback — where backdrop-filter is unsupported the surface goes fully
+     OPAQUE. A tint alone over a visible gradient is both ugly and unprovable
+     for contrast, so we never ship the half-measure. */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .cw-mat-1,
+    .cw-mat-2,
+    .cw-mat-3 {
+      background-color: var(--cw-mat-opaque);
+      border-color: var(--cw-hairline);
+      box-shadow: var(--cw-elev-1);
+    }
+  }
+
+  /* ------------------------------------------------------------------------
+     §8.1  GLASS CARD
+     ---------------------------------------------------------------------- */
+  .cw-card {
+    display: flow-root;
+    padding: var(--cw-space-6);
+    border-radius: var(--cw-radius-lg);
+    /* extends .cw-mat-2 — apply both classes, or compose in the component */
+  }
+  .cw-card:not(.cw-mat-1):not(.cw-mat-3) {
+    background-color: rgb(var(--cw-mat-tint) / var(--cw-mat-2-alpha));
+    -webkit-backdrop-filter: blur(var(--cw-mat-2-blur)) saturate(var(--cw-mat-2-sat));
+            backdrop-filter: blur(var(--cw-mat-2-blur)) saturate(var(--cw-mat-2-sat));
+    border: 1px solid var(--cw-glass-edge);
+    box-shadow: var(--cw-elev-2), var(--cw-glass-specular);
+  }
+
+  .cw-card__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--cw-space-4);
+    margin-block-end: var(--cw-space-5);
+  }
+  .cw-card__title {
+    font-size: var(--cw-text-xl);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--cw-ink);
+  }
+  .cw-card__body > * + * { margin-block-start: var(--cw-space-4); }
+  .cw-card__footer {
+    margin-block-start: var(--cw-space-6);
+    padding-block-start: var(--cw-space-5);
+    border-block-start: 1px solid var(--cw-hairline);
+  }
+
+  /* Nested surfaces are OPAQUE — §2 rule 2, glass never composites on glass.
+     Concentric radius: 20px parent − 32px inset floors at the md step. */
+  .cw-card--inset {
+    background-color: var(--cw-surface-inset);
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+    border: 1px solid var(--cw-hairline);
+    box-shadow: none;
+    border-radius: var(--cw-radius-md);
+    padding: var(--cw-space-5);
+  }
+
+  .cw-card--quiet {
+    box-shadow: none;
+    border-color: var(--cw-hairline);
+  }
+
+  /* The recovery / guarantee card. */
+  .cw-card--accent {
+    border-inline-start: 3px solid var(--cw-accent);
+  }
+
+  .cw-card--interactive {
+    transition:
+      box-shadow var(--cw-dur-1) var(--cw-ease-out),
+      transform  var(--cw-dur-1) var(--cw-ease-out);
+  }
+  .cw-card--interactive:hover {
+    box-shadow: var(--cw-elev-3), var(--cw-glass-specular);
+    transform: translateY(-1px);
+  }
+
+  /* ------------------------------------------------------------------------
+     §8.2  BUTTONS — exactly one .cw-btn--primary per screen (P6)
+     ---------------------------------------------------------------------- */
+  .cw-btn {
+    position: relative;          /* anchor for the [data-loading] indicator */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cw-space-2);
+
+    min-block-size: 3rem;                 /* 48px default */
+    min-inline-size: var(--cw-target-min);
+    padding-inline: var(--cw-space-5);
+    padding-block: var(--cw-space-3);
+
+    font-family: var(--cw-font-ui);
+    font-size: var(--cw-text-base);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.005em;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+
+    border: 1px solid transparent;
+    border-radius: var(--cw-radius-sm);
+    cursor: pointer;
+
+    transition:
+      background-color var(--cw-dur-1) var(--cw-ease-out),
+      border-color     var(--cw-dur-1) var(--cw-ease-out),
+      color            var(--cw-dur-1) var(--cw-ease-out),
+      box-shadow       var(--cw-dur-1) var(--cw-ease-out),
+      transform        var(--cw-dur-1) var(--cw-ease-out);
+  }
+
+  .cw-btn--sm { min-block-size: 2.25rem; padding-inline: var(--cw-space-4); font-size: var(--cw-text-sm); }
+  .cw-btn--lg { min-block-size: 3.5rem;  padding-inline: var(--cw-space-7); font-size: var(--cw-text-lg); }
+  .cw-btn--block { display: flex; inline-size: 100%; }
+
+  .cw-btn--primary {
+    background-color: var(--cw-accent-fill);
+    color: var(--cw-accent-on-fill);
+    box-shadow: var(--cw-elev-1);
+  }
+  .cw-btn--primary:hover  { background-color: var(--cw-accent-fill-hov); }
+  .cw-btn--primary:active { background-color: var(--cw-accent-fill-act); transform: translateY(1px); box-shadow: none; }
+
+  .cw-btn--secondary {
+    background-color: rgb(var(--cw-mat-tint) / var(--cw-mat-2-alpha));
+    -webkit-backdrop-filter: blur(var(--cw-mat-2-blur)) saturate(var(--cw-mat-2-sat));
+            backdrop-filter: blur(var(--cw-mat-2-blur)) saturate(var(--cw-mat-2-sat));
+    border-color: var(--cw-border);
+    color: var(--cw-ink);
+  }
+  .cw-btn--secondary:hover  { border-color: var(--cw-ink-3); }
+  .cw-btn--secondary:active { transform: translateY(1px); }
+
+  .cw-btn--quiet { color: var(--cw-ink-2); }
+  .cw-btn--quiet:hover { background-color: var(--cw-surface-inset); color: var(--cw-ink); }
+
+  /* Destructive only — and never pre-selected (P6). */
+  .cw-btn--danger {
+    border-color: var(--cw-danger);
+    color: var(--cw-danger);
+  }
+  .cw-btn--danger:hover { background-color: var(--cw-danger-tint); }
+
+  .cw-btn[disabled],
+  .cw-btn[aria-disabled="true"] {
+    background-color: var(--cw-surface-inset);
+    border-color: var(--cw-hairline);
+    color: var(--cw-ink-disabled);
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+  }
+  /* Nielsen #1: a disabled control MUST be accompanied by a stated reason.
+     This selector is a lint hook, not styling — see .cw-btn__reason. */
+  .cw-btn__reason {
+    display: block;
+    margin-block-start: var(--cw-space-2);
+    font-size: var(--cw-text-sm);
+    color: var(--cw-ink-2);
+  }
+
+  /* Loading: width is locked so the button does not resize under the cursor;
+     the accessible name is updated by the component via aria-live. */
+  .cw-btn[data-loading="true"] {
+    cursor: progress;
+    pointer-events: none;
+  }
+  .cw-btn[data-loading="true"] .cw-btn__label { visibility: hidden; }
+  .cw-btn[data-loading="true"]::after {
+    content: "";
+    position: absolute;
+    inline-size: 1.125rem;
+    block-size: 1.125rem;
+    border: 2px solid currentColor;
+    border-block-start-color: transparent;
+    border-radius: var(--cw-radius-full);
+    animation: cw-spin 720ms linear infinite;
+  }
+
+  @keyframes cw-spin { to { transform: rotate(360deg); } }
+
+  /* ------------------------------------------------------------------------
+     §8.3  STATUS TIMELINE — the highest-risk surface in the product.
+     Every state carries a GLYPH and a LABEL, never colour alone (A6).
+     ---------------------------------------------------------------------- */
+  .cw-timeline {
+    display: grid;
+    gap: var(--cw-space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cw-timeline__node {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.75rem 1fr;
+    gap: var(--cw-space-4);
+    padding-block-end: var(--cw-space-1);
+  }
+
+  /* The rail. Decorative continuation only — the state lives in the glyph. */
+  .cw-timeline__node:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 1.75rem;
+    inset-block-end: calc(-1 * var(--cw-space-5));
+    inset-inline-start: 0.8125rem;
+    inline-size: 2px;
+    background-color: var(--cw-hairline);
+  }
+  .cw-timeline__node[data-state="done"]:not(:last-child)::before {
+    background-color: var(--cw-accent);
+  }
+
+  .cw-timeline__glyph {
+    position: relative;          /* anchor for the active-state arc */
+    display: grid;
+    place-items: center;
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+    border: 2px solid var(--cw-hairline);
+    border-radius: var(--cw-radius-full);
+    background-color: var(--cw-canvas);
+    color: var(--cw-ink-3);
+    font-size: var(--cw-text-xs);
+    line-height: 1;
+    z-index: var(--cw-z-raised);
+  }
+
+  .cw-timeline__label {
+    font-size: var(--cw-text-base);
+    font-weight: 500;
+    color: var(--cw-ink);
+  }
+  .cw-timeline__detail {
+    margin-block-start: var(--cw-space-1);
+    font-size: var(--cw-text-sm);
+    color: var(--cw-ink-3);
+    max-inline-size: var(--cw-measure);
+  }
+  /* Streamed content slot — the wait is filled with real reading (Nielsen #1). */
+  .cw-timeline__stream { margin-block-start: var(--cw-space-3); }
+
+  .cw-timeline__node[data-state="pending"] .cw-timeline__label { color: var(--cw-ink-3); }
+
+  .cw-timeline__node[data-state="active"] .cw-timeline__glyph {
+    border-color: var(--cw-accent);
+    color: var(--cw-accent);
+  }
+  /* A single non-looping ramp per state change — nothing loops (§6.4 rule 1).
+     The exception noted in the spec: the active arc, which is decorative and
+     disappears entirely under prefers-reduced-motion. */
+  .cw-timeline__node[data-state="active"] .cw-timeline__glyph::after {
+    content: "";
+    position: absolute;
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+    border: 2px solid transparent;
+    border-block-start-color: var(--cw-accent);
+    border-radius: var(--cw-radius-full);
+    animation: cw-spin 1200ms linear infinite;
+  }
+
+  .cw-timeline__node[data-state="done"] .cw-timeline__glyph {
+    border-color: var(--cw-accent);
+    background-color: var(--cw-accent);
+    color: var(--cw-accent-on-fill);
+  }
+
+  /* "Still working — this one's taking a bit longer, your draft is not lost."
+     USER_JOURNEY §6.4 names silence here the single highest-risk micro-
+     interaction in the product. This state is NOT optional. */
+  .cw-timeline__node[data-state="slow"] .cw-timeline__glyph,
+  .cw-timeline__node[data-state="blocked"] .cw-timeline__glyph {
+    border-color: var(--cw-caution-edge);
+    color: var(--cw-caution);
+  }
+  .cw-timeline__node[data-state="slow"] .cw-timeline__detail,
+  .cw-timeline__node[data-state="blocked"] .cw-timeline__detail { color: var(--cw-caution); }
+
+  /* Rose here means a SYSTEM failure, never an Amazon rejection (P4.2). */
+  .cw-timeline__node[data-state="failed"] .cw-timeline__glyph {
+    border-color: var(--cw-danger);
+    color: var(--cw-danger);
+  }
+
+  /* ------------------------------------------------------------------------
+     §8.4  PROGRESS + SLA CLOCK
+     There is NO indeterminate variant. Where no honest proportion exists,
+     the timeline is used instead (Nielsen #1 read strictly).
+     ---------------------------------------------------------------------- */
+  .cw-progress {
+    inline-size: 100%;
+    block-size: 0.5rem;
+    border-radius: var(--cw-radius-full);
+    background-color: var(--cw-surface-inset);
+    border: 1px solid var(--cw-hairline);
+    overflow: hidden;
+  }
+  .cw-progress__fill {
+    block-size: 100%;
+    background-color: var(--cw-accent-fill);
+    border-radius: inherit;
+    transition: inline-size var(--cw-dur-3) var(--cw-ease-in-out);
+  }
+
+  /* Real measurement (paid_at → document_ready_at), not a marketing number.
+     Quiet by design: no colour change as time elapses, no red at any point. */
+  .cw-sla-clock {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--cw-space-2);
+    font-family: var(--cw-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-size: var(--cw-text-sm);
+    color: var(--cw-ink-2);
+  }
+  .cw-sla-clock__figure { font-weight: 600; color: var(--cw-ink); }
+  /* Missed SLA: the guarantee is honoured by the system, not claimed by the
+     user (Nielsen #9). Still not red — this is our failure, calmly stated. */
+  .cw-sla-clock[data-state="missed"] { color: var(--cw-caution); }
+
+  /* ------------------------------------------------------------------------
+     §8.5  CITATION CHIP — the most important component in the system.
+     The visible surface of ARCHITECTURE invariant I2 and of D7.
+     Markup contract (A10): <figure> > <blockquote cite> + <figcaption>.
+     OPAQUE tint, not glass — this text is the product (§2 rule 2).
+     ---------------------------------------------------------------------- */
+  .cw-cite {
+    margin: 0;
+    padding: var(--cw-space-5);
+    border-radius: var(--cw-radius-md);
+    border: 1px solid var(--cw-hairline);
+    border-inline-start: 3px solid var(--cw-cite-edge);
+    background-color: var(--cw-cite-tint);
+  }
+
+  .cw-cite__quote {
+    margin: 0;
+    font-family: var(--cw-font-doc);
+    font-size: var(--cw-text-lg);
+    line-height: var(--cw-lh-relaxed);
+    color: var(--cw-ink);
+    max-inline-size: var(--cw-measure-doc);
+  }
+  .cw-cite__quote::before { content: "\201C"; }
+  .cw-cite__quote::after  { content: "\201D"; }
+
+  .cw-cite__source {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--cw-space-1) var(--cw-space-3);
+    margin-block-start: var(--cw-space-4);
+    font-family: var(--cw-font-ui);
+    font-size: var(--cw-text-xs);
+    line-height: var(--cw-lh-snug);
+    color: var(--cw-cite);
+  }
+  .cw-cite__doc  { font-weight: 600; }
+  .cw-cite__loc  { font-weight: 400; opacity: 0.92; }
+  .cw-cite__link { color: var(--cw-cite); text-underline-offset: 0.2em; }
+
+  /* Inline reference inside draft prose. */
+  .cw-cite-ref {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2em;
+    padding-inline: 0.4em;
+    padding-block: 0.05em;
+    border-radius: var(--cw-radius-xs);
+    background-color: var(--cw-cite-tint);
+    color: var(--cw-cite);
+    font-size: 0.9em;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .cw-cite-ref sup { font-size: 0.75em; }
+
+  /* MUST NEVER RENDER IN PRODUCTION. A development-time tripwire so a
+     citation leak is caught by eye as well as by assertOnlyCitedClauses()
+     and the blocking CI test. Stripped from production builds. */
+  .cw-cite--unverified {
+    border: 2px dashed var(--cw-danger) !important;
+    background-image: repeating-linear-gradient(
+      45deg,
+      var(--cw-danger-tint) 0 8px,
+      transparent 8px 16px
+    );
+  }
+  .cw-cite--unverified::before {
+    content: "UNCITED — THIS MUST NOT SHIP";
+    display: block;
+    margin-block-end: var(--cw-space-3);
+    font-family: var(--cw-font-mono);
+    font-size: var(--cw-text-2xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--cw-danger);
+  }
+
+  /* ------------------------------------------------------------------------
+     §8.6  PRICING CARD
+     No scarcity furniture. No "was $299". No expiry. (P5 / X1)
+     ---------------------------------------------------------------------- */
+  .cw-price {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cw-space-4);
+    padding: var(--cw-space-6);
+    border-radius: var(--cw-radius-lg);
+    background-color: rgb(var(--cw-mat-tint) / var(--cw-mat-2-alpha));
+    -webkit-backdrop-filter: blur(var(--cw-mat-2-blur)) saturate(var(--cw-mat-2-sat));
+            backdrop-filter: blur(var(--cw-mat-2-blur)) saturate(var(--cw-mat-2-sat));
+    border: 1px solid var(--cw-glass-edge);
+    box-shadow: var(--cw-elev-2), var(--cw-glass-specular);
+  }
+
+  .cw-price__tier {
+    font-size: var(--cw-text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--cw-ink-3);
+  }
+  .cw-price__amount {
+    font-family: var(--cw-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-size: var(--cw-text-3xl);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--cw-ink);
+  }
+  .cw-price__unit { font-size: var(--cw-text-sm); font-weight: 400; color: var(--cw-ink-3); }
+  .cw-price__role { font-size: var(--cw-text-sm); color: var(--cw-ink-2); }
+
+  .cw-price__list { display: grid; gap: var(--cw-space-2); margin: 0; padding: 0; list-style: none; }
+  .cw-price__item {
+    display: grid;
+    grid-template-columns: 1.25rem 1fr;
+    gap: var(--cw-space-2);
+    font-size: var(--cw-text-sm);
+    color: var(--cw-ink-2);
+  }
+  .cw-price__item::before {
+    content: "\2713";
+    color: var(--cw-accent);
+    font-weight: 700;
+  }
+
+  .cw-price__guarantee {
+    font-size: var(--cw-text-xs);
+    color: var(--cw-ink-2);
+  }
+
+  /* The non-purchasable anchor rows ($3,500 attorney / $1,250 consultant).
+     Legible as a real alternative — anchoring fails against a strawman. */
+  .cw-price--anchor {
+    background-color: transparent;
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+    border-color: var(--cw-hairline);
+    box-shadow: none;
+    padding: var(--cw-space-5);
+  }
+  .cw-price--anchor .cw-price__amount { font-size: var(--cw-text-xl); color: var(--cw-ink-2); }
+
+  /* Recommended is stated in WORDS, not imposed by contrast (P6 / Nielsen #3). */
+  .cw-price--recommended { border-color: var(--cw-accent); }
+
+  /* ------------------------------------------------------------------------
+     §8.7  FORM FIELDS
+     Visible <label> always. Never placeholder-as-label (Nielsen #6).
+     ---------------------------------------------------------------------- */
+  .cw-field { display: grid; gap: var(--cw-space-2); }
+
+  .cw-field__label {
+    font-size: var(--cw-text-sm);
+    font-weight: 500;
+    color: var(--cw-ink);
+  }
+
+  .cw-field__control {
+    inline-size: 100%;
+    min-block-size: var(--cw-target-min);
+    padding: var(--cw-space-3);
+    font-family: var(--cw-font-ui);
+    font-size: var(--cw-text-base);
+    line-height: var(--cw-lh-normal);
+    color: var(--cw-ink);
+    background-color: var(--cw-surface-inset);
+    border: 1px solid var(--cw-border);
+    border-radius: var(--cw-radius-sm);
+    transition:
+      border-color var(--cw-dur-1) var(--cw-ease-out),
+      background-color var(--cw-dur-1) var(--cw-ease-out);
+  }
+  .cw-field__control::placeholder { color: var(--cw-ink-3); opacity: 1; }
+  .cw-field__control:hover { border-color: var(--cw-ink-3); }
+  .cw-field__control:focus-visible { border-color: var(--cw-accent); }
+
+  .cw-field__control[aria-invalid="true"] { border-color: var(--cw-danger); }
+  .cw-field__control[disabled] {
+    color: var(--cw-ink-disabled);
+    background-color: var(--cw-surface-sunken);
+    border-color: var(--cw-hairline);
+    cursor: not-allowed;
+  }
+  .cw-field__control[readonly] { background-color: var(--cw-surface-sunken); }
+
+  .cw-field__help  { font-size: var(--cw-text-sm); color: var(--cw-ink-3); }
+  /* A6: never colour alone — the glyph and the message carry it too. */
+  .cw-field__error {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--cw-space-2);
+    font-size: var(--cw-text-sm);
+    color: var(--cw-danger);
+  }
+  .cw-field__error::before { content: "\26A0"; flex: none; }
+
+  /* B1 — THE paste textarea. One textarea, one button, no signup.
+     Sits on the card, never on glass directly: a 50,000-character paste
+     scrolling under a translucent surface is the unbounded-backdrop case. */
+  .cw-paste {
+    inline-size: 100%;
+    min-block-size: 12rem;
+    max-block-size: 32rem;
+    padding: var(--cw-space-6);
+    font-family: var(--cw-font-ui);
+    font-size: var(--cw-text-base);
+    line-height: var(--cw-lh-normal);
+    color: var(--cw-ink);
+    background-color: var(--cw-surface-inset);
+    border: 1px solid var(--cw-border);
+    border-radius: var(--cw-radius-xl);
+    resize: vertical;
+    field-sizing: content;   /* progressive enhancement; ignored where absent */
+  }
+  .cw-paste:hover { border-color: var(--cw-ink-3); }
+  .cw-paste:focus-visible { border-color: var(--cw-accent); }
+
+  /* ------------------------------------------------------------------------
+     §8.8  PILLS AND CHIPS — dot AND word, always (A6)
+     ---------------------------------------------------------------------- */
+  .cw-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cw-space-2);
+    padding-inline: var(--cw-space-3);
+    padding-block: var(--cw-space-1);
+    border-radius: var(--cw-radius-full);
+    border: 1px solid var(--cw-hairline);
+    background-color: var(--cw-surface-inset);
+    font-size: var(--cw-text-xs);
+    font-weight: 500;
+    color: var(--cw-ink-2);
+    white-space: nowrap;
+  }
+  .cw-pill::before {
+    content: "";
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    border-radius: var(--cw-radius-full);
+    background-color: currentColor;
+    flex: none;
+  }
+  .cw-pill--accent  { color: var(--cw-accent-strong); background-color: var(--cw-accent-tint);  border-color: var(--cw-accent); }
+  .cw-pill--caution { color: var(--cw-caution);       background-color: var(--cw-caution-tint); border-color: var(--cw-caution-edge); }
+  /* Rose = system failure only. There is deliberately no --rejected variant:
+     an Amazon rejection renders --caution with the guarantee adjacent (P4.2). */
+  .cw-pill--danger  { color: var(--cw-danger);        background-color: var(--cw-danger-tint);  border-color: var(--cw-danger); }
+
+  .cw-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cw-space-2);
+    padding-inline: var(--cw-space-3);
+    padding-block: var(--cw-space-1);
+    border-radius: var(--cw-radius-xs);
+    border: 1px solid var(--cw-hairline);
+    background-color: var(--cw-surface-inset);
+    font-size: var(--cw-text-xs);
+    color: var(--cw-ink-2);
+  }
+  .cw-chip--recommend {
+    border-color: var(--cw-accent);
+    color: var(--cw-accent-strong);
+    background-color: var(--cw-accent-tint);
+    font-weight: 600;
+  }
+  .cw-chip--code {
+    font-family: var(--cw-font-mono);
+    font-size: var(--cw-text-2xs);
+    letter-spacing: 0.02em;
+    color: var(--cw-ink);
+  }
+  .cw-chip--evidence { cursor: pointer; }
+  .cw-chip--evidence[aria-pressed="true"] {
+    border-color: var(--cw-accent);
+    background-color: var(--cw-accent-tint);
+    color: var(--cw-accent-strong);
+  }
+
+  /* ------------------------------------------------------------------------
+     §8.9  LOSS COUNTER — the ONLY urgency device in the product.
+     No colour. No red. No animation. No countdown. (P5)
+     ---------------------------------------------------------------------- */
+  .cw-loss {
+    padding: var(--cw-space-5);
+    border-radius: var(--cw-radius-md);
+    border: 1px solid var(--cw-hairline);
+    background-color: var(--cw-surface-inset);
+    font-size: var(--cw-text-base);
+    line-height: var(--cw-lh-relaxed);
+    color: var(--cw-ink-2);
+    max-inline-size: var(--cw-measure);
+  }
+  .cw-loss__figure {
+    font-family: var(--cw-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-weight: 700;
+    color: var(--cw-ink);
+  }
+  /* The seller's own number, visibly theirs and editable — which is what
+     makes this a fact rather than a pressure tactic. */
+  .cw-loss__input {
+    font: inherit;
+    font-family: var(--cw-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-weight: 700;
+    inline-size: 7ch;
+    padding-inline: var(--cw-space-1);
+    color: var(--cw-ink);
+    background-color: transparent;
+    border: 0;
+    border-block-end: 1px dashed var(--cw-border);
+  }
+
+  /* ------------------------------------------------------------------------
+     §8.10  DISCLAIMER — NAMING.md §5 invariant 3 / B11.
+     "Prominent" means legible: ink-2, never ink-disabled.
+     ---------------------------------------------------------------------- */
+  .cw-disclaimer {
+    margin-block-start: var(--cw-space-6);
+    padding-block-start: var(--cw-space-4);
+    border-block-start: 1px solid var(--cw-hairline);
+    font-size: var(--cw-text-2xs);
+    line-height: var(--cw-lh-snug);
+    letter-spacing: 0.02em;
+    color: var(--cw-ink-2);
+    max-inline-size: var(--cw-measure);
+  }
+
+  /* ------------------------------------------------------------------------
+     §8.11  HEADER VEIL — L1, the thinnest material. No nav before payment.
+     ---------------------------------------------------------------------- */
+  .cw-header {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: var(--cw-z-header);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cw-space-4);
+    padding-inline: var(--cw-space-5);
+    padding-block: var(--cw-space-4);
+    border: 0;
+    border-block-end: 1px solid var(--cw-glass-edge);
+    background-color: rgb(var(--cw-mat-tint) / var(--cw-mat-1-alpha));
+    -webkit-backdrop-filter: blur(var(--cw-mat-1-blur)) saturate(var(--cw-mat-1-sat));
+            backdrop-filter: blur(var(--cw-mat-1-blur)) saturate(var(--cw-mat-1-sat));
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .cw-header { background-color: var(--cw-mat-opaque); border-block-end-color: var(--cw-hairline); }
+  }
+
+  /* §5.3 — one unbroken lowercase token, survives at icon and label sizes. */
+  .cw-wordmark {
+    font-family: var(--cw-font-ui);
+    font-size: var(--cw-text-lg);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-transform: lowercase;
+    color: var(--cw-ink);
+    text-decoration: none;
+  }
+  .cw-wordmark--lg { font-size: var(--cw-text-2xl); }
+  .cw-wordmark--lg .cw-wordmark__mark { color: var(--cw-accent); }
+
+  /* ------------------------------------------------------------------------
+     SHEET (L3) — modal precedence. Paywall, pre-submission checklist.
+     ---------------------------------------------------------------------- */
+  .cw-sheet {
+    position: fixed;
+    z-index: var(--cw-z-sheet);
+    inline-size: min(40rem, calc(100vw - var(--cw-space-6)));
+    max-block-size: calc(100dvh - var(--cw-space-8));
+    overflow-y: auto;
+    padding: var(--cw-space-7);
+    border-radius: var(--cw-radius-xl);
+    background-color: rgb(var(--cw-mat-tint) / var(--cw-mat-3-alpha));
+    -webkit-backdrop-filter: blur(var(--cw-mat-3-blur)) saturate(var(--cw-mat-3-sat));
+            backdrop-filter: blur(var(--cw-mat-3-blur)) saturate(var(--cw-mat-3-sat));
+    border: 1px solid var(--cw-glass-edge);
+    box-shadow: var(--cw-elev-3), var(--cw-glass-specular);
+  }
+  .cw-sheet::backdrop { background-color: rgb(10 16 23 / 0.45); }
+
+  /* ------------------------------------------------------------------------
+     THE RENDERED DOCUMENT — same component renders screen and PDF, so the
+     two cannot drift (ARCHITECTURE §3.1: divergence is a citation leak).
+     ---------------------------------------------------------------------- */
+  .cw-doc {
+    font-family: var(--cw-font-doc);
+    font-size: var(--cw-text-base);
+    line-height: var(--cw-lh-relaxed);
+    color: var(--cw-ink);
+    max-inline-size: var(--cw-measure-doc);
+  }
+  .cw-doc h2 {
+    font-family: var(--cw-font-ui);
+    font-size: var(--cw-text-lg);
+    font-weight: 600;
+    margin-block: var(--cw-space-6) var(--cw-space-3);
+  }
+  .cw-doc p + p { margin-block-start: var(--cw-space-4); }
+}
+
+/* ==========================================================================
+   UTILITIES
+   ========================================================================== */
+@layer cw.utilities {
+  .cw-shell {
+    inline-size: 100%;
+    max-inline-size: var(--cw-shell-max);
+    margin-inline: auto;
+    padding-inline: var(--cw-space-5);
+  }
+
+  .cw-stack       { display: grid; gap: var(--cw-space-4); }
+  .cw-stack--tight{ gap: var(--cw-space-2); }
+  .cw-stack--loose{ gap: var(--cw-space-6); }
+  .cw-stack--section { gap: var(--cw-space-8); }
+
+  .cw-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cw-space-3); }
+
+  .cw-measure     { max-inline-size: var(--cw-measure); }
+  .cw-measure-doc { max-inline-size: var(--cw-measure-doc); }
+
+  .cw-text-sm  { font-size: var(--cw-text-sm); }
+  .cw-text-xs  { font-size: var(--cw-text-xs); }
+  .cw-ink-2    { color: var(--cw-ink-2); }
+  .cw-ink-3    { color: var(--cw-ink-3); }
+  .cw-tabular  { font-variant-numeric: tabular-nums lining-nums; }
+  .cw-mono     { font-family: var(--cw-font-mono); }
+
+  /* A7 — 44px hit area without enlarging the visual. */
+  .cw-hitslop { position: relative; }
+  .cw-hitslop::after {
+    content: "";
+    position: absolute;
+    inset: 50% 50%;
+    inline-size: var(--cw-target-min);
+    block-size: var(--cw-target-min);
+    transform: translate(-50%, -50%);
+  }
+
+  .cw-visually-hidden {
+    position: absolute !important;
+    inline-size: 1px; block-size: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Horizontal overflow is contained, never inflicted on the page body. */
+  .cw-scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+/* ==========================================================================
+   A3 — prefers-reduced-transparency
+   NOT a degraded fallback. A first-class alternate rendering with identical
+   spacing and hierarchy, and CERTIFIED contrast (§4.5 opaque rows).
+   ========================================================================== */
+@media (prefers-reduced-transparency: reduce) {
+  body {
+    background-image: none;                     /* remove the ambient field */
+  }
+
+  .cw-mat-1, .cw-mat-2, .cw-mat-3,
+  .cw-card, .cw-price, .cw-sheet, .cw-header {
+    background-color: var(--cw-mat-opaque) !important;
+    -webkit-backdrop-filter: none !important;
+            backdrop-filter: none !important;
+    border-color: var(--cw-hairline);
+  }
+
+  /* The secondary button takes the inset surface, not the card surface —
+     otherwise it disappears into the card it sits on. */
+  .cw-btn--secondary {
+    background-color: var(--cw-surface-inset) !important;
+    -webkit-backdrop-filter: none !important;
+            backdrop-filter: none !important;
+    border-color: var(--cw-border);
+  }
+
+  .cw-card, .cw-price { box-shadow: var(--cw-elev-1); }
+  .cw-sheet  { box-shadow: var(--cw-elev-2); }
+  .cw-header { box-shadow: none; border-block-end: 1px solid var(--cw-border); }
+
+  /* With translucency gone, boundaries must carry the hierarchy on their own,
+     so meaningful edges step up from hairline to the >=3:1 border token.
+     The citation's left rule is NOT overwritten — the cite edge is identity. */
+  .cw-card--inset, .cw-pill, .cw-chip, .cw-loss {
+    border-color: var(--cw-border);
+  }
+  .cw-cite {
+    border-block-color: var(--cw-border);
+    border-inline-end-color: var(--cw-border);
+    border-inline-start-color: var(--cw-cite-edge);
+  }
+}
+
+/* ==========================================================================
+   A4 — prefers-reduced-motion
+   Durations collapse to 0.01ms, never 0, so transitionend handlers still fire.
+   Every state remains distinguishable by glyph and label without motion.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* The active-node arc is purely decorative; it goes away entirely rather
+     than spinning once and stopping in an arbitrary position. */
+  .cw-timeline__node[data-state="active"] .cw-timeline__glyph::after { display: none; }
+  .cw-btn[data-loading="true"]::after {
+    animation: none;
+    border-block-start-color: currentColor;
+    opacity: 0.5;
+  }
+  .cw-card--interactive:hover { transform: none; }
+  .cw-btn:active { transform: none; }
+}
+
+/* ==========================================================================
+   A9 — forced-colors (Windows High Contrast)
+   forced-color-adjust is used NOWHERE. The system's colours win, and the
+   component structure survives because hierarchy is carried by borders too.
+   ========================================================================== */
+@media (forced-colors: active) {
+  .cw-mat-1, .cw-mat-2, .cw-mat-3,
+  .cw-card, .cw-price, .cw-sheet, .cw-header,
+  .cw-cite, .cw-loss, .cw-card--inset {
+    background-color: Canvas;
+    color: CanvasText;
+    border: 1px solid CanvasText;
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+    box-shadow: none;
+  }
+
+  .cw-btn { border: 1px solid ButtonText; }
+  .cw-btn--primary { background-color: ButtonFace; color: ButtonText; }
+  .cw-btn[disabled] { color: GrayText; border-color: GrayText; }
+
+  .cw-timeline__glyph { border-color: CanvasText; background-color: Canvas; }
+  .cw-timeline__node[data-state="done"] .cw-timeline__glyph {
+    background-color: Highlight;
+    color: HighlightText;
+  }
+
+  .cw-progress { border: 1px solid CanvasText; }
+  .cw-progress__fill { background-color: Highlight; }
+
+  .cw-pill, .cw-chip { border: 1px solid CanvasText; background-color: Canvas; color: CanvasText; }
+
+  :focus-visible { outline: 2px solid Highlight; outline-offset: 2px; }
+}
+
+/* ==========================================================================
+   PRINT — the seller prints or PDFs the POA. Glass makes no sense on paper;
+   this path must render the document, nothing else.
+   ========================================================================== */
+@media print {
+  body {
+    background: #FFFFFF !important;
+    color: #000000;
+    font-size: 11pt;
+  }
+  .cw-header, .cw-btn, .cw-sheet, .cw-progress, .cw-sla-clock, .cw-loss { display: none !important; }
+  .cw-mat-1, .cw-mat-2, .cw-mat-3, .cw-card, .cw-price {
+    background: none !important;
+    -webkit-backdrop-filter: none !important;
+            backdrop-filter: none !important;
+    box-shadow: none !important;
+    border: 1px solid #999999;
+  }
+  /* The citation survives to paper — it is the product. */
+  .cw-cite { border-inline-start: 3px solid #000000; background: none; page-break-inside: avoid; }
+  .cw-disclaimer { display: block !important; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 9pt; }
+}
+
+/* ==========================================================================
+   LANDING PAGE LAYER
+   Appended after the system layers, so page composition can override without
+   specificity escalation and without !important (DESIGN_SYSTEM §10).
+   Rules here compose SYSTEM classes only. There is no bespoke backdrop-filter
+   anywhere below — every translucent surface is .cw-header, .cw-card or
+   .cw-price, which is what keeps the prefers-reduced-transparency and
+   forced-colors renderings correct (A3, A9).
+   ========================================================================== */
+@layer cw.page;
+
+@layer cw.page {
+
+  /* The header is sticky, so anything targeted by an in-page link needs to
+     clear it. The reduced-motion block in the system layer overrides the
+     scroll behaviour with !important, so this is safe to state flatly. */
+  html { scroll-behavior: smooth; }
+  [id] { scroll-margin-block-start: 5.5rem; }
+
+  /* -- Skip link ------------------------------------------------------- */
+  .cw-lp-skip {
+    position: absolute;
+    inset-inline-start: var(--cw-space-4);
+    inset-block-start: -100%;
+    z-index: var(--cw-z-toast);
+    padding: var(--cw-space-3) var(--cw-space-4);
+    border-radius: var(--cw-radius-sm);
+    background-color: var(--cw-surface-inset);
+    border: 1px solid var(--cw-border);
+    color: var(--cw-ink);
+    font-size: var(--cw-text-sm);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .cw-lp-skip:focus { inset-block-start: var(--cw-space-3); }
+
+  /* -- Header ---------------------------------------------------------- */
+  .cw-lp-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cw-space-4);
+    inline-size: 100%;
+    max-inline-size: var(--cw-shell-max);
+    margin-inline: auto;
+  }
+  .cw-lp-header-note {
+    display: none;
+    font-size: var(--cw-text-xs);
+    color: var(--cw-ink-3);
+  }
+  @media (min-width: 48rem) { .cw-lp-header-note { display: block; } }
+
+  .cw-lp-header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cw-space-4);
+  }
+  .cw-lp-theme__value { font-weight: 600; }
+
+  /* -- Sections -------------------------------------------------------- */
+  .cw-lp-section { padding-block: var(--cw-space-9); }
+  @media (min-width: 60rem) { .cw-lp-section { padding-block: var(--cw-space-10); } }
+
+  .cw-lp-section + .cw-lp-section,
+  .cw-lp-hero + .cw-lp-section { border-block-start: 1px solid var(--cw-hairline); }
+
+  .cw-lp-eyebrow {
+    display: block;
+    margin-block-end: var(--cw-space-3);
+    font-size: var(--cw-text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--cw-ink-3);
+  }
+  .cw-lp-h2 {
+    max-inline-size: 22ch;
+    font-size: clamp(var(--cw-text-xl), 3.4vw, var(--cw-text-2xl));
+  }
+  .cw-lp-lede {
+    margin-block-start: var(--cw-space-4);
+    font-size: var(--cw-text-lg);
+    line-height: var(--cw-lh-snug);
+    color: var(--cw-ink-2);
+  }
+  .cw-lp-head { margin-block-end: var(--cw-space-7); }
+
+  /* -- Hero ------------------------------------------------------------ */
+  .cw-lp-hero { padding-block: var(--cw-space-8) var(--cw-space-9); }
+  @media (min-width: 60rem) { .cw-lp-hero { padding-block: var(--cw-space-10) var(--cw-space-10); } }
+
+  .cw-lp-hero__grid { display: grid; gap: var(--cw-space-7); align-items: start; }
+  @media (min-width: 64rem) {
+    .cw-lp-hero__grid {
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+      gap: var(--cw-space-8);
+    }
+  }
+
+  .cw-lp-hero__frame {
+    display: block;
+    margin-block-end: var(--cw-space-5);
+    font-size: var(--cw-text-sm);
+    line-height: var(--cw-lh-snug);
+    color: var(--cw-ink-2);
+    max-inline-size: 46ch;
+  }
+  .cw-lp-hero__frame b { color: var(--cw-ink); font-weight: 600; }
+
+  /* The tagline is never split in half (BRAND §5.4). Both clauses are here and
+     both are fully legible; the size step only enacts the hierarchy BRAND §3.1
+     asks for — lead with the outcome, differentiate immediately after. */
+  .cw-lp-hero__title { max-inline-size: 28ch; }
+  .cw-lp-hero__title-a {
+    display: block;
+    font-size: clamp(var(--cw-text-2xl), 5.4vw, var(--cw-text-4xl));
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    max-inline-size: 19ch;
+  }
+  .cw-lp-hero__title-b {
+    display: block;
+    margin-block-start: var(--cw-space-4);
+    font-size: clamp(var(--cw-text-lg), 3.1vw, var(--cw-text-2xl));
+    line-height: 1.26;
+    letter-spacing: -0.015em;
+    color: var(--cw-ink);
+  }
+  .cw-lp-hero__lede {
+    margin-block-start: var(--cw-space-5);
+    max-inline-size: 54ch;
+    font-size: var(--cw-text-lg);
+    line-height: var(--cw-lh-snug);
+    color: var(--cw-ink-2);
+  }
+
+  /* The paste panel. The textarea inside it is OPAQUE (--cw-surface-inset),
+     so a long paste never scrolls under a translucent surface (§2 rule 2). */
+  .cw-lp-paste-card { margin-block-start: var(--cw-space-7); }
+  .cw-lp-paste-card .cw-field { gap: var(--cw-space-3); }
+  .cw-lp-paste-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cw-space-4);
+    margin-block-start: var(--cw-space-5);
+  }
+  .cw-lp-assure {
+    font-size: var(--cw-text-sm);
+    line-height: var(--cw-lh-snug);
+    color: var(--cw-ink-2);
+    max-inline-size: 34ch;
+  }
+
+  /* -- Loss counter (the only urgency device — §8.9 / P5) -------------- */
+  .cw-lp-loss__title {
+    font-size: var(--cw-text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--cw-ink-3);
+    margin-block-end: var(--cw-space-4);
+  }
+  .cw-lp-loss__sentence { max-inline-size: 40ch; }
+  .cw-loss__input:hover { border-block-end-color: var(--cw-ink-3); }
+  .cw-lp-loss__input--days { inline-size: 4ch; }
+  .cw-lp-loss__note {
+    margin-block-start: var(--cw-space-4);
+    padding-block-start: var(--cw-space-4);
+    border-block-start: 1px solid var(--cw-hairline);
+    font-size: var(--cw-text-sm);
+    line-height: var(--cw-lh-snug);
+    color: var(--cw-ink-3);
+    max-inline-size: 44ch;
+  }
+
+  /* -- Three-up grids -------------------------------------------------- */
+  .cw-lp-grid-3 { display: grid; gap: var(--cw-space-5); }
+  @media (min-width: 56rem) { .cw-lp-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--cw-space-6); } }
+
+  .cw-lp-step { display: flow-root; }
+  .cw-lp-step__n {
+    display: block;
+    margin-block-end: var(--cw-space-3);
+    font-family: var(--cw-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-size: var(--cw-text-sm);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--cw-accent);
+  }
+  .cw-lp-step__body {
+    margin-block-start: var(--cw-space-3);
+    font-size: var(--cw-text-base);
+    color: var(--cw-ink-2);
+  }
+  .cw-lp-note {
+    margin-block-start: var(--cw-space-6);
+    font-size: var(--cw-text-sm);
+    line-height: var(--cw-lh-normal);
+    color: var(--cw-ink-3);
+    max-inline-size: var(--cw-measure);
+  }
+
+  /* -- Proof ----------------------------------------------------------- */
+  .cw-lp-proof__grid { display: grid; gap: var(--cw-space-7); align-items: start; }
+  @media (min-width: 64rem) {
+    .cw-lp-proof__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: var(--cw-space-8); }
+  }
+  .cw-lp-proof__intro { margin-block-end: var(--cw-space-5); color: var(--cw-ink-2); }
+  .cw-lp-proof__caption {
+    margin-block-start: var(--cw-space-4);
+    font-size: var(--cw-text-xs);
+    line-height: var(--cw-lh-snug);
+    color: var(--cw-ink-3);
+    max-inline-size: 52ch;
+  }
+  .cw-lp-proof__list { display: grid; gap: var(--cw-space-4); }
+  .cw-lp-proof__item { display: flow-root; }
+  .cw-lp-proof__rank {
+    display: block;
+    margin-block-end: var(--cw-space-2);
+    font-size: var(--cw-text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--cw-ink-3);
+  }
+  .cw-lp-proof__h {
+    font-size: var(--cw-text-base);
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--cw-ink);
+  }
+  .cw-lp-proof__p {
+    margin-block-start: var(--cw-space-2);
+    font-size: var(--cw-text-sm);
+    line-height: var(--cw-lh-normal);
+    color: var(--cw-ink-2);
+  }
+
+  /* -- Pricing --------------------------------------------------------- */
+  .cw-lp-anchors {
+    display: grid;
+    gap: 0;
+    margin: 0 0 var(--cw-space-7);
+    padding: 0;
+    list-style: none;
+    max-inline-size: 44rem;
+  }
+  .cw-lp-anchor {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: var(--cw-space-2) var(--cw-space-4);
+    padding-block: var(--cw-space-3);
+    border-block-end: 1px solid var(--cw-hairline);
+  }
+  .cw-lp-anchor__what { font-size: var(--cw-text-base); color: var(--cw-ink-2); }
+  .cw-lp-anchor__price {
+    font-family: var(--cw-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-size: var(--cw-text-lg);
+    color: var(--cw-ink-2);
+    white-space: nowrap;
+  }
+  .cw-lp-anchor__note {
+    grid-column: 1 / -1;
+    font-size: var(--cw-text-sm);
+    color: var(--cw-ink-3);
+  }
+  .cw-lp-anchor--us { border-block-end: 0; padding-block-start: var(--cw-space-4); }
+  .cw-lp-anchor--us .cw-lp-anchor__what { color: var(--cw-ink); font-weight: 600; }
+  .cw-lp-anchor--us .cw-lp-anchor__price { color: var(--cw-ink); font-weight: 700; }
+
+  .cw-lp-price-grid { display: grid; gap: var(--cw-space-5); align-items: stretch; }
+  @media (min-width: 56rem) { .cw-lp-price-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--cw-space-6); } }
+
+  .cw-lp-price__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cw-space-3);
+  }
+  /* Pushes the button and its guarantee line to the foot of every card, so
+     three cards of unequal content still line up. */
+  .cw-price .cw-btn { margin-block-start: auto; }
+
+  .cw-lp-shield { margin-block-start: var(--cw-space-7); }
+  .cw-lp-shield__grid { display: grid; gap: var(--cw-space-5); }
+  @media (min-width: 56rem) {
+    .cw-lp-shield__grid { grid-template-columns: minmax(0, 18rem) minmax(0, 1fr); gap: var(--cw-space-7); }
+  }
+  .cw-lp-shield__price {
+    font-family: var(--cw-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-size: var(--cw-text-2xl);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--cw-ink);
+  }
+  .cw-lp-shield__p { color: var(--cw-ink-2); font-size: var(--cw-text-sm); }
+  .cw-lp-shield__p + .cw-lp-shield__p { margin-block-start: var(--cw-space-3); }
+
+  /* -- FAQ ------------------------------------------------------------- */
+  .cw-lp-faq { max-inline-size: 52rem; }
+  .cw-lp-faq__item { border-block-end: 1px solid var(--cw-hairline); }
+  .cw-lp-faq__item:first-child { border-block-start: 1px solid var(--cw-hairline); }
+  .cw-lp-faq__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cw-space-4);
+    min-block-size: var(--cw-target-min);
+    padding-block: var(--cw-space-5);
+    font-size: var(--cw-text-lg);
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    color: var(--cw-ink);
+    cursor: pointer;
+    list-style: none;
+  }
+  .cw-lp-faq__q::-webkit-details-marker { display: none; }
+  .cw-lp-faq__sign {
+    flex: none;
+    inline-size: 1.25rem;
+    text-align: center;
+    font-weight: 400;
+    color: var(--cw-ink-3);
+    transition: transform var(--cw-dur-1) var(--cw-ease-out);
+  }
+  .cw-lp-faq__item[open] .cw-lp-faq__sign { transform: rotate(45deg); }
+  .cw-lp-faq__a {
+    padding-block-end: var(--cw-space-6);
+    color: var(--cw-ink-2);
+  }
+  .cw-lp-faq__a > * + * { margin-block-start: var(--cw-space-4); }
+
+  /* -- Footer ---------------------------------------------------------- */
+  .cw-lp-footer {
+    padding-block: var(--cw-space-8) var(--cw-space-9);
+    border-block-start: 1px solid var(--cw-hairline);
+  }
+  .cw-lp-footer__top {
+    display: grid;
+    gap: var(--cw-space-5);
+    margin-block-end: var(--cw-space-6);
+  }
+  @media (min-width: 48rem) {
+    .cw-lp-footer__top { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: var(--cw-space-8); }
+  }
+  .cw-lp-footer__frame {
+    font-size: var(--cw-text-sm);
+    line-height: var(--cw-lh-normal);
+    color: var(--cw-ink-2);
+    max-inline-size: 56ch;
+  }
+  .cw-lp-footer__meta {
+    margin-block-start: var(--cw-space-5);
+    font-size: var(--cw-text-xs);
+    color: var(--cw-ink-3);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<a class="cw-lp-skip" href="#main">Skip to the notice box</a>
+
+<header class="cw-header">
+  <div class="cw-lp-header-inner">
+    <span class="cw-wordmark">clausewright</span>
+    <div class="cw-lp-header-actions">
+      <span class="cw-lp-header-note">Not legal advice</span>
+      <button type="button" id="cw-theme" class="cw-btn cw-btn--quiet cw-btn--sm">
+        Theme:&nbsp;<span class="cw-lp-theme__value">System</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ====================================================================
+       HERO — R-1 register. L1 lead → L2 frame → L3 mechanic → one CTA.
+       Exactly one .cw-btn--primary exists on this page, and it is here (P6).
+       ==================================================================== -->
+  <section class="cw-lp-hero" aria-labelledby="hero-title">
+    <div class="cw-shell">
+      <div class="cw-lp-hero__grid">
+
+        <div>
+          <p class="cw-lp-hero__frame">
+            <b>Clausewright</b> — a suspension defense copilot for Amazon and Walmart sellers.
+          </p>
+
+          <h1 class="cw-lp-hero__title" id="hero-title">
+            <span class="cw-lp-hero__title-a">Every day dark costs you a day’s sales.</span>
+            <span class="cw-lp-hero__title-b">Get back to selling — with the exact policy clause on your side.</span>
+          </h1>
+
+          <p class="cw-lp-hero__lede">
+            Paste your deactivation notice. In minutes you get a submission-ready Plan of Action
+            that cites the exact policy clause you were charged under — with a human appeal writer
+            one click away if your case needs judgment.
+          </p>
+
+          <div class="cw-card cw-lp-paste-card" id="paste">
+            <form class="cw-field" id="cw-notice-form" action="/decode" method="post" novalidate>
+              <label class="cw-field__label" for="cw-notice">
+                Paste the email or screenshot text Amazon or Walmart sent you
+              </label>
+              <textarea
+                class="cw-paste"
+                id="cw-notice"
+                name="notice"
+                rows="7"
+                aria-describedby="cw-notice-help cw-notice-error"
+                placeholder="Your account has been deactivated in accordance with…"></textarea>
+              <p class="cw-field__help" id="cw-notice-help">
+                The whole notice, including the header. Nothing is submitted to Amazon or Walmart on your behalf.
+              </p>
+              <p class="cw-field__error" id="cw-notice-error" hidden></p>
+
+              <div class="cw-lp-paste-card__actions">
+                <button type="submit" class="cw-btn cw-btn--primary cw-btn--lg">
+                  <span class="cw-btn__label">Show me what I’m charged under</span>
+                </button>
+                <p class="cw-lp-assure">
+                  Free. No card, no login, and no access to your Seller Central account — not now, not ever.
+                </p>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- The loss counter. The seller supplies both numbers; the arithmetic
+             happens in front of them. No countdown, no colour, no motion (P5). -->
+        <aside class="cw-loss" aria-labelledby="loss-title">
+          <h2 class="cw-lp-loss__title" id="loss-title">What the wait is costing</h2>
+          <p class="cw-lp-loss__sentence">
+            You’ve been dark for
+            <label class="cw-visually-hidden" for="cw-days">Days your account has been deactivated</label><input
+              class="cw-loss__input cw-lp-loss__input--days" id="cw-days" type="text"
+              inputmode="decimal" value="3" size="3" autocomplete="off">
+            days. At the $<label class="cw-visually-hidden" for="cw-rev">Your daily revenue in dollars</label><input
+              class="cw-loss__input" id="cw-rev" type="text" inputmode="decimal" value="800" size="5"
+              autocomplete="off">
+            a day you sell, that’s
+            <span class="cw-loss__figure" id="cw-loss-total">$2,400</span>
+            so far.<span class="cw-visually-hidden" id="cw-loss-live" aria-live="polite"></span>
+          </p>
+          <p class="cw-lp-loss__note">
+            $800 a day is one seller’s own reported figure, not ours. Put your two numbers in —
+            the arithmetic runs in your browser, and nothing you type here is sent anywhere.
+          </p>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       HOW IT WORKS — three glass cards mirroring the real pipeline.
+       ==================================================================== -->
+  <section class="cw-lp-section" aria-labelledby="how-title">
+    <div class="cw-shell">
+      <div class="cw-lp-head">
+        <span class="cw-lp-eyebrow">How it works</span>
+        <h2 class="cw-lp-h2" id="how-title">What happens after you paste</h2>
+        <p class="cw-lp-lede">
+          Three things come back, in this order, and the first two cost nothing.
+        </p>
+      </div>
+
+      <ol class="cw-lp-grid-3">
+        <li class="cw-card cw-lp-step">
+          <span class="cw-lp-step__n">Step 01</span>
+          <h3 class="cw-card__title">Your reason code, read out of your own notice</h3>
+          <p class="cw-lp-step__body">
+            A Section 3 case, an inauthentic-item case and a linked-account case take three
+            different appeals, and most sellers cannot tell them apart. Your notice’s own
+            wording decides which one you are in — not a template, and not a guess.
+          </p>
+        </li>
+
+        <li class="cw-card cw-lp-step">
+          <span class="cw-lp-step__n">Step 02</span>
+          <h3 class="cw-card__title">The policy clause, quoted, before you decide anything</h3>
+          <p class="cw-lp-step__body">
+            The clause you were charged under appears verbatim on screen, with the policy
+            document and section it came from. It is free and it is on the page before any
+            payment. Read it, check it against your notice, and decide from there.
+          </p>
+        </li>
+
+        <li class="cw-card cw-lp-step">
+          <span class="cw-lp-step__n">Step 03</span>
+          <h3 class="cw-card__title">A drafted Plan of Action, and a list of what it still lacks</h3>
+          <p class="cw-lp-step__body">
+            You get a submission-ready Plan of Action plus a flat list of what is missing —
+            the things this reason code is most often rejected for. You review it, you submit
+            it, and you are told exactly where in Account Health it goes.
+          </p>
+        </li>
+      </ol>
+
+      <p class="cw-lp-note">
+        Four fixed steps in code — classify, retrieve, draft, critique — rather than an agent
+        improvising its own route. That is a deliberate choice, and it is why the wait can be
+        narrated honestly instead of hidden behind a spinner. You stay in command throughout:
+        nothing is filed, submitted or logged into on your behalf.
+      </p>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       PROOF — L4 stack in the binding order of BRAND §3.3:
+       1 cited clause · 2 honest triage · 3 guarantees · 4 the human tier.
+       No glass in this section; the citation is opaque tint (§2 rule 2).
+       ==================================================================== -->
+  <section class="cw-lp-section" aria-labelledby="proof-title">
+    <div class="cw-shell">
+      <div class="cw-lp-head">
+        <span class="cw-lp-eyebrow">Proof</span>
+        <h2 class="cw-lp-h2" id="proof-title">What you can check before you pay</h2>
+        <p class="cw-lp-lede">
+          There is no success rate on this page. Here is what there is instead.
+        </p>
+      </div>
+
+      <div class="cw-lp-proof__grid">
+
+        <div>
+          <p class="cw-lp-proof__intro">
+            Every policy reference in a Clausewright draft comes back from retrieval carrying a
+            source location. A reference without one cannot reach the screen — a test in the build
+            pipeline fails first. This is what that looks like:
+          </p>
+
+          <figure class="cw-cite">
+            <blockquote class="cw-cite__quote" cite="https://sellercentral.amazon.com/help/hub/reference/G1801">Act fairly and honestly on Amazon to ensure a safe buying and selling experience.</blockquote>
+            <figcaption class="cw-cite__source">
+              <span class="cw-cite__doc">Amazon Seller Code of Conduct</span>
+              <span class="cw-cite__loc">§ 3 — Acting Fairly</span>
+              <a class="cw-cite__link" href="https://sellercentral.amazon.com/help/hub/reference/G1801" rel="noopener noreferrer" target="_blank">View the policy page<span class="cw-visually-hidden"> (opens in a new tab)</span></a>
+            </figcaption>
+          </figure>
+
+          <p class="cw-lp-proof__caption">
+            An example rendering, using a publicly published clause. Which clause appears in your
+            draft is decided by your notice, not by us. The quotation, the document, the section
+            and the link all travel together — a quote you cannot trace is a quote you should not trust.
+          </p>
+        </div>
+
+        <div class="cw-lp-proof__list">
+
+          <div class="cw-card--inset cw-lp-proof__item">
+            <span class="cw-lp-proof__rank">Proof 02</span>
+            <h3 class="cw-lp-proof__h">Some cases should not be appealed by a tool</h3>
+            <p class="cw-lp-proof__p">
+              If yours is one of them, you are told so before you are charged, and pointed at
+              someone who can actually help. A tool that guesses at a case it cannot read costs
+              you an appeal attempt you do not get back.
+            </p>
+          </div>
+
+          <div class="cw-card--inset cw-lp-proof__item">
+            <span class="cw-lp-proof__rank">Proof 03</span>
+            <h3 class="cw-lp-proof__h">Three guarantees, and one thing nobody can guarantee</h3>
+            <p class="cw-lp-proof__p">
+              Your draft is in your inbox in 10 minutes or it is free. Revisions are unlimited
+              until you are reinstated or you tell us to stop. If your first submission is
+              rejected, your human review is free. No one can guarantee reinstatement — Amazon
+              and Walmart decide that. What is guaranteed is the draft, the clause and the time.
+            </p>
+          </div>
+
+          <div class="cw-card--inset cw-lp-proof__item">
+            <span class="cw-lp-proof__rank">Proof 04</span>
+            <h3 class="cw-lp-proof__h">A person takes the case the machine should not</h3>
+            <p class="cw-lp-proof__p">
+              When the reason code is unclear or the case needs judgment, an experienced appeal
+              writer picks it up the same day and edits the same document in the same tool, under
+              the same citation rule. That is a tier with a price on it, not a support ticket.
+            </p>
+          </div>
+
+          <div class="cw-card--inset cw-lp-proof__item">
+            <span class="cw-lp-proof__rank">What is missing</span>
+            <h3 class="cw-lp-proof__h">We have not published a win rate</h3>
+            <p class="cw-lp-proof__p">
+              Other tools in this category advertise reinstatement rates between 85 and 93
+              percent. Amazon publishes no reinstatement data, so no one outside those companies
+              can check them. Ours will appear once it has been measured — with the number of
+              cases it was measured over and the method used to count them, and not a day before.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       PRICING — anchors first (below the fold, per BRAND §3.5), then tiers.
+       Every tier button is .cw-btn--secondary: the page's single primary
+       action is the paste box (P6). No scarcity furniture anywhere (X1).
+       ==================================================================== -->
+  <section class="cw-lp-section" aria-labelledby="price-title">
+    <div class="cw-shell">
+      <div class="cw-lp-head">
+        <span class="cw-lp-eyebrow">Pricing</span>
+        <h2 class="cw-lp-h2" id="price-title">What it costs, next to what this usually costs</h2>
+        <p class="cw-lp-lede">
+          Published in full. No gated pricing, no demo call, no mandatory intake call.
+        </p>
+      </div>
+
+      <ul class="cw-lp-anchors">
+        <li class="cw-lp-anchor">
+          <span class="cw-lp-anchor__what">An attorney</span>
+          <span class="cw-lp-anchor__price">~$3,500</span>
+          <span class="cw-lp-anchor__note">About two weeks.</span>
+        </li>
+        <li class="cw-lp-anchor">
+          <span class="cw-lp-anchor__what">A consultant</span>
+          <span class="cw-lp-anchor__price">~$1,250</span>
+          <span class="cw-lp-anchor__note">Several days, and usually a call first.</span>
+        </li>
+        <li class="cw-lp-anchor cw-lp-anchor--us">
+          <span class="cw-lp-anchor__what">Clausewright Rescue</span>
+          <span class="cw-lp-anchor__price">$149</span>
+          <span class="cw-lp-anchor__note">
+            Minutes. The attorney and consultant figures above are AppealDesk’s own published
+            comparison figures, not ours.
+          </span>
+        </li>
+      </ul>
+
+      <div class="cw-lp-price-grid">
+
+        <section class="cw-price" aria-labelledby="tier-decoder">
+          <div class="cw-lp-price__head">
+            <h3 class="cw-price__tier" id="tier-decoder">Decoder</h3>
+          </div>
+          <p class="cw-price__amount">Free<span class="cw-price__unit"> · no card, no login</span></p>
+          <p class="cw-price__role">See what you are charged under.</p>
+          <ul class="cw-price__list">
+            <li class="cw-price__item"><span>Your reason code, read from your notice</span></li>
+            <li class="cw-price__item"><span>The exact policy clause, quoted with its source</span></li>
+            <li class="cw-price__item"><span>A plain-English diagnosis of your case</span></li>
+            <li class="cw-price__item"><span>Your Plan of Action outline</span></li>
+            <li class="cw-price__item"><span>The first section of the real draft</span></li>
+          </ul>
+          <a class="cw-btn cw-btn--secondary cw-btn--block" href="#paste">Start with your notice</a>
+          <p class="cw-price__guarantee">Nothing is charged now or later unless you choose a tier.</p>
+        </section>
+
+        <section class="cw-price cw-price--recommended" aria-labelledby="tier-rescue">
+          <div class="cw-lp-price__head">
+            <h3 class="cw-price__tier" id="tier-rescue">Rescue</h3>
+            <span class="cw-chip cw-chip--recommend">Recommended for a first suspension</span>
+          </div>
+          <p class="cw-price__amount">$149<span class="cw-price__unit"> one-time</span></p>
+          <p class="cw-price__role">The complete Plan of Action, drafted and critiqued.</p>
+          <ul class="cw-price__list">
+            <li class="cw-price__item"><span>Complete policy-cited Plan of Action in under 10 minutes</span></li>
+            <li class="cw-price__item"><span>Rejection-Risk Scorer on your own draft</span></li>
+            <li class="cw-price__item"><span>Unlimited revisions</span></li>
+            <li class="cw-price__item"><span>Evidence Kit and Reason Code Playbook</span></li>
+            <li class="cw-price__item"><span>30 days of Shield included, card on file</span></li>
+          </ul>
+          <a class="cw-btn cw-btn--secondary cw-btn--block" href="#paste">Start with your notice</a>
+          <p class="cw-price__guarantee">
+            In your inbox in 10 minutes or it is free. You choose this after you have read your
+            reason code, your clause and your critique — not before.
+          </p>
+        </section>
+
+        <section class="cw-price" aria-labelledby="tier-human">
+          <div class="cw-lp-price__head">
+            <h3 class="cw-price__tier" id="tier-human">Rescue + Human</h3>
+          </div>
+          <p class="cw-price__amount">$399<span class="cw-price__unit"> one-time</span></p>
+          <p class="cw-price__role">For the case that needs a person rather than a tool.</p>
+          <ul class="cw-price__list">
+            <li class="cw-price__item"><span>Everything in Rescue</span></li>
+            <li class="cw-price__item"><span>Same-day review by an experienced appeal writer</span></li>
+            <li class="cw-price__item"><span>A 15-minute strategy call</span></li>
+            <li class="cw-price__item"><span>Priority queue</span></li>
+            <li class="cw-price__item"><span>Second-round Rejection Rescue</span></li>
+          </ul>
+          <a class="cw-btn cw-btn--secondary cw-btn--block" href="#paste">Start with your notice</a>
+          <p class="cw-price__guarantee">
+            First submission rejected? Your human review is free.
+          </p>
+        </section>
+
+      </div>
+
+      <div class="cw-card--inset cw-lp-shield">
+        <div class="cw-lp-shield__grid">
+          <div>
+            <h3 class="cw-price__tier">Shield</h3>
+            <p class="cw-lp-shield__price">$49<span class="cw-price__unit"> /mo, or $470/yr</span></p>
+          </div>
+          <div>
+            <p class="cw-lp-shield__p">
+              Thirty days are included free with every Rescue, with your card on file. You set one
+              forwarding rule for the account-health emails Amazon and Walmart send you; every
+              notice that arrives is read the same way your deactivation notice was. You get an
+              alert naming the specific policy at risk, pre-drafted Plans of Action for your top
+              three risk vectors, and one Rescue appeal included each year.
+            </p>
+            <p class="cw-lp-shield__p">
+              On day 25 you get an email showing what it flagged. Keep it or let it lapse — both
+              are one click, and neither is buried. The paid plan is only ever offered once you
+              are back online, never while you are down.
+            </p>
+            <p class="cw-lp-shield__p">
+              Handling accounts for other sellers? Shield Pro is $149/mo for up to ten of them.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       FAQ — five items, R-3 register: plainest and slowest on the page.
+       ==================================================================== -->
+  <section class="cw-lp-section" aria-labelledby="faq-title">
+    <div class="cw-shell">
+      <div class="cw-lp-head">
+        <span class="cw-lp-eyebrow">Questions</span>
+        <h2 class="cw-lp-h2" id="faq-title">What sellers ask first</h2>
+      </div>
+
+      <div class="cw-lp-faq">
+
+        <details class="cw-lp-faq__item">
+          <summary class="cw-lp-faq__q">
+            Do you need my Seller Central login?
+            <span class="cw-lp-faq__sign" aria-hidden="true">+</span>
+          </summary>
+          <div class="cw-lp-faq__a">
+            <p>
+              No, and you will never be asked for one. You paste the text of your notice; that is
+              the only thing that crosses over. Nothing is filed, submitted or logged into on your
+              behalf — when your Plan of Action is ready, you are shown exactly where in Account
+              Health to paste it, and you submit it yourself.
+            </p>
+          </div>
+        </details>
+
+        <details class="cw-lp-faq__item">
+          <summary class="cw-lp-faq__q">
+            Can you guarantee I get reinstated?
+            <span class="cw-lp-faq__sign" aria-hidden="true">+</span>
+          </summary>
+          <div class="cw-lp-faq__a">
+            <p>
+              No. Amazon and Walmart decide that, and anyone who tells you otherwise is selling
+              you something they do not control.
+            </p>
+            <p>
+              What is guaranteed is narrower and entirely in our hands: your draft is in your
+              inbox within 10 minutes or it costs nothing; revisions continue until you are
+              reinstated or you tell us to stop; and if your first submission is rejected, your
+              human review is free.
+            </p>
+          </div>
+        </details>
+
+        <details class="cw-lp-faq__item">
+          <summary class="cw-lp-faq__q">
+            What if my case is one you should not be drafting?
+            <span class="cw-lp-faq__sign" aria-hidden="true">+</span>
+          </summary>
+          <div class="cw-lp-faq__a">
+            <p>
+              You will be told so, in plain words, before you are charged. Some deactivations turn
+              on facts a document cannot fix, and some notices are too ambiguous to classify with
+              confidence. Guessing there would cost you an appeal attempt you do not get back.
+            </p>
+            <p>
+              In that situation you get two things instead of a draft: a person who can take the
+              case if it is one that judgment can solve, and a referral if it is not. You have not
+              been charged either way.
+            </p>
+          </div>
+        </details>
+
+        <details class="cw-lp-faq__item">
+          <summary class="cw-lp-faq__q">
+            Why $149 when there is a $97 tool?
+            <span class="cw-lp-faq__sign" aria-hidden="true">+</span>
+          </summary>
+          <div class="cw-lp-faq__a">
+            <p>
+              AppealDesk is honest that it walks away when a case gets hard — it publishes the
+              categories it refuses. Clausewright built the tier that takes those cases instead,
+              and that tier is why the $149 one exists at the price it does.
+            </p>
+            <p>
+              The $52 difference buys unlimited revisions, the Evidence Kit, the time guarantee,
+              30 days of Shield, and the clause on screen before you pay. If none of that is worth
+              $52 to you, the free Decoder still tells you your reason code and shows you your
+              clause, and you are welcome to take it and write the appeal yourself.
+            </p>
+          </div>
+        </details>
+
+        <details class="cw-lp-faq__item">
+          <summary class="cw-lp-faq__q">
+            What are the 30 days of Shield, and what happens at the end of them?
+            <span class="cw-lp-faq__sign" aria-hidden="true">+</span>
+          </summary>
+          <div class="cw-lp-faq__a">
+            <p>
+              You forward the account-health emails Amazon and Walmart send you — one rule, set
+              once. Each one that arrives is read, and when something moves you get an alert
+              naming the specific policy at risk. We never log into your account, so Shield sees
+              what you forward and nothing else. Thirty days come with every Rescue, at no extra
+              charge, with your card kept on file.
+            </p>
+            <p>
+              On day 25 you get an email that opens with what those 30 days actually flagged. Keep
+              Shield at $49/mo, or let it lapse — both are one click, presented the same size, in
+              the same email. Nothing renews quietly.
+            </p>
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="cw-lp-footer">
+  <div class="cw-shell">
+    <div class="cw-lp-footer__top">
+      <div>
+        <span class="cw-wordmark cw-wordmark--lg">clause<span class="cw-wordmark__mark">w</span>right</span>
+        <p class="cw-lp-footer__meta">Suspension defense. Amazon and Walmart.</p>
+      </div>
+      <p class="cw-lp-footer__frame">
+        Clausewright is a suspension defense copilot for Amazon and Walmart sellers. You paste the
+        notice you were sent; you get the reason code, the policy clause you were charged under
+        with its source, and a submission-ready Plan of Action — with an experienced appeal writer
+        available the same day when a case needs judgment.
+      </p>
+    </div>
+
+    <p class="cw-disclaimer">
+      Not legal advice. Clausewright drafts documents you review and submit yourself; it does not
+      advise you, represent you, or act for you before any marketplace, agency or court. Marketplace
+      policy is contract, not law. Clausewright is an independent product and is not affiliated with,
+      endorsed by, or sponsored by Amazon.com, Inc. or Walmart Inc.; those names are used only to
+      identify the marketplaces this product works with. Prices shown are in US dollars.
+      No account credentials are ever requested, stored or used.
+    </p>
+
+    <p class="cw-lp-footer__meta">© 2026 Clausewright.</p>
+  </div>
+</footer>
+
+<script>
+/* ==========================================================================
+   1) Theme control — three states, matching DESIGN_SYSTEM §10:
+      system (no attribute) → light → dark → system.
+   ========================================================================== */
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById("cw-theme");
+  if (!btn) { return; }
+  var out = btn.querySelector(".cw-lp-theme__value");
+  var modes = ["system", "light", "dark"];
+  var names = { system: "System", light: "Light", dark: "Dark" };
+
+  function read() {
+    try {
+      var v = localStorage.getItem("cw-theme");
+      return (v === "light" || v === "dark") ? v : "system";
+    } catch (e) { return "system"; }
+  }
+
+  function apply(mode) {
+    if (mode === "system") { root.removeAttribute("data-theme"); }
+    else { root.setAttribute("data-theme", mode); }
+    out.textContent = names[mode];
+    btn.setAttribute("aria-label", "Colour theme: " + names[mode] + ". Activate to change it.");
+  }
+
+  var current = read();
+  apply(current);
+
+  btn.addEventListener("click", function () {
+    current = modes[(modes.indexOf(current) + 1) % modes.length];
+    try { localStorage.setItem("cw-theme", current); } catch (e) { /* ignore */ }
+    apply(current);
+  });
+})();
+
+/* ==========================================================================
+   2) Loss counter — days × the seller's own daily revenue.
+      Their numbers, our arithmetic, in front of them. No countdown, no
+      animation, no colour change: BRAND §2.5 and DESIGN_SYSTEM P5 / §8.9.
+      The default output is rendered in the HTML, so the figure is correct
+      before this script runs and if it never runs at all.
+   ========================================================================== */
+(function () {
+  var days = document.getElementById("cw-days");
+  var rev = document.getElementById("cw-rev");
+  var out = document.getElementById("cw-loss-total");
+  if (!days || !rev || !out) { return; }
+
+  var money;
+  try {
+    money = new Intl.NumberFormat("en-US", {
+      style: "currency", currency: "USD", maximumFractionDigits: 0
+    });
+  } catch (e) {
+    money = { format: function (n) { return "$" + Math.round(n); } };
+  }
+
+  function value(el) {
+    var n = parseFloat(String(el.value).replace(/[^0-9.]/g, ""));
+    return (isFinite(n) && n >= 0) ? n : null;
+  }
+
+  function recalc() {
+    var d = value(days);
+    var r = value(rev);
+    out.textContent = (d === null || r === null) ? "—" : money.format(d * r);
+  }
+
+  /* A11: the visible figure updates on every keystroke; the screen-reader
+     announcement waits for the field to settle, so it is not a per-character flood. */
+  var live = document.getElementById("cw-loss-live");
+  function announce() {
+    if (!live) { return; }
+    live.textContent = (out.textContent === "\u2014")
+      ? "Fill in both numbers to see the total."
+      : "Roughly " + out.textContent + " so far.";
+  }
+
+  days.addEventListener("input", recalc);
+  rev.addEventListener("input", recalc);
+  days.addEventListener("change", announce);
+  rev.addEventListener("change", announce);
+  recalc();
+})();
+
+/* ==========================================================================
+   3) Every pricing link points at the same box, because every tier starts in
+      the same place: you read your clause first, then you decide. Moving the
+      caret into the textarea is the whole point of the click.
+   ========================================================================== */
+(function () {
+  var box = document.getElementById("cw-notice");
+  if (!box) { return; }
+  var links = document.querySelectorAll('a[href="#paste"]');
+  for (var i = 0; i < links.length; i++) {
+    links[i].addEventListener("click", function () {
+      window.setTimeout(function () { box.focus({ preventScroll: true }); }, 0);
+    });
+  }
+})();
+
+/* ==========================================================================
+   4) Notice box validation — Nielsen #9: say what happened, why, and the way
+      forward, in the seller's own language. Never "Validation failed."
+   ========================================================================== */
+(function () {
+  var form = document.getElementById("cw-notice-form");
+  var field = document.getElementById("cw-notice");
+  var err = document.getElementById("cw-notice-error");
+  if (!form || !field || !err) { return; }
+
+  function clear() {
+    err.hidden = true;
+    err.textContent = "";
+    field.removeAttribute("aria-invalid");
+  }
+
+  form.addEventListener("submit", function (event) {
+    var text = field.value.replace(/\s+/g, " ").trim();
+    if (text.length >= 40) { clear(); return; }
+
+    event.preventDefault();
+    err.textContent = text.length === 0
+      ? "Paste the notice first — the whole thing, including the header. Your reason code is in its wording."
+      : "That is too short to read a reason code from. Paste the full notice, including the header.";
+    err.hidden = false;
+    field.setAttribute("aria-invalid", "true");
+    field.focus();
+  });
+
+  field.addEventListener("input", function () {
+    if (!err.hidden) { clear(); }
+  });
+})();
+</script>
+
+</body>
+</html>
