@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "clausewright/corpus/schema.reason_code.json",
+  "title": "L1 reason code",
+  "description": "Spec: CORPUS_DESIGN.md §3.3.1. One record per code in taxonomy.json#/codes. Codes are append-only (§2.3).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "code", "platform", "family", "status", "plain_english", "severity_band",
+    "account_level", "triage_disposition", "classifier_floor", "aliases",
+    "notice_trigger_phrases", "governed_by", "appeal_pattern", "confusable_with",
+    "disclaimer_profile", "provenance"
+  ],
+  "properties": {
+    "code": { "type": "string", "pattern": "^(AMZ|WMT)\\.[A-Z]+\\.[A-Z0-9_]+$" },
+    "platform": { "enum": ["AMZ", "WMT"] },
+    "family": { "type": "string", "pattern": "^[A-Z]+$" },
+    "status": { "enum": ["active", "retired"] },
+    "successor": { "type": ["string", "null"] },
+    "constructed": {
+      "type": "boolean",
+      "description": "true where the code is our construction rather than a published platform taxonomy entry (CORPUS_DESIGN §3.4, Walmart)."
+    },
+    "plain_english": {
+      "type": "string",
+      "description": "Seller-facing gloss. Nielsen heuristic #2. Never 'POA', never 'legal clause' (NAMING.md §5 invariant 2).",
+      "minLength": 5
+    },
+    "severity_band": { "enum": ["standard", "judgment_required", "counsel_referral"] },
+    "account_level": {
+      "const": true,
+      "description": "N9 — account-level codes only in v1. A listing-level code is out of scope, not a missing record."
+    },
+    "triage_disposition": { "enum": ["draft", "human_tier", "refer_out"] },
+    "classifier_floor": { "type": "number", "minimum": 0, "maximum": 1 },
+    "disclaimer_profile": { "enum": ["standard", "referral"] },
+    "aliases": { "type": "array", "items": { "type": "string" } },
+    "notice_trigger_phrases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["phrase", "confidence_weight", "observed"],
+        "properties": {
+          "phrase": { "type": "string" },
+          "confidence_weight": { "enum": ["high", "medium", "low"] },
+          "observed": {
+            "type": "boolean",
+            "description": "false = derived from published policy wording, not from a real notice. CORPUS_DESIGN §3.3.1 assumes observed strings; we do not have them yet and must not pretend we do."
+          }
+        }
+      }
+    },
+    "governed_by": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "pattern": "^[a-z0-9.]+#[a-z0-9-]+$" },
+      "description": "L2 clause ids. Every entry MUST resolve — gate G2."
+    },
+    "appeal_pattern": { "type": "string", "description": "Equals `code`. Exactly one L3 pattern per code — gate G3." },
+    "confusable_with": { "type": "array", "items": { "type": "string" } },
+    "gap": {
+      "type": "string",
+      "description": "A recorded hole in the corpus for this code. Present means: we know what is missing and why. Absent means we believe coverage is adequate — never means we did not look."
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authored_by", "reviewed_by_human", "reviewed_at", "sources_consulted"],
+      "properties": {
+        "authored_by": { "enum": ["human", "agent"] },
+        "reviewed_by_human": { "type": "boolean" },
+        "reviewed_at": { "type": "string", "format": "date" },
+        "sources_consulted": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

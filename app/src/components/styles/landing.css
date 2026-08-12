@@ -1,0 +1,366 @@
+/* ==========================================================================
+   CLAUSEWRIGHT — LANDING PAGE LAYER
+
+   Ported VERBATIM from /home/user/Octopus/phase-2-build/identity/landing/index.html
+   (the <style> block's `@layer cw.page` section, post-H-7/H-8 review pass).
+   Do not add colours here: every value is a design-system token, which is what
+   keeps the DESIGN_SYSTEM.md §4.5 contrast certification true of this page too.
+   ========================================================================== */
+
+@layer cw.page;
+
+@layer cw.page {
+
+  /* The header is sticky, so anything targeted by an in-page link needs to
+     clear it. The reduced-motion block in the system layer overrides the
+     scroll behaviour with !important, so this is safe to state flatly. */
+  html { scroll-behavior: smooth; }
+  [id] { scroll-margin-block-start: 5.5rem; }
+
+  /* -- Skip link ------------------------------------------------------- */
+  .cw-lp-skip {
+    position: absolute;
+    inset-inline-start: var(--cw-space-4);
+    inset-block-start: -100%;
+    z-index: var(--cw-z-toast);
+    padding: var(--cw-space-3) var(--cw-space-4);
+    border-radius: var(--cw-radius-sm);
+    background-color: var(--cw-surface-inset);
+    border: 1px solid var(--cw-border);
+    color: var(--cw-ink);
+    font-size: var(--cw-text-sm);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .cw-lp-skip:focus { inset-block-start: var(--cw-space-3); }
+
+  /* -- Header ---------------------------------------------------------- */
+  .cw-lp-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cw-space-4);
+    inline-size: 100%;
+    max-inline-size: var(--cw-shell-max);
+    margin-inline: auto;
+  }
+  .cw-lp-header-note {
+    display: none;
+    font-size: var(--cw-text-xs);
+    color: var(--cw-ink-3);
+  }
+  @media (min-width: 48rem) { .cw-lp-header-note { display: block; } }
+
+  .cw-lp-header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cw-space-4);
+  }
+  .cw-lp-theme__value { font-weight: 600; }
+
+  /* -- Sections -------------------------------------------------------- */
+  .cw-lp-section { padding-block: var(--cw-space-9); }
+  @media (min-width: 60rem) { .cw-lp-section { padding-block: var(--cw-space-10); } }
+
+  .cw-lp-section + .cw-lp-section,
+  .cw-lp-hero + .cw-lp-section { border-block-start: 1px solid var(--cw-hairline); }
+
+  .cw-lp-eyebrow {
+    display: block;
+    margin-block-end: var(--cw-space-3);
+    font-size: var(--cw-text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--cw-ink-3);
+  }
+  .cw-lp-h2 {
+    max-inline-size: 22ch;
+    font-size: clamp(var(--cw-text-xl), 3.4vw, var(--cw-text-2xl));
+  }
+  .cw-lp-lede {
+    margin-block-start: var(--cw-space-4);
+    font-size: var(--cw-text-lg);
+    line-height: var(--cw-lh-snug);
+    color: var(--cw-ink-2);
+  }
+  .cw-lp-head { margin-block-end: var(--cw-space-7); }
+
+  /* -- Hero ------------------------------------------------------------ */
+  .cw-lp-hero { padding-block: var(--cw-space-8) var(--cw-space-9); }
+  @media (min-width: 60rem) { .cw-lp-hero { padding-block: var(--cw-space-10) var(--cw-space-10); } }
+
+  .cw-lp-hero__grid { display: grid; gap: var(--cw-space-7); align-items: start; }
+  @media (min-width: 64rem) {
+    .cw-lp-hero__grid {
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+      gap: var(--cw-space-8);
+    }
+  }
+
+  .cw-lp-hero__frame {
+    display: block;
+    margin-block-end: var(--cw-space-5);
+    font-size: var(--cw-text-sm);
+    line-height: var(--cw-lh-snug);
+    color: var(--cw-ink-2);
+    max-inline-size: 46ch;
+  }
+  .cw-lp-hero__frame b { color: var(--cw-ink); font-weight: 600; }
+
+  /* The tagline is never split in half (BRAND §5.4). Both clauses are here and
+     both are fully legible; the size step only enacts the hierarchy BRAND §3.1
+     asks for — lead with the outcome, differentiate immediately after. */
+  .cw-lp-hero__title { max-inline-size: 28ch; }
+  .cw-lp-hero__title-a {
+    display: block;
+    font-size: clamp(var(--cw-text-2xl), 5.4vw, var(--cw-text-4xl));
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    max-inline-size: 19ch;
+  }
+  .cw-lp-hero__title-b {
+    display: block;
+    margin-block-start: var(--cw-space-4);
+    font-size: clamp(var(--cw-text-lg), 3.1vw, var(--cw-text-2xl));
+    line-height: 1.26;
+    letter-spacing: -0.015em;
+    color: var(--cw-ink);
+  }
+  .cw-lp-hero__lede {
+    margin-block-start: var(--cw-space-5);
+    max-inline-size: 54ch;
+    font-size: var(--cw-text-lg);
+    line-height: var(--cw-lh-snug);
+    color: var(--cw-ink-2);
+  }
+
+  /* The paste panel. The textarea inside it is OPAQUE (--cw-surface-inset),
+     so a long paste never scrolls under a translucent surface (§2 rule 2). */
+  .cw-lp-paste-card { margin-block-start: var(--cw-space-7); }
+  .cw-lp-paste-card .cw-field { gap: var(--cw-space-3); }
+  .cw-lp-paste-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cw-space-4);
+    margin-block-start: var(--cw-space-5);
+  }
+  .cw-lp-assure {
+    font-size: var(--cw-text-sm);
+    line-height: var(--cw-lh-snug);
+    color: var(--cw-ink-2);
+    max-inline-size: 34ch;
+  }
+
+  /* -- Loss counter (the only urgency device — §8.9 / P5) -------------- */
+  .cw-lp-loss__title {
+    font-size: var(--cw-text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--cw-ink-3);
+    margin-block-end: var(--cw-space-4);
+  }
+  .cw-lp-loss__sentence { max-inline-size: 40ch; }
+  .cw-loss__input:hover { border-block-end-color: var(--cw-ink-3); }
+  .cw-lp-loss__input--days { inline-size: 4ch; }
+  .cw-lp-loss__note {
+    margin-block-start: var(--cw-space-4);
+    padding-block-start: var(--cw-space-4);
+    border-block-start: 1px solid var(--cw-hairline);
+    font-size: var(--cw-text-sm);
+    line-height: var(--cw-lh-snug);
+    color: var(--cw-ink-3);
+    max-inline-size: 44ch;
+  }
+
+  /* -- Three-up grids -------------------------------------------------- */
+  .cw-lp-grid-3 { display: grid; gap: var(--cw-space-5); }
+  @media (min-width: 56rem) { .cw-lp-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--cw-space-6); } }
+
+  .cw-lp-step { display: flow-root; }
+  .cw-lp-step__n {
+    display: block;
+    margin-block-end: var(--cw-space-3);
+    font-family: var(--cw-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-size: var(--cw-text-sm);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--cw-accent);
+  }
+  .cw-lp-step__body {
+    margin-block-start: var(--cw-space-3);
+    font-size: var(--cw-text-base);
+    color: var(--cw-ink-2);
+  }
+  .cw-lp-note {
+    margin-block-start: var(--cw-space-6);
+    font-size: var(--cw-text-sm);
+    line-height: var(--cw-lh-normal);
+    color: var(--cw-ink-3);
+    max-inline-size: var(--cw-measure);
+  }
+
+  /* -- Proof ----------------------------------------------------------- */
+  .cw-lp-proof__grid { display: grid; gap: var(--cw-space-7); align-items: start; }
+  @media (min-width: 64rem) {
+    .cw-lp-proof__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: var(--cw-space-8); }
+  }
+  .cw-lp-proof__intro { margin-block-end: var(--cw-space-5); color: var(--cw-ink-2); }
+  .cw-lp-proof__caption {
+    margin-block-start: var(--cw-space-4);
+    font-size: var(--cw-text-xs);
+    line-height: var(--cw-lh-snug);
+    color: var(--cw-ink-3);
+    max-inline-size: 52ch;
+  }
+  .cw-lp-proof__list { display: grid; gap: var(--cw-space-4); }
+  .cw-lp-proof__item { display: flow-root; }
+  .cw-lp-proof__rank {
+    display: block;
+    margin-block-end: var(--cw-space-2);
+    font-size: var(--cw-text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--cw-ink-3);
+  }
+  .cw-lp-proof__h {
+    font-size: var(--cw-text-base);
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--cw-ink);
+  }
+  .cw-lp-proof__p {
+    margin-block-start: var(--cw-space-2);
+    font-size: var(--cw-text-sm);
+    line-height: var(--cw-lh-normal);
+    color: var(--cw-ink-2);
+  }
+
+  /* -- Pricing --------------------------------------------------------- */
+  .cw-lp-anchors {
+    display: grid;
+    gap: 0;
+    margin: 0 0 var(--cw-space-7);
+    padding: 0;
+    list-style: none;
+    max-inline-size: 44rem;
+  }
+  .cw-lp-anchor {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: var(--cw-space-2) var(--cw-space-4);
+    padding-block: var(--cw-space-3);
+    border-block-end: 1px solid var(--cw-hairline);
+  }
+  .cw-lp-anchor__what { font-size: var(--cw-text-base); color: var(--cw-ink-2); }
+  .cw-lp-anchor__price {
+    font-family: var(--cw-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-size: var(--cw-text-lg);
+    color: var(--cw-ink-2);
+    white-space: nowrap;
+  }
+  .cw-lp-anchor__note {
+    grid-column: 1 / -1;
+    font-size: var(--cw-text-sm);
+    color: var(--cw-ink-3);
+  }
+  .cw-lp-anchor--us { border-block-end: 0; padding-block-start: var(--cw-space-4); }
+  .cw-lp-anchor--us .cw-lp-anchor__what { color: var(--cw-ink); font-weight: 600; }
+  .cw-lp-anchor--us .cw-lp-anchor__price { color: var(--cw-ink); font-weight: 700; }
+
+  .cw-lp-price-grid { display: grid; gap: var(--cw-space-5); align-items: stretch; }
+  @media (min-width: 56rem) { .cw-lp-price-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--cw-space-6); } }
+
+  .cw-lp-price__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cw-space-3);
+  }
+  /* Pushes the button and its guarantee line to the foot of every card, so
+     three cards of unequal content still line up. */
+  .cw-price .cw-btn { margin-block-start: auto; }
+
+  .cw-lp-shield { margin-block-start: var(--cw-space-7); }
+  .cw-lp-shield__grid { display: grid; gap: var(--cw-space-5); }
+  @media (min-width: 56rem) {
+    .cw-lp-shield__grid { grid-template-columns: minmax(0, 18rem) minmax(0, 1fr); gap: var(--cw-space-7); }
+  }
+  .cw-lp-shield__price {
+    font-family: var(--cw-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-size: var(--cw-text-2xl);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--cw-ink);
+  }
+  .cw-lp-shield__p { color: var(--cw-ink-2); font-size: var(--cw-text-sm); }
+  .cw-lp-shield__p + .cw-lp-shield__p { margin-block-start: var(--cw-space-3); }
+
+  /* -- FAQ ------------------------------------------------------------- */
+  .cw-lp-faq { max-inline-size: 52rem; }
+  .cw-lp-faq__item { border-block-end: 1px solid var(--cw-hairline); }
+  .cw-lp-faq__item:first-child { border-block-start: 1px solid var(--cw-hairline); }
+  .cw-lp-faq__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cw-space-4);
+    min-block-size: var(--cw-target-min);
+    padding-block: var(--cw-space-5);
+    font-size: var(--cw-text-lg);
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    color: var(--cw-ink);
+    cursor: pointer;
+    list-style: none;
+  }
+  .cw-lp-faq__q::-webkit-details-marker { display: none; }
+  .cw-lp-faq__sign {
+    flex: none;
+    inline-size: 1.25rem;
+    text-align: center;
+    font-weight: 400;
+    color: var(--cw-ink-3);
+    transition: transform var(--cw-dur-1) var(--cw-ease-out);
+  }
+  .cw-lp-faq__item[open] .cw-lp-faq__sign { transform: rotate(45deg); }
+  .cw-lp-faq__a {
+    padding-block-end: var(--cw-space-6);
+    color: var(--cw-ink-2);
+  }
+  .cw-lp-faq__a > * + * { margin-block-start: var(--cw-space-4); }
+
+  /* -- Footer ---------------------------------------------------------- */
+  .cw-lp-footer {
+    padding-block: var(--cw-space-8) var(--cw-space-9);
+    border-block-start: 1px solid var(--cw-hairline);
+  }
+  .cw-lp-footer__top {
+    display: grid;
+    gap: var(--cw-space-5);
+    margin-block-end: var(--cw-space-6);
+  }
+  @media (min-width: 48rem) {
+    .cw-lp-footer__top { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: var(--cw-space-8); }
+  }
+  .cw-lp-footer__frame {
+    font-size: var(--cw-text-sm);
+    line-height: var(--cw-lh-normal);
+    color: var(--cw-ink-2);
+    max-inline-size: 56ch;
+  }
+  .cw-lp-footer__meta {
+    margin-block-start: var(--cw-space-5);
+    font-size: var(--cw-text-xs);
+    color: var(--cw-ink-3);
+  }
+}

@@ -24,6 +24,8 @@ import type { Db } from '../lib/db';
 import { claimJobs, completeJob, failJob, reclaimStaleJobs } from '../lib/db/queue';
 import type { JobKind } from '../lib/db/queue';
 import type { Job } from '../lib/db/schema';
+import { getAdapters } from '../lib/adapters';
+import { registerAllHandlers } from '../lib/queue/worker-registration';
 import { getEnv } from '../env';
 
 type Handler = (db: Db, job: Job) => Promise<void>;
@@ -84,6 +86,12 @@ async function tick(db: Db, workerId: string, batchSize: number): Promise<number
 export async function runWorker(): Promise<void> {
   const env = getEnv(); // Boot-time config validation — fail fast (factor III).
   const db = await getDb();
+
+  // Wire the engine jobs owned by data/billing/email/outcome-capture
+  // (queue/worker-registration.ts). `render_pdf`, `escalation_review` and
+  // `cache_rewarm` belong to other workstreams and are deliberately left
+  // unregistered — see that module's header comment.
+  registerAllHandlers(registerHandler, getAdapters());
 
   log('info', 'worker.start', {
     worker_id: env.WORKER_ID,

@@ -1,62 +1,52 @@
 /**
- * The Decoder page — one textarea, one button.
+ * The landing page — `/`.
  *
- * Spec: ARCHITECTURE.md §3.1, USER_JOURNEY.md, DESIGN_SYSTEM.md.
+ * Spec: `phase-2-build/identity/landing/index.html`, which this route renders as
+ * React components with the copy VERBATIM, including both review passes it
+ * carries: H-7 (no delivery-time guarantee anywhere on this page until gate G6
+ * clears — ARCHITECTURE.md §9) and H-8 (step and pricing cards take `.cw-mat-0`
+ * so the viewport holds ONE translucent surface, the header, against a budget of
+ * three — DESIGN_SYSTEM §7).
  *
- * This is the scaffold's placeholder shell: the SSE stream, the loss counter's
- * live arithmetic and the paywall are built on top of it. Three constraints
- * apply to whatever replaces this and are recorded here so they are not
- * rediscovered by accident:
+ * THE COPY IS THE SPEC. BRAND and NAMING bind every sentence on this page:
+ * "policy clause" never "legal clause"; no claim of autonomy; no success rate
+ * until B9 yields one with its denominator; no scarcity furniture (X1). A copy
+ * edit here is a document change first, a code change second.
  *
- *  - NO SIGNUP, NO DASHBOARD, NO NAVIGATION BEFORE PAYMENT (N4). Email is
- *    captured only at Stripe Checkout. Every field before the paywall is a
- *    conversion tax on a buyer who is mid-panic.
- *
- *  - The copy says "policy clause" and "your account went dark" — never "POA",
- *    never "Plan of Action", never "legal clause" (NAMING.md §5 invariants 1–2;
- *    Nielsen heuristic #2).
- *
- *  - NO DELIVERY-TIME GUARANTEE ON ANY SURFACE until gate G6 clears
- *    (ARCHITECTURE.md §9): the automatic SLO-refund job must be running in
- *    production and exercised on a deliberately-breached test case first. Copy
- *    may describe what the product does; it may not promise a remedy we cannot
- *    pay automatically.
+ * ONE PRIMARY ACTION (P6). The paste box's button is the only
+ * `.cw-btn--primary` on the page; every pricing CTA is a secondary button that
+ * points back at the same box, because every tier starts in the same place —
+ * you read your clause first, then you decide.
  */
 
-export default function DecoderPage() {
+import { Faq } from '@/components/landing/Faq';
+import { Hero } from '@/components/landing/Hero';
+import { HowItWorks } from '@/components/landing/HowItWorks';
+import { LandingFooter } from '@/components/landing/LandingFooter';
+import { Pricing } from '@/components/landing/Pricing';
+import { Proof } from '@/components/landing/Proof';
+import { SiteHeader } from '@/components/SiteHeader';
+
+import { startAppeal } from './_lib/actions';
+
+export default function LandingPage() {
   return (
-    <div className="cw-stack cw-stack--section cw-measure">
-      <section className="cw-stack">
-        <h1>Your account went dark. Let&apos;s find the clause.</h1>
-        <p className="cw-ink-2">
-          Paste the deactivation notice exactly as the marketplace sent it. You&apos;ll see the
-          reason code it maps to, the policy clause it was issued under, and an honest readiness
-          check — before you pay anything.
-        </p>
-      </section>
+    <>
+      <a className="cw-lp-skip" href="#main">
+        Skip to the notice box
+      </a>
 
-      <form className="cw-stack" action="/api/appeal" method="post">
-        <div className="cw-field">
-          <label className="cw-field__label" htmlFor="notice">
-            Your deactivation notice
-          </label>
-          <textarea
-            className="cw-paste"
-            id="notice"
-            name="notice"
-            placeholder="Paste the full email or Seller Central message here…"
-            required
-          />
-          <p className="cw-field__help">
-            We never ask for your seller login, and we never submit on your behalf.
-          </p>
-        </div>
+      <SiteHeader />
 
-        <button className="cw-btn cw-btn--primary cw-btn--lg cw-btn--block" type="submit">
-          <span className="cw-btn__label">Find my policy clause</span>
-          <span className="cw-btn__reason">Free — no account needed</span>
-        </button>
-      </form>
-    </div>
+      <main id="main">
+        <Hero action={startAppeal} />
+        <HowItWorks />
+        <Proof />
+        <Pricing />
+        <Faq />
+      </main>
+
+      <LandingFooter />
+    </>
   );
 }

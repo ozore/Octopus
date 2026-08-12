@@ -1,0 +1,488 @@
+/* ==========================================================================
+   CLAUSEWRIGHT — APPLICATION PAGE LAYER
+
+   Layout glue for the screens USER_JOURNEY.md §§1–3 names (S1–S17) and for the
+   /ops console (ARCHITECTURE.md §3.6). It sits in `@layer cw.page`, after the
+   system layers, so composition can override without specificity escalation and
+   without `!important` (DESIGN_SYSTEM.md §10).
+
+   THREE RULES THIS FILE OBEYS, none of them visible in any single declaration:
+
+   1. No colour is defined here. Every value below is a design-system semantic
+      token. A colour authored at this layer would be a colour outside the
+      §4.5 contrast certification, and the certification is a test, not prose.
+
+   2. No bespoke `backdrop-filter`. Every translucent surface on every screen is
+      `.cw-header`, `.cw-card`, `.cw-price` or `.cw-sheet` — which is what keeps
+      the `prefers-reduced-transparency` (A3) and `forced-colors` (A9)
+      renderings correct without a second implementation.
+
+   3. The §7 performance guard is counted with the sticky header FIRST. Every
+      multi-card layout below therefore hands its cards `.cw-mat-0` (the opaque
+      material level) rather than loosening the budget — the H-8 resolution
+      applied to the app screens, not only to the landing page.
+   ========================================================================== */
+
+@layer cw.page;
+
+@layer cw.page {
+
+  /* ------------------------------------------------------------------------
+     `.cw-shell` RESTORED TO ITS SYSTEM DEFINITION.
+
+     `src/styles/app.css` (the scaffold) redefined `.cw-shell` as a 100dvh flex
+     column, because the scaffold's layout used one shell for the whole page.
+     The shipped layout does not: the landing page uses `.cw-shell` many times
+     over, once per section, as DESIGN_SYSTEM §10's centred measure container —
+     and a 100dvh flex column per section would blow the page apart.
+
+     This restores the utility to what design-system.css means by it. The
+     structural properties (`inline-size`, `max-inline-size`, `margin-inline`,
+     `padding-inline`) still come from `cw.utilities` and are untouched; only
+     the scaffold's four page-shell properties are reverted, at a later layer,
+     without `!important`.
+     ---------------------------------------------------------------------- */
+  .cw-shell {
+    display: block;
+    gap: normal;
+    min-block-size: auto;
+  }
+
+  /* ------------------------------------------------------------------------
+     APP SHELL — the chrome shared by every screen after the landing page.
+     ---------------------------------------------------------------------- */
+  .cw-app {
+    display: flex;
+    flex-direction: column;
+    min-block-size: 100dvh;
+  }
+  .cw-app__main {
+    flex: 1 1 auto;
+    padding-block: var(--cw-space-8) var(--cw-space-9);
+  }
+  @media (min-width: 60rem) {
+    .cw-app__main { padding-block: var(--cw-space-9) var(--cw-space-10); }
+  }
+  .cw-app__foot {
+    padding-block: var(--cw-space-6) var(--cw-space-8);
+    border-block-start: 1px solid var(--cw-hairline);
+  }
+
+  .cw-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cw-space-4);
+    inline-size: 100%;
+    max-inline-size: var(--cw-shell-max);
+    margin-inline: auto;
+  }
+  .cw-header__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cw-space-4);
+  }
+  .cw-header__note {
+    display: none;
+    font-size: var(--cw-text-xs);
+    color: var(--cw-ink-3);
+  }
+  @media (min-width: 48rem) { .cw-header__note { display: block; } }
+  .cw-theme__value { font-weight: 600; }
+
+  /* Skip link — same behaviour as the landing page's. */
+  .cw-skip {
+    position: absolute;
+    inset-inline-start: var(--cw-space-4);
+    inset-block-start: -100%;
+    z-index: var(--cw-z-toast);
+    padding: var(--cw-space-3) var(--cw-space-4);
+    border-radius: var(--cw-radius-sm);
+    background-color: var(--cw-surface-inset);
+    border: 1px solid var(--cw-border);
+    color: var(--cw-ink);
+    font-size: var(--cw-text-sm);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .cw-skip:focus { inset-block-start: var(--cw-space-3); }
+
+  /* ------------------------------------------------------------------------
+     SCREEN HEADINGS
+     ---------------------------------------------------------------------- */
+  .cw-screen { display: grid; gap: var(--cw-space-8); }
+  .cw-screen__head { display: grid; gap: var(--cw-space-4); }
+  .cw-screen__eyebrow {
+    font-size: var(--cw-text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--cw-ink-3);
+  }
+  .cw-screen__title { max-inline-size: 24ch; }
+  .cw-screen__lede {
+    font-size: var(--cw-text-lg);
+    line-height: var(--cw-lh-snug);
+    color: var(--cw-ink-2);
+    max-inline-size: 56ch;
+  }
+  .cw-screen__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cw-space-3);
+  }
+
+  /* Two-column result layouts. Single column below 64rem — a stressed reader on
+     a phone reads one thing at a time (USER_JOURNEY §8.1). */
+  .cw-split { display: grid; gap: var(--cw-space-7); align-items: start; }
+  @media (min-width: 64rem) {
+    .cw-split { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: var(--cw-space-8); }
+  }
+  .cw-split--even { }
+  @media (min-width: 64rem) {
+    .cw-split--even { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  .cw-cards { display: grid; gap: var(--cw-space-5); }
+  @media (min-width: 56rem) {
+    .cw-cards--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--cw-space-6); }
+    .cw-cards--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--cw-space-6); }
+  }
+
+  /* ------------------------------------------------------------------------
+     S1 — THE PASTE SCREEN
+     ---------------------------------------------------------------------- */
+  .cw-paste-card { display: grid; gap: var(--cw-space-5); }
+  .cw-paste-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cw-space-4);
+  }
+  .cw-assure {
+    font-size: var(--cw-text-sm);
+    line-height: var(--cw-lh-snug);
+    color: var(--cw-ink-2);
+    max-inline-size: 36ch;
+  }
+
+  /* ------------------------------------------------------------------------
+     S2 — THE PROCESSING SCREEN (Nielsen #1, the highest-risk surface)
+     ---------------------------------------------------------------------- */
+  .cw-run { display: grid; gap: var(--cw-space-6); }
+  .cw-run__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cw-space-4);
+    margin-block-start: var(--cw-space-5);
+    padding-block-start: var(--cw-space-5);
+    border-block-start: 1px solid var(--cw-hairline);
+  }
+  /* The streamed-content slot under an active node: real reading, not a spinner. */
+  .cw-run__stream {
+    font-family: var(--cw-font-doc);
+    font-size: var(--cw-text-sm);
+    line-height: var(--cw-lh-relaxed);
+    color: var(--cw-ink-2);
+    max-inline-size: var(--cw-measure-doc);
+  }
+
+  /* ------------------------------------------------------------------------
+     S3 — CITED PREVIEW
+     ---------------------------------------------------------------------- */
+  .cw-clauses { display: grid; gap: var(--cw-space-5); }
+  .cw-clause-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cw-space-1);
+    font-size: var(--cw-text-xs);
+    color: var(--cw-cite);
+  }
+  .cw-critique { display: grid; gap: var(--cw-space-4); margin: 0; padding: 0; list-style: none; }
+  .cw-critique__item {
+    display: grid;
+    grid-template-columns: 1.5rem minmax(0, 1fr);
+    gap: var(--cw-space-3);
+    font-size: var(--cw-text-sm);
+    color: var(--cw-ink-2);
+  }
+  /* A6 — the glyph and the label carry the state, never the colour alone. */
+  .cw-critique__glyph {
+    font-family: var(--cw-font-mono);
+    font-size: var(--cw-text-sm);
+    line-height: var(--cw-lh-normal);
+  }
+  .cw-critique__item[data-met="true"] .cw-critique__glyph { color: var(--cw-accent); }
+  .cw-critique__item[data-met="false"] .cw-critique__glyph { color: var(--cw-caution); }
+  .cw-critique__label { font-weight: 500; color: var(--cw-ink); }
+  .cw-critique__gap { display: block; margin-block-start: var(--cw-space-1); }
+
+  /* The readiness figure. Amber and slate only — never rose (P4.1, X3). */
+  .cw-readiness {
+    display: flex;
+    align-items: baseline;
+    gap: var(--cw-space-3);
+    font-family: var(--cw-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  .cw-readiness__figure {
+    font-size: var(--cw-text-2xl);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--cw-ink);
+  }
+  .cw-readiness__unit { font-size: var(--cw-text-sm); color: var(--cw-ink-3); }
+
+  /* ------------------------------------------------------------------------
+     S4 — PAYWALL / ANCHORS  (structure mirrors the landing page's, because
+     Nielsen #4 says the second time a seller meets this table it must look
+     like the first time.)
+     ---------------------------------------------------------------------- */
+  .cw-anchors {
+    display: grid;
+    gap: 0;
+    margin: 0 0 var(--cw-space-6);
+    padding: 0;
+    list-style: none;
+    max-inline-size: 44rem;
+  }
+  .cw-anchor {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: var(--cw-space-2) var(--cw-space-4);
+    padding-block: var(--cw-space-3);
+    border-block-end: 1px solid var(--cw-hairline);
+  }
+  .cw-anchor__what { font-size: var(--cw-text-base); color: var(--cw-ink-2); }
+  .cw-anchor__price {
+    font-family: var(--cw-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-size: var(--cw-text-lg);
+    color: var(--cw-ink-2);
+    white-space: nowrap;
+  }
+  .cw-anchor__note { grid-column: 1 / -1; font-size: var(--cw-text-sm); color: var(--cw-ink-3); }
+  .cw-anchor--us { border-block-end: 0; padding-block-start: var(--cw-space-4); }
+  .cw-anchor--us .cw-anchor__what { color: var(--cw-ink); font-weight: 600; }
+  .cw-anchor--us .cw-anchor__price { color: var(--cw-ink); font-weight: 700; }
+
+  .cw-tiers { display: grid; gap: var(--cw-space-5); align-items: stretch; }
+  @media (min-width: 56rem) { .cw-tiers { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--cw-space-6); } }
+  .cw-price__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cw-space-3);
+  }
+  .cw-price form { margin-block-start: auto; }
+
+  /* ------------------------------------------------------------------------
+     S5 / S6 — THE DELIVERED DOCUMENT AND THE PRE-SUBMISSION CHECKLIST
+     ---------------------------------------------------------------------- */
+  .cw-doc__section + .cw-doc__section { margin-block-start: var(--cw-space-7); }
+
+  .cw-checklist { display: grid; gap: var(--cw-space-4); margin: 0; padding: 0; list-style: none; }
+  .cw-checklist__item {
+    display: grid;
+    grid-template-columns: 1.25rem minmax(0, 1fr);
+    gap: var(--cw-space-3);
+    align-items: start;
+  }
+  .cw-checklist__box {
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    margin-block-start: 0.2rem;
+    accent-color: var(--cw-accent-fill);
+  }
+  .cw-checklist__label { font-size: var(--cw-text-base); color: var(--cw-ink); }
+  .cw-checklist__why {
+    display: block;
+    margin-block-start: var(--cw-space-1);
+    font-size: var(--cw-text-sm);
+    color: var(--cw-ink-3);
+  }
+  .cw-checklist__count {
+    font-family: var(--cw-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-size: var(--cw-text-sm);
+    color: var(--cw-ink-2);
+  }
+
+  /* Where in Account Health it goes. I4: the seller submits, by hand, always. */
+  .cw-handoff { display: grid; gap: var(--cw-space-3); }
+  .cw-handoff__path {
+    font-family: var(--cw-font-mono);
+    font-size: var(--cw-text-sm);
+    color: var(--cw-ink);
+    overflow-wrap: anywhere;
+  }
+
+  /* ------------------------------------------------------------------------
+     /case/[id] — THE LIFECYCLE TIMELINE
+     ---------------------------------------------------------------------- */
+  .cw-case__grid { display: grid; gap: var(--cw-space-7); align-items: start; }
+  @media (min-width: 64rem) {
+    .cw-case__grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: var(--cw-space-8); }
+  }
+  .cw-facts { display: grid; gap: var(--cw-space-3); margin: 0; }
+  .cw-facts__row {
+    display: grid;
+    grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
+    gap: var(--cw-space-2) var(--cw-space-4);
+    padding-block: var(--cw-space-2);
+    border-block-end: 1px solid var(--cw-hairline);
+  }
+  .cw-facts__row:last-child { border-block-end: 0; }
+  .cw-facts__k { font-size: var(--cw-text-sm); color: var(--cw-ink-3); }
+  .cw-facts__v { font-size: var(--cw-text-sm); color: var(--cw-ink); overflow-wrap: anywhere; }
+  .cw-facts__v--code { font-family: var(--cw-font-mono); font-size: var(--cw-text-xs); }
+
+  /* ------------------------------------------------------------------------
+     /ops — THE ESCALATION QUEUE. Plain and functional, by instruction: this is
+     an internal console, and every minute spent decorating it is a minute not
+     spent on the surface a panicking seller reads (Nielsen #8).
+     ---------------------------------------------------------------------- */
+  .cw-ops { display: grid; gap: var(--cw-space-6); }
+  .cw-ops__stats {
+    display: grid;
+    gap: var(--cw-space-4);
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  }
+  .cw-ops__stat {
+    padding: var(--cw-space-4);
+    border: 1px solid var(--cw-hairline);
+    border-radius: var(--cw-radius-md);
+    background-color: var(--cw-surface-inset);
+  }
+  .cw-ops__stat-k {
+    display: block;
+    font-size: var(--cw-text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--cw-ink-3);
+  }
+  .cw-ops__stat-v {
+    display: block;
+    margin-block-start: var(--cw-space-1);
+    font-family: var(--cw-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-size: var(--cw-text-xl);
+    font-weight: 700;
+    color: var(--cw-ink);
+  }
+
+  .cw-table { inline-size: 100%; border-collapse: collapse; font-size: var(--cw-text-sm); }
+  .cw-table caption {
+    text-align: start;
+    padding-block-end: var(--cw-space-3);
+    font-size: var(--cw-text-sm);
+    color: var(--cw-ink-3);
+  }
+  .cw-table th,
+  .cw-table td {
+    text-align: start;
+    vertical-align: top;
+    padding: var(--cw-space-3);
+    border-block-end: 1px solid var(--cw-hairline);
+  }
+  .cw-table th {
+    font-weight: 600;
+    color: var(--cw-ink-2);
+    white-space: nowrap;
+    border-block-end-color: var(--cw-border);
+  }
+  .cw-table td { color: var(--cw-ink-2); }
+  .cw-table__id { font-family: var(--cw-font-mono); font-size: var(--cw-text-xs); color: var(--cw-ink); }
+  .cw-table__actions { display: flex; flex-wrap: wrap; gap: var(--cw-space-2); }
+  .cw-empty {
+    padding: var(--cw-space-6);
+    border: 1px dashed var(--cw-border);
+    border-radius: var(--cw-radius-md);
+    color: var(--cw-ink-2);
+    text-align: center;
+  }
+
+  /* ------------------------------------------------------------------------
+     /settings/monitoring — SHIELD (D6, and the C-1 honesty correction)
+     ---------------------------------------------------------------------- */
+  .cw-shield__address {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cw-space-3);
+    padding: var(--cw-space-4);
+    border: 1px solid var(--cw-border);
+    border-radius: var(--cw-radius-md);
+    background-color: var(--cw-surface-inset);
+    font-family: var(--cw-font-mono);
+    font-size: var(--cw-text-sm);
+    color: var(--cw-ink);
+    overflow-wrap: anywhere;
+  }
+  .cw-shield__steps {
+    display: grid;
+    gap: var(--cw-space-4);
+    margin: 0;
+    padding: 0;
+    counter-reset: cw-step;
+    list-style: none;
+  }
+  .cw-shield__step {
+    display: grid;
+    grid-template-columns: 1.75rem minmax(0, 1fr);
+    gap: var(--cw-space-3);
+    font-size: var(--cw-text-sm);
+    color: var(--cw-ink-2);
+  }
+  .cw-shield__step::before {
+    counter-increment: cw-step;
+    content: counter(cw-step);
+    display: grid;
+    place-items: center;
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+    border: 1px solid var(--cw-border);
+    border-radius: var(--cw-radius-full);
+    font-family: var(--cw-font-mono);
+    font-size: var(--cw-text-xs);
+    color: var(--cw-ink-2);
+  }
+  /* S15's two options carry equal visual weight; the recommendation is a word,
+     not a contrast step (Nielsen #3, DESIGN_SYSTEM P6). */
+  .cw-decision { display: grid; gap: var(--cw-space-4); }
+  @media (min-width: 44rem) {
+    .cw-decision { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
+  }
+  .cw-decision > form { display: grid; }
+
+  /* ------------------------------------------------------------------------
+     SHARED SMALL PIECES
+     ---------------------------------------------------------------------- */
+  .cw-note {
+    font-size: var(--cw-text-sm);
+    line-height: var(--cw-lh-normal);
+    color: var(--cw-ink-3);
+    max-inline-size: var(--cw-measure);
+  }
+  .cw-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cw-space-4);
+  }
+  .cw-list { display: grid; gap: var(--cw-space-2); margin: 0; padding: 0; list-style: none; }
+  .cw-list__item {
+    display: grid;
+    grid-template-columns: 1.25rem minmax(0, 1fr);
+    gap: var(--cw-space-2);
+    font-size: var(--cw-text-sm);
+    color: var(--cw-ink-2);
+  }
+  .cw-list__item::before { content: "\2013"; color: var(--cw-ink-3); }
+}

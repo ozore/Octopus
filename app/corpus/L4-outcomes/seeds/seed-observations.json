@@ -1,0 +1,76 @@
+{
+  "spec": "CORPUS_DESIGN.md §4.5 — cold start. Schema: ontology/schema.seed_observation.json.",
+  "collected_at": "2026-08-12",
+  "collection_method": "Amazon Seller Forums, Account Health category, fetched logged out. sellercentral.amazon.com/robots.txt was re-fetched immediately before collection and allows /seller-forums by explicit allowlist entry while carrying a broad Disallow: / otherwise; /forums/search and /forums/search.jspa are explicitly disallowed and are hard-blocked in code, not by convention.",
+  "standards": {
+    "never_quoted": "No forum post text is reproduced anywhere in these records. Every string in `observation` is our own structural description.",
+    "never_a_policy_fact": "A forum post is evidence of what a seller says happened. Policy facts come from Tier A/B/D sources only.",
+    "never_in_a_denominator": "These records live in seed_observation, never outcome_record.",
+    "never_counted": "contributes_to_supporting_n is 0 for every record, by schema const. Gate G16.",
+    "thread_dates_are_inferences": "Forum pages render relative dates ('2 days ago'). Absolute dates below are inferences from the retrieval date and are labelled as such."
+  },
+  "coverage_note": "Two seeds, both on AMZ.OPS.VERIFICATION, because that is what the Account Health category surfaced on the day of collection. This is a thin, non-representative sample and is recorded as such — CORPUS_DESIGN.md §4.5 is explicit that the seed is the weakest material in the system and is scaffolding, not a moat. It is deliberately not padded out: a fabricated post-mortem would be worse than a small one.",
+  "observations": [
+    {
+      "seed_id": "SEED.AMZ.VERIFICATION.1",
+      "seed": true,
+      "citable": false,
+      "platform": "AMZ",
+      "reason_code_guess": "AMZ.OPS.VERIFICATION",
+      "source_url": "https://sellercentral.amazon.com/seller-forums/discussions/t/ee61a0f5-076e-4ce4-a26c-72fb2e48f0f6",
+      "source_surface": "Amazon Seller Forums — Account Health category",
+      "retrieved_at": "2026-08-12",
+      "thread_date_note": "Thread renders as roughly four weeks old at retrieval, with replies continuing for about three weeks after the opening post. Absolute dates are an inference, not a stated fact.",
+      "observation": {
+        "enforcement_action": "A wave of identity and bank-account verification demands tied to annual INFORM Act compliance, with an at-risk-of-deactivation warning shown on the account dashboard.",
+        "what_the_seller_submitted": [
+          "Government photo identification, front and back",
+          "A credit card or financial statement",
+          "A bank account statement",
+          "In some cases a business registration extract"
+        ],
+        "structural_notes": [
+          "Multiple participants describe an expired identity document as the trigger, not a missing one — the document existed and had lapsed.",
+          "Several describe receiving contradictory automated messages, one reporting verification failure and one reporting approval, within the same episode.",
+          "The dashboard at-risk warning is described as persisting after the seller believed the submission was complete, which is what drove the forum post rather than the verification itself.",
+          "Processing is described as taking substantially longer than participants expected for straightforward documentation."
+        ]
+      },
+      "reported_outcome": "unresolved",
+      "outcome_verified": false,
+      "contributes_to_supporting_n": 0,
+      "informs_patterns": ["AMZ.OPS.VERIFICATION"],
+      "what_it_shaped": "The mandatory-evidence note that the requested document must be in date and unaltered, and the preventive requirement of a named owner for document expiry dates. A hypothesis about where this code fails, not evidence that it does."
+    },
+    {
+      "seed_id": "SEED.AMZ.VERIFICATION.2",
+      "seed": true,
+      "citable": false,
+      "platform": "AMZ",
+      "reason_code_guess": "AMZ.OPS.VERIFICATION",
+      "source_url": "https://sellercentral.amazon.com/seller-forums/discussions/t/f7494e19-cfb1-4b7a-8949-63fded2ee919",
+      "source_surface": "Amazon Seller Forums — Account Health category",
+      "retrieved_at": "2026-08-12",
+      "thread_date_note": "Thread renders as two days old at retrieval with a reply one day old. Absolute dating is an inference.",
+      "observation": {
+        "enforcement_action": "Account locked by an automated verification process over a mismatch between the registered business type and the document submitted — the account was registered as an individual and a business licence was supplied.",
+        "what_the_seller_submitted": [
+          "A business licence for INFORM Act verification",
+          "Corporate bank account documentation, including confirmation of the platform's own test deposit",
+          "A prior support email from an earlier year approving the use of business documentation"
+        ],
+        "structural_notes": [
+          "The defect is a mismatch between account registration and document, not an absence of documentation — the seller had documents, of the wrong type for the registration.",
+          "The seller's argument is a history-of-compliance argument, asking for manual review rather than an exception.",
+          "The case is described as escalated by a support specialist and then closed by an automated rejection, with the escalation not visibly reaching a decision.",
+          "The remedy the seller asks for is a correction to the platform's own registration data, which is a different request from an appeal against a finding."
+        ]
+      },
+      "reported_outcome": "unresolved",
+      "outcome_verified": false,
+      "contributes_to_supporting_n": 0,
+      "informs_patterns": ["AMZ.OPS.VERIFICATION"],
+      "what_it_shaped": "AP.ENTITY_MISMATCH and AP.SUBSTITUTE_DOCUMENT in the L3 pattern, and the must_contain item requiring the mismatch to be named before the reviewer finds it. Again: a hypothesis to test against the golden set, not a finding."
+    }
+  ]
+}

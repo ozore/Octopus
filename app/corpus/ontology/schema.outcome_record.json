@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "clausewright/corpus/schema.outcome_record.json",
+  "title": "L4 outcome record (Corpus B) — DATABASE ONLY",
+  "description": "Spec: CORPUS_DESIGN.md §4.2. This schema documents the shape; the data lives ONLY in Postgres (see L4-outcomes/schema.sql). No outcome record, no consent record and no customer text may ever be committed to this repository (§2.1, gate G6). This file is a contract, not a store.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["case_id", "reason_code", "platform", "poa_structure", "poa_structure_hash", "outcome", "appeal_round", "reporting_method", "counts_in_denominator", "curation_state"],
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "pattern": "^case_[0-9A-HJKMNP-TV-Z]{26}$",
+      "description": "Opaque ULID. NOT derived from email, merchant token or Stripe id (§2.3)."
+    },
+    "reason_code": { "type": "string" },
+    "platform": { "enum": ["AMZ", "WMT"] },
+    "poa_structure": {
+      "type": "object",
+      "description": "Structure and signals, never free customer text.",
+      "additionalProperties": false,
+      "properties": {
+        "sections": { "type": "array", "items": { "enum": ["root_cause", "immediate_corrective", "preventive"] } },
+        "section_word_counts": { "type": "object", "additionalProperties": { "type": "integer" } },
+        "evidence_items_referenced": { "type": "array", "items": { "type": "string" } },
+        "evidence_items_missing": { "type": "array", "items": { "type": "string" } },
+        "anti_patterns_flagged": { "type": "array", "items": { "type": "string" } },
+        "anti_patterns_remaining_at_submit": { "type": "array", "items": { "type": "string" } },
+        "clauses_cited": { "type": "array", "items": { "type": "string" } },
+        "critique_score_pre": { "type": "number" },
+        "critique_score_post": { "type": "number" }
+      }
+    },
+    "poa_structure_hash": {
+      "type": "string",
+      "description": "Dedupe by STRUCTURE, not by text (§4.6 rule 2) — fifty near-identical drafts for one code are evidence about one pattern, not fifty."
+    },
+    "outcome": { "enum": ["reinstated", "rejected", "no_response", "withdrawn", "unknown"] },
+    "days_to_decision": { "type": ["integer", "null"] },
+    "appeal_round": { "type": "integer", "minimum": 1 },
+    "submitted_at": { "type": ["string", "null"], "format": "date" },
+    "reported_at": { "type": ["string", "null"], "format": "date" },
+    "reporting_method": { "enum": ["self_report", "screenshot_verified"] },
+    "tier_purchased": { "enum": ["rescue", "rescue_human"] },
+    "human_edited": { "type": "boolean" },
+    "counts_in_denominator": {
+      "const": true,
+      "description": "N10 / R11. Exists so a success rate can never be quietly computed from the winners alone. Any query producing a rate must join this column — gate G14."
+    },
+    "curation_state": { "enum": ["raw", "redacted", "verified", "promoted", "quarantined"] }
+  }
+}

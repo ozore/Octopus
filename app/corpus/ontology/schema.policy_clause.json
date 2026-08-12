@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "clausewright/corpus/schema.policy_clause.json",
+  "title": "L2 policy source + clause",
+  "description": "Spec: CORPUS_DESIGN.md §3.3.2. One markdown file per policy document under L2-policy-clauses/; the file's front matter is a POLICY_SOURCE, each `## clause: <id>` section is a POLICY_CLAUSE. There is deliberately NO `source_text` field anywhere in this schema — gate G5.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["source", "clauses"],
+  "properties": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id", "platform", "title", "tier", "access_mode", "url",
+        "robots_status", "first_fetched_at", "last_verified_at",
+        "license_posture", "citable", "jurisdiction_caveat", "stub"
+      ],
+      "properties": {
+        "source_id": { "type": "string", "pattern": "^[a-z]{3}\\.[a-z0-9.]+$" },
+        "platform": { "enum": ["AMZ", "WMT"] },
+        "title": { "type": "string" },
+        "tier": {
+          "enum": ["A", "B", "C", "D", "corroboration"],
+          "description": "A = public machine-readable CDN document; B = public HTML; C = public forum (never citable); D = login-gated, human-read only (N11); corroboration = third-party mirror, never citable."
+        },
+        "access_mode": { "enum": ["cdn_pdf", "public_html", "forum", "human_read"] },
+        "url": { "type": "string", "format": "uri" },
+        "alt_urls": { "type": "array", "items": { "type": "string", "format": "uri" } },
+        "robots_status": { "enum": ["allowed", "disallowed", "no_rule_for_our_agent", "n_a"] },
+        "marketplace_edition": {
+          "type": "string",
+          "description": "The marketplace whose edition this document is, e.g. 'NA', 'US', 'IN', 'UK', 'unknown'. Drives jurisdiction_caveat."
+        },
+        "publisher_date": { "type": ["string", "null"] },
+        "first_fetched_at": { "type": "string", "format": "date" },
+        "last_verified_at": { "type": "string", "format": "date" },
+        "content_sha256": { "type": ["string", "null"], "description": "Hash of the extracted text, not of the PDF bytes. Null on a stub." },
+        "extraction_method": { "enum": ["pdf_text_extraction", "html_to_text", "human_read", "none"] },
+        "license_posture": { "type": "string" },
+        "citable": {
+          "type": "boolean",
+          "description": "false for tier C and corroboration — gates G8 and G9. A non-citable source can inform an L3 pattern but can never reach a customer-facing citation."
+        },
+        "jurisdiction_caveat": {
+          "type": "boolean",
+          "description": "true where the document is a non-US edition or its edition could not be confirmed. Clauses from such a source are excluded from US drafting — gate G7."
+        },
+        "stub": {
+          "type": "boolean",
+          "description": "true where the document is known and named but its text could not be obtained through the proxy. A stub carries zero clauses. It is a recorded hole, never a fabricated summary."
+        },
+        "stub_reason": { "type": "string" }
+      }
+    },
+    "clauses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["clause_id", "source_id", "heading", "obligation_type", "status", "our_summary", "reason_codes"],
+        "properties": {
+          "clause_id": { "type": "string", "pattern": "^[a-z0-9.]+#[a-z0-9-]+$" },
+          "source_id": { "type": "string" },
+          "heading": { "type": "string" },
+          "obligation_type": { "enum": ["prohibition", "requirement", "standard", "definition"] },
+          "status": { "enum": ["active", "superseded", "withdrawn"] },
+          "supersedes": { "type": ["string", "null"] },
+          "our_summary": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1,
+            "description": "OUR PROSE, one entry per paragraph. This is the citation target (CORPUS_DESIGN §3.3.2 / §5.2): each paragraph becomes one content block in a custom-content document, so a citation resolves to (clause_id, block_index)."
+          },
+          "quoted_excerpt": {
+            "type": ["string", "null"],
+            "description": "Verbatim excerpt from the source, marked as an excerpt. Hard cap 25 words — gate G4 (CORPUS_DESIGN §3.6 copyright mitigation)."
+          },
+          "reason_codes": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "token_estimate": { "type": "integer" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "clausewright/corpus/schema.appeal_pattern.json",
+  "title": "L3 appeal pattern",
+  "description": "Spec: CORPUS_DESIGN.md §3.3.3. Exactly one record per reason code (gate G3), keyed by the code itself. The anti_patterns block is not documentation — it is the input to stage 4, the readiness critique (B6, evaluator-optimizer), which is shown free pre-paywall. It is therefore the highest-leverage content in Corpus A.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["code", "provenance", "supporting_n", "last_reviewed_at", "structure", "evidence_required", "anti_patterns"],
+  "properties": {
+    "code": { "type": "string" },
+    "provenance": {
+      "enum": ["authored", "promoted_from_L4"],
+      "description": "Flips to promoted_from_L4 only when §4.7's four gates all pass: >=10 verified outcome records, >=70%/<=30% signal split, >=3 rejected records, named human sign-off."
+    },
+    "supporting_n": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Counts VERIFIED outcome records only. Forum seed observations contribute zero — gate G16. This is what makes N10 ('never publish a success rate without a denominator') enforceable rather than aspirational."
+    },
+    "last_reviewed_at": { "type": "string", "format": "date" },
+    "structure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["root_cause", "immediate_corrective", "preventive"],
+      "properties": {
+        "root_cause": { "$ref": "#/$defs/section" },
+        "immediate_corrective": { "$ref": "#/$defs/section" },
+        "preventive": { "$ref": "#/$defs/section" }
+      }
+    },
+    "evidence_required": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["evidence_id", "label", "mandatory"],
+        "properties": {
+          "evidence_id": { "type": "string", "pattern": "^EV\\.[A-Z0-9_.]+$" },
+          "label": { "type": "string" },
+          "mandatory": { "type": "boolean" },
+          "redaction_note": { "type": "string" }
+        }
+      }
+    },
+    "anti_patterns": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "detect", "critique", "weight"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^AP\\.[A-Z0-9_]+$" },
+          "detect": { "type": "string" },
+          "critique": { "type": "string" },
+          "weight": { "type": "number", "minimum": 0, "maximum": 1 }
+        }
+      }
+    },
+    "refer_out_note": {
+      "type": "string",
+      "description": "Present on refer_out codes. We do not draft these; the pattern exists so the free critique can explain WHY we route the case to counsel rather than silently refusing (the AppealDesk differentiator, §3.2)."
+    }
+  },
+  "$defs": {
+    "section": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["must_contain", "must_avoid"],
+      "properties": {
+        "must_contain": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "must_avoid": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

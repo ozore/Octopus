@@ -1,0 +1,714 @@
+{
+  "spec": "CORPUS_DESIGN.md §3.3.3 — one appeal pattern per reason code, exactly (gate G3).",
+  "authored_at": "2026-08-12",
+  "format_note": "CORPUS_DESIGN.md §2.1 sketches L3 as one markdown file per code. This corpus stores L3 as one keyed JSON document instead, and the deviation is deliberate: L3 records contain no third-party text, have no citation surface, and are consumed whole by stage 4 as a rubric. File-per-record would buy nothing a JSON key does not, while costing 33 sets of front matter that could drift out of sync. L2 — where verbatim excerpts, source URLs and copyright posture live — IS one file per policy document, because there the per-file provenance is load-bearing.",
+  "provenance_note": "Every pattern below is provenance:'authored' with supporting_n:0. Per N10/R11 and gate G16, supporting_n counts VERIFIED consented outcome records only; the forum seed observations in L4-outcomes/seeds contribute exactly zero. No pattern here may be described to a customer as evidence-backed, because none of it is yet. Promotion to 'promoted_from_L4' requires §4.7's four gates: >=10 verified records, the element present in >=70% of reinstated and <=30% of rejected, >=3 rejected records, and a named human sign-off.",
+  "shared_anti_patterns": [
+    {
+      "id": "AP.APOLOGY_ONLY",
+      "detect": "Apology or expression of regret present; no named corrective control.",
+      "critique": "This reads as an apology, not a plan. The investigator is looking for a control, not contrition.",
+      "weight": 0.15
+    },
+    {
+      "id": "AP.BLAME_PLATFORM",
+      "detect": "Attributes the enforcement to a platform error, a bot, or an unfair system.",
+      "critique": "Blaming the platform is the most common reason a first appeal fails. State what you changed.",
+      "weight": 0.2
+    },
+    {
+      "id": "AP.BLAME_CUSTOMER",
+      "detect": "Attributes the complaint to a dishonest buyer or a malicious competitor without evidence.",
+      "critique": "Even where it is true, leading with it reads as deflection. Put the correction first and the context second, with evidence.",
+      "weight": 0.1
+    },
+    {
+      "id": "AP.UNMEASURABLE",
+      "detect": "Preventive section contains no number, no named owner, and no frequency.",
+      "critique": "'We will be more careful' is not a preventive measure. Name the check, who runs it, and how often.",
+      "weight": 0.2
+    },
+    {
+      "id": "AP.NO_TIMELINE",
+      "detect": "Corrective actions are described without dates or a completion status.",
+      "critique": "An action with no date cannot be verified. Say what was done, on what date, and what remains.",
+      "weight": 0.1
+    },
+    {
+      "id": "AP.WRONG_SCOPE",
+      "detect": "Addresses only the specific item or order named in the notice, with no account-wide review.",
+      "critique": "The notice names an example, not the boundary. Show that you looked across the account, and what you found.",
+      "weight": 0.15
+    },
+    {
+      "id": "AP.PROMISE_NOT_PROOF",
+      "detect": "Mandatory evidence item is described as available rather than attached.",
+      "critique": "Offering to provide documents is not providing them. Attach the mandatory items with the first submission.",
+      "weight": 0.15
+    }
+  ],
+  "patterns": {
+    "AMZ.AUTH.INAUTHENTIC": {
+      "code": "AMZ.AUTH.INAUTHENTIC",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": [
+            "A specific, checkable account of where the complained-of inventory came from",
+            "The supplier named, with the nature of the relationship stated (authorised distributor, wholesaler, liquidator, brand direct)",
+            "An admission of what went wrong in the sourcing process itself, not in the outcome"
+          ],
+          "must_avoid": ["Blaming the complainant or the buyer", "Blaming Amazon's detection systems", "Asserting the goods are genuine without a supply chain that shows it"]
+        },
+        "immediate_corrective": {
+          "must_contain": [
+            "What happened to the affected inventory: disposed, returned to supplier, or quarantined, with quantities",
+            "Whether the affected listings were removed, and on what date",
+            "Whether the supplier relationship was ended or put under review"
+          ],
+          "must_avoid": ["Actions described in the future tense"]
+        },
+        "preventive": {
+          "must_contain": [
+            "A supplier-verification step that did not exist before, with an owner and a frequency",
+            "A measurable receiving control tied to invoices and lot or batch identifiers"
+          ],
+          "must_avoid": ["Undertakings to be more careful", "Controls with no owner"]
+        }
+      },
+      "evidence_required": [
+        { "evidence_id": "EV.INVOICE.SUPPLIER", "label": "Supplier invoices covering the complained-of ASINs", "mandatory": true, "redaction_note": "Prices may be redacted; supplier name, address and invoice date may not." },
+        { "evidence_id": "EV.SUPPLIER.CONTACT", "label": "Verifiable supplier contact details", "mandatory": true },
+        { "evidence_id": "EV.PROOF.DISPOSAL", "label": "Evidence of what happened to the affected stock", "mandatory": false },
+        { "evidence_id": "EV.SUPPLY.DIAGRAM", "label": "Supply-chain diagram from brand to your inventory", "mandatory": false }
+      ],
+      "anti_patterns": [
+        { "id": "AP.NO_INVOICE", "detect": "No supplier invoice is referenced or attached.", "critique": "No supplier invoices are referenced. For an authenticity complaint that is usually fatal on its own.", "weight": 0.3 },
+        { "id": "AP.RETAIL_RECEIPT", "detect": "Sourcing evidence is a retail receipt rather than a commercial invoice.", "critique": "A retail receipt is not a supply-chain document. It shows you bought the item; it does not show where the item came from.", "weight": 0.2 }
+      ],
+      "notes": "Triage is human_tier: we draft, but the paywall recommends the $399 tier. The judgment call here is not the writing, it is whether the supply chain will survive being looked at."
+    },
+    "AMZ.AUTH.COUNTERFEIT": {
+      "code": "AMZ.AUTH.COUNTERFEIT",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "refer_out_note": "We do not draft counterfeit appeals. A counterfeit allegation is an accusation with legal exposure beyond the platform, and a self-drafted response can prejudice the seller's position with the rights holder. We refer to partner counsel and say why — the differentiator versus competitors who simply refuse the category.",
+      "structure": {
+        "root_cause": { "must_contain": ["Not drafted — referred to counsel"], "must_avoid": ["Any admission drafted without counsel"] },
+        "immediate_corrective": { "must_contain": ["Not drafted — referred to counsel"], "must_avoid": [] },
+        "preventive": { "must_contain": ["Not drafted — referred to counsel"], "must_avoid": [] }
+      },
+      "evidence_required": [
+        { "evidence_id": "EV.INVOICE.SUPPLIER", "label": "Supplier invoices (for counsel, not for a self-drafted appeal)", "mandatory": true },
+        { "evidence_id": "EV.NOTICE.COMPLAINT", "label": "The complaint notice identifying the rights holder", "mandatory": true }
+      ],
+      "anti_patterns": [
+        { "id": "AP.SELF_DRAFTED_ADMISSION", "detect": "Any drafted admission of counterfeiting.", "critique": "An admission drafted without counsel can follow you off the platform. This category is referred, not drafted.", "weight": 1.0 }
+      ]
+    },
+    "AMZ.AUTH.CONDITION": {
+      "code": "AMZ.AUTH.CONDITION",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": [
+            "Where the affected units entered inventory and how they were graded",
+            "The specific step in receiving or grading that failed",
+            "Whether the listing was matched to a detail page describing a different manufacturer, edition, version or format"
+          ],
+          "must_avoid": ["Treating a condition complaint as a buyer misunderstanding"]
+        },
+        "immediate_corrective": {
+          "must_contain": ["What happened to the mis-graded units", "Whether affected listings were corrected or removed, with dates"],
+          "must_avoid": []
+        },
+        "preventive": {
+          "must_contain": ["A written receiving and inspection procedure with an owner", "A sampling rate or inspection frequency stated as a number"],
+          "must_avoid": ["An inspection step with no rate"]
+        }
+      },
+      "evidence_required": [
+        { "evidence_id": "EV.PROCESS.RECEIVING", "label": "Written receiving and inspection process", "mandatory": true },
+        { "evidence_id": "EV.PHOTO.GRADING", "label": "Photographs of the grading process or workstation", "mandatory": false }
+      ],
+      "anti_patterns": [
+        { "id": "AP.NO_INSPECTION_STEP", "detect": "No inspection or grading step is described anywhere in the plan.", "critique": "There is no inspection step in this plan. A condition complaint is answered with a process, not with an assurance.", "weight": 0.3 }
+      ]
+    },
+    "AMZ.AUTH.EXPIRY": {
+      "code": "AMZ.AUTH.EXPIRY",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["How expiry dates are captured at receiving", "Why the affected units were shipped inside the restricted remaining-shelf-life window", "Whether stock rotation is FEFO, FIFO, or neither"],
+          "must_avoid": ["Treating short-dated stock as equivalent to expired stock without saying which occurred"]
+        },
+        "immediate_corrective": { "must_contain": ["Disposition of the affected lots, with quantities and dates", "Whether remaining inventory of the same lots was pulled"], "must_avoid": [] },
+        "preventive": { "must_contain": ["A date-capture control at receiving with an owner", "A minimum remaining-shelf-life rule stated as a number of days"], "must_avoid": ["Rotation described without a rule"] }
+      },
+      "evidence_required": [
+        { "evidence_id": "EV.PROCESS.EXPIRY", "label": "Written expiry-date capture and rotation procedure", "mandatory": true },
+        { "evidence_id": "EV.INVOICE.SUPPLIER", "label": "Supplier invoices showing lot dates for the affected units", "mandatory": true }
+      ],
+      "anti_patterns": [
+        { "id": "AP.NO_SHELF_LIFE_RULE", "detect": "No minimum remaining-shelf-life threshold is stated.", "critique": "There is no shelf-life rule in this plan, only an intention to rotate stock. State the minimum days remaining you will ship.", "weight": 0.25 }
+      ]
+    },
+    "AMZ.IP.TRADEMARK": {
+      "code": "AMZ.IP.TRADEMARK",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "refer_out_note": "Referred. A trademark complaint is a dispute with a rights holder that the platform is not deciding. The productive path is usually a retraction from the complainant, which is counsel work, not drafting work.",
+      "structure": {
+        "root_cause": { "must_contain": ["Not drafted — referred to counsel"], "must_avoid": [] },
+        "immediate_corrective": { "must_contain": ["Not drafted — referred to counsel"], "must_avoid": [] },
+        "preventive": { "must_contain": ["Not drafted — referred to counsel"], "must_avoid": [] }
+      },
+      "evidence_required": [{ "evidence_id": "EV.NOTICE.COMPLAINT", "label": "The complaint notice identifying the rights holder and the mark", "mandatory": true }],
+      "anti_patterns": [{ "id": "AP.ARGUE_THE_RIGHT", "detect": "Argues the validity or scope of the trademark to the platform.", "critique": "The platform is not deciding whether the mark is valid. That argument belongs with the rights holder, through counsel.", "weight": 1.0 }]
+    },
+    "AMZ.IP.COPYRIGHT": {
+      "code": "AMZ.IP.COPYRIGHT",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "refer_out_note": "Referred. Copyright complaints carry counter-notice mechanics with legal consequences that a drafted appeal should not walk a seller into unadvised.",
+      "structure": {
+        "root_cause": { "must_contain": ["Not drafted — referred to counsel"], "must_avoid": [] },
+        "immediate_corrective": { "must_contain": ["Not drafted — referred to counsel"], "must_avoid": [] },
+        "preventive": { "must_contain": ["Not drafted — referred to counsel"], "must_avoid": [] }
+      },
+      "evidence_required": [{ "evidence_id": "EV.NOTICE.COMPLAINT", "label": "The complaint notice identifying the work and the complainant", "mandatory": true }],
+      "anti_patterns": [{ "id": "AP.COUNTER_NOTICE_UNADVISED", "detect": "Drafts or recommends a counter-notice.", "critique": "A counter-notice has legal consequences. It is not something to file on a template.", "weight": 1.0 }]
+    },
+    "AMZ.IP.PATENT": {
+      "code": "AMZ.IP.PATENT",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "refer_out_note": "Referred. Patent claims turn on claim construction, which is not a drafting task at any price point we sell.",
+      "structure": {
+        "root_cause": { "must_contain": ["Not drafted — referred to counsel"], "must_avoid": [] },
+        "immediate_corrective": { "must_contain": ["Not drafted — referred to counsel"], "must_avoid": [] },
+        "preventive": { "must_contain": ["Not drafted — referred to counsel"], "must_avoid": [] }
+      },
+      "evidence_required": [{ "evidence_id": "EV.NOTICE.COMPLAINT", "label": "The complaint notice identifying the patent number", "mandatory": true }],
+      "anti_patterns": [{ "id": "AP.NON_INFRINGEMENT_ASSERTED", "detect": "Asserts non-infringement without claim analysis.", "critique": "A non-infringement assertion without claim analysis is an opinion. This is counsel work.", "weight": 1.0 }]
+    },
+    "AMZ.COC.SECTION3": {
+      "code": "AMZ.COC.SECTION3",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["The sub-reason the notice actually cites, quoted from the notice", "A root cause addressed to that sub-reason and no other", "An account history summary where the notice references pattern rather than a single event"],
+          "must_avoid": ["Treating the notice as generic because it cites the agreement rather than a policy", "Answering every policy the seller can think of"]
+        },
+        "immediate_corrective": { "must_contain": ["Actions tied to the cited sub-reason, with dates"], "must_avoid": [] },
+        "preventive": { "must_contain": ["A control preventing recurrence of the cited sub-reason, with owner and frequency"], "must_avoid": [] }
+      },
+      "evidence_required": [{ "evidence_id": "EV.NOTICE.ORIGINAL", "label": "The deactivation notice itself, complete and unedited", "mandatory": true }],
+      "anti_patterns": [
+        { "id": "AP.GENERIC_SECTION3", "detect": "No sub-reason from the notice is identified anywhere in the plan.", "critique": "This answers a Section 3 notice in general. Amazon cited something specific — find it in the notice and answer that.", "weight": 0.35 }
+      ],
+      "notes": "The governing text is BSA Section 3, which is login-gated and absent from this corpus (see _stubs). Nothing drafted for this code may characterise Section 3's contents; the citable clauses state the enforcement power, not the section."
+    },
+    "AMZ.COC.LINKED": {
+      "code": "AMZ.COC.LINKED",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["A direct statement of the relationship to the other account, if any exists", "The specific shared signal that plausibly caused the link (address, device, bank account, IP, phone, corporate officer)", "Where there is genuinely no relationship, what innocent fact produced the shared signal"],
+          "must_avoid": ["A bare denial with no documents", "Silence about a relationship that documents will reveal"]
+        },
+        "immediate_corrective": { "must_contain": ["What was separated, closed or transferred, with dates"], "must_avoid": [] },
+        "preventive": { "must_contain": ["How the shared signal is prevented from recurring, with an owner"], "must_avoid": [] }
+      },
+      "evidence_required": [
+        { "evidence_id": "EV.CORP.RECORDS", "label": "Corporate registration and ownership records for both entities", "mandatory": true },
+        { "evidence_id": "EV.PREMISES.RECORDS", "label": "Utility or lease records for the premises", "mandatory": false }
+      ],
+      "anti_patterns": [
+        { "id": "AP.BARE_DENIAL", "detect": "Denies the link without producing any document.", "critique": "A denial without documents cannot be verified, and it is the most common way a linked-account appeal fails.", "weight": 0.3 },
+        { "id": "AP.PARTIAL_DISCLOSURE", "detect": "Discloses one connection while a second is discoverable from the same records.", "critique": "Partial disclosure is worse than full disclosure. If a document you attach reveals a second connection, name it first.", "weight": 0.25 }
+      ]
+    },
+    "AMZ.COC.MULTIACCOUNT": {
+      "code": "AMZ.COC.MULTIACCOUNT",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["Every account operated, listed, with its status", "The business justification, matched against the three Amazon names: multiple brands with separate businesses, manufacturing for two distinct companies, or recruitment into a program requiring separate accounts", "Where no justification exists, saying so"],
+          "must_avoid": ["Listing only the accounts Amazon has already found"]
+        },
+        "immediate_corrective": { "must_contain": ["Which accounts were closed and when", "Confirmation that every remaining account is in good standing"], "must_avoid": [] },
+        "preventive": { "must_contain": ["Who approves opening any future account, and against what test"], "must_avoid": [] }
+      },
+      "evidence_required": [{ "evidence_id": "EV.CORP.RECORDS", "label": "Corporate records establishing the separate businesses", "mandatory": true }],
+      "anti_patterns": [
+        { "id": "AP.UNDISCLOSED_ACCOUNT", "detect": "The account inventory is incomplete on its face.", "critique": "List every account, including ones Amazon has not mentioned. An account found later is worse than an account disclosed now.", "weight": 0.35 }
+      ]
+    },
+    "AMZ.COC.REVIEW_MANIP": {
+      "code": "AMZ.COC.REVIEW_MANIP",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["Every review- and feedback-solicitation channel ever used, including inserts, email, SMS, social and third-party tools", "Any agency, freelancer or software acting on the account, named", "Whether solicitation was ever selective — sent only to buyers believed to be happy"],
+          "must_avoid": ["Not disclosing an agency", "Describing selective solicitation as customer service"]
+        },
+        "immediate_corrective": { "must_contain": ["Which channels were stopped and on what date", "Whether the agency engagement was terminated"], "must_avoid": [] },
+        "preventive": { "must_contain": ["The single approved solicitation mechanism going forward, with an owner", "How third-party tools are vetted before use"], "must_avoid": [] }
+      },
+      "evidence_required": [
+        { "evidence_id": "EV.CHANNEL.INVENTORY", "label": "Inventory of every solicitation channel with sample copy", "mandatory": true },
+        { "evidence_id": "EV.VENDOR.CONTRACT", "label": "Contracts with any agency or tool vendor used", "mandatory": false }
+      ],
+      "anti_patterns": [
+        { "id": "AP.AGENCY_UNDISCLOSED", "detect": "No third party is named although one is implied by the described activity.", "critique": "If an agency or tool touched reviews, name it. Amazon's clause makes their conduct yours, and concealment is the harder violation to recover from.", "weight": 0.3 },
+        { "id": "AP.SELECTIVE_SOLICITATION", "detect": "Describes asking satisfied customers for reviews as an ongoing practice.", "critique": "Soliciting only customers who had a good experience is itself the violation, not the fix.", "weight": 0.25 }
+      ]
+    },
+    "AMZ.COC.RANK_ABUSE": {
+      "code": "AMZ.COC.RANK_ABUSE",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["Whether any order was placed, paid for, discounted externally or refunded externally by or for the seller", "Any rank claim appearing in a title, bullet or description", "Any promotional service or 'launch' vendor engaged"],
+          "must_avoid": ["Addressing only orders and ignoring listing copy"]
+        },
+        "immediate_corrective": { "must_contain": ["Listing copy corrected, with dates", "Vendor engagements ended"], "must_avoid": [] },
+        "preventive": { "must_contain": ["Listing-copy review step before publication, with an owner", "A rule on external refunds and discounts"], "must_avoid": [] }
+      },
+      "evidence_required": [{ "evidence_id": "EV.LISTING.BEFORE_AFTER", "label": "Before-and-after listing copy for affected ASINs", "mandatory": true }],
+      "anti_patterns": [
+        { "id": "AP.COPY_IGNORED", "detect": "No listing copy is reviewed in the plan.", "critique": "A best-seller claim in a title violates this policy on its own. Show the copy you checked and what you changed.", "weight": 0.25 }
+      ]
+    },
+    "AMZ.COC.SEARCH_ABUSE": {
+      "code": "AMZ.COC.SEARCH_ABUSE",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["Which specific field carried the problem: title, bullets, description, variations, or hidden keyword attributes", "Whether brand names, product names or ASINs — including the seller's own — were placed in hidden keyword fields", "Whether duplicate detail pages or separate listings for identical items exist on the account"],
+          "must_avoid": ["Treating keyword optimisation and keyword manipulation as the same thing without distinguishing them"]
+        },
+        "immediate_corrective": { "must_contain": ["Fields corrected per ASIN, with dates", "Duplicate pages merged or removed"], "must_avoid": [] },
+        "preventive": { "must_contain": ["A pre-publication listing review with a named owner and a checklist", "A rule barring identifiers in hidden keyword fields"], "must_avoid": [] }
+      },
+      "evidence_required": [{ "evidence_id": "EV.LISTING.AUDIT", "label": "Account-wide listing audit showing fields reviewed", "mandatory": true }],
+      "anti_patterns": [
+        { "id": "AP.SINGLE_ASIN_FIX", "detect": "Only the ASINs named in the notice are audited.", "critique": "Amazon named examples. Audit the catalogue and report what the audit found, including that it found nothing else.", "weight": 0.25 }
+      ]
+    },
+    "AMZ.COC.DIVERSION": {
+      "code": "AMZ.COC.DIVERSION",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["A complete inventory of every artefact that can carry a URL or contact detail: package inserts, warranty cards, manuals, product imagery, listing fields, order-confirmation messages, email footers and QR codes", "Which specific artefact carried the diversion", "Whether any direct email address was provided to, or solicited from, a buyer"],
+          "must_avoid": ["Fixing one channel and describing it as a fix", "Treating a warranty-registration card as unrelated to the policy"]
+        },
+        "immediate_corrective": { "must_contain": ["Artwork and copy corrected per artefact, with dates", "Remaining stock of printed inserts destroyed or quarantined, with quantities"], "must_avoid": [] },
+        "preventive": { "must_contain": ["An approval step for any printed or packaged material with an owner", "A periodic re-audit with a stated frequency"], "must_avoid": [] }
+      },
+      "evidence_required": [
+        { "evidence_id": "EV.ARTEFACT.INVENTORY", "label": "Inventory of every insert, card, footer and listing field, with corrected artwork", "mandatory": true },
+        { "evidence_id": "EV.PHOTO.INSERT", "label": "Photographs of corrected packaging and inserts", "mandatory": false }
+      ],
+      "anti_patterns": [
+        { "id": "AP.PARTIAL_CHANNEL_FIX", "detect": "One channel is corrected; others in the inventory are unaddressed.", "critique": "Fixing the insert and leaving the email footer is the most common way this appeal fails. Show every channel and its status.", "weight": 0.3 }
+      ]
+    },
+    "AMZ.COC.SELLER_ABUSE": {
+      "code": "AMZ.COC.SELLER_ABUSE",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["Exactly what action Amazon is attributing to the account, quoted from the notice", "Who performed it — including any employee, VA, agency or tool acting on the account", "Where the seller believes they were the recipient rather than the actor, the sequence with dates"],
+          "must_avoid": ["Counter-accusation as the opening move"]
+        },
+        "immediate_corrective": { "must_contain": ["Access removed or conduct stopped, with dates and named individuals by role"], "must_avoid": [] },
+        "preventive": { "must_contain": ["Access control over who can edit listings, file notices or contact support, with an owner", "A written rule on competitor interaction"], "must_avoid": [] }
+      },
+      "evidence_required": [{ "evidence_id": "EV.ACCESS.LOG", "label": "Account access list by role, before and after", "mandatory": true }],
+      "anti_patterns": [
+        { "id": "AP.COUNTER_ACCUSATION", "detect": "Opens by accusing another seller.", "critique": "Lead with what you control. A counter-accusation before a correction reads as deflection, even when it is true.", "weight": 0.25 }
+      ]
+    },
+    "AMZ.COC.BIZ_NAME": {
+      "code": "AMZ.COC.BIZ_NAME",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["Which of the three tests the name failed: accurate identification, not misleading, or right to use", "Whether the name contained an email suffix such as .com or .net", "The relationship between the display name and the registered entity"],
+          "must_avoid": ["Arguing the name is well known"]
+        },
+        "immediate_corrective": { "must_contain": ["The new name, and the date it was changed"], "must_avoid": [] },
+        "preventive": { "must_contain": ["Who approves a display-name change, and against which three tests"], "must_avoid": [] }
+      },
+      "evidence_required": [
+        { "evidence_id": "EV.CORP.RECORDS", "label": "Business registration showing the entity name", "mandatory": true },
+        { "evidence_id": "EV.TM.RIGHT", "label": "Evidence of the right to use the name, where a mark is involved", "mandatory": false }
+      ],
+      "anti_patterns": [
+        { "id": "AP.NAME_UNCHANGED", "detect": "No new name is stated.", "critique": "This code is usually resolved by a change, not an argument. State the new name and the date.", "weight": 0.3 }
+      ]
+    },
+    "AMZ.COC.FRAUD": {
+      "code": "AMZ.COC.FRAUD",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "refer_out_note": "Referred. A deceptive-or-fraudulent-activity finding carries exposure beyond the account, and anything drafted becomes a written statement about conduct that may be examined elsewhere.",
+      "structure": {
+        "root_cause": { "must_contain": ["Not drafted — referred to counsel"], "must_avoid": [] },
+        "immediate_corrective": { "must_contain": ["Not drafted — referred to counsel"], "must_avoid": [] },
+        "preventive": { "must_contain": ["Not drafted — referred to counsel"], "must_avoid": [] }
+      },
+      "evidence_required": [{ "evidence_id": "EV.NOTICE.ORIGINAL", "label": "The notice, complete and unedited", "mandatory": true }],
+      "anti_patterns": [{ "id": "AP.WRITTEN_STATEMENT_UNADVISED", "detect": "Any drafted narrative of the flagged conduct.", "critique": "A written account of conduct a platform has called fraudulent should be prepared with counsel, not from a template.", "weight": 1.0 }]
+    },
+    "AMZ.PERF.ODR": {
+      "code": "AMZ.PERF.ODR",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["The rate broken into its three components: negative feedback, non-declined A-to-z claims, and chargebacks", "Which component drove the breach, over which weeks of the 60-day window", "The underlying operational cause per component, by SKU, carrier or lane where the data supports it"],
+          "must_avoid": ["An aggregate promise with no component breakdown", "Attributing the rate to unfair buyers"]
+        },
+        "immediate_corrective": { "must_contain": ["What changed in the dominant component, with dates", "Current rate against the 1% threshold"], "must_avoid": [] },
+        "preventive": { "must_contain": ["A monitoring cadence stated as a frequency, with an owner", "A trigger level below 1% at which action is taken"], "must_avoid": [] }
+      },
+      "evidence_required": [{ "evidence_id": "EV.METRIC.BREAKDOWN", "label": "Order Defect Rate broken out by component and week", "mandatory": true }],
+      "anti_patterns": [
+        { "id": "AP.NO_COMPONENT_SPLIT", "detect": "ODR is discussed as a single number.", "critique": "ODR is three metrics in a coat. Say which one moved, and in which weeks.", "weight": 0.3 }
+      ]
+    },
+    "AMZ.PERF.LSR": {
+      "code": "AMZ.PERF.LSR",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["Whether the failure was late dispatch or late shipment confirmation — the metric measures confirmation", "The handling-time setting against actual handling performance", "Cut-off times, carrier collection schedules and the days of week that failed"],
+          "must_avoid": ["Conflating shipping late with confirming late"]
+        },
+        "immediate_corrective": { "must_contain": ["Handling times adjusted, or the confirmation process changed, with dates"], "must_avoid": [] },
+        "preventive": { "must_contain": ["A daily confirmation check with an owner and a time of day"], "must_avoid": [] }
+      },
+      "evidence_required": [{ "evidence_id": "EV.METRIC.BREAKDOWN", "label": "Late shipment rate by week, with order-level detail for the failures", "mandatory": true }],
+      "anti_patterns": [
+        { "id": "AP.CONFIRMATION_IGNORED", "detect": "The plan addresses dispatch speed only.", "critique": "This metric measures when you confirmed, not when you shipped. Address the confirmation step explicitly.", "weight": 0.25 }
+      ]
+    },
+    "AMZ.PERF.PCR": {
+      "code": "AMZ.PERF.PCR",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["Why the seller cancelled, by cause, across the seven-day window", "Whether stock-outs, pricing errors or fulfilment errors dominated", "How inventory quantities are synchronised, and how often"],
+          "must_avoid": ["Counting buyer-initiated cancellations as part of the seller metric"]
+        },
+        "immediate_corrective": { "must_contain": ["Listings suppressed or quantities corrected, with dates"], "must_avoid": [] },
+        "preventive": { "must_contain": ["Inventory sync frequency stated as a number, with an owner", "A safety-stock or buffer rule"], "must_avoid": [] }
+      },
+      "evidence_required": [{ "evidence_id": "EV.METRIC.BREAKDOWN", "label": "Seller cancellations by cause for the affected window", "mandatory": true }],
+      "anti_patterns": [
+        { "id": "AP.NO_SYNC_FREQUENCY", "detect": "Inventory synchronisation is described without a frequency.", "critique": "The window is seven days. An inventory process with no stated frequency cannot be assessed against it.", "weight": 0.25 }
+      ]
+    },
+    "AMZ.PERF.VTR": {
+      "code": "AMZ.PERF.VTR",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["Which shipments lacked valid tracking, and why: carrier not integrated, manual upload missed, or an invalid number format", "Whether any carrier used does not provide qualifying tracking", "The proportion affected in the 30-day window"],
+          "must_avoid": ["Cost as a root cause — the policy notes major carriers offer tracking free"]
+        },
+        "immediate_corrective": { "must_contain": ["Carrier or process change, with dates"], "must_avoid": [] },
+        "preventive": { "must_contain": ["An automated tracking-upload path, or a daily reconciliation with an owner"], "must_avoid": [] }
+      },
+      "evidence_required": [{ "evidence_id": "EV.METRIC.BREAKDOWN", "label": "Shipments without valid tracking, by carrier and week", "mandatory": true }],
+      "anti_patterns": [
+        { "id": "AP.MANUAL_AT_VOLUME", "detect": "The preventive control is a manual upload step at meaningful order volume.", "critique": "A manual step will not hold a 99%-class standard at volume. Name the automation or the reconciliation that catches misses.", "weight": 0.25 }
+      ]
+    },
+    "AMZ.PERF.AHR": {
+      "code": "AMZ.PERF.AHR",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["The specific unresolved violations listed on the Account Health page, itemised", "The severity and age of each", "Which of them remain unresolved and why"],
+          "must_avoid": ["Addressing the score rather than the violations that produce it", "Asserting a numeric AHR threshold"]
+        },
+        "immediate_corrective": { "must_contain": ["Per-violation remediation status, with dates"], "must_avoid": [] },
+        "preventive": { "must_contain": ["A review cadence for the Account Health page with an owner and a frequency", "Confirmation that the emergency notification number on file is current"], "must_avoid": [] }
+      },
+      "evidence_required": [{ "evidence_id": "EV.VIOLATION.LIST", "label": "Itemised list of violations from the Account Health page with status", "mandatory": true }],
+      "anti_patterns": [
+        { "id": "AP.SCORE_NOT_CAUSES", "detect": "The plan discusses the rating rather than the underlying violations.", "critique": "The rating is an output. Address each violation that produces it, one by one.", "weight": 0.3 },
+        { "id": "AP.AHR_THRESHOLD_CLAIM", "detect": "Asserts a numeric AHR threshold not present in this corpus.", "critique": "No public Amazon source in this corpus states an AHR pass mark. Do not assert one.", "weight": 0.4 }
+      ]
+    },
+    "AMZ.SAFETY.PRODUCT": {
+      "code": "AMZ.SAFETY.PRODUCT",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["The specific complaint or incident, and the product and lot involved", "Which compliance documentation existed at the time of listing, and which did not", "Whether the product is subject to a recall or regulatory action"],
+          "must_avoid": ["Relying on a supplier's assurance as the answer rather than as the root cause"]
+        },
+        "immediate_corrective": { "must_contain": ["Inventory quarantined, returned or destroyed, with quantities and dates", "Listings removed", "Whether buyers were notified, where applicable"], "must_avoid": [] },
+        "preventive": { "must_contain": ["A documentation gate before listing, with an owner", "A named third-party testing or certification route"], "must_avoid": [] }
+      },
+      "evidence_required": [
+        { "evidence_id": "EV.DOC.TESTREPORT", "label": "Test reports or certificates of compliance for the affected product", "mandatory": true },
+        { "evidence_id": "EV.PROOF.QUARANTINE", "label": "Recall, quarantine or disposal record", "mandatory": false }
+      ],
+      "anti_patterns": [
+        { "id": "AP.NO_THIRD_PARTY_DOC", "detect": "No third-party documentation is referenced.", "critique": "A safety complaint is answered with documentation, not with assurance. Attach the test report or say when it will exist.", "weight": 0.3 }
+      ]
+    },
+    "AMZ.SAFETY.RESTRICTED": {
+      "code": "AMZ.SAFETY.RESTRICTED",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["Which restriction the listing breached and how the product reached the catalogue", "Whether the seller checked the restricted-products pages before listing, and against what process", "Whether other listings on the account fall in the same or adjacent categories"],
+          "must_avoid": ["Relying on the product's absence from the published examples — the policy states the examples are not exhaustive"]
+        },
+        "immediate_corrective": { "must_contain": ["Listings removed and inventory dispositioned, with dates", "Per-item next steps followed where the Product Policy Compliance page lists them"], "must_avoid": [] },
+        "preventive": { "must_contain": ["A pre-listing restricted-products check with an owner and a record", "A category-level review cadence"], "must_avoid": [] }
+      },
+      "evidence_required": [{ "evidence_id": "EV.PROCESS.PRELIST", "label": "Written pre-listing compliance check with evidence it was run", "mandatory": true }],
+      "anti_patterns": [
+        { "id": "AP.NOT_ON_THE_LIST", "detect": "Argues the product was not on the published restricted list.", "critique": "The policy says its examples are not exhaustive. Absence from the list is not permission.", "weight": 0.3 }
+      ]
+    },
+    "AMZ.SAFETY.GPSR": {
+      "code": "AMZ.SAFETY.GPSR",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["Which compliance element is missing, as stated in the notice", "Whether an EU-based responsible person is designated and identified on the listing", "Which documentation exists and which does not"],
+          "must_avoid": ["Asserting a specific GPSR requirement that the notice does not state — this corpus holds no GPSR-specific source"]
+        },
+        "immediate_corrective": { "must_contain": ["Documentation supplied or listings suppressed, with dates"], "must_avoid": [] },
+        "preventive": { "must_contain": ["A pre-listing documentation gate for regulated categories, with an owner"], "must_avoid": [] }
+      },
+      "evidence_required": [
+        { "evidence_id": "EV.DOC.TESTREPORT", "label": "Compliance documentation for the affected products", "mandatory": true },
+        { "evidence_id": "EV.DOC.RESPONSIBLE_PERSON", "label": "Details of the designated responsible person, where required", "mandatory": false }
+      ],
+      "anti_patterns": [
+        { "id": "AP.GPSR_SPECIFIC_CLAIM", "detect": "States a GPSR requirement not present in the notice or this corpus.", "critique": "This corpus has no GPSR-specific source. Work from what the notice states, and escalate rather than infer the regulation.", "weight": 0.4 }
+      ],
+      "notes": "Triage is human_tier and the corpus gap is recorded in taxonomy.json. This is a code where the honest answer is often that we cannot cite the governing text."
+    },
+    "AMZ.OPS.DROPSHIP": {
+      "code": "AMZ.OPS.DROPSHIP",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["Whether the seller is the seller of record on every order", "What the customer actually received in the box: packing slip, invoice, external packaging and any other insert, each named with whose identity it carried", "Which supplier or retailer shipped directly, and under what arrangement"],
+          "must_avoid": ["Describing the commercial arrangement without describing the packaging"]
+        },
+        "immediate_corrective": { "must_contain": ["Supplier agreement amended or terminated, with dates", "Packaging and paperwork corrected, with evidence"], "must_avoid": [] },
+        "preventive": { "must_contain": ["A supplier agreement clause requiring seller-of-record identification, with an owner", "A periodic test-buy or packing-slip sampling routine with a frequency"], "must_avoid": [] }
+      },
+      "evidence_required": [
+        { "evidence_id": "EV.SUPPLIER.AGREEMENT", "label": "Supplier agreement showing you are identified as the seller of record", "mandatory": true },
+        { "evidence_id": "EV.PACKSLIP.SAMPLE", "label": "Sample packing slips and external packaging as the customer receives them", "mandatory": true }
+      ],
+      "anti_patterns": [
+        { "id": "AP.SELLER_OF_RECORD_UNADDRESSED", "detect": "The plan never states who appears on the packing slip.", "critique": "This policy is about what the customer sees. Say whose name is on the packing slip, and show it.", "weight": 0.35 }
+      ],
+      "notes": "Gate G7 currently blocks this code's only governing source from US drafting (see taxonomy.json gap). The pattern is retained so the free critique still works and so the escalation can explain itself."
+    },
+    "AMZ.OPS.VERIFICATION": {
+      "code": "AMZ.OPS.VERIFICATION",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["Exactly which document was requested and which was supplied", "Any mismatch between the account's registered details and the document: entity type, legal name, address, or account holder", "Whether any submitted document was expired, edited, or a substitute for the one asked for"],
+          "must_avoid": ["Substituting a different document because the requested one is inconvenient", "Arguing from the seller's history rather than supplying the document"]
+        },
+        "immediate_corrective": { "must_contain": ["The exact requested documents, unaltered, and the date supplied", "Registered account details corrected to match, with dates"], "must_avoid": [] },
+        "preventive": { "must_contain": ["A calendar owner for document expiry dates, checked at a stated frequency", "A single source of truth for registered entity details"], "must_avoid": [] }
+      },
+      "evidence_required": [
+        { "evidence_id": "EV.DOC.IDENTITY", "label": "The identity or business document exactly as requested, unaltered and in date", "mandatory": true, "redaction_note": "Do not redact the fields being verified. Redaction is the most common cause of a second rejection." },
+        { "evidence_id": "EV.DOC.BANK", "label": "Bank or financial statement in the registered entity's name", "mandatory": false }
+      ],
+      "anti_patterns": [
+        { "id": "AP.SUBSTITUTE_DOCUMENT", "detect": "A document other than the one requested is supplied.", "critique": "Verification is a matching exercise. Supplying a different document restarts the clock rather than answering it.", "weight": 0.35 },
+        { "id": "AP.ENTITY_MISMATCH", "detect": "Entity type or legal name on the document differs from the account registration, unaddressed.", "critique": "Name the mismatch before the reviewer finds it, and say which side is being corrected.", "weight": 0.3 }
+      ],
+      "notes": "The two forum seed observations in L4-outcomes/seeds both sit on this code, and both describe an entity/document mismatch loop rather than a document absence. That shaped AP.ENTITY_MISMATCH — as a hypothesis worth testing, not as evidence. Seeds contribute 0 to supporting_n."
+    },
+    "WMT.PERF.STANDARDS": {
+      "code": "WMT.PERF.STANDARDS",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["Which named standard was missed and by how much, taken from the Performance page", "Whether the account is suppressed, paused, suspended or terminated — the states differ and so does the route back", "The operational cause behind the failing metric"],
+          "must_avoid": ["Writing before reviewing the Performance page — Walmart's step 1"]
+        },
+        "immediate_corrective": { "must_contain": ["What changed, with dates, and the current value of the failing metric"], "must_avoid": [] },
+        "preventive": { "must_contain": ["Steps that prevent future breaches, stated with owner and frequency", "A monitoring trigger set inside the published threshold"], "must_avoid": [] }
+      },
+      "evidence_required": [
+        { "evidence_id": "EV.PLAN.WRITTEN", "label": "The written business plan of action itself", "mandatory": true },
+        { "evidence_id": "EV.METRIC.BREAKDOWN", "label": "Metric evidence from the Performance page", "mandatory": true },
+        { "evidence_id": "EV.PHOTO.WAREHOUSE", "label": "Current images of the warehouse", "mandatory": false }
+      ],
+      "anti_patterns": [
+        { "id": "AP.NO_WRITTEN_PLAN", "detect": "No discrete written plan of action is produced.", "critique": "Walmart's guidance asks for a written business plan of action. A support message is not one.", "weight": 0.3 },
+        { "id": "AP.WRONG_SUBMISSION_ROUTE", "detect": "The plan assumes the Start appeal banner while the account is suspended rather than suppressed.", "critique": "Suppression appeals use the Performance page banner; suspensions go through the Help button in Seller Center. Using the wrong one costs days.", "weight": 0.2 }
+      ]
+    },
+    "WMT.PERF.ODR": {
+      "code": "WMT.PERF.ODR",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["Which of the eight published metrics failed, with its value against the published standard", "Whether the Return Rate comparison uses the 6% line or the 9% Resold line", "The operational cause per failing metric"],
+          "must_avoid": ["Discussing 'order defects' as a single Walmart metric — Walmart publishes eight separate standards"]
+        },
+        "immediate_corrective": { "must_contain": ["Per-metric change with dates and current values"], "must_avoid": [] },
+        "preventive": { "must_contain": ["Per-metric monitoring with owner and frequency"], "must_avoid": [] }
+      },
+      "evidence_required": [{ "evidence_id": "EV.METRIC.BREAKDOWN", "label": "Per-metric evidence from the Performance page", "mandatory": true }],
+      "anti_patterns": [
+        { "id": "AP.WRONG_RETURN_LINE", "detect": "Return Rate is argued against 6% where Resold inventory is involved, or against 9% where it is not.", "critique": "Walmart publishes two return-rate lines. Say which inventory type applies before arguing about the number.", "weight": 0.2 }
+      ]
+    },
+    "WMT.COC.CONDUCT": {
+      "code": "WMT.COC.CONDUCT",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["Which of the six code principles is at issue, and which named instance within it", "Where diversion is alleged, an inventory of every URL, advertisement and social link in seller-controlled surfaces", "Whether display name and company description meet the published character limits"],
+          "must_avoid": ["Answering the principle in the abstract without naming the instance"]
+        },
+        "immediate_corrective": { "must_contain": ["Artefacts and fields corrected, with dates"], "must_avoid": [] },
+        "preventive": { "must_contain": ["An approval step for customer-facing copy and packaging, with an owner"], "must_avoid": [] }
+      },
+      "evidence_required": [{ "evidence_id": "EV.ARTEFACT.INVENTORY", "label": "Inventory of seller-controlled customer-facing surfaces, with corrections", "mandatory": true }],
+      "anti_patterns": [
+        { "id": "AP.PLATFORM_SPLIT_FIX", "detect": "Corrects Amazon-facing artefacts only, where the seller operates on both marketplaces.", "critique": "Both platforms prohibit diversion. Show the inventory across every channel, not one marketplace's.", "weight": 0.25 }
+      ]
+    },
+    "WMT.TRUST.SAFETY": {
+      "code": "WMT.TRUST.SAFETY",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["Which of the three categories applies: regulatory compliance, offensive product, or intellectual property", "The specific item unpublished, by item ID", "The context a reviewer would not have had from the listing alone"],
+          "must_avoid": ["Disputing Walmart's discretion rather than addressing the concern"]
+        },
+        "immediate_corrective": { "must_contain": ["Item corrected or withdrawn, with dates", "Whether adjacent items in the catalogue were reviewed"], "must_avoid": [] },
+        "preventive": { "must_contain": ["A content and imagery review step before publication, with an owner"], "must_avoid": [] }
+      },
+      "evidence_required": [{ "evidence_id": "EV.ITEM.DETAIL", "label": "The unpublished item's ID and current listing content", "mandatory": true }],
+      "anti_patterns": [
+        { "id": "AP.DISPUTE_DISCRETION", "detect": "Argues Walmart has no right to restrict the product.", "critique": "The policy states this is discretionary and measured against Walmart's own commitments. Address the concern, not the authority.", "weight": 0.3 },
+        { "id": "AP.ACCOUNT_LEVEL_FOR_ITEM", "detect": "Submits an account-level plan for an item-level removal.", "critique": "This route reinstates items. Name the item and give the reason it should be reinstated.", "weight": 0.2 }
+      ]
+    },
+    "WMT.OPS.PROHIBITED": {
+      "code": "WMT.OPS.PROHIBITED",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["Which product, and which law, regulation or Walmart standard it breached", "Whether required product safety documentation existed for regulated or children's products", "How the item passed whatever pre-listing check existed"],
+          "must_avoid": ["Not knowing the policy as the root cause — the policy makes awareness the seller's responsibility"]
+        },
+        "immediate_corrective": { "must_contain": ["Listings removed, with dates", "Response to Walmart about inventory in its custody within the five-day window, if applicable"], "must_avoid": [] },
+        "preventive": { "must_contain": ["A pre-listing compliance check with an owner and a record", "A documentation requirement for regulated categories"], "must_avoid": [] }
+      },
+      "evidence_required": [
+        { "evidence_id": "EV.DOC.TESTREPORT", "label": "Product safety documentation for the affected items", "mandatory": true },
+        { "evidence_id": "EV.INVOICE.SUPPLIER", "label": "Supplier invoices less than two months old", "mandatory": true, "redaction_note": "Prices may be redacted; the invoice date may not — recency is the requirement being tested." }
+      ],
+      "anti_patterns": [
+        { "id": "AP.STALE_INVOICE", "detect": "Supplier invoices older than two months are offered as evidence.", "critique": "Walmart asks for invoices under two months old. An older invoice fails on its date regardless of what it shows.", "weight": 0.35 },
+        { "id": "AP.CUSTODY_DEADLINE_MISSED", "detect": "Inventory in Walmart's custody is not addressed while the plan is being written.", "critique": "Walmart may dispose of held inventory if you do not respond within five days. Answer that first.", "weight": 0.25 }
+      ]
+    },
+    "WMT.AGREEMENT.RETAILER": {
+      "code": "WMT.AGREEMENT.RETAILER",
+      "provenance": "authored",
+      "supporting_n": 0,
+      "last_reviewed_at": "2026-08-12",
+      "structure": {
+        "root_cause": {
+          "must_contain": ["Which specific Retailer Policy is at issue — the set spans performance, returns, shipping, prohibited products, tax, multiple accounts, information security, pricing, listing standards and warranties", "The account's current state: suppressed, paused, suspended or terminated", "The conduct or omission, in Walmart's terms"],
+          "must_avoid": ["Answering 'the Retailer Agreement' as though it were one rule"]
+        },
+        "immediate_corrective": { "must_contain": ["Corrective steps per policy identified, with dates"], "must_avoid": [] },
+        "preventive": { "must_contain": ["Steps to prevent future breaches — expressly required by Walmart's appeal guidance for agreement violations", "An owner for policy monitoring and a review frequency"], "must_avoid": [] }
+      },
+      "evidence_required": [{ "evidence_id": "EV.PLAN.WRITTEN", "label": "The written business plan of action, including preventive steps", "mandatory": true }],
+      "anti_patterns": [
+        { "id": "AP.NO_PREVENTIVE_SECTION", "detect": "No preventive section is present.", "critique": "Walmart's guidance requires preventive steps expressly where the Retailer Agreement was violated. A two-part plan is incomplete here.", "weight": 0.35 },
+        { "id": "AP.POLICY_UNIDENTIFIED", "detect": "No specific Retailer Policy is named.", "critique": "The Retailer Policies are a set, not a rule. Name the one at issue or the plan cannot be evaluated.", "weight": 0.3 }
+      ]
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "clausewright/corpus/schema.seed_observation.json",
+  "title": "Seed observation — public forum post-mortem",
+  "description": "Spec: CORPUS_DESIGN.md §4.5. A seed observation is NOT an outcome record. It lives in its own table so it can never contaminate a denominator, it is never quoted, it is never a policy fact, and it contributes zero to any L3 pattern's supporting_n (gate G16). Its only job is to give L3's must_contain / anti_patterns blocks a plausible starting shape so the free critique is useful on day one. It is scaffolding, and it gets replaced code by code as real consented outcomes arrive.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["seed_id", "seed", "citable", "platform", "reason_code_guess", "source_url", "source_surface", "retrieved_at", "observation", "reported_outcome", "outcome_verified", "contributes_to_supporting_n"],
+  "properties": {
+    "seed_id": { "type": "string", "pattern": "^SEED\\.[A-Z0-9_.]+$" },
+    "seed": { "const": true },
+    "citable": {
+      "const": false,
+      "description": "Structurally barred from being cited to a customer. Forum text is authored by sellers, not by Amazon and not by us."
+    },
+    "platform": { "enum": ["AMZ", "WMT"] },
+    "reason_code_guess": {
+      "type": "string",
+      "description": "OUR reading of which code the thread is about. A guess, labelled as one — a forum post carries no official code."
+    },
+    "source_url": { "type": "string", "format": "uri" },
+    "source_surface": { "type": "string" },
+    "retrieved_at": { "type": "string", "format": "date" },
+    "thread_date_note": {
+      "type": "string",
+      "description": "What the thread itself says about when it happened, in our words. Forum pages render relative dates ('2 days ago'), so an absolute date is an inference and is recorded as one."
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enforcement_action", "what_the_seller_submitted", "structural_notes"],
+      "properties": {
+        "enforcement_action": { "type": "string" },
+        "what_the_seller_submitted": { "type": "array", "items": { "type": "string" } },
+        "structural_notes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "OUR structural description. Never a quotation of the post."
+        }
+      }
+    },
+    "reported_outcome": { "enum": ["reinstated", "rejected", "no_response", "unresolved", "unknown"] },
+    "outcome_verified": {
+      "const": false,
+      "description": "A forum post is evidence of what a seller SAYS happened, never of what a policy requires and never of a verified outcome. §4.5 gives seeds no reporting_method for exactly this reason."
+    },
+    "contributes_to_supporting_n": { "const": 0 },
+    "informs_patterns": { "type": "array", "items": { "type": "string" } }
+  }
+}
