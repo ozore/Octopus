@@ -52,3 +52,28 @@ intelligence base with an AI engine on top. The idea must stay simple.
   `claude/company-ideas-template-cdjpj8`.
 - Model routing: Sonnet = wide fan-out research & mechanical coding;
   Opus = judging, synthesis, architecture, brand & critical code; Fable = orchestration.
+
+## Literature grounding (mandatory, all phases)
+Nothing is invented from scratch: every idea evaluation, technical design,
+pricing, GTM and sales decision must be anchored in published, widely
+validated (and where possible peer-reviewed) literature, cited inline in the
+deliverables. Canonical corpus:
+- **Idea selection & PMF**: Paul Graham essays ("How to Get Startup Ideas");
+  YC Startup School; Eric Ries "The Lean Startup"; Steve Blank "The Four Steps
+  to the Epiphany"; Rob Fitzpatrick "The Mom Test"; Sean Ellis PMF survey
+  (40% rule); Rahul Vohra's Superhuman PMF engine; Marc Andreessen "The Only
+  Thing That Matters".
+- **Offers, sales & monetization**: Alex Hormozi "$100M Offers" / "$100M
+  Leads"; Madhavan Ramanujam "Monetizing Innovation"; OpenView (Kyle Poyar)
+  SaaS pricing research.
+- **Positioning & GTM**: April Dunford "Obviously Awesome"; Weinberg & Mares
+  "Traction" (Bullseye); Geoffrey Moore "Crossing the Chasm".
+- **Strategy & moats**: Hamilton Helmer "7 Powers"; Peter Thiel "Zero to One";
+  Clayton Christensen (Jobs-to-be-Done, "The Innovator's Dilemma").
+- **Knowledge bases & AI engineering**: Lewis et al. 2020 "Retrieval-Augmented
+  Generation" (NeurIPS); Andrej Karpathy ("Software 2.0", LLM OS) for
+  knowledge/wiki + LLM system design; Anthropic's published agent-engineering
+  guides; plus standard software references at build time (12-Factor App,
+  Nielsen usability heuristics / Apple HIG for design).
+Recommendations not traceable to a published source are flagged as hypotheses.
+Each major deliverable ends with a References section.
