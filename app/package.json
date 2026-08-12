@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.0",
+    "ajv": "^8.20.0",
     "drizzle-orm": "^0.44.6",
     "next": "^15.5.4",
     "postgres": "^3.4.7",

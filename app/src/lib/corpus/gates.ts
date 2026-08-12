@@ -13,6 +13,7 @@
  */
 
 import { REASON_CODES, type ReasonCode } from '../domain/reason-codes';
+import { gateG1, type CanonicalRecord, type OntologySchemas } from './ontology';
 import { packSlice, findCacheInvalidators, canonicalJson } from './pack';
 import { selectCorpusSlice } from './retrieval';
 import type { CorpusBundle } from './types';
@@ -201,11 +202,20 @@ export function gateCoverage(bundle: CorpusBundle): Violation[] {
   return out;
 }
 
+/**
+ * G1 is applied here through the same entry point as the rest, but its input is
+ * the RAW corpus rather than the built bundle — see `ontology.ts` for why that
+ * distinction is load-bearing. It is optional in the signature only so that a
+ * caller holding a bundle but no raw material (a fixture, a test) can still run
+ * the other gates; the corpus build passes it and CI fails without it.
+ */
 export function runAllGates(
   bundle: CorpusBundle,
   rawFiles: ReadonlyArray<{ name: string; content: string }>,
+  ontology?: { schemas: OntologySchemas; records: readonly CanonicalRecord[] },
 ): Violation[] {
   return [
+    ...(ontology ? gateG1(ontology.schemas, ontology.records) : []),
     ...gateG2(bundle),
     ...gateG3(bundle),
     ...gateG4(bundle),
@@ -222,9 +232,6 @@ export function runAllGates(
 /**
  * Gates NOT implemented here, and why — so the set is auditable:
  *
- *  - **G1** (JSON Schema validation) needs a schema validator dependency. The
- *    schemas exist in `corpus/ontology/`; wiring a validator is a package.json
- *    change and is deliberately left to whoever owns dependencies.
  *  - **G10** (token budget) requires the API's `count_tokens`, which needs the
  *    network and a key. It belongs to the build step, not the offline suite;
  *    `estimateTokens` in `pack.ts` catches order-of-magnitude drift only.
@@ -235,7 +242,7 @@ export function runAllGates(
  *  - **G15** (robots pre-flight) belongs to the ingestion job, which is not part
  *    of the request path and does not run in this suite.
  */
-export const UNIMPLEMENTED_GATES = ['G1', 'G10', 'G12', 'G13', 'G14', 'G15'] as const;
+export const UNIMPLEMENTED_GATES = ['G10', 'G12', 'G13', 'G14', 'G15'] as const;
 
 export type GateReport = {
   violations: Violation[];

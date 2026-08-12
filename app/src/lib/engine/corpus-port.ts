@@ -77,19 +77,31 @@ export function adaptCorpusModule(mod: unknown): CorpusProvider {
 }
 
 /**
- * Late-bound loader for the composition root. The engine's own entry points take
- * a `CorpusProvider` explicitly (dependency injection, so the test suite needs
- * no build artifact); this helper exists for the worker, which wants the real
- * corpus and should fail loudly if the bundle has not been built.
+ * Loader for the composition root. The engine's own entry points take a
+ * `CorpusProvider` explicitly (dependency injection, so the test suite needs no
+ * corpus on disk); this helper exists for the web and worker processes, which
+ * want the real corpus and should fail loudly if it cannot be read.
+ *
+ * THE STATIC IMPORT IS LOAD-BEARING AND MUST NOT BECOME A COMPUTED SPECIFIER.
+ * This was previously `await import(specifier)` with `specifier` a parameter.
+ * Under `next build`, webpack cannot resolve an expression, so it emitted a
+ * context module that throws MODULE_NOT_FOUND for every input — meaning the web
+ * tier could NEVER load the corpus. The failure was invisible in development
+ * because the caller's `catch` falls back to the synthetic fixture corpus, so
+ * dev quietly served fixture policy text and production would have refused to
+ * boot. `src/lib/corpus/` is a first-party module in this same repo; there was
+ * never a reason for it to be late-bound.
+ *
+ * What IS late is the file read: `src/lib/corpus/load.ts` reads `corpus/` at
+ * first call and memoises. `next.config.mjs` traces that directory into the
+ * standalone output and the Dockerfile copies it, so both process types see it.
  */
-export async function loadCorpusProvider(specifier = '../corpus/index.js'): Promise<CorpusProvider> {
+export async function loadCorpusProvider(module?: unknown): Promise<CorpusProvider> {
   try {
-    const mod: unknown = await import(/* @vite-ignore */ specifier);
+    const mod: unknown = module ?? (await import('../corpus/index'));
     return adaptCorpusModule(mod);
   } catch (cause) {
     if (cause instanceof CorpusIntegrityError) throw cause;
-    throw new CorpusIntegrityError(
-      `corpus module "${specifier}" could not be loaded: ${(cause as Error).message}`,
-    );
+    throw new CorpusIntegrityError(`corpus module could not be loaded: ${(cause as Error).message}`);
   }
 }

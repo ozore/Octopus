@@ -25,6 +25,10 @@
       "type": "string",
       "description": "What the thread itself says about when it happened, in our words. Forum pages render relative dates ('2 days ago'), so an absolute date is an inference and is recorded as one."
     },
+    "what_it_shaped": {
+      "type": "string",
+      "description": "Which L3 pattern element this observation motivated — the audit trail from a forum post to a line in an appeal pattern. Recorded so a seed's influence is traceable and removable when a real consented outcome replaces it (CORPUS_DESIGN §4.5: scaffolding, replaced code by code). It is a hypothesis, never evidence, and contributes nothing to supporting_n (gate G16)."
+    },
     "observation": {
       "type": "object",
       "additionalProperties": false,

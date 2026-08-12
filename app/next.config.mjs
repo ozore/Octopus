@@ -16,6 +16,17 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   serverExternalPackages: ['postgres', '@electric-sql/pglite'],
+  /**
+   * `src/lib/corpus/load.ts` reads `corpus/` through a path computed at run time
+   * (`process.cwd()` + CORPUS_DIR), which Next's static file tracing cannot see.
+   * Without this the standalone output ships the corpus CODE and none of the
+   * corpus CONTENT, and the web process boots into "corpus unreadable". The
+   * `drizzle/` SQL is included for the same reason: the migration runner reads
+   * it as data from an identical release image (Twelve-Factor XII).
+   */
+  outputFileTracingIncludes: {
+    '/**/*': ['./corpus/**/*', './drizzle/**/*'],
+  },
   env: {
     NEXT_PUBLIC_CORPUS_RELEASE: process.env.CORPUS_RELEASE ?? '0',
     NEXT_PUBLIC_BUILD_SHA: process.env.BUILD_SHA ?? 'dev',

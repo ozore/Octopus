@@ -52,6 +52,21 @@ export function readRawCorpus(dir: string, corpusRelease: number): RawCorpus & {
   };
 }
 
+/**
+ * The JSON Schemas in `corpus/ontology/`, keyed by file name. Gate G1 validates
+ * every corpus record against these (CORPUS_DESIGN.md §7); they are read rather
+ * than imported so that adding a schema file is a corpus change and not a code
+ * change.
+ */
+export function readOntologySchemas(dir?: string): Record<string, unknown> {
+  const ontologyDir = join(resolveCorpusDir(dir), 'ontology');
+  const out: Record<string, unknown> = {};
+  for (const name of readdirSync(ontologyDir).filter((n) => n.endsWith('.json')).sort()) {
+    out[name] = JSON.parse(readFileSync(join(ontologyDir, name), 'utf8'));
+  }
+  return out;
+}
+
 export function loadCorpus(options: { dir?: string; corpusRelease?: number } = {}): CorpusBundle {
   const dir = resolveCorpusDir(options.dir);
   const release = options.corpusRelease ?? Number(process.env['CORPUS_RELEASE'] ?? 0);

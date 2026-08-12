@@ -19,9 +19,11 @@ import { REASON_CODES } from '../src/lib/domain/reason-codes';
 import {
   buildCorpus,
   canonicalJson,
+  canonicalRecords,
   draftableCodes,
   EXCERPT_WORD_LIMIT,
   findCacheInvalidators,
+  gateG1,
   gateG2,
   gateG3,
   gateG4,
@@ -37,6 +39,7 @@ import {
   packSlice,
   parsePolicyFile,
   parseKeyedBlock,
+  readOntologySchemas,
   readRawCorpus,
   resolveCitation,
   resolveCorpusDir,
@@ -46,6 +49,7 @@ import {
 
 const raw = readRawCorpus(resolveCorpusDir(), 1);
 const bundle = buildCorpus(raw);
+const ontology = { schemas: readOntologySchemas(), records: canonicalRecords(raw) };
 
 // ---------------------------------------------------------------------------
 // 1. The parser
@@ -190,8 +194,26 @@ describe('corpus quality gates', () => {
     expect(gateCoverage(bundle)).toEqual([]);
   });
 
+  it('G1 — every corpus record validates against its ontology schema', () => {
+    expect(gateG1(ontology.schemas, ontology.records)).toEqual([]);
+    // One record per taxonomy code, per appeal pattern, per seed and per L2
+    // file. A projection that silently produced nothing would make G1 vacuous,
+    // which is the failure mode a schema gate is most prone to.
+    expect(ontology.records.length).toBe(
+      bundle.reasonCodes.size + bundle.patterns.size + bundle.seeds.length + raw.policyFiles.length,
+    );
+  });
+
+  it('G1 — a record that violates its schema is actually caught', () => {
+    // The gate must fail on bad input, not merely pass on good input.
+    const broken = ontology.records.map((r, i) =>
+      i === 0 ? { ...r, record: { ...(r.record as object), plain_english: 42 } } : r,
+    );
+    expect(gateG1(ontology.schemas, broken).length).toBeGreaterThan(0);
+  });
+
   it('the whole gate set passes against the committed corpus', () => {
-    expect(runAllGates(bundle, raw.allFiles)).toEqual([]);
+    expect(runAllGates(bundle, raw.allFiles, ontology)).toEqual([]);
   });
 });
 

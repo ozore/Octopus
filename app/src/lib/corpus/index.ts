@@ -11,6 +11,7 @@ export * from './parse';
 export * from './build';
 export * from './retrieval';
 export * from './pack';
+export * from './ontology';
 export * from './gates';
 export * from './manifest';
 export * from './load';

@@ -16,7 +16,11 @@
         "license_posture", "citable", "jurisdiction_caveat", "stub"
       ],
       "properties": {
-        "source_id": { "type": "string", "pattern": "^[a-z]{3}\\.[a-z0-9.]+$" },
+        "source_id": {
+          "type": "string",
+          "pattern": "^(_[a-z][a-z0-9_]*|[a-z]{3}\\.[a-z0-9.]+$)",
+          "description": "`{platform}.{slug}` for a real source. The leading-underscore form is reserved for container records that hold no clauses of their own — `_stubs` is the only one (see `stub_entries`)."
+        },
         "platform": { "enum": ["AMZ", "WMT"] },
         "title": { "type": "string" },
         "tier": {
@@ -49,7 +53,33 @@
           "type": "boolean",
           "description": "true where the document is known and named but its text could not be obtained through the proxy. A stub carries zero clauses. It is a recorded hole, never a fabricated summary."
         },
-        "stub_reason": { "type": "string" }
+        "stub_reason": { "type": "string" },
+        "reason_codes_covered": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Every L1 code this source speaks to. Read by the loader (build.ts `reasonCodesCovered`) to route a source into a code's slice; declared here because gate G1 validates what the files actually carry, not a subset of it."
+        },
+        "retrieval_note": {
+          "type": "string",
+          "description": "How this document was obtained and what is uncertain about the edition. Free text a human wrote and a human reads; carried on the record so provenance travels with the source rather than living in a commit message."
+        },
+        "stub_entries": {
+          "type": ["array", "string"],
+          "description": "Container-record only (`_stubs`): the named-but-unobtained sources. A recorded hole is a task; fabricating text to fill one is the one thing this corpus must never do. TWO FORMS ARE ACCEPTED FOR AN HONEST REASON: the L2 front-matter dialect (parse.ts) is deliberately FLAT — scalars and inline lists only — so a nested block authored in a `.md` file reaches every consumer as one opaque string, and today that is what this field is. The array form below is the shape it must take if any code is ever to read it; until then it is a human-readable record and no loader depends on it. Declaring only the array would make gate G1 fail forever on a file that is not wrong; declaring only the string would enshrine the limitation as the target.",
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "required": ["source_id", "title", "url", "tier"],
+            "properties": {
+              "source_id": { "type": "string" },
+              "title": { "type": "string" },
+              "url": { "type": "string" },
+              "tier": { "enum": ["A", "B", "C", "D", "corroboration"] },
+              "attempted_at": { "type": "string" },
+              "http_status": { "type": ["integer", "string", "null"] }
+            }
+          }
+        }
       }
     },
     "clauses": {

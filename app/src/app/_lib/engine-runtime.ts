@@ -19,10 +19,10 @@
  *
  * TWO BINDINGS, DECIDED INDEPENDENTLY, AND THE INDEPENDENCE IS THE POINT:
  *
- *  - The CORPUS comes from `src/lib/corpus/`, a build artifact
- *    (`npm run corpus:build`, ARCHITECTURE.md §3.3). If it is absent — a fresh
- *    checkout — the engine's own synthetic fixture corpus stands in, outside
- *    production only.
+ *  - The CORPUS comes from `src/lib/corpus/`, which reads the `corpus/` content
+ *    directory once and memoises it (ARCHITECTURE.md §3.3; `npm run
+ *    corpus:check` is the CI gate over it). If it cannot be read, the engine's
+ *    own synthetic fixture corpus stands in, outside production only.
  *  - The MODEL surface follows `ADAPTER_MODE`. In `mock` the run is scripted
  *    from the recorded golden-set responses, because per-commit runs are
  *    deterministic and free by design and no test may need a key or a network
@@ -66,16 +66,29 @@ export type EngineBinding = {
 // ---------------------------------------------------------------------------
 
 /**
- * Late-bound, through the engine's own loader. The specifier is resolved at
- * runtime rather than bundled, which is deliberate: `src/lib/corpus/` is emitted
- * by `npm run corpus:build`, so a checkout that has not run it must still build
- * and boot. `loadCorpusProvider` throws `CorpusIntegrityError` when the module
- * is absent or does not satisfy `CorpusProvider`; both are "no built corpus".
+ * Binds the real corpus through the engine's own loader.
+ *
+ * `loadCorpusProvider` throws `CorpusIntegrityError` when `corpus/` cannot be
+ * read or does not satisfy `CorpusProvider`. Outside production that is not
+ * fatal — a fresh checkout still has to render its own screens — so it degrades
+ * to the fixture corpus. But the reason is LOGGED rather than swallowed: the
+ * silent `catch` that used to be here is precisely what hid a bundler defect in
+ * which the corpus could never load at all, and a fallback nobody can see is a
+ * fallback that becomes permanent (`npm run corpus:check` fails the build on the
+ * same condition).
  */
 async function loadBuiltCorpus(): Promise<CorpusProvider | null> {
   try {
     return await loadCorpusProvider();
-  } catch {
+  } catch (error) {
+    process.stderr.write(
+      `${JSON.stringify({
+        level: 'warn',
+        proc: 'web',
+        event: 'corpus.unavailable',
+        error: error instanceof Error ? error.message : String(error),
+      })}\n`,
+    );
     return null;
   }
 }
@@ -152,7 +165,7 @@ export async function bindEngine(noticeText: string): Promise<EngineBinding> {
     // without one is a broken build, and serving synthetic policy text to a
     // paying seller would be worse than failing loudly.
     throw new Error(
-      'corpus bundle missing: run `npm run corpus:build` — the synthetic fixture corpus is never served in production',
+      'corpus unreadable: check that `corpus/` shipped in the image (`npm run corpus:check`) — the synthetic fixture corpus is never served in production',
     );
   }
 
