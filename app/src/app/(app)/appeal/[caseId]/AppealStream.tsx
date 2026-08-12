@@ -177,7 +177,7 @@ export function AppealStream({
           )}
         </div>
         <StatusTimeline nodes={nodes} label="Progress on your appeal draft" />
-        {preview?.synthetic ? (
+        {preview?.syntheticCorpus ? (
           <p className="cw-run__foot cw-note">
             Development build: this run used the engine&rsquo;s synthetic fixture corpus, not a
             built policy corpus. The clause below is fixture text and is labelled as such wherever

@@ -223,7 +223,7 @@ export async function confirmForwarding(formData: FormData): Promise<void> {
   updateCase(caseId, {
     shield: { ...record.shield, forwardingConfirmedAt: new Date().toISOString() },
   });
-  revalidatePath(`/case/${caseId}/monitoring`);
+  revalidatePath('/settings/monitoring');
 }
 
 /**

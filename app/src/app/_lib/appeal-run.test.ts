@@ -23,6 +23,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { GOLDEN_SET } from '@/lib/engine/evals';
+import { loadCorpusProvider } from '@/lib/engine';
 
 import { ensureRun } from './appeal-run';
 import { createCase, getCase, resetCaseStore } from './case-store';
@@ -91,7 +92,12 @@ describe('a drafted case', () => {
       // the per-case corpus allowlist; none of them is model prose.
       expect(clause.citedText.length).toBeGreaterThan(0);
       expect(clause.clauseId).toMatch(/#/);
-      expect(clause.sourceUrl).toMatch(/^https?:\/\//);
+      // An absolute URI, whatever the scheme. Published policy pages resolve to
+      // https; the L3 appeal-pattern documents are internal and resolve to a
+      // `corpus://` URI (lib/corpus/retrieval.ts), because there is no public
+      // page to send a seller to and inventing one would be the same defect
+      // class as an uncited clause.
+      expect(clause.sourceUrl).toMatch(/^[a-z][a-z0-9+.-]*:\/\//);
       expect(clause.documentTitle.length).toBeGreaterThan(0);
     }
   });
@@ -111,13 +117,25 @@ describe('a drafted case', () => {
     }
   });
 
-  it('labels a synthetic-corpus run as synthetic (LLM_ENGINE §8.1)', async () => {
+  it('carries corpus and model provenance to the screen (LLM_ENGINE §8.1)', async () => {
     const events = await runCase(fixtureNotice('GS-01'));
     const preview = events.find((e) => e.type === 'preview');
     if (preview?.type !== 'preview') throw new Error('no preview');
-    // No corpus bundle is built in the test lane, so this must be true; a false
-    // here would mean fixture text was being served unlabelled.
-    expect(preview.preview.synthetic).toBe(true);
+
+    // Ground truth, resolved exactly as the runtime resolves it: a checkout that
+    // has run `corpus:build` serves the built corpus, one that has not serves
+    // the engine's fixture corpus. Either is legal outside production — what is
+    // NOT legal is a preview that fails to say which one it was, because a
+    // screen presenting fixture policy text as corpus text is the same defect
+    // class as C-1 (marketing a mechanism the system does not have).
+    const built = await loadCorpusProvider().then(
+      () => true,
+      () => false,
+    );
+    expect(preview.preview.syntheticCorpus).toBe(!built);
+    // ADAPTER_MODE=mock in this lane, so the run was scripted from recorded
+    // responses — no network, no key (ARCHITECTURE.md §2.2 factor X).
+    expect(preview.preview.recordedModel).toBe(true);
   });
 
   it('leaves the case in preview_ready with its result persisted', async () => {

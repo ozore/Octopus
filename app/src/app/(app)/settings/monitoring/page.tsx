@@ -194,7 +194,7 @@ export default async function MonitoringPage({
               <p className="cw-ink-2">
                 {cancelled
                   ? 'Nothing is charged, now or later. Turning it back on is one click and takes effect immediately.'
-                  : `On day 25 you get an email that opens with what these ${remaining > 0 ? '30' : '30'} days actually flagged — the facts first, not a pitch. Then you decide. Keeping it is $49 a month and includes one Rescue appeal each year; letting it lapse costs nothing and charges nothing. Do nothing and we will ask you once, by email, before anything is charged.`}
+                  : 'On day 25 you get an email that opens with what these 30 days actually flagged — the facts first, not a pitch. Then you decide. Keeping it is $49 a month and includes one Rescue appeal each year; letting it lapse costs nothing and charges nothing. Do nothing and we will ask you once, by email, before anything is charged.'}
               </p>
 
               <div className="cw-decision">

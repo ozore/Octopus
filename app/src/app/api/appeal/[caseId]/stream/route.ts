@@ -40,10 +40,19 @@ export async function GET(
   const stream = new ReadableStream<Uint8Array>({
     start(controller) {
       let closed = false;
+      // `let`, assigned after `subscribe` returns, and therefore READ through a
+      // guard rather than directly. `subscribe` replays the buffer synchronously
+      // before it returns, so a case that has already finished delivers its
+      // `done` event *during* the call below — a `const unsubscribe` referenced
+      // from `close()` would still be in its temporal dead zone at that moment
+      // and throw, breaking the exact rejoin path the run registry exists to
+      // serve (Twelve-Factor IX — the seller reloads and will not paste twice).
+      let unsubscribe: (() => void) | undefined;
+
       const close = () => {
         if (closed) return;
         closed = true;
-        unsubscribe();
+        unsubscribe?.();
         try {
           controller.close();
         } catch {
@@ -51,7 +60,7 @@ export async function GET(
         }
       };
 
-      const unsubscribe = subscribe(run, (event) => {
+      unsubscribe = subscribe(run, (event) => {
         if (closed) return;
         try {
           controller.enqueue(encoder.encode(encodeSse(event)));
@@ -62,7 +71,10 @@ export async function GET(
         if (event.type === 'done') close();
       });
 
-      if (run.done) close();
+      // A replayed run closed inside `subscribe`, before `unsubscribe` existed;
+      // release the listener it registered on the way past.
+      if (closed) unsubscribe();
+      else if (run.done) close();
     },
   });
 

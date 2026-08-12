@@ -30,21 +30,31 @@ export type RedactionResult = {
 type Pattern = { type: string; re: RegExp; label: string };
 
 /**
- * Order matters only for readability, not correctness — every pattern runs
- * over the same original text and replacements never overlap by type. ASIN
- * and Amazon order-id patterns are matched BEFORE the coarse merchant-token
- * pattern would otherwise also match them, so each span is labelled by its
- * most specific type.
+ * ORDER IS LOAD-BEARING, not merely cosmetic: `redactText` below replaces
+ * sequentially into a single accumulating `redacted` string (each pattern
+ * runs over the PREVIOUS pattern's output, not over the original text), so an
+ * earlier, coarser pattern can consume part of a span a later, more specific
+ * pattern needs intact. Concretely: the 10-digit `phone` shape
+ * (`\d{3}-\d{3}-\d{4}`) is a valid infix of the 17-character Amazon
+ * order-id shape (`\d{3}-\d{7}-\d{7}`, e.g. "111-2223334-5556667" contains
+ * "111-2223334" as a phone-shaped substring) — if `phone` ran first it would
+ * eat the first 11 characters and leave a dangling "-5556667" that no longer
+ * matches `amazon_order_id` at all, silently downgrading a should-fail-closed
+ * order id to a should-fail-open miss. The fix is ordering: every pattern
+ * whose match could be a substring of another pattern's match runs AFTER the
+ * more specific one. `asin` and `amazon_order_id` (structured, narrow) run
+ * before `phone` (loose digit-grouping) for the same reason `case_or_claim_id`
+ * and `postal_address` run before the catch-all `merchant_token`.
  */
 const PATTERNS: Pattern[] = [
   { type: 'email', re: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, label: '[EMAIL]' },
+  { type: 'asin', re: /\bB0[A-Z0-9]{8}\b/g, label: '[ASIN]' },
+  { type: 'amazon_order_id', re: /\b\d{3}-\d{7}-\d{7}\b/g, label: '[ORDER_ID]' },
   {
     type: 'phone',
     re: /(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g,
     label: '[PHONE]',
   },
-  { type: 'asin', re: /\bB0[A-Z0-9]{8}\b/g, label: '[ASIN]' },
-  { type: 'amazon_order_id', re: /\b\d{3}-\d{7}-\d{7}\b/g, label: '[ORDER_ID]' },
   {
     type: 'case_or_claim_id',
     re: /\b(?:case|claim|ticket|reference)[\s#:]*[A-Z0-9]{6,}\b/gi,
