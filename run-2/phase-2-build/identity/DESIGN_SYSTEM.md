@@ -17,7 +17,7 @@
 
 > **Naming supersession, recorded.** `NAMING.md` struck the phase-1 working name **Wage Line** and set **Ratepin** in its place, on four grounds — including invariant 2, *never imply a person is reachable*, which the word `Line` violates outright under A3. This document is written against the new name. Three consequences a reader coming from the architecture set should know:
 >
-> 1. The token and class prefix is **`rp-`**, not `wl-`. `ARCHITECTURE.md`, `CORPUS_DESIGN.md`, `ENGINE.md` and `USER_JOURNEY.md` were written before the gate landed and still say *Wage Line*; they need a name pass, and nothing in them depends on a class name.
+> 1. The token and class prefix is **`rp-`**, not `wl-`. `ARCHITECTURE.md`, `CORPUS_DESIGN.md`, `ENGINE.md` and `USER_JOURNEY.md` were written before the gate landed; their name pass landed on 2026-08-13 and all four now say *Ratepin*. Nothing in them depends on a class name.
 > 2. The brand hue is named **`pin`**, not `line` or `accent` — `NAMING.md` §8 invariant 7 is *brand the pin, not the form*, and the hue that marks a pinned wage determination should carry that noun (§4.1).
 > 3. The $49 SKU displays as **Bid Sheet** (`NAMING.md` §7.3). Price, metering and packaging are unchanged from **D4**.
 

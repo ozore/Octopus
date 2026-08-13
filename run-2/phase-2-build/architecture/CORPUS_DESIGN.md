@@ -34,9 +34,9 @@ Every later section refers to these by letter.
 
 D5 specifies "the index endpoint plus per-WD document fetch as an independent second path." That is paths A and B, and it is implemented exactly as written. Paths C and D are additive, and §2.6 argues that D is the one that makes the disagreement rule mean anything.
 
-### 0.3 Findings that revise IDEA_DOSSIER D5 and R1 — four Challenges
+### 0.3 Findings that revise IDEA_DOSSIER D5 and R1 — six Challenges
 
-D1–D10 are binding and are implemented as specified. Four are implemented *and* flagged, because a downstream agent who repeats the dossier's reasoning verbatim will say something false in public copy.
+D1–D10 are binding and are implemented as specified. Six are implemented *and* flagged, because a downstream agent who repeats the dossier's reasoning verbatim will say something false in public copy — or, in C5 and C6, will build a probe that blocks the entire corpus.
 
 ---
 
@@ -100,6 +100,54 @@ Knight and Leveson prepared 27 independently written versions of one program fro
 
 *Implemented as specified.* The honest statement of what dual ingest buys is: **it detects divergence, not outage.** Outage is handled by D7 — generation reads the mirror, so an outage degrades the freshness claim and nothing else. The only genuinely publisher-authored assertion in the pipeline is path D, the determination's own modification table, and §10.4 promotes it to a first-class probe for exactly this reason.
 
+---
+
+**Challenge C5 — A probe earns blocking power by measurement, not by anecdote. The `standard` flag would have quarantined 100% of the corpus on night one.**
+
+`ARCHITECTURE.md` §8.2's probe **P4** and **ADR-004** give blocking power to a four-field agreement test — `revision`, publish date, `active`, and **`standard`** — with the response *"QUARANTINE both paths for that WD; publish neither."* ADR-004 cites `VA20260195` r2 (`isStandard: true` vs `standard: false`) as evidence that the probe *"earned its place before launch."*
+
+One record cannot establish that. Measured against the live corpus, 2026-08-13:
+
+```
+path A, size=5000&is_active=true      →  isStandard: true on 4,236 of 4,236.  Zero false.
+path B, 14-WD random sample           →  standard: false on 14 of 14.
+path B, 200-WD random sample (here)   →  A.isStandard ≠ B.standard on 200 of 200 — red rate 100%.
+```
+
+`isStandard` is a constant on path A; `standard` is a constant on path B; the constants differ. The "disagreement" is not a fact about any determination — it is the fixed offset between two GSA services that mean different things by one word. A field with zero variance carries zero information, so this probe cannot discriminate a corrupt record from a healthy one no matter how loudly it fires.
+
+Implemented as ADR-004 writes it, night one yields 4,236 quarantined determinations, no promoted snapshot, no establishable pin, and every artifact watermarked **DRAFT — NOT CERTIFIABLE** — a product that emits nothing while every probe reports itself green.
+
+*Not implemented as specified.* §9.5 is the authoritative rule and the snapshot-promotion blocking set is exactly **`{revision_number, publish_date, active_flag}`**. `standard`, county codes, and every other flag we never read are **advisory**: recorded in `variance_detail` with `agreement = 'advisory_variance'`, surfaced in the ingest report, never blocking.
+
+**New standing rule, binding on every probe in this document and every probe added later: no probe may be given blocking power until its red rate has been measured against the live corpus and recorded here.** The register is §10.6. A probe that fires on everything and a probe that has never been shown to fire are the same product.
+
+---
+
+**Challenge C6 — The standing rule pays for itself immediately: `mod_table_rows = revision + 1` is red on 17% of the live corpus, and this document had encoded it as a `CHECK` constraint.**
+
+§2.4 asserted that a determination's own modification table must carry *"exactly `revisionNumber + 1` rows"*, and §3.3 hardened that into `CONSTRAINT wd_rev_modrows CHECK (mod_table_rows = revision + 1)`. C5's rule requires measuring it before trusting it. Measured, 200-WD random sample of the active set, path B at each WD's current revision:
+
+```
+mod_table_rows == revision + 1                                    RED  34/200 = 17.0%
+  … of those 34, modification row 0 absent from the table              34/34
+  … of those 34, rows contiguous and ending exactly at `revision`      34/34
+```
+
+WHD does not always print modification 0. `LA20260005` is revision 2 and its table lists rows 1 and 2 only; one sampled record's table began at row 3. Nothing is missing from the *determination* — the table is a **contiguous suffix** of `0…revision`, not always the whole run.
+
+This is worse than the C5 failure in one specific way: a `CHECK` constraint is stronger than a quarantine. Seventeen percent of the active corpus would have been literally **unwritable**, aborting the ingest transaction rather than degrading. The corrected invariant, measured on the same sample:
+
+```
+rows strictly increasing, every row in 0…revision, last row == revision,
+publication dates non-decreasing, last row's date == the header date
+                                                                  RED   0/200 =  0.0%
+```
+
+*Corrected here.* §3.3's constraint, §4.4's quarantine rule and §9.4's `G-modtable` gate all move to the suffix form. The probe keeps its blocking power because it now has a measured red rate of zero across 200 records *and* still fires on the thing it exists to catch: a table whose last row disagrees with the revision we were served, which is C2's stale-index signal and §10.4's probe 4.
+
+The general lesson, and the reason C5 is a standing rule rather than a one-time fix: **both of this document set's corpus-killing bugs were invisible to reading and obvious to measuring.** Neither could have been found by a careful reviewer with no network access.
+
 ### 0.4 Invariants that bind every later section
 
 1. **Generation never performs a network fetch.** D7. A filing reads `wd_revision` and `wd_classification` rows that were promoted before the request arrived. There is no code path from the PDF renderer to `sam.gov`.
@@ -108,6 +156,25 @@ Knight and Leveson prepared 27 independently written versions of one program fro
 4. **Refusal is a data state, not a message.** `fringe_treatment = 'cba_schedule_not_published'` and `parse_status = 'quarantined'` are enum values that the renderer keys off. There is no branch where prose apologises and the number prints anyway.
 5. **No support escalation exists anywhere in this pipeline.** A3. Every failure mode in §13 terminates in an in-product state — a narrowed claim, a blocked line, a watermark, or an automatic credit. None terminates in a person.
 6. **No measured claim ships un-measured.** G1–G6. Numbers in this document that come from sampling are labelled with their sample size at the point of use.
+7. **No probe blocks without a measured red rate.** C5. Every gate that can halt promotion, quarantine a determination or refuse a write appears in §10.6 with its red rate against the live corpus and the date it was measured. A probe with no row in that register is advisory by default, whatever its section says.
+
+### 0.5 Authority: what this document owns, and what it supersedes
+
+Four architecture documents each declare themselves binding, which is how the `standard` probe survived to review. The boundary is therefore stated once, here, in the document that owns the contract:
+
+> **`CORPUS_DESIGN.md` is the single authority on ingest.** Where it and `ARCHITECTURE.md` disagree about how the corpus is fetched, reconciled, promoted or blocked, this document governs and `ARCHITECTURE.md` defers to it and says so at the point of conflict.
+
+Three supersessions are in force, each with its target section named so the override is auditable rather than implicit:
+
+| This document | Supersedes | Substance |
+|---|---|---|
+| **§9.5** and **§10.6** | `ARCHITECTURE.md` §8.2 probe **P4**; **ADR-004**'s decision sentence | The blocking set is exactly `{revision_number, publish_date, active_flag}`. `standard` and the structured county codes are advisory, never blocking. ADR-004's claim that the probe "earned its place" on `VA20260195` is withdrawn: measured at 100% red fleet-wide, `isStandard` is a constant, not an oracle (**C5**, **CRIT-1**). |
+| **§2.1** and **§9.2** `INDEXED` | `ARCHITECTURE.md` §7.1 `ingest.sam.index` and the §4.4 diagram, both of which specify *"43 pages at `size=100`"* | The active crawl is **one request at `size=5000`**, re-verified 2026-08-13: HTTP 200, 4,236 records, 3,638,250 bytes, 0.68 s, `page.totalPages: 1`. The paginated walk is a fallback, not the design (**HIGH-5**). |
+| **§3.3**, **§4.4**, **§9.4** | This document's own §2.4, as first written | The modification table is a contiguous **suffix** of `0…revision`, not always `revision + 1` rows. The original form is red on 17% of the live corpus (**C6**). |
+
+Nothing else in `ARCHITECTURE.md` is overridden. Where this document is silent — the request path, the tenant boundary, the artifact status type, the ladder's customer-visible behaviour — `ARCHITECTURE.md` governs and this document defers to it.
+
+The scope rule that generates all three: **`ARCHITECTURE.md` owns what the product does with the corpus; this document owns what is in it and how it got there.** A probe threshold, a promotion gate, a reconciliation field list and an ingest request shape are all the second kind, and belong here even when a summary of them appears there.
 
 ---
 
@@ -203,7 +270,7 @@ and the envelope:
 
 *Field presence is not uniform between active and archived records.* On the 4,236 active records: `publishDate`, `modifiedDate` and `location` present on **all** of them, `fullReferenceNumber` uppercase on **all** of them. On a 10,000-record archived sample: `publishDate` and `modifiedDate` present on **5,969** (59.7%), `location` present on **6,975** (69.8%), and `fullReferenceNumber` **lowercase on all 10,000**. The identity key therefore normalises to uppercase (§3.5), and a nightly job that assumes the date fields exist will `NULL`-crash the moment it touches history.
 
-*`isStandard` does not discriminate.* All 4,236 active records report `isStandard: true`. Zero report false. Whatever the flag means on this path, it carries no information about the active set — and path B disagrees with it (§2.5).
+*`isStandard` does not discriminate.* All 4,236 active records report `isStandard: true`. Zero report false. Whatever the flag means on this path, it carries no information about the active set — and path B reports `standard: false` on every record we have ever fetched (§2.5, measured 200/200). A field with zero variance on both sides cannot be an oracle for anything, which is Challenge **C5** and the reason `standard` has no blocking power in §9.5.
 
 **Pagination, measured.**
 
@@ -220,6 +287,21 @@ and the envelope:
 | `page=99&size=100&is_active=true` | **200**, `totalElements: 0`, zero results — Challenge C3 |
 
 The active crawl is therefore **one request**, not 43. `maxAllowedRecords: 10000` bounds `(page+1) × size`, and `size` itself is not separately capped below 10,000. This collapses the nightly index stage from a 43-request paginated walk with 43 chances to half-fail into a single atomic read — a material reliability gain that the dossier's "full pagination" phrasing would have missed.
+
+**This paragraph is the authority on the shape of the index request (§0.5).** `ARCHITECTURE.md` §7.1 and its §4.4 diagram describe the same job as *"43 pages at `size=100`"*; that is superseded. The single-request form was re-verified while closing this finding:
+
+```
+GET …?index=dbra&page=0&size=5000&is_active=true      Accept: application/hal+json
+→ 200, 3,638,250 bytes, 0.68 s
+  page: {"size":4236,"totalElements":4236,"totalPages":1,"number":0,"maxAllowedRecords":10000}
+  4,236 results, 4,236 distinct _id, isActive true on all of them
+```
+
+Three consequences, all of which the paginated walk loses:
+
+1. **The read is atomic.** A 43-page walk that retrieves 40 pages yields a plausible 93% count — outside the 0.5% delta, so it `HELD`s and the freshness clock runs for a reason that is not an upstream problem. A 43-page walk that retrieves all 43 with one page served from a stale replica yields a plausible count and **promotes**. Neither failure exists at `totalPages: 1`.
+2. **`totalPages == 1` is asserted, not assumed** (§9.2 `INDEXED`). A value greater than 1 means the active set has crossed `size`, which is corpus growth — a signal to widen `size`, not an error. `totalPages > 1` with `size` already at `maxAllowedRecords` is the documented trigger for the paginated fallback.
+3. **The fallback is specified but not the default.** Should the active set ever exceed `maxAllowedRecords: 10000`, the crawl partitions on `state` (the only working filter, §"Filters, measured") and asserts that the union of the slices reconciles to `totalElements` from a `page=0` unfiltered read. Until that day the fallback is dead code with a test, which is the correct place for it.
 
 **Filters, measured — and the silent-ignore hazard.**
 
@@ -331,11 +413,11 @@ Modification Number     Publication Date
 This block is written by the Wage and Hour Division and travels inside the payload. It is the only assertion in the pipeline that no serving layer authored. It yields, for free:
 
 - the **header date** (`08/06/2026`), which must equal path B's `publishDate` and path A's `modifiedDate`;
-- the **complete revision history with publication dates**, which must have exactly `revisionNumber + 1` rows and whose last row must match the header date;
+- the **revision history with publication dates** — a contiguous *suffix* of `0…revisionNumber`, whose last row number equals `revisionNumber` and whose last date equals the header date. It is **not** always `revisionNumber + 1` rows: WHD omits modification 0 on **34 of a 200-WD random sample (17.0%)**, and one sampled table began at modification 3. Challenge **C6**, and the reason §3.3's constraint is written as a suffix test;
 - the **authoritative county scope in prose**, which §6.1 shows is the only county source that is internally consistent;
 - the **construction types** and **state**, cross-checkable against both structured paths.
 
-A determination whose modification table has four rows while path A reports `revisionNumber: 2` is telling us the index is stale — from inside the document. That is a stronger signal than any comparison between two GSA services, and §10.4 makes it probe 4.
+A determination whose modification table's **last row is 3** while path A reports `revisionNumber: 2` is telling us the index is stale — from inside the document. That is a stronger signal than any comparison between two GSA services, and §10.4 makes it probe 4. Note the comparison is on the last row *number*, not on the row *count*: counting rows is what C6 measured at 17% red, and it fails on healthy determinations for a reason that has nothing to do with staleness.
 
 ### 2.5 The disagreements, enumerated
 
@@ -351,13 +433,32 @@ For `VA20260195` revision 2, fetched on all paths within the same minute:
 | county codes | 13 codes, all in `168xx` | 12 codes: `16864, 16868, 16878` + nine in `200xx` | 13 county names | **DISAGREE** — only **3 codes overlap** |
 | county names | 13 names | *(no names on this path)* | 13 names, identical set | **agree** |
 
-Two of these are worth dwelling on.
+**One record is an anecdote.** The version of this section that shipped to review concluded from `VA20260195` alone that *"this single record justifies D5's dual-ingest disagreement rule on day one"* — and `ARCHITECTURE.md`'s ADR-004 drew the same inference from the same record, which is how a probe that quarantines the entire corpus reached a binding document. Per **C5**, the inference is only available from a fleet measurement, so here is one.
 
-**The `standard` flag inversion** was found by deep dive 04 on the first record it pulled, and it reproduces today on the same record. Whatever `standard` means, the two GSA services do not agree about it. It is captured on both paths, never reconciled, and **never surfaced to a customer** — we have no basis for asserting either value.
+**The same comparison at fleet scale.** Measured 2026-08-13 on a 200-WD random sample of the 4,236 active determinations, fetching path B at each WD's current revision and comparing it against that WD's path A record and against its own path D prose:
 
-**The county-code divergence is worse than it looks.** Path A's 13 codes and path B's 12 codes share only three. Path B's own structured codes also disagree with path B's own prose, which lists 13 counties matching path A's 13 names exactly. So the document is internally inconsistent: its machine-readable county array does not describe the county scope its human-readable text describes. The resolution rule in §6.1 follows directly — **the prose is authoritative**, because the prose is what a contracting officer and a WHD investigator read, and the structured codes are stored as advisory metadata that never gates a rate.
+| Comparison | Red rate | Reading |
+|---|---|---|
+| `revision` — A vs B | **0 / 200** | the two services agree about the ordinal |
+| `publish_date` — A (epoch-ms → `America/New_York`, **and** `modifiedDate`) vs B | **0 / 200** | both index date fields normalise onto B's bare date |
+| `publish_date` — B vs D header | **0 / 200** | the publisher's own header agrees with the serving layer |
+| `active` — A vs B | **0 / 200** | |
+| `construction_types` — A vs B, set equality | **0 / 200** | the field-name difference (plural vs singular) is not a value difference |
+| `state_code` — A vs the WD number's own prefix | **0 / 200** | |
+| county **names** — A vs D prose | **1 / 200 (0.5%)** | the one red is *our parser*, not the data — see below |
+| county **codes** — A vs B structured | **11 / 200 (5.5%)** | a real disagreement, in a namespace we never read |
+| canonical text — B vs C | **0 / 75** | separate 75-WD sample; the canonical transform holds |
+| **`standard` — A vs B** | **200 / 200 (100%)** | a constant on each side, and the constants differ |
 
-This single record justifies D5's dual-ingest disagreement rule on day one, exactly as deep dive 04 predicted. It also shows why the rule must be *field-scoped*: a WD that disagreed on `standard` and county codes but agreed on revision, dates, construction type and county names is not a corrupt record. Blocking the whole determination would block one of the largest Highway WDs in Virginia over a flag we never use.
+Four things follow, and they are the whole of CRIT-1's fix.
+
+**The `standard` flag is not a disagreement, it is an offset.** Deep dive 04 found it on the first record it pulled and it reproduces on every record anyone has pulled since. Both endpoints are internally consistent; they simply do not mean the same thing by the word. It is captured on both paths, recorded as an advisory variance, never reconciled, and **never surfaced to a customer** — we have no basis for asserting either value. It has no blocking power (§9.5).
+
+**The county-code divergence is real but uncommon.** On `VA20260195` path A's 13 codes and path B's 12 codes share only three, and path B's structured codes also disagree with path B's *own prose*, which lists 13 counties matching path A's 13 names exactly. Fleet-wide that internal inconsistency appears on 5.5% of records rather than on all of them. The resolution rule in §6.1 is unchanged and its warrant is unchanged — **the prose is authoritative**, because the prose is what a contracting officer and a WHD investigator read — but the honest framing is that the structured code array is *usually* right and *occasionally* describes a different county set than the document it ships inside. That is precisely a field to store and never trust, which is what advisory means.
+
+**Measuring the county-name probe found a parser bug rather than a data bug.** The single red at 0.5% is `DC20260001`, whose prose county scope is the string `Washington, D.C.` — a county name that contains a comma, which a comma-delimited split cuts into `Washington` and `D.C.`. There are zero true county-name disagreements in 200 records. §4's parser and §6.1's prose reconciliation both take the fix: the county list is split on commas *except* where the following token is a bare state-style abbreviation, and `DC20260001` joins the frozen golden corpus as a regression fixture. This is C5 producing value in the benign direction — a probe that measures clean tells you about your own code.
+
+**The rule must be field-scoped, and the field list must be short.** A determination that disagrees on `standard` and on county codes while agreeing on revision, dates, `active`, construction type and county names is not a corrupt record. Blocking it would block one of the largest Highway determinations in Virginia over a flag we never read. §9.5 therefore blocks on exactly `{revision_number, publish_date, active_flag}` and treats everything else as advisory.
 
 ### 2.6 What each path is actually good for
 
@@ -367,7 +468,7 @@ This single record justifies D5's dual-ingest disagreement rule on day one, exac
 | What are this WD's alternate spellings? | A (`allReferenceNumbers`) | B, C, D |
 | What did revision 1 say? | B, C | A (Challenge C2) |
 | What are the rates and classifications? | B, C, D (the text) | **A — no rates, verified** |
-| Has a new revision appeared? | A (`revisionNumber`), B (walk to 404), **D (mod table row count)** | C |
+| Has a new revision appeared? | A (`revisionNumber`), B (walk to 404), **D (mod table's last row number)** | C |
 | Is the record corrupt in transit? | B ⨯ C canonical equality | A |
 | Is the *index* stale relative to the *publisher*? | **D only** | A, B, C |
 
@@ -450,7 +551,8 @@ CREATE TABLE wd_blob (
 
 CREATE TYPE agreement_state AS ENUM (
   'agreed',            -- every reconciled field matched across the paths fetched
-  'advisory_variance', -- only fields on the advisory list differ (standard flag, county codes)
+  'advisory_variance', -- only §9.5 tier-3 fields differ (standard flag, county codes/names,
+                       -- construction types, state code). Recorded, reported, never blocking.
   'blocking_variance', -- a pinned field differs; this revision may not be promoted
   'single_path'        -- only one path returned; permitted for archive backfill only
 );
@@ -490,6 +592,8 @@ CREATE TABLE wd_revision (
   -- path D, extracted from the text itself
   mod_table          jsonb       NOT NULL,          -- [{"modification":0,"publication_date":"2026-01-02"},…]
   mod_table_rows     smallint    NOT NULL,
+  mod_table_first    smallint    NOT NULL,          -- first modification number printed; NOT always 0 (C6)
+  mod_table_last     smallint    NOT NULL,          -- last modification number printed; must equal `revision`
 
   -- reconciliation and parsing
   agreement          agreement_state NOT NULL,
@@ -509,8 +613,13 @@ CREATE TABLE wd_revision (
   CONSTRAINT wd_rev_shape   CHECK (wd_number ~ '^[A-Z]{2}[0-9]{8}$'),
   CONSTRAINT wd_rev_nonneg  CHECK (revision >= 0),
   CONSTRAINT wd_rev_hashlen CHECK (octet_length(canonical_sha256) = 32),
-  -- path D consistency: the modification table must have exactly revision+1 rows
-  CONSTRAINT wd_rev_modrows CHECK (mod_table_rows = revision + 1),
+  -- path D consistency (C6). The modification table is a CONTIGUOUS SUFFIX of 0…revision
+  -- ending exactly at `revision`. It is NOT always revision+1 rows: WHD omits
+  -- modification 0 on 17.0% of a 200-WD live sample, and "= revision + 1" would have
+  -- made those rows unwritable.
+  CONSTRAINT wd_rev_modlast   CHECK (mod_table_last = revision),
+  CONSTRAINT wd_rev_modrange  CHECK (mod_table_first >= 0 AND mod_table_first <= mod_table_last),
+  CONSTRAINT wd_rev_modsuffix CHECK (mod_table_rows = mod_table_last - mod_table_first + 1),
   -- header date and reconciled publish date must agree, or the row is not writable
   CONSTRAINT wd_rev_dates   CHECK (header_date = publish_date),
   CONSTRAINT wd_rev_valid   CHECK (superseded_on IS NULL OR superseded_on >= publish_date),
@@ -541,7 +650,9 @@ Two constraints deserve comment because they are doing real work.
 
 `wd_blob_selfcert` uses `pgcrypto`'s `digest()` inside a `CHECK`. It makes the invariant "the key is the hash of the value" a property of the database rather than of the ingest code. No later engineer can bypass it, and no bug in the fetcher can poison the store with mislabelled bytes. This is P4 in its purest form.
 
-`wd_rev_modrows` — `mod_table_rows = revision + 1` — encodes path D as a schema constraint. A determination claiming to be revision 2 whose own modification table lists four modifications cannot be written at all. The ingest job catches this and routes the WD to quarantine before the row is attempted (§9.5), but the constraint is the backstop.
+`wd_rev_modlast` / `wd_rev_modrange` / `wd_rev_modsuffix` encode path D as a schema constraint. Together they say: the printed modification numbers form a contiguous run that ends exactly at the revision we were served. A determination claiming to be revision 2 whose own modification table's last row is 3 cannot be written at all — that WD's index record is stale relative to the publisher, which is §10.4's probe 4 and D4's alert, not a row to store. The ingest job catches it and routes the WD to quarantine before the row is attempted (§9.5); the constraints are the backstop.
+
+The three-constraint form is deliberate and is the C6 correction. The single constraint this replaces — `mod_table_rows = revision + 1` — read as the same rule to a human and was **red on 17.0% of a 200-WD live sample**, because WHD frequently declines to print modification 0. Being a `CHECK` rather than a probe, it would not have quarantined those determinations; it would have aborted the ingest transaction that touched them. P4 says anything that can be a constraint *is* one, and C5 adds the other half: **a constraint that has not been measured against the live corpus is a fail-closed switch wired to an unknown input.**
 
 ### 3.4 Append-only, enforced
 
@@ -753,7 +864,7 @@ A revision's parse is accepted only if all of the following hold. Any failure se
 | Rate checksum | `Σ base_rate` and `Σ fringe_rate` recomputed and stored; a re-parse of unchanged bytes at a new `parser_version` that moves either sum **blocks the parser rollout**, not the corpus | Distinguishes "the determination changed" from "we changed." |
 | Identifier coverage | Every classification sits under a recognised identifier; `identifier_kind = 'unrecognised'` count must be 0 | An unrecognised identifier means an unmodelled rate source; we do not guess its fringe treatment. |
 | Wrapped-name sanity | No `class_name` shorter than 4 characters or longer than 200 | Catches both halves of a mis-joined wrap. |
-| Modification table | Parses to exactly `revision + 1` rows, strictly increasing dates, last row equal to the header date | Path D consistency; also enforced by `wd_rev_modrows`. |
+| Modification table | Parses to a **contiguous suffix of `0…revision` whose last row number equals `revision`**, with non-decreasing publication dates and a last date equal to the header date | Path D consistency; also enforced by `wd_rev_modlast` / `wd_rev_modrange` / `wd_rev_modsuffix`. Measured red rate 0/200; the `revision + 1` row-count form this replaces was red on 34/200 (**C6**). |
 
 The golden corpus behind G1 is the regression suite for all six: **≥25 WDs across ≥8 states**, byte-frozen in the repository, re-parsed on every build, with the full `wd_classification` output diffed. A parser change that alters one rate in one frozen determination fails CI. This is the same "structural, not procedural" posture as P4 — the rule is a test, not a note.
 
@@ -837,6 +948,79 @@ CREATE INDEX wd_class_diff_material ON wd_class_diff (wd_number, rev_to)
 - **The free WD-change email alert list** (D8, channel 3): the same query, unauthenticated, keyed on a WD number the visitor supplies. This is the channel that "builds the list on the exact anxiety we monetise," and it costs one row lookup.
 - **Exception narrative** (D6): the model receives the diff rows as injected facts and drafts prose into a fixed template. It never computes a delta; `total_delta` is a generated column.
 
+### 5.5 When the pinned revision is superseded and the contract is not
+
+The diff machinery above assumes the interesting case is *"a newer revision exists, look at what moved."* The **common** case on a real subcontract is the opposite, and it is the one that can push a customer into a wrong rate.
+
+A general contractor's flow-down incorporates a specific determination *at a specific revision* into the subcontract at award. Six weeks later WHD publishes revision 3. For the life of that contract, revision 2 may remain the operative revision — and every affordance the product has built so far (the change notice, the diff, the one-click re-pin) points at revision 3. A product that nudges toward the newer number is asserting an effectiveness conclusion by user-interface affordance, which is exactly the conclusion §8.4 refuses to draw in prose.
+
+**Why we cannot resolve it, verified rather than assumed.** FAR 22.404-6, fetched 2026-08-13:
+
+- **(b)(1)(i)** — under sealed bidding a modification is effective if received by the agency, or published on SAM.gov, *"10 or more calendar days before the date of bid opening."*
+- **(b)(2)** — modifications received *after* bid opening *"shall not be effective."*
+- **(b)(5)** — *"If an effective modification is received by the contracting officer after award, the contracting officer shall modify the contract to incorporate the wage modification retroactive to the date of award."*
+- **(c)(1)** — under negotiation, modifications received *"before contract award … shall be effective."*
+- **(d)(1)(i)** — on option exercise, effective if received prior to exercise, or within 45 days of a determination request.
+
+Read together these forbid *both* naive answers. "The newer revision governs" is wrong under (b)(2). "The award revision is frozen forever" is also wrong, because (b)(5) contains a retroactive-incorporation path and (d) reopens the question at every option. The determining facts — the date of bid opening, the date the contracting officer received the modification, whether the officer made the finding, whether an option was exercised — are contract-file facts that Ratepin cannot observe on any ingest path. So we do not conclude. **P-D.**
+
+**What the corpus records: three observable facts and no conclusion.**
+
+1. `wd_revision.publish_date` and `superseded_on` for every revision — the publication timeline, from path D's own modification table.
+2. The pin's revision and the project's award date, as the customer entered them.
+3. `wd_revision_locked_at_award` — a boolean on the project, collected once at setup, phrased as the customer's own assertion about their own contract rather than as our finding: *"Does your subcontract name a specific wage determination revision?"* It is stored as an assertion with its timestamp, and it appears on the exception report as one (*"revision 2 is contract-locked by your assertion of 2026-07-31"*), so no reader mistakes it for something Ratepin determined.
+
+The corpus never stores a fourth fact, and there is no `is_effective` column anywhere in this schema (§8.4).
+
+**The derived standing.** One value drives every surface, computed from the corpus and the pin — never from a model, never from a heuristic:
+
+```sql
+CREATE VIEW pin_standing AS
+SELECT
+    p.pin_id, p.project_id, p.wd_number, p.revision AS revision_pinned,
+    cur.revision      AS revision_current,
+    cur.publish_date  AS current_published_on,
+    pin.superseded_on AS pinned_superseded_on,
+    p.locked_at_award,
+    CASE
+      WHEN cur.revision = p.revision       THEN 'current'
+      WHEN p.locked_at_award               THEN 'superseded_contract_locked'
+      ELSE                                      'superseded_open'
+    END AS standing
+FROM wd_pins p                                        -- ARCHITECTURE §6.2 owns this table
+JOIN wd_revision pin ON (pin.wd_number, pin.revision) = (p.wd_number, p.revision)
+JOIN LATERAL (
+      SELECT r.revision, r.publish_date FROM wd_revision r
+      WHERE r.wd_number = p.wd_number AND r.superseded_on IS NULL
+      ORDER BY r.revision DESC LIMIT 1
+     ) cur ON true;
+```
+
+| `standing` | Rate on the filing | Freshness sentence | Change notice | Primitive |
+|---|---|---|---|---|
+| `current` | pinned revision | unnarrowed | none | — |
+| `superseded_open` | **pinned revision, unchanged** | narrows: names both revisions and both publication dates | persistent, three actions at equal weight | **P-C** + **P-D** |
+| `superseded_contract_locked` | **pinned revision, unchanged** | narrows the same way, and adds the customer's own lock assertion | **informational only** — the re-pin is present but demoted below "keep revision N" | **P-C** + **P-D** |
+
+Three properties of that table are load-bearing.
+
+**The rate never moves.** In all three states the filing generates and the money is the pinned revision's money. Supersession is a change in what we can *claim about currency*, not a change in what the determination said — the P5 boundary between an assertion about the present and an assertion about the past, applied to the one case where a customer would most like us to guess.
+
+**The narrowed claim is the whole response, and it is dated.** The footer sentence for both superseded states:
+
+```
+Rates from wage determination CA20260012 revision 4, published 2026-07-31 — the
+revision pinned to this project at award. Revision 5 published 2026-08-11.
+Which revision applies to your contract turns on FAR 22.404-6 and on findings by
+your contracting officer that Ratepin cannot observe. We do not draw that conclusion.
+```
+
+That is a P-C narrowing carrying a P-D refusal, generated from `pin_standing` and the two `publish_date` values. It contains no verb that could be read as advice.
+
+**Equal visual weight is a corpus-side rule, not a design preference.** `superseded_open` renders *keep revision N*, *pin revision N+1*, and *pin and regenerate unfiled weeks* with no pre-selection and no default — pre-selecting any of them would be Ratepin making the effectiveness call by affordance. `superseded_contract_locked` is the one asymmetry, and it runs the *safe* way: the re-pin drops below "keep", because the customer has already told us their contract names a revision. The asymmetry is sourced entirely from the customer's own assertion, which is the only authority in this product allowed to break the tie.
+
+None of this routes to a person (A3). The question *"which revision does my contract name?"* is answered once, at setup, by the only party who can read the subcontract — and then never asked again, which is the same shape as §7.3's classification memory and the same shape as F18.
+
 ---
 
 ## 6. The county × construction-type × classification index
@@ -848,7 +1032,7 @@ CREATE INDEX wd_class_diff_material ON wd_class_diff (wd_number, rev_to)
 **Resolution rule, binding:**
 
 1. **The prose county list (path D) is authoritative for scope.** It is what a contracting officer reads, what appears on the determination the GC attaches to the subcontract, and the only source that is present for every revision.
-2. **Path A's `(code, value)` pairs supply the code↔name mapping** used to reconcile prose names to a stable key. Path A's names matched the prose exactly on the observed record; a mismatch is a blocking variance.
+2. **Path A's `(code, value)` pairs supply the code↔name mapping** used to reconcile prose names to a stable key. Measured across 200 active determinations (§2.5), path A's name set equals the prose name set on **199 of 200**; the single difference is `DC20260001`, and it is our own bug — a comma-delimited split cutting the county name `Washington, D.C.` in two. The splitter therefore treats a comma followed by a bare abbreviation-shaped token as part of the preceding name, and `DC20260001` is frozen into the golden corpus as the regression fixture for it. A residual name mismatch is recorded as an **advisory** variance and surfaced in the ingest report; per **R-CRIT1** it never blocks promotion (§9.5). What it does instead is fall to the last rule below — an unclean prose parse leaves that WD's scope `unresolved` and out of the lookup index, which is a per-WD scope refusal rather than a corpus-wide block.
 3. **Path B's structured `counties` array is stored as advisory and never gates a rate.** Its code namespace is not reconcilable with path A's on the observed record.
 4. **Independent cities are first-class.** The prose emits `Chesapeake*` with a footnote `* Designates Independent City`. Virginia's independent cities are not inside the counties they adjoin, and a subcontractor working in Chesapeake who is served a Chesapeake-County rate has been given a wrong rate. The asterisk is parsed into a boolean, not stripped.
 5. **`statewideFlag`** on path B, when true, expands to every county in the state at render time rather than being materialised — statewide determinations would otherwise dominate the index.
@@ -942,6 +1126,44 @@ D3's free tier is unlimited single WH-347 generation and county × craft rate lo
 - The free tier makes **zero LLM calls** (deep dive 03) — it is an indexed lookup, and where a title does not resolve deterministically the page shows the WD's own classification list with verbatim scope text rather than ranking anything.
 - The programmatic pages are generated from a table whose every row already carries `wd_number`, `revision`, `publish_date` and `canonical_sha256`, so the provenance footer that makes the artifact a channel (D8) is free on the SEO surface too.
 - ~479,000 rows is the theoretical page ceiling. The practical set is the county × construction-type × *craft-family* rollup, because "Los Angeles County electrician prevailing wage 2026" is a query and "Los Angeles County OPERATOR: BOBCAT/SKID STEER/SKID LOADER" is not. The rollup uses the crosswalk's SOC layer (§7) to group classifications into families, which is the same asset that powers classification ranking. One asset, two surfaces.
+
+### 6.4 The free tier asserts a rate with no pin, so it is always a draft
+
+The free generator is D8's funnel, D3's wedge and — architecturally — the tested fallback path for when the model budget is exhausted (`ARCHITECTURE.md` §3.8). It is also, unattended, the **least supervised rate assertion the company makes**: it emits a WH-347 with a provenance footer naming a wage determination and revision, from a mirror that may be many hours unverified, to an anonymous visitor who has no account and therefore never sees an in-product staleness banner. The free artifact is the acquisition channel. It must not be the least honest artifact the company produces.
+
+Two rules close that, and both are structural.
+
+**Rule 1 — free-tier output is always `P-B` DRAFT — NOT CERTIFIABLE, signature withheld.** Not as a conversion tactic; as an accurate statement. A certifiable artifact is one whose rates are pinned to a revision of record, and §5.5 shows that question is answerable only against a project carrying an award date and a customer assertion about which revision the subcontract names. An anonymous visitor has no project, no award date, and nothing persisted beyond 24 hours.
+
+The mechanism is structural rather than conditional. **`artifact_provenance` is the only path to a certifiable artifact**, and its row requires `account_id`, `project_id`, `revision_pinned` *and* `revision_at_award` — four values that do not exist for an anonymous request. The free generator therefore renders from an **ephemeral provenance struct** that carries every corpus column (`wd_number`, `revision`, `publish_date`, `canonical_sha256`, `snapshot_id`, `merkle_root`, `corpus_verified_at`) and no pin, and the renderer derives `certifiable` from the *presence of a persisted `artifact_provenance` row*, never from a flag. Block reason: `NO_PINNED_REVISION`. There is no config value and no future feature flip that makes the free generator emit a signed-looking form — it would require inventing a project and an award date, and the two the visitor never supplied are `NOT NULL`.
+
+Invariant 3 of §0.4 is satisfied and worth re-reading against this case: every rate that reaches a customer carries `(wd_number, revision, publish_date, snapshot_id, canonical_sha256)`, and the free artifact carries all five. What it lacks is not evidence — it is the *pin*, and the pin is what certification means.
+
+The footer carries full corpus provenance regardless — the pin is what is missing, not the evidence:
+
+```
+DRAFT — NOT CERTIFIABLE. Signature block withheld.
+Rates from wage determination VA20260195 revision 2, published 2026-08-06.
+Determination hash 5bd58170…  Corpus snapshot cs_2026-08-13T06:00Z (root 9f3c1a2e…).
+Newer-revision check last completed 2026-08-13 06:04 UTC.
+This draft is not pinned to a contract. Ratepin has not been told which wage
+determination revision your subcontract names, so it does not certify one.
+```
+
+The snapshot reference and the newer-revision-check timestamp are the same values, from the same columns, that the paid footer prints. One source, three surfaces (§8.2) — extended here to the surface with no account attached to it.
+
+**Rule 2 — at L2 STALE the free generator stops sourcing rates from the corpus, exactly as the paid path stops establishing pins.** Every free-tier rate assertion is a first-time resolution by construction — there is no pin to fall back on — so it is precisely the class of claim D7 suppresses beyond 72 hours. The boundary, stated so a builder cannot get it backwards:
+
+| Surface | < 24 h | 24–72 h (**L1**) | > 72 h (**L2 STALE**) |
+|---|---|---|---|
+| Free WH-347 generator — corpus rate onto a form | fills, DRAFT | fills, DRAFT + dated line | **suppressed.** Rate cells stay empty for the visitor to type; block reason `CORPUS_STALE_NO_NEW_ASSERTION` joins `NO_PINNED_REVISION`; the exception report names the last successful newer-revision check |
+| County × craft lookup page, programmatic pages | renders | renders, "as of" line narrows (**P-C**) | renders from the last promoted snapshot with the dated narrowing (**P-C**) and no currency framing; never blank, never silently stale |
+| "Find my WD for this county" — first-time WD resolution | normal | dated caveat | **suppressed**, identically to a new pin |
+| Paid filing on an existing pin | normal | normal | **normal** — unchanged, P5 |
+
+The asymmetry in the last two rows is the whole of P5 and it is worth stating plainly: *putting a corpus rate onto a new form* is an assertion about the present and fails closed; *showing what a determination said, under a dated line* is an assertion about the past and does not. The lookup page keeps rendering because the alternative — a blank page — teaches the visitor nothing and hides the staleness we are trying to disclose.
+
+Free users get no Stripe credit at L2, because they paid nothing. They get the same sentence, with the same timestamp, that a Crew customer sees. That symmetry is the point: the honesty is a property of the corpus state, not of the price.
 
 ---
 
@@ -1039,25 +1261,59 @@ CREATE INDEX cw_obs_account ON crosswalk_observation (account_id, wd_number, tit
                                                       decided_at DESC);
 CREATE INDEX cw_obs_learning ON crosswalk_observation (title_norm, chosen_class_norm);
 
--- The aggregate prior. k-anonymised (§7.4). Rebuilt nightly, after promotion.
+-- Which accounts may contribute to the CROSS-TENANT prior at all.
+-- HIGH-2: signup is a free magic link, so "distinct account" is an attacker-controlled
+-- input. Costly-signal eligibility is what makes k mean something. Mirrors
+-- ARCHITECTURE.md §11.6 exactly; if these two ever disagree, ARCHITECTURE wins on the
+-- threshold and this DDL is the bug.
+CREATE VIEW crosswalk_eligible_account AS
+SELECT f.account_id
+FROM filing f
+WHERE f.status = 'RELEASED'                    -- DRAFT — NOT CERTIFIABLE never counts
+GROUP BY f.account_id
+HAVING count(*) >= 4                           -- >= 4 released filings
+   AND count(DISTINCT f.project_id) >= 2;      -- across >= 2 projects
+
+-- The aggregate prior. k-anonymised (§7.4). Rebuilt on a FIXED SCHEDULE (nightly, after
+-- promotion) and never on a deletion event -- the schedule is the differencing mitigation
+-- described in §7.4, not an implementation detail. Consumers may use this to ORDER a
+-- candidate list and for nothing else (AS-5 / HIGH-2): there is deliberately no column here
+-- in which a selection could be expressed.
 CREATE MATERIALIZED VIEW crosswalk_prior AS
 SELECT
     o.title_norm,
     r.state_code,
     ct.construction_type,
     o.chosen_class_norm,
-    count(DISTINCT o.account_id)                       AS supporting_accounts,
-    count(*)                                           AS observations,
-    max(o.decided_at)                                  AS last_confirmed_at
+    -- Published shape is a coarse band, not a live count: the exact k of a cell is not
+    -- readable through any API (§7.4 (iv)). supporting_accounts stays internal.
+    width_bucket(
+        count(DISTINCT o.account_id)::numeric
+          / nullif(sum(count(DISTINCT o.account_id)) OVER (
+                PARTITION BY o.title_norm, r.state_code, ct.construction_type), 0),
+        0, 1, 5)                                       AS agreement_band,
+    date_trunc('day', now())                           AS as_of      -- refresh date, not event time
 FROM crosswalk_observation o
+JOIN crosswalk_eligible_account e ON e.account_id = o.account_id
 JOIN wd_revision r ON (r.wd_number, r.revision) = (o.wd_number, o.revision)
 CROSS JOIN LATERAL unnest(r.construction_types) AS ct(construction_type)
+WHERE o.provenance = 'user_confirmed'          -- unconfirmed rows never reach the aggregate
+  AND o.account_id IS NOT NULL                 -- attribution is NOT NULL by schema; belt and braces
 GROUP BY 1,2,3,4
 HAVING count(DISTINCT o.account_id) >= 5;      -- k = 5. Below this the prior does not exist.
 
 CREATE UNIQUE INDEX crosswalk_prior_pk ON crosswalk_prior
   (title_norm, state_code, construction_type, chosen_class_norm);
 ```
+
+The four HIGH-2 protections are all in that DDL rather than in application code, because a
+policy an ORM can forget is not a boundary: **eligibility** (`crosswalk_eligible_account` —
+four released filings across two projects is weeks of real work per sybil, against a $0
+signup), **confirmation** (`provenance = 'user_confirmed'`), **attribution**
+(`account_id IS NOT NULL`, and `NOT NULL` at the base table), and **coarsening**
+(`agreement_band`, no raw count leaves the view). The fifth — that the consumer may only
+reorder — is enforced in the return type at `crosswalk/aggregate/**`
+(`ARCHITECTURE.md` §3.9): an ordering has no field for a selection.
 
 ### 7.3 How a customer correction feeds the crosswalk
 
@@ -1081,8 +1337,8 @@ A crosswalk built from customer corrections has an obvious hazard that the dossi
 
 Three further rules:
 
-- The **model never sees another account's data**. Its input is this WD's classification list plus this account's own history. `crosswalk_prior` influences the *deterministic* pre-ranking, which is aggregate and k-anonymised, not the prompt.
-- **Deletion.** An account deletion removes its `crosswalk_observation` rows and rebuilds the prior. Because the prior requires five accounts, no single deletion can be detected by observing the prior's change.
+- The **model never sees another account's data**. Its input is this WD's classification list plus this account's own history. `crosswalk_prior` influences the *deterministic* candidate **ordering** — aggregate and k-anonymised — never the prompt, and since the HIGH-2 remediation never a pre-selection either (`ARCHITECTURE.md` §11.6 AS-5, `USER_JOURNEY.md` §6.3.1, `ENGINE.md` §15.1 own that rule; this section is the storage half of it).
+- **Deletion — stated correctly, because the earlier wording was false.** An account deletion removes its `crosswalk_observation` rows and rebuilds the prior. The sentence that stood here until 2026-08-13 — *"because the prior requires five accounts, no single deletion can be detected by observing the prior's change"* — is **wrong, and wrong in the direction that flatters us**. `k = 5` is a publication floor, not a differencing defence: an observer who snapshots the prior before and after watches a cell at exactly `k = 5` vanish, which is precisely the observation the sentence denies. Two cells' worth of arithmetic recovers a departing account's associations. What is actually true, and all that is claimed now: (i) the prior carries counts, never rows, never an account identity, and never raw title text; (ii) a cell is published only at `k ≥ 5`, so no cell ever traces to one account *at rest*; (iii) `crosswalk_prior` is a materialized view refreshed on a **fixed schedule, never on a deletion event**, and cells are published with the refresh's date rather than a live count, so a departure is not observable as an event — it is smeared into a batch alongside every other change in that window; (iv) the published value is a bucketed agreement ratio, not `count(DISTINCT account_id)`, so the exact `k` of a cell is not readable from the API at all. This is *mitigation by batching and coarsening*, not a proof, and it is recorded as such rather than as a privacy guarantee. What deletion erases account-wide — and what it deliberately does not, including immutable artifacts, backups and the Stripe record — is `ARCHITECTURE.md` §5.5, which is the authority; nothing here may be read as a broader promise than that section makes.
 - **No title text crosses accounts.** `crosswalk_prior` keys on `title_norm`, which is a normalised occupational string, never on the raw payroll text, which may contain a person's name or an internal crew code.
 
 ### 7.5 Why the free tier makes zero LLM calls
@@ -1265,7 +1521,9 @@ The CA daily window is live as this is written: 22 August 2026 is nine days away
 
 **`OPEN`.** A `corpus_snapshot` row is created. Everything below runs against this row; a crash at any point leaves a snapshot in a non-`promoted` state and the previous snapshot remains current. Nothing is ever half-promoted.
 
-**`INDEXED`.** One request: `GET …?index=dbra&page=0&size=5000&is_active=true` with `Accept: application/hal+json`. The full active set arrives in a single response (§2.1). Recorded on the snapshot: `index_alias` (from any record's `_index`), `index_total_active`, `index_indexed_date`, and the raw response as a blob. A second request without `is_active` at `size=1` captures `index_total_all`. Probes 1 and 2 evaluate here.
+**`INDEXED`.** One request: `GET …?index=dbra&page=0&size=5000&is_active=true` with `Accept: application/hal+json`. The full active set arrives in a single response (§2.1, which is the authority on this request shape and supersedes `ARCHITECTURE.md` §7.1's 43-page walk). Recorded on the snapshot: `index_alias` (from any record's `_index`), `index_total_active`, `index_indexed_date`, and the raw response as a blob. A second request without `is_active` at `size=1` captures `index_total_all`. Probes 1 and 2 evaluate here.
+
+Three assertions run before the response is used, in this order, and all three are §10.1's preconditions rather than new rules: `page.number == 0`; `_embedded.results` non-empty with `length == min(size, totalElements)`; and **`page.totalPages == 1`**. A `totalPages` above 1 is *not* an error — it means the active set has outgrown `size`, which is corpus growth. The stage widens `size` up to `maxAllowedRecords` and re-reads once; only if `totalPages > 1` persists at `size = maxAllowedRecords` does it fall back to the `state`-partitioned crawl of §2.1, and that fallback reconciles its slice union against an unfiltered `page=0` `totalElements` before any result is used. The single-request path stays the design; the paginated path stays a tested fallback.
 
 **`FETCHED`.** For each of the 4,236 active WDs, compare the index's `revisionNumber` against our high-water mark. For any WD where the index is ahead, walk path B from our high-water + 1 upward until 404, fetching each revision. For every fetched revision, also fetch path C and canonicalise. Additionally — and this is the part that catches a stale *index* — for a rotating sample of 200 WDs per night plus every WD pinned by an active customer project, walk one revision *past* the index's claimed high-water mark; a 200 there means a new revision exists that path A has not yet indexed (probe 4, §10.4).
 
@@ -1301,7 +1559,7 @@ stateDiagram-v2
     QUARANTINE --> RECONCILED : WD excluded;<br/>prior revision remains current
 
     RECONCILED --> CANARIED : blocking_variances = 0
-    RECONCILED --> HELD : any blocking variance<br/>on a pinned field
+    RECONCILED --> HELD : disagreement on one of the three<br/>blocking fields only (§9.5 tier 1)
     RECONCILED --> FROZEN : P3 content hash changed<br/>with no revision bump
 
     CANARIED --> PROMOTED : golden suite 100%<br/>(G1)
@@ -1340,8 +1598,8 @@ The distinction the diagram is built around: **`HELD` is about this snapshot; `F
 | **G-fetch** | Every revision the index claims exists returned 200 on path B | `HELD` | C2 |
 | **G-parse** | Per-WD; §4.4's six rules | `QUARANTINE` (per WD) | U4 |
 | **G-canon** | Path B canonical text == path C canonical text, for every fetched revision | `QUARANTINE` (per WD) | §2.3 |
-| **G-modtable** | `mod_table_rows == revision + 1`, dates strictly increasing, last == header | `QUARANTINE` (per WD) | Path D |
-| **G-agree** | Zero `blocking_variance` rows | `HELD` | D5, R1(b) |
+| **G-modtable** | Modification numbers contiguous, all in `0…revision`, **last row == `revision`**, dates non-decreasing, last date == header date | `QUARANTINE` (per WD) | Path D, **C6** |
+| **G-agree** | Zero `blocking_variance` rows — and the blocking field set is exactly `{revision_number, publish_date, active_flag}` (§9.5) | `HELD` | D5, R1(b), **C5** |
 | **G-content** | No `canonical_sha256` change at an unchanged `(wd, revision)` | `FROZEN` | R1(c) |
 | **G-canary** | Golden payroll suite 100% exact match | `HELD` + block the build | G1 |
 
@@ -1349,27 +1607,54 @@ G-canary blocks the *build* as well as the corpus, per G1's "any divergence bloc
 
 ### 9.5 Dual-ingest disagreement: the blocking rule
 
-D5 requires that disagreement between paths blocks promotion. §2.5 showed that a naive whole-record rule would block one of Virginia's largest Highway determinations over a flag we never use. The rule is therefore field-scoped, with the field list frozen in the schema so it cannot drift:
+**This section is the authority on what blocks a promotion. It supersedes `ARCHITECTURE.md` §8.2 probe P4 and ADR-004's decision sentence** (§0.5), both of which give blocking power to the `standard` flag and would therefore quarantine 4,236 of 4,236 determinations on the first run (**C5**, review finding CRIT-1).
 
-**Pinned fields — disagreement is `blocking_variance`, snapshot goes `HELD`:**
+D5 requires that disagreement between paths blocks promotion. It does not say *every* disagreement, and §2.5's fleet measurement shows why it must not: across a 200-WD random sample, one field disagrees on 100% of records, one on 5.5%, one on 0.5% (and that one turned out to be our own parser), and the remaining seven on none. A rule that blocks on all of them blocks everything, every night, forever. The rule is therefore field-scoped, the field list is minimal, and every field's red rate is measured before it is allowed to block.
 
-| Field | A | B | C | D |
-|---|---|---|---|---|
-| `wd_number` (normalised uppercase) | ✓ | ✓ | — | ✓ (header) |
-| `revision` | ✓ | ✓ | — | ✓ (mod table row count − 1) |
-| `publish_date` (normalised to America/New_York date) | ✓ | ✓ | — | ✓ (header + last mod row) |
-| `canonical_sha256` | — | ✓ | ✓ | — |
-| county **names** | ✓ | — | — | ✓ |
-| `state_code` | ✓ | ✓ | — | ✓ |
-| `construction_types` (set equality) | ✓ | ✓ | — | ✓ |
+**Tier 0 — identity preconditions. Not variances at all.**
 
-**Advisory fields — disagreement is recorded in `variance_detail`, promotion proceeds, value never surfaced:**
+Before any comparison, `upper(B.fullReferenceNumber)` must equal the WD number we requested and `D.header` must name the same number. A mismatch means we fetched or parsed the wrong document; it is a bug in us, not a disagreement between publishers. That WD is quarantined and the fetch is retried on the next run. Measured red rate 0/200.
 
-| Field | Observed disagreement |
-|---|---|
-| `standard` / `isStandard` | `true` vs `false` on VA20260195 r2 |
-| county **codes** | 13 vs 12 codes, 3 overlapping, on the same record |
-| `location.description` | `"na"` on path B; absent on path A |
+**Tier 1 — the blocking set. Exactly three fields, and no more.**
+
+| Field | Compared across | Disagreement ⇒ | Measured red rate (200-WD sample, 2026-08-13) |
+|---|---|---|---|
+| **`revision_number`** | A `revisionNumber` · B `revisionNumber` · D last modification row | `blocking_variance`, snapshot `HELD` | **0 / 200** |
+| **`publish_date`** (normalised to an `America/New_York` date) | A `publishDate` epoch-ms **and** `modifiedDate` · B `publishDate` · D header date **and** last mod row date | `blocking_variance`, snapshot `HELD` | **0 / 200** |
+| **`active_flag`** | A `isActive` · B `active` | `blocking_variance`, snapshot `HELD` | **0 / 200** |
+
+These three are the fields the product actually reads to answer *"which text governed this payroll week."* A disagreement on any of them means the two services do not agree about which determination we are holding, and there is no safe way to pick a winner. Everything else is either an integrity gate on the bytes (tier 2) or a field we never read (tier 3).
+
+**Tier 2 — per-WD integrity gates. They quarantine a determination; they do not block the snapshot.**
+
+| Gate | Test | Measured red rate |
+|---|---|---|
+| `G-canon` | `canon(B.document) == canon(C.s3_object)` | **0 / 75** |
+| `G-modtable` | modification numbers contiguous within `0…revision`, last row `== revision`, dates non-decreasing, last date `==` header date (**C6**) | **0 / 200** |
+| `G-parse` | §4.4's six parser rules | per-WD, §4.4 |
+
+These are statements about whether we hold a clean copy of *this* determination, not about whether the corpus is trustworthy. The failure is local and the response is local: that WD's previous promoted revision stays the mirror's answer and the rest of the snapshot proceeds.
+
+**Tier 3 — advisory. Recorded, reported, never blocking.**
+
+A disagreement here sets `agreement = 'advisory_variance'`, appends a record to `variance_detail`, and appears in the nightly ingest report. Promotion proceeds. The value is never surfaced to a customer, because we have no basis for asserting either side.
+
+| Field | Measured red rate | Why it is advisory |
+|---|---|---|
+| `standard` / `isStandard` | **200 / 200 (100%)** | constant `true` on A across all 4,236 active records, constant `false` on B; a fixed offset between two vocabularies, carrying zero information (**C5**) |
+| county **codes** (A `location.state.counties[].code` vs B `location.mapping[].counties`) | **11 / 200 (5.5%)** | a real but uncommon divergence in a code namespace **we never read** — §6.1 makes the prose authoritative for scope |
+| county **names** (A vs D prose) | **1 / 200 (0.5%)**, and that one is our own comma-split bug on `DC20260001` | scope errors are caught by §6.1's `unresolved` rule, which excludes the WD from the lookup index — a narrower and more accurate response than halting the corpus |
+| `construction_types` (set equality, A vs B) | **0 / 200** | never measured to fire; advisory until it has (see the promotion procedure below) |
+| `state_code` (A vs the WD number's own prefix) | **0 / 200** | as above |
+| `location.description` | n/a — `"na"` on B, absent on A | a field with no defined meaning on either path |
+
+**Two of these deserve their reasoning stated, because both look like they should block.**
+
+County names and `construction_types` are things the product genuinely relies on, and the instinct is to block on them. The measurement says otherwise in different ways. County names have never been observed to truly disagree, and the only red we produced was our own parser — a probe that has only ever fired on our bugs will, in production, mostly fire on our bugs, and its failure mode is a halted corpus. `construction_types` and `state_code` have a red rate of exactly zero, which sounds like the best possible result and is in fact the reason they cannot block yet: **a probe that has never been observed to fire has never been shown capable of firing.** Zero red and 100% red are the same epistemic state — no demonstrated discrimination — and C5 treats them the same way.
+
+**How a field is promoted from advisory to blocking.** Not by argument. A field moves into tier 1 when (a) its red rate has been measured on ≥200 live records and recorded in §10.6, (b) the red rate is above zero and below 1%, and (c) at least one red case has been inspected and shown to be a genuine upstream disagreement rather than a parser artifact. Condition (c) is the one that would have stopped both C5 and the `DC20260001` case, and it is the only condition that cannot be satisfied by a script.
+
+**The blocking set is frozen in code, not in prose.** A CI test asserts the literal set equality `BLOCKING_FIELDS == {revision_number, publish_date, active_flag}`, so adding a field to it is a visible, reviewed diff rather than a one-word edit inside a comparison function. A second CI test asserts `'standard' ∉ BLOCKING_FIELDS` by name, because that is the specific regression this document exists to prevent.
 
 **Missing-path rules.** A path returning 404 or timing out is not a disagreement. Path B is mandatory (`CHECK (blob_b_sha256 IS NOT NULL)`); path A absence is normal for archived records (30% carry no location, 40% no dates); path C absence is tolerated with `agreement = 'single_path'` and is permitted only for backfill, never for a revision that will become current.
 
@@ -1474,6 +1759,43 @@ CREATE UNIQUE INDEX corpus_freeze_open ON corpus_freeze ((closed_at IS NULL))
 
 A freeze closes itself: three consecutive clean runs of the probe that opened it sets `closed_at` and `auto_closed = true`. There is no manual clear, because a manual clear is a human minute (A6) and, worse, a human judgement call about upstream health made under pressure.
 
+### 10.6 The blocking-probe register
+
+Invariant 7 and Challenge C5: **no probe blocks without a measured red rate recorded here.** This is the register. Every gate in this document that can halt a promotion, quarantine a determination, freeze the product or refuse a database write appears in it with the rate it fires at on the live corpus, the sample it was measured on, and the date.
+
+| Probe / gate / constraint | §  | Blocking power | Red rate | Sample | Measured |
+|---|---|---|---|---|---|
+| `revision_number` disagreement | 9.5 | snapshot `HELD` | **0.0%** | 0 / 200 active WDs, random | 2026-08-13 |
+| `publish_date` disagreement | 9.5 | snapshot `HELD` | **0.0%** | 0 / 200 | 2026-08-13 |
+| `active_flag` disagreement | 9.5 | snapshot `HELD` | **0.0%** | 0 / 200 | 2026-08-13 |
+| Tier-0 identity precondition | 9.5 | quarantine WD | **0.0%** | 0 / 200 | 2026-08-13 |
+| `G-canon` — path B ⨯ path C canonical equality | 9.4 | quarantine WD | **0.0%** | 0 / 75 | 2026-08-13 |
+| `G-modtable` — suffix form (**C6**) | 9.4 | quarantine WD | **0.0%** | 0 / 200 | 2026-08-13 |
+| `wd_rev_modlast` / `modrange` / `modsuffix` `CHECK` | 3.3 | **refuses the write** | **0.0%** | 0 / 200 | 2026-08-13 |
+| Probe 1 — count delta > 0.5% | 10.1 | snapshot `HELD` (never blocks a filing) | rate per **night**, not per record — blank until the 60-night window fills; **H10** | — | armed |
+| Probe 1 — `totalElements: 0` precondition | 10.1 | snapshot `HELD` | fires by construction at `page=99&size=100`; 0% on the design's own request shape | 0 / 1 request shape | 2026-08-13 |
+| Probe 2 — alias changed **and** count moved | 10.2 | `FROZEN` (suppresses new assertions only) | rate per **alias roll** — blank until observed twice; **H10** | — | armed |
+| Probe 3 — content hash changed at unchanged revision | 10.3 | `FROZEN` (suppresses new assertions only) | rate per **republication** — blank until observed; **H10** | — | armed |
+| Probe 4 — `revision + 1` returns 200 | 10.4 | **none by design** — raises an alert, never blocks | n/a | — | — |
+| `G-parse` — §4.4's six rules | 4.4 | quarantine WD | not yet measured — needs the first full-corpus parse; **H3**, **H10** | — | — |
+| `G-canary` — golden payroll suite | 9.4 | `HELD` **+ blocks the build** | 0% by construction on a frozen corpus | frozen | — |
+| **Withdrawn:** `standard` flag disagreement | ~~9.5~~ | **none — removed** | **100.0%** | 200 / 200, and `isStandard` constant on 4,236 / 4,236 | 2026-08-13 |
+| **Withdrawn:** `mod_table_rows = revision + 1` | ~~3.3~~ | **none — replaced** | **17.0%** | 34 / 200 | 2026-08-13 |
+
+Four rules govern this table.
+
+**A red rate above 1% on a blocking probe is a specification bug, not an incident.** It is handled by changing the specification, never by working through the quarantine queue — which would be a human minute per determination and is forbidden by A6 regardless of how the arithmetic came out. Both withdrawn rows above were found this way.
+
+**A red rate of exactly zero does not license blocking on its own.** It licenses *keeping* blocking power for a probe that already earns it structurally — a canonical-hash mismatch or a modification table that contradicts its own revision is a corrupt copy by definition, whatever its frequency. It does not license *granting* blocking power to a field we merely believe should agree. §9.5's promotion procedure is the difference.
+
+**The rule's stringency scales with the blast radius of the response, and the rows marked "not yet measured" stay armed.** This is the distinction that makes C5 a usable rule rather than a blanket ban, and getting it backwards would open an autonomy hole where it closed one.
+
+`standard` had to be disarmed because its response was `QUARANTINE` — publish neither path — which at a 100% red rate means the corpus publishes nothing and the product emits nothing. Probes 1, 2 and 3 respond with `HELD` and `FROZEN`, and §9.3 is built on the fact that **neither of those blocks a filing**: a held snapshot advances the freshness clock and narrows a sentence; a frozen product suppresses *new* rate assertions and serves every pinned one. A false positive from probe 1 costs a dated banner and, past 72 hours, a Stripe credit we owe anyway under D7. A false negative costs a customer a rate we never verified. The asymmetry runs the other way from `standard`'s, so the probes run armed from night one.
+
+What is genuinely unmeasured about them is the rate, not the direction, and rates cannot be sampled from one day's corpus: probe 1 fires on a change *between* nights, probe 2 on an alias roll, probe 3 on a republication. Their red rates therefore enter the register from a 60-night rolling window — the same window G3 already requires before any "every wage determination" claim ships — and the 1% rule applies to them from the moment the window is full, not before. Until then they are honest blanks in the register rather than absent rows, which is the point of writing the register down.
+
+**The register is re-measured on a schedule, because it is a measurement of somebody else's system.** A quarterly job re-runs every measurable row against a fresh 200-WD random sample and writes the results to `probe_run` with `probe_run.observed.kind = 'red_rate_audit'`. A blocking probe whose red rate has crossed 1% since the last audit **disarms itself automatically** and files the finding into the ingest report. That is not a compromise of the fail-closed posture; it is the fail-closed posture applied one level up, to the probes themselves. A probe that has silently started firing on everything is indistinguishable from an upstream vocabulary change, and the C5 failure mode — a green-looking system that emits nothing — is worse than the failure it was guarding against.
+
 ---
 
 ## 11. Staleness, banners, and the Stripe auto-credit
@@ -1498,6 +1820,8 @@ Note what it is *not*: it is not the last time the cron ran, and not the last ti
 | **> 14 d** | as above, plus in-product export offer | suppressed | as above | credit continues; self-serve cancel and full archive export remain one click |
 
 The 72-hour trigger is D7's, verbatim: *"Corpus unverified beyond 72h → dated banner, new rate assertions suppressed, Stripe auto-credit issued."*
+
+**The ladder governs the free tier too, and the table above understates it.** "New rate assertions are suppressed" reads, to a builder, as a rule about accounts — but the visitor with no account is the one who never sees a banner, and every free-tier rate assertion is a first-time resolution with no pin behind it. §6.4 is the full rule; the one-line version is that **L2 suppresses a corpus rate landing on a new free-tier form exactly as it blocks a new pin**, while the county × craft lookup pages keep rendering under a dated narrowing (P-C) rather than going blank. The freshness sentence and its timestamp are identical on the free artifact and the Crew artifact; only the credit differs, because only one of them paid.
 
 What survives at every tier is the thing the customer actually needs on a Friday afternoon: **a filing on an already-pinned project always generates.** That is P5 and it is the whole reason the autonomy objection closed.
 
@@ -1623,7 +1947,7 @@ The diff is a set operation on `(identifier, amendment_date, removed)`, not a te
 | **5.28** | Unfunded plans — refused, not approximated |
 | **5.31(b)** | The three discharge methods for the fringe obligation |
 | **5.32** | Overtime and the fringe exclusion; the reason the premium is `0.5 × max(BHR_WD, cash rate excl. fringe)` |
-| **3.5** | The eight permissible deduction categories |
+| **3.5** | The **ten** permissible deduction categories, (a)–(j). Re-verified via the eCFR API 2026-08-13: ten paragraphs, last amended 88 FR 57730 (23 Aug 2023), with **(i)** board/lodging/facilities and **(j)** nominal-value safety equipment. This document previously said eight; `ENGINE.md` §9.2 is correct and `ARCHITECTURE.md` §3.2's eight-category enum is the review's HIGH-6. An enum short of the current paragraph set blocks lawful deductions — boots and gloves under (j) are routine on a field crew — so the changelog entry for 3.5 carries the paragraph letters and a future paragraph (k) fails the build rather than silently blocking lines |
 
 A change on the binding list sets `obligation_review_required`, which: raises a dated in-product banner naming the section; marks the affected computation `pending_review`; and, for a change to 5.5(b) or 5.32, **blocks new CWHSSA computations** until the golden suite has been re-derived. A change off the binding list is logged to the changelog and shown in a "what changed in the rules" surface, which is content for D8 and costs nothing.
 
@@ -1757,7 +2081,7 @@ Every row terminates in a product state. None terminates in a person (A3).
 | F9 | Content hash changes at an unchanged revision | Probe 3 + `wd_revision_guard()` | `FROZEN`; ingest transaction aborts | As F6 |
 | F10 | Path B 404s for a revision path A claims exists | G-fetch | `HELD`; quarantine that WD | That WD's rates narrow to its last promoted revision |
 | F11 | Path B and path C canonical texts differ | G-canon | Quarantine that WD | As F10 |
-| F12 | Modification table row count ≠ revision+1 | G-modtable + `wd_rev_modrows` | Quarantine that WD | As F10 |
+| F12 | Modification table's last row ≠ `revision`, or numbers non-contiguous | G-modtable + `wd_rev_modlast`/`modrange`/`modsuffix` | Quarantine that WD | As F10 |
 | F13 | Blocking variance on a pinned field | G-agree | `HELD`; neither side published | As F10 |
 | F14 | Parser residue >2%, or class count swings ±25% | G-parse | Quarantine that WD | Lookup pages show "under review, last verified {date}" |
 | F15 | Unrecognised rate identifier | G-parse | Quarantine that WD | As F14 |
@@ -1771,6 +2095,10 @@ Every row terminates in a product state. None terminates in a person (A3).
 | F23 | Corpus unverified >72 h | §11.2 | assertions suppressed | Banner + **auto-credit** |
 | F24 | Stripe credit reconciliation mismatch | §11.4 layer 3 | further crediting frozen | none; internal alarm |
 | F25 | Promoted snapshot fails post-promotion canary | §9.6 | `ROLLED_BACK` | Affected filings flagged in archive with one-click regenerate; emitted artifacts untouched |
+| F26 | Free-tier generation, at any freshness level | §6.4 rule 1 | none | Always **P-B** — DRAFT — NOT CERTIFIABLE, signature withheld, block reason `NO_PINNED_REVISION`, full corpus provenance and snapshot date in the footer |
+| F27 | Free-tier generation requested at **L2** | §6.4 rule 2 | none | As F26, plus `CORPUS_STALE_NO_NEW_ASSERTION`: rate cells stay empty for the visitor to type and the exception report names the last successful newer-revision check. Lookup pages keep rendering under the dated narrowing (**P-C**) |
+| F28 | A project's pinned revision is superseded | §5.5, nightly diff | both revisions recorded; pin untouched | **P-C** narrowed footer naming both revisions and both dates, **P-D** declining the FAR 22.404-6 conclusion, three actions at equal weight — or, if the customer asserted a contract lock at setup, the re-pin demoted below "keep revision N" |
+| F29 | A blocking probe's red rate crosses 1% at the quarterly audit | §10.6 | that probe **disarms itself**; promotion continues | none directly; the finding lands in the ingest report as a specification bug |
 
 F18 deserves a closing note because it is the one that looks like it needs a human and does not. "Which classification is this worker?" is a question only the contractor can answer — they know what the person did on Tuesday. The corpus's job is not to answer it but to make answering it a three-second decision with the determination's own words in front of the person who knows, and then **never ask again** for that account, that WD and that title. That is the difference between an escalation path and a picker, and it is the whole of A6's "the one human-shaped question answers itself permanently."
 
@@ -1786,6 +2114,8 @@ F18 deserves a closing note because it is the one that looks like it needs a hum
 | **G4** Time saved | Measured in-product from CSV upload to artifact download; never a DOL-derived extrapolation. **Deep dives 01 and 02 independently establish the DOL burden is 56 minutes per *form*, not per employee** (OMB 1235-0008: 122,936 respondents, 11,310,112 responses, 10,556,105 hours) — the "15 hours a week" and "over an hour per employee" figures are dead and must never appear | Instrumented timestamps, not a corpus table |
 | **G5** Autonomy | Human-minutes counter; every row in §13 is designed so that no failure increments it | Instrumented; §13 is the design evidence |
 | **G6** Risk reversal | §11.5's chaos test must be green before any guarantee copy ships | CI job, `staleness_window`, Stripe reconciliation |
+
+One gate cuts across all six and is new since the adversarial review: **§10.6's blocking-probe register.** G1, G3 and G5 each depend on probes doing something other than firing constantly or never — a probe that quarantines the corpus makes G3 report a 100% delta, makes G1's canary run against nothing, and makes G5's human-minutes counter the only signal left. The register is the mechanism that keeps the other gates measuring what they claim to measure, and its quarterly audit is the only scheduled job in this document whose subject is Ratepin rather than the upstream.
 
 ---
 
@@ -1811,6 +2141,12 @@ Stated as hypotheses because they are not measured. None blocks the build; each 
 
 **H9 — Index lag is unmeasured.** Probe 4 (§10.4) will produce the distribution of `(index date) − (publication date)`. Until it has, no claim is made about how quickly we detect a new revision — which is, notably, the central latency claim of the whole product. It ships measured or not at all.
 
+**H10 — The time-series probes' red rates cannot be measured from one day's corpus, and are therefore unknown.** Probe 1's count delta, probe 2's alias-plus-count rule and probe 3's silent-republication rule fire on a *change between nights*, not on a property of a record. §10.6 keeps them armed — their responses (`HELD`, `FROZEN`) narrow claims and never block a filing, so a false positive is cheap and a false negative is not — and leaves their rates blank until a 60-night rolling window fills. The falsification route is simply the 60 nights. The residual risk stated plainly: for that window we do not know how often these three fire, so we do not know whether the freshness banner will be a rare event or a nightly one, and no claim about corpus freshness rates ships until we do.
+
+**H11 — The 200-WD sample generalises to the 4,236-record active set, and to the 85,426-record archive.** Every red rate in §10.6 is a random sample of the *active* corpus on a single day. Two directions of error are plausible and neither is currently bounded: archived records are known to be structurally different (30% carry no `location`, 40% no dates, §2.1), so tier-3 rates measured on active records almost certainly understate the archive; and a 200-record sample cannot distinguish a true zero from a rate below roughly 1.5%. The quarterly audit is the falsification route for drift; the first full-corpus parse is the falsification route for the sampling error. No claim in the register is stated without its denominator for exactly this reason.
+
+**H12 — We do not know what fraction of subcontracts name a specific wage-determination revision.** §5.5's `wd_revision_locked_at_award` is collected as a customer assertion, and the whole design of the superseded-pin surface — which action is demoted, what the exception report says — turns on it. If nearly every subcontract names a revision, the contract-locked state is the common case and the default ordering is wrong for most users; if almost none does, the field is a setup question that earns nothing. Falsified by the distribution of the field's own values at 50+ paying accounts, which costs nothing to collect because the field is collected anyway.
+
 ---
 
 ## 16. References
@@ -1818,6 +2154,7 @@ Stated as hypotheses because they are not measured. None blocks the build; each 
 **Primary sources, all fetched live 2026-08-13**
 
 - https://sam.gov/api/prod/sgs/v1/search/?index=dbra&page=0&size=2&is_active=true&sort=-modifiedDate — DBRA index (path A). 200 `application/hal+json`; `totalElements` 4,236 active / 85,426 total; `maxAllowedRecords` 10,000; alias `db-prod-samdotgovsearch-wdol-dba_idxref_08112026`
+- https://sam.gov/api/prod/sgs/v1/search/?index=dbra&page=0&size=5000&is_active=true — **the single-request active crawl** (§2.1, §9.2, HIGH-5). Re-verified 2026-08-13: 200, 3,638,250 bytes, 0.68 s, `page.totalPages: 1`, 4,236 results, 4,236 distinct `_id`, `isStandard: true` on 4,236 of 4,236 and `isActive: true` on 4,236 of 4,236 — the CRIT-1 measurement
 - https://sam.gov/api/prod/wdol/v1/wd/VA20260195/2 — per-WD document endpoint (path B). 200, 13,395 bytes, byte-stable across three fetches; `standard:false` against the index's `isStandard:true`
 - https://sam.gov/api/prod/wdol/v1/wd/VA20260195/0 — superseded revision 0, 200, 12,878 bytes; `location.mapping` empty
 - https://sam.gov/api/prod/wdol/v1/wd/WA20200002/0 — a 2020 determination, 200, 27,748 bytes
@@ -1838,7 +2175,7 @@ Stated as hypotheses because they are not measured. None blocks the build; each 
 - https://www.reginfo.gov/public/do/PRAOMBHistory?ombControlNumber=1235-0008 — ICR history; revision approved 2025-01-06, expires 2028-01-31
 - https://www.onetcenter.org/database.html — O*NET 29.1 database
 - https://www.onetcenter.org/dl_files/database/db_29_1_text/Alternate%20Titles.txt — 55,121 alternate-title rows; 1,595 under SOC 47-2
-- https://www.acquisition.gov/far/22.404-6 — FAR 22.404-6, wage determination effectiveness; the conclusion we decline to draw
+- https://www.acquisition.gov/far/22.404-6 — FAR 22.404-6, wage determination effectiveness; the conclusion we decline to draw. Fetched 2026-08-13 for §5.5: **(b)(1)(i)** the 10-calendar-day rule before bid opening; **(b)(2)** modifications received after bid opening *"shall not be effective"*; **(b)(5)** an effective modification received after award is incorporated *"retroactive to the date of award"*; **(c)(1)** under negotiation, modifications received before award are effective; **(d)(1)(i)** the option-exercise and 45-day rules. Together these forbid *both* naive answers, which is why §5.5 declines rather than defaults
 
 **Regulatory authority**
 
@@ -1881,6 +2218,9 @@ Stated as hypotheses because they are not measured. None blocks the build; each 
 
 - `/home/user/Octopus/run-2/PLAN.md` — A1–A6
 - `/home/user/Octopus/run-2/phase-1-ideation/IDEA_DOSSIER.md` — D1–D10, G1–G6, R1–R3
+- `/home/user/Octopus/run-2/phase-2-build/DESIGN_REVIEW.md` — the adversarial review. **CRIT-1** (the `standard` probe quarantines the corpus) is closed by C5, §9.5 and §10.6; **HIGH-5** (contradictory ingest mechanics) by §0.5 and §2.1; **MED-9** (superseded pin against a contract-locked revision) by §5.5; **MED-10** (the free generator's unpinned rate assertion) by §6.4. C6 and the `DC20260001` parser bug were found while applying the review's own standing rule and are not in it
+- `/home/user/Octopus/run-2/phase-2-build/architecture/ARCHITECTURE.md` — governs everything this document is silent about; defers to §9.5, §10.6, §2.1 and §9.2 per the supersession table in §0.5
+- `/home/user/Octopus/run-2/phase-2-build/architecture/USER_JOURNEY.md` — the four refusal primitives P-A…P-D, which §5.5, §6.4 and §13 are written against
 - `/home/user/Octopus/run-2/phase-1-ideation/research/01-demand-pmf.md` — the DOL burden is per form, not per employee (G4)
 - `/home/user/Octopus/run-2/phase-1-ideation/research/02-competition-positioning.md` — the WD archive is not a cornered resource (Challenge C1)
 - `/home/user/Octopus/run-2/phase-1-ideation/research/03-gtm-pricing.md` — the free tier makes zero LLM calls (§7.5)

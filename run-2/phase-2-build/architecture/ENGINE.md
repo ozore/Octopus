@@ -1,4 +1,4 @@
-# WAGE LINE — COMPUTATION AND MODEL ENGINE (v1)
+# RATEPIN — COMPUTATION AND MODEL ENGINE (v1)
 
 **Product:** Ratepin — *certified-payroll rate-of-record engine for open-shop specialty subcontractors on Davis-Bacon work.*
 **Job (D2):** "Get Friday's certified payroll out the door with rates I can defend."
@@ -14,23 +14,34 @@
 - `/home/user/Octopus/run-2/phase-2-build/architecture/ARCHITECTURE.md` — invariants **I1–I7**, **ADR-001–013**. This document refines **I1**, **I2** and **ADR-002** at the arithmetic and prompt layer.
 - `/home/user/Octopus/phase-2-build/architecture/LLM_ENGINE.md` — run 1 (Clausewright). Its shape is the quality bar; its conclusions are not portable, because run 1's model sat *in* the money path and this one does not.
 
-**Ownership.** This document is the single owner of: the arithmetic specification (§1–§13), the model request shapes and prompt-cache layout (§14–§20), the confidence ladder (§18), and the canary suite design (§21–§28). Where it conflicts with `ARCHITECTURE.md`, the two supersessions are stated explicitly — **ADR-101** (§17.4) and **§9.2** (the deduction count) — and nothing else in that document is altered.
+**Ownership.** This document is the single owner of: the arithmetic specification (§1–§13), the model request shapes and prompt-cache layout (§14–§20), the confidence ladder (§18), and the canary suite design (§21–§28). **On the arithmetic, this document is the authority and `ARCHITECTURE.md` defers to it** — the same relation `ARCHITECTURE.md` has to `CORPUS_DESIGN.md` on ingest. In particular the `DeductionCategory` enum (§9.1), the CWHSSA coverage gate (§7.0), the CWHSSA hours base (§7.3), the `col7A` formula (§8) and the rounding discipline (§11) are defined here and nowhere else.
+
+Where it conflicts with `ARCHITECTURE.md`, the supersessions are stated explicitly below. This table is not a claim of priority in the other direction: `ARCHITECTURE.md`'s own **AS-1…AS-8** table and `CORPUS_DESIGN.md` §0.5 supersede *this* document where they say so, and §15.1/§18.2's ordering-only rule (**HIGH-2**) arrived that way. The two namespaces are deliberately distinct — **ES-n** is what ENGINE overrides, **AS-n** is what ARCHITECTURE overrides — after the remediation audit found `S-3` and `S-5` each meaning two different things.
+
+| # | Supersedes | Stated in |
+|---|---|---|
+| **ES-1** | `ARCHITECTURE.md` §2.1's Sonnet/Opus model split | **ADR-101**, §17.4 |
+| **ES-2** | `ARCHITECTURE.md` §3.2's *eight* permissible deduction categories → **ten**, (a)–(j) | §9.2 |
+| **ES-3** | `ARCHITECTURE.md` §3.2's unconditional CWHSSA premium → gated on `contract_value_band` | §7.0 |
+| **ES-4** | `ARCHITECTURE.md` §5.2/§15's blanket `is_union_group` setup refusal → refuse only a **6B credit claim** | §13, **C-2** |
+| **ES-5** | `ARCHITECTURE.md` §3.5's "six checkboxes of 29 CFR 5.5(a)(3)(ii)(C)" → **three** certifications in (C); the six boxes are the WH-347 form's own reverse | §18.3 |
 
 **Verification note.** Every regulation quoted below was fetched from the eCFR API on **2026-08-13** and is quoted verbatim, not paraphrased from memory. Every DOL worked example is reproduced with its published figures and is used as a test oracle. Every model price, cache multiplier and schema constraint was fetched live from `platform.claude.com` on **2026-08-13**. The wage-determination extract in §15.3 is a live response from `sam.gov/api/prod/wdol/v1/wd/VA20260195/2` on the same date. Anything not verified in-session is flagged as a hypothesis in §30.
 
 ---
 
-## 0. The nine engine decisions
+## 0. The ten engine decisions
 
-Everything below is elaboration. These nine are the calls.
+Everything below is elaboration. These ten are the calls.
 
 | # | Decision | Rationale | Traces to |
 |---|---|---|---|
 | **E1** | **The money arithmetic is a pure function over integer cents with no clock, no locale, no randomness and no I/O.** Given the same inputs it returns byte-identical output a year later on a different machine. | This is what makes a $0.01 divergence a *build failure* rather than a tolerance. Anything non-deterministic in the core would force G1 to become an approximate gate, and an approximate gate on a federal false-statement surface is not a gate. | **D6**, **I1**, **ADR-002**, **G1** |
 | **E2** | **Four DOL-published worked examples are the arithmetic's primary oracles, not our own reasoning.** 29 CFR 5.31(b), 29 CFR 5.32(c)(1)–(3), FOH 15k11(a) and FOH 15k11(b) are encoded as fixtures whose expected values we did not author and cannot regenerate. | An oracle we wrote is a restatement of our own belief. An oracle DOL published is a falsifiable external claim. §12.3 shows all four independently confirming one formula. | **G1**, **R3** |
-| **E3** | **CWHSSA premium = `OT_hours × 0.5 × regular_rate`, where `regular_rate` is the hours-weighted average of `max(BHR_WD_c, cash_rate_c excluding bona fide cash-in-lieu)` across every classification worked in the week.** Single-classification weeks are the one-element case of the same formula, not a separate branch. | Derived in §7 and confirmed against all four E2 oracles. One code path means one thing to test; a second branch is a second place to be wrong. | 29 CFR 5.5(b)(1), 5.32; FOH 15k01(b) |
+| **E3** | **CWHSSA premium = `statutory_OT_hours × 0.5 × regular_rate`, less premium already *proven* paid**, where `statutory_OT_hours = max(0, Σ(st + ot + dt) − 40)` over covered work and `regular_rate` is the hours-weighted average of `max(BHR_WD_c, cash_rate_c excluding bona fide cash-in-lieu)` across every classification worked in the week. Single-classification weeks are the one-element case of the same formula, not a separate branch. | Derived in §7 and confirmed against all four E2 oracles, none of which it moves. **The hours base is every hour worked, not every hour the payroll export chose not to label** — 5.5(b)(1) is denominated in *"hours worked in excess of forty"*, and a column label that removed hours from the count made a federal obligation disappear (§4 A2). | 29 CFR 5.5(b)(1), 5.32, 778.202; FOH 15k01(b) |
+| **E3a** | **CWHSSA is gated, not universal: it attaches only to contracts *"in an amount in excess of $100,000"* (29 CFR 5.5(b)).** `contract_value_band` is a required project field; `unknown` withholds certification (**P-B**) rather than guessing either way. | The Davis-Bacon Act attaches at $2,000 and CWHSSA at $100,000 — a specialty sub sits between them routinely. Applying CWHSSA unconditionally tells a compliant contractor they underpaid; assuming it away deletes a real obligation. Neither guess is available on a document signed under 18 U.S.C. 1001. | §7.0; 29 CFR 5.5(b); 40 U.S.C. 3142 |
 | **E4** | **The `max(BHR_WD, cash)` floor is applied *per classification, to straight-time*, and is never re-applied to the weighted average.** | DOL's own Method 1 produces a regular rate of **$10.91** on a week where the electrician's WD basic hourly rate is **$12.00** (FOH 15k11(b)(1)). A naive reading of 5.32(a)'s "in no event ... less than the basic hourly rate" floors the average and produces $24.00 where DOL publishes $21.82. This is the single most likely place for a plausible-looking wrong number, and it is pinned by fixture. | §7.5; FOH 15k11(b) |
-| **E5** | **The model ranks; it never resolves.** There is no confidence value at which a model-proposed classification is written to an artifact without a human click. Confidence and margin govern *ordering and pre-selection only*. | D7 says the unmapped line is *blocked* and the choice is *memorised*. A threshold that auto-resolves would contradict D7 and would put a model decision inside a signed federal certification. The click costs the customer one action, once, forever — and it is what mints the crosswalk moat. | **D6**, **D7**, **A3**; §18 |
+| **E5** | **The model ranks; it never resolves.** There is no confidence value at which a model-proposed classification is written to an artifact without a human click. Confidence and margin govern *ordering only*; the single licence to pre-select a radio is an exact normalized match against the determination’s own verbatim label (§15.1, §18.2 L-C₁). | D7 says the unmapped line is *blocked* and the choice is *memorised*. A threshold that auto-resolves would contradict D7 and would put a model decision inside a signed federal certification. The click costs the customer one action, once, forever — and it is what mints the crosswalk moat. | **D6**, **D7**, **A3**; §18 |
 | **E6** | **The classification response schema makes a wrong answer unrepresentable, not merely detectable.** The model returns an array of integers constrained by a fixed `enum` of candidate slots; there is no string field in which a classification name could be invented, and no numeric field at all. | Anthropic [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs): the schema is enforced by a compiled grammar. Validation-after-the-fact catches a hallucinated class; an integer enum means the token was never sampleable. Refines **I2**. | **D6**, **I2**; §15.4 |
 | **E7** | **Any digit in a model-authored string rejects the response.** The exception narrative is a fixed template; the model writes prose into named slots, and code injects every number, date, WD reference and dollar amount from the provenance struct. | "The model may never emit a number that reaches an artifact" (**I2**) is otherwise an intention. As a lexical rule over the response it is a total, cheap, exhaustively testable function — and because a deterministic fallback sentence always exists, rejection costs nothing. | **I2**, **ADR-002**; §16.3 |
 | **E8** | **One model, `claude-sonnet-5`, for both jobs, at low effort.** Supersedes `ARCHITECTURE.md` §2.1's Sonnet/Opus split. Pre-committed promotion rule in **ADR-101**. | Both jobs are constrained: rank ≤12 enum slots, or fill ≤6 prose slots under a digit ban with a deterministic fallback. Neither is Opus-tier work, and one model ID means one cache namespace, one price row, one eval harness. Modelled cost falls to ~**$0.002/filing** against deep dive 03's $0.05 budget (§17.3). | **A6**; §17, **ADR-101** |
@@ -56,17 +67,31 @@ The cost is stated honestly: we cannot use the model to repair a malformed CSV. 
 
 ---
 
-## 2. Value types: integer cents, and the one place fractions are allowed
+## 2. Value types: integer cents, and every place a fraction is created
 
 ```ts
-type Cents      = number & { readonly __brand: 'Cents' };       // integer, exact
-type MilliRate  = number & { readonly __brand: 'MilliRate' };    // integer ten-thousandths of a dollar
-type Hours      = number & { readonly __brand: 'Hours' };        // integer hundredths of an hour
+type Cents       = number & { readonly __brand: 'Cents' };       // integer, exact
+type MilliRate   = number & { readonly __brand: 'MilliRate' };   // integer ten-thousandths of a dollar (10⁻⁴ $)
+type Hours       = number & { readonly __brand: 'Hours' };       // integer hundredths of an hour (10⁻² h)
+type MicroDollars = number & { readonly __brand: 'MicroDollars' }; // integer millionths of a dollar (10⁻⁶ $)
 ```
 
 **Rationale.** IEEE-754 binary floating point cannot represent $0.10. A build that computes `0.1 + 0.2 !== 0.3` has already lost the exact-match gate. Every monetary quantity is an integer count of cents; every rate is an integer count of ten-thousandths of a dollar (four decimal places, which is more precision than any wage determination publishes — the live extract in §15.3 shows two, e.g. `$ 36.85` / `14.13`); every hours figure is an integer count of hundredths of an hour, which is what payroll systems export.
 
-**The single division.** The only division in the engine is the weighted-average regular rate in §7.3. Everywhere else is multiply-and-add over integers, which is exact. That division is the entire rounding surface of the product, and §11 pins it.
+### 2.1 Rounding is a property of every rate × hours product — corrected
+
+An earlier revision of this document claimed *"the only division in the engine is the weighted-average regular rate in §7.3; everywhere else is multiply-and-add over integers, which is exact."* **That claim is arithmetically false and is withdrawn.** The multiply is exact; the *unit conversion after it* is not.
+
+`MilliRate × Hours` has units of 10⁻⁴ $ × 10⁻² h = **10⁻⁶ dollars** — `MicroDollars`. Reaching `Cents` requires dividing by 10,000, and that division generally has a remainder. From this document's own live extract (§15.3): `LABORER: ASPHALT` at `$18.62`/hr for 37.25 hours is `186_200 × 3_725 = 693_595_000` µ$ = **$693.595**, which is not representable in cents. The same is true of `col6B`, `col6C`, straight-time cash, double-time cash, `requiredTotal` and `paidTotal`.
+
+So there are **two arithmetically distinct operations**, and conflating them is what produced the false claim:
+
+| Operation | Where | Exact? |
+|---|---|---|
+| **Narrowing** — `MicroDollars → Cents`, a scale change by 10⁴ | Every rate × hours product, once per (line, column) | No: remainder in [0, 10⁴) µ$ |
+| **The one genuine ratio** — `stEarnings ÷ hoursWorked`, a quotient of unlike quantities | §7.3, once per worker-week | No: remainder, and the only place a *rate* is derived rather than read |
+
+There is exactly one narrowing function and exactly one place a ratio is taken. **§11 enumerates every narrowing site by name**, states the order of operations, and pins the residual bound as property **P-19** — an invariant that actually holds, replacing the un-enforceable call-site `grep` the earlier revision specified.
 
 **Currency.** USD only, no locale formatting in the core. Rendering to `"$1,234.56"` happens in the renderer, from `Cents`, with a fixed formatter. A locale-sensitive formatter in the core would make the engine's output depend on the machine — a violation of **E1**.
 
@@ -80,6 +105,7 @@ The engine's input is a `PayrollWeek`, a value type with no references to the da
 interface PayrollWeek {
   weekEnding:        IsoDate;            // from the CSV, never from a clock
   workweekStartDay:  0|1|2|3|4|5|6;      // project setting; governs the seven day columns
+  contractValueBand: 'over_100k' | 'at_or_under_100k' | 'unknown';   // project setting; §7.0
   pin:               WdPin;              // (wd_number, revision, published_date, snapshot_id)
   workers:           WorkerWeek[];
 }
@@ -99,17 +125,21 @@ interface ClassLine {
   dayHours:          DayHours[7];        // { st, ot, dt } per day, in Hours
   cashRate:          MilliRate;          // GROSS straight-time cash rate actually paid
   cashInLieu:        MilliRate;          // customer-asserted portion of cashRate paid in lieu of fringe
+  otRate:            MilliRate | null;   // rate actually paid on the `ot` bucket (WH-347 col 6A bottom row)
+  dtRate:            MilliRate | null;   // rate actually paid on the `dt` bucket; null = unmapped, §7.3
   fringeCreditPlans: FringePlanCredit[]; // customer-asserted hourly credit per plan (col 6B)
 }
 ```
 
-Five properties of this shape are load-bearing:
+Seven properties of this shape are load-bearing:
 
 - **`classificationId` is branded.** Its only constructor is `MirrorReader.classificationsFor(pin)`. A classification that is not on that exact WD revision cannot be typed, so it cannot reach the arithmetic (**I2**).
 - **`cashRate` is the gross rate.** 29 CFR 5.32(a), verbatim: *"an employee's regular or basic straight-time rate is computed on his earnings before any deductions are made for the employee's contributions to fringe benefits."* If the CSV mapping step marks the rate column as net of employee deferrals, the line is blocked with `AMBIGUOUS_RATE_BASIS`. Silently using a post-deferral rate understates the overtime base — a systematic underpayment that would look completely normal on the form.
 - **`cashInLieu` is an assertion, not a derivation.** 29 CFR 5.32(c)(1) states plainly that whether a cash payment is in lieu of a fringe *"may be presented"* as *"a question of fact."* It moves the overtime base (§7.2), so it is a customer input that is printed and disclaimed, never inferred.
 - **`dayHours` has exactly seven entries.** The CA eCPR XSD declares `day` with `minOccurs="7" maxOccurs="7"` (verified, deep dive 04 §1.6). Making the federal model match the strictest downstream consumer means the XML renderer never has to invent a day.
 - **`allWorkGross` and `netPaid` are customer-supplied and reconciled, not computed.** We are not a payroll system (**D9**). §9.3 specifies what happens when they disagree with our arithmetic.
+- **`otRate` and `dtRate` are nullable, and `null` is not zero.** A premium bucket carrying hours but no rate is a bucket whose premium *cannot be proven*, which is a different fact from a bucket paid at $0.00 and produces a different outcome (§7.3). Modelling the absence as `0` would silently convert "we don't know" into "nothing was paid", which is the error class **P-A** exists to prevent.
+- **`contractValueBand` is a required project setting with no default.** There is no inferred value, no "assume covered", and no "assume not covered". `'unknown'` is a first-class value that produces **P-B** (§7.0), because the two guesses are wrong in opposite directions and both are wrong on a signed document.
 
 ---
 
@@ -126,7 +156,15 @@ Three rules, each with a reason:
 
 **A1 — Multiple classifications are separate lines, never merged.** 29 CFR 5.5(a)(1)(i), verbatim: *"Laborers or mechanics performing work in more than one classification may be compensated at the rate specified for each classification for the time actually worked therein: Provided, That the employer's payroll records accurately set forth the time spent in each classification in which work is performed."* The proviso is a condition on the *records*. If the CSV does not separate the time, we do not have the records, and the correct behaviour is to block the line with `UNSPLIT_CLASSIFICATION_TIME` — not to allocate hours by a heuristic. A heuristic here would be us manufacturing the very record the regulation requires the employer to have kept.
 
-**A2 — Double-time hours pass through.** `dt` is carried into columns 4/5 and into CA's per-day ST/OT/DT structure, contributes to gross at the rate the CSV states, and is **excluded from the CWHSSA computation**, which is a weekly-over-40 obligation (§7.1). California Labor Code §1815's daily-overtime obligation is a *different* obligation on the same hours and needs a second corpus we do not ship (**D9**, `ARCHITECTURE.md` §15).
+**A2 — Double-time hours pass through *as dollars*, and count *as hours*. Corrected.** An earlier revision of this rule said `dt` is *"excluded from the CWHSSA computation."* **That was wrong, and it was the most dangerous sentence in this document**, because it made a federal obligation vanish behind a column label.
+
+29 CFR 5.5(b)(1) is about *hours worked*: *"to work in excess of forty hours in such workweek."* A double-time hour is an hour worked. Excluding `dt` from the threshold silently assumed that exactly `dt` of the over-40 hours had already been discharged at ≥1.5× — an assumption nothing in the engine tested, on a field whose rate is an arbitrary customer-supplied number. A worker logging **36 ST + 8 DT** produced `coveredHours = 36`, `otHours = 0`, `cwhssaPremium = $0.00`. Any payroll export that routes a shift differential, a per-diem bucket, or a mis-mapped column into `DT` at $1.00/hr therefore erased four hours of statutory overtime from a certified payroll with no flag, no block and no exception line — a systematic underpayment that looks completely normal on the form, which is the exact failure class §1 uses to justify the deterministic core.
+
+The corrected rule, in three parts:
+
+1. **Every hour worked on covered work counts toward the forty-hour threshold, whatever column of the CSV it arrived in.** `hoursWorked = Σ(st + ot + dt)`. There is no column label that removes an hour from the CWHSSA denominator (§7.3). This generalises past `dt`: any future premium bucket the CSV mapper learns to read inherits the rule by construction, because the rule is stated over *hours worked*, not over a list of column names.
+2. **A premium label discharges the obligation on its own hours only if the row proves it** — the bucket carries an explicit rate and that rate is ≥ 1.5 × the week's regular rate. Proven premium is credited (§7.3); unproven premium blocks the line with **P-A** and a closed choice (§7.3, `PREMIUM_HOURS_UNPROVEN`).
+3. **`dt` dollars are still a pass-through.** `dt` is carried into columns 4/5 and into CA's per-day ST/OT/DT structure and contributes to gross at the rate the CSV states. What passes through is the *money*; the *hours* are ours to count. California Labor Code §1815's daily-overtime obligation remains a different obligation on the same hours, needing a second corpus we do not ship (**D9**, `ARCHITECTURE.md` §15) — refusing to compute a state obligation was always correct, and was never a reason to drop the federal one.
 
 **A3 — The workweek is a project setting, not a calendar inference.** The seven day columns are laid out from `workweekStartDay`. The engine never reads a clock (**E1**), so a filing regenerated eighteen months later during a dispute produces the identical grid.
 
@@ -154,9 +192,11 @@ The wage determination's rate is **never printed in 6A**. It appears in the head
 > *"(1) By paying not less than the basic hourly rate to the laborers or mechanics and by making contributions for 'bona fide' fringe benefits in a total amount not less than the total of the fringe benefits required by the wage determination. For example, the obligations for 'Laborer: common or general' in § 5.30, figure 1 to paragraph (c), will be met by the payment of a straight time hourly rate of not less than $21.93 and by contributions of not less than a total of $6.27 an hour for 'bona fide' fringe benefits; or (2) By paying in cash directly to laborers or mechanics for the basic hourly rate and by making an additional cash payment in lieu of the required benefits. For example ... $28.60 ($21.93 basic hourly rate plus $6.27 for fringe benefits); or (3) ... a combination ..."*
 
 ```
-col6B(line) = Σ_p plan.hourlyCredit × totalHours(line)      // contributions / anticipated costs
-col6C(line) = line.cashInLieu × totalHours(line)            // cash equivalent
+col6B(line) = Σ_p Cents.fromMicroDollars( plan.hourlyCredit × totalHours(line) )  // contributions / costs
+col6C(line) = Cents.fromMicroDollars( line.cashInLieu × totalHours(line) )        // cash equivalent
 ```
+
+Both are **weekly totals**, not hourly rates — WHD's instructions say *"Enter the **total** of the contractor's or subcontractor's contributions"* and *"the **total amount in cash** provided in lieu of fringe benefits to the worker during the workweek."* Both are narrowing sites N1 and N2 (§11.2). `col6C` is a **disclosure of dollars already inside `col7A`**, never an addend to it — §8.1.
 
 Both are per-hour figures multiplied by **all** hours worked, including overtime hours. The DOL Prevailing Wage Resource Book is unambiguous: *"Under Davis-Bacon, fringe benefits must be paid for **all** hours worked, including overtime hours. However, the fringe benefit amounts listed in the applicable wage determination may be excluded from the half-time premium due as overtime compensation."* Fringe is owed on hour 44; only the *premium* excludes it.
 
@@ -176,13 +216,43 @@ A certified-payroll CSV contains covered hours for one week on one project. It d
 
 This is the section that earns the product. It is also the section where every incumbent's blog post is subtly wrong.
 
+### 7.0 The coverage gate — CWHSSA attaches only above $100,000
+
+**Everything in §7 is conditional on this gate.** An earlier revision of this document applied CWHSSA unconditionally; the threshold appeared nowhere in the repository. Corrected here, and this section supersedes `ARCHITECTURE.md` §3.2 on the point (**ES-3**).
+
+29 CFR 5.5(b), fetched verbatim from the eCFR API on 2026-08-13:
+
+> *"Contract Work Hours and Safety Standards Act (CWHSSA). The Agency Head must cause or require the contracting officer to insert the following clauses set forth in paragraphs (b)(1) through (5) of this section in full, or (for contracts covered by the Federal Acquisition Regulation) by reference, **in any contract in an amount in excess of $100,000** and subject to the overtime provisions of the Contract Work Hours and Safety Standards Act."*
+
+WHD's WH-347 instructions say the same thing operationally, and make column 4's overtime row conditional on it: *"**On all contracts subject to the Contract Work Hours and Safety Standards Act (CWHSSA)**, enter hours worked on this project in excess of 40 hours total in the week as overtime ('OT')."*
+
+The Davis-Bacon Act itself attaches far lower: 40 U.S.C. 3142(a), verbatim, reaches *"every contract **in excess of $2,000**, to which the Federal Government or the District of Columbia is a party, for construction, alteration, or repair."* The two thresholds are fifty times apart, and a specialty subcontractor — **D1**'s buyer exactly — sits between them routinely. So a DBA-covered project with no CWHSSA obligation is not an edge case; it is a normal week, and an engine that cannot represent one is wrong about a large fraction of its market.
+
+**The gate.** `contract_value_band` is a **required** field at project setup, with no default and no inference:
+
+| `contractValueBand` | Effect on the engine |
+|---|---|
+| `over_100k` | §7.1–§7.7 as specified. `cwhssaPremium` computed; the `max(BHR_WD, cash)` overtime floor applied; `PREMIUM_BELOW_STATUTORY` and `PREMIUM_HOURS_UNPROVEN` live. |
+| `at_or_under_100k` | `cwhssaPremium := 0`. The `max(BHR_WD, cash)` **overtime** floor is not applied (it is a CWHSSA rule — 5.32(a) governs *"the regular or basic rate upon which premium pay for overtime is calculated"*). `PREMIUM_BELOW_STATUTORY` and `PREMIUM_HOURS_UNPROVEN` are suppressed. Column 4's OT sub-row renders the CSV's own reported overtime hours with no CWHSSA characterisation. |
+| `unknown` | **P-B.** `BlockReason` `CWHSSA_COVERAGE_UNDETERMINED` is raised once per filing; `deriveStatus` returns `DRAFT — NOT CERTIFIABLE`, the signature block is withheld, and the exception report states the threshold and its citation. |
+
+**Why `unknown` is P-B and not a guess in either direction.** Guessing *covered* computes a premium that is not owed, applies a floor that does not apply, prints hours in a CWHSSA column on a contract with no CWHSSA column, and can raise a flag naming a statute the contract is not subject to — telling a compliant contractor they underpaid. Guessing *not covered* silently deletes a real federal overtime obligation from a document signed under 18 U.S.C. 1001. There is no safe default, so there is no default. The contract value is a fact the customer holds and we do not; asking for it once at setup costs one field, and the answer is remembered for the life of the project.
+
+**What the `at_or_under_100k` path must say, and must not say.** The exception report carries a **P-D declined conclusion**, not a clearance:
+
+> "This project is recorded as a contract at or under $100,000. The overtime clauses of 29 CFR 5.5(b) are inserted in contracts in an amount in excess of $100,000, so no CWHSSA overtime premium is computed here. Overtime obligations arising under the Fair Labor Standards Act are not computed by Ratepin (§7.7). Ratepin does not determine whether CWHSSA applies to this contract."
+
+*"That CWHSSA applies to this contract"* joins the DO-NOT-ASSERT list (`ARCHITECTURE.md` §11.7, `USER_JOURNEY.md` §16.1). The band is the customer's assertion, printed as an assertion, exactly as `cashInLieu` is (§3).
+
+**The $100,000 is a corpus value, not a constant** — the same discipline §10 applies to the $33/day liquidated damages, and for the same reason. It is stored with an effective date and a source URL, and the eCFR Monday section-version diff (`ARCHITECTURE.md` §7.1, `ingest.ecfr`) watches the 5.5(b) preamble alongside 5.5(b)(2). A threshold that has stood for decades is still a number Congress can move, and a hard-coded one guarantees a stale gate.
+
 ### 7.1 The statutory chain, quoted
 
-**29 CFR 5.5(b)(1)** — the obligation:
+**29 CFR 5.5(b)(1)** — the obligation, in the contracts §7.0's gate lets through:
 
-> *"No contractor or subcontractor contracting for any part of the conract work which may require or involve the employment of laborers or mechanics shall require or permit any such laborer or mechanic in any workweek in which he or she is employed on such work to work in excess of forty hours in such workweek unless such laborer or mechanic receives compensation at a rate not less than one and one-half times the basic rate of pay for all hours worked in excess of forty hours in such workweek."*
+> *"No contractor or subcontractor contracting for any part of the conract work which may require or involve the employment of laborers or mechanics shall require or permit any such laborer or mechanic in any workweek in which he or she is employed on such work to work **in excess of forty hours in such workweek** unless such laborer or mechanic receives compensation at a rate not less than one and one-half times the basic rate of pay for **all hours worked in excess of forty hours** in such workweek."*
 
-(The typo `conract` is DOL's, in the current eCFR text. We quote it as published.)
+(The typo `conract` is DOL's, in the current eCFR text. We quote it as published. The two bolded phrases are the warrant for §4 A2's corrected rule: the clause is denominated in *hours worked*, not in hours the payroll export chose to label as ordinary.)
 
 **29 CFR 5.32(a)** — what goes into the base:
 
@@ -204,10 +274,12 @@ This is the section that earns the product. It is also the section where every i
 
 ```
 baseRate(line) = max( BHR_WD(pin, line.classificationId),
-                      line.cashRate − line.cashInLieu )
+                      line.cashRate − line.cashInLieu )        // over_100k only — §7.0
 ```
 
 Read it as: start from what was actually paid in cash *excluding* any bona fide cash-in-lieu (5.32(c)(1) excludes it); and never go below the determination's basic hourly rate (5.32(a)'s floor, and 5.32(c)(3)'s example). Employer fringe *contributions* never enter this expression at all; employee contributions never *reduce* it, because `cashRate` is gross (§3).
+
+**The floor is a CWHSSA rule and travels with the gate.** 5.32(a) is expressly about *"the regular or basic rate upon which premium pay for overtime is calculated,"* so on an `at_or_under_100k` project there is no premium for it to floor and `baseRate` is not computed. The Davis-Bacon obligation on those same hours is unaffected and is checked in §10, which compares total straight-time compensation against `BHR_WD + FRINGE_WD` and does not read `baseRate` at all. Losing the CWHSSA premium below the threshold does **not** lose the underpayment check.
 
 Four DOL examples confirm this single expression, and they disagree with each other in ways a wrong formula could not survive:
 
@@ -220,25 +292,92 @@ Four DOL examples confirm this single expression, and they disagree with each ot
 
 Note what the third and fourth rows kill: the intuitive "premium is half the rate actually paid" is wrong in both, by $0.13/hr and $1.00/hr respectively, always in the contractor's favour and therefore always an underpayment. And the second row kills the equally intuitive "premium is half the WD's BHR" — that one overpays, which is cheaper but still a wrong number on a certified document.
 
-### 7.3 The weighted-average regular rate (default method)
+### 7.3 The weighted-average regular rate, the hours base, and the premium credit
+
+Applies only when `contractValueBand == 'over_100k'` (§7.0). Every `Cents.from…` below is a **narrowing site**, enumerated in §11.
 
 ```
-coveredHours(worker)  = Σ_lines ( st + ot )                       // dt excluded (§4, A2)
-stEarnings(worker)    = Σ_lines ( totalStOtHours(line) × baseRate(line) )
-regularRate(worker)   = roundHalfUpToCents( stEarnings / coveredHours )
-otHours(worker)       = max(0, coveredHours − 40)
-cwhssaPremium(worker) = otHours × 0.5 × regularRate
+// 1 — the hours base. Every covered hour, whatever column it arrived in (§4 A2).
+hoursWorked(worker)       = Σ_lines ( st + ot + dt )
+statutoryOtHours(worker)  = max(0, hoursWorked − 40)
+
+// 2 — straight-time earnings. Premium buckets enter at their STRAIGHT-time equivalent,
+//     because 29 CFR 778.202 excludes the premium portion from the regular rate.
+stEarnings_µ(worker)      = Σ_lines ( (st + ot + dt)(line) × baseRate(line) )     // MicroDollars, exact
+
+// 3 — the one genuine ratio (§2.1), narrowed once.
+regularRate(worker)       = Cents.fromRatio( stEarnings_µ , hoursWorked )          // half-up to cents
+
+// 4 — what CWHSSA owes on the over-40 hours.
+premiumOwed(worker)       = Cents.fromMicroDollars( statutoryOtHours × regularRate × ½ )
+
+// 5 — premium ALREADY paid on self-priced premium hours, but only where the row PROVES it.
+//     SELF_PRICED = buckets whose hours enter gross at the bucket's own rate (§8) = { dt }.
+//     `ot` is NOT self-priced: §8 pays ot hours at cashRate and adds the premium separately.
+provenPremiumHours(line, b) = hours(b)  iff b ∈ SELF_PRICED
+                                        and rate(b) != null
+                                        and rate(b) ≥ 1.5 × regularRate
+premiumCredit(worker)     = Σ_lines Σ_b∈SELF_PRICED
+                              Cents.fromMicroDollars(
+                                provenPremiumHours(line, b) × max(0, rate(b) − regularRate) )
+
+// 6 — the residual. Never negative; a generous premium is not a credit against next week.
+cwhssaPremium(worker)     = max(0, premiumOwed − min(premiumCredit, premiumOwed))
 ```
 
-Three deliberate properties:
+**Why `ot` is in the threshold but not in the credit.** §8 follows DOL's Method-1 shape: *every* hour enters gross at the straight-time `cashRate`, and the CWHSSA half-time premium is a separate addend on top. Overtime hours therefore carry no premium dollars *inside* `col7A` for a credit to draw on — `cwhssaPremium` **is** their premium. Double-time hours are different: §8 pays them at `dtRate`, so their premium is already in gross and crediting it is what stops the engine charging for it twice. The rule is stated over the property (*does this bucket price its own hours in gross?*) rather than over the column name, so a future bucket inherits the correct treatment from how it is paid, not from what it is called. `SELF_PRICED` is a single constant in `engine/arithmetic`, and §25 compares it.
 
-- **Single classification is the one-element case.** With one line, `stEarnings = H × base` and `regularRate = base`, so `premium = OT × 0.5 × base`. There is no separate single-class branch to test, and property **P-07** (§12.2) asserts the two agree.
-- **`otHours` is computed on *covered* hours only.** FOH 15k03(a): *"only the hours actually spent on a covered contract or combination of covered contracts need be considered in computing the OT pay."* §7.6 handles the mixed-work case.
+**The blocking rule (P-A).** Let `unprovenPremiumHours = Σ_lines Σ_b∈SELF_PRICED (hours(b) − provenPremiumHours(line, b))`.
+
+> If `statutoryOtHours > 0` **and** `unprovenPremiumHours > 0`, the line is blocked with `PREMIUM_HOURS_UNPROVEN` and the picker offers a **closed choice**: *these hours were ordinary hours mis-labelled by the export*, or *these hours were paid at a premium rate of ___*. The engine does not choose, and does not proceed on either reading.
+
+Three notes on why the rule is shaped this way:
+
+- **It does not try to work out *which* hours crossed forty.** Doing so needs a within-week ordering the CSV does not carry, and inventing one would be the §4 A1 error — manufacturing the record the regulation requires the employer to have kept. So the trigger is the conjunction "the week has statutory overtime *and* it contains premium hours we cannot price", which over-blocks slightly and under-blocks never.
+- **Below forty hours worked, nothing blocks.** `statutoryOtHours == 0` means no CWHSSA obligation exists, so an unpriceable `dt` bucket is harmless and the line renders. This is what keeps the rule from firing on the common case of a short week with a mis-mapped column.
+- **`null` rate and `$0.00` rate produce the same block, deliberately.** Both are "we cannot prove ≥1.5× was paid". The customer resolves both the same way, once, with the same closed choice. (The review that found this named the reason `DT_RATE_BELOW_PREMIUM`; renamed here because the rule generalises past the `dt` column, per **R-CRIT4**.)
+
+Four deliberate properties of the computation:
+
+- **Single classification is the one-element case.** With one line, `stEarnings = H × base` and `regularRate = base`, so `premium = statutoryOT × 0.5 × base`. There is no separate single-class branch to test, and property **P-07** (§12.2) asserts the two agree.
+- **`hoursWorked` counts *covered* hours only.** FOH 15k03(a): *"only the hours actually spent on a covered contract or combination of covered contracts need be considered in computing the OT pay."* Covered-vs-private is a different exclusion from ST-vs-DT: the first is about *which contract the hour was worked on*, the second was about *what the payroll system called it*. The first is legitimate and stays; the second was the bug. §7.7 handles the mixed-work case.
 - **The floor is not re-applied to the average.** This is **E4**, and §7.5 shows why.
+- **All four DOL oracles are unaffected by this rewrite**, because every one of them has `dt = 0` and no proven premium bucket, so `hoursWorked` reduces to `Σ(st + ot)`, `premiumCredit` reduces to zero, and the expressions collapse to the pre-correction form. A correction that moved a class-1 fixture would be a correction to be suspicious of; this one moves none (§12.3).
+
+#### 7.3.1 Worked examples M4a and M4b — the two double-time outcomes
+
+Both authored oracles (class 2, §23), frozen as fixtures **F-DT-UNPROVEN** and **F-DT-PROVEN**. One classification, `contractValueBand = over_100k`, `cashRate = baseRate = $20.00`, no cash in lieu.
+
+**M4a — the failure the old rule hid.** 36 ST + 8 DT, export codes the DT bucket at **$1.00/hr**.
+
+| Step | Old rule (wrong) | Corrected rule |
+|---|---|---|
+| hours base | `coveredHours = 36` | `hoursWorked = 44` |
+| statutory OT | 0 | **4.00 h** |
+| `regularRate` | $20.00 | $20.00 (`44 × $20.00 / 44`) |
+| premium owed | — | `4 × $20.00 × ½` = **$40.00** |
+| proven premium | — | none: `$1.00 < 1.5 × $20.00` |
+| outcome | `cwhssaPremium = $0.00`, **renders CERTIFIABLE** | **line blocked, `PREMIUM_HOURS_UNPROVEN`, P-A** |
+
+Four hours of statutory overtime, worth $40.00 of premium on one worker in one week, previously vanished with no flag. On a 30-worker crew over a year the class of error is five figures, and every filing that carried it looked perfect.
+
+**M4b — genuine double time, credited not double-charged.** 36 ST + 8 DT at **$40.00/hr**.
+
+| Step | Value |
+|---|---|
+| `hoursWorked` | 44.00 |
+| `statutoryOtHours` | 4.00 |
+| `regularRate` | `44 × $20.00 / 44` = $20.00 |
+| `premiumOwed` | `4 × $20.00 × ½` = $40.00 |
+| proven? | `$40.00 ≥ 1.5 × $20.00 = $30.00` ✓ — all 8 h proven |
+| `premiumCredit` | `8 × max(0, $40.00 − $20.00)` = $160.00, capped at $40.00 |
+| `cwhssaPremium` | `max(0, $40.00 − $40.00)` = **$0.00** |
+
+The premium is zero here for a *reason the engine can state* — $160.00 of premium was already paid against $40.00 owed — rather than because a column label removed the hours from the count. That is the whole difference: the same output, arrived at by arithmetic instead of by omission, and the exception report can show the working.
 
 ### 7.4 Worked example M1 — single classification, two fringe treatments (FOH 15k11(a))
 
-DOL's text: an employee works **44 hours** as an electrician where the WD rate is **$12.00 basic + $2.50 fringe**.
+DOL's text: an employee works **44 hours** as an electrician where the WD rate is **$12.00 basic + $2.50 fringe**. (All four DOL oracles are CWHSSA examples, so every fixture in §12.3 is pinned at `contractValueBand = over_100k`; §7.0's gate is exercised separately by the canary's contract-band axis, §22.)
 
 *Case (a)(1): employer pays $12.00 cash and $2.50 in fringe benefits.*
 
@@ -278,7 +417,7 @@ DOL's text: an employee works as **painter** and **electrician** on a covered co
 | painter straight-time | 24 × max(10.00, 10.00) | $240.00 |
 | electrician straight-time | 20 × max(12.00, 12.00) | $240.00 |
 | `stEarnings` | | $480.00 |
-| `regularRate` | roundHalfUpToCents($480.00 / 44) | **$10.91** |
+| `regularRate` | `Cents.fromRatio($480.00, 44.00 h)` | **$10.91** |
 | `cwhssaPremium` | 4 × 0.5 × $10.91 | **$21.82** |
 
 DOL publishes: *"Step 1: Determine the straight time wages due; excluding fringe benefits — 24 hours at the painter's rate of $10.00 = $240.00; 20 hours at the electrician's rate of $12.00 = $240.00; Total straight time wages = $480.00. Step 2: Calculate the 'regular rate' — ($480.00 / 44 hours worked) = $10.91 'regular rate'. Step 3: Compute the overtime premium due — ½($10.91) x 4 overtime hours worked = $21.82."* ✓
@@ -310,11 +449,13 @@ WD: **$21.93 + $6.27** (the 5.30 figure-1 laborer). Contractor pays **$30.00/hr 
 | `cashRate − cashInLieu` | $30.00 − $6.27 | $23.73 |
 | `baseRate` | max(21.93, 23.73) | **$23.73** |
 | `col6A_st` | $30.00 − $6.27 | $23.73 |
-| `col6C` | 48 × $6.27 | $300.96 |
+| `col6C` | 48 × $6.27 | $300.96 &nbsp;← *disclosure, not an addend* |
 | `col6B` | — | $0.00 |
 | straight-time cash | 48 × $30.00 | $1,440.00 |
 | `cwhssaPremium` | 8 × 0.5 × $23.73 | **$94.92** |
 | `col7A` | $1,440.00 + $94.92 | **$1,534.92** |
+
+**Read the `col6C` row against the `col7A` row.** The $300.96 is *inside* the $1,440.00, because `cashInLieu` is by definition a portion of `cashRate` (§3) — the contractor paid $30.00/hr, of which they assert $6.27/hr discharged the fringe obligation. `col7A` therefore adds it **zero** times, not once more. Adding `col6C` to gross would print **$1,835.88** against a cheque for $1,534.92: a $300.96 overstatement on one worker-week, on the gross-earned column of a document signed under 18 U.S.C. 1001. §8 states the formula that makes this the only representable answer, and fixture **F-M3-CIL** pins $1,534.92 so it cannot drift back.
 
 The excess over the WD's $28.20 total is straight-time wage, not extra fringe, so it *raises* the overtime base — 5.32(c)(2)'s rule. If the same contractor instead asserted the whole $8.07 excess as cash in lieu, `baseRate` would drop to $21.93 and the premium to $87.72. **The assertion moves the number by $7.20 on one worker-week**, which is precisely why deep dive 04 put "that a cash payment is genuinely in lieu of a fringe" on the DO-NOT-ASSERT list. The engine prints the assertion and its consequence side by side on the exception report and declines to characterise the payment.
 
@@ -322,7 +463,11 @@ The excess over the WD's $28.20 total is straight-time wage, not extra fringe, s
 
 CWHSSA fires only above 40 hours **on covered contracts** (FOH 15k03(a)). FLSA fires above 40 hours **in the workweek** (29 CFR 778.101). A worker with 30 covered hours and 15 private hours has an FLSA overtime obligation and no CWHSSA obligation.
 
-The engine computes CWHSSA only. When `col7B` implies more than 40 total hours while covered hours are ≤ 40, the exception report carries a **flag, not a number**:
+This is the one exclusion from `hoursWorked` that survives §4 A2's correction, and it survives because it is a different kind of exclusion. *Covered vs. private* is a fact about **which contract the hour was worked on** — a fact the CSV carries and FOH 15k03(a) expressly authorises us to act on. *Straight vs. double time* was a fact about **what the payroll system called an hour it agrees was worked on this contract**, which authorises nothing. Keeping the first and dropping the second is the whole distinction, and it is worth stating because both look like "hours we leave out of the threshold" from a distance.
+
+Below the $100,000 threshold neither obligation is computed: CWHSSA does not attach (§7.0) and FLSA overtime is refused here. The `at_or_under_100k` exception line and this one are printed together so the customer sees the full extent of what Ratepin has and has not computed on that project.
+
+The engine computes CWHSSA only. When `col7B` implies more than 40 total hours while `hoursWorked` on this project is ≤ 40, the exception report carries a **flag, not a number**:
 
 > "Column 7B reports gross earnings for 45.0 hours of work across all projects this week; 30.0 of those hours are on this project. Overtime obligations arising under the Fair Labor Standards Act on hours worked outside this project are not computed by Ratepin."
 
@@ -333,17 +478,40 @@ That is a true statement of a limit, and it is more useful than either silence o
 ## 8. Stage E — gross (columns 7A and 7B)
 
 ```
-col7A(worker) = Σ_lines ( stOtHours × cashRate + dtHours × dtRate )
-              + cwhssaPremium(worker)
-              + Σ_lines col6C(line)              // cash in lieu is cash paid
-col7B(worker) = worker.allWorkGross              // customer-supplied
+col7A(worker) = Σ_lines Cents.fromMicroDollars( (st + ot) × cashRate )
+              + Σ_lines Cents.fromMicroDollars( dt × dtRate )
+              + cwhssaPremium(worker)                 // 0 unless over_100k (§7.0)
+col7B(worker) = worker.allWorkGross                   // customer-supplied
 ```
 
 WHD's instructions define 7A as *"the worker's gross amount earned for the workweek for hours worked on this Federal or federally assisted project"* and 7B as *"the total gross amount earned during the week for all work performed."*
 
-**`col6B` is not in gross.** Employer contributions to a benefit plan are not wages paid to the worker in the pay period; they are credits against the wage obligation. Adding 6B to 7A both overstates gross and breaks the §9.3 net identity. A separate check: on the all-cash discharge method (5.31(b)(2)) the same dollars appear in 6C and *are* in gross, which is why the two columns must never be summed together into a single "fringe" figure.
+### 8.1 `col6C` is a disclosure of a subset of 7A, never an addend — corrected
 
-**Property P-02:** `col7A ≥ Σ_lines (stOtHours × baseRate)` with equality iff there is no overtime, no cash in lieu, no double time, and the cash rate equals the base rate. This catches sign errors in the premium.
+An earlier revision of this section added `Σ_lines col6C(line)` to `col7A` with the comment *"cash in lieu is cash paid."* The comment is true; the addition is a **double count**, and it is corrected here.
+
+`cashInLieu` is defined in §3 as the *"customer-asserted **portion of** `cashRate` paid in lieu of fringe"*, and §5 derives `col6A_st = cashRate − cashInLieu` from exactly that containment. So `Σ((st + ot) × cashRate)` **already contains every cash-in-lieu dollar**. Adding `col6C` on top adds them a second time. On §7.6's M3 — 48 hours at $30.00 with $6.27 asserted in lieu — the error is **$300.96 on one worker-week**, and it grows linearly with crew size.
+
+The relationship, stated once so it cannot be misread:
+
+| Column | Contains | Relation to 7A |
+|---|---|---|
+| `col6A_st` | `cashRate − cashInLieu`, the straight-time rate net of cash-in-lieu | rate, not money |
+| `col6C` | `cashInLieu × totalHours`, the weekly cash-in-lieu total | **⊆ 7A** — already counted once |
+| `col6B` | employer contributions / anticipated costs | **∉ 7A** — never wages paid in the period |
+| `col7A` | gross earned on this project | the sum above, and nothing else |
+
+**`col6B` is not in gross.** Employer contributions to a benefit plan are not wages paid to the worker in the pay period; they are credits against the wage obligation. Adding 6B to 7A both overstates gross and breaks the §9.3 net identity.
+
+**6B and 6C are asymmetric, and that asymmetry is the whole point of the two columns.** Under the all-cash discharge method (5.31(b)(2)) the fringe obligation is met with dollars that *are* wages, so they sit in 6C and inside 7A. Under the contributions method (5.31(b)(1)) it is met with dollars that are *not* wages, so they sit in 6B and outside 7A. The two must therefore never be summed into a single "fringe" figure, and neither may be added to gross: 6B because it was never in it, 6C because it always was.
+
+**Why no test caught this.** `P-01` tests the net identity against **7B**, not 7A. `P-05` (monotone in hours) passes under both formulas. `P-02` as previously written passes under both. The G1 canary would have caught it only if a class-2 expectation happened to be authored from §7.6 rather than §8 — that is, by luck. The three properties below close the gap by testing `col7A`'s composition directly rather than testing consequences of it.
+
+**P-16 (composition, exact):** `col7A == Σ_lines Cents((st+ot) × cashRate) + Σ_lines Cents(dt × dtRate) + cwhssaPremium`, to the cent. This is the formula as an executable assertion; it fails under the old formula on any week with `cashInLieu > 0`.
+
+**P-17 (containment):** `Σ_lines col6C(line) ≤ Σ_lines Cents((st+ot+dt) × cashRate)`. A cash-in-lieu total exceeding the cash actually paid is unrepresentable; a generator that produces one is producing an invalid `PayrollWeek`, and the engine blocks it with `CASH_IN_LIEU_EXCEEDS_CASH_RATE` rather than computing on it.
+
+**P-02 (corrected):** `col7A ≥ Σ_lines Cents((st+ot+dt) × cashRate)`, with equality iff `cwhssaPremium == 0` and every `dtRate == cashRate`. **The previous statement of P-02 used `baseRate` and is false on DOL's own oracle**: FOH 15k11(a)(2) pays $10.00 cash against a $12.00 WD basic hourly rate, so `col7A` = 44 × $10.00 + $24.00 = **$464.00** while `Σ(44 × baseRate)` = **$528.00**, and the property fails on a class-1 fixture. A property that a regulatory fixture falsifies is a specification bug, not a test failure; corrected here rather than weakened. The catch it was reaching for — premium sign errors — is covered exactly by P-16.
 
 ---
 
@@ -351,7 +519,9 @@ WHD's instructions define 7A as *"the worker's gross amount earned for the workw
 
 ### 9.1 The permissible categories
 
-29 CFR 3.5 lists deductions permissible *"without application to and approval of the Secretary of Labor."* The engine's `DeductionCategory` enum is exactly that list, one member per paragraph, plus one sentinel:
+**This section is the single authority on `DeductionCategory`; `ARCHITECTURE.md` §3.2 defers to it (supersession ES-2).** The enum is defined here, in one place, because it is a transcription of a regulation rather than a design choice, and a transcription that exists twice will eventually exist in two versions.
+
+29 CFR 3.5, lead-in quoted verbatim from the eCFR API on 2026-08-13: *"Deductions made under the circumstances or in the situations described in the paragraphs of this section may be made without application to and approval of the Secretary of Labor."* The section as currently published carries **ten** lettered paragraphs, (a) through (j), last amended at **88 FR 57730 (Aug. 23, 2023)**. The engine's `DeductionCategory` enum is exactly that list, one member per paragraph, plus one sentinel:
 
 | Enum member | 3.5 ¶ | Substance |
 |---|---|---|
@@ -369,9 +539,30 @@ WHD's instructions define 7A as *"the worker's gross amount earned for the workw
 
 ### 9.2 Correction, superseding two upstream documents
 
-Deep dive 04 §1.5 and `ARCHITECTURE.md` §3.2 both state that 29 CFR 3.5 lists **eight** categories. The section as published in the current eCFR, fetched 2026-08-13, has **ten**: paragraphs (a) through (j). The two missing ones are (i), board and lodging under FLSA §3(m) — which additionally requires the records of 29 CFR 516.25(a) — and (j), nominal-value safety equipment such as *"safety shoes, safety glasses, safety gloves, and hard hats."*
+Deep dive 04 §1.5 and `ARCHITECTURE.md` §3.2 both state that 29 CFR 3.5 lists **eight** categories. The section as published in the current eCFR, fetched 2026-08-13, has **ten**: paragraphs (a) through (j). **This document supersedes both upstream statements on the count (ES-2).**
 
-This is not pedantry. Boot and glove deductions are common on a field crew. Under an eight-category model, every one of them lands in `UNMAPPED` and blocks the line, and the customer is told a permissible deduction is impermissible. **This document supersedes both upstream statements on the count.** The lesson is procedural as well as substantive: an enumerated list from a regulation is a corpus value with an amendment date, not a constant to be remembered — which is exactly what the Monday eCFR section-version diff (`ARCHITECTURE.md` §7.1, `ingest.ecfr`) exists to catch. A future amendment adding paragraph (k) will surface as an `obligation_changelog` entry, and the enum will be extended by a release, never silently.
+The two missing paragraphs, quoted verbatim so a builder never has to reconstruct them from a summary:
+
+> **(i)** *"Any deduction not more than for the 'reasonable cost' of board, lodging, or other facilities meeting the requirements of section 3(m) of the Fair Labor Standards Act of 1938, as amended, and 29 CFR part 531. When such a deduction is made the additional records required under 29 CFR 516.25(a) must be kept."*
+
+> **(j)** *"Any deduction for the cost of safety equipment of nominal value purchased by the laborer or mechanic as their own property for their personal protection in their work, such as safety shoes, safety glasses, safety gloves, and hard hats, if such equipment is not required by law to be furnished by the contractor, if such deduction does not violate the Fair Labor Standards Act or any other law, if the cost on which the deduction is based does not exceed the actual cost to the contractor where the equipment is purchased from the contractor and does not include any direct or indirect monetary return to the contractor where the equipment is purchased from a third person, and if the deduction is either: (1) Voluntarily consented to by the laborer or mechanic in writing and in advance of the period in which the work is to be done and such consent is not a condition either for the obtaining of employment or its continuance; or (2) Provided for in a bona fide collective bargaining agreement between the contractor or subcontractor and representatives of its laborers and mechanics."*
+
+This is not pedantry. Boot, glove and hard-hat deductions are routine on a field crew, and employer-provided housing on remote heavy/highway work is common enough to matter. Under an eight-category model every one of them lands in `UNMAPPED` and blocks the line, and the customer is told a lawful deduction is unlawful — the product accusing a compliant contractor, in the one place the product's whole value is being trusted.
+
+#### 9.2.1 The conditions inside (i) and (j) are named, never enforced — and may never block
+
+Both paragraphs are conditional, and every one of their conditions is a fact about the employment relationship that no payroll CSV contains: whether the equipment is *"required by law to be furnished by the contractor"*; whether there is *"direct or indirect monetary return"*; whether written advance consent exists or a CBA provides for it; whether the 29 CFR 516.25(a) records are kept. **The engine observes none of these and asserts none of them.**
+
+> **The rule: a deduction whose category is a member of the enum never blocks a line on our inability to verify that category's conditions.** It maps, it renders in column 8 under its paragraph, and the conditions are printed on the exception report as a **P-D declined conclusion**: *"29 CFR 3.5(j) permits this deduction where the equipment is not required by law to be furnished by the contractor, no monetary return flows to the contractor, and the worker consented in writing in advance or a collective bargaining agreement provides for it. Ratepin does not determine whether those conditions are met."*
+
+Only `UNMAPPED` blocks (§9.3 D1), and `UNMAPPED` means *the label matched no paragraph at all* — not *the label matched a paragraph whose conditions we could not check*. Collapsing those two into one outcome is how a correct ten-member enum still ends up blocking hard-hat deductions.
+
+**Two CI tests, because the count is the kind of fact that rots:**
+
+1. `DeductionCategory`'s paragraph letters must equal exactly the letters recorded in the current `obligation_changelog` entry for 29 CFR 3.5. A future paragraph (k) fails the build rather than silently blocking lines, and a paragraph removed by amendment fails it too.
+2. A fixture set of realistic field-crew deduction labels — `SAFETY BOOTS`, `HARD HAT`, `SAFETY GLASSES`, `GLOVES`, `CAMP ROOM & BOARD`, `EMPLOYER HOUSING` — must map to (j) and (i) respectively and must produce **zero** `BlockReason`s. This is the test that would have caught the eight-category enum by its behaviour rather than by its count.
+
+The lesson is procedural as well as substantive: an enumerated list from a regulation is a corpus value with an amendment date, not a constant to be remembered — which is exactly what the Monday eCFR section-version diff (`ARCHITECTURE.md` §7.1, `ingest.ecfr`) exists to catch. A future amendment adding paragraph (k) surfaces as an `obligation_changelog` entry, and the enum is extended by a release, never silently.
 
 ### 9.3 The three rules that make column 8 safe
 
@@ -390,19 +581,44 @@ This is not pedantry. Boot and glove deductions are common on a field crew. Unde
 The engine performs one comparison that no incumbent form-filler performs, because it is the comparison that requires a pinned rate of record:
 
 ```
-requiredTotal(line) = ( BHR_WD + FRINGE_WD ) × stOtHours(line)
-paidTotal(line)     = cashRate × stOtHours(line)
+requiredTotal(line) = Cents.fromMicroDollars( ( BHR_WD + FRINGE_WD ) × allHours(line) )
+paidTotal(line)     = Cents.fromMicroDollars( cashRate × allHours(line) )
                     + col6B(line) + col6C(line)
+                    where allHours(line) = st + ot + dt
 ```
 
 `paidTotal < requiredTotal` raises `WD_UNDERPAYMENT` with the shortfall in cents, per line, per worker. It does **not** block the line — the contractor may have a reason we cannot see, and an artifact refused on our own inference would be worse than one that renders with a stated concern. It renders as a prominent exception with the arithmetic shown, and the artifact status stays `CERTIFIABLE` unless something *else* blocks it.
 
-Two companion flags:
+**This check does not read `contractValueBand` and is never gated by it.** The Davis-Bacon prevailing-wage obligation attaches at $2,000, not $100,000; a sub-$100k project loses its CWHSSA premium (§7.0) and keeps every dollar of its DBA obligation. Nor does it read `baseRate`. Keeping the two independent is what stops §7.0's gate from quietly disabling the one comparison no incumbent form-filler performs.
 
-- `FRINGE_BELOW_WD` — `col6B + col6C < FRINGE_WD × hours` while `paidTotal ≥ requiredTotal`. Legal under 5.31(b)(3)'s combination method (the cash excess covers it), but worth surfacing because it is the shape of a contractor who thinks they are compliant on the cash line and has not checked the total.
-- `PREMIUM_BELOW_STATUTORY` — the overtime actually paid, derived from `col6A_ot × otHours`, is less than `baseRate × 1.5 × otHours`. This is the CWHSSA violation that carries liquidated damages.
+Two companion flags, **both gated on `contractValueBand == 'over_100k'`** because both name CWHSSA obligations:
 
-**Liquidated damages are a corpus value, not a constant.** 29 CFR 5.5(b)(2), current text: liquidated damages *"in the sum of $33 for each calendar day on which such individual was required or permitted to work in excess of the standard workweek of forty hours without payment of the overtime wages required."* The DOL Field Operations Handbook, Rev. 660 dated 10/25/2010, quotes the identical sentence with **$10**. Same rule, same words, a figure that has tripled through inflation adjustment. The engine stores `$33` in the corpus with an effective date and a source URL, never in code, and the eCFR Monday diff watches 5.5(b)(2). Anything else guarantees a stale penalty figure in customer-facing copy within a year or two.
+- `FRINGE_BELOW_WD` — *ungated.* `col6B + col6C < FRINGE_WD × allHours` while `paidTotal ≥ requiredTotal`. Legal under 5.31(b)(3)'s combination method (the cash excess covers it), but worth surfacing because it is the shape of a contractor who thinks they are compliant on the cash line and has not checked the total. This is a DBA fringe observation, not a CWHSSA one, so the gate does not apply.
+- `PREMIUM_BELOW_STATUTORY` — **gated, and restated to see every premium bucket.** The previous statement derived it from `col6A_ot × otHours` alone and never looked at `dt`, which meant the flag was blind to exactly the hours CRIT-4 showed were escaping the threshold. Restated over the §7.3 quantities:
+
+```
+premiumPaidTotal(worker) = Σ_lines Σ_buckets∈{ot,dt}
+                             Cents.fromMicroDollars( hours(bucket) × max(0, rate(bucket) − regularRate) )
+premiumShortfall(worker) = max(0, premiumOwed(worker) − premiumPaidTotal(worker))
+```
+
+> `PREMIUM_BELOW_STATUTORY` fires iff `contractValueBand == 'over_100k'` and `premiumShortfall > 0`, carrying the shortfall in cents and the arithmetic that produced it.
+
+The flag and §7.3's `premiumCredit` differ deliberately, on two axes, because they answer different questions:
+
+| | §7.3 `premiumCredit` | §10 `premiumPaidTotal` |
+|---|---|---|
+| Question | *What have we already accounted for in gross?* | *What did the contractor actually pay?* |
+| Buckets | `SELF_PRICED` only (`dt`) — `ot` hours carry no premium inside `col7A` | **both** `ot` and `dt` — the contractor's reported OT rate is exactly what this asks about |
+| Hours | **proven** only (rate present and ≥ 1.5 × `regularRate`) | **all** premium hours with a stated rate |
+
+The credit is narrow because it reduces what we compute is owed, and reducing an obligation on an unproven assertion is how CRIT-4 happened. The flag is broad because it should not accuse a contractor who paid something merely for failing to prove it was enough. Unproven hours in a week with statutory overtime have already blocked the line at P-A, so the two never disagree on a rendered artifact — and property **P-18** asserts the flag fires whenever a certifiable week's premium falls short.
+
+On an `at_or_under_100k` project the exception report says why the flag is absent (§7.0's P-D sentence) rather than saying nothing; silence would read as a clean bill.
+
+**Liquidated damages are a corpus value, not a constant — and they too are gated.** 29 CFR 5.5(b)(2), current text: liquidated damages *"in the sum of $33 for each calendar day on which such individual was required or permitted to work in excess of the standard workweek of forty hours without payment of the overtime wages required."* The DOL Field Operations Handbook, Rev. 660 dated 10/25/2010, quotes the identical sentence with **$10**. Same rule, same words, a figure that has tripled through inflation adjustment. The engine stores `$33` in the corpus with an effective date and a source URL, never in code, and the eCFR Monday diff watches 5.5(b)(2) **and the 5.5(b) preamble's $100,000** (§7.0). Anything else guarantees a stale penalty figure in customer-facing copy within a year or two.
+
+The $33 sentence is printed only on `over_100k` projects. 5.5(b)(2) is a clause inserted by the same preamble that carries the threshold, so on a contract at or under $100,000 there are no CWHSSA liquidated damages to describe, and describing them would be citing a penalty regime the contract is not subject to.
 
 Two things the engine never does here: it never characterises a shortfall as a violation of law, and it never computes liquidated damages for a customer. It states the arithmetic and names the rule.
 
@@ -410,19 +626,60 @@ Two things the engine never does here: it never characterises a shortfall as a v
 
 ## 11. Rounding, and the exact order of operations
 
-The whole rounding surface is the one division in §7.3. The pinned rule:
+§2.1 withdrew the claim that rounding happens in one place. This section replaces it with the discipline that actually governs, and with a CI control that can actually be enforced.
 
-> **R1.** All multiplication and addition is exact over integers. The regular rate is computed as `stEarnings_cents × 10000 / coveredHours_hundredths` in integer arithmetic, then **rounded half-up to the nearest cent** before the premium multiply. The premium is then `otHours × regularRate_cents / 2`, rounded half-up to the nearest cent.
+### 11.1 The narrowing rule
 
-**Why half-up, and why at that point.** DOL's Method 1 prints the intermediate regular rate as **$10.91** (FOH 15k11(b)(1), Step 2) — a rounded cent figure, not `$10.909090…`. The contractor's own payroll register will show $10.91. The auditor comparing our form to that register compares cents. Carrying full precision through and rounding only at the end is defensible arithmetic and *indefensible evidence*: it produces a figure that reconciles with nothing anyone else holds. Where the two conventions differ, they differ by at most half a cent per overtime hour; where the difference is visible, DOL's published intermediate wins.
+> **R1 — one narrowing function.** `Cents.fromMicroDollars(µ: MicroDollars): Cents` is the **only** way to obtain a `Cents` value from a wider quantity. It rounds **half-up to the nearest cent**: `(µ + 5000) idiv 10000` for `µ ≥ 0`, and the symmetric away-from-zero form for `µ < 0`. `Cents.fromRatio(numerator_µ, hours_hundredths)` is the single ratio variant (§2.1), computing `numerator_µ × 100 / hours_hundredths` in integer arithmetic and narrowing once. `roundHalfUpToCents` is the private implementation of both and is not exported.
 
-> **R2.** Half-up, not banker's rounding. Banker's rounding is statistically superior and reconciles with no payroll system in the field. Consistency with the customer's other records beats distributional elegance.
+> **R2 — narrow at the line, then sum in cents.** Every `MilliRate × Hours` product is computed exactly in `MicroDollars`, narrowed to `Cents` **once, at the (line, column) it belongs to**, and only then summed. Worker-week and filing totals are sums of already-narrowed cents. No total is recomputed from micro-dollars.
 
-> **R3.** Rounding is never applied twice to the same quantity. Each stage emits `Cents` exactly once; downstream stages consume the rounded value. Double rounding is how a penny appears from nowhere.
+> **R3 — half-up, not banker's.** Banker's rounding is statistically superior and reconciles with no payroll system in the field. Consistency with the customer's other records beats distributional elegance.
 
-> **R4.** `roundHalfUpToCents` is one function, in one module, with an exhaustive test over the boundary set `{…, x.xx4999, x.xx5, x.xx5001, …}` including negatives. It is called from exactly two sites (§7.3 twice). A `grep` assertion in CI fails the build if a third call site appears without a documented reason, because a new rounding site is a new source of divergence.
+> **R4 — never twice.** Each quantity is narrowed exactly once; downstream stages consume the narrowed value and never re-narrow it. Double rounding is how a penny appears from nowhere.
 
-Because rounding is confined to one function and two call sites, G1's exact-match gate is achievable rather than aspirational. This is the direct engineering justification for **E1**.
+**Why narrow at the line rather than at the end.** Two reasons, one evidential and one structural. Evidential: DOL's Method 1 prints the intermediate regular rate as **$10.91** (FOH 15k11(b)(1), Step 2) — a rounded cent figure, not `$10.909090…` — and the contractor's payroll register shows the same. An auditor holding our form beside that register compares cents. Carrying full precision through and rounding only at the end is defensible arithmetic and *indefensible evidence*: it produces figures that reconcile with nothing anyone else holds. Structural: every figure the engine narrows is a figure that gets **printed** — a WH-347 cell, an eCPR element. A quantity that is displayed in cents and carried in micro-dollars is two different numbers wearing one name, and the second one eventually escapes.
+
+### 11.2 The narrowing sites, enumerated
+
+There is no call-site *count*; there is a call-site *table*. A narrowing site is a (stage, column) pair, and this is all of them:
+
+| # | Site | Expression | Per |
+|---|---|---|---|
+| N1 | `col6B` | `Σ_p plan.hourlyCredit × totalHours` | line × plan |
+| N2 | `col6C` | `cashInLieu × totalHours` | line |
+| N3 | straight-time cash | `(st + ot) × cashRate` | line |
+| N4 | double-time cash | `dt × dtRate` | line |
+| N5 | `regularRate` | `Cents.fromRatio(stEarnings_µ, hoursWorked)` — the one ratio | worker-week |
+| N6 | `premiumOwed` | `statutoryOtHours × regularRate × ½` | worker-week |
+| N7 | `premiumCredit` | `provenPremiumHours × (rate − regularRate)` | line × bucket |
+| N8 | `premiumPaidTotal` | `hours(bucket) × (rate − regularRate)` | line × bucket |
+| N9 | `requiredTotal` | `(BHR_WD + FRINGE_WD) × allHours` | line |
+| N10 | `paidTotal` cash term | `cashRate × allHours` | line |
+
+`col7A`, `col5`, column-8 totals and every filing-level total are **sums of the above**, not narrowings of their own. Adding a printed money column to the engine means adding a row here; the table is the specification, and §25's exact-match field list is its mirror.
+
+### 11.3 The CI control that replaces the grep
+
+The previous revision specified *"`roundHalfUpToCents` … is called from exactly two sites (§7.3 twice). A `grep` assertion in CI fails the build if a third call site appears."* That rule was unenforceable — §11.2 shows there are ten sites, not two — and its two failure modes were both bad: fail on the first honest implementation, or be satisfied by silently truncating micro-dollars inside the arithmetic module, which is a different rounding rule applied invisibly. It is withdrawn and replaced by a **type boundary plus a lint**, which are checkable statements about the code rather than a guess about its shape:
+
+1. **Type.** `Cents` is constructible from a wider type only through `Cents.fromMicroDollars` / `Cents.fromRatio`. `roundHalfUpToCents` is module-private to `engine/arithmetic/money.ts`. A cast or a raw `as Cents` outside that module fails the import-boundary check (the same mechanism as §14's Anthropic-adapter rule).
+2. **Lint.** The `/` operator on any branded value is forbidden anywhere under `src/engine/arithmetic/**` outside `money.ts`. This is the grep the earlier rule wanted — pointed at the operator that loses information, not at the function that handles it correctly.
+3. **Exhaustive unit test** of `roundHalfUpToCents` over the boundary set `{…, x.xx4999, x.xx5, x.xx5001, …}` including negatives and both zero directions.
+
+### 11.4 The residual bound — the property that actually holds
+
+Narrowing at the line and narrowing at the end are different arithmetic, and honest specification means bounding the difference rather than pretending it is zero.
+
+> **P-19 (rounding residual).** For any worker-week, let *n* be the number of narrowing sites the week instantiates (§11.2, counted per line, per plan, per bucket). Then
+>
+> `| Σ (per-site narrowed cents) − Cents.fromMicroDollars( Σ (exact micro-dollars) ) | ≤ n` cents.
+>
+> That is: **per-line rounding never moves the weekly total by more than one cent per narrowing site.**
+
+The bound is provable, not empirical. Each narrowing has error in (−½, +½] cents, so *n* of them sum to error in (−n/2, +n/2]; the single narrowing of the exact sum contributes at most ½. Total `< n/2 + ½ ≤ n` for `n ≥ 1`. A property test asserts it over the §12.2 generators, including the sub-cent rates MED-5 forces into the pool (§12.2), which are precisely the inputs that make the residual non-zero. It is a genuine invariant of the specified discipline: it fails if a stage narrows twice (R4), if a total is recomputed from micro-dollars instead of summed (R2), or if truncation is substituted for half-up anywhere (R1).
+
+This is the honest form of the sentence the earlier revision wanted to write. G1's exact-match gate is achievable not because rounding happens in one place — it does not — but because **where** it happens is enumerated, **how** it happens is one function, and **how far** it can move a total is bounded and tested. That is the direct engineering justification for **E1**.
 
 ---
 
@@ -432,46 +689,64 @@ Three test layers, each catching a different class of bug. All three run per-com
 
 ### 12.1 Layer 1 — unit tests over enumerated boundaries
 
-Zero hours; exactly 40.00 hours; 40.01 hours; one classification; three classifications; every `DeductionCategory` including `UNMAPPED`; every 5.31(b) discharge method; `cashInLieu` of zero, of the full fringe, and above it; apprentice with and without a level; a week spanning a month end; a worker appearing on two projects.
+Zero hours; exactly 40.00 hours; 40.01 hours; one classification; three classifications; **all ten** `DeductionCategory` members plus `UNMAPPED`, with the §9.2.1 field-crew label set asserting zero blocks on (i) and (j); every 5.31(b) discharge method; `cashInLieu` of zero, of the full fringe, and above it; apprentice with and without a level; a week spanning a month end; a worker appearing on two projects; **each `contractValueBand` value against an otherwise identical week**, asserting that only the CWHSSA quantities move; **36 ST + 8 DT at each of `dtRate ∈ {null, $0.00, 1.49 × rr, 1.50 × rr, 2.00 × rr}`**, asserting block / block / block / credit / credit.
 
 ### 12.2 Layer 2 — property tests (`fast-check`)
 
-Generators produce structurally valid `PayrollWeek` values over realistic ranges: rates $10.00–$95.00, fringes $0.00–$35.00, hours 0.00–84.00 per week, 1–4 classifications, 0–8 deductions.
+Generators produce structurally valid `PayrollWeek` values over realistic ranges: rates $10.00–$95.00, fringes $0.00–$35.00, hours 0.00–84.00 per week, 1–4 classifications, 0–8 deductions, all three `contractValueBand` values, and `dt` buckets with rates drawn from `{null, $0.00, below 1.5×, exactly 1.5×, above 1.5×}`.
+
+**Generator constraint G-SUBCENT.** At least 20% of generated rates must be **sub-cent** — `MilliRate` values not divisible by 100, e.g. `$10.0050`, `$36.8525`. Payroll systems do export them. Without this the rounding properties (P-06, P-10, P-19) are silently vacuous, and a vacuous property is worse than a missing one because it reports green.
 
 | # | Property | Catches |
 |---|---|---|
 | **P-01** | `netPaid + Σ deductions == col7B` for every certifiable week | Wrong gross basis for deductions (§9.3 D2) |
-| **P-02** | `col7A ≥ Σ (stOtHours × baseRate)` | Premium sign errors, dropped cash-in-lieu |
-| **P-03** | `coveredHours ≤ 40 ⟹ cwhssaPremium == 0` | Off-by-one at the 40-hour boundary |
-| **P-04** | `cwhssaPremium` is monotone non-decreasing in `coveredHours` | Non-monotonic branching in the weighted average |
+| **P-02** | `col7A ≥ Σ ((st+ot+dt) × cashRate)`, equality iff no premium and `dtRate == cashRate` — **corrected, §8.1** | Premium sign errors |
+| **P-03** | `hoursWorked ≤ 40 ⟹ cwhssaPremium == 0` | Off-by-one at the 40-hour boundary |
+| **P-04** | `cwhssaPremium` is monotone non-decreasing in `hoursWorked` at fixed rates | Non-monotonic branching in the weighted average |
 | **P-05** | `col7A` is monotone non-decreasing in every hours field | Sign errors anywhere in gross |
-| **P-06** | `regularRate ≥ min_c baseRate(c)` and `≤ max_c baseRate(c)` | A weighted average outside its own inputs — arithmetic nonsense |
-| **P-07** | With one classification, the weighted-average path equals `OT × 0.5 × baseRate` | Divergence between the general and special cases (**E3**) |
+| **P-06** | `min_c baseRate(c) − $0.005 ≤ regularRate ≤ max_c baseRate(c) + $0.005` | A weighted average outside its own inputs — arithmetic nonsense |
+| **P-07** | With one classification, the weighted-average path equals `statutoryOT × 0.5 × baseRate` | Divergence between the general and special cases (**E3**) |
 | **P-08** | Permuting `dayHours` within a week changes no output field | Day-order dependence; timezone leakage |
-| **P-09** | Splitting one line into two lines with the same classification and rate, hours summing to the original, changes no output field | Per-line vs per-class aggregation errors |
-| **P-10** | Scaling every rate by integer *k* scales `col7A` by *k* (to R1) | Rounding applied in the wrong place |
+| **P-09** | Splitting one line into two lines with the same classification and rate, hours summing to the original, changes no output field except by the P-19 residual | Per-line vs per-class aggregation errors |
+| **P-10** | Scaling every rate by integer *k* scales `col7A` by *k* to within the P-19 residual | Rounding applied in the wrong place |
 | **P-11** | Running the engine twice with `TZ`, locale and system clock changed produces byte-identical output | **E1** — the determinism invariant, executable |
 | **P-12** | `col6B > 0 ⟺ statement-of-compliance box 5 is checked` | Checkbox drift from arithmetic (§6.1) |
 | **P-13** | Any line with `resolutionState != resolved` ⟹ `artifactStatus == DRAFT_NOT_CERTIFIABLE` and no signature block | **D7**'s core promise, as a property |
 | **P-14** | `WD_UNDERPAYMENT` fires ⟺ `paidTotal < requiredTotal`, with the flagged shortfall equal to the difference | Flag/arithmetic drift in §10 |
 | **P-15** | No `Cents` value in any output is non-integer, and no output field is `NaN` or `±Infinity` | Float leakage past the branded types |
+| **P-16** | `col7A == Σ Cents((st+ot) × cashRate) + Σ Cents(dt × dtRate) + cwhssaPremium`, exactly | **The CRIT-2 double count.** Fails under the withdrawn §8 formula on any week with `cashInLieu > 0` |
+| **P-17** | `Σ col6C ≤ Σ Cents((st+ot+dt) × cashRate)` | Cash-in-lieu exceeding cash paid — an unrepresentable input reaching the arithmetic |
+| **P-18** | `contractValueBand == over_100k ∧ hoursWorked > 40 ∧ premiumPaidTotal < premiumOwed ⟹ PREMIUM_BELOW_STATUTORY fires or the line is blocked` | **The CRIT-4 hole.** A mis-labelled premium column silently zeroing the premium |
+| **P-19** | Per-site narrowing differs from narrow-at-the-end by ≤ 1 cent per narrowing site (§11.4) | Double rounding, truncation substituted for half-up, totals recomputed from micro-dollars |
+| **P-20** | `contractValueBand == 'unknown' ⟹ artifactStatus == DRAFT_NOT_CERTIFIABLE` and no signature block; `== 'at_or_under_100k' ⟹ cwhssaPremium == 0 ∧ ¬PREMIUM_BELOW_STATUTORY` | **The CRIT-3 gate**, as a property rather than a paragraph |
+| **P-21** | No `BlockReason` is raised for a `DeductionEntry` whose category is a member of `DeductionCategory` | §9.2.1 — a lawful (i)/(j) deduction wrongly blocking a line |
+| **P-22** | `WD_UNDERPAYMENT` fires independently of `contractValueBand` on identical inputs | §7.0's gate silently disabling the §10 comparison |
 
-**P-06 and P-11 are the two worth arguing for.** P-06 is a *metamorphic* property: it needs no known answer, only a relation that must hold, and it catches the entire class of "the weighted average went wrong" without anyone computing an expected value. P-11 is the executable form of **E1** — it is why a filing regenerated during a dispute eighteen months from now is the same document.
+**P-06, P-11 and P-19 are the three worth arguing for.** P-06 is a *metamorphic* property: it needs no known answer, only a relation that must hold, and it catches the entire class of "the weighted average went wrong" without anyone computing an expected value. Its **±$0.005 tolerance is load-bearing, not slack**: `regularRate` is narrowed to cents (§11 N5) while `baseRate` is a `MilliRate` carrying four decimals, so a single-classification week at `baseRate = $10.0050` yields `regularRate = $10.01`, which strictly exceeds `max_c baseRate` and falsifies the untoleranced form on a perfectly legitimate input. Half a cent is exactly the maximum a single half-up narrowing can move a value, so the tolerance is the narrowing rule restated — not a fudge factor, and it must not be widened. G-SUBCENT exists so the tolerance is exercised rather than assumed; an untoleranced P-06 over a generator that never emits sub-cent rates is a property that is *both* wrong and green, which is the worst state a test can be in.
+
+P-11 is the executable form of **E1** — it is why a filing regenerated during a dispute eighteen months from now is the same document. P-19 is the executable form of §11's rounding discipline, and it is what makes the discipline a specification rather than an intention.
 
 ### 12.3 Layer 3 — regulatory fixtures (the external oracles)
 
-Five fixtures whose expected values were authored by DOL and are quoted with their source. These are the only tests in the codebase whose expected values we are forbidden to regenerate.
+Eleven fixtures: **six class-1**, whose expected values were authored by DOL and are quoted with their source, and **five class-2**, authored here to pin the four corrections this revision makes. The six class-1 fixtures are the only tests in the codebase whose expected values we are forbidden to regenerate, and all six are pinned at `contractValueBand = over_100k` (§7.4) — they are CWHSSA examples, and asserting them under any other band would be asserting something DOL did not publish.
 
-| Fixture | Source | Asserts |
-|---|---|---|
-| **F-531** | 29 CFR 5.31(b)(1)–(3) | $21.93 + $6.27 = $28.60 across all three discharge methods; `col6B`/`col6C` placement |
-| **F-532abc** | 29 CFR 5.32(c)(1)(2)(3) | `baseRate` = $3.00 / $3.25 / $3.00 on the three contractor scenarios |
-| **F-FOH-15k11a** | FOH 15k11(a)(1)(2) | $110.00/$528.00/$24.00/$662.00 and $198.00/$440.00/$24.00/$662.00 |
-| **F-FOH-15k11b-M1** | FOH 15k11(b)(1) | `stEarnings` $480.00; `regularRate` $10.91; premium **$21.82** — the **E4** case |
-| **F-FOH-15k11b-M2** | FOH 15k11(b)(2) | With §7(g)(2) asserted and Saturday hours identified: premium **$24.00** |
-| **F-PWRB-44h** | DOL Prevailing Wage Resource Book, DB compliance principles | 44 h at $27.00 + $18.00: `44 × $45.00 = $1,980.00` straight time; `4 × .5 × $27.00 = $54.00`; total **$2,034.00** |
+| Fixture | Class | Source | Asserts — **and against which field** |
+|---|---|---|---|
+| **F-531** | 1 | 29 CFR 5.31(b)(1)–(3) | $21.93 + $6.27 = $28.60 across all three discharge methods; **and the §8.1 placement rule**: on method (2) the cash-in-lieu dollars appear in `col6C` and are counted once inside `col7A`; on method (1) the contribution dollars appear in `col6B` and are absent from `col7A` |
+| **F-532abc** | 1 | 29 CFR 5.32(c)(1)(2)(3) | `baseRate` = $3.00 / $3.25 / $3.00 on the three contractor scenarios |
+| **F-FOH-15k11a** | 1 | FOH 15k11(a)(1)(2) | `col6B` $110.00, straight-time cash $528.00, `cwhssaPremium` $24.00, DBA total due $662.00; and $198.00 / $440.00 / $24.00 / $662.00 |
+| **F-FOH-15k11b-M1** | 1 | FOH 15k11(b)(1) | `stEarnings` $480.00; `regularRate` $10.91; `cwhssaPremium` **$21.82** — the **E4** case |
+| **F-FOH-15k11b-M2** | 1 | FOH 15k11(b)(2) | With §7(g)(2) asserted and Saturday hours identified: `cwhssaPremium` **$24.00** |
+| **F-PWRB-44h** | 1 | DOL Prevailing Wage Resource Book, DB compliance principles | 44 h at $27.00 + $18.00: straight-time wage `44 × $45.00 = $1,980.00`; `cwhssaPremium` `4 × .5 × $27.00 = $54.00`; **total DBA compensation due $2,034.00 — which is *not* WH-347 column 7A** and must be asserted against `dbaCompensationDue`, never against `col7A` |
+| **F-M3-CIL** | 2 | §7.6 M3, authored | 48 h, $30.00 all cash, $6.27 asserted in lieu: `col6C` **$300.96**, `col7A` **$1,534.92**. Pins **R-CRIT2** — the $300.96 must be counted once |
+| **F-DT-UNPROVEN** | 2 | §7.3.1 M4a, authored | 36 ST + 8 DT at $1.00: `hoursWorked` 44.00, `statutoryOtHours` 4.00, line **blocked** `PREMIUM_HOURS_UNPROVEN`, artifact `DRAFT — NOT CERTIFIABLE` |
+| **F-DT-PROVEN** | 2 | §7.3.1 M4b, authored | 36 ST + 8 DT at $40.00: `premiumOwed` $40.00, `premiumCredit` $40.00 (capped), `cwhssaPremium` **$0.00**, **no block** |
+| **F-BAND-SUB100K** | 2 | §7.0, authored | 44 h at $20.00 with `at_or_under_100k`: `cwhssaPremium` **$0.00**, no `PREMIUM_BELOW_STATUTORY`, `WD_UNDERPAYMENT` evaluated unchanged, P-D sentence present |
+| **F-BAND-UNKNOWN** | 2 | §7.0, authored | The same week with `unknown`: `CWHSSA_COVERAGE_UNDETERMINED`, `DRAFT — NOT CERTIFIABLE`, **signature block absent** |
 
-A change to any file under `src/engine/arithmetic/**` that alters an F-fixture's output fails CI unconditionally. There is no regenerate flag for this class. If DOL is wrong, DOL is still the oracle, because DOL is who audits the customer.
+**On the class labels.** F-M3-CIL through F-BAND-UNKNOWN are **class 2 (frozen), not class 1**, and the distinction is not bookkeeping. Class 1 means *DOL published this number*; nobody at DOL published $1,534.92. What class 1 *does* supply for F-M3-CIL is the **rule** it pins — WHD's own column definitions, which put cash-in-lieu in 6C as a component of what was paid and define 7A as gross earned. Labelling an authored figure class 1 to make it feel more binding would corrupt the one distinction §23 exists to protect.
+
+A change to any file under `src/engine/arithmetic/**` that alters an F-fixture's output fails CI unconditionally. For class 1 there is no regenerate flag. If DOL is wrong, DOL is still the oracle, because DOL is who audits the customer. Class 2 follows §23's `REGEN.md` discipline.
 
 ---
 
@@ -479,17 +754,22 @@ A change to any file under `src/engine/arithmetic/**` that alters an F-fixture's
 
 Restating **D9** at the arithmetic layer, so nothing is added by accident:
 
-| Refused | Because | Behaviour |
-|---|---|---|
-| Annualized fringe credit rate (5.25(c)) | Requires total private hours and annual plan cost, absent from a certified-payroll CSV | 6B is customer-asserted, printed, disclaimed |
-| Unfunded-plan credit (5.28) | Requires an approval from the Secretary we cannot observe | Line blocked, 5.28(c) path described |
-| Union CBA fringe schedules | Not present in public WD text — the WD carries only the aggregate fringe figure | Refused at project setup on union-group classifications |
-| State daily overtime / double time | A second corpus (e.g. CA Labor Code §1815); a different obligation on the same hours | DT passes through from the CSV |
-| FLSA overtime on non-covered hours | Outside the covered contract; we are not the payroll system | Flagged as a limit (§7.7), never computed |
-| Apprenticeship ratios | An opinion about programme compliance | `(J)/(RA)` and level recorded and printed; no ratio computed |
-| Liquidated damages | An assessment made by the federal agency, per FOH 15k11(c) | The $33/day rule is stated with its effective date; no amount computed |
-| Whether a cash payment is "in lieu of" a fringe | 29 CFR 5.32(c): *"a question of fact"* | Assertion and its consequence shown side by side (§7.6) |
-| Whether a wage determination is *effective* | FAR 22.404-6 turns on a contracting-officer finding | Rule stated, observable dates shown, conclusion declined |
+| Refused | Because | Behaviour | Primitive |
+|---|---|---|---|
+| Annualized fringe credit rate (5.25(c)) | Requires total private hours and annual plan cost, absent from a certified-payroll CSV | 6B is customer-asserted, printed, disclaimed | **P-D** |
+| Unfunded-plan credit (5.28) | Requires an approval from the Secretary we cannot observe | Line blocked, 5.28(c) path described | **P-A** |
+| Union CBA fringe schedules | Not present in public WD text — the WD carries only the aggregate fringe figure | **Narrowed (ES-4):** refused **only** when a fringe credit is claimed (`col6B > 0`) against an `is_union_group` classification. The all-cash (5.31(b)(2)) and cash-in-lieu discharge methods are **allowed** | **P-A**, scoped |
+| State daily overtime / double time | A second corpus (e.g. CA Labor Code §1815); a different obligation on the same hours | DT **dollars** pass through from the CSV; DT **hours** count toward the federal 40-hour threshold (§4 A2) | **P-D** |
+| Whether CWHSSA attaches to this contract | 29 CFR 5.5(b) turns on the contract amount, a fact the customer holds and we do not | `contract_value_band` collected at setup; `unknown` withholds certification | **P-B** |
+| Whether a premium-labelled hour was paid at ≥1.5× | The CSV asserts a label, not a rate, and the two are not the same claim | Proven premium credited; unproven premium blocks with a closed choice (§7.3) | **P-A** |
+| FLSA overtime on non-covered hours | Outside the covered contract; we are not the payroll system | Flagged as a limit (§7.7), never computed | **P-D** |
+| Apprenticeship ratios | An opinion about programme compliance | `(J)/(RA)` and level recorded and printed; no ratio computed | **P-D** |
+| Liquidated damages | An assessment made by the federal agency, per FOH 15k11(c) | The $33/day rule is stated with its effective date on `over_100k` projects only; no amount computed | **P-D** |
+| Whether a 29 CFR 3.5(i)/(j) deduction's conditions are met | Consent, monetary return and 516.25(a) records are facts about the employment relationship | Category mapped and printed, conditions named, **never blocking** (§9.2.1) | **P-D** |
+| Whether a cash payment is "in lieu of" a fringe | 29 CFR 5.32(c): *"a question of fact"* | Assertion and its consequence shown side by side (§7.6) | **P-D** |
+| Whether a wage determination is *effective* | FAR 22.404-6 turns on a contracting-officer finding | Rule stated, observable dates shown, conclusion declined | **P-D** |
+
+**On the union row.** The narrowing is adopted, not merely recorded. A contractor paying `ELEC0080-011`'s `$36.85 + $14.13` entirely in cash under 5.31(b)(2) needs no CBA schedule at all — the WD's own aggregate figure fully supports the payment, and refusing them at project setup refuses a paying customer with no compliance problem to solve. What we cannot evaluate is a *credit* claimed against a schedule we do not hold, which is exactly `col6B > 0`. See **C-2** (§29) for the full argument and the supersession of `ARCHITECTURE.md` §5.2/§15.
 
 ---
 
@@ -524,7 +804,7 @@ flowchart TB
 
     csv --> s0
     s3 --> picker
-    s2 -.->|"above τ_lex/δ_lex<br/>pre-selected"| picker
+    s2 -.->|"above τ_lex/δ_lex<br/>ordered, none pre-selected<br/>(exact match only: pre-selected)"| picker
     picker -->|"confirmed → crosswalk write"| arith
     status -.->|"any BlockReason"| narr
     narr -.->|"slots only, no numbers"| render
@@ -552,11 +832,13 @@ Two consequences, both enforced by the CI import-boundary check (`ARCHITECTURE.m
 
 **Stage 0 — tenant crosswalk.** `crosswalk_entries` keyed `(tenant, wd_group_or_number, normalized_payroll_title) → classification_id`. Normalization is a pure function: uppercase, collapse whitespace, strip punctuation except `/`, expand a fixed abbreviation table (`OPER→OPERATOR`, `LAB→LABORER`, `CARP→CARPENTER`, `JRNY→JOURNEYMAN`, `APPR→APPRENTICE`, …). A hit resolves silently with zero model calls. Hypothesis **H2** (`ARCHITECTURE.md` §17) puts steady-state hit rate at ≥90% after four filings; `crosswalk_hit_ratio` is instrumented from day one.
 
-**Stage 1 — global aggregate.** A cross-tenant view keyed `(wd_group, normalized_title)` carrying counts only, never rows, and exposed only above a 5-tenant threshold (`ARCHITECTURE.md` §11.6). A hit here pre-selects in the picker; it does not resolve, because another contractor's answer is evidence, not authority.
+**Stage 1 — global aggregate.** A cross-tenant view keyed `(wd_group, normalized_title)` carrying counts only, never rows, and exposed only above a 5-tenant threshold (`ARCHITECTURE.md` §11.6). **A hit here may only change the ORDER of the candidate list.** It may not pre-select, default, auto-apply, annotate an individual candidate, or shorten the list — amended 2026-08-13 under finding **HIGH-2** (`ARCHITECTURE.md` ES-5, `USER_JOURNEY.md` §6.3.1, which own this rule). The reason is not that another contractor's answer is weak evidence; it is that signup is a free magic link, so *k* is an attacker-controlled input, and pre-selection is the step that converts five sybils into a wrong rate on a document signed under 18 U.S.C. 1001. As an ordering input the same attack produces only a worse ordering. The return type carries no field in which a selection could be expressed.
 
 **Stage 2 — lexical retrieval.** Deterministic scoring over the parsed classification list of *this WD revision*: normalized token-set Jaccard, plus a hand-curated synonym table anchored on SOC titles, plus a penalty for classifications in a union-prefixed group. Output: candidates ordered by `lexicalScore ∈ [0,1]`.
 
-> If `top1.lexicalScore ≥ 0.92` **and** `top1.lexicalScore − top2.lexicalScore ≥ 0.15`, the picker opens with that candidate pre-selected and **no model call is made**.
+> If `top1.lexicalScore ≥ 0.92` **and** `top1.lexicalScore − top2.lexicalScore ≥ 0.15`, **no model call is made** — the picker opens ordered by lexical score with nothing pre-selected.
+>
+> Pre-selection has exactly one licence, and it is narrower than this band: an **exact** match, after normalization, against this determination's own verbatim classification label (`lexicalScore == 1.0`). `USER_JOURNEY.md` §6.3.1's permission table is the authority, and this paragraph is ENGINE agreeing with it — the earlier 0.92/0.15 pre-selection rule was a divergence, found by the remediation audit and closed here. Similarity below exact orders the list and nothing more, because a 0.93 token-set overlap between *"CEMENT MASON"* and *"CEMENT MASON/CONCRETE FINISHER"* is a good guess, and a filled radio is an endorsement.
 
 This is not an optimisation, it is a product boundary. Deep dive 03 made "the free tier makes ZERO LLM calls" load-bearing for margin, and `ARCHITECTURE.md` §3.8 makes the free generator the tested fallback when the model budget is exhausted or Anthropic is unreachable. Stage 2 is that path. It is exercised by thousands of free-generator users daily, so the emergency path is a path in constant production use rather than a cold branch discovered during an incident.
 
@@ -627,7 +909,7 @@ Six design notes, each earned:
 - **Integer enums are supported; array `maxItems` is not** (only `minItems` of 0 or 1). Array length is validated in code.
 - **`rationale_span` must be a substring of the normalized payroll title** after the same normalization the retriever uses. This is the falsifiable part of the response: a required verbatim quote from the *input* is a claim that can be checked, whereas a self-reported confidence scalar is a number the model produced about itself. An empty or non-matching span is the real low-confidence signal and demotes to L-E (§18).
 - **`no_suitable_candidate`** lets the model decline. Forcing a rank always produces a rank; the useful signal is a model that says none of these fit — which routes to L-F, the conformance path under 29 CFR 5.5(a)(1)(iii), where the honest product answer is that a classification may not exist on this determination at all.
-- **No tools, anywhere.** Adding a tool would put a tool-use system prompt in front of every request (286–474 tokens depending on `tool_choice`, per the live pricing page) and, more importantly, would create a code path where the model influences what is retrieved. The retriever is a pure function of the mirror.
+- **No tools, anywhere.** Adding a tool would put a tool-use system prompt in front of every request — for `claude-sonnet-5`, **354 tokens** at `tool_choice: auto`/`none` and **474** at `any`/`tool`, re-verified on the live pricing page 2026-08-13 — and, more importantly, would create a code path where the model influences what is retrieved. The retriever is a pure function of the mirror. (An earlier revision quoted the range as "286–474", which spliced Opus 5's low figure onto Sonnet 5's high one. Immaterial to the argument, since no tools are used, but a mis-citation in a document that stakes its authority on live verification is worth correcting on sight.)
 
 ### 15.5 Validation, and what rejection costs
 
@@ -823,7 +1105,7 @@ Onboarding burst: a new account mapping ~15 titles in its first week costs about
 
 > **E5 — There is no confidence value at which the model resolves a classification.**
 
-D7 is explicit that an unmapped trade produces *"three candidate classifications with verbatim scope-of-work text and rate, that payroll line blocked, choice memorised."* The line is blocked. Any threshold that auto-resolved from a model rank would contradict D7, and would put a model decision inside a certification the contractor signs under 18 U.S.C. 1001. Thresholds in Ratepin govern **ordering and pre-selection only**.
+D7 is explicit that an unmapped trade produces *"three candidate classifications with verbatim scope-of-work text and rate, that payroll line blocked, choice memorised."* The line is blocked. Any threshold that auto-resolved from a model rank would contradict D7, and would put a model decision inside a certification the contractor signs under 18 U.S.C. 1001. Thresholds in Ratepin govern **ordering only**. Exactly one input may arrive with a radio filled — an exact normalized match against this determination’s own verbatim classification label — and it is federal text, not another tenant’s answer and not a model’s (**L-C₁**; `USER_JOURNEY.md` §6.3.1 owns the permission table).
 
 This is not caution for its own sake. The asymmetry is stark: a wrong classification produces a wrong rate on a signed federal document, discoverable years later, with back wages, interest, withholding and three-year debarment under 29 CFR 5.12 on one side; and one extra click, once, per title, per account, on the other.
 
@@ -832,26 +1114,44 @@ This is not caution for its own sake. The asymmetry is stark: a wrong classifica
 | Level | Trigger | Picker | Line | Artifact status | Signature block |
 |---|---|---|---|---|---|
 | **L-A** | Tenant crosswalk exact hit | not shown | resolved | unaffected | rendered |
-| **L-B** | Global aggregate hit: ≥5 tenants, ≥0.90 agreement | shown, top candidate **pre-selected** | blocked until one click | `DRAFT — NOT CERTIFIABLE` until clicked | withheld until clicked |
-| **L-C** | Lexical `score ≥ 0.92` **and** `margin ≥ 0.15` — **no model call** | shown, pre-selected | blocked until one click | `DRAFT — NOT CERTIFIABLE` until clicked | withheld until clicked |
+| **L-B** | Global aggregate hit: ≥5 tenants, ≥0.90 agreement | shown, **ordering only — nothing pre-selected, nothing annotated** | blocked until chosen | `DRAFT — NOT CERTIFIABLE` until chosen | withheld until chosen |
+| **L-C₁** | **Exact** normalized match against this determination's own verbatim label (`score == 1.0`) — **no model call** | shown, that candidate **pre-selected** | blocked until one click | `DRAFT — NOT CERTIFIABLE` until clicked | withheld until clicked |
+| **L-C₂** | Lexical `score ≥ 0.92` **and** `margin ≥ 0.15`, below exact — **no model call** | shown, ordered by score, **none pre-selected** | blocked until chosen | `DRAFT — NOT CERTIFIABLE` until chosen | withheld until chosen |
 | **L-D** | Model rank accepted: schema-valid, `confidence == "high"`, `rationale_span` matches, `ranked[0]` in-range | **top 3**, ordered by the model, none pre-selected | blocked until chosen | `DRAFT — NOT CERTIFIABLE` | **withheld** |
 | **L-E** | Model rejected (schema, digits, out-of-range, empty/mismatched span), or `confidence != "high"`, or budget exhausted (P12), or Anthropic unreachable | **top 3 by lexical score**, plus a searchable full class list; banner: *"Candidate ordering was produced without ranking assistance."* | blocked until chosen | `DRAFT — NOT CERTIFIABLE` | **withheld** |
 | **L-F** | `no_suitable_candidate == true`, or zero candidates above the lexical floor | full class list, searchable; exception block describes the conformance path | blocked; `UNMAPPED_TRADE` | **`DRAFT — NOT CERTIFIABLE`** | **withheld** |
 
 **What each level looks like in the product:**
 
-- **L-B / L-C — pre-selected picker.** One classification is offered with its verbatim WD line, its line number in the determination, and its base and fringe rates. The customer confirms. First confirmation writes the crosswalk entry; every later week is L-A.
+- **L-C₁ — the pre-selected picker.** One classification is offered, pre-selected, with its verbatim WD line, its line number in the determination, and its base and fringe rates. The customer confirms. First confirmation writes the crosswalk entry; every later week is L-A. This is the *only* level at which a radio arrives filled, and the only input allowed to fill it is this determination's own federal text.
+- **L-B / L-C₂ — the ordered picker.** Same surface, same verbatim detail per candidate, **no radio filled and the confirm button inert until she chooses**. L-B's ordering comes from the cross-tenant aggregate and L-C₂'s from lexical score; neither may be shown as a recommendation, and no count of other companies' confirmations appears beside any candidate (`USER_JOURNEY.md` §6.3.1). First confirmation writes the crosswalk entry; every later week is L-A.
 - **L-D — the top-3 picker.** Three candidates, model-ordered, each with `verbatim WD line · line n–m · $base + $fringe · group id`. No candidate is pre-selected, because pre-selection is an endorsement and a model-ordered list is not one. The line carries `UNMAPPED_TRADE` until a choice is made.
 - **L-E — the degraded picker.** Identical UI, lexically ordered, with the banner. This is the free-generator path, which means the degraded mode is a surface with daily production traffic rather than a cold branch.
 - **L-F — the honest refusal.** The exception block states 29 CFR 5.5(a)(1)(iii)'s conformance criteria, notes that *"the contracting officer must require that any class of laborers or mechanics ... which is not listed in the wage determination ... be classified in conformance with the wage determination,"* and **declines to conclude** whether conformance is required here, because that turns on a determination we cannot observe. It also states plainly that Ratepin does not file SF-1444.
 
 **The watermark and the withheld signature block are produced by `deriveStatus`, not by the model path.** The ranking path contributes only a `BlockReason`; `deriveStatus(lines, freshness)` is the single total constructor of `ArtifactStatus` (`ARCHITECTURE.md` §6.3), and property **P-13** asserts that any unresolved line forces `DRAFT_NOT_CERTIFIABLE` with no signature block. A model failure cannot produce a certifiable-looking artifact, because a model failure and a missing CSV column travel the same code path.
 
-### 18.3 What the withheld signature block actually withholds
+### 18.3 What the withheld signature block actually withholds — and the three-versus-six correction
 
-29 CFR 5.5(a)(3)(ii)(C) requires the Statement of Compliance to certify three things, the third being *"That each laborer or mechanic has been paid not less than the applicable wage rates and fringe benefits or cash equivalents for the classification(s) of work actually performed, as specified in the applicable wage determination incorporated into the contract."*
+**Two different objects are routinely conflated, and this document is where the distinction is owned (ES-5).** 29 CFR 5.5(a)(3)(ii)(C) requires **three** certifications. The WH-347's own reverse carries **six** numbered boxes. Both facts are true; attaching one citation to the other — as `ARCHITECTURE.md` §3.5's *"the six checkboxes of 29 CFR 5.5(a)(3)(ii)(C)"* does — is a miscitation on the legally operative half of the filing, in a document whose credibility rests on quoting rather than remembering. It is corrected here and `ARCHITECTURE.md` §3.5 defers.
 
-If a line's classification is unresolved, that third certification is **unsupportable** — not by the contractor's fault, but because "the classification of work actually performed" has not been established. Rendering a signature block on such a document would produce a certifiable-looking artifact whose central certification we know to be unsupported. Withholding it is not UX politeness; it is the only rendering consistent with the regulation. (E) permits *"an original handwritten signature or a legally valid electronic signature"*, and (D) confirms the WH-347 reverse satisfies the requirement — so when the block *is* rendered, a self-serve product closes the loop with no human anywhere.
+**(C), quoted verbatim from the eCFR API on 2026-08-13, in full:**
+
+> *"Statement of Compliance. Each certified payroll submitted must be accompanied by a 'Statement of Compliance,' signed by the contractor or subcontractor, or the contractor's or subcontractor's agent who pays or supervises the payment of the persons working on the contract, and must certify the following:*
+>
+> *(1) That the certified payroll for the payroll period contains the information required to be provided under paragraph (a)(3)(ii) of this section, the appropriate information and basic records are being maintained under paragraph (a)(3)(i) of this section, and such information and records are correct and complete;*
+>
+> *(2) That each laborer or mechanic (including each helper and apprentice) working on the contract during the payroll period has been paid the full weekly wages earned, without rebate, either directly or indirectly, and that no deductions have been made either directly or indirectly from the full wages earned, other than permissible deductions as set forth in 29 CFR part 3; and*
+>
+> *(3) That each laborer or mechanic has been paid not less than the applicable wage rates and fringe benefits or cash equivalents for the classification(s) of work actually performed, as specified in the applicable wage determination incorporated into the contract."*
+
+Three, numbered (1)–(3). There is no (4), (5) or (6).
+
+**The six boxes are the form's, not the regulation's.** WHD's WH-347 instructions, verified the same day: *"Boxes 1, 2, 3 and 6 (i.e., the first three boxes and the last box) always **must** be checked"*; box 4 *"must be checked"* when a worker is paid as an apprentice, with each registered program named; box 5 when *"claiming an hourly credit for their contributions to or reasonably anticipated costs of bona fide fringe benefit plans, funds, or programs."* So the correct citation is split: **WHD's instructions** for the six-box layout and which are conditional, **5.5(a)(3)(ii)(C)** for the three things the signature certifies, and **(D)** for the fact that the WH-347 reverse satisfies (C) at all. §6.1's box-5 derivation and §25's "six statement-of-compliance checkbox states" both cite the instructions, correctly; only the attachment of the *number* six to the *regulation* was wrong.
+
+**Why the distinction earns its place rather than being a pedantic footnote.** The six boxes are a rendering contract — get one wrong and the form is defective. The three certifications are a liability contract — they are what 5.5(a)(3)(ii)(F) exposes to 18 U.S.C. 1001 and 31 U.S.C. 3729. A builder who believes the regulation enumerates six will look for six things to certify, find three, and resolve the discrepancy by inventing three. The whole withheld-signature design depends on knowing exactly which claims the signature makes.
+
+**Which brings the withholding into focus.** If a line's classification is unresolved, certification **(3)** is **unsupportable** — not by the contractor's fault, but because "the classification(s) of work actually performed" has not been established. If `contractValueBand` is `unknown` (§7.0), the overtime component of the wages certified under **(2)** and **(3)** cannot be computed either way. If a premium-labelled bucket is unproven (§7.3), the same. Rendering a signature block on any of those documents would produce a certifiable-looking artifact whose central certification we know to be unsupported. Withholding it is not UX politeness; it is the only rendering consistent with the regulation, and it is what **P-B** means. (E) permits *"an original handwritten signature or a legally valid electronic signature"*, and (D) confirms the WH-347 reverse satisfies the requirement — so when the block *is* rendered, a self-serve product closes the loop with no human anywhere.
 
 ### 18.4 Freshness never blocks — the second half of D7
 
@@ -934,25 +1234,30 @@ The canary is therefore the same 500 lines run against three different `(code, c
 | Distinct WDs | ≥ 25 | Pinned `(wd_number, revision)` pairs |
 | States | ≥ 8 | Chosen for parser diversity, weighted toward CA (launch demand market) |
 | Construction types | 4 | Building, Heavy, Highway, Residential |
-| Union-group classes | ≥ 3 WDs | Drives the D9 setup-refusal path |
+| Union-group classes | ≥ 3 WDs | Drives **both** union paths: the allowed all-cash discharge and the refused `col6B > 0` credit (§13, **ES-4**) |
 | Zero-fringe classes | ≥ 40% of lines | Matches the observed distribution (§15.3: 8 of 10 rows) |
+| `at_or_under_100k` lines | ≥ 15% of lines | §7.0's gate is a normal week, not an edge case; a suite that never exercises it cannot catch a regression that re-enables CWHSSA below the threshold |
 
 **Permutation matrix** — the cross-product each line is drawn from:
 
 | Axis | Values |
 |---|---|
 | Weekly hours | 0 · 8 · 39.75 · 40.00 · 40.25 · 44 · 48 · 55 · 84 |
+| **Contract value band** | `over_100k` · `at_or_under_100k` · `unknown` (**P-B**, whole filing) |
 | Classifications in week | 1 · 2 · 3 · 4 |
 | Fringe discharge (5.31(b)) | contributions · all cash · combination · none required |
 | Cash in lieu | none · exactly the WD fringe · above the WD fringe (§7.6) · below it |
 | Cash vs BHR | above · equal · below (each triggers a different §7.2 branch) |
-| Deductions | each of the ten 3.5 categories · multiple in one week · one `UNMAPPED` |
+| Deductions | each of the ten 3.5 categories · multiple in one week · one `UNMAPPED` · the §9.2.1 field-crew (i)/(j) label set asserting **zero** blocks |
 | §7(g)(2) | absent · asserted with OT class identified · asserted without it |
 | Status | J · RA with level · RA without level (blocks) |
-| Double time | present · absent |
+| **Double time** | absent · present under 40 total hours · **present with total hours over 40 at `dtRate` = null, $0.00, 1.49 × rr, 1.50 × rr, 2.00 × rr** |
 | Mixed work | covered only · covered + private under 40 covered (§7.7) |
+| Rate precision | whole cents · **sub-cent `MilliRate`s (G-SUBCENT, §12.2)** |
 | Calendar | week within a month · spanning a month end · spanning a year end |
 | Structure | one project · two projects same week · zero-hour day · zero-hour worker |
+
+The double-time row is deliberately over-specified. The previous matrix read simply *"Double time | present · absent"*, and that is precisely the resolution at which CRIT-4 hides: a suite can be 100% green on "DT present" and never once place a double-time hour above the fortieth, which is the only region where the bug lives.
 
 Roughly 40% of lines are drawn to be *boring* — a 40-hour week, one classification, statutory deductions only. A suite composed entirely of edge cases stops resembling the traffic it is supposed to protect, and a regression in the common path would be the most expensive one.
 
@@ -997,9 +1302,9 @@ stateDiagram-v2
 
 ## 25. Exact-match semantics
 
-**What is compared:** every field of the rendered `Wh347Artifact` struct — cols 1A–1E, 2, 3, 4 (seven days × ST/OT/DT), 5, 6A ST and OT, 6B, 6C, 7A, 7B, 8 (per category and total), 9; the six statement-of-compliance checkbox states; the artifact status enum and every `BlockReason`; the full provenance struct; and the CA eCPR element tree where applicable.
+**What is compared:** every field of the rendered `Wh347Artifact` struct — cols 1A–1E, 2, 3, 4 (seven days × ST/OT/DT), 5, 6A ST and OT, 6B, 6C, 7A, 7B, 8 (per category and total), 9; the six statement-of-compliance checkbox states (WHD's instructions, §18.3); the artifact status enum and every `BlockReason`; the full provenance struct; and the CA eCPR element tree where applicable. Also compared, because §7.0 and §7.3 made them load-bearing and an uncompared field is an untested one: `contractValueBand`, `hoursWorked`, `statutoryOtHours`, `regularRate`, `premiumOwed`, `premiumCredit`, `cwhssaPremium`, `premiumPaidTotal` and `dbaCompensationDue`.
 
-**Tolerance: none.** Integer cents, `expected === actual`. A one-cent difference is a failure, because a one-cent difference means the rounding rule (§11) moved, and a rounding rule that moves once will move again on a bigger number.
+**Tolerance: none.** Integer cents, `expected === actual`. A one-cent difference is a failure, because a one-cent difference means the rounding rule (§11) moved, and a rounding rule that moves once will move again on a bigger number. Note that this is not in tension with P-19's ±1-cent-per-site residual bound: P-19 bounds the difference between *two different orders of operations*, only one of which the engine performs. The engine performs the §11.2 order, deterministically, so a pinned expectation is exact. P-19 exists to prove the specified order is the one implemented; G1 exists to prove it has not changed.
 
 **What is *not* in G1:** PDF byte comparison. Font metrics and PDF library versions produce byte differences that carry no arithmetic meaning, and folding them into G1 would train everyone to treat red as noise. Geometry is guarded by a separate visual-regression job over rendered page images and by XSD validation against the pinned CA schema hash — both gate the deploy, neither gates the index, and their failures map to `RENDER_DIFF` and `SCHEMA_DIFF` below.
 
@@ -1009,7 +1314,7 @@ stateDiagram-v2
 
 The model path gets its own harness, and it does **not** gate the arithmetic build. That asymmetry is the whole point of **D6**.
 
-**Classification benchmark.** ≥300 `(raw_title, wd_revision, confirmed_classification_id)` triples harvested from `user_confirmed` crosswalk entries, held out from the crosswalk the ranker reads. Metrics: top-1 accuracy, top-3 recall, mean rank of the confirmed answer, rejection rate, and the L-C deterministic-resolve rate (which is the free-tier quality proxy). Runs nightly against live models; runs per-commit against recorded responses so a prompt change is not a coin flip.
+**Classification benchmark.** ≥300 `(raw_title, wd_revision, confirmed_classification_id)` triples harvested from `user_confirmed` crosswalk entries, held out from the crosswalk the ranker reads. Metrics: top-1 accuracy, top-3 recall, mean rank of the confirmed answer, rejection rate, and the L-C₁/L-C₂ deterministic-resolve rate (which is the free-tier quality proxy). Runs nightly against live models; runs per-commit against recorded responses so a prompt change is not a coin flip.
 
 **Narrative eval.** Template conformance (does each sentence bind to its block), the digit-ban rejection rate, the DO-NOT-ASSERT rejection rate, and a rubric score for readability. The two rejection rates are hard pass/fail; the rubric is a report.
 
@@ -1055,13 +1360,25 @@ What we may say once it clears is narrow and true: *"Every rate on every filing 
 
 **C-1 — D6's "exception narrative" is the weakest use of the model in the design, and it is implemented anyway.** D6 gives the model two jobs. The first, constrained ranking, does real work: it converts a 200-item search into a one-click confirmation and mints the crosswalk. The second, narrative drafting, produces prose that a deterministic template already produces adequately — and §16.3's digit ban means the model may not touch a single fact in it. On the numbers in §17.3 it costs about $0.0005 per filing, so it is not a cost objection; it is a complexity objection. **Implemented as specified**, with the honest note that if the narrative eval's readability rubric does not beat the deterministic fallback by a measurable margin over 60 days, the correct move is to delete Job 2 entirely and ship the template. That would leave exactly one model call in the entire product, which would be a better product, not a worse one.
 
-**C-2 — D9's union exclusion is implemented more broadly than D9 requires.** D9 excludes *"union CBA fringe schedules (not present in public WDs)."* That is precise and correct: the WD publishes only an aggregate fringe number (§15.3 shows `ELEC0080-011` at `$36.85 / 14.13`), and the *schedule* behind it — what the $14.13 buys — is in a collective bargaining agreement we do not hold. `ARCHITECTURE.md` §15 implements this as a **refusal at project setup** on any `is_union_group` classification. That is broader than the decision: a contractor could correctly pay $36.85 + $14.13 all in cash under 5.31(b)(2) and need no CBA schedule at all. **Implemented as specified** to stay consistent with the architecture. The narrower rule, recorded here for whoever revisits it: refuse only when the customer claims a **fringe credit** (col 6B > 0) against a union-group classification, and allow the all-cash and cash-in-lieu discharge methods, which the WD's own aggregate number fully supports.
+**C-2 — D9's union exclusion was implemented more broadly than D9 requires. The narrow rule is now adopted (ES-4).** D9 excludes *"union CBA fringe schedules (not present in public WDs)."* That is precise and correct: the WD publishes only an aggregate fringe number (§15.3 shows `ELEC0080-011` at `$36.85 / 14.13`), and the *schedule* behind it — what the $14.13 buys — is in a collective bargaining agreement we do not hold. `ARCHITECTURE.md` §5.2/§15 implements this as a **refusal at project setup** on any `is_union_group` classification, which is broader than the decision: a contractor paying $36.85 + $14.13 entirely in cash under 5.31(b)(2) needs no CBA schedule at all.
+
+An earlier revision recorded the narrow rule and then implemented the broad one *"to stay consistent with the architecture."* **That reasoning was wrong and is withdrawn.** Consistency with a document you have just demonstrated to be over-broad is not a reason; it is a way of laundering a known defect through a second file. The narrow rule is adopted:
+
+> **Refuse only when a fringe credit is claimed — `col6B > 0` — against an `is_union_group` classification.** The all-cash (5.31(b)(2)) and cash-in-lieu discharge methods are allowed, because the WD's own aggregate fringe figure fully supports them and no CBA schedule is needed to evaluate them.
+
+Three consequences worth stating. (a) The refusal moves from **project setup** to the **line**, which is a better place for it: it is a fact about how this contractor discharged the obligation on this line, not a property of the determination. It is **P-A** with a closed choice — pay the fringe in cash, or the line stays blocked — rather than a door closed before the customer has entered. (b) `ARCHITECTURE.md` §5.2/§15 is superseded on the point and must be amended to match; the D9 Challenge note belongs against **D9** in the dossier rather than buried in this section. (c) It admits a segment the broad rule turned away: an open-shop sub on a WD where one trade happens to carry a union-prevailed rate is **D1**'s buyer, not an edge case, and refusing them at setup refused a paying customer with no compliance problem to solve.
+
+**C-6 — Three arithmetic rules in this document are Ratepin's, not DOL's, and all three can only cost the contractor money.** Recorded together so no future reader mistakes one for a citation. (i) §7.5's requirement that Method 2's premium be ≥ Method 1's — see **C-3**. (ii) §7.3's requirement that a premium label be **proven** by a stated rate ≥ 1.5 × `regularRate` before it is credited: DOL nowhere requires a contractor to prove the rate on a payroll they filed, but we cannot compute a credit from a number we do not have, and the alternative to blocking is to assume the premium was paid — which is what CRIT-4 showed produces a silent underpayment. (iii) §7.3's over-blocking when a week has both statutory overtime and unpriceable premium hours, without attempting to work out which hours crossed the fortieth. Each of the three resolves ambiguity toward paying more, and each is visible to the customer as a block or an exception rather than as a silently larger number.
+
+**C-7 — The `contract_value_band` question is the first thing Ratepin asks that the customer might get wrong.** Every other setup field is copied off a document the customer already holds (WD number, county, award date). The contract value is too, but it is the field most likely to be answered from memory, and the *modification* case is genuinely hard: a $90,000 award raised past $100,000 by change order acquires CWHSSA obligations, and the product cannot see the change order. Mitigations, all inside the product: the band is re-confirmed at each new project rather than inherited; the exception report prints the band on every filing so a wrong answer is visible weekly rather than discovered in an audit; and the copy states the threshold and its citation rather than asking for a number in the abstract. What we do **not** do is infer the band from anything — not from crew size, not from filing volume, not from the WD. **Q-E10** records that the error rate on this field is unmeasured.
 
 **C-3 — The §7(g)(2) conservatism rule is ours, not DOL's.** §7.5 requires that Method 2's premium be ≥ Method 1's before Method 2 is used. No regulation says this; DOL presents the two as alternatives, and 778.419 sets the conditions. Our rule can only ever cause a contractor to pay *more* than the minimum, never less. It is recorded here as a Ratepin policy so that a future reader does not mistake it for a citation, and so that a customer who disagrees knows there is a defensible position on the other side.
 
 **C-4 — The engine cannot verify the one thing the customer most wants verified.** The paid boundary (**D3**) is the rate of record. The engine proves the rate on the form traces to a named WD number, revision and publication date. It cannot prove the *right* determination is pinned to the project, because FAR 22.404-6 effectiveness turns on a contracting-officer finding, and it cannot prove the classification is *correct*, because that is a fact about work performed on a site we cannot observe. Both refusals are already binding (**D7**, `ARCHITECTURE.md` §11.7). Recording the consequence plainly: **Ratepin's provenance claim is narrower than "your rates are right,"** and acquisition copy that blurs the two would be making exactly the claim the DO-NOT-ASSERT list forbids.
 
-**C-5 — Two upstream documents state the wrong number of permissible deduction categories.** §9.2, superseded on evidence.
+**C-5 — Two upstream documents state the wrong number of permissible deduction categories.** §9.2, superseded on evidence (**ES-2**). The substantive half — that a correct ten-member enum can *still* wrongly block a hard-hat deduction if a mapped category's unverifiable conditions are treated as blocking — is closed in §9.2.1 and tested by **P-21**.
+
+**C-8 — Four of this document's own claims were falsified by adversarial review, and the pattern in them is worth more than any one fix.** §8's `col7A` double-counted cash in lieu; §4 A2 dropped double-time hours from a federal threshold; §2's "single division" was arithmetically false and §11 R4 built a CI rule on top of it; §7 applied CWHSSA with no coverage gate. Every one of them was **internally contradicted somewhere else in this same document** — §7.6's worked example already used the correct `col7A`; §4 A2's own text admitted `dtRate` was arbitrary; §15.3's own live extract exhibits a rate × hours product that is not representable in cents. The document was consistent with itself in prose and inconsistent in arithmetic, and no test crossed the gap because every property tested a *consequence* of the formulas rather than the formulas themselves. The structural response is P-16 through P-22: assertions written against the formula as stated, so a formula and its worked example cannot drift apart again without a red build. **The general lesson, recorded as a standing rule: a worked example that disagrees with the formula above it is not a typo in the example — it is a fifty-fifty bet on which one the builder implements.**
 
 ---
 
@@ -1073,12 +1390,14 @@ Recorded so Phase 2 does not mistake absence of evidence for evidence. Q-numbers
 |---|---|---|
 | **Q-E1** | Token estimates in §17.3 (900 / 1,200 / 350 / 120) | **Estimates.** The prompt bundles do not exist yet. The real control is a build-time `messages.count_tokens` assertion; set the ceiling once the bundle exists and re-baseline rather than scaling by hand. |
 | **Q-E2** | `claude-sonnet-5` ranking accuracy on construction classifications | **Unmeasured.** **ADR-101**'s entire assignment rests on it. Mitigated by the nightly benchmark and the pre-committed 80% / 95% promotion rule — the one hypothesis here with an automatic reversal path. |
-| **Q-E3** | The lexical thresholds τ_lex = 0.92 and δ_lex = 0.15 | **Chosen conservatively, not fitted.** They govern pre-selection only (**E5**), so being wrong costs a click, never a rate. Fit them against the §26 benchmark once ≥300 confirmations exist; move them only on measured data. |
+| **Q-E3** | The lexical thresholds τ_lex = 0.92 and δ_lex = 0.15 | **Chosen conservatively, not fitted.** Since the HIGH-2 remediation they govern only whether the model is called, not whether a radio is filled (**E5**, **L-C₂**), so being wrong costs a model call, never a rate. Fit them against the §26 benchmark once ≥300 confirmations exist; move them only on measured data. |
 | **Q-E4** | Cost figures in §17.3 | **Modelled from list prices, not measured.** Re-fetch pricing on build day. Do not quote a margin externally before 100 real filings (G4's copy lint). |
 | **Q-E5** | `injection_signal` on payroll titles | **Logged, not acted on.** No baseline rate exists, so any threshold would be invented. It exists so the first attack is observed. |
 | **Q-E6** | Whether the exception narrative beats the deterministic template | **Unmeasured.** See **C-1**. The 60-day rubric comparison is the decision instrument, and deletion is a legitimate outcome. |
 | **Q-E7** | Fixed-width parse coverage across all 4,236 active WDs (**H1**) | **Hypothesis.** §15.3 shows the wrapped-name case is real. The canary's ≥25 WDs is a sample, not a census; probe **P5** is the fleet-scale instrument. The *rate* at which classes are unparseable — and therefore the rate at which lines block — is unknown. |
-| **Q-E8** | Whether the DOL Method 1 rounding convention (§11 R1) matches what auditors actually reconcile against | **Reasoned from DOL's published intermediate ($10.91), not confirmed with an auditor.** The difference is ≤ half a cent per overtime hour. If a customer's payroll register uses full precision, the two differ by at most a cent on the form, and the fixture is where that argument gets settled. |
+| **Q-E8** | Whether the DOL Method 1 rounding convention (§11) matches what auditors actually reconcile against | **Reasoned from DOL's published intermediate ($10.91), not confirmed with an auditor.** P-19 bounds the exposure at one cent per narrowing site; the fixture is where the argument gets settled. |
+| **Q-E10** | The rate at which customers answer `contract_value_band` wrongly, and the change-order case that moves a project across the threshold mid-life (**C-7**) | **Unmeasured, and not measurable from our data** — we cannot see the contract. Instrumented indirectly: `band_changed_after_first_filing` is logged per project, and a rising rate is evidence the setup copy is unclear. No automatic action attached, because there is no action that would not be a guess. |
+| **Q-E11** | Whether §7.3's over-blocking rule (block when a week has statutory overtime *and* unpriceable premium hours) fires often enough to be friction | **Unmeasured.** `premium_hours_unproven_rate` is instrumented from day one. If it exceeds a few percent of filings the answer is a better CSV mapping step at ingest — teaching the mapper to read the premium rate column — never a relaxation of the rule, because the rule's failure mode is a silent federal underpayment (§7.3.1 M4a). |
 | **Q-E9** | Published platform facts in §17.1 | **Verified 2026-08-13, with an expiry.** Prices and cache minimums are dated observations, not permanent properties. Re-fetch on build day and on every model-id change; never quote the Sonnet 5 pricing note in stronger words than it uses. |
 
 ---
@@ -1087,13 +1406,15 @@ Recorded so Phase 2 does not mistake absence of evidence for evidence. Q-numbers
 
 **Regulation, forms and enforcement guidance (all fetched 2026-08-13 via the eCFR API or dol.gov)**
 
-- https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-A/section-5.5 — 29 CFR 5.5: (a)(1)(i) multiple classifications and the payroll-records proviso; (a)(1)(iii) conformance; (a)(3)(ii)(B) the full-SSN prohibition on weekly transmittals; (a)(3)(ii)(C) the three certifications; (D) the WH-347 reverse; (E) electronic signature; (F) 18 U.S.C. 1001 / 31 U.S.C. 3729; (G) three-year retention; **(b)(1) the CWHSSA overtime clause**; (b)(2) $33/day liquidated damages
+- https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-A/section-5.5 — 29 CFR 5.5: (a)(1)(i) multiple classifications and the payroll-records proviso; (a)(1)(iii) conformance; (a)(3)(ii)(B) the full-SSN prohibition on weekly transmittals; **(a)(3)(ii)(C) the *three* certifications, quoted in full in §18.3**; (D) the WH-347 reverse; (E) electronic signature; (F) 18 U.S.C. 1001 / 31 U.S.C. 3729; (G) three-year retention; **(b) preamble — the CWHSSA clauses are inserted "in any contract in an amount in excess of $100,000" (§7.0)**; (b)(1) the CWHSSA overtime clause, denominated in *hours worked*; (b)(2) $33/day liquidated damages
 - https://www.ecfr.gov/api/versioner/v1/full/2026-08-11/title-29.xml?part=5&section=5.5 — machine-readable source of the §7.1 and §18.3 quotations
 - https://www.ecfr.gov/api/versioner/v1/full/2026-08-11/title-29.xml?part=5&section=5.32 — **29 CFR 5.32**: the overtime base, the employee-contribution rule, and the three contractor examples (W, X, Y) reproduced in §7.2
 - https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-B/section-5.31 — 29 CFR 5.31(b): the three discharge methods and the $21.93 / $6.27 / $28.60 example (fixture F-531)
 - https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-B/section-5.25 — 29 CFR 5.25(c): annualization, quoted in §6.1
 - https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-B/section-5.28 — 29 CFR 5.28: unfunded plans and the Secretary-approval condition
-- https://www.ecfr.gov/api/versioner/v1/full/2026-08-11/title-29.xml?part=3&section=3.5 — **29 CFR 3.5**: the **ten** permissible deduction categories (a)–(j), superseding the eight-category statement upstream (§9.2)
+- https://www.ecfr.gov/api/versioner/v1/full/2026-08-11/title-29.xml?part=3&section=3.5 — **29 CFR 3.5**: the **ten** permissible deduction categories (a)–(j), last amended **88 FR 57730 (Aug. 23, 2023)**; (i) board/lodging under FLSA §3(m) with the 29 CFR 516.25(a) records and (j) nominal-value safety equipment are quoted verbatim in §9.2, superseding the eight-category statement upstream (**ES-2**)
+- https://www.ecfr.gov/api/versioner/v1/full/2026-08-11/title-29.xml?part=778&section=778.202 — FLSA extra compensation at a premium rate for hours in excess of the daily or weekly standard: excludable from the regular rate and creditable toward overtime. The warrant for §7.3's treatment of premium buckets — straight-time equivalent into `stEarnings`, premium portion into `premiumCredit`
+- https://www.law.cornell.edu/uscode/text/40/3142 — 40 U.S.C. 3142: the Davis-Bacon Act's own **$2,000** contract threshold, fifty times below CWHSSA's $100,000 (§7.0)
 - https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-A/section-5.12 — three-year debarment
 - https://www.ecfr.gov/api/versioner/v1/full/2026-08-11/title-29.xml?part=778&section=778.115 — FLSA weighted-average regular rate for two or more rates
 - https://www.ecfr.gov/api/versioner/v1/full/2026-08-11/title-29.xml?part=778&section=778.415 — FLSA §7(g)(1) and (2), and the before-performance agreement requirement
@@ -1102,7 +1423,7 @@ Recorded so Phase 2 does not mistake absence of evidence for evidence. Q-numbers
 - https://www.dol.gov/sites/dolgov/files/WHD/legacy/files/FOH_Ch15.pdf — Rev. 660, 10/25/2010: **15k01(a)** basic rate of pay; **15k01(b)** the weighted-average rule; **15k03(a)** covered hours; **15k06** overtime with fringe benefits; **15k11(a)** the $662.00 examples; **15k11(b)** the painter/electrician Method 1 ($21.82) and Method 2 ($24.00); 15k10/15k11(c) liquidated damages at the then-current $10/day
 - https://www.dot.state.mn.us/const/labor/documents/contractdocs/usdolfoh15.pdf — text-extractable mirror of the same chapter, used to obtain the §7 quotations verbatim
 - https://www.dol.gov/agencies/whd/government-contracts/prevailing-wage-resource-book/db-compliance-principles — "each classification stands alone"; fringe excluded from the half-time premium; the 44-hour $27.00 + $18.00 → $2,034.00 example (fixture F-PWRB-44h)
-- https://www.dol.gov/agencies/whd/forms/wh347 — WH-347 and instructions, Rev. January 2025, OMB 1235-0008, expires 01/31/2028: columns 1A–9 verbatim, including 6A's "do not include cash payments in lieu of fringe benefits", 8's "for all work", 9's "across all projects", and the statement-of-compliance box rules (1/2/3/6 always, 4 apprentices, 5 fringe credit)
+- https://www.dol.gov/agencies/whd/forms/wh347 — WH-347 and instructions, Rev. January 2025, OMB 1235-0008, expires 01/31/2028: columns 1A–9 verbatim, including 6A's "do not include cash payments in lieu of fringe benefits", 6B/6C as **weekly totals**, 8's "for all work", 9's "across all projects"; column 4's overtime row conditioned *"On all contracts subject to the Contract Work Hours and Safety Standards Act (CWHSSA)"* (§7.0); and the **six** numbered boxes on the form's own reverse — 1/2/3/6 always, 4 apprentices, 5 fringe credit — which are the form's, not 5.5(a)(3)(ii)(C)'s (§18.3, **ES-5**)
 - https://www.dol.gov/sites/dolgov/files/WHD/legacy/files/wh347.pdf — the form PDF
 - https://www.acquisition.gov/far/22.404-6 — wage determination effectiveness; the conclusion we decline to draw (**C-4**)
 - https://codes.findlaw.com/ca/labor-code/lab-sect-1815.html — CA daily overtime; a different obligation on the same hours, out of scope in v1
@@ -1133,10 +1454,13 @@ Recorded so Phase 2 does not mistake absence of evidence for evidence. Q-numbers
 **Product-internal**
 
 - `IDEA_DOSSIER.md` — **D6** (engine design), **D7** (unhappy-path behaviour), **D9** (v1 exclusions), **D10/G1–G6** (measurement gates), **R1–R3**
-- `ARCHITECTURE.md` — **I1–I7**, §3.2 (the arithmetic module), §3.8 (the free generator as the tested fallback), §6.3 (`deriveStatus`), §7.2 (staging vs promotion), §8.1–8.2 (the ladder and the probes), §11.6 (the crosswalk aggregate), §11.7 (DO-NOT-ASSERT), §14 (G1–G6 instrumentation), **ADR-002**, **ADR-003**, **ADR-010**, **ADR-013**. Superseded here: §2.1's model split (**ADR-101**) and §3.2's deduction count (§9.2)
+- `ARCHITECTURE.md` — **I1–I7**, §3.2 (the arithmetic module), §3.8 (the free generator as the tested fallback), §6.3 (`deriveStatus`), §7.2 (staging vs promotion), §8.1–8.2 (the ladder and the probes), §11.6 (the crosswalk aggregate), §11.7 (DO-NOT-ASSERT), §14 (G1–G6 instrumentation), **ADR-002**, **ADR-003**, **ADR-010**, **ADR-013**. Superseded here, per the S-table at the head of this document: §2.1's model split (**ES-1**, ADR-101), §3.2's deduction count (**ES-2**, §9.2), §3.2's unconditional CWHSSA (**ES-3**, §7.0), §5.2/§15's blanket union refusal (**ES-4**, §13/C-2) and §3.5's six-checkbox citation (**ES-5**, §18.3)
+- `DESIGN_REVIEW.md` — the adversarial review that falsified CRIT-2 (§8.1), CRIT-3 (§7.0), CRIT-4 (§4 A2, §7.3), CRIT-5 (§2.1, §11), HIGH-6 (§9.2.1), MED-1 (§18.3), MED-5 (§12.2 P-06), MED-6 (§11.2) and MED-8 (§13, C-2). **C-8** records what the four arithmetic findings had in common
 - `research/03-gtm-pricing.md` — the zero-LLM free tier and the $0.05/filing LLM budget
 - `research/04-mvp-scope.md` — the revised WH-347 layout, the SAM two-endpoint finding, the CA/federal SSN conflict, the CWHSSA arithmetic, and the FCA penalty range ($14,308–$28,619 per claim) that must never be described as a DBA penalty
 
 ---
 
-**Document status:** binding for Phase 2. Where this document conflicts with a later implementation choice, this document wins unless a superseding ADR is written and merged. **ADR-101** (§17.4) and **§9.2** state precisely what they change in `ARCHITECTURE.md`; nothing else in that document is altered.
+**Document status:** binding for Phase 2. Where this document conflicts with a later implementation choice, this document wins unless a superseding ADR is written and merged. **ES-1 through ES-5**, tabulated at the head of this document, state precisely what they change in `ARCHITECTURE.md`. The converse also holds and is not optional: `ARCHITECTURE.md` **AS-1…AS-8** and `CORPUS_DESIGN.md` §0.5 override this document where they say so — **AS-5** (the cross-tenant aggregate orders only) rewrote §15.1 and §18.2 here.
+
+**Revision note, 2026-08-13.** This revision closes CRIT-2, CRIT-3 (engine half), CRIT-4, CRIT-5, HIGH-6, MED-1, MED-5, MED-6 and MED-8 from `DESIGN_REVIEW.md`, and corrects LOW-1 and LOW-2 in passing. Four statements are **withdrawn as false**, each named at the point of correction rather than quietly deleted: §2's "single division"; §4 A2's exclusion of double-time hours from the CWHSSA threshold; §8's addition of `col6C` to `col7A`; and §11 R4's two-call-site `grep`. Two properties are **corrected**: P-02, which was falsified by a class-1 DOL fixture, and P-06, which was falsified by any sub-cent rate. Seven properties are **added** (P-16…P-22) and six fixtures with them, each pinned to one of the findings, so that a regression to any withdrawn statement is a red build rather than a rediscovery.

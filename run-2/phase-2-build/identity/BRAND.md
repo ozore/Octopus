@@ -73,7 +73,7 @@ Dunford's rule is that the alternative is whatever the customer would do if you 
 
 | Attribute | So what? | The buyer's own sentence |
 |---|---|---|
-| U1 provenance | An audit, a GC challenge or a DOL conformance question **eighteen months later is answered from stored data instead of reconstruction** — and reconstruction is exactly what is impossible, because SAM overwrites the live document | *"I can show them where the number came from without going and finding it again."* |
+| U1 provenance | An audit, a GC challenge or a DOL conformance question **eighteen months later is answered from stored data instead of reconstruction** — reconstruction is possible (SAM's archive serves superseded revisions; see the not-claimed list above), but it is her unpaid Saturday, and it does not tell her which revision was pinned to *this* project on *that* week | *"I can show them where the number came from without going and finding it again."* |
 | U2 refusal | You **never sign a document the software was not sure about.** The signature carries 18 U.S.C. § 1001 exposure — DOL's own WH-347 instructions warn of *"a fine, possible imprisonment of not more than 5 years, or both"* — and it is the contractor's signature, not ours | *"It won't let me certify something it couldn't work out."* |
 | U3 memory | *"Which class is this guy?"* — the one genuinely human-shaped question in the whole job — is **asked once, ever, per trade per determination** | *"I told it once."* |
 | U4 no humans | You can **decide, pay and file inside one session at 4:40pm on a Friday**, which is when this work actually happens | *"I didn't have to book anything."* |

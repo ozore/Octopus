@@ -528,7 +528,12 @@
   .rp-sheet {
     position: relative;
     inline-size: 100%;
-    aspect-ratio: 11 / 8.5;
+    /* 8.5/11 = 0.7727 — one Letter page, landscape, as a FLOOR rather than a
+       fixed ratio. At the specimen's content the sheet is exactly one page, so
+       the geometry claim above holds on sight; if a line of arithmetic ever
+       makes it taller, the paper runs on rather than clipping a worker. That is
+       the same courtesy the DRAFT state already had, applied to every state. */
+    min-block-size: 77.27cqi;
     padding: 3.2cqi;
     background-color: var(--rp-surface);
     color: var(--rp-ink);
@@ -537,12 +542,10 @@
     overflow: hidden;
     display: flex; flex-direction: column;
   }
-  /* A DRAFT artifact legitimately carries an extra band and a fourth footer
-     line. It is allowed to run past one page rather than clip a worker. */
-  [data-state="draft"] .rp-sheet { aspect-ratio: auto; min-block-size: 77.2cqi; }
   /* flex:1 rather than height:100% so the body fills the sheet whether the
-     height came from the aspect ratio or from the content (draft). That is
-     what keeps the provenance block at the foot of the page in both. */
+     height came from the one-page floor or from the content (draft, which
+     carries an extra band and a fourth footer line). That is what keeps the
+     provenance block at the foot of the page in both. */
   .rp-sheet__body { position: relative; z-index: 1; flex: 1 1 auto; display: flex; flex-direction: column; }
 
   /* Bounded Overlay Rule: one colour, one alpha, over one surface. */
@@ -620,6 +623,16 @@
   .rp-w347__name { font-size: 1.9cqi; font-weight: 700; letter-spacing: 0.02em; }
   .rp-w347__omb { font-family: var(--rp-font-num); font-size: 0.86cqi; color: var(--rp-ink-2); }
   .rp-w347__use { margin-block-start: 0.25cqi; font-size: 0.86cqi; color: var(--rp-ink-3); }
+  /* SPECIMEN mark. Neutral ink and a rule, never a status hue — R2 says colour
+     means state, and this is not a state of the filing. It says something about
+     this page: the employer and the workers are invented, the determination is not. */
+  .rp-w347__spec {
+    display: inline-block; margin-inline-start: 1cqi;
+    padding: 0.12cqi 0.55cqi;
+    font-family: var(--rp-font-num); font-size: 0.8cqi; font-weight: 700;
+    letter-spacing: 0.16em; line-height: 1.25; color: var(--rp-ink-2);
+    border: 0.14cqi solid var(--rp-rule-strong);
+  }
 
   .rp-w347__head {
     display: grid; grid-template-columns: 2.1fr 1.4fr 0.7fr 1fr;
@@ -669,7 +682,17 @@
   .rp-w347__raw { font-family: var(--rp-font-num); font-size: 0.78cqi; color: var(--rp-draft); font-weight: 700; }
   .rp-w347__void { color: var(--rp-draft); font-weight: 700; }
 
-  .rp-w347__foot { display: flex; flex-wrap: wrap; gap: 0.5cqi 1.6cqi; margin-block-start: 0.7cqi; font-size: 0.8cqi; color: var(--rp-ink-3); }
+  /* Ratepin's own annotation band, not form furniture — hence ink-3 and a
+     hanging rule rather than a box. One note per line: these are the sentences
+     a compliance desk reads to check our arithmetic, and a ragged multi-column
+     wrap would hide the one they came for. */
+  .rp-w347__foot {
+    display: grid; gap: 0.42cqi; margin-block-start: 0.8cqi;
+    padding-block-start: 0.55cqi; border-block-start: 0.07cqi solid var(--rp-rule);
+    font-size: 0.8cqi; line-height: 1.35; color: var(--rp-ink-3);
+  }
+  .rp-w347__foot > span { display: grid; grid-template-columns: 1.1cqi 1fr; }
+  .rp-w347__foot > span::before { content: "\00B7"; font-weight: 700; }
   .rp-w347__sigrow { display: flex; flex-wrap: wrap; gap: 1.2cqi 3cqi; align-items: flex-end; }
   .rp-w347__certs { font-size: 0.9cqi; line-height: 1.45; color: var(--rp-ink-2); max-inline-size: 52cqi; }
   .rp-w347__certs strong { color: var(--rp-ink); }
@@ -1050,7 +1073,7 @@
 
           <div class="rp-w347__title">
             <div>
-              <span class="rp-w347__name">PAYROLL</span>
+              <span class="rp-w347__name">PAYROLL</span><span class="rp-w347__spec">SPECIMEN</span>
               <p class="rp-w347__use">Form WH-347 · For Contractor's Optional Use · Rev. January 2025</p>
             </div>
             <span class="rp-w347__omb">OMB No. 1235-0008 · Expires 01/31/2028 · Page 1 of 2</span>
@@ -1096,9 +1119,9 @@
                 <th rowspan="2" scope="col">&nbsp;</th>
                 <th colspan="7" scope="colgroup">4 — Hours worked each day</th>
                 <th rowspan="2" scope="col">5<br>Total<br>hrs</th>
-                <th rowspan="2" scope="col">6A<br>Rate<br>paid</th>
-                <th rowspan="2" scope="col">6B<br>Fringe<br>credit</th>
-                <th rowspan="2" scope="col">6C<br>Cash in<br>lieu</th>
+                <th rowspan="2" scope="col">6A<br>Rate<br>paid<br>$/hour</th>
+                <th rowspan="2" scope="col">6B<br>Fringe<br>credit<br>$/week</th>
+                <th rowspan="2" scope="col">6C<br>Cash in<br>lieu<br>$/week</th>
                 <th rowspan="2" scope="col">7A<br>Gross<br>this proj.</th>
                 <th rowspan="2" scope="col">7B<br>Gross<br>all work</th>
                 <th colspan="4" scope="colgroup">8 — Deductions, all work</th>
@@ -1124,8 +1147,8 @@
                 <td class="rp-w347__n">8</td><td class="rp-w347__n">8</td><td class="rp-w347__n">8</td><td class="rp-w347__n">8</td>
                 <td class="rp-w347__n">40</td>
                 <td class="rp-w347__n rp-w347__traced">22.00</td>
-                <td rowspan="2" class="rp-w347__n">6.10</td>
-                <td rowspan="2" class="rp-w347__n">5.67</td>
+                <td rowspan="2" class="rp-w347__n">244.00</td>
+                <td rowspan="2" class="rp-w347__n">226.80</td>
                 <td rowspan="2" class="rp-w347__n">1,106.80</td>
                 <td rowspan="2" class="rp-w347__n">1,106.80</td>
                 <td rowspan="2" class="rp-w347__n">84.67</td>
@@ -1154,8 +1177,8 @@
                 <td class="rp-w347__n">10</td><td class="rp-w347__n">10</td><td class="rp-w347__n">10</td><td class="rp-w347__n">—</td>
                 <td class="rp-w347__n">40</td>
                 <td class="rp-w347__n">22.00</td>
-                <td rowspan="2" class="rp-w347__n">6.10</td>
-                <td rowspan="2" class="rp-w347__n">5.67</td>
+                <td rowspan="2" class="rp-w347__n">280.60</td>
+                <td rowspan="2" class="rp-w347__n">260.82</td>
                 <td rowspan="2" class="rp-w347__n">1,338.82</td>
                 <td rowspan="2" class="rp-w347__n">1,338.82</td>
                 <td rowspan="2" class="rp-w347__n">102.42</td>
@@ -1185,7 +1208,7 @@
                 <td class="rp-w347__n">36</td>
                 <td class="rp-w347__n">13.00</td>
                 <td rowspan="2" class="rp-w347__n">0.00</td>
-                <td rowspan="2" class="rp-w347__n">3.99</td>
+                <td rowspan="2" class="rp-w347__n">143.64</td>
                 <td rowspan="2" class="rp-w347__n">611.64</td>
                 <td rowspan="2" class="rp-w347__n">611.64</td>
                 <td rowspan="2" class="rp-w347__n">46.79</td>
@@ -1208,14 +1231,14 @@
                 <td rowspan="2">RIVERA, MARISOL</td>
                 <td rowspan="2" class="rp-w347__c">6035</td>
                 <td rowspan="2" class="rp-w347__c">(J)</td>
-                <td rowspan="2" class="rp-w347__cls">ELECTRICIAN<br><span class="rp-w347__tag">SUTN2017-004 · from memory</span></td>
+                <td rowspan="2" class="rp-w347__cls">ELECTRICIAN<br><span class="rp-w347__tag">SUTN2017-004 · this account's own confirmed mapping</span></td>
                 <td class="rp-w347__c">S</td>
                 <td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">8</td>
                 <td class="rp-w347__n">8</td><td class="rp-w347__n">8</td><td class="rp-w347__n">8</td><td class="rp-w347__n">8</td>
                 <td class="rp-w347__n">40</td>
                 <td class="rp-w347__n">22.00</td>
-                <td rowspan="2" class="rp-w347__n">6.10</td>
-                <td rowspan="2" class="rp-w347__n">5.67</td>
+                <td rowspan="2" class="rp-w347__n">244.00</td>
+                <td rowspan="2" class="rp-w347__n">226.80</td>
                 <td rowspan="2" class="rp-w347__n">1,106.80</td>
                 <td rowspan="2" class="rp-w347__n">1,106.80</td>
                 <td rowspan="2" class="rp-w347__n">84.67</td>
@@ -1267,8 +1290,34 @@
           </table>
 
           <div class="rp-w347__foot">
-            <span>6B is a customer-asserted plan credit. Ratepin neither computed nor verified annualization under 29 CFR 5.25(c).</span>
-            <span>Overtime premium computed weekly over 40 hours per 29 CFR 5.5(b)(1); state daily overtime passes through from the CSV.</span>
+            <span>
+              <b>6B and 6C are weekly totals, not hourly rates</b> — WHD's instructions ask for the “total”
+              in both. 6A is the only hourly column on the form, and it excludes cash paid in lieu.
+              Entry 1: 40 h × $6.10 = $244.00 and 40 h × $5.67 = $226.80; $244.00 + $226.80 = $470.80 =
+              40 h × the determination's $11.77 fringe, discharged by the combination method of 29 CFR 5.31(b)(3).
+            </span>
+            <span>
+              6B is a customer-asserted hourly plan credit multiplied by the week's hours. Ratepin neither
+              computed nor verified annualization under 29 CFR 5.25(c).
+            </span>
+            <span>
+              6C is cash <b>wages</b>, counted once inside 7A — never added to 7A a second time, and never
+              a deduction in column 8.
+            </span>
+            <span>
+              Contract value band, recorded by the contractor at project setup: <b>over $100,000</b>, so the
+              overtime clauses of 29 CFR 5.5(b) are in this contract and CWHSSA attaches. Entry 2:
+              6 h over 40 × 0.5 × $22.00 = $66.00 premium, inside 7A. At or under $100,000 no CWHSSA premium
+              is computed; “unknown” withholds the signature block rather than guess either way.
+            </span>
+            <span>
+              Hours in any premium-labelled column count toward the 40-hour threshold unless the row proves a
+              ≥1.5× rate was actually paid; an unprovable premium label blocks the line.
+            </span>
+            <span>
+              Every rate × hours product is rounded half-up to cents at the line, then summed in cents.
+              No product on this sheet has a remainder.
+            </span>
           </div>
 
           <div class="rp-signature" data-when="certifiable dated">
@@ -1278,9 +1327,12 @@
                 <p class="rp-signature__caption">Signature — contractor or authorised agent · date</p>
               </div>
               <p class="rp-w347__certs">
-                Statement of compliance on page 2, boxes <strong>1, 2, 3 and 6</strong> applicable;
-                box <strong>5</strong> applicable (fringe credit claimed). Certification made under
-                <strong>29 CFR 5.5(a)(3)(ii)(C)</strong>; falsification reachable under 18 U.S.C. 1001 and 31 U.S.C. 3729.
+                Statement of compliance on page 2: boxes <strong>1, 2, 3 and 6</strong> always checked;
+                box <strong>5</strong> checked because a fringe credit is claimed (Σ 6B &gt; 0); box
+                <strong>4</strong> not checked — no apprentice or trainee on this payroll. Those six boxes
+                are the form's own. What the signature certifies is the <strong>three</strong> things
+                numbered (1)–(3) in <strong>29 CFR 5.5(a)(3)(ii)(C)</strong>; falsification reachable under
+                18 U.S.C. 1001 and 31 U.S.C. 3729.
               </p>
             </div>
           </div>
@@ -1327,11 +1379,15 @@
       </div>
 
       <p class="rp-legal" style="margin-block-start: var(--rp-s-4)">
-        Sample artifact. <strong>The contractor, project, addresses and worker names are fictitious.</strong>
-        The wage determination number, modification number, publication date, classification names and
-        hourly rates are real: read from
+        Sample artifact, marked <strong>SPECIMEN</strong> on the sheet itself in all three states.
+        <strong>The contractor, project, addresses, contract number and worker names are fictitious</strong>, as
+        are the payroll's hours, plan credits and deductions. The wage determination number, modification
+        number, publication date, group identifier, classification names and hourly rates are real: read from
         <a href="https://sam.gov/api/prod/wdol/v1/wd/TN20260151/1"><code>sam.gov/api/prod/wdol/v1/wd/TN20260151/1</code></a>
-        on 2026-08-13 and reproduced without alteration. Form WH-347 is a U.S. Department of Labor form
+        on 2026-08-13 and reproduced without alteration — ELECTRICIAN $22.00 / $11.77 and
+        LABORER: COMMON OR GENERAL $13.00 / $3.99, group SUTN2017-004. Every money figure in the grid is
+        derived from those rates by the arithmetic printed under it; nothing here is illustrative rounding.
+        Form WH-347 is a U.S. Department of Labor form
         (OMB 1235-0008). Ratepin is not affiliated with, endorsed by, or acting on behalf of any government agency.
       </p>
     </div>
@@ -1354,7 +1410,7 @@
       <figure class="rp-lp-figcell" style="margin:0">
         <figcaption class="rp-lp-cap"><strong>On the form</strong> · column 6A, entry 1</figcaption>
         <span class="rp-lp-figcell__v">22.00</span>
-        <span class="rp-lp-cap">ELECTRICIAN · 40 straight hours</span>
+        <span class="rp-lp-cap">ELECTRICIAN · <strong>$ per hour</strong> · 40 straight hours. 6A is the only hourly column on the WH-347; 6B and 6C beside it are weekly totals.</span>
       </figure>
 
       <div class="rp-lp-trace__arrow" aria-hidden="true">→</div>
@@ -1366,8 +1422,10 @@
 <mark>ELECTRICIAN..................$ 22.00     11.77</mark></pre>
         <span class="rp-lp-cap">
           Group <code>SUTN2017-004</code> — the <code>SU</code> prefix means a survey rate, not a
-          collective bargaining agreement. Fringe obligation $11.77, discharged here as $6.10 in plan
-          contributions plus $5.67 cash in lieu, per 29 CFR 5.31(b).
+          collective bargaining agreement. The $11.77 fringe obligation is discharged <strong>per
+          hour</strong> as $6.10 in plan contributions plus $5.67 cash in lieu — the combination method of
+          29 CFR 5.31(b)(3). On the form those become <strong>weekly totals</strong>: entry 1's 40 hours
+          print 6B $244.00 and 6C $226.80, and $244.00 + $226.80 = 40 × $11.77.
         </span>
       </figure>
 
@@ -1384,8 +1442,10 @@
           <div><dt>Snapshot</dt><dd>4b91e30c</dd></div>
         </dl>
         <span class="rp-lp-cap">
-          Ratepin keeps a dated copy of every modification it has seen, so a superseded modification is
-          still readable here after SAM overwrites the live document.
+          Ratepin keeps a dated copy of every modification it has seen, beside the filings that used it.
+          A superseded modification is <strong>also</strong> retrievable from SAM's own archive endpoint —
+          we are not claiming otherwise. What is sold here is having it already assembled and already
+          attached, not exclusive access to it.
         </span>
       </figure>
     </div>
@@ -1396,18 +1456,22 @@
         <p class="rp-lp-card__b">
           The January 2025 revision of the WH-347 added a <strong>Wage Determination No.</strong> field to
           the header, alongside new columns 1A–1E, the (J)/(RA) marker, <strong>6B total fringe benefit
-          credit</strong> and <strong>6C payment in lieu of fringe benefits</strong>. The header field is
-          one box. Being able to defend what goes in it, every week, across every county you run, is the
-          product.
+          credit</strong> and <strong>6C payment in lieu of fringe benefits</strong> — both of which WHD's
+          instructions define as <strong>weekly totals</strong>, hours × the hourly figure, not the hourly
+          figure itself. The header field is one box. Being able to defend what goes in it, every week,
+          across every county you run, is the product.
         </p>
       </div>
       <div class="rp-lp-card">
         <p class="rp-lp-card__t">What we are not claiming</p>
         <p class="rp-lp-card__b">
-          Not that this archive is unobtainable — superseded modifications are fetchable from SAM's own
-          endpoint and at least one vendor resells the series. What Ratepin sells is assembly, latency and
-          the crosswalk your own corrections build: the determination pinned at award, the diff since,
-          and the memory of which of your payroll titles is which classification.
+          Not that this archive is unobtainable. We checked on <strong>2026-08-13</strong>: asking SAM's own
+          download endpoint for a superseded revision returns a <code>303</code> straight to that revision's
+          file in an S3 archive bucket, and at least one vendor resells the series by subscription. So no
+          part of our case is that you could not get this yourself. What Ratepin sells is
+          <strong>assembly, latency and the crosswalk your own corrections build</strong>: the determination
+          pinned at award, the diff since, and the memory of which of your payroll titles is which
+          classification.
         </p>
       </div>
     </div>
@@ -1428,8 +1492,9 @@
         <p class="rp-lp-card__t">Upload the week's payroll CSV</p>
         <p class="rp-lp-card__b">
           Whatever your payroll system exports. You map your columns once and Ratepin remembers the
-          mapping. Project setup is five fields — county, construction type, wage determination number
-          (or find-it-for-me), funding source, week ending.
+          mapping. Project setup is six fields — county, construction type, wage determination number
+          (or find-it-for-me), funding source, week ending, and whether the contract is over $100,000,
+          which is the fact that decides whether CWHSSA overtime applies at all.
         </p>
         <p class="rp-lp-card__b rp-ink-3">
           Ratepin does not run your payroll, compute your taxes or print your cheques. It reads the file
@@ -1442,8 +1507,10 @@
         <p class="rp-lp-card__t">Ratepin reads the pinned determination and does the arithmetic</p>
         <p class="rp-lp-card__b">
           Rates come from the modification pinned to the project at award, read from Ratepin's own mirror —
-          <strong>never from a live call to SAM</strong>. Gross, fringe credit, cash in lieu, CWHSSA
-          overtime over 40 hours, deductions and net are deterministic code under property tests.
+          <strong>never from a live call to SAM</strong>. Gross, the weekly fringe-credit and cash-in-lieu
+          totals, CWHSSA overtime over 40 hours <em>on contracts over $100,000</em>, deductions and net are
+          deterministic code under property tests. Every rate × hours product rounds half-up to cents at the
+          line and is then summed in cents.
         </p>
         <p class="rp-lp-card__b rp-ink-3">
           The model does exactly two things and neither is arithmetic: it orders candidate classifications
@@ -1560,6 +1627,12 @@
             ranking put first, each with the determination's own scope text, and the line stays blocked
             until you click. <strong>No confidence score resolves a classification.</strong>
           </p>
+          <p>
+            The same primitive covers premium hours. Hours in any premium-labelled column count toward the
+            40-hour threshold unless the row proves a ≥1.5× rate was actually paid — a mislabelled column
+            cannot be allowed to delete a federal overtime obligation quietly. An unprovable premium label
+            blocks its line, and the closed choice is again yours.
+          </p>
         </div>
       </div>
 
@@ -1572,6 +1645,14 @@
             full-contrast band naming the count and the reason, and replaces the signature block. A
             DRAFT filing is <strong>never billed and never counts against your included filings</strong>.
             Flip the switch at the top of this page to see it.
+          </p>
+          <p>
+            A project whose <strong>contract value band is recorded as unknown</strong> produces the same
+            document. CWHSSA's overtime clauses go into contracts over $100,000 (29 CFR 5.5(b)); Davis-Bacon
+            itself attaches above $2,000. Between those two numbers is an ordinary week for a specialty sub.
+            Guessing <em>covered</em> invents a premium and can accuse a compliant contractor of underpaying;
+            guessing <em>not covered</em> deletes a real obligation from a document signed under
+            18 U.S.C. 1001. So Ratepin asks once at setup and withholds the signature until it is answered.
           </p>
         </div>
       </div>
@@ -1919,7 +2000,7 @@
       <p class="rp-lp-eyebrow">Read this before you pay, not after</p>
       <h2 id="bound-h">What Ratepin does not do</h2>
       <p class="rp-lp-lead">
-        Eight lines. They are here, at this size, because a buyer who has been sold to by this category
+        Nine lines. They are here, at this size, because a buyer who has been sold to by this category
         before is defended against enthusiasm and undefended against subtraction — and because every one
         of them is simply true.
       </p>
@@ -1933,6 +2014,7 @@
       <li>Beyond the federal WH-347, Ratepin covers California eCPR only. NY, WA, NJ and IL are not in v1.</li>
       <li>Ratepin does not file SF-1444 conformance requests, or opine on apprenticeship ratios.</li>
       <li>Ratepin does not conclude whether a wage determination is effective. It shows the dates and the rule.</li>
+      <li>Ratepin does not decide whether CWHSSA applies to your contract, and does not compute FLSA overtime. You record the contract value band; “unknown” yields a draft, not a guess.</li>
       <li>No human reviews any Ratepin output, at any tier. There is no support queue.</li>
     </ul>
 
@@ -1942,9 +2024,10 @@
         <p class="rp-lp-card__b">
           <strong>Annualization is out of scope.</strong> 29 CFR 5.25(c) requires fringe contributions to be
           annualized over total hours on private and covered work; a certified-payroll CSV does not contain
-          private hours. Column 6B is a customer-asserted input, printed as given and disclaimed on the
-          artifact. <strong>Unfunded plan credits are refused</strong>, not approximated — 29 CFR 5.28 makes
-          them non-bona-fide absent WHD approval.
+          private hours. The hourly credit behind column 6B is a customer-asserted input — Ratepin multiplies
+          it by the week's hours to produce the weekly total the form asks for, prints that, and disclaims it
+          on the artifact. <strong>Unfunded plan credits are refused</strong>, not approximated — 29 CFR 5.28
+          makes them non-bona-fide absent WHD approval.
         </p>
       </div>
       <div class="rp-lp-card">
@@ -2020,9 +2103,10 @@
       implied objective claims <em>before</em> they are disseminated, and there is no AI exemption from it.
       Four claims that appeared in this company's own earlier pitch documents were falsified during
       validation — one about clerical time, one about penalty exposure, one about competitors' pricing
-      structure, and one about the determination archive being impossible to reconstruct. All four are
-      permanently retired and are not reproduced here, in any form, because a retired claim printed inside
-      a correction is still a claim printed.
+      structure, and one about the wage-determination archive. All four are permanently retired and are
+      named here only by subject, never restated, because a retired claim printed inside its own
+      correction is still a claim printed. What replaced the fourth is on this page as a plain fact: the
+      archive is obtainable elsewhere, and Ratepin is sold on assembly, latency and your own crosswalk.
     </p>
   </div>
 </section>
@@ -2177,15 +2261,16 @@
         <h3 style="font-size: var(--rp-t-lead)">Sources</h3>
         <p class="rp-legal">Every figure, quotation, rate and hash on this page resolves to one of these. All were fetched on 2026-08-13.</p>
         <ol class="rp-lp-refs">
-          <li><a href="https://www.dol.gov/agencies/whd/forms/wh347">dol.gov/agencies/whd/forms/wh347</a> — WH-347 columns 1A–1E, 2, 3, 4, 5, 6A, 6B, 6C, 7A, 7B, 8, 9; OMB 1235-0008; expires 01/31/2028</li>
+          <li><a href="https://www.dol.gov/agencies/whd/forms/wh347">dol.gov/agencies/whd/forms/wh347</a> — WH-347 columns 1A–1E, 2, 3, 4, 5, 6A, 6B, 6C, 7A, 7B, 8, 9; OMB 1235-0008; expires 01/31/2028. Source of the three unit rules on the specimen: 6A is <em>“the actual hourly rate paid”</em> and <em>“do not include cash payments in lieu of fringe benefits in this column”</em>; 6B is <em>“the total of the contractor's … contributions”</em>, equal to <em>“the worker's total hours worked in this period multiplied by the hourly credit”</em>; 6C is <em>“the total amount in cash provided in lieu of fringe benefits to the worker during the workweek.”</em> Also the source of column 4's <em>“on all contracts subject to the Contract Work Hours and Safety Standards Act (CWHSSA)”</em> condition, and of the six statement-of-compliance boxes and which are conditional</li>
           <li><a href="https://www.dol.gov/sites/dolgov/files/WHD/legacy/files/wh347.pdf">dol.gov/…/wh347.pdf</a> — the form PDF; MediaBox 0 0 792 612 pt on both pages = Letter landscape</li>
           <li><a href="https://www.reginfo.gov/public/do/PRAOMBHistory?ombControlNumber=1235-0008">reginfo.gov — OMB 1235-0008 history</a> — revision approved 01/06/2025</li>
-          <li><a href="https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-A/section-5.5">eCFR 29 CFR 5.5</a> — statement of compliance; the SSN prohibition on weekly transmittals; CWHSSA overtime over forty hours; retention</li>
+          <li><a href="https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-A/section-5.5">eCFR 29 CFR 5.5</a> — the three certifications of (a)(3)(ii)(C), numbered (1)–(3); the SSN prohibition on weekly transmittals; retention. <strong>(b) is the CWHSSA threshold</strong>: the overtime clauses go into <em>“any contract in an amount in excess of $100,000”</em> · <a href="https://www.law.cornell.edu/uscode/text/40/3142">40 U.S.C. 3142(a)</a> — Davis-Bacon itself attaches to <em>“every contract in excess of $2,000”</em>, the other end of the band the specimen's setup field resolves</li>
           <li><a href="https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-B/section-5.25">29 CFR 5.25</a> — annualization · <a href="https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-B/section-5.28">5.28</a> — unfunded plans</li>
-          <li><a href="https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-B/section-5.31">29 CFR 5.31</a> — discharging the wage obligation · <a href="https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-B/section-5.32">5.32</a> — overtime and the fringe exclusion</li>
+          <li><a href="https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-B/section-5.31">29 CFR 5.31</a> — discharging the wage obligation; (b)(1) contributions, (b)(2) all cash, <strong>(b)(3) the combination method used on the specimen</strong> · <a href="https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-B/section-5.32">5.32</a> — the regular rate on which the overtime premium is computed, and the fringe exclusion from it</li>
           <li><a href="https://www.ecfr.gov/current/title-29/subtitle-A/part-3/section-3.5">29 CFR 3.5</a> — permissible deductions · <a href="https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-A/section-5.12">5.12</a> — debarment</li>
           <li><a href="https://sam.gov/api/prod/wdol/v1/wd/TN20260151/1">sam.gov/api/prod/wdol/v1/wd/TN20260151/1</a> — the determination on this page: Modification 1, published 2026-05-18, Bedford and Coffee Counties, Building; group SUTN2017-004; ELECTRICIAN $22.00 / $11.77; LABORER: COMMON OR GENERAL $13.00 / $3.99; the EO 13658 note quoted above</li>
           <li><a href="https://sam.gov/api/prod/wdol/v1/wd/TN20260148/2">…/TN20260148/2</a> — Obion County · <a href="https://sam.gov/api/prod/wdol/v1/wd/CA20260022/5">…/CA20260022/5</a> — Los Angeles County, Modification 5, published 2026-08-06</li>
+          <li><a href="https://sam.gov/api/prod/wdol/v1/wd/WA20200002/0/download">sam.gov/…/wd/WA20200002/0/download</a> — the check behind “not that this archive is unobtainable”: a superseded revision answers <code>303 See Other</code> to <code>iae-wdol-sam-gov.s3.amazonaws.com/WDOL_FILES_PROD/DBA/ARCHIVE/FY2020/wa2.r0.txt</code>. Verified 2026-08-13</li>
           <li><a href="https://sam.gov/api/prod/sgs/v1/search/?index=dbra&amp;page=0&amp;size=1&amp;is_active=true">sam.gov DBRA index</a> — 4,236 active, 85,426 total, maxAllowedRecords 10,000, alias <code>db-prod-samdotgovsearch-wdol-dba_idxref_08112026</code></li>
           <li><a href="https://www.acquisition.gov/far/22.404-6">FAR 22.404-6</a> — wage determination effectiveness, the conclusion Ratepin declines</li>
           <li><a href="http://www.dir.ca.gov/dlse/CPR-Prod-Test/CPR.xsd">dir.ca.gov/dlse/CPR-Prod-Test/CPR.xsd</a> — California eCPR schema, 49,325 bytes, SHA-256 <code>2ea52e97…</code>; <code>ssn</code> is <code>[0-9]{9}</code> and required</li>

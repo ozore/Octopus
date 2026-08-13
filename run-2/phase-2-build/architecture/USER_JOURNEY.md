@@ -1,4 +1,4 @@
-# WAGE LINE — USER JOURNEYS (v1)
+# RATEPIN — USER JOURNEYS (v1)
 
 **Product:** Ratepin — the certified-payroll **rate-of-record** engine for open-shop specialty subcontractors on Davis-Bacon work.
 **Document owner:** UX researcher (Phase 2, run 2)
@@ -41,8 +41,8 @@ These are the entire vocabulary. Every journey below reuses them; none invents a
 | # | Primitive | What it looks like | When it fires | Where it is defined |
 |---|---|---|---|---|
 | **P-A** | **Blocked line, with a choice** | The offending payroll row is marked, the rest of the filing continues, and the user is handed a small, closed set of real options with the source text beside each | Unmapped payroll title; unmapped deduction; classification the parser could not read | ARCHITECTURE §4.3 (first `alt`), §6.3 block reasons |
-| **P-B** | **DRAFT — NOT CERTIFIABLE** | The artifact renders in full, watermarked, **with the signature block withheld** and an exception report attached | Any line unresolved at generation time | ARCHITECTURE §6.3 |
-| **P-C** | **Narrowed claim** | The artifact and the rate are unchanged; the *sentence about freshness* narrows, a dated banner appears, and a Stripe credit accrues | Freshness ladder L1/L2; quarantine L3 on the user's own WD | ARCHITECTURE §6.4, §8.1, §9.4 |
+| **P-B** | **DRAFT — NOT CERTIFIABLE** | The artifact renders in full, watermarked, **with the signature block withheld** and an exception report attached | Any line unresolved at generation time; the project's **contract-value band is `unknown`** (§4.4); the artifact carries **no revision-of-record** — which is every free-tier artifact, always (§1.5) | ARCHITECTURE §6.3 |
+| **P-C** | **Narrowed claim** | The artifact and the rate are unchanged; the *sentence about currency* narrows and a dated banner appears. A Stripe credit accrues **only when the narrowing is our failure** | Freshness ladder L1/L2; quarantine L3 on the user's own WD (credit accrues). A **superseded pin**, §8.4.3 (no credit — nothing of ours failed) | ARCHITECTURE §6.4, §8.1, §9.4 |
 | **P-D** | **Declined conclusion** | We state the rule, show the observable dates, and refuse to draw the conclusion | FAR 22.404-6 effectiveness; whether a fringe credit is annualized or bona fide; whether a deduction is permissible; whether a classification is *correct*; SF-1444 conformance | ARCHITECTURE §11.7 |
 
 **The test for a new screen:** if a proposed error state is not P-A, P-B, P-C or P-D, it is either (a) a bug we should fix rather than surface, or (b) a request for a human, which is out of bounds. There is no third option. This is the single rule that made this document writable.
@@ -65,14 +65,14 @@ Drawn from D1 (open-shop specialty subs, 5–75 field employees, the person who 
 
 | # | Journey | Persona | Account? | Money? | Refusal primitives exercised |
 |---|---|---|---|---|---|
-| **J1** | Anonymous free WH-347 generator | Marcus | no | no | P-A, P-B |
+| **J1** | Anonymous free WH-347 generator | Marcus | no | no | P-A, **P-B always** |
 | **J2** | County × craft rate lookup | Marcus | no | no | P-C, P-D |
 | **J3** | $49 bid rate card, purchased pre-account | Marcus | **no** | $49 | P-C (blocks the *sale*), P-D |
-| **J4** | Signup and five-field project setup, incl. find-my-WD | Dee | yes | subscription | P-C, P-D |
+| **J4** | Signup and six-field project setup, incl. find-my-WD | Dee | yes | subscription | P-B (band `unknown`), P-C, P-D |
 | **J5** | Payroll CSV upload and column mapping | Dee | yes | — | P-A |
 | **J6** | The unmapped-classification picker, and the memory that kills it | Dee | yes | — | **P-A**, P-B, P-D |
 | **J7** | Generate, preview, download, provenance footer | Dee | yes | meter | P-B, P-C |
-| **J8** | WD-change alert and one-click regenerate | Dee | yes | — | **P-D**, P-A |
+| **J8** | WD-change alert, contract-lock, one-click regenerate | Dee | yes | — | **P-D**, P-A, P-C |
 | **J9** | The Friday multi-project run | Priya | yes | overage | P-A, P-C |
 | **J10** | California eCPR export | Dee | yes | — | P-B (per-artifact), P-C |
 | **J11** | Billing: upgrade, downgrade, dunning, refund, staleness credit | Priya | yes | all of it | P-C |
@@ -94,7 +94,7 @@ Every surface below already exists in `ARCHITECTURE.md §3.1`. This document seq
 | S07 | Stripe hosted Checkout | none | J3, J4, J11 |
 | S08 | `/rate-card/r/[token]` — delivery page, 12-month TTL | token | J3 |
 | S09 | `/signin` — magic link request | none | J4 |
-| S10 | `/app/projects/new` — the five fields | yes | J4 |
+| S10 | `/app/projects/new` — the six required fields (contract-value band added, §4.4) | yes | J4 |
 | S11 | `/app/projects/new/wd` — find-my-WD candidates | yes | J4 |
 | S12 | `/app/projects/[id]` — project home | yes | J4–J10 |
 | S13 | `/app/projects/[id]/imports/new` — CSV upload | yes | J5 |
@@ -108,7 +108,7 @@ Every surface below already exists in `ARCHITECTURE.md §3.1`. This document seq
 | S21 | `/app/settings/billing` — plan, allowance, credits, refund, re-check | yes | J11 |
 | S22 | Stripe Customer Portal (hosted) | yes | J11 |
 | S23 | `/app/settings/data` — export and delete | yes | J12 |
-| S24 | `/status` — public rendering of `/api/status` | none | all |
+| S24 | `/status` — public rendering of `/api/status`, **including the published G5 autonomy counters** (§11.7, §20 Challenge E) | none | all |
 
 ### 0.7 Which journey carries which heuristic
 
@@ -118,12 +118,12 @@ Nielsen's ten ([NN/g, 10 Usability Heuristics for User Interface Design](https:/
 |---|---|---|
 | 1 Visibility of system status | J7, J8, J9, J11 | The provenance footer, the ladder banner, the per-project status chip, the pre-run cost disclosure |
 | 2 Match between system and the real world | J5, J6, J7 | The preview *is* the WH-347, column-for-column; classification candidates carry the determination's own verbatim text |
-| 3 User control and freedom | J6, J8, J11, J12 | Memory is editable; re-pin is never automatic; downgrade is symmetric with upgrade; deletion has a 7-day undo |
-| 4 Consistency and standards | J1↔J5, J7 | The free generator and the paid product share component **M**; the artifact is the same renderer at every tier |
-| 5 Error prevention | J5, J6, J7 | The status gate withholds the signature block; unmapped deductions block rather than fall into "Other" |
+| 3 User control and freedom | J6, J8, J11, J12 | Memory is editable; re-pin is never automatic and never pre-weighted by us; **no picker candidate is ever pre-selected from another tenant's data**; downgrade is symmetric with upgrade; deletion has a 7-day undo |
+| 4 Consistency and standards | J1↔J5, J7 | The free generator and the paid product share component **M**; the artifact is the same renderer at every tier; the same freshness algebra prints on the free footer and the paid one |
+| 5 Error prevention | **J4**, J5, J6, J7 | The status gate withholds the signature block on all three of its conditions; the contract-value band is asked rather than assumed; unmapped deductions block rather than fall into "Other" |
 | 6 Recognition rather than recall | **J6**, J5, J9 | Classification memory; remembered column maps; the Friday board shows what is missing rather than asking |
 | 7 Flexibility and efficiency of use | J9, J5 | Batch upload, one decision fixing N projects, remembered mappings applied silently |
-| 8 Aesthetic and minimalist design | J1, J4 | Free generator is one screen; project setup is five fields with progressive disclosure |
+| 8 Aesthetic and minimalist design | J1, J4 | Free generator is one screen; project setup is six fields with progressive disclosure |
 | 9 Recognize, diagnose, recover from errors | J5, J10, J11 | Every error names the row, the column and the fix; the DIR rejection capture; "re-check my payment status" |
 | 10 Help and documentation | J2, J8 | Help is *inline provenance*, not a help centre — and WCAG 2.2 SC 3.2.6 does not require us to have one (§18) |
 
@@ -141,9 +141,9 @@ There is no signup wall, no "start free trial", no email capture before the valu
 
 The screen asks for a wage determination — and this is the first honest moment in the product. It offers three ways to supply one: paste a WD number from the contract, look it up by state + county + construction type, or **skip it and type the rates yourself**. The third option is not a trap; free users often have the rates on a sheet from the GC and just want the arithmetic and the geometry. Skipping produces a working form with a footer that says so.
 
-He enters six people, their classifications, their daily hours, their rates, and the deductions. The engine computes gross, the CWHSSA premium on hours over forty — `0.5 × max(BHR_WD, cash rate excluding fringe)`, per 29 CFR 5.5(b)(1)'s requirement of *"compensation at a rate not less than one and one-half times the basic rate of pay for all hours worked in excess of forty hours in such workweek"* (verified verbatim from the eCFR API, 2026-08-13) — and the net. The preview is **the rendered PDF**, not an HTML mock-up: heuristic #2 and #4 together, because what he is about to sign has to be what he is looking at.
+He enters six people, their classifications, their daily hours, their rates, and the deductions — and **one radio button**, because the 40-hour overtime rule is not universal. The free generator asks the same contract-value question the paid product asks (§4.4), for the same reason: the clauses at 29 CFR 5.5(b) go into contracts *"in an amount in excess of $100,000"* (verified verbatim from the eCFR API, 2026-08-13), so computing a Contract Work Hours and Safety Standards Act premium on a $60,000 striping subcontract invents an obligation, and skipping it on a $2m one hides one. Above the line the engine computes the premium on hours over forty — `0.5 × max(BHR_WD, cash rate excluding fringe)`, per 5.5(b)(1)'s requirement of *"compensation at a rate not less than one and one-half times the basic rate of pay for all hours worked in excess of forty hours in such workweek"*. At or below it, no premium, no wage-determination floor on the overtime basis, and a printed line saying so. On *I don't know*, neither — and the exception report explains the gap. Then gross, deductions, net. The preview is **the rendered PDF**, not an HTML mock-up: heuristic #2 and #4 together, because what he is about to sign has to be what he is looking at.
 
-Then he sees the footer. It names the wage determination number, its revision, its publication date, the corpus snapshot hash and the generation timestamp — and, because this is the free tier, it says plainly that **no revision-of-record was pinned**. That footer is D8's channel and D3's paid boundary in the same three lines, and it is the only marketing on the page.
+Then he sees the footer, and the watermark. It names the wage determination number, its revision, its publication date, the freshness sentence in the same three-state algebra the paid artifact uses, the corpus snapshot hash and the generation timestamp — and it says plainly that **no revision-of-record was pinned**, which is why **the signature block is not there**. Free artifacts are **always DRAFT — NOT CERTIFIABLE**; see §1.5. That footer is D8's channel and D3's paid boundary in the same four lines, and it is the only marketing on the page.
 
 **Zero LLM calls happen anywhere in this journey.** Deep dive 03 makes that non-negotiable for margin, and ARCHITECTURE §3.8 makes it non-negotiable for a second reason: this exact code path is what the paid product degrades *to* when the model budget trips P12 or Anthropic is unreachable. Our emergency path is the path thousands of anonymous users exercise every day.
 
@@ -162,11 +162,10 @@ flowchart TB
     I["Resolve classifications<br/><b>deterministic crosswalk + this WD's own class list</b><br/>ZERO model calls"]
     J{"Every line resolved?"}
     K["<b>P-A</b> blocked line<br/>pick from the determination's own list<br/>no ranking available on free"]
-    L["Compute — gross, 6B, 6C,<br/>CWHSSA premium, part-3 deductions, net"]
-    M{"Status gate"}
-    N["<b>CERTIFIABLE</b><br/>signature block rendered"]
-    O["<b>P-B</b> DRAFT — NOT CERTIFIABLE<br/>signature withheld, watermark,<br/>exception report attached"]
-    P["Preview = the rendered PDF<br/>provenance footer, <b>unpinned</b>"]
+    CV{"Contract-value band<br/><b>required radio</b> — §4.4"}
+    L["Compute — gross, 6B, 6C,<br/>part-3 deductions, net<br/><b>CWHSSA premium only on over_100k</b>"]
+    O["<b>P-B</b> DRAFT — NOT CERTIFIABLE<br/><b>always, on free</b><br/>signature withheld, watermark,<br/>exception report attached"]
+    P["Preview = the rendered PDF<br/>provenance footer, freshness sentence,<br/><b>unpinned</b>"]
     Q(["Download. Nothing stored past 24 h."])
 
     A --> B
@@ -174,50 +173,68 @@ flowchart TB
     B -->|CSV| D --> E
     E -->|number| F --> I
     E -->|lookup| G --> I
-    E -->|skip| H --> L
+    E -->|skip| H --> CV
     I --> J
     J -->|no| K --> J
-    J -->|yes| L --> M
-    M -->|all resolved| N --> P
-    M -->|any unresolved| O --> P
+    J -->|yes| CV
+    CV -->|"over $100k"| L
+    CV -->|"$100k or less"| L
+    CV -->|"I don't know"| L
+    L --> O --> P
     P --> Q
 
     classDef ok fill:#2c6e49,stroke:#194d31,color:#fff
     classDef warn fill:#8b5a1f,stroke:#5c3c14,color:#fff
     classDef bad fill:#8b2c2c,stroke:#5c1a1a,color:#fff
-    class I,L,N,P ok
-    class K warn
+    class I,L,P ok
+    class K,CV warn
     class O bad
 ```
+
+**There is no status gate on this diagram, and that is the change.** Free has exactly one terminal status. A gate is a decision; free has nothing to decide, because an artifact with no pin behind it can never satisfy the CERTIFIABLE condition. See §1.5.
 
 ### 1.3 Screens
 
 | # | Screen | Emotional job | Heuristics | Note |
 |---|---|---|---|---|
-| S01 | Free generator input | *"This is a form, not a funnel."* | #8, #2 | Two affordances. The word "trial" does not appear. |
+| S01 | Free generator input | *"This is a form, not a funnel."* | #8, #2 | Two affordances plus one required radio (the contract-value band, §4.4). The word "trial" does not appear. |
 | S02 | Column mapping (**M**) | *"It already guessed most of it."* | #6, #9 | Identical component to S14. A free user who later pays meets no new UI. |
-| S03 | Preview + download | *"That's the actual form."* | #2, #4, #1 | Rendered PDF, provenance footer, 24-hour expiry stated with the exact expiry timestamp. |
+| S03 | Preview + download | *"That's the actual form — and it tells me what it isn't."* | #2, #4, #1 | Rendered PDF, **DRAFT watermark and withheld signature block, always**, provenance footer with the freshness sentence, 24-hour expiry stated with the exact expiry timestamp. |
 
 ### 1.4 Unhappy paths
 
 | Trigger | What Marcus sees | How it resolves, in-product | Primitive |
 |---|---|---|---|
 | A payroll title matches no classification and no crosswalk entry | The row is marked; below it, the determination's own classification list, filtered by deterministic string similarity, each row showing group id, verbatim label, base and fringe | He picks one. Copy: *"Free lookup doesn't rank candidates for you. These are the classifications this determination actually lists. Pick the one whose scope matches the work."* No model call, no ticket. | P-A |
-| He picks nothing and generates anyway | The PDF renders, watermarked, **signature block withheld**, with a one-page exception report listing the row, the title as entered, and the dollars affected | He can still hand it to his GC as a draft, which is exactly what a draft is for. | P-B |
+| He picks nothing and generates anyway | The PDF renders with a one-page exception report listing the row, the title as entered, and the dollars affected. The watermark and the withheld signature block were already there | He can still hand it to his GC as a draft, which is exactly what a draft is for. The blocked row adds a *reason*, not a *status* — the status was fixed the moment he chose the free path. | P-A → P-B |
+| He answers **"I don't know"** to the contract-value question | The form generates. No CWHSSA premium is computed, and the exception report carries the §4.4 sentence naming the $100,000 clause threshold and the two places the answer is written down | Free never guesses either way, exactly as paid never does. The difference is only in the consequence: on free the artifact was already a draft, so the unknown band costs him an exception line rather than a status. | P-B |
 | He selects a **union CBA group** (e.g. a group id prefixed `ELEC`) | Immediate refusal at selection, before any arithmetic | *"This group's rates come from a collective bargaining agreement. The agreement's fringe schedule is not published in the wage determination, so Ratepin will not compute it — we would be guessing. Survey groups (SU) and averages (UAVG) on this determination are available."* (D9, `is_union_group`) | P-D |
-| Deduction column he can't classify | The row blocks with the eight categories of 29 CFR 3.5 offered as a closed list | *"'Other' on a signed form is an assertion that the deduction is permissible. That's a legal question about your specific deduction, and we don't answer it. Pick the category it actually falls under, or leave the row blocked."* | P-A + P-D |
+| Deduction column he can't classify | The row blocks with the **ten** categories of 29 CFR 3.5 — paragraphs (a) through (j), verified from the eCFR API 2026-08-13 — offered as a closed list | *"'Other' on a signed form is an assertion that the deduction is permissible. That's a legal question about your specific deduction, and we don't answer it. Pick the category it actually falls under, or leave the row blocked."* | P-A + P-D |
 | Hours >24 in a day, 8 days in a week, negative hours, OT with no ST | Inline, at the cell, before generation | Error text names the cell, the value and the constraint, per [NN/g error-message guidelines](https://www.nngroup.com/articles/error-message-guidelines/): specific, human-readable, constructive, and the entered data is preserved. | prevention |
 | He closes the tab, comes back tomorrow | `/wh347/p/[token]` says: *"This preview expired at 14:02 PT on 14 Aug 2026. Free previews are kept 24 hours and then deleted. Nothing was billed and nothing was kept."* | Re-entry is 90 seconds of typing, or a CSV. We do not offer to email it to him — that would be an email capture dressed as help. | honest expiry |
 | Burst traffic / scripted abuse | A Cloudflare Turnstile challenge on burst, never a hard block | D3 promises *unlimited* free generation and we keep it; the throttle self-heals and shows the exact time it clears. There is no "contact us to raise your limit" — that is a human path. ([Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/)) | self-healing |
-| Corpus at L1/L2 | Footer narrows to the dated sentence; a banner names the last successful newer-revision check | Free users get the same honesty as paying ones. They get no credit, because they paid nothing. | P-C |
+| Corpus at L1/L2 | The footer runs the **same three-state freshness algebra as the paid artifact** (§7.3) — at L2 it additionally prints *"Our newer-revision check for {WD} last completed {ts} and has not re-run since."* on the artifact itself, not only on screen | MED-10: an anonymous visitor never sees an in-product banner, because there is no in-product. The honesty therefore has to be **on the paper**, or the free artifact is the least honest document the company produces — on the exact channel D8 uses to reach every GC in the county. Free users get no credit, because they paid nothing. | P-C |
+| Corpus at L3 for the determination he named | The form still generates, from the last agreed snapshot, with the quarantine date printed in the footer | Never a blank page, never a silent stale page — the J2 rule, applied to the artifact. | P-C |
 
-### 1.5 The one thing free deliberately does not do
+### 1.5 The one thing free deliberately does not do — and the status that follows from it
 
 It never asserts a **revision-of-record**. It will look a determination up, print its number, revision and publication date as read at generation time, and stamp the corpus snapshot hash — but it does not create a `wd_pins` row, does not compute a diff since award, does not remember a classification past 24 hours, and does not keep the artifact. Deep dive 03's Challenge 4 puts the paid boundary exactly there, and D3 agrees: *"the paid line begins the moment a rate becomes an assertion."*
 
-The upsell is therefore not a nag. It is one line under the footer:
+**Therefore every free artifact is DRAFT — NOT CERTIFIABLE, unconditionally, forever.** This is the MED-10 resolution and it is a tightening, not a clarification: the earlier design let a clean free run render a signature block. One rule now generates it, and it is the same rule §4.5's unpinned-project path already stated:
 
-> *Ratepin kept nothing from this session. Pin this determination to a project and we'll keep the revision, tell you when a newer one publishes, and remember every classification you just picked.*
+> **No pin, no signature block.** The CERTIFIABLE statuses assert a revision-of-record. The free path creates no pin by construction, so it can never satisfy the condition, so the gate is not consulted — the artifact is a draft before the first number is typed.
+
+Three things follow, and they are the whole argument for doing it this way.
+
+1. **It closes the honesty hole directly.** The old free footer named a WD number and revision read from a mirror that may be seventy-two hours unverified, to a visitor with no account, no banner and no credit — a rate assertion with less provenance than the one L2 blocks a paying customer from making (ARCHITECTURE §8.1). A withheld signature block is not a warning about that; it is the assertion never being made.
+2. **It costs the free user nothing they came for.** Marcus wanted the arithmetic and the geometry. He gets both, complete, on the real form, with his own numbers. What he does not get is our countersignature on a revision we did not pin — and *he was always going to sign it himself anyway*. The certification on the reverse is his under 29 CFR 5.5(a)(3)(ii)(C); ours was never on the document.
+3. **It makes the upgrade legible without a nag.** The free artifact now names its own gap, once, in the place a reader is already looking.
+
+The upsell is therefore still not a nag. It is one line under the footer, and it is now *true about the document above it*:
+
+> *This is a draft. Ratepin kept nothing from this session and pinned no revision, so the signature block is withheld. Pin this determination to a project and the same form comes back certifiable — with the revision kept, a notice when a newer one publishes, and every classification you just picked remembered.*
+
+**The risk we are taking, named.** H-J7 (§21) already doubts whether a withheld signature block reads as integrity or as failure. Applying it to 100% of free artifacts moves that hypothesis onto the acquisition channel, where a bad reading costs conversion rather than trust. The instrument is the free→signup rate against the pre-change baseline, and D8 channel 1 is where it will show up first. Recorded as **H-J1b**.
 
 ---
 
@@ -268,7 +285,7 @@ flowchart LR
 
 ### 2.4 Why the diff is above the fold
 
-Deep dive 02's hardest finding: **the WD archive is not a cornered resource.** `sam.gov/api/prod/wdol/v1/wd/{ref}/{rev}/download` redirects to a signed S3 object and reproduces any `(wdNumber, revision)` as plain text; `govconapi.com` resells 90,033 determinations with `date_from`/`date_to` at $19/month. So the page cannot win on *having* the data. It wins on **assembly**: the per-classification diff, computed and displayed, is work nobody has done for this county × craft, and it is what a searcher who is worried about a rate change actually wants. The moat is restated accordingly wherever it appears in copy — assembly, latency and crosswalk memory, never "unreconstructable."
+Deep dive 02's hardest finding: **the WD archive is not a cornered resource.** Re-verified from this machine today: `GET sam.gov/api/prod/wdol/v1/wd/WA20200002/0/download` returns **HTTP 303 See Other** to `iae-wdol-sam-gov.s3.amazonaws.com/WDOL_FILES_PROD/DBA/ARCHIVE/FY2020/wa2.r0.txt` — a presigned object in a deterministically named archive path, reproducing a six-year-old revision as plain text. `govconapi.com` resells 90,033 determinations with `date_from`/`date_to` at $19/month. So the page cannot win on *having* the data, and **the sentence "you cannot reconstruct a superseded revision" is measured false and is banned from every surface, marketing included** (HIGH-7; §16.3). It wins on **assembly**: the per-classification diff, computed and displayed, is work nobody has done for this county × craft, and it is what a searcher who is worried about a rate change actually wants. The moat is stated the same way everywhere it appears — **assembly, latency and crosswalk memory** — and §21 records that all three are unmeasured.
 
 ---
 
@@ -308,7 +325,7 @@ EFFECTIVENESS — WHAT WE CAN SHOW, AND WHAT WE WILL NOT SAY
   the answer can turn on a finding by the contracting officer —
   a finding Ratepin cannot observe.
 
-  WAGE LINE DOES NOT CONCLUDE WHICH REVISION IS EFFECTIVE FOR
+  RATEPIN DOES NOT CONCLUDE WHICH REVISION IS EFFECTIVE FOR
   YOUR CONTRACT. The dates above are what we can see. The
   determination incorporated into your solicitation, and any
   amendment your contracting officer issues, govern.
@@ -373,7 +390,7 @@ The email from the Checkout Session becomes the delivery address. A `tenants` ro
 
 ---
 
-## 4. J4 — Signup and the five-field project setup, including find-my-WD
+## 4. J4 — Signup and the six-field project setup, including find-my-WD and the contract-value band
 
 ### 4.1 Narrative
 
@@ -381,17 +398,24 @@ Dee has three active federally funded jobs and has been doing WH-347s by hand fo
 
 **Signup is an email address.** Magic link, single-use, short-expiry, hashed at rest; no password, therefore no password reset flow, therefore one fewer support surface that does not exist (ARCHITECTURE §11.5). She is signed in in under a minute, most of which is her mail client.
 
-Then the five fields. This is D4's "five-field project setup" taken literally:
+Then the fields. D4 called this a "five-field project setup"; CRIT-3 made it six, and the sixth is not a nicety — see §4.4 and Challenge B (§20):
 
 | # | Field | Why it is required | Default / help |
 |---|---|---|---|
 | 1 | **Project name** | Hers, not ours. It appears on the WH-347 header and on the Friday board | free text |
 | 2 | **State and county** | Determines which determinations cover the site | typeahead over the mirror's county coverage |
 | 3 | **Construction type** | Building / Heavy / Highway / Residential — the axis on which determinations split | radio, with the determination's **own type strings** shown |
-| 4 | **Funding source** | DBA direct vs. a Related Act vs. state-only. Changes what we will and will not say | radio; picking "state-funded only, no federal money" **ends the flow honestly** (§4.4) |
+| 4 | **Funding source** | DBA direct vs. a Related Act vs. state-only. Changes what we will and will not say | radio; picking "state-funded only, no federal money" **ends the flow honestly** (§4.5) |
 | 5 | **Wage determination** | Number from the contract, or **find it for me** | → S11 |
+| 6 | **Contract-value band** | Decides whether the 40-hour CWHSSA premium is computed at all. There is no safe default in either direction | radio, **no option pre-selected**, three values including *I don't know* → **§4.4** |
 
-Two refinements sit behind progressive disclosure ([NN/g](https://www.nngroup.com/articles/progressive-disclosure/)) — *"Disclose these secondary features only if a user asks for them"*: **award or bid date** (needed for "diff since award", D3 — defaults to today, editable) and **contract number**. Both are optional, both are printed on the form when supplied. See Challenge B (§20): calling this "five fields" is only true because these two are optional, and the diff-since-award feature is weaker without the date.
+Three refinements sit behind progressive disclosure ([NN/g](https://www.nngroup.com/articles/progressive-disclosure/)) — *"Disclose these secondary features only if a user asks for them"*:
+
+- **Award or bid date** — needed for "diff since award" (D3); defaults to today, editable.
+- **Contract number** — printed on the form when supplied.
+- **"My contract incorporates this revision at award"** — the contract-lock assertion (MED-9). Offered here for the user who already knows, and offered again at the moment it actually matters, on S19 the first time a newer revision publishes (§8.4). Default **unset**, which is neither yes nor no.
+
+All three are optional. See Challenge B (§20): the field count is six required plus three refinements, and the diff-since-award feature is weaker without the date.
 
 ### 4.2 Find-my-WD
 
@@ -403,7 +427,8 @@ sequenceDiagram
     participant MR as mirror read model
     participant DB as Postgres
 
-    D->>W: state=CA, county=Madera, type=Building, funding=DBA
+    D->>W: state=CA, county=Madera, type=Building, funding=DBA,<br/><b>contract_value_band</b> = over_100k · at_or_under_100k · unknown
+    Note over D,W: The band is required and has NO default.<br/>'unknown' is a real answer, not a skip. (§4.4)
     W->>MR: candidates for (state, county, construction_type)
     MR-->>W: N determinations from the LAST PROMOTED SNAPSHOT
 
@@ -416,7 +441,7 @@ sequenceDiagram
     else several
         W-->>D: disambiguation using each determination's<br/>OWN construction-type language, plus a link to<br/>sam.gov/wage-determinations to check the contract
     else none
-        W-->>D: honest empty state + "paste the determination<br/>from my contract" path (see 4.4)
+        W-->>D: honest empty state + "paste the determination<br/>from my contract" path (see 4.5)
     end
 
     D->>W: confirm CA20260012 revision 4
@@ -441,10 +466,75 @@ D9 refuses union CBA fringe schedules and says the refusal happens *at signup, n
 
 Telling her at minute 3 rather than at minute 40 on a Friday is the whole point. It is heuristic #5 applied at the level of *product fit* rather than of field validation, and it is the honest version of Moore's beachhead discipline: we would rather lose a union shop at setup than half-serve one at deadline ([Moore, *Crossing the Chasm*](https://openlibrary.org/works/OL2734570W/Crossing_the_chasm)).
 
-### 4.4 Unhappy paths
+### 4.4 The contract-value band, and the "I don't know" path
+
+CRIT-3 in one sentence: **the product computed a Contract Work Hours and Safety Standards Act premium on every project, and CWHSSA does not attach to every project.** Verified verbatim from the eCFR API today — 29 CFR 5.5(b), preamble:
+
+> *"The Agency Head must cause or require the contracting officer to insert the following clauses set forth in paragraphs (b)(1) through (5) of this section in full … in any contract **in an amount in excess of $100,000** and subject to the overtime provisions of the Contract Work Hours and Safety Standards Act."*
+
+Davis-Bacon itself attaches to contracts **in excess of $2,000**. The gap between the two thresholds is not an edge case for D1's buyer — it is where a six-person striping sub on a county job actually lives. WHD's own WH-347 instruction ties the form's overtime row to the same condition, verbatim from the form's page (2026-08-13): *"On all contracts subject to the Contract Work Hours and Safety Standards Act (CWHSSA), enter hours worked on this project in excess of 40 hours total in the week as overtime ("OT")."*
+
+So the product needs one fact it cannot observe, and it has to ask for it without pretending to know what the answer means for her.
+
+#### 4.4.1 The question, exactly as it is asked
+
+Field 6 on S10. No option pre-selected; the primary button is inert until one is chosen.
+
+> ### Contract value
+>
+> **Is the prime contract on this job over $100,000?**
+>
+> - ◯ &nbsp;Over $100,000
+> - ◯ &nbsp;$100,000 or less
+> - ◯ &nbsp;I don't know
+>
+> **Why we ask.** The 40-hour overtime rule this form has a column for — Contract Work Hours and Safety Standards Act overtime — is written into contracts *"in an amount in excess of $100,000"* (29 CFR 5.5(b)). Davis-Bacon starts at $2,000, so a job can be a Davis-Bacon job and not a CWHSSA job at the same time. Over the line, we compute a premium on hours over forty in the week. At or under it, we don't — and we print that we didn't.
+>
+> **Where to read the answer.** It is the **prime contract** amount, not your piece of it: a $40,000 subcontract under a $3m prime is over the line. If you can't see the prime's value, read your own contract's clause list instead — **FAR 52.222-4, "Contract Work Hours and Safety Standards Act — Overtime Compensation"**, is the clause that carries this rule, and it flows down. If that clause is in your contract, answer **over $100,000**. **If the clause and the dollar figure seem to disagree, go with the clause** — the contract governs, not the arithmetic.
+>
+> **What we don't do.** Ratepin doesn't read your contract and doesn't decide whether that clause is in it. We compute from what you tell us, and every artifact prints what you told us and when.
+
+That last paragraph is the whole reason this is not legal advice. We cite the rule, name the two places the answer is written down, and then decline: the sentence on the artifact is always *"you told us"*, never *"CWHSSA applies to you."* **"That CWHSSA applies to this contract" is added to the DO-NOT-ASSERT list** (§16.1).
+
+#### 4.4.2 The three answers, and what each one does to the artifact
+
+| She picks | `contract_value_band` | What the engine does | What the artifact says | Status |
+|---|---|---|---|---|
+| **Over $100,000** | `over_100k` | The CWHSSA path as specified: premium on hours over forty, the `max(BHR_WD, cash excluding fringe)` floor on the overtime basis, `PREMIUM_BELOW_STATUTORY` live | Provenance block: *"Overtime computed under the Contract Work Hours and Safety Standards Act. You recorded on 2026-08-13 that this contract is over $100,000."* | unaffected |
+| **$100,000 or less** | `at_or_under_100k` | No premium. No wage-determination floor on the overtime basis. `PREMIUM_BELOW_STATUTORY` **suppressed**, because it names a violation of a statute this contract may not be under | Exception-report line on **every** filing: *"You recorded on 2026-08-13 that this contract is $100,000 or less. The 40-hour overtime clause at 29 CFR 5.5(b) goes into contracts in excess of $100,000, so Ratepin has computed no Contract Work Hours and Safety Standards Act premium on this payroll. Ratepin does not compute Fair Labor Standards Act overtime — that is a separate rule on a different basis, and we don't do it. Column 4's overtime row carries the hours your payroll reported, unchanged."* | unaffected |
+| **I don't know** | `unknown` | Nothing. It neither computes a premium nor omits one | The P-B block below | **DRAFT — NOT CERTIFIABLE** |
+
+#### 4.4.3 What the artifact says on `unknown` — the exact copy
+
+Rendered on S16 above the preview, and on page 1 of the exception report:
+
+> **DRAFT — NOT CERTIFIABLE · the 40-hour overtime rule is unresolved**
+>
+> We don't know whether the Contract Work Hours and Safety Standards Act clause is in this contract, so we haven't guessed. The clause at 29 CFR 5.5(b) goes into contracts *"in an amount in excess of $100,000"*, and it changes both what goes in column 4's overtime row and whether a premium is owed on hours over forty.
+>
+> Guessing yes would print an overtime premium you may not owe. Guessing no would drop one you may. Both land on a document you sign.
+>
+> The signature block is withheld until this is answered. **It is one question, it takes one click, and it is remembered for this project.**
+>
+> [Answer the contract-value question]
+
+No other route out. There is no "generate anyway" on this block, because the two failure modes are symmetric and neither is safe — which is precisely why `unknown` is a first-class value rather than a null. **This is the one place in the product where the block exists to stop *us* from asserting, not to stop her from filing:** she can still download the draft, hand it to her GC, and answer the question on Monday.
+
+#### 4.4.4 Two thresholds, one contract — and why the contract wins
+
+Recorded because the number is not as clean as a single citation makes it look. 29 CFR 5.5(b) directs insertion above **$100,000**. FAR 22.305, which governs direct federal procurement, tells contracting officers *not* to insert 52.222-4 in contracts *"Valued at or below $200,000"* (verified on acquisition.gov, 2026-08-13). Both are live; they implement the same statute at different levels of generosity, and a federally *assisted* Related-Act contract is not procured under the FAR at all.
+
+We do not resolve that. We take the lower of the two as the band boundary — so the question is asked of everyone the CFR reaches — and then we hand the tiebreak to the only authority that actually binds her: **the clause list in her own contract**, which is why §4.4.1's copy says to go with the clause when the two seem to disagree. The band is her recorded assertion; the contract is the fact; we are neither.
+
+#### 4.4.5 Changing the answer later
+
+The band is per-project and editable on S12. Changing it behaves exactly like changing classification memory (§6.4): **it does not alter filings already generated**, because artifacts are immutable, and the editor offers *"Generate amendments for the N affected filings"* — new filings with `amends_filing_id` set. A band moving from `unknown` to a real value is the common case and usually has no prior filings to amend, because `unknown` never produced a certifiable one.
+
+### 4.5 Unhappy paths
 
 | Trigger | What Dee sees | Resolution | Primitive |
 |---|---|---|---|
+| **Contract-value band left at `unknown` at generation time** | The §4.4.3 block. Full preview, full arithmetic apart from the premium, signature block withheld, one button that goes to the one question | The block is project-scoped, not line-scoped, so it is **P-B** rather than P-A: no individual row is wrong, the whole document's overtime basis is unestablished. | P-B |
 | **Funding source = "state or local money only"** | The flow stops, politely and immediately | *"Then this isn't a Davis-Bacon project and Ratepin isn't the right tool. If it's California public works, you still owe DIR a certified payroll — but under state law, and we only cover the federal determination plus the DIR XML format. We'd rather say so now than take your money."* Refusing an unqualified buyer at setup is A6 in practice: an unqualified customer is a support load we cannot serve. | P-D |
 | Zero candidate determinations for county × type | Named empty state with the three real causes (as J2) plus a fourth path: **"paste the determination number from my contract"** | If the pasted number is in the mirror, we pin it even if our county index did not predict it — the contract governs, not our index. If it is **not** in the mirror (e.g. a project wage determination issued directly to the agency and never published), the project is created **unpinned**, and every filing on it can only ever be **DRAFT — NOT CERTIFIABLE**, stated in that sentence at creation time. | P-B stated in advance |
 | Several determinations, and she is not sure which construction type | Each candidate shows the determination's own construction-type string plus the classifications it lists; a "what if I pick wrong?" disclosure says: *"Nothing is destroyed. Change the type and the candidates change. A pin can be replaced; the old one is kept."* | Reversibility is heuristic #3, and stating it up front is what stops a wrong-but-committed choice. | — |
@@ -514,7 +604,8 @@ flowchart TB
 | Ambiguous encoding | Hard reject with the two candidate encodings named and the exact re-export instruction for her payroll system | Guessing corrupts names (`Núñez` → `NuÃ±ez`) on a signed federal document. A wrong name is a defect on the certification. | prevention |
 | Same file, same week, uploaded twice | *"This is the same file you uploaded at 15:12 today."* Two buttons: open that filing, or upload as an **amendment** | Idempotent on `source_sha256`. An amendment is a **new filing** with `amends_filing_id` set (ARCHITECTURE §5.3) — an amended certified payroll is a distinct legal document, not an edit to a signed one. | #5 |
 | Hours land outside the declared week-ending | The offending rows listed with their dates, and the two possible fixes: change the week-ending, or exclude those rows | For California this is not cosmetic: the eCPR XSD declares `day` with `minOccurs="7" maxOccurs="7"`, so a week that is not seven days cannot produce valid XML. Stated at upload rather than discovered at export. | #9 |
-| A deduction column that maps to no 29 CFR 3.5 category | **Those rows block.** A closed picker of the eight categories permissible without WHD approval, memorised per tenant once chosen | *"'Other' on a signed form asserts the deduction is permissible. Whether yours is permissible under 29 CFR part 3 is a legal question about your specific deduction, and we don't answer it."* ([29 CFR 3.5](https://www.ecfr.gov/current/title-29/subtitle-A/part-3/section-3.5)) | P-A + P-D |
+| A column labelled as a premium — `DT`, `2X`, `SHIFT`, `PREM` — whose rate does not prove a premium was paid | **That row blocks**, with the arithmetic shown: the hours, the rate the CSV states, and `1.5 × regular rate` beside it. A closed choice: *"these are premium hours paid at or above time-and-a-half"* or *"these are ordinary hours under another label"* | Per R-CRIT4: hours in any premium-labelled column **count toward the forty-hour threshold** unless the row proves a ≥1.5× rate was actually paid. A mislabelled column at $1.00/hr would otherwise erase statutory overtime from a signed payroll and look completely normal doing it. The engine does not decide which reading is true; the row asserts it, in a closed choice, before anything computes. Fires only when the band is `over_100k` — below the threshold there is no CWHSSA denominator to protect. | P-A |
+| A deduction column that maps to no 29 CFR 3.5 category | **Those rows block.** A closed picker of the **ten** categories permissible without WHD approval — (a) through (j), including **(i)** board and lodging at reasonable cost and **(j)** minimal-value safety equipment the worker bought, which is how boots and glasses come off a field crew's cheque — memorised per tenant once chosen | *"'Other' on a signed form asserts the deduction is permissible. Whether yours is permissible under 29 CFR part 3 is a legal question about your specific deduction, and we don't answer it."* ([29 CFR 3.5](https://www.ecfr.gov/current/title-29/subtitle-A/part-3/section-3.5)) | P-A + P-D |
 | Column 6B (fringe credit) present | Accepted, printed, and **disclaimed on the artifact** | *"6B is what you tell us you credit. We print it. We do not verify that the plan is bona fide, that contributions are annualized under 29 CFR 5.25(c), or that an unfunded plan qualifies — those are findings about your plan, not arithmetic."* (D9 + deep dive 04; §20 Challenge in ARCHITECTURE §16.5) | P-D |
 | More than 500 workers in one week on one project | Warning at upload, not at export: *"California's eCPR schema caps a submission at 500 employees (`employee maxOccurs="500"`). This week has 512. The WH-347 PDF is unaffected."* | The constraint is quoted from the pinned XSD, not paraphrased. | P-B, per artifact |
 | Upload interrupted (job-trailer wifi) | The import row exists with `row_count` null; on return: *"An upload from 15:31 didn't finish. Resume · Discard."* | No orphan state, no "please try again". | #9 |
@@ -535,7 +626,7 @@ This is the journey the entire autonomy argument rests on. A3 names one human-sh
 
 Dee's CSV has a row whose job title reads `CEM MASON - FINISH`. Her crosswalk has no entry for it on this determination's group. The engine does **not** guess and does **not** proceed.
 
-The row appears on S15 in a blocked state, showing the title exactly as her payroll system wrote it, the worker's initials, the hours, and the dollars affected. Beneath it: **three candidates**, ranked by the model, and constrained by construction to classifications that actually exist in **this determination revision's parsed rows** (ARCHITECTURE §4.3, §11.4). Each candidate shows:
+The row appears on S15 in a blocked state, showing the title exactly as her payroll system wrote it, the worker's initials, the hours, and the dollars affected. Beneath it: **three candidates, none of them selected**, ordered by the model, and constrained by construction to classifications that actually exist in **this determination revision's parsed rows** (ARCHITECTURE §4.3, §11.4). Each candidate shows:
 
 - the group identifier (`SUCA2020-005`), because that is what the determination calls it;
 - the **verbatim classification label** from the determination text;
@@ -544,6 +635,10 @@ The row appears on S15 in a blocked state, showing the title exactly as her payr
 - the **line span** in the source document, with a link that opens the determination text scrolled to those lines.
 
 Below the three: *"None of these"* → the full searchable list of that revision's classifications. Below that: nothing. No chat bubble. No "ask an expert". No mailto. A lint rule fails the build if a `mailto:` or a contact-support component appears anywhere under the filing route tree (ARCHITECTURE §13, A3 row).
+
+And nothing above them, either — which is the HIGH-2 resolution, stated here because this screen is where it is either kept or broken:
+
+> **The picker never arrives pre-selected from another tenant's data.** No radio is filled, no candidate is highlighted as recommended, no count of other companies' confirmations appears beside any candidate, and the confirm button is inert until she chooses. What the cross-tenant aggregate may do is **order the list**. That is the entire permission. It may not select, default, pre-fill, auto-apply, or annotate an individual candidate. (§6.3, mechanism 3.)
 
 She reads the second candidate's scope text, recognises the work, clicks it. Then the sentence that is the actual product:
 
@@ -577,11 +672,11 @@ sequenceDiagram
     end
 
     E-->>W: top 3 + verbatim label + verbatim scope +<br/>base + fringe + line span; <b>row blocked</b>
-    W-->>D: picker
+    W-->>D: picker — <b>nothing pre-selected, confirm inert</b>
     D->>W: choose SUCA2020-005
     W->>X: INSERT (tenant, wd_group, normalized_title)<br/>→ classification_id, source = user_confirmed
     W-->>D: "Remembered. Never asked again for this account."
-    Note over X: After k>=5 distinct tenants confirm the same<br/>(wd_group, normalized_title) pair, it seeds<br/>candidate ORDER for new accounts as a COUNT,<br/>never as a row. (CORPUS_DESIGN 7.4)
+    Note over X: HER OWN confirmed entry AUTO-APPLIES from now on —<br/>no picker, no prompt. That is the product.<br/>The k>=5 cross-tenant aggregate may only ORDER a<br/>candidate list. It never selects, defaults or auto-applies<br/>for anyone else. (HIGH-2; CORPUS_DESIGN 7.4)
 ```
 
 ### 6.3 How the memory removes the question permanently
@@ -590,7 +685,39 @@ Three mechanisms, in increasing order of power.
 
 1. **Per-tenant memory, keyed on the WD group — not the project, not the WD number.** `crosswalk_entries(tenant_id, wd_group, normalized_title) → classification_id`. Because it is keyed on the group, one answer covers every project on every determination that carries that group, and it **survives a re-pin to a new revision** (J8). This is the difference between "remembers within a project" (worthless) and "remembers the trade" (the moat).
 2. **Normalization before lookup.** `CEM MASON - FINISH`, `Cement Mason – Finisher`, `CEMENT MASON/FINISH` collapse to one key. Digits, personal-name-shaped tokens and punctuation are stripped (CORPUS_DESIGN §7.4), which is also what makes the aggregate safe to share.
-3. **The cross-tenant aggregate, at k ≥ 5.** A `(wd_group, normalized_title)` pair confirmed by **five or more distinct tenants** seeds candidate *ordering* for a brand-new account — as a count, never as a row, never with a tenant identity. A payroll title can occasionally identify a person ("Foreman - J. Alvarez Crew"); a title confirmed by five independent contractors is a fact about a trade. This is Helmer's process power expressed as a data structure: it compounds from customer corrections rather than from crawling, and no incumbent has it because incumbents make the contractor pick the class by hand ([Helmer, *7 Powers*](https://7powers.com/)).
+3. **The cross-tenant aggregate, at k ≥ 5 — which may only change the ORDER of a list.** A `(wd_group, normalized_title)` pair confirmed by **five or more distinct tenants** seeds candidate *ordering* for a brand-new account — as a count, never as a row, never with a tenant identity, and never attached to an individual candidate on screen. A payroll title can occasionally identify a person ("Foreman - J. Alvarez Crew"); a title confirmed by five independent contractors is a fact about a trade. This is Helmer's process power expressed as a data structure: it compounds from customer corrections rather than from crawling, and no incumbent has it because incumbents make the contractor pick the class by hand ([Helmer, *7 Powers*](https://7powers.com/)).
+
+#### 6.3.1 The auto-apply boundary — HIGH-2, stated as a permission table
+
+This is the rule the build must not soften. Read the columns as strictly increasing power, left to right:
+
+| Where a suggestion comes from | May **auto-apply** silently, no picker | May **pre-select** a radio in the picker | May only **order** the list |
+|---|---|---|---|
+| This account's own `user_confirmed` entry for this `(wd_group, normalized_title)` | **yes — this is the product** | — | — |
+| This account's own project-scoped override (§6.4) | yes, on that project only | — | — |
+| This account's own remembered column map (J5) | yes | — | — |
+| An **exact** match, after normalization, against this determination's **own verbatim classification label** | no | **yes** | — |
+| Deterministic string *similarity* below exact | no | no | yes |
+| The model's ranking over the closed enum of this revision's rows | no | no | yes |
+| **The cross-tenant k ≥ 5 aggregate** | **no** | **no** | **yes, and nothing else** |
+
+Two of those rows are the finding. **Her own confirmed choices may auto-apply**, because she made them, they are hers, and re-asking her is the exact cost the product exists to remove. **Nobody else's may**, in any form — not as a default, not as a highlighted "most common" chip, not as a pre-filled radio she has to notice in order to override.
+
+**Why: the count is an attacker-controlled input, and pre-selection is what converts that into a signature.** Signup is a magic link at a self-serve address; accounts are free to create and the free tier needs none at all. So "five distinct accounts" is not five independent contractors unless something makes it so — five sybils are a Tuesday afternoon. That is survivable as an *ordering* input and not survivable as a *default*, and the difference is exactly what the user has to do to be harmed:
+
+- **Ordering only.** The worst case is that three real classifications from this determination's own parsed rows appear in a bad order. Each still carries its verbatim label, its verbatim scope text, its base and fringe rates and a link to the source lines. She still has to read one and click it. The blast radius of a poisoned cell is *a worse first guess*.
+- **Pre-selection.** The worst case is a wrong classification, hence a wrong rate, arriving already chosen, on a document signed under 18 U.S.C. 1001, for every tenant on that WD group — accepted by anyone who does not read. And **H-J6b (§21) says out loud that we do not know whether anyone reads.** A design cannot rest a federal certification on an unmeasured assumption about attention. The standing rule from R-CRIT1 applies by analogy: no signal gets promoted to authority until its error rate has been measured against the live corpus.
+
+Two supports, neither of which is the primary defence:
+
+- **Weight, don't just count.** A supporting account contributes to the aggregate only if it has actually done work — a minimum number of released filings across a minimum number of distinct projects. This raises the price of a sybil from free to *doing the job*, which is the only cost function that scales in our favour.
+- **Freeze, don't alert.** A prior cell whose supporting accounts were created inside a short window, or share a signup IP or ASN, is frozen automatically — the cell simply stops contributing to ordering. Nobody is paged, no queue is opened, no email is sent: A3 forbids the escalation and the freeze does not need one, because freezing costs a slightly worse ordering and nothing else.
+
+The residual risk is recorded rather than claimed away: **an attacker who controls five qualifying accounts can still degrade the ordering of a candidate list.** We do not defend against that, we bound it, and the bound is the permission table above. See also HIGH-3's correction in `CORPUS_DESIGN.md` §7.4 on what the k boundary does and does not conceal.
+
+**What we tell the user about all this.** Once, in the picker's footnote, and again in Settings → Memory — never as a number beside a candidate:
+
+> *Candidates are ordered by how well their scope text matches your title and, where enough unrelated companies have independently mapped the same title, by that. **Ordering only — nothing here is chosen for you, and no other company's answer is ever applied to your filing.** Your own answers are different: once you confirm a title, we apply it silently from then on and stop asking.*
 
 The measurable version — **H2** in ARCHITECTURE §17 — is the hypothesis that after four filings ≥90% of payroll titles resolve from memory with no model call. It is instrumented as `crosswalk_hit_ratio` from day one, and it is the number the $0.06-per-filing economics depend on. **It is a hypothesis and the UI never states it as a fact.** What the UI *does* state is her own number, which is not a claim about anyone else:
 
@@ -604,6 +731,8 @@ That line, appearing on the fourth Friday, is the peak-end moment of the entire 
 |---|---|---|---|
 | **None of the three fit, and neither does anything in the full list** | The row stays blocked. The filing renders **DRAFT — NOT CERTIFIABLE**, signature block withheld, exception report attached, naming the title and the dollars | And then the honest end: *"If the work your crew performs isn't listed on this determination, the route is a conformance request under 29 CFR 5.5(a)(1)(ii) — Standard Form 1444, submitted by the contracting officer. **Ratepin does not prepare or file SF-1444s and will not do it for you.** Here is what the process is, and here is your draft with this row flagged."* (D7, D9) | P-B + P-D |
 | Anthropic unreachable, or P12 budget tripped | Identical layout, one changed sentence: *"Candidate ranking is in reduced mode right now. Below is this determination's own classification list, matched on text, not ranked."* | The degraded path **is** the free generator's path — the most-exercised code in the product (ARCHITECTURE §10.4). Nothing is blocked, nothing is queued, nobody is paged. | P-C |
+| **The cross-tenant aggregate has been poisoned for her title** | The candidate she wants is second or third instead of first. Nothing is pre-selected, nothing is applied, and every candidate still carries its verbatim label, scope text and rates | This is the designed blast radius of HIGH-2, not a failure to handle it: an ordering input that goes wrong produces a worse ordering. She reads the scope text and clicks the right one, and **her** confirmation is what her account uses from then on. The poisoned cell never touches her filing unless she chooses it. | ordering only |
+| A prior cell is frozen by the sybil detector mid-week | Nothing visible. The list orders on the deterministic signal alone | A freeze is a demotion of a ranking hint, not an outage. There is nobody to notify and nothing to notify them about. | — |
 | Model returns an id outside the closed enum | Nothing. Schema rejection, one retry, then reduced mode | `schema_reject_total` is a counter, not a customer-facing event. A silent regression with no functional symptom is exactly what a counter is for. | — |
 | Injected instructions inside a payroll title | Nothing. The model's response schema has **no numeric field** and the candidate set is a closed enum of parsed rows; only a ≤128-char character-class-filtered title ever reaches it | Worst case is a wrong *suggestion*, shown beside verbatim scope text and a rate, which Dee then rejects. The blast radius is a bad ordering of three real options. | — |
 | She realises three weeks later that she picked wrong | S20 memory editor: search, see every remembered mapping with its source (`deterministic` / `llm_ranked` / `user_confirmed`), change or delete any of them | And the critical honesty: **changing memory does not alter filings already generated.** Artifacts are immutable. The editor offers *"Generate amendments for the 3 affected filings"*, which creates new filings with `amends_filing_id` set. | #3, #9 |
@@ -630,13 +759,17 @@ The review screen (S16) shows, in this order:
 
 From ARCHITECTURE §6.3. `deriveStatus(lines, freshness)` is the only function that constructs the type, it is total, and it is exhaustively tested.
 
+`deriveStatus` takes three inputs, not two: the lines, the freshness, and **the project's contract-value band** (§4.4).
+
 | Chip | Condition | Signature block | Billed? |
 |---|---|---|---|
-| **CERTIFIABLE** | every line resolved, freshness FRESH | rendered | yes |
-| **CERTIFIABLE (dated)** | every line resolved, freshness DATED or STALE | rendered | yes |
-| **DRAFT — NOT CERTIFIABLE** | **any** line unresolved | **withheld**, page watermarked | **never** |
+| **CERTIFIABLE** | every line resolved, band ≠ `unknown`, project pinned, freshness FRESH | rendered | yes |
+| **CERTIFIABLE (dated)** | every line resolved, band ≠ `unknown`, project pinned, freshness DATED or STALE | rendered | yes |
+| **DRAFT — NOT CERTIFIABLE** | **any** line unresolved · **or** band = `unknown` · **or** the project carries no pin — which includes every free-tier artifact (§1.5) and every unpinned project (§4.5) | **withheld**, page watermarked | **never** |
 
 > **Freshness never produces DRAFT — NOT CERTIFIABLE.** That single line is D7. An unresolved line moves the *status*; a stale freshness check moves a *sentence*. SAM being unreachable moves neither, because there is no code path from the filing engine to SAM.
+
+> **The three DRAFT conditions are the three things we refuse to assert:** that we know what a payroll line is (a resolved line), that we know which overtime rule the contract carries (a band), and that we know which revision is of record (a pin). Miss any one and the signature block does not render — not as a punishment, but because the document would otherwise say something we do not know.
 
 And the billing consequence, which is the clearest statement of the product's ethics: **we do not charge for the artifact we told you not to sign.** `DRAFT — NOT CERTIFIABLE` never posts a meter event (ARCHITECTURE §9.5).
 
@@ -647,10 +780,14 @@ Printed on every artifact at every tier, including free. This is simultaneously 
 ```
 Rates from wage determination CA20260012 revision 4, published 2026-07-31.
 No newer revision existed as of 2026-08-13 02:41 ET.
+Overtime computed under the Contract Work Hours and Safety Standards Act.
+  You recorded on 2026-08-13 that this contract is over $100,000.
 Corpus snapshot 9f2c…a17e · engine 1.4.2 · generated 2026-08-14 15:52 PT
 Ratepin computed and formatted this document. The contractor certifies it.
-wageline.app/v/8c1f-22a9
+ratepin.com/v/8c1f-22a9
 ```
+
+Two footer lines are **assertions the customer made, printed back**, never conclusions we drew: the contract-value line above (§4.4) and, when it is set, the contract-lock line (§8.4) — *"You recorded on 2026-08-02 that your contract incorporates revision 4 at award."* Both are dated, both name her as the source, and both are reproducible eighteen months later from the same stored row. This is the grammatical difference the whole document turns on: *you recorded* is evidence; *this applies* is a legal conclusion, and §16.1 forbids it.
 
 The three freshness sentences (ARCHITECTURE §6.4):
 
@@ -712,7 +849,7 @@ stateDiagram-v2
 
 ---
 
-## 8. J8 — WD-change alert and one-click regenerate
+## 8. J8 — WD-change alert, the contract lock, and one-click regenerate
 
 ### 8.1 Narrative
 
@@ -749,7 +886,11 @@ Then three actions, presented with **equal visual weight** — because a pre-sel
 - **Pin revision 5 going forward.** (New `wd_pins` row; the old pin is retained forever.)
 - **Pin revision 5 and regenerate my unfiled weeks.** (One click; only weeks not yet released.)
 
+Equal weight means equal in every dimension that carries meaning: same button style, same size, same order every time, no colour that reads as recommended, no "most contractors do this", and the keyboard focus lands on none of them. A default here would be a legal conclusion rendered in CSS.
+
 Filed weeks are handled separately, behind an explicit second step, because regenerating a released filing produces an **amendment**, and an amendment is a legal act, not a refresh.
+
+And beneath the three, a fourth thing that is not an action but an **assertion she can record** — MED-9's resolution, and the case this screen previously had no room for: *my contract incorporates revision 4 at award.* See §8.4.
 
 ### 8.2 Sequence
 
@@ -781,6 +922,11 @@ sequenceDiagram
     alt Keep revision 4
         D->>W: keep
         W-->>D: notice persists; project page shows "pinned rev 4; rev 5 published 2026-08-11"
+    else Keep revision 4 AND record the contract lock (§8.4)
+        D->>W: keep + "my contract incorporates rev 4 at award"
+        W->>DB: SET wd_revision_locked_at_award = true, with actor + timestamp
+        W-->>D: notice becomes INFORMATIONAL for every future revision;<br/>footer narrows to the recorded-assertion sentence (<b>P-C</b>)
+        Note right of DB: HER assertion, stored and dated.<br/>We still conclude nothing. (<b>P-D</b>)
     else Pin revision 5
         D->>W: re-pin
         W->>DB: INSERT wd_pins (rev 5) — <b>new row, old pin retained</b>
@@ -803,6 +949,61 @@ sequenceDiagram
 | She wants amendments for four already-filed weeks | A second, explicit screen listing each week, the dollar delta per week, and the sentence *"Each of these creates a new certified payroll that amends the one you already submitted. That is a document you sign again."* Then one click generates all four | Amendments are `amends_filing_id` filings with incremented `sequence` — our record, not DIR's, because DIR auto-increments `payrollNum`/`amendmentNum` and the XSD declares both `fixed=""`. | #5 |
 | Anonymous alert subscriber (no account, D8 channel 3) | The same diff, in the email, for any WD number they asked to watch — with a link to J1 and J3, not to a paywall | The list is built on the exact anxiety we monetise, and the free alert is genuinely complete. | — |
 | Ingest is stuck at L1/L2 so no diff is available | No alert is sent, and the banner explains the silence: *"We haven't completed a newer-revision check since {ts}, so no change alerts are being generated. Your rates are unchanged."* | **Silence must be explained**, or a working alert system and a broken one look identical. | P-C |
+| **Her contract locked the revision at award and always will** | She records it once (§8.4). Every later revision arrives as an informational line rather than as a decision | MED-9: the modelled case was "a newer revision published, what do you want to do?" The *common* case is "my contract froze revision 2 in March and nothing about that has changed." Without a place to say so, the product asks her the same question every quarter and the answer is always the same. | P-C + P-D |
+| She records the lock and later discovers the contracting officer **did** modify the contract | One control on S19, always present, never buried: **"My contract was modified — show me revisions again."** Clears the flag, restores the three equal-weight actions, and the cleared flag is dated in the audit trail like the setting of it | Reversible in one click, because the assertion was hers to make and hers to withdraw. No filing already generated changes; amendments are offered (§4.4.5). | #3 |
+
+### 8.4 The contract-locked project — MED-9
+
+**The case the design was missing.** J8 as originally written models one situation: a newer revision published, and the customer has a live decision to make. That situation is real but it is not the common one. The common one is that the contract incorporated a specific revision at award, the contracting officer has not modified it, and the newer revision has nothing to do with this job for the rest of its life. In that world every WD-change notice, every diff and every one-click re-pin is a quarterly invitation to put the wrong rate on a certified payroll — and all three of them point the same direction.
+
+**What we may not do about it.** We may not detect it, infer it, or conclude it. FAR 22.404-6 governs which revision applies, and the answer can turn on a contracting-officer finding we cannot observe — that is P-D and it does not move. (The regulation is genuinely intricate: modifications published ten or more calendar days before bid opening are effective; there is a 90-day rule when award is delayed; post-award incorporation can be retroactive to the date of award. Verified on acquisition.gov, 2026-08-13. We cite it, we show her the dates, and we stop.)
+
+**What we may do.** Record what *she* asserts, date it, print it, and let it govern our own UI. One boolean, `wd_revision_locked_at_award`, default unset — which is neither yes nor no.
+
+#### 8.4.1 Where it is asked, and the copy
+
+Offered in two places and nowhere else: behind progressive disclosure at project setup (§4.1), for the customer who already knows; and on S19 **the first time a newer revision publishes**, which is the moment the question is finally concrete. Recognition rather than recall, at the point of decision.
+
+> **Does your contract lock this revision?**
+>
+> ☐ &nbsp;My contract incorporates **CA20260012 revision 4** at award, and my contracting officer hasn't modified it.
+>
+> Tick this and we'll stop asking. Newer revisions still get published here — you'll see that revision 5 exists and what changed in it — but the re-pin actions move out of your way and your filings keep saying revision 4.
+>
+> **This is your statement, not ours.** We record it, date it, and print it on the artifact: *"You recorded on 2026-08-02 that your contract incorporates revision 4 at award."* We don't check it, and **we still don't conclude which revision applies to your contract** — FAR 22.404-6 governs that, and it can turn on a finding by your contracting officer that we can't see. If the contract gets modified, untick it in one click.
+
+#### 8.4.2 What changes when it is set, and what does not
+
+| | Lock **unset** (default) | Lock **set** |
+|---|---|---|
+| WD-change notice | Persistent, factual, unnagging | **Informational.** Same diff, same numbers, same FAR panel — presented as a fact about the determination rather than as a question about her project |
+| The three actions | **Equal visual weight**, no default, focus on none | Ordered behind **"Keep revision 4"** — because that is the instruction *she* recorded, not a conclusion *we* drew. The other two remain present, one click away, and are never hidden |
+| Footer sentence | *"No newer revision existed as of {ts}."* | **Narrows** — see §8.4.3 |
+| Email alerts for this project | Sent | Not sent. The in-product notice remains, because it is the normative surface (§20 Challenge F) |
+| The FAR panel | Unchanged | **Unchanged.** It concludes nothing either way, and setting the lock does not make it conclude anything |
+| Rates on filings | Revision 4 | Revision 4 |
+
+The middle row is the one that could go wrong, so it is worth being exact about why it is not a contradiction of §8.1's equal-weight rule. **Equal weight is what we owe her when we have no instruction from her.** It is the default precisely because a default would otherwise be us answering a legal question with a button style. Once she has recorded an instruction, following it is not us deciding — it is the same permission boundary that governs classification memory in §6.3.1: **her own confirmed choices may auto-apply; nobody else's may, and neither may ours.**
+
+#### 8.4.3 The narrowed claim — P-C on a superseded pin
+
+The moment revision 5 publishes, the standard FRESH sentence *"No newer revision existed as of {ts}"* becomes **false on this artifact**, and a false freshness sentence is worse than a stale one. So the claim narrows, in both lock states:
+
+| Situation | Footer sentence |
+|---|---|
+| Pin current, FRESH | *"Rates from CA20260012 revision 4, published 2026-07-31. No newer revision existed as of 2026-08-13 02:41 ET."* |
+| **Pin superseded, lock unset** | *"Rates from CA20260012 revision 4, published 2026-07-31. Revision 5 published 2026-08-11 and is not used on this payroll; you have kept revision 4 pinned to this project."* |
+| **Pin superseded, lock set** | *"Rates from CA20260012 revision 4, published 2026-07-31. Revision 5 published 2026-08-11 and is not used on this payroll. You recorded on 2026-08-02 that your contract incorporates revision 4 at award."* |
+
+This is P-C in its exact definition: **the artifact and the rate are unchanged; the sentence narrows; the banner is dated.** The rate did not become less correct — our sentence about it became less broad, and we say the narrower true thing instead of the wider false one.
+
+**One deliberate difference from every other P-C in this document: no credit accrues.** The staleness credit exists because L1/L2 narrowing is *our* failure — our ingest did not run. A superseded pin is not a failure of ours at all; it is a fact about her contract that we are reporting accurately. Auto-crediting for it would be paying customers for the product working. The two cases share a primitive and not a remedy, and §11.6's credit arithmetic reads `freshness_state`, never `pin_superseded`.
+
+#### 8.4.4 What this costs, and the honest downside
+
+One boolean, one checkbox, one sentence on the artifact, one reversal control. Against that: it removes the product's single largest opportunity to nudge a customer onto a rate her contract does not carry — a nudge delivered, before this change, by three UI affordances all pointing the same way, on the one screen where the stakes are a rate on a signed federal document.
+
+The downside is real and is recorded as **H-J8b** (§21): a customer who ticks the box wrongly — because she assumed a lock her contract does not have — has now silenced the alerts that would have shown her the change. The mitigations are that the diff is still displayed on every visit, the re-pin actions are one click away and never hidden, and the artifact prints her assertion where she and her GC both read it. We do not mitigate it by declining to offer the box, because the alternative is nudging *everyone* in the other direction.
 
 ---
 
@@ -888,6 +1089,7 @@ flowchart TB
 | She crosses her allowance mid-run | Nothing interrupts the run. The overage is disclosed before the button and confirmed after: *"7 filings billed at $2.50 = $17.50 added to your 14 Sept invoice."* | Metering is post-commit and keyed on `filing_id`, so a retry cannot double-bill. | #1 |
 | She hits the overage cap | Automatic upgrade, **announced at 80% and again at the moment it fires**, with a one-click *"put me back on Crew"* | Auto-upgrade without warning is a dark pattern; auto-upgrade with a pre-warning and a symmetric undo is a service. See J11. | #3 |
 | She uploads one CSV containing all nine projects | Component **M** maps a project column; the import fans out into nine per-project imports | The alternative — nine uploads — is the single biggest time cost in her week, and it is the one heuristic-#7 investment that matters most at Multi. | #7 |
+| One project's contract-value band is still `unknown` | That row sits under **NEEDS A DECISION** with the one question inline, resolvable without leaving the board. It still runs — it produces a draft — and the results table names it as **DRAFT — NOT CERTIFIABLE · contract-value band** | Project-scoped, so unlike a classification block it cannot be resolved for nine projects at once: nine projects can be nine contracts. The board groups blocks by reason, and this reason simply has a group size of one. It is also **never billed**, like every draft. | P-B |
 | Three projects have no payroll because those crews didn't work | She marks them **"no work performed this week"** | This is a real certified-payroll concept and it produces a proper no-work filing rather than a gap in the sequence. Absence of a filing and a filing of absence are different things to an auditor. | #2 |
 
 ---
@@ -1047,7 +1249,45 @@ When an L2-or-worse incident is open and attributable to her pinned determinatio
 | Chargeback filed | Subscription cancelled, **archive export link emailed immediately**, dunning stops | We do not dun a customer who is disputing. | #3 |
 | Overage cap hit, auto-upgrade fires | Email + in-product: *"You passed 140 filings, so we moved you to Multi at $599 and stopped charging overage. You'd have paid $612 on Crew. One click puts you back."* | The upgrade must be defensible as *cheaper for her*, or it is a trap. | #3 |
 | She wants a plan we do not sell | *"We sell four prices and they're all on this page. There's no quote, no call and no custom tier — including for us."* | D4: no seats, no setup fee, no quote, no call, ever, at any tier. | P-D |
-| A genuine payment dispute needing a person | **One** contact address, on the billing page, **outside the compliance flow** — because a customer who cannot pay cannot use the in-app refund button, and card networks expect it | Every message it receives increments `human_minutes`. **G5** therefore measures the real thing rather than a claim, and no "zero human minutes" copy ships until 90 days below 2 min/customer/month at ≥50 paying accounts. | measured |
+| A genuine payment dispute needing a person | **One** contact address, on the billing page, **outside the compliance flow** — because a customer who cannot pay cannot use the in-app refund button, and card networks expect it | Every message it receives increments the counter — **every** message, with no triage and no judgement by us. See §11.8. **G5** therefore measures the real thing rather than a claim, and no "zero human minutes" copy ships until 90 days below 2 min/customer/month at ≥50 paying accounts. | measured |
+
+### 11.8 The G5 counter, redefined so that it can fail — MED-2
+
+**The finding.** G5 was written as *"any inbound message **requiring** a human answer increments the counter."* Every other gate in this run is mechanically falsifiable — G1 is an exact match against frozen expectations, G3 is a count delta, G6 is a chaos test that either fires or does not. G5 alone contained a word — *requiring* — that only a person can evaluate, and the person evaluating it is the same person the "zero human minutes" claim flatters. A gate whose input is a judgement call by the claimant is not an instrument; it is a preference with a number next to it.
+
+**The redefinition.** Three properties, and the third is the one that makes the first two true.
+
+**1 — Count everything, decide nothing.**
+
+> `inbound_messages_total` increments on **every inbound message of any kind, delivered to any address the product publishes.** No exclusions, no triage, no category called "didn't need an answer."
+
+The published-address set is a config list, and CI asserts that it is *exactly* the set of addresses appearing anywhere the company can be written to: the copy bundle, the artifact templates, the landing page and its source, the DNS zone's MX-bearing records, the registrar and RDAP records, the Stripe receipt and statement descriptors, and the app-store and directory listings. **An address that can receive mail and is not declared fails the build.** That closes the obvious evasion — moving the load to an address the counter does not watch — because the counter's scope is derived from what we publish, not from what we choose to watch.
+
+Spam, vendor mail, autoresponders, bounces and delivery receipts all land in that raw total. Mechanical filters may derive a smaller number *alongside* it, never instead of it, and each filter must be (a) a named machine-checkable rule — SPF/DKIM failure, a `List-Unsubscribe` header, a known bulk sender — (b) published with its own count, and (c) unable to consume a message that fails no rule. **Anything not machine-classifiable counts as human.** Nobody at Ratepin ever decides whether a message counted.
+
+**2 — Minutes with a floor, so that silence cannot lower the number.**
+
+> `human_minutes += max(1, wall-clock minutes from delivery to first outbound reply from that address)`
+
+The floor exists because "we never replied" must not read as "it cost us nothing" — reading a message and deciding not to answer is the cheapest possible human minute, and it is still a human minute. Never replying to anything is the one strategy that could otherwise drive the gate to zero, and the floor makes it the *worst* strategy rather than the best. Reply time is taken from mail-transport timestamps, not from anyone's recollection.
+
+**3 — Published, so that someone other than us can check it.**
+
+`/status` (S24) carries, monthly and without a login. **The figures below are a layout specimen, not a measurement — nothing has been counted yet, because nothing has shipped:**
+
+```
+AUTONOMY — the G5 instrument, published raw          [SPECIMEN LAYOUT]
+
+  Inbound messages, all published addresses     37
+  of which machine-classified bulk              31   (SPF/DKIM fail: 22 · List-Unsubscribe: 9)
+  Counted as human                               6
+  Human minutes, floor-adjusted                 14
+  Paying accounts, period average                58
+  Minutes per customer per month              0.24
+  Consecutive days under 2.00                     67   → G5 clears in 23 days
+```
+
+Anyone can divide the last two numbers themselves. **The "zero human minutes"-class claim is rendered from the counter, not from a decision** — the same mechanism §10.4 uses for the *generated, not acceptance-tested* label, so removing the label requires the data rather than an opinion about the data. If the numbers are small this costs nothing to publish. **If they are not, G5 is the gate that was built to say so, and a gate that cannot embarrass its owner was never a gate.**
 
 ---
 
@@ -1058,7 +1298,7 @@ When an L2-or-worse incident is open and attributable to her pinned determinatio
 One button, one ZIP, no request form, no waiting period:
 
 ```
-wageline-export-coastline-2026-08-13.zip
+ratepin-export-coastline-2026-08-13.zip
 ├── manifest.json                     every file, its sha256, its filing id
 ├── filings/
 │   └── 2026-08-14-fresno-courthouse/
@@ -1088,7 +1328,7 @@ Deletion is genuinely self-serve — CCPA's **right to delete** implemented as a
 > **Download your archive first.** [Download 148 filings (312 MB)] — done automatically before deletion unless you turn it off.
 >
 > **What is deleted:** every project, pin, payroll line, filing and artifact; every worker record including encrypted Social Security numbers; your classification memory; your column mappings.
-> **What is not:** anonymous aggregate counts of which payroll titles map to which classifications, which are kept only where **five or more unrelated companies** made the same mapping and which contain no company or worker identity; the public wage-determination mirror, which is public data and was never yours or ours; and billing records, which Stripe retains for tax and card-network purposes.
+> **What is not:** anonymous aggregate counts of which payroll titles map to which classifications, which are kept only where **five or more unrelated companies** made the same mapping, which contain no company or worker identity, and which are only ever used to **order** a list of candidates for someone else — never to choose one for them; the public wage-determination mirror, which is public data and was never yours or ours; and billing records, which Stripe retains for tax and card-network purposes.
 > **Your subscription** is cancelled immediately and the unused days are refunded automatically.
 >
 > Type **Coastline Insulation** to confirm.
@@ -1146,14 +1386,15 @@ gantt
     section Anonymous free — Marcus — 6 workers typed
     Land on the free generator          :a1, 00:00, 10s
     Enter a determination or skip       :a2, after a1, 35s
-    Type 6 workers and hours and rates  :a3, after a2, 70s
+    Contract-value band — one radio     :a2b, after a2, 12s
+    Type 6 workers and hours and rates  :a3, after a2b, 70s
     Compute and render preview          :a4, after a3, 8s
     Download                            :a5, after a4, 10s
 
     section Paid first run — Dee — 26 workers by CSV
-    Run a free WH-347 first             :b1, 00:00, 135s
+    Run a free WH-347 first             :b1, 00:00, 147s
     Email and magic-link round trip     :b2, after b1, 60s
-    Five-field project setup            :b3, after b2, 95s
+    Project setup — six required fields :b3, after b2, 110s
     Find-my-WD then pick then pin       :b4, after b3, 55s
     CSV upload and first column mapping :b5, after b4, 170s
     Classification pickers — 4 unmapped :b6, after b5, 80s
@@ -1172,9 +1413,9 @@ gantt
 
 | Step | Journey | p50 target | p95 target | What blows the budget |
 |---|---|---|---|---|
-| Anonymous free artifact, 6 typed workers | J1 | **2:15** | 4:00 | typing, not the system |
+| Anonymous free artifact, 6 typed workers | J1 | **2:27** | 4:15 | typing, not the system |
 | Magic-link round trip | J4 | 1:00 | 3:00 | her mail client, not us |
-| Five-field project setup | J4 | 1:35 | 3:00 | not knowing the construction type |
+| Project setup, six required fields | J4 | 1:50 | 3:20 | not knowing the construction type; **not knowing the contract value** (§4.4, H-J4b) |
 | Find-my-WD → pin | J4 | 0:55 | 2:00 | several candidate determinations |
 | CSV upload + first-time column mapping | J5 | 2:50 | 6:00 | an unusual payroll export |
 | Classification pickers, first project (≈4 titles) | J6 | 1:20 | 4:00 | reading scope text carefully, which is the point |
@@ -1219,7 +1460,8 @@ stateDiagram-v2
     import_mapped : <b>import · mapped</b><br/>column_map written
     resolving : <b>resolving</b><br/>blocked lines listed with dollars
     computed : <b>computed</b>
-    draft : <b>DRAFT — NOT CERTIFIABLE</b><br/>signature withheld · never billed
+    band_unknown : <b>band unknown</b><br/>contract_value_band = 'unknown'<br/>no premium computed, none omitted (§4.4)
+    draft : <b>DRAFT — NOT CERTIFIABLE</b><br/>signature withheld · never billed<br/>= unresolved line OR band unknown OR no pin
     certifiable : <b>CERTIFIABLE</b> / <b>CERTIFIABLE (dated)</b><br/>signature rendered · metered
     released : <b>released</b><br/>downloaded · immutable forever
     amended : <b>amended</b><br/>new filing, amends_filing_id set
@@ -1232,8 +1474,11 @@ stateDiagram-v2
     import_mapped --> resolving
     resolving --> computed : all lines resolved
     resolving --> draft : generate with blocks
-    computed --> certifiable
-    computed --> draft : status gate finds an unresolved line
+    computed --> band_unknown : band = 'unknown'
+    band_unknown --> draft
+    band_unknown --> computed : she answers the one question (§4.4.3)
+    computed --> certifiable : band set AND project pinned
+    computed --> draft : status gate finds an unresolved line,<br/>an unknown band, or no pin
     draft --> resolving : resolve and regenerate
     certifiable --> released
     draft --> released : downloaded as a draft
@@ -1242,20 +1487,22 @@ stateDiagram-v2
     project_pinned --> project_pinned : re-pin = NEW wd_pins row (J8)
 ```
 
+**The free path is not on this diagram, and should not be.** J1 writes no `projects` row, no `wd_pins` row and no `filings` row; nothing survives 24 hours. Its artifact has exactly one status — **DRAFT — NOT CERTIFIABLE** (§1.5) — reached without a gate, because the CERTIFIABLE condition requires a pin the path never creates. A state machine with one state is a constant, and drawing it as a machine would suggest a decision exists.
+
 ---
 
 ## 15. Nielsen heuristic audit, all ten
 
 | # | Heuristic | Where Ratepin carries it | The specific failure it prevents |
 |---|---|---|---|
-| **1** | Visibility of system status | The provenance footer's three freshness sentences; the ladder banner naming an exact timestamp; per-project chips on the Friday board; the pre-run cost disclosure; *"we also emailed this — this page is the record"* | A user cannot tell a working system from a silently broken one. **Silence is always explained**: when no WD-change alerts are being generated, we say why. |
+| **1** | Visibility of system status | The provenance footer's freshness sentences, including the two superseded-pin narrowings (§8.4.3); the ladder banner naming an exact timestamp; per-project chips on the Friday board; the pre-run cost disclosure; *"we also emailed this — this page is the record"*; and `/status` publishing **our own** autonomy numbers raw (§11.8) | A user cannot tell a working system from a silently broken one. **Silence is always explained**: when no WD-change alerts are being generated, we say why. The same rule applied to ourselves is why G5's counter is published rather than reported. |
 | **2** | Match between system and the real world | The preview *is* the WH-347, column 1A to column 9, in the form's own headings; classification candidates carry the determination's **verbatim** label and scope text and a link to the source lines; "no work performed this week" is a real certified-payroll concept, not a UI convenience | Renaming the form's own vocabulary would force the user to translate twice — once into our words and once back into the auditor's. |
-| **3** | User control and freedom | Re-pin is **never** automatic; upgrade and downgrade are visually symmetric; cancellation-deflection coupons are deliberately disabled; classification memory is editable; deletion has a 7-day undo; auto-upgrade has a one-click revert | A product that decides for you which wage-determination revision applies has made the exact legal conclusion it promised to decline. |
+| **3** | User control and freedom | Re-pin is **never** automatic and the three actions carry equal weight until *she* records an instruction (§8.4); **no candidate is ever pre-selected from another tenant's data** (§6.3.1); upgrade and downgrade are visually symmetric; cancellation-deflection coupons are deliberately disabled; classification memory is editable; deletion has a 7-day undo; auto-upgrade has a one-click revert | A product that decides for you which wage-determination revision applies has made the exact legal conclusion it promised to decline — and a picker that arrives pre-answered from five strangers' accounts has done the same thing to a classification. |
 | **4** | Consistency and standards | Component **M** is shared by the free generator and the paid app; one renderer produces the artifact at every tier; `/api/status`, the banner and the footer render from a single source | Free and paid diverging would make the upgrade a re-learning event and would let the free path rot as an untested fallback. |
-| **5** | Error prevention | The **status gate withholds the signature block** rather than warning; unmapped deductions block rather than falling into "Other"; the union-group refusal fires at project setup, not at generation; duplicate uploads are detected by hash; ambiguous encodings are rejected rather than guessed | A wrong rate on a signed certification is a federal false-statement exposure (R3). A warning can be clicked past; a missing signature block cannot. |
+| **5** | Error prevention | The **status gate withholds the signature block** rather than warning, on all three of its conditions — unresolved line, unknown contract-value band, no pin; unmapped deductions block rather than falling into "Other"; an unprovable premium label blocks rather than silently erasing statutory overtime (§5.4); the union-group refusal fires at project setup, not at generation; duplicate uploads are detected by hash; ambiguous encodings are rejected rather than guessed | A wrong rate on a signed certification is a federal false-statement exposure (R3). A warning can be clicked past; a missing signature block cannot. The contract-value band is the case where the *absence* of a question was the error. |
 | **6** | Recognition rather than recall | **Classification memory** keyed on WD group; remembered column maps applied silently; the Friday board shows what is missing instead of asking; the $49 rate card auto-attaches if she later signs up with the same email | Asking a weekly user the same question every week is the single largest avoidable cost in a weekly product. |
 | **7** | Flexibility and efficiency of use | One CSV fanning out to nine projects; one picker answer resolving every project on that group; both WH-347 layouts behind a per-project flag; per-project delete as well as account delete | The Multi customer's Friday is nine of everything; without batching, the tier is unsellable. |
-| **8** | Aesthetic and minimalist design | `/wh347` is one screen with two affordances; project setup is five fields with two refinements behind progressive disclosure; the FAR panel is dense because the density *is* the content | Every field between a searcher and a working WH-347 is a conversion tax on D8's channel. |
+| **8** | Aesthetic and minimalist design | `/wh347` is one screen with two affordances and one radio; project setup is six required fields with three refinements behind progressive disclosure; the FAR panel is dense because the density *is* the content | Every field between a searcher and a working WH-347 is a conversion tax on D8's channel — which is exactly why the sixth field had to earn its place, and Challenge B records the argument rather than assuming it. |
 | **9** | Help users recognize, diagnose and recover from errors | Every error names the row, the column, the value and the constraint; input is always preserved; *"re-check my payment status"*; the DIR rejection capture; resumable uploads | With no support channel, an unrecoverable error is a lost customer with no intermediate step. |
 | **10** | Help and documentation | There is **no help centre and no support widget in the compliance flow** — by design. Help is inline provenance: verbatim scope text next to each candidate, the source line span, the FAR panel, the boundary statement | WCAG 2.2 SC 3.2.6 (Consistent Help) explicitly *"does not require authors to provide help"* — only that help mechanisms which exist be consistently placed. We satisfy it by having none in the flow, and by placing the single billing-dispute address consistently on the billing page. See §18. |
 
@@ -1267,7 +1514,9 @@ These are lint rules over the copy bundle and the artifact templates (ARCHITECTU
 
 ### 16.1 Never assert
 
-Accepted, compliant or approved · that a wage determination is *effective* for a contract · that EO 13658's floor applies · that a fringe credit is annualized, bona fide or WHD-approved · that a deduction is permissible under 29 CFR part 3 · that a classification is *correct* · that a cash payment is genuinely in lieu of a fringe rather than straight-time wage · that an apprenticeship ratio is met · any measured-performance number before its gate clears.
+Accepted, compliant or approved · that a wage determination is *effective* for a contract · **that a revision is or is not incorporated into a contract** · **that the Contract Work Hours and Safety Standards Act applies to this contract** · that EO 13658's floor applies · that a fringe credit is annualized, bona fide or WHD-approved · that a deduction is permissible under 29 CFR part 3 · that a classification is *correct* · **that another company's classification choice is right for this one** · that a cash payment is genuinely in lieu of a fringe rather than straight-time wage · that an apprenticeship ratio is met · any measured-performance number before its gate clears.
+
+Three of those are new and each has a grammatical tell the lint can catch. Where the product holds a customer assertion — the contract-value band (§4.4), the contract lock (§8.4) — the only permitted sentence form is **"you recorded on {date} that …"**. The forms *"CWHSSA applies"*, *"this contract is covered"*, *"revision 4 governs"* and *"revision 5 does not apply"* are failures, in copy, in artifact templates and in exception-report strings alike.
 
 ### 16.2 Two numbers banned by name
 
@@ -1286,6 +1535,13 @@ Accepted, compliant or approved · that a wage determination is *effective* for 
 | "Something went wrong. Contact support." | "This determination's schema hash changed on 2026-08-12. We won't emit XML DIR will reject. Your WH-347 PDF is unaffected." |
 | "Saves you 15 hours a week." | (nothing, until G4) |
 | "Trusted by hundreds of contractors." | (nothing, until it is true and countable) |
+| "CWHSSA overtime applies to this contract." | "You recorded on 2026-08-13 that this contract is over $100,000. The 40-hour overtime clause at 29 CFR 5.5(b) goes into contracts in excess of $100,000." |
+| "We couldn't determine CWHSSA coverage, so we skipped the premium." | "We don't know whether the 40-hour rule is in this contract, so we haven't guessed — in either direction. The signature block is withheld until you answer." |
+| "Most contractors map this title to Cement Mason." | (nothing beside a candidate. The aggregate orders the list and says so once, in a footnote — §6.3.1) |
+| "Recommended" / a pre-filled radio in the classification picker | (no candidate is pre-selected; the confirm button is inert until she chooses) |
+| "Revision 5 doesn't apply to your contract." | "You recorded on 2026-08-02 that your contract incorporates revision 4 at award. Revision 5 published 2026-08-11 and is not used on this payroll." |
+| "Zero human minutes." | (nothing, until §11.8's published counter has been under 2.00 for 90 consecutive days at ≥50 paying accounts — and then the number, not the adjective) |
+| "You can't reconstruct a superseded revision." / "Once SAM overwrites it, it's gone." | (nothing — the sentence is **false**, measured: `wdol/v1/wd/{ref}/{rev}/download` returns a 303 to an S3 archive object and `govconapi.com` resells the series at $19/month. The moat is **assembly, latency and crosswalk memory**, and that is what the copy says — §2.4.) |
 
 ### 16.4 Voice
 
@@ -1300,6 +1556,7 @@ Short sentences. The user's nouns, not ours: *determination*, *revision*, *class
 | **No projects yet** | A single primary action and one sentence naming what a project is: *"A project is one federally funded job with one wage determination pinned to it."* | Empty states are the highest-attention screen a new user sees and the cheapest place to teach the product's one central noun ([NN/g](https://www.nngroup.com/articles/empty-state-interface-design/)). |
 | **Project with no payroll yet** | The expected CSV shape, with a downloadable 3-row template and the QuickBooks / ADP / Paychex / Gusto export paths named | The most common first-run failure is not knowing what file to produce. |
 | **No filings yet** | The Friday board shows the project under **WAITING ON YOU**, not an empty page | An empty page makes the user diagnose; a named state tells them. |
+| **Contract-value band unanswered** | Not an empty state — a **blocked artifact** with one question and one button (§4.4.3). Everything else on the filing renders in full | An unanswered question that changes the arithmetic is not "incomplete data", it is an assertion we would otherwise have to invent. |
 | **Corpus never yet promoted** (cold start) | `/status` says so, and pinning is blocked with the reason | We fail closed on the claim before we have ever made one. |
 | **Generating** | Inline progress under 1 s; the Friday run resolves per-project rows one at a time | Per-item resolution beats a percent bar when items are independent. |
 | **Expired free preview** | The exact expiry timestamp and what was deleted | Honest expiry beats a 404, and it is a second chance to explain the paid boundary. |
@@ -1324,13 +1581,17 @@ Beyond the standard, the field reality: **status is never conveyed by colour alo
 |---|---|
 | Any support widget, chat bubble, "contact us" or `mailto:` in the compliance flow | **A3.** A lint rule fails the build if one appears under the filing route tree (ARCHITECTURE §13). |
 | A help centre or knowledge base | Help that lives away from the decision is help that arrives too late. Every explanation is inline, next to the thing it explains. |
-| A product tour, coach marks, or a checklist onboarding | The first run *is* the tour: five fields, one upload, one artifact. A tour would be an admission that the flow needs narrating. |
+| A product tour, coach marks, or a checklist onboarding | The first run *is* the tour: six fields, one upload, one artifact. A tour would be an admission that the flow needs narrating. |
 | An NPS or satisfaction interstitial | The only feedback we collect is the **G2 acceptance confirmation** — a fact about an artifact, not an opinion. Fitzpatrick's rule: ask about what happened, never about whether they like it ([*The Mom Test*](https://www.momtestbook.com/)). |
 | Cancellation-deflection coupons | Stripe offers them; we leave them off (§11.4). |
 | A "request a demo" or "talk to sales" affordance | D4: no seats, no setup fee, no quote, no call, ever, at any tier. |
 | A human review queue at any tier | There is no review table, no reviewer role and no queue. It is not disabled; **it does not exist** (ARCHITECTURE §15). |
 | Portal credential storage / auto-submission | D9. A whole risk class removed by not having a table. |
-| Any UI that concludes which WD revision is effective | D7 / P-D. The three re-pin actions carry equal visual weight for exactly this reason. |
+| Any UI that concludes which WD revision is effective | D7 / P-D. The three re-pin actions carry equal visual weight for exactly this reason, and they yield ordering only to an instruction **she** recorded (§8.4). |
+| A classification pre-selected, defaulted or annotated from other tenants' data | HIGH-2. The cross-tenant aggregate may **order** a candidate list and may do nothing else. Her own confirmed answers auto-apply; nobody else's do (§6.3.1). |
+| A default on the contract-value band | §4.4. Both wrong answers put a number on a signed federal document, so there is no safe side to fall to. `unknown` is a real answer that withholds the signature block, not a null that gets guessed. |
+| A signature block on a free artifact | §1.5. No pin, no signature block — and free creates no pin by construction. |
+| A triage step in front of the G5 counter | §11.8. Deciding which inbound messages "really needed" a person is the judgement call that made the old gate unfalsifiable. Everything counts; nothing is assessed. |
 
 ---
 
@@ -1338,15 +1599,23 @@ Beyond the standard, the field reality: **status is never conveyed by colour alo
 
 **Challenge A — D4's caps are implemented as ARCHITECTURE's resolution, and the journeys show it.** D4 says *"$99/mo Solo (1 project, ≤15 workers); $249/mo Crew (5 projects, ≤75 workers)."* Deep dive 03 showed every capped tier is dominated on price-per-project by CertifiedPayrollPro ($49 buys 5 projects; $99 buys 25) and that a cap is a churn event rather than an expansion event. ARCHITECTURE §16 Challenge 1 keeps D4's price points and D4's metering of projects and workers, and changes only the pricing *function* to included-filing allowances plus a $2.50 capped overage with auto-upgrade. **J4 and J9 are written against that resolution** — no project cap appears anywhere in this document. Reverting to literal D4 is a `plans` row change with no code change, and would require rewriting J4's "she creates a second project" row and J9's pre-run disclosure.
 
-**Challenge B — "five-field project setup" is five *required* fields plus two optional refinements.** D4 names four (county, construction type, WD number or find-it-for-me, funding source). Implemented as five required (adding a project name, which the WH-347 header requires anyway) plus **award/bid date** and **contract number** behind progressive disclosure. The award date is not cosmetic: D3's *"per-classification diff since award"* cannot be computed without it, and it cannot be derived from anything we hold. Defaulting it to today makes the first diff trivially empty until she corrects it — a real degradation, recorded here rather than hidden.
+**Challenge B — "five-field project setup" is now *six* required fields plus three optional refinements.** D4 names four (county, construction type, WD number or find-it-for-me, funding source). It became five with a project name, which the WH-347 header requires anyway. **CRIT-3 makes it six**: `contract_value_band` is required at setup because the alternative — the shipped design — computed a Contract Work Hours and Safety Standards Act premium on contracts the Act's own $100,000 clause threshold does not reach, and told sub-$100k contractors they had underpaid a statute their contract may not carry (§4.4). The refinements behind progressive disclosure are **award/bid date**, **contract number** and the **contract-lock assertion** (MED-9, §8.4).
+
+Two costs, recorded rather than hidden. The award date is not cosmetic: D3's *"per-classification diff since award"* cannot be computed without it, and it cannot be derived from anything we hold; defaulting it to today makes the first diff trivially empty until she corrects it. And the sixth field is a conversion tax on the highest-intent screen in the funnel, paid by every customer to fix an error that afflicts some of them — which is the trade §4.4 argues is worth it, and **H-J4b** (§21) is the instrument that will say whether it was.
 
 **Challenge C — D3's "unlimited" free generator needs abuse protection, and the protection must not be a human.** Implemented as a self-healing throttle plus a Cloudflare Turnstile challenge on burst, with the exact clear-time shown. There is deliberately **no** "contact us to raise your limit" path, because that is a human escalation wearing a growth hat. The word "unlimited" survives in copy only because the throttle self-clears and no request is ever permanently refused.
 
 **Challenge D — L2 STALE should block the $49 sale, not merely block new pins.** D7 says staleness beyond the SLA suppresses **new rate assertions**; ARCHITECTURE §8.1 implements that as "new pins blocked." A bid rate card creates no pin, so a literal reading would let us sell the purest rate assertion in the product while refusing to record one. J3 blocks the sale. This is a tightening in the direction D7 points, it costs revenue rather than earning it, and it is flagged rather than assumed.
 
-**Challenge E — the one contact address is outside the compliance flow, and it is counted.** D7 says there is no support contact *anywhere in the compliance flow*. ARCHITECTURE §10.5 adds exactly one address on the billing page, because a customer whose card has failed cannot reach the in-app refund button and card networks expect a contact. This document keeps it there, keeps it out of every filing surface, and makes `human_minutes` the instrument that will tell us if it ever becomes load-bearing — before we would notice by feel. **G5 publishes nothing until 90 days below 2 minutes per customer per month at ≥50 paying accounts.**
+**Challenge E — the one contact address is outside the compliance flow, and it is counted without our opinion.** D7 says there is no support contact *anywhere in the compliance flow*. ARCHITECTURE §10.5 adds exactly one address on the billing page, because a customer whose card has failed cannot reach the in-app refund button and card networks expect a contact. This document keeps it there and keeps it out of every filing surface. **MED-2 then changed what "counted" means.** G5 as written incremented on any message *"requiring a human answer"* — a word only a person can evaluate, evaluated by the person the claim flatters, in a run where every other gate is mechanical. §11.8 replaces it: **every** inbound message to **every** address the product publishes, with the published-address set asserted by CI against our own copy bundle, DNS, registrar and receipts; a one-minute floor per message so never replying cannot score zero; and the raw counts published monthly on `/status` so the ratio can be recomputed by anyone. **G5 publishes nothing until 90 days below 2 minutes per customer per month at ≥50 paying accounts** — and now that sentence is checkable from outside the company.
 
 **Challenge F — the WD-change alert email is a channel we do not control.** D5 and D8 both lean on email (change alerts, the free watch list, dunning, the deletion undo). Deliverability is not ours. Every one of those flows therefore has an in-product surface that is **normative**, with email explicitly demoted to best-effort in the copy. The deletion undo link is the sharpest case and it is duplicated on S23 for the full 7 days. Flagged as a hypothesis: nobody has measured our deliverability, because we have sent nothing.
+
+**Challenge G — the free generator now always emits a draft, which is stricter than D3 asked for.** D3 puts the paid line at *"the moment a rate becomes an assertion"* and promises unlimited free generation; it does not say the free artifact must be unsignable. MED-10 showed the gap: the free path printed a WD number and revision from a mirror that may be seventy-two hours unverified, to a visitor with no account and therefore no banner and no credit — a rate assertion with *less* provenance than the one L2 forbids a paying customer from making. Challenge D closed the identical hole for the $49 rate card by refusing the sale. Here there is no sale to refuse, so the artifact refuses instead: **no pin, no signature block** (§1.5). This costs conversion rather than earning it, it is a tightening in the direction D3 points, and the unlimited free generation D3 promised is untouched — every free user still gets the complete form, the complete arithmetic and the complete provenance footer. What they no longer get is our silence about what the document is.
+
+**Challenge H — the contract-lock ordering is the one place a re-pin screen is not perfectly symmetric, and it is her asymmetry, not ours.** §8.1's equal-weight rule exists because a default on that screen would be a FAR 22.404-6 conclusion rendered in CSS. §8.4 lets a customer record that her contract incorporates a revision at award, after which "Keep revision N" is ordered first. The distinction the build must hold: **equal weight is what we owe her in the absence of an instruction from her.** The moment she gives one, following it is obedience, not inference — the same boundary §6.3.1 draws around classification memory, where her own confirmed answers auto-apply and nobody else's ever do. If that distinction is ever softened into "we noticed most customers keep the old revision, so we default to keeping it," the product has drawn the conclusion by aggregate that it refused to draw by button, and MED-9 will have been closed into a worse hole than it opened.
+
+**Challenge I — HIGH-2 costs the crosswalk aggregate its strongest form, and the moat argument has to absorb that.** D6 and the Helmer framing in §6.3 treat the cross-tenant crosswalk as compounding process power. HIGH-2 showed the mechanism was reachable: signup is a free magic link, so "five distinct accounts" is an attacker-controlled input, and the aggregate's most valuable expression — pre-selecting the top candidate — would have turned five sybils into a wrong rate on other people's signed filings. The aggregate is therefore demoted to **ordering only**, permanently and by rule (§6.3.1). This is a real reduction in the asset's power, arriving in the same phase as HIGH-7's finding that the archive moat was measured false. **What survives is: assembly, latency, and the per-account memory — which was always the part that actually removes work from Dee's Friday, and is the part no sybil can touch, because it is hers.** Recorded here rather than absorbed silently, because Phase 3 must inherit the reduced claim.
 
 ---
 
@@ -1362,6 +1631,10 @@ Marked as hypotheses because they are not evidenced, per the run's literature-gr
 6. **H-J3 — Does the $49 rate card sell at all?** Deep dive 01 is blunt: nobody has been asked to pay for Ratepin, and no primary contractor voice was obtained. The rate card is designed as an acquisition instrument at ~$47 contribution with instantaneous payback; that arithmetic holds only if the conversion exists.
 7. **Q1 — Does "pinned revision" survive contact with a user who has never thought about revisions?** The entire paid boundary rests on a concept the buyer may not have a word for. The mitigation in this document is to always show the consequence (*"we'll tell you when a newer one publishes"*) rather than the mechanism. Unvalidated.
 8. **Q2 — Is the free generator a funnel or a leak?** Deep dive 02 notes PrevailComply already ships a free WH-347 generator, so this is table stakes rather than a wedge. Whether free users convert is H5 in ARCHITECTURE §17 and is Phase 3's problem; the only instrument is the attribution parameter in the provenance footer's URL.
+9. **H-J1b — Does an always-DRAFT free artifact convert better or worse?** §1.5 puts H-J7's unresolved question (does a withheld signature block read as integrity or as failure?) onto 100% of the acquisition channel. The design bet is that a document naming its own limits is the most credible thing on a page selling correctness. The opposite reading — *"the free one is crippled"* — is equally available and would show up as a drop in free→signup against the pre-change baseline. Instrumented, not assumed.
+10. **H-J4b — Do contractors know their prime contract value?** §4.4's whole design rests on the band being answerable. If a large share of D1 buyers pick *I don't know* and stay there, the required field becomes a wall in front of the first artifact rather than a question, and the fix is not a default — there isn't a safe one — but better recognition support at the clause-list route. The instrument is the distribution of `contract_value_band` at project creation and the share still `unknown` at first generation attempt. **Unmeasured, and it is the largest single risk this change introduces.**
+11. **H-J8b — Does the contract-lock box get ticked correctly?** §8.4 hands the customer an assertion that silences her own change alerts. A customer who assumes a lock her contract does not have has quieted the one signal that would have shown her a rate change. Mitigated by keeping the diff visible, the re-pin actions one click away and the assertion printed on the artifact — not by withholding the box, because the alternative nudges everyone the other way. The instrument is the rate at which locks are later cleared via *"my contract was modified"*, which is a proxy and we should say so.
+12. **H-J6c — Is the aggregate worth anything once it may only order?** §6.3.1 demotes the cross-tenant prior to ordering-only, and Challenge I concedes that this removes its strongest expression. Whether ordering alone measurably reduces picker time — as against the deterministic signal on its own — has never been measured, and the honest position is that the compounding asset is now the **per-account** memory. Instrument: time-to-choice on the picker, split by whether an aggregate-informed ordering was available.
 
 ---
 
@@ -1401,15 +1674,18 @@ Marked as hypotheses because they are not evidenced, per the run's literature-gr
 
 **Regulation, forms and the artifacts themselves (all verified 2026-08-13)**
 
-- https://www.dol.gov/agencies/whd/forms/wh347 — WH-347; OMB 1235-0008, expires 01/31/2028, **55 minutes per response**; columns 1A, 1B, 1C, 1D, 1E, 2, 3, 4, 5, 6A, 6B, 6C, 7A, 7B, 8, 9
+- https://www.dol.gov/agencies/whd/forms/wh347 — WH-347; OMB 1235-0008, expires 01/31/2028, **55 minutes per response**; columns 1A, 1B, 1C, 1D, 1E, 2, 3, 4, 5, 6A, 6B, 6C, 7A, 7B, 8, 9. Source of the column-4 CWHSSA condition quoted in §4.4: *"On all contracts subject to the Contract Work Hours and Safety Standards Act (CWHSSA), enter hours worked on this project in excess of 40 hours total in the week as overtime ("OT")"* — and of the column 6B/6C **weekly total** instruction (*"Enter the total of the contractor's or subcontractor's contributions…"*, *"Enter the total amount in cash provided in lieu of fringe benefits to the worker during the workweek"*)
 - https://www.reginfo.gov/public/do/PRAOMBHistory?ombControlNumber=1235-0008 — ICR history; the revision approved 01/06/2025
 - https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-A/section-5.5 — 29 CFR 5.5. Quoted verbatim in this document via the eCFR API: (a)(3)(i)(A) *"preserved… for a period of at least 3 years after all the work on the prime contract is completed"*; (a)(3)(ii)(B) *"full Social Security numbers and last known addresses, telephone numbers, and email addresses must not be included on weekly transmittals… need only include an individually identifying number… (e.g., the last four digits…)"*; (a)(3)(ii)(C) the three certifications of the Statement of Compliance; (a)(3)(ii)(D) that a properly executed WH-347 reverse satisfies (C); (b)(1) *"compensation at a rate not less than one and one-half times the basic rate of pay for all hours worked in excess of forty hours in such workweek"*
-- https://www.ecfr.gov/api/versioner/v1/full/2026-08-11/title-29.xml?part=5&section=5.5 — the machine-readable source of those quotations
-- https://www.ecfr.gov/current/title-29/subtitle-A/part-3/section-3.5 — the eight deduction categories permissible without WHD approval; J5's blocked-deduction picker
+- https://www.ecfr.gov/api/versioner/v1/full/2026-08-11/title-29.xml?part=5&section=5.5 — the machine-readable source of those quotations, and of §4.4's **$100,000 CWHSSA threshold**: paragraph (b)'s preamble, verbatim, *"…must cause or require the contracting officer to insert the following clauses set forth in paragraphs (b)(1) through (5) of this section in full … in any contract **in an amount in excess of $100,000** and subject to the overtime provisions of the Contract Work Hours and Safety Standards Act"*, together with (b)(2)'s **$33 per worker per calendar day** liquidated damages
+- https://www.ecfr.gov/api/versioner/v1/full/2026-08-11/title-29.xml?part=3&section=3.5 — 29 CFR 3.5, *"Payroll deductions permissible without application to or approval of the Secretary of Labor."* Verified 2026-08-13: **ten** paragraphs, (a) through (j) — not eight. (i) is board, lodging and facilities at reasonable cost; (j) is minimal-value safety equipment the worker bought, which is how boots and safety glasses come off a field crew's cheque. J1 §1.4 and J5 §5.4 corrected to ten
+- https://sam.gov/api/prod/wdol/v1/wd/WA20200002/0/download — verified 2026-08-13: **HTTP 303 See Other** → `iae-wdol-sam-gov.s3.amazonaws.com/WDOL_FILES_PROD/DBA/ARCHIVE/FY2020/wa2.r0.txt`. The evidence that a superseded revision *is* reconstructable, and therefore that the sentence banned in §16.3 is false rather than merely unproven (HIGH-7)
 - https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-A/section-5.12 — three-year debarment; §16.2
 - https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-B/section-5.32 — the overtime base and the fringe-exclusion rule behind the CWHSSA premium
 - https://www.dol.gov/agencies/whd/government-contracts/construction — *"contracts in excess of $2,000"*; the coverage sentence in §0.1
-- https://www.acquisition.gov/far/22.404-6 — wage-determination effectiveness; the conclusion J3 and J8 decline to draw
+- https://www.acquisition.gov/far/22.404-6 — wage-determination effectiveness; the conclusion J3 and J8 decline to draw. Verified 2026-08-13: a modification is effective in sealed bidding when *"received by the contracting agency, or is published on the Wage Determinations at SAM.gov, 10 or more calendar days before the date of bid opening"*; a 90-day rule applies where award is delayed; post-award incorporation can be retroactive to the date of award with an equitable price adjustment. Cited in §8.4 as the reason the contract-lock is **her** assertion and never our finding
+- https://www.acquisition.gov/far/52.222-4 — FAR clause 52.222-4, *"Contract Work Hours and Safety Standards Act — Overtime Compensation"*; the clause §4.4.1 names as the recognition route to the contract-value answer, because it flows down into subcontracts and is readable in a clause list
+- https://www.acquisition.gov/far/part-22 — FAR 22.305, the prescription for 52.222-4. Verified 2026-08-13: the clause is **not** inserted in contracts *"Valued at or below $200,000"*, a threshold higher than 29 CFR 5.5(b)'s $100,000. The divergence is recorded in §4.4.4 and resolved by deferring to the contract's own clause list rather than by us picking a number
 - https://www.dir.ca.gov/Public-Works/Certified-Payroll-Reporting.html — California eCPR requirement
 - https://www.dir.ca.gov/Public-Works/PublicWorks.html — contractor registration and awarding-body project registration; J10's prerequisites
 - https://www.dir.ca.gov/public-works/ecpruserguide.pdf — the eCPR user guide: PWCR registration, DIR Project ID, XML upload path

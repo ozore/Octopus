@@ -349,3 +349,136 @@ The single most alarming property of this document set is that **CORPUS_DESIGN s
 - `run-2/phase-1-ideation/IDEA_DOSSIER.md` — D1–D10, G1–G6, R1–R3; the Moat lens falsified by HIGH-7
 - `run-2/phase-2-build/architecture/{ARCHITECTURE,CORPUS_DESIGN,ENGINE,USER_JOURNEY}.md`
 - `run-2/phase-2-build/identity/{NAMING,BRAND,DESIGN_SYSTEM}.md`, `identity/landing/index.html`
+
+---
+
+## Remediation audit
+
+**Date:** 2026-08-13 (same day as the review above)
+**Auditor:** verification pass, independent of the six agents that made the edits
+**Method:** I read the current text of every document this review criticises and decided each finding against that text. I did not read the agents' reports as evidence. Every regulatory and upstream fact a fix leans on was **re-probed in this session**, not carried from the review's own §0 table:
+
+| Re-probe, 2026-08-13 | Result | Bears on |
+|---|---|---|
+| `ecfr.gov/api/versioner/v1/full/2026-08-11/…?part=5&section=5.5` | (b) preamble verbatim: *"…in any contract in an amount in excess of **$100,000** and subject to the overtime provisions of the Contract Work Hours and Safety Standards Act."* (a)(3)(ii)(C) numbered items: **(1), (2), (3)** — three | CRIT-3, MED-1 |
+| `…?part=3&section=3.5` | **Ten** top-level lettered paragraphs (a)–(j); (i) board/lodging, (j) nominal-value safety equipment; tail `[88 FR 57730, Aug. 23, 2023]` | HIGH-6 |
+| `sam.gov/api/prod/sgs/v1/search/?index=dbra&page=0&size=5000&is_active=true` | HTTP 200, **3,638,250 B in 0.89 s**, `totalElements 4236`, **`totalPages 1`**, `isStandard: true` on **4,236 / 4,236** | CRIT-1, HIGH-5 |
+| `wdol/v1/wd/{VA20260195/2, TX20260147/0, MN20260016/0}` | `standard: false` on **3 / 3** against the index's constant `true` | CRIT-1 |
+| `wdol/v1/wd/WA20200002/0/download` | **HTTP 303** → `iae-wdol-sam-gov.s3.amazonaws.com/WDOL_FILES_PROD/DBA/ARCHIVE/FY2020/wa2.r0.txt` | HIGH-7 |
+
+Every fact the fixes rest on holds. The failures below are internal consistency failures, not factual ones.
+
+### Finding-by-finding
+
+| # | Verdict | Where it is closed, or what is missing |
+|---|---|---|
+| **CRIT-1** | **CLOSED** | `CORPUS_DESIGN.md` §9.5 tier 1: *"the blocking set. Exactly three fields, and no more"* — `revision_number`, `publish_date`, `active_flag`, each with a measured **0/200** red rate. `standard` demoted to tier 3 at **200/200 (100%)**. `ARCHITECTURE.md` §8.2 P4 and ADR-004 now carry the identical set, and ADR-004 withdraws *"earned its place"*: §2.3 records `isStandard` as *"a fixed offset between two vocabularies … carries zero information."* R-CRIT1's standing rule is in force as CORPUS_DESIGN invariant 7 with a promotion procedure, a `BLOCKING_FIELDS` set-equality CI test, a `'standard' ∉ BLOCKING_FIELDS` test by name, and a quarterly re-audit that auto-disarms any probe crossing 1%. §10.6 is the register and ARCHITECTURE §8.2 defers to it rather than duplicating it. **Strongest single fix in the set**, and it went further than asked: applying the new rule to CORPUS_DESIGN's own `CHECK (mod_table_rows = revision + 1)` found it red on **34/200** — 17% of the corpus was unwritable — recorded as C6 and replaced with the suffix form at 0/200. |
+| **CRIT-2** | **CLOSED** | `ENGINE.md` §8 no longer adds `Σ col6C`. §8.1 states the containment as a table: *"`col6C` … **⊆ 7A** — already counted once"*, *"`col6B` … **∉ 7A**"*, with the asymmetry reasoned from 5.31(b)(1) vs (b)(2). **P-16** (exact composition) and **P-17** (containment) added; fixture F-M3-CIL pins $1,534.92. The landing specimen agrees independently: entry 1 prints 7A **1,106.80 = 40 × $27.67**, with 6C 226.80 disclosed and not re-added. The agent also found and corrected a real defect the review missed: **P-02 as written was false on a class-1 DOL oracle** — FOH 15k11(a)(2) gives `col7A` $464.00 against `Σ(44 × baseRate)` $528.00. I re-derived it; the correction is right. |
+| **CRIT-3** | **CLOSED** | `ENGINE.md` §7.0 quotes 5.5(b) verbatim — I diffed it against the API response, it is exact — and gates §7.1–§7.7 on `contractValueBand`, with `unknown` → `CWHSSA_COVERAGE_UNDETERMINED` → **P-B**. `ARCHITECTURE.md` §5.1 makes `projects.contract_value_band` a required enum with **no DEFAULT** plus a backfill migration; §3.2 defers to ENGINE §7.0. `USER_JOURNEY.md` §4.4 adds it as required field 6 on S10 with no option pre-selected, verbatim question copy, and the FAR 52.222-4 clause-list recognition route. **P-20** and **P-22** make the gate executable; **P-22** in particular asserts `WD_UNDERPAYMENT` fires *independently* of the band, which stops the new gate silently disabling the one comparison the product exists to make. §4.4.4 records the 29 CFR 5.5(b) $100,000 / FAR 22.305 $200,000 divergence and resolves it by deferring to the customer's contract rather than picking a number — the right answer. Consistent in all four documents and on the landing page. |
+| **CRIT-4** | **CLOSED** | `ENGINE.md` §4 A2 withdraws the exclusion by name — *"That was wrong, and it was the most dangerous sentence in this document"* — and §7.3 computes `hoursWorked = Σ(st + ot + dt)`. Premium is credited only where `rate(b) ≥ 1.5 × regularRate` on a `SELF_PRICED` bucket; otherwise **P-A** `PREMIUM_HOURS_UNPROVEN` with a closed choice. The generalisation past the `dt` column name (the rule is stated over *does this bucket price its own hours in gross?*) is better than the fix the review specified. **P-18** added; the §22 matrix now walks `dtRate ∈ {null, $0.00, 1.49×, 1.50×, 2.00×}`. The E4 case is undisturbed, as §12.3 asserts and the DOL oracles confirm (all four have `dt = 0`). Mirrored in `USER_JOURNEY.md` §5.4 and on the landing page. |
+| **CRIT-5** | **CLOSED** | `ENGINE.md` §2.1 withdraws "the single division". §11 replaces it with R1–R4 (one narrowing function, narrow at the line then sum in cents, half-up not banker's, never twice), a **ten-row narrowing-site table N1–N10**, and the honest evidential argument for line-level rounding (DOL prints $10.91, not $10.909090…). The unenforceable grep is replaced by a type boundary plus a lint pointed at the `/` operator. **P-19** bounds the residual at one cent per narrowing site; I checked the proof — error per site in (−½,+½], so `< n/2 + ½ ≤ n` for `n ≥ 1` — it holds. |
+| **HIGH-1** | **CLOSED** | Zero occurrences of "Wage Line" in all four architecture documents (was 11/10/12/22); all four now head "RATEPIN". `NAMING.md` §7.3 records the `Bid Rate Card → Bid Sheet` rename with its reason. *Residual, minor:* `DESIGN_SYSTEM.md` line 20 still says the four architecture documents *"still say Wage Line; they need a name pass"* — true when written, false now. One sentence, in a file nobody owned this round. |
+| **HIGH-2** | **OPEN** | See §A below. `ARCHITECTURE.md` §11.6 and `USER_JOURNEY.md` §6.3.1 close it properly. **`ENGINE.md` does not, and ENGINE is the declared owner of the ladder.** |
+| **HIGH-3** | **OPEN** | See §B below. The false sentence is still in `CORPUS_DESIGN.md` §7.4, verbatim. |
+| **HIGH-4** | **CLOSED** | `ARCHITECTURE.md` §3.1 replaces the redirect with an authenticated route that walks `artifact → filing → project → tenant` under RLS on **every** request, streams through the application with `Cache-Control: no-store`, and forbids a presigned URL in the module contract table (§3.10) as well as in prose. Cloudflare's own presigned-URL language is quoted as the reason. The retention contradiction is reconciled: §5.4 gives the eCPR XML its own row on **the same clock as `ssn_ciphertext`** (30 days post-export), retaining a redacted rendering plus the original `sha256` so §8's reproduction property survives without the SSNs. §11.3 adds SSE-C per tenant and §5.5 makes key destruction the erasure guarantee. |
+| **HIGH-5** | **CLOSED** | `ARCHITECTURE.md` §7.1, the §4.4 diagram, and Challenge 3 all now specify **one request at `size=5000`** with a `totalPages == 1` assertion and pagination demoted to a documented fallback; `CORPUS_DESIGN.md` §2.1 is named as the governing authority. Verified live above: 4,236 records, `totalPages 1`, 0.89 s. |
+| **HIGH-6** | **CLOSED** | `ARCHITECTURE.md` §3.2 no longer enumerates a count — it defers to `ENGINE.md` §9.2 by name, states why (*"an earlier revision of this section enumerated eight categories and that number is wrong"*), and names the (i)/(j) substance. The enum is generated against the paragraph letters in the `obligation_changelog` row for 3.5, with a CI test so a future (k) fails the build. `ingest.ecfr` watches the paragraph set. Ten is correct — verified. |
+| **HIGH-7** | **PARTIAL** | See §C below. Banned correctly in `ARCHITECTURE.md` §11.7, `USER_JOURNEY.md` §16.3, `CORPUS_DESIGN.md` C1 and `CORRECTIONS.md` X-1, and the erratum stands at the head of `IDEA_DOSSIER.md`. **It is still printed in `identity/BRAND.md` line 76.** |
+| **HIGH-8** | **CLOSED** | The specimen grid now prints weekly totals. I re-derived every figure: 40 × $6.10 = **244.00**, 40 × $5.67 = **226.80**, and 244.00 + 226.80 = 470.80 = 40 × $11.77, the WD's own fringe. Entry 2 at 46 h → 280.60 / 260.82; entry 3 at 36 h → 0.00 / 143.64 = 36 × $3.99. 7A ties at 40 × $27.67 = 1,106.80. Column headers now carry `$/hour` and `$/week`. A `SPECIMEN` mark is present in neutral ink alongside the DRAFT watermark. |
+
+### A. HIGH-2 is open, and it is open in the specific shape this review warned about
+
+The review's closing paragraph said the most alarming property of the set was that *"CORPUS_DESIGN silently fixes CRIT-1 and ARCHITECTURE does not know."* That pattern has reproduced, with the polarity reversed.
+
+`ARCHITECTURE.md` §11.6 states the rule correctly and structurally — *"the cross-tenant aggregate may only ORDER a list. It may never pre-select, default, or auto-apply… `crosswalk/aggregate/**`'s return type is `ClassificationId[]`, an ordering, with no field in which a selection could be expressed"* — and `USER_JOURNEY.md` §6.3.1 renders it as a permission table whose bottom row reads *"The cross-tenant k ≥ 5 aggregate | no | no | **yes, and nothing else**."* Both are exactly right, and §6.3.1's sybil reasoning is the clearest statement of the argument anywhere in the set.
+
+`ENGINE.md` was not changed. It still specifies the poisoned behaviour, in three places:
+
+- §15.1 Stage 1: *"A hit here **pre-selects in the picker**; it does not resolve, because another contractor's answer is evidence, not authority."*
+- §18.2 ladder, level **L-B**: *"Global aggregate hit: ≥5 tenants, ≥0.90 agreement | shown, top candidate **pre-selected**"*
+- §18.2 prose: *"**L-B / L-C — pre-selected picker.** One classification is offered… The customer confirms."*
+
+This is not a stale cross-reference that a builder resolves in favour of the corrected document. The two documents claim authority over the same rule in opposite directions:
+
+- `ARCHITECTURE.md` **S-5** names its target explicitly: *"`CORPUS_DESIGN.md` §7.2, §7.4; **`ENGINE.md` §18.2**."*
+- `ENGINE.md` §17 declares itself *"the single owner of… **the confidence ladder (§18)**"*, and its closing line states: *"Where this document conflicts with a later implementation choice, this document wins… **S-1 through S-5**… state precisely what they change in `ARCHITECTURE.md`; **nothing else in that document is altered**."*
+
+So ARCHITECTURE asserts it has superseded ENGINE §18.2, and ENGINE asserts that ARCHITECTURE has altered nothing but the five items ENGINE itself lists. A builder implementing the ranking ladder from its declared owner ships the version in which five free signups pre-select a wrong classification on every other tenant's federally certified payroll — which is the finding, unmitigated.
+
+Two supporting gaps in the same finding:
+
+1. **The S-numbering collides.** ARCHITECTURE mints S-1…S-8 and ENGINE mints S-1…S-5, with the same labels meaning different things: ARCH **S-3** is the one-request crawl while ENGINE **S-3** is the CWHSSA gate; ARCH **S-5** is the crosswalk ordering rule while ENGINE **S-5** is the three-vs-six certification split. The review asked for one `SUPERSESSIONS.md` listing every override with its source and its target. Instead there are now two overlapping namespaces, and "S-5" resolves to whichever document the reader happened to pick up.
+2. **The DDL does not implement the defence.** ARCHITECTURE §11.6 protection 2 says *"`eligible_for_aggregate` is a generated column… and the materialized view's `WHERE` clause reads it,"* and protection 3 requires supporting accounts to have **≥4 released filings across ≥2 distinct projects**. `CORPUS_DESIGN.md` §7.2 owns that DDL, and its `crosswalk_observation` table has no `source`, `confirmed_at` or `eligible_for_aggregate` column, while `crosswalk_prior` is still bare `HAVING count(DISTINCT o.account_id) >= 5` with no `WHERE` and no weighting. The fix is stated in the document that describes the schema and absent from the document that defines it.
+
+*Lesser divergence, worth one line while the file is open:* `USER_JOURNEY.md` §6.3.1 grants pre-selection only to *"an **exact** match, after normalization, against this determination's own verbatim classification label"* and explicitly denies it to *"deterministic string similarity below exact."* `ENGINE.md` §15.1 / §18.2 **L-C** pre-selects at `lexicalScore ≥ 0.92` with `margin ≥ 0.15`, which is similarity below exact. One of the two thresholds has to move.
+
+### B. HIGH-3 is open, and the fix made it worse rather than neutral
+
+`CORPUS_DESIGN.md` §7.4 still reads, unedited:
+
+> *"**Deletion.** An account deletion removes its `crosswalk_observation` rows and rebuilds the prior. Because the prior requires five accounts, no single deletion can be detected by observing the prior's change."*
+
+That is the sentence the finding is about, and it is false for the reason the finding gives.
+
+What is new is that `ARCHITECTURE.md` §11.6 now states the true property, correctly and at length — *"an observer who controls k−1 accounts can learn that a specific other account deleted, and when… k-anonymity has never provided the property that the phrase 'no single deletion can be detected' was asserting"* — and then **points at §7.4 as the owner of the corrected text**: *"`CORPUS_DESIGN.md` §7.4 owns the disclosure boundary and states the true property."* It does not. It states the false one. A reader who follows ARCHITECTURE's own citation lands on the claim ARCHITECTURE just refuted, and a reader who arrives at §7.4 directly gets no signal that anything is wrong with it. Before the fix the documents were consistently wrong; they are now inconsistently wrong, with a cross-reference asserting the opposite of what it points to.
+
+### C. HIGH-7 is partial: the banned sentence is still in the brand document
+
+The prohibition is stated well and in the right places, and `CORRECTIONS.md` is a genuinely strong artifact — a lint config that is also the register, with the claim, its origin, its verdict, its dated verification, its replacement wording and its grep probe, and with the register's own category-ban set demoted to advisory after it measured 100% false-positive on correct copy. Applying R-CRIT1's rule to itself is the right instinct.
+
+But `identity/BRAND.md` line 76, in the attribute → benefit ladder that feeds acquisition copy, still reads:
+
+> *"…eighteen months later is answered from stored data instead of reconstruction — and **reconstruction is exactly what is impossible, because SAM overwrites the live document**"*
+
+I verified it false in this session: `wd/WA20200002/0/download` → **303** → the S3 archive object, path space deterministic, series resold at $19/mo. The same file bans the claim twice — line 272 (*"Refuted: archived revisions are fetchable and resold"*) and line 344, which even supplies the correct replacement wording — so BRAND.md now contradicts itself within twelve lines of its own don't-say table. `CORRECTIONS.md` line 651 identified this exact line and queued it for its owner; no owner was assigned, so it did not move. R-HIGH7 says the sentence must never be printed anywhere, **including in acquisition copy**. This is acquisition copy.
+
+Secondary, and cheaper to leave: `IDEA_DOSSIER.md` carries the erratum at the head of the document, which satisfies the substance, but the Moat lens itself (line 48, *"You cannot retroactively buy what a WD said last March"*) and the runner-up rationale (line 63, *"SAM overwrites, and a superseded revision is gone"*) are unstruck at their point of use, unlike the four demand claims the same header says are *"struck at their point of use."* Phase 3 reads the lens, not the header.
+
+### What was fixed that this review did not ask for, and should be kept
+
+Three of the six agents found real defects outside their assignment and recorded them rather than quietly patching them. All three are worth more than the finding that occasioned them:
+
+1. **CORPUS_DESIGN C6.** Applying the new red-rate rule to the document's own constraint found `CHECK (mod_table_rows = revision + 1)` red on **34/200 (17.0%)** — WHD omits modification 0 — meaning 17% of the corpus was unwritable by the shipped schema. This is a second corpus-killer of the same class as CRIT-1, found only because CRIT-1's fix was turned on its author.
+2. **ENGINE P-02.** A property this review endorsed as harmless (*"P-02 passes under both formulas"*) turns out to be **false on a DOL-published oracle**. Corrected rather than weakened, which is the right call.
+3. **The zero-red-rate argument.** §9.5's *"a probe that has never been observed to fire has never been shown capable of firing… Zero red and 100% red are the same epistemic state"* is a sharper statement of the lesson than the one this review drew, and it is the reason `construction_types` and `state_code` were not quietly promoted into the blocking set on the strength of a clean sample.
+
+### Verdict
+
+**The specification is buildable on everything that terminates in arithmetic or in the corpus. It is not yet buildable on the crosswalk, and one false claim is still in the copy.**
+
+All five CRITICAL findings are closed, and I re-derived rather than accepted each one. The two things the original verdict said were not done — the arithmetic and the probe thresholds — are now done, and done better than specified: the blocking set is measured rather than argued, the rounding surface is enumerated rather than asserted, the CWHSSA gate is a required field with no safe default rather than an assumption, and every correction is named at the point of withdrawal instead of being quietly deleted. The autonomy posture survived the whole remediation: I found no human step, no support address and no escalation introduced by any of the thirteen fixes, and the four refusal primitives absorbed every new failure mode (P-B for the unknown band, P-A for the unproven premium label and the unmapped deduction, P-C for the narrowed pin claim, P-D for the declined FAR and CWHSSA conclusions).
+
+**Three edits stand between this and buildable. None is architectural; two are single-file.**
+
+| # | File | Required change |
+|---|---|---|
+| **1** | `architecture/ENGINE.md` | §18.2 **L-B** and §15.1 Stage 1: the cross-tenant aggregate **orders only**. Change L-B's picker cell from *"top candidate pre-selected"* to *"ordered, none pre-selected"*, delete *"A hit here pre-selects in the picker"*, and amend the §18.2 prose so **L-B** is not bracketed with L-C as a "pre-selected picker." Add an S-row naming `ARCHITECTURE.md` §11.6 / `USER_JOURNEY.md` §6.3.1 as the source, and amend the closing "nothing else in that document is altered" sentence, which is what currently makes the contradiction load-bearing. Reconcile **L-C** with `USER_JOURNEY.md` §6.3.1's exact-match-only rule — pick one threshold and state it in both. |
+| **2** | `architecture/CORPUS_DESIGN.md` | §7.4: delete the sentence *"Because the prior requires five accounts, no single deletion can be detected by observing the prior's change,"* and replace it with the true property already drafted in `ARCHITECTURE.md` §11.6 (membership changes at the k boundary are observable; no defence against a differencing attack by an observer controlling k−1 accounts), so ARCHITECTURE's citation resolves to what it claims. While in the file, §7.2: add `source` / `confirmed_at` / `eligible_for_aggregate` to `crosswalk_observation` and the `WHERE` clause plus the ≥4-filings / ≥2-projects weighting to `crosswalk_prior`, so the HIGH-2 defence exists in the schema that defines it and not only in the prose that describes it. |
+| **3** | `identity/BRAND.md` | Line 76: strike *"and reconstruction is exactly what is impossible, because SAM overwrites the live document."* The replacement is already written at line 344 — the stored-copy latency claim, which is true. Verified false again today: 303 → `iae-wdol-sam-gov.s3.amazonaws.com/WDOL_FILES_PROD/DBA/ARCHIVE/FY2020/wa2.r0.txt`. Add BRAND.md to the Scope A path set in `CORRECTIONS.md` §3 so the probe that already exists would have caught it. |
+
+Two housekeeping items, non-blocking, best done in the same pass: fold the two colliding `S-*` namespaces into the single `SUPERSESSIONS.md` this review asked for, with one row per override naming its source document, its target section and its finding — the collision (`S-3` and `S-5` each meaning two different things) is exactly the drift the register was supposed to prevent. And correct `identity/DESIGN_SYSTEM.md` line 20, which still tells the reader the four architecture documents say "Wage Line."
+
+**Fix 1 and fix 2 are blocking for the build.** Fix 3 is blocking for Phase 3 and is one sentence. With those three landed, the answer to the original question is yes.
+
+---
+
+## Remediation audit, second pass — 2026-08-13, orchestrator
+
+The three edits the audit left open are landed. Each was a single-file change; none
+touched an architectural decision.
+
+| # | File | What changed | Status |
+|---|---|---|---|
+| **1** | `architecture/ENGINE.md` | §15.1 Stage 1 now reads *"a hit here may only change the ORDER of the candidate list"* with the sybil reasoning stated at the point of the rule; §18.2 **L-B**'s picker cell is *"ordering only — nothing pre-selected, nothing annotated"*; the old **L-C** is split into **L-C₁** (exact normalized match against the determination's **own verbatim label** — the one input allowed to fill a radio) and **L-C₂** (the 0.92/0.15 band, which now governs only whether the model is called); the *"pre-selected picker"* bullet no longer brackets L-B with it; **E5**, §18.1, the ranker diagram and **Q-E3** follow. The τ_lex divergence against `USER_JOURNEY.md` §6.3.1 is resolved **in favour of the stricter rule** — exact match only — and ENGINE now names USER_JOURNEY as the authority instead of asserting its own. | **CLOSED** |
+| **2** | `architecture/CORPUS_DESIGN.md` | §7.4's false differencing sentence is struck *and quoted at the point of withdrawal*, replaced with the four properties that are actually true — counts-not-rows, `k ≥ 5` at rest, fixed-schedule refresh so a departure is smeared into a batch rather than observable as an event, and a bucketed `agreement_band` so a cell's exact *k* is not readable through any API — labelled **mitigation by batching and coarsening, not a proof**. §7.2's DDL gains `crosswalk_eligible_account` (≥4 released filings across ≥2 projects), `provenance = 'user_confirmed'`, `account_id IS NOT NULL` and the banded output, so all four HIGH-2 defences live in the schema rather than in prose an ORM can forget. Deletion scope defers explicitly to `ARCHITECTURE.md` §5.5. | **CLOSED** |
+| **3** | `identity/BRAND.md` | Line 76's *"reconstruction is exactly what is impossible"* is struck. U1's value is restated on the true ground: reconstruction is possible, it is her unpaid Saturday, and it still does not tell her which revision was pinned to *this* project on *that* week. | **CLOSED** |
+
+Both housekeeping items are done in the same pass. The colliding `S-*` namespaces are split
+rather than merged: **AS-n** is what `ARCHITECTURE.md` overrides, **ES-n** is what `ENGINE.md`
+overrides, and each document's closing status paragraph now states that the *other* direction
+also binds it — ENGINE's *"nothing else in that document is altered"* was the sentence that
+made the contradiction load-bearing, and it is gone. `identity/DESIGN_SYSTEM.md` line 20 no
+longer tells the reader the architecture set says "Wage Line"; the name pass landed the same day.
+
+**Verdict: buildable.** The condition the first-pass audit set — *"with those three landed, the
+answer is yes"* — is met. Build proceeds against this specification.
