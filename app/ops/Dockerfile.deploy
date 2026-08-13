@@ -1,0 +1,63 @@
+# syntax=docker/dockerfile:1
+# Clausewright — sandbox-deploy variant of ../Dockerfile.
+#
+# Identical to the committed Dockerfile except that network-using RUN steps
+# mount the development container's egress-proxy CA as a BuildKit secret
+# (never written into any image layer). Needed only when building from inside
+# a TLS-intercepting sandbox; CI/Fly builders should use ../Dockerfile.
+# Build:
+#   docker build -f ops/Dockerfile.deploy \
+#     --secret id=cacert,src=$CA_BUNDLE_PATH \
+#     --build-arg CORPUS_RELEASE=... --build-arg PROMPT_BUNDLE_HASH=... \
+#     --build-arg BUILD_SHA=... -t <tag> .
+
+FROM node:22-slim AS base
+ENV PNPM_HOME=/pnpm NEXT_TELEMETRY_DISABLED=1
+WORKDIR /app
+
+# --- dependencies ------------------------------------------------------------
+FROM base AS deps
+COPY package.json package-lock.json ./
+RUN --mount=type=secret,id=cacert,target=/run/secrets/cacert \
+    NODE_EXTRA_CA_CERTS=/run/secrets/cacert npm_config_cafile=/run/secrets/cacert \
+    npm ci --omit=dev --ignore-scripts
+
+FROM base AS build-deps
+COPY package.json package-lock.json ./
+RUN --mount=type=secret,id=cacert,target=/run/secrets/cacert \
+    NODE_EXTRA_CA_CERTS=/run/secrets/cacert npm_config_cafile=/run/secrets/cacert \
+    npm ci --ignore-scripts
+
+# --- build -------------------------------------------------------------------
+FROM build-deps AS build
+COPY . .
+ARG CORPUS_RELEASE=0
+ARG PROMPT_BUNDLE_HASH=unbuilt
+ARG BUILD_SHA=dev
+ENV CORPUS_RELEASE=$CORPUS_RELEASE PROMPT_BUNDLE_HASH=$PROMPT_BUNDLE_HASH BUILD_SHA=$BUILD_SHA
+RUN npm run build
+
+# --- runtime -----------------------------------------------------------------
+FROM base AS runner
+ENV NODE_ENV=production
+
+RUN --mount=type=secret,id=cacert,target=/run/secrets/cacert \
+    apt-get -o Acquire::https::CAInfo=/run/secrets/cacert update \
+  && apt-get -o Acquire::https::CAInfo=/run/secrets/cacert install -y --no-install-recommends chromium ca-certificates fonts-liberation \
+  && rm -rf /var/lib/apt/lists/*
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+
+RUN groupadd --system --gid 1001 nodejs && useradd --system --uid 1001 --gid nodejs nextjs
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=build --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=build --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=build --chown=nextjs:nodejs /app/public ./public
+COPY --from=build --chown=nextjs:nodejs /app/src ./src
+COPY --from=build --chown=nextjs:nodejs /app/drizzle ./drizzle
+COPY --from=build --chown=nextjs:nodejs /app/drizzle.config.ts /app/tsconfig.json /app/package.json ./
+COPY --from=build --chown=nextjs:nodejs /app/corpus ./corpus
+
+USER nextjs
+EXPOSE 3000
+CMD ["node", "server.js"]
