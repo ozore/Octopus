@@ -65,10 +65,25 @@ export async function reconcileDunning(
       now: clock.now(),
     });
     const stored = await storedEntitlement(db, account.accountId);
-    if (stored === entitlement.entitlement) continue;
+    const capabilityChanged = stored !== entitlement.entitlement;
 
-    await persistEntitlement(db, account, entitlement, clock);
+    if (capabilityChanged) await persistEntitlement(db, account, entitlement, clock);
+
+    // THE NOTIFICATION IS NOT GATED ON THE CAPABILITY CHANGING, and that is the
+    // whole reason this is two statements rather than an early `continue`. The
+    // vocabularies differ by design (§9.1): `active` and `past_due_grace` are two
+    // MONEY states that share one CAPABILITY, `full`. Gating the mail on the
+    // capability would silently delete the grace-period notice — the one message
+    // whose entire job is to reach the customer while everything still works, so she
+    // can fix the card before anything stops.
+    //
+    // Sending it every hour instead is prevented by the outbox's unique key, which
+    // is (account, money state, state_since): the same transition cannot be
+    // announced twice, and a new failure — which moves `state_since` — is a new
+    // announcement.
     const emailQueued = await notifyTransition(db, account, entitlement, clock);
+
+    if (!capabilityChanged && emailQueued === null) continue;
     transitions.push({
       accountId: account.accountId,
       from: stored ?? 'unknown',

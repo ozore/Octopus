@@ -333,6 +333,13 @@ GRANT UPDATE (first_reply_at, minutes_charged) ON inbound_messages TO ratepin_ap
  * Apply the platform DDL. Idempotent, so it is safe on every boot and every test
  * fixture; `ratepin_enable_tenant_rls` is the one statement that is not, so it is
  * guarded by a catalogue check rather than by hoping.
+ *
+ * STATEMENT BY STATEMENT, AND NOT AS ONE STRING. Both drivers send `execute()`
+ * through the extended query protocol, which accepts exactly one command per parse —
+ * a multi-statement string fails with 42601 ("cannot insert multiple commands into a
+ * prepared statement") rather than running. Splitting here rather than at the call
+ * site also means a failure names the statement that failed instead of a 300-line
+ * blob, which is the difference between a five-second fix and an afternoon.
  */
 export async function ensurePlatformSchema(db: Db | Tx): Promise<void> {
   const already = await db.execute(sql`
@@ -342,9 +349,78 @@ export async function ensurePlatformSchema(db: Db | Tx): Promise<void> {
     ? already
     : ((already as { rows?: unknown[] }).rows ?? []);
   const ddl = rows.length > 0 ? stripRlsCalls(PLATFORM_DDL) : PLATFORM_DDL;
-  await db.execute(sql.raw(ddl));
+
+  for (const statement of splitStatements(ddl)) {
+    try {
+      await db.execute(sql.raw(statement));
+    } catch (error) {
+      throw new Error(
+        `platform DDL failed on:\n${statement.slice(0, 240)}\n\n${String(error)}`,
+      );
+    }
+  }
 }
 
 function stripRlsCalls(ddl: string): string {
   return ddl.replace(/^SELECT ratepin_enable_tenant_rls\(.*$/gm, '');
+}
+
+/**
+ * Split on semicolons that end a statement — which is not every semicolon.
+ *
+ * `inbound_messages_monotone()` is a plpgsql body inside `$$ … $$` and contains
+ * several, and the `RAISE EXCEPTION '…'` strings contain more. A regex split would
+ * cut the trigger function into fragments that each fail on their own, so this is a
+ * two-state scanner over dollar-quoting and single quotes. Comments are left in
+ * place: they are part of the statement text and Postgres is happy to receive them.
+ */
+export function splitStatements(ddl: string): readonly string[] {
+  const statements: string[] = [];
+  let current = '';
+  let inDollar = false;
+  let inQuote = false;
+
+  for (let i = 0; i < ddl.length; i += 1) {
+    const char = ddl[i] ?? '';
+    const pair = ddl.slice(i, i + 2);
+
+    // A line comment runs to the newline and its apostrophes are prose, not quotes
+    // — "G5's counter" inside a `--` comment would otherwise open a string literal
+    // and swallow the next several statements.
+    if (!inQuote && !inDollar && pair === '--') {
+      const end = ddl.indexOf('\n', i);
+      const stop = end === -1 ? ddl.length : end;
+      current += ddl.slice(i, stop);
+      i = stop - 1;
+      continue;
+    }
+    if (!inQuote && pair === '$$') {
+      inDollar = !inDollar;
+      current += pair;
+      i += 1;
+      continue;
+    }
+    if (!inDollar && char === "'") {
+      inQuote = !inQuote;
+      current += char;
+      continue;
+    }
+    if (char === ';' && !inDollar && !inQuote) {
+      const trimmed = current.trim();
+      if (trimmed.length > 0 && !isOnlyComments(trimmed)) statements.push(`${trimmed};`);
+      current = '';
+      continue;
+    }
+    current += char;
+  }
+
+  const tail = current.trim();
+  if (tail.length > 0 && !isOnlyComments(tail)) statements.push(tail);
+  return statements;
+}
+
+function isOnlyComments(text: string): boolean {
+  return text
+    .split('\n')
+    .every((line) => line.trim().length === 0 || line.trim().startsWith('--'));
 }

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Ratepin">
+  <!--
+    The Ratepin mark. A baseline rule and one pin driven through it: a rate, and
+    the record it is pinned to. Drawn here rather than fetched — the design system
+    forbids an external font, script or image on any surface, and identity
+    furniture does not justify a request.
+
+    Colours are the token values themselves (--rp-stock-100, --rp-ink-950,
+    --rp-pin-700), written literally because an SVG served as a file has no
+    cascade to read them from. The dark-scheme override below is the same pair
+    inverted, so a browser that renders the icon on a dark chrome gets the night
+    palette rather than a filtered light one.
+  -->
+  <style>
+    .paper { fill: #EFEDE6; }
+    .ink   { fill: #14120E; }
+    .pin   { fill: #12508F; }
+    @media (prefers-color-scheme: dark) {
+      .paper { fill: #131210; }
+      .ink   { fill: #F3F0E8; }
+      .pin   { fill: #8FB8EC; }
+    }
+  </style>
+  <rect class="paper" width="32" height="32"/>
+  <rect class="ink" x="4" y="22" width="24" height="4"/>
+  <rect class="pin" x="11" y="5" width="4" height="17"/>
+</svg>

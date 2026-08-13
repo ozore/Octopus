@@ -9,11 +9,11 @@
  * THE PAGE IS THE ASSEMBLY, NOT THE DATA
  *
  * §2.4 is the hardest finding in the research and it is what this file is written
- * against: **the wage-determination archive is not a cornered resource.** A
- * superseded revision is reproducible from SAM's own archive path and at least one
- * vendor resells the series. So the sentence "you cannot reconstruct a superseded
- * revision" is measured false and is banned from every surface, and this page must
- * not be a templated paragraph wrapped around a number anyone can fetch.
+ * against. Measured on 2026-08-13: a superseded revision is reproducible from SAM's
+ * own archive path, and at least one vendor resells the whole series cheaply. So
+ * possession of the archive distinguishes nothing, the claim that it does is struck
+ * from every surface including marketing, and this page must not be a templated
+ * paragraph wrapped around a number anyone can fetch.
  *
  * What is on it that only the mirror can produce:
  *
@@ -25,8 +25,10 @@
  *      the federal source rather than trusted.
  *
  * Each of those is per-classification, per-county assembly across N revisions. That
- * is the claim — assembly, latency and crosswalk memory — and it is the only moat
- * sentence any surface of this company is allowed to make.
+ * is the claim — assembly, latency and crosswalk memory — and it is the only claim
+ * of that kind any surface of this company is allowed to make. All three are
+ * unmeasured, so none of them is printed on the page as a boast; the page simply
+ * shows the assembly and lets a reader judge it.
  */
 
 import Link from 'next/link';

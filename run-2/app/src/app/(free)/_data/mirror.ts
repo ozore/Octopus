@@ -247,14 +247,14 @@ export async function determinationsForCounty(
     county_name: string;
     independent_city: boolean;
     classes: number | string;
-    canonical_sha256: Buffer | Uint8Array;
+    canonical_sha256: string;
   }>(
     await db.execute(sql`
       SELECT wd_number, revision, publish_date, construction_type,
              min(county_name) AS county_name,
              bool_or(independent_city) AS independent_city,
              count(*)::int AS classes,
-             min(canonical_sha256) AS canonical_sha256
+             min(encode(canonical_sha256, 'hex')) AS canonical_sha256
       FROM county_class_rate
       WHERE state_code = ${input.stateCode.toUpperCase()}
         AND county_name_norm = ${normaliseCountyName(input.countyName)}
@@ -270,7 +270,7 @@ export async function determinationsForCounty(
     countyName: row.county_name,
     independentCity: row.independent_city,
     classCount: Number(row.classes),
-    canonicalSha256: sha256Hex(Buffer.from(row.canonical_sha256).toString('hex')),
+    canonicalSha256: sha256Hex(row.canonical_sha256),
   }));
 }
 
@@ -482,13 +482,14 @@ function diffKind(
 /**
  * One classification's rate at every revision the mirror holds, oldest first.
  *
- * THIS IS THE THING NOBODY ELSE HAS ASSEMBLED, and §2.4 is explicit that it is the
- * page's whole reason to exist. The archive is not a cornered resource — a
- * superseded revision is retrievable from SAM's own S3 path and resold by at least
- * one vendor — so the page cannot win on HAVING the data. It wins on the assembly:
- * one classification, followed across every revision, with the publication date it
- * moved on. That is work a searcher worried about a rate change actually wants and
- * would otherwise do by hand across N text files.
+ * THIS IS THE ASSEMBLY §2.4 SAYS THE PAGE EXISTS FOR. Measured on 2026-08-13: a
+ * superseded revision is retrievable from SAM's own archive path and at least one
+ * vendor resells the series at a low monthly price, so possession of the data is
+ * not what distinguishes this page and no surface of this company may claim that it
+ * is. What distinguishes it is the assembly — one classification, followed across
+ * every revision, with the publication date it moved on — which is work a searcher
+ * worried about a rate change actually wants and would otherwise do by hand across
+ * N text files.
  *
  * Matched on `class_name_norm`, so a renamed classification appears as two series
  * rather than as one series with an invented continuity.
@@ -596,7 +597,8 @@ export async function classificationsOf(
       identifierDate: row.identifier_date == null ? null : toIsoDate(row.identifier_date),
       className: row.class_name,
       // The determination's OWN lines, newlines preserved. The picker shows this
-      // verbatim: help here is inline provenance, not a help centre.
+      // verbatim, because every explanation in this product is the source text
+      // sitting next to the decision it governs.
       classNameVerbatim: row.class_name_raw,
       classNameNorm: row.class_name_norm,
       baseRate: MilliRate.of(Number(row.base_rate_milli)),

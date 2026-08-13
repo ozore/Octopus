@@ -1,0 +1,781 @@
+/* ==========================================================================
+   RATEPIN — MARKETING SURFACE, additive stylesheet.
+
+   AUTHORITY: `identity/landing/index.html` (the page this ports, rule for rule)
+   and `identity/DESIGN_SYSTEM.md` §1 R1–R5. This file is a PORT, not a redesign:
+   every declaration below is either copied from the landing's own `rp.landing`
+   layer or is a container-query override the landing declared for the artifact
+   sheet.
+
+   TWO RULES THIS FILE OBEYS ABSOLUTELY.
+
+   1. NO COLOUR IS AUTHORED HERE. Every value is a token from
+      `design-system.css`, whose §4.5 certifies contrast pair by pair in light,
+      dark and high-contrast. A hex code in this file would be a colour outside
+      that certification, which is a test we would have quietly deleted.
+
+   2. NO EXISTING COMPONENT IS REDEFINED. `design-system.css` already owns
+      `.rp-sheet`, `.rp-prov`, `.rp-status`, `.rp-price` and the rest, and a
+      stylesheet is global no matter which route imports it — so a bare
+      `.rp-sheet { }` here would silently change the artifact preview inside the
+      paid product. The landing's true-geometry sheet is therefore scoped to
+      `.rp-lp-paper` and applies only where the marketing page puts one.
+
+   The layer is declared after `wl.page`, so composition wins on cascade order
+   rather than on specificity, and nothing here needs `!important`.
+   ========================================================================== */
+
+@layer wl.marketing {
+  /* ------------------------------------------------------------------ NAV -- */
+  .rp-lp-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--rp-s-4);
+    font-size: var(--rp-t-data);
+    padding-block-end: var(--rp-s-5);
+    border-block-end: 1px solid var(--rp-rule);
+  }
+  .rp-lp-nav a {
+    color: var(--rp-ink-2);
+    text-decoration-color: var(--rp-rule-strong);
+  }
+  .rp-lp-nav a:hover {
+    color: var(--rp-ink);
+    text-decoration-color: currentColor;
+  }
+  .rp-lp-spacer {
+    margin-inline-start: auto;
+  }
+
+  /* -------------------------------------------------------------- SECTION -- */
+  .rp-lp-section {
+    padding-block: var(--rp-s-10);
+    border-block-start: 1px solid var(--rp-rule);
+  }
+  .rp-lp-section--tight {
+    padding-block: var(--rp-s-9);
+  }
+  .rp-lp-section:first-of-type {
+    border-block-start: 0;
+  }
+  .rp-lp-head {
+    display: grid;
+    gap: var(--rp-s-3);
+    margin-block-end: var(--rp-s-7);
+  }
+  .rp-lp-eyebrow {
+    font-size: var(--rp-t-data);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--rp-ink-3);
+  }
+  .rp-lp-lead {
+    font-size: var(--rp-t-lead);
+    line-height: var(--rp-lh-prose);
+    color: var(--rp-ink-2);
+    max-inline-size: var(--rp-measure);
+  }
+
+  .rp-lp-hero {
+    padding-block: var(--rp-s-9) var(--rp-s-7);
+  }
+  .rp-lp-hero h1 {
+    font-size: clamp(2rem, 1.15rem + 2.6vw, 3.15rem);
+    max-inline-size: 22ch;
+    letter-spacing: -0.018em;
+  }
+  .rp-lp-hero__sub {
+    margin-block-start: var(--rp-s-5);
+    font-size: var(--rp-t-lead);
+    line-height: var(--rp-lh-prose);
+    color: var(--rp-ink-2);
+    max-inline-size: 60ch;
+  }
+  .rp-lp-actions {
+    margin-block-start: var(--rp-s-7);
+  }
+
+  /* ---------------------------------------------------------------- GRID -- */
+  .rp-lp-grid {
+    display: grid;
+    gap: var(--rp-s-6);
+  }
+  @media (min-width: 48rem) {
+    .rp-lp-grid--2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 60rem) {
+    .rp-lp-grid--3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 76rem) {
+    .rp-lp-grid--5 {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+  }
+
+  .rp-lp-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--rp-s-3);
+    padding: var(--rp-s-5);
+    background-color: var(--rp-surface);
+    border: 1px solid var(--rp-rule-strong);
+    border-radius: var(--rp-r-2);
+  }
+  .rp-lp-card--ruled {
+    border-block-start: 4px solid var(--rp-ink);
+  }
+  .rp-lp-card__k {
+    font-family: var(--rp-font-num);
+    font-size: var(--rp-t-data);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--rp-ink-3);
+  }
+  .rp-lp-card__t {
+    font-size: var(--rp-t-lead);
+    font-weight: 650;
+  }
+  .rp-lp-card__b {
+    font-size: var(--rp-t-data);
+    line-height: var(--rp-lh-prose);
+    color: var(--rp-ink-2);
+  }
+  .rp-lp-card__b strong {
+    color: var(--rp-ink);
+  }
+
+  /* ------------------------------------------------- THE STATUS FLIPPER -- */
+  /* Real radios, styled as a ruled segmented control. No option is visually
+     heavier than another — the three states are peers, and a page that made
+     CERTIFIABLE look like the good one would be selling past the refusal. */
+  .rp-lp-switch {
+    display: grid;
+    gap: var(--rp-s-3);
+    margin-block-end: var(--rp-s-6);
+  }
+  .rp-lp-switch__legend {
+    font-size: var(--rp-t-data);
+    font-weight: 650;
+    color: var(--rp-ink-2);
+  }
+  .rp-lp-switch__set {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--rp-s-2);
+  }
+  .rp-lp-switch__opt {
+    position: relative;
+  }
+  .rp-lp-switch__opt input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    margin: 0;
+    cursor: pointer;
+  }
+  .rp-lp-switch__face {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--rp-s-2);
+    min-block-size: var(--rp-target-min);
+    padding-inline: var(--rp-s-4);
+    font-size: var(--rp-t-data);
+    font-weight: 650;
+    background-color: var(--rp-surface);
+    color: var(--rp-ink-2);
+    border: 1px solid var(--rp-rule-strong);
+    border-radius: var(--rp-r-2);
+    transition:
+      background-color var(--rp-dur-tick) var(--rp-ease),
+      color var(--rp-dur-tick) var(--rp-ease);
+  }
+  .rp-lp-switch__opt:hover .rp-lp-switch__face {
+    background-color: var(--rp-sunken);
+    color: var(--rp-ink);
+  }
+  .rp-lp-switch__opt input:checked + .rp-lp-switch__face {
+    background-color: var(--rp-ink);
+    color: var(--rp-ink-on-fill);
+    border-color: var(--rp-ink);
+  }
+  .rp-lp-switch__opt input:focus-visible + .rp-lp-switch__face {
+    outline: var(--rp-focus-w) solid var(--rp-focus);
+    outline-offset: var(--rp-focus-gap);
+    box-shadow: 0 0 0 var(--rp-focus-gap) var(--rp-focus-halo);
+  }
+
+  /* The chip and its one-sentence explanation, above the paper. */
+  .rp-lp-statusrow {
+    gap: var(--rp-s-4);
+    margin-block-end: var(--rp-s-5);
+  }
+  .rp-lp-statusnote {
+    max-inline-size: 46ch;
+    margin: 0;
+  }
+
+  /* State-driven visibility. Absence is the enforcement: the markup for all
+     three states is always in the DOM and always inspectable. */
+  [data-state='certifiable'] [data-when]:not([data-when~='certifiable']),
+  [data-state='dated'] [data-when]:not([data-when~='dated']),
+  [data-state='draft'] [data-when]:not([data-when~='draft']) {
+    display: none;
+  }
+
+  /* -------------------------------------------- THE ARTIFACT SHEET (§8.8) --
+     True geometry. The DOL's WH-347 PDF declares MediaBox [0 0 792 612] on both
+     pages = 11in x 8.5in, US Letter LANDSCAPE. Inside `.rp-lp-paper` everything
+     is expressed in `cqi`, so the sheet is a pure proportional scale of a real
+     sheet of paper: if it fits at one width it fits at every width.
+
+     SCOPED, DELIBERATELY. `design-system.css` owns the app's `.rp-sheet` and
+     that one has to keep its `aspect-ratio`. These rules apply only inside the
+     marketing page's paper container.
+     ---------------------------------------------------------------------- */
+  .rp-lp-paper {
+    container-type: inline-size;
+    inline-size: 100%;
+    min-inline-size: 70rem;
+  }
+  .rp-lp-scroll {
+    inline-size: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding-block-end: var(--rp-s-2);
+  }
+
+  .rp-lp-paper .rp-sheet {
+    max-inline-size: none;
+    margin-inline: 0;
+    /* 8.5/11 = 0.7727 — one Letter page, landscape, as a FLOOR rather than a
+       fixed ratio. At the specimen's content the sheet is exactly one page; if a
+       line of arithmetic ever makes it taller the paper runs on rather than
+       clipping a worker. */
+    aspect-ratio: auto;
+    min-block-size: 77.27cqi;
+    padding: 3.2cqi;
+    display: flex;
+    flex-direction: column;
+  }
+  /* flex rather than block-size:100%, so the body fills the sheet whether the
+     height came from the one-page floor or from the content (draft carries an
+     extra band and a fourth footer line). That is what keeps the provenance
+     block at the foot of the page in both. */
+  .rp-lp-paper .rp-sheet__body {
+    block-size: auto;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .rp-lp-paper .rp-sheet__mark span {
+    font-size: 5.2cqi;
+  }
+  .rp-lp-paper .rp-sheet__band {
+    gap: 0.6cqi 1.6cqi;
+    margin-block-end: 1.4cqi;
+    padding: 1cqi 1.4cqi;
+    font-size: 1.15cqi;
+    border-block-width: 0.28cqi;
+  }
+  .rp-lp-paper .rp-signature {
+    margin-block-start: 1.6cqi;
+    padding-block-start: 1.2cqi;
+    border-block-start-width: 0.19cqi;
+  }
+  .rp-lp-paper .rp-signature__line {
+    inline-size: 30cqi;
+    block-size: 3.2cqi;
+    border-block-end-width: 0.1cqi;
+  }
+  .rp-lp-paper .rp-signature__caption {
+    margin-block-start: 0.5cqi;
+    font-size: 0.92cqi;
+  }
+  .rp-lp-paper .rp-signature--withheld {
+    padding: 1.4cqi;
+    border-width: 0.36cqi;
+  }
+  .rp-lp-paper .rp-signature__withheld-title {
+    font-size: 1.3cqi;
+  }
+  .rp-lp-paper .rp-signature__withheld-why {
+    margin-block-start: 0.5cqi;
+    font-size: 1.02cqi;
+  }
+  /* Inside the sheet the provenance footer scales with the paper, like
+     everything else — and it is never abbreviated. */
+  .rp-lp-paper .rp-prov {
+    max-inline-size: none;
+    margin-block-start: auto;
+    padding-block-start: 0.8cqi;
+    border-block-start-width: 0.19cqi;
+    font-size: 0.92cqi;
+    line-height: 1.5;
+  }
+  .rp-prov__blocked {
+    color: var(--rp-draft);
+    font-weight: 650;
+  }
+
+  /* ------------------------------------------------- THE WH-347 GRID ----- */
+  .rp-w347__title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.6cqi 1.6cqi;
+  }
+  .rp-w347__name {
+    font-size: 1.9cqi;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .rp-w347__omb {
+    font-family: var(--rp-font-num);
+    font-size: 0.86cqi;
+    color: var(--rp-ink-2);
+  }
+  .rp-w347__use {
+    margin-block-start: 0.25cqi;
+    font-size: 0.86cqi;
+    color: var(--rp-ink-3);
+  }
+  /* SPECIMEN mark. Neutral ink and a rule, never a status hue — R2 says colour
+     means state, and this is not a state of the filing. It says something about
+     this page: the employer and the workers are invented, the determination is
+     not. */
+  .rp-w347__spec {
+    display: inline-block;
+    margin-inline-start: 1cqi;
+    padding: 0.12cqi 0.55cqi;
+    font-family: var(--rp-font-num);
+    font-size: 0.8cqi;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    line-height: 1.25;
+    color: var(--rp-ink-2);
+    border: 0.14cqi solid var(--rp-rule-strong);
+  }
+
+  .rp-w347__head {
+    display: grid;
+    grid-template-columns: 2.1fr 1.4fr 0.7fr 1fr;
+    gap: 0.1cqi;
+    margin-block: 1.2cqi 1cqi;
+    border: 0.1cqi solid var(--rp-rule-strong);
+    background-color: var(--rp-rule-strong);
+  }
+  .rp-w347__cell {
+    padding: 0.6cqi 0.8cqi;
+    background-color: var(--rp-surface);
+  }
+  .rp-w347__cell--wd {
+    background-color: var(--rp-pin-tint);
+  }
+  .rp-w347__lab {
+    display: block;
+    font-size: 0.72cqi;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--rp-ink-3);
+  }
+  .rp-w347__lab--gap {
+    margin-block-start: 0.45cqi;
+  }
+  .rp-w347__val {
+    display: block;
+    margin-block-start: 0.2cqi;
+    font-size: 1.02cqi;
+    font-weight: 600;
+    color: var(--rp-ink);
+  }
+  .rp-w347__val--id {
+    font-family: var(--rp-font-num);
+    font-variant-numeric: lining-nums slashed-zero;
+  }
+  .rp-w347__val--plain {
+    font-weight: 400;
+  }
+
+  .rp-w347__grid {
+    inline-size: 100%;
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+  }
+  .rp-w347__grid th,
+  .rp-w347__grid td {
+    border: 0.07cqi solid var(--rp-rule-strong);
+    padding: 0.28cqi 0.34cqi;
+    font-size: 0.86cqi;
+    line-height: 1.25;
+  }
+  .rp-w347__grid thead th {
+    background-color: var(--rp-sunken);
+    font-size: 0.66cqi;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--rp-ink-2);
+    text-align: center;
+    vertical-align: bottom;
+  }
+  .rp-w347__grid thead th.rp-w347__hl {
+    text-align: start;
+  }
+  .rp-w347__grid td {
+    vertical-align: middle;
+  }
+  .rp-w347__grid .rp-w347__n {
+    text-align: end;
+    font-family: var(--rp-font-num);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+  }
+  .rp-w347__grid .rp-w347__c {
+    text-align: center;
+    font-family: var(--rp-font-num);
+  }
+  .rp-w347__grid .rp-w347__cls {
+    font-size: 0.8cqi;
+    font-weight: 600;
+  }
+  .rp-w347__grid .rp-w347__tag {
+    font-family: var(--rp-font-num);
+    font-size: 0.72cqi;
+    color: var(--rp-ink-3);
+  }
+  .rp-w347__grid tr[data-line='ot'] td {
+    border-block-start-style: dashed;
+  }
+  .rp-w347__grid tr[data-worker]:first-child td {
+    border-block-start-width: 0.14cqi;
+  }
+  /* The traced cell. Marked by a rule, never by a fill that could read as a
+     grade — the pin hue means "this is a link to the record", nothing more. */
+  .rp-w347__grid td.rp-w347__traced {
+    background-color: var(--rp-pin-tint);
+    box-shadow: inset 0 0 0 0.14cqi var(--rp-pin);
+    font-weight: 700;
+  }
+  /* A blocked line: the payroll title verbatim, and no money at all. */
+  .rp-w347__grid tr[data-blocked='true'] td {
+    background-color: var(--rp-draft-tint);
+  }
+  .rp-w347__grid tr[data-blocked='true'] td:first-child {
+    box-shadow: inset 0.3cqi 0 0 var(--rp-draft);
+  }
+  .rp-w347__raw {
+    font-family: var(--rp-font-num);
+    font-size: 0.78cqi;
+    color: var(--rp-draft);
+    font-weight: 700;
+  }
+  .rp-w347__void {
+    color: var(--rp-draft);
+    font-weight: 700;
+  }
+
+  /* Ratepin's own annotation band, not form furniture — hence ink-3 and a
+     hanging rule rather than a box. One note per line: these are the sentences
+     a compliance desk reads to check our arithmetic, and a ragged multi-column
+     wrap would hide the one they came for. */
+  .rp-w347__foot {
+    display: grid;
+    gap: 0.42cqi;
+    margin-block-start: 0.8cqi;
+    padding-block-start: 0.55cqi;
+    border-block-start: 0.07cqi solid var(--rp-rule);
+    font-size: 0.8cqi;
+    line-height: 1.35;
+    color: var(--rp-ink-3);
+  }
+  .rp-w347__foot > span {
+    display: grid;
+    grid-template-columns: 1.1cqi 1fr;
+  }
+  .rp-w347__foot > span::before {
+    content: '\00B7';
+    font-weight: 700;
+  }
+  .rp-w347__sigrow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2cqi 3cqi;
+    align-items: flex-end;
+  }
+  .rp-w347__certs {
+    font-size: 0.9cqi;
+    line-height: 1.45;
+    color: var(--rp-ink-2);
+    max-inline-size: 52cqi;
+  }
+  .rp-w347__certs strong {
+    color: var(--rp-ink);
+  }
+
+  /* --------------------------------------------------------- THE TRACE --- */
+  .rp-lp-trace {
+    display: grid;
+    gap: var(--rp-s-4);
+    align-items: stretch;
+  }
+  @media (min-width: 62rem) {
+    .rp-lp-trace {
+      grid-template-columns: minmax(0, 0.85fr) 1.6rem minmax(0, 1.5fr) 1.6rem minmax(0, 1fr);
+    }
+  }
+  .rp-lp-trace__arrow {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--rp-t-h3);
+    color: var(--rp-ink-3);
+  }
+  @media (min-width: 62rem) {
+    .rp-lp-trace__arrow {
+      display: flex;
+    }
+  }
+  .rp-lp-fig {
+    margin: 0;
+    display: grid;
+    gap: var(--rp-s-2);
+  }
+  .rp-lp-pre {
+    margin: 0;
+    padding: var(--rp-s-4);
+    background-color: var(--rp-sunken);
+    border: 1px solid var(--rp-rule-strong);
+    border-radius: var(--rp-r-1);
+    font-family: var(--rp-font-num);
+    font-size: var(--rp-t-micro);
+    line-height: 1.5;
+    color: var(--rp-ink);
+    white-space: pre;
+    overflow-x: auto;
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+  }
+  .rp-lp-pre mark {
+    background-color: var(--rp-pin-tint);
+    color: var(--rp-ink);
+    font-weight: 700;
+    padding-inline: 2px;
+  }
+  .rp-lp-figcell {
+    display: grid;
+    gap: var(--rp-s-2);
+    justify-items: start;
+    padding: var(--rp-s-5);
+    background-color: var(--rp-surface);
+    border: 1px solid var(--rp-rule-strong);
+    border-radius: var(--rp-r-1);
+  }
+  .rp-lp-figcell__v {
+    font-family: var(--rp-font-num);
+    font-size: var(--rp-t-h2);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    color: var(--rp-ink);
+  }
+  .rp-lp-cap {
+    font-size: var(--rp-t-data);
+    color: var(--rp-ink-3);
+  }
+  .rp-lp-cap strong {
+    color: var(--rp-ink-2);
+  }
+
+  /* ------------------------------------------------------ KEY / VALUE ---- */
+  .rp-lp-kv {
+    display: grid;
+    gap: 0;
+    margin: 0;
+  }
+  .rp-lp-kv > div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--rp-s-2) var(--rp-s-4);
+    padding-block: var(--rp-s-3);
+    border-block-end: 1px solid var(--rp-rule);
+  }
+  .rp-lp-kv > div:last-child {
+    border-block-end: 0;
+  }
+  .rp-lp-kv dt {
+    font-size: var(--rp-t-data);
+    color: var(--rp-ink-2);
+  }
+  .rp-lp-kv dd {
+    margin: 0;
+    font-family: var(--rp-font-num);
+    font-size: var(--rp-t-data);
+    font-weight: 650;
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    color: var(--rp-ink);
+  }
+  .rp-lp-kv--boxed {
+    border: 1px solid var(--rp-rule-strong);
+    border-radius: var(--rp-r-1);
+    padding-inline: var(--rp-s-4);
+    background-color: var(--rp-surface);
+  }
+
+  /* --------------------------------------------------- NOT-LIST / GATE --- */
+  .rp-lp-notlist {
+    display: grid;
+    gap: 0;
+    max-inline-size: 78ch;
+  }
+  .rp-lp-notlist li {
+    display: grid;
+    grid-template-columns: 1.4rem 1fr;
+    gap: var(--rp-s-3);
+    padding-block: var(--rp-s-4);
+    border-block-end: 1px solid var(--rp-rule);
+    font-size: var(--rp-t-base);
+    line-height: var(--rp-lh-prose);
+    color: var(--rp-ink);
+  }
+  .rp-lp-notlist li:last-child {
+    border-block-end: 0;
+  }
+  .rp-lp-notlist li::before {
+    content: '\2014';
+    color: var(--rp-ink-3);
+    font-weight: 700;
+  }
+
+  .rp-lp-gate {
+    display: grid;
+    gap: var(--rp-s-3);
+    padding: var(--rp-s-5);
+    background-color: var(--rp-surface);
+    border: 1px solid var(--rp-rule-strong);
+    border-radius: var(--rp-r-2);
+  }
+  .rp-lp-gate__id {
+    font-family: var(--rp-font-num);
+    font-size: var(--rp-t-data);
+    font-weight: 700;
+    color: var(--rp-ink-3);
+    letter-spacing: 0.04em;
+  }
+  .rp-lp-gate__locked {
+    padding: var(--rp-s-3) var(--rp-s-4);
+    background-color: var(--rp-sunken);
+    border-inline-start: 3px solid var(--rp-rule-strong);
+    font-size: var(--rp-t-data);
+    color: var(--rp-ink-2);
+  }
+  .rp-lp-gate__locked s {
+    color: var(--rp-ink-3);
+    text-decoration-thickness: 1px;
+  }
+  .rp-lp-gate__now {
+    font-size: var(--rp-t-data);
+    line-height: var(--rp-lh-prose);
+    color: var(--rp-ink);
+  }
+
+  /* ------------------------------------------------------------- FOOTER -- */
+  .rp-lp-foot {
+    margin-block-start: var(--rp-s-9);
+    padding-block-start: var(--rp-s-7);
+    border-block-start: 2px solid var(--rp-rule-ink);
+  }
+  .rp-lp-refs {
+    display: grid;
+    gap: var(--rp-s-2);
+    font-size: var(--rp-t-micro);
+    line-height: 1.5;
+    padding: 0;
+    margin: 0;
+  }
+  .rp-lp-refs li {
+    color: var(--rp-ink-2);
+    overflow-wrap: anywhere;
+  }
+  .rp-lp-refs a {
+    color: var(--rp-pin);
+  }
+
+  /* ------------------------------------------------------------ ADAPTIVE -- */
+  @supports not (container-type: inline-size) {
+    /* Container queries carry the sheet's proportional scale. Where they are
+       missing the paper is pinned to its baseline width instead — degraded, not
+       broken, and the downloaded PDF is the artifact regardless. */
+    .rp-lp-paper {
+      inline-size: 70rem;
+    }
+    .rp-lp-paper .rp-sheet {
+      padding: 0.35in;
+    }
+    .rp-w347__name {
+      font-size: 21px;
+    }
+    .rp-w347__lab {
+      font-size: 8px;
+    }
+    .rp-w347__val {
+      font-size: 11px;
+    }
+    .rp-w347__grid th {
+      font-size: 7.5px;
+    }
+    .rp-w347__grid td {
+      font-size: 9.5px;
+    }
+    .rp-lp-paper .rp-prov {
+      font-size: 10px;
+    }
+    .rp-lp-paper .rp-sheet__mark span {
+      font-size: 58px;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .rp-lp-card,
+    .rp-lp-gate,
+    .rp-lp-figcell,
+    .rp-lp-pre {
+      background-color: Canvas;
+      color: CanvasText;
+      border-color: CanvasText;
+    }
+    .rp-lp-switch__opt input:checked + .rp-lp-switch__face {
+      background-color: Highlight;
+      color: HighlightText;
+      border-color: Highlight;
+    }
+  }
+
+  @media print {
+    .rp-lp-nav,
+    .rp-lp-switch {
+      display: none;
+    }
+    .rp-lp-scroll,
+    .rp-lp-paper {
+      overflow: visible;
+      min-inline-size: 0;
+      inline-size: 100%;
+    }
+    .rp-lp-section {
+      break-inside: auto;
+      padding-block: 18pt;
+    }
+    .rp-lp-card,
+    .rp-lp-gate {
+      break-inside: avoid;
+    }
+  }
+}

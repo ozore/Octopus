@@ -116,6 +116,7 @@ interface ArtifactRow {
   readonly provenance: Record<string, unknown> | null;
   readonly week_ending: string;
   readonly project_name: string;
+  readonly sequence: number | string;
 }
 
 const ARTIFACT_FILENAME: Readonly<Record<string, string>> = {
@@ -179,19 +180,28 @@ export async function buildExport(
       await tx.execute(sql`
         SELECT a.id, a.filing_id, a.kind::text AS kind, encode(a.sha256, 'hex') AS sha256_hex,
                a.r2_key, a.byte_size, a.provenance,
-               to_char(f.week_ending, 'YYYY-MM-DD') AS week_ending, p.name AS project_name
+               to_char(f.week_ending, 'YYYY-MM-DD') AS week_ending, p.name AS project_name,
+               f.sequence
           FROM artifacts a
           JOIN filings f  ON f.id = a.filing_id
           JOIN projects p ON p.id = f.project_id
          WHERE a.account_id = ${account}::uuid
-         ORDER BY f.week_ending, p.name, a.kind
+         ORDER BY f.week_ending, p.name, f.sequence, a.kind
       `),
     );
 
     const filings = new Set<string>();
     let artifactBytes = 0;
     for (const artifact of artifacts) {
-      const dir = `filings/${artifact.week_ending}-${slug(artifact.project_name)}`;
+      // ONE DIRECTORY PER FILING, not per week. A week can hold several filings on
+      // one project: ADR-013 makes an amendment a NEW filing rather than an edit, so
+      // sequence 2 is a different document with a different sha256 and it needs its
+      // own directory. Collapsing them would have the export silently keep the last
+      // one, which is exactly the artifact a customer is least likely to want.
+      const sequence = Number(artifact.sequence);
+      const dir =
+        `filings/${artifact.week_ending}-${slug(artifact.project_name)}` +
+        (sequence > 1 ? `-amendment-${String(sequence - 1)}` : '');
       const name = ARTIFACT_FILENAME[artifact.kind] ?? `${artifact.kind}.bin`;
       filings.add(artifact.filing_id);
       artifactBytes += Number(artifact.byte_size);

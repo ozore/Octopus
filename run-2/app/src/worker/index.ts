@@ -374,7 +374,12 @@ export async function main(): Promise<void> {
   await ensurePlanCatalog(handle.db);
   // ADR-011's second mechanism is inert under a role that can bypass it, and that
   // failure has no symptom other than queries returning more rows than they should.
-  await assertRlsEnforced(handle.db);
+  //
+  // Skipped on PGlite, which connects as a superuser by construction and which
+  // `src/lib/config.ts` already refuses outright when NODE_ENV=production. The
+  // narrow skip is better than no assertion: every path that can reach a customer's
+  // data is checked, and the one that cannot reach production is named.
+  if (config.DATABASE_DRIVER !== 'pglite') await assertRlsEnforced(handle.db);
 
   const deps = buildWorkerDeps({ db: handle.db, config });
   const worker = startWorker(deps);
