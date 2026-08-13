@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Rates from wage determination CA20260012 revision 4, published 2026-07-31. -->
+<!-- No newer revision existed as of 2026-08-14 02:41 UTC. -->
+<!-- Overtime computed under the Contract Work Hours and Safety Standards Act. You recorded on 2026-07-31 that this contract is over $100,000. -->
+<!-- Corpus snapshot 9f2c…a17e · determination 3b1f…f7d2 · Merkle root c0ff…f607 leaf 137 · engine 1 · build test-build · form wh347_rev_2025_01 7a5e…0a1b · generated 2026-08-14 15:52 UTC -->
+<!-- Ratepin computes and formats. You certify and file. This is not legal advice. -->
+<!-- Schema 2ea52e977ab4ac74f7bb99aa9fb7634de8b48db7e090864150428b63c800d01a -->
+<!-- generated, not acceptance-tested -->
+<eCPR xmlns="http://www.dir.ca.gov/dlse/CPR-Prod-Test/CPR.xsd">
+  <cprInfo>
+    <contractorName>Grade &amp; Pour Concrete, Inc.</contractorName>
+    <contractorAddress>1140 Harbor Way</contractorAddress>
+    <contractorCity>Richmond</contractorCity>
+    <contractorState>CA</contractorState>
+    <contractorZip>94804</contractorZip>
+    <contractorPWCR>1000512847</contractorPWCR>
+    <contractorFEIN>941234567</contractorFEIN>
+    <licenseType>CSLB</licenseType>
+    <licenseNum>1027744</licenseNum>
+    <awardingBodyProjectId>552310</awardingBodyProjectId>
+    <projectName>Bay Trail Segment 7</projectName>
+    <contractAgency>City of Richmond</contractAgency>
+    <payrollNum></payrollNum>
+    <amendmentNum></amendmentNum>
+    <weekEndDate>2026-08-08</weekEndDate>
+    <isFinalPayroll>false</isFinalPayroll>
+  </cprInfo>
+  <employees>
+    <employee>
+      <name id="551234821::DOE, JANE, M">Doe, Jane, M</name>
+      <ssn>551234821</ssn>
+      <address>88 Cutting Blvd</address>
+      <city>Richmond</city>
+      <state>CA</state>
+      <zip>94804</zip>
+      <numWithholdingExemp>2</numWithholdingExemp>
+      <classification>LABORER: ASPHALT, CONCRETE AND SEAL COAT</classification>
+      <days>
+        <day>
+          <date>2026-08-02</date>
+          <stHours>0.00</stHours>
+          <otHours>0.00</otHours>
+          <dtHours>0.00</dtHours>
+        </day>
+        <day>
+          <date>2026-08-03</date>
+          <stHours>8.00</stHours>
+          <otHours>0.00</otHours>
+          <dtHours>0.00</dtHours>
+        </day>
+        <day>
+          <date>2026-08-04</date>
+          <stHours>8.00</stHours>
+          <otHours>0.00</otHours>
+          <dtHours>0.00</dtHours>
+        </day>
+        <day>
+          <date>2026-08-05</date>
+          <stHours>8.00</stHours>
+          <otHours>0.00</otHours>
+          <dtHours>0.00</dtHours>
+        </day>
+        <day>
+          <date>2026-08-06</date>
+          <stHours>8.00</stHours>
+          <otHours>0.00</otHours>
+          <dtHours>0.00</dtHours>
+        </day>
+        <day>
+          <date>2026-08-07</date>
+          <stHours>5.25</stHours>
+          <otHours>0.00</otHours>
+          <dtHours>0.00</dtHours>
+        </day>
+        <day>
+          <date>2026-08-08</date>
+          <stHours>0.00</stHours>
+          <otHours>0.00</otHours>
+          <dtHours>0.00</dtHours>
+        </day>
+      </days>
+      <hourlyRate>18.62</hourlyRate>
+      <grossPayThisProject>693.60</grossPayThisProject>
+      <grossPayAll>693.60</grossPayAll>
+      <deductionsContribPay>
+        <fedTax>0.00</fedTax>
+        <FICA>0.00</FICA>
+        <stateTax>0.00</stateTax>
+        <SDI>0.00</SDI>
+        <vacationHoliday>0.00</vacationHoliday>
+        <healthWelfare>0.00</healthWelfare>
+        <pension>0.00</pension>
+        <training>0.00</training>
+        <fundAdmin>0.00</fundAdmin>
+        <dues>0.00</dues>
+        <travelSubs>0.00</travelSubs>
+        <savings>0.00</savings>
+        <other>89.25</other>
+        <total>89.25</total>
+        <notes>Balance in "other" covers, by 29 CFR 3.5 category: STATUTORY (29 CFR 3.5(a)) 84.25; CHARITABLE_501C3 (29 CFR 3.5(g)) 5.00. Ratepin does not assign a federal category to a California element it cannot derive.</notes>
+      </deductionsContribPay>
+      <checkNum>20417</checkNum>
+      <netPay>604.35</netPay>
+    </employee>
+    <employee>
+      <name id="602557310::RIVERA, LUIS">Rivera, Luis</name>
+      <ssn>602557310</ssn>
+      <address>19 Nevin Ave</address>
+      <city>Richmond</city>
+      <state>CA</state>
+      <zip>94801</zip>
+      <numWithholdingExemp>1</numWithholdingExemp>
+      <classification>CEMENT MASON/CONCRETE FINISHER</classification>
+      <days>
+        <day>
+          <date>2026-08-02</date>
+          <stHours>0.00</stHours>
+          <otHours>0.00</otHours>
+          <dtHours>0.00</dtHours>
+        </day>
+        <day>
+          <date>2026-08-03</date>
+          <stHours>8.00</stHours>
+          <otHours>0.00</otHours>
+          <dtHours>0.00</dtHours>
+        </day>
+        <day>
+          <date>2026-08-04</date>
+          <stHours>8.00</stHours>
+          <otHours>0.00</otHours>
+          <dtHours>0.00</dtHours>
+        </day>
+        <day>
+          <date>2026-08-05</date>
+          <stHours>8.00</stHours>
+          <otHours>0.00</otHours>
+          <dtHours>0.00</dtHours>
+        </day>
+        <day>
+          <date>2026-08-06</date>
+          <stHours>8.00</stHours>
+          <otHours>0.00</otHours>
+          <dtHours>0.00</dtHours>
+        </day>
+        <day>
+          <date>2026-08-07</date>
+          <stHours>8.00</stHours>
+          <otHours>0.00</otHours>
+          <dtHours>0.00</dtHours>
+        </day>
+        <day>
+          <date>2026-08-08</date>
+          <stHours>0.00</stHours>
+          <otHours>6.00</otHours>
+          <dtHours>0.00</dtHours>
+        </day>
+      </days>
+      <hourlyRate>25.00</hourlyRate>
+      <grossPayThisProject>1271.00</grossPayThisProject>
+      <grossPayAll>1271.00</grossPayAll>
+      <deductionsContribPay>
+        <fedTax>0.00</fedTax>
+        <FICA>0.00</FICA>
+        <stateTax>0.00</stateTax>
+        <SDI>0.00</SDI>
+        <vacationHoliday>0.00</vacationHoliday>
+        <healthWelfare>0.00</healthWelfare>
+        <pension>0.00</pension>
+        <training>0.00</training>
+        <fundAdmin>0.00</fundAdmin>
+        <dues>0.00</dues>
+        <travelSubs>0.00</travelSubs>
+        <savings>0.00</savings>
+        <other>176.30</other>
+        <total>176.30</total>
+        <notes>Balance in "other" covers, by 29 CFR 3.5 category: STATUTORY (29 CFR 3.5(a)) 152.30; BENEFIT_FUND (29 CFR 3.5(d)) 24.00. Ratepin does not assign a federal category to a California element it cannot derive.</notes>
+      </deductionsContribPay>
+      <checkNum>20418</checkNum>
+      <netPay>1094.70</netPay>
+    </employee>
+  </employees>
+</eCPR>

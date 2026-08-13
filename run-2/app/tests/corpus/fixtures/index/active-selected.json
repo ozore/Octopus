@@ -1,0 +1,275 @@
+{
+ "_embedded": {
+  "results": [
+   {
+    "_index": "db-prod-samdotgovsearch-wdol-dba_idxref_08112026",
+    "year": 2026,
+    "shortReferenceNumber": "DC1",
+    "revisionNumber": 5,
+    "suggestion": {
+     "input": [
+      "dc20260001"
+     ],
+     "contexts": {
+      "isActive": true
+     }
+    },
+    "_rScore": 0,
+    "publishDate": 1785384000000,
+    "_type": "wdDBRA",
+    "indexedDate": "2026-08-11T06:06:32-04:00",
+    "allReferenceNumbers": [
+     {
+      "wdNumber": "DC260001"
+     },
+     {
+      "wdNumber": "DC261"
+     },
+     {
+      "wdNumber": "DC20261"
+     },
+     {
+      "wdNumber": "DC0001"
+     }
+    ],
+    "type": {
+     "code": "DBA",
+     "value": "Davis-Bacon Act"
+    },
+    "title": "DC20260001",
+    "isActive": true,
+    "_samdotgovType": "wdDBRA",
+    "fullReferenceNumber": "DC20260001",
+    "isStandard": true,
+    "constructionTypes": [
+     "Heavy",
+     "Highway"
+    ],
+    "modifiedDate": "2026-07-30T00:00:00-04:00",
+    "rollover": false,
+    "location": {
+     "state": {
+      "code": "DC",
+      "name": "District of Columbia",
+      "counties": [
+       {
+        "code": 20008,
+        "value": "Washington, D.C."
+       }
+      ]
+     }
+    },
+    "_id": "DC20260001"
+   },
+   {
+    "_index": "db-prod-samdotgovsearch-wdol-dba_idxref_08112026",
+    "year": 2026,
+    "shortReferenceNumber": "LA5",
+    "revisionNumber": 2,
+    "suggestion": {
+     "input": [
+      "la20260005"
+     ],
+     "contexts": {
+      "isActive": true
+     }
+    },
+    "_rScore": 0,
+    "publishDate": 1779076800000,
+    "_type": "wdDBRA",
+    "indexedDate": "2026-08-11T06:06:32-04:00",
+    "allReferenceNumbers": [
+     {
+      "wdNumber": "LA260005"
+     },
+     {
+      "wdNumber": "LA265"
+     },
+     {
+      "wdNumber": "LA20265"
+     },
+     {
+      "wdNumber": "LA0005"
+     }
+    ],
+    "type": {
+     "code": "DBA",
+     "value": "Davis-Bacon Act"
+    },
+    "title": "LA20260005",
+    "isActive": true,
+    "_samdotgovType": "wdDBRA",
+    "fullReferenceNumber": "LA20260005",
+    "isStandard": true,
+    "constructionTypes": [
+     "Heavy"
+    ],
+    "modifiedDate": "2026-05-18T00:00:00-04:00",
+    "rollover": false,
+    "location": {
+     "state": {
+      "code": "LA",
+      "name": "Louisiana",
+      "counties": [
+       {
+        "code": 15346,
+        "value": "St James"
+       },
+       {
+        "code": 15354,
+        "value": "Jefferson"
+       },
+       {
+        "code": 15356,
+        "value": "Orleans"
+       },
+       {
+        "code": 15357,
+        "value": "Plaquemines"
+       },
+       {
+        "code": 15359,
+        "value": "St Bernard"
+       },
+       {
+        "code": 15360,
+        "value": "St Charles"
+       },
+       {
+        "code": 15361,
+        "value": "St Tammany"
+       },
+       {
+        "code": 17476,
+        "value": "St John the Baptist"
+       },
+       {
+        "code": 20040,
+        "value": "St James"
+       },
+       {
+        "code": 20041,
+        "value": "St John the Baptist"
+       }
+      ]
+     }
+    },
+    "_id": "LA20260005"
+   },
+   {
+    "_index": "db-prod-samdotgovsearch-wdol-dba_idxref_08112026",
+    "year": 2026,
+    "shortReferenceNumber": "VA195",
+    "revisionNumber": 2,
+    "suggestion": {
+     "input": [
+      "va20260195"
+     ],
+     "contexts": {
+      "isActive": true
+     }
+    },
+    "_rScore": 0,
+    "publishDate": 1785988800000,
+    "_type": "wdDBRA",
+    "indexedDate": "2026-08-11T06:06:32-04:00",
+    "allReferenceNumbers": [
+     {
+      "wdNumber": "VA260195"
+     },
+     {
+      "wdNumber": "VA26195"
+     },
+     {
+      "wdNumber": "VA2026195"
+     },
+     {
+      "wdNumber": "VA0195"
+     }
+    ],
+    "type": {
+     "code": "DBA",
+     "value": "Davis-Bacon Act"
+    },
+    "title": "VA20260195",
+    "isActive": true,
+    "_samdotgovType": "wdDBRA",
+    "fullReferenceNumber": "VA20260195",
+    "isStandard": true,
+    "constructionTypes": [
+     "Highway"
+    ],
+    "modifiedDate": "2026-08-06T00:00:00-04:00",
+    "rollover": false,
+    "location": {
+     "state": {
+      "code": "VA",
+      "name": "Virginia",
+      "counties": [
+       {
+        "code": 16863,
+        "value": "Chesapeake*"
+       },
+       {
+        "code": 16864,
+        "value": "Gloucester"
+       },
+       {
+        "code": 16865,
+        "value": "Hampton*"
+       },
+       {
+        "code": 16867,
+        "value": "James*"
+       },
+       {
+        "code": 16868,
+        "value": "Mathews"
+       },
+       {
+        "code": 16869,
+        "value": "Newport News*"
+       },
+       {
+        "code": 16870,
+        "value": "Norfolk*"
+       },
+       {
+        "code": 16871,
+        "value": "Poquoson*"
+       },
+       {
+        "code": 16872,
+        "value": "Portsmouth*"
+       },
+       {
+        "code": 16874,
+        "value": "Suffolk*"
+       },
+       {
+        "code": 16876,
+        "value": "Virginia Beach*"
+       },
+       {
+        "code": 16877,
+        "value": "Williamsburg*"
+       },
+       {
+        "code": 16878,
+        "value": "York"
+       }
+      ]
+     }
+    },
+    "_id": "VA20260195"
+   }
+  ]
+ },
+ "page": {
+  "size": 3,
+  "totalElements": 3,
+  "totalPages": 1,
+  "number": 0,
+  "maxAllowedRecords": 10000
+ }
+}

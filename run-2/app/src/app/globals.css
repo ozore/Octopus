@@ -1,0 +1,35 @@
+/* ==========================================================================
+   RATEPIN — application glue.
+
+   The design system (`design-system.css`) owns every token, every component and
+   the whole `@layer wl.*` cascade. This file adds ONLY layout glue, and it adds
+   it inside a layer declared AFTER the system's, so page composition overrides
+   without specificity escalation and without `!important`.
+
+   DESIGN_SYSTEM.md §4.5 certifies contrast pair by pair. A colour authored here
+   rather than in the system is a colour outside that certification — which is a
+   test, not documentation. So this file declares no colour of its own; it
+   references tokens or it says nothing.
+   ========================================================================== */
+
+@layer wl.page {
+  /* The app shell fills the viewport so the boundary statement sits at the
+     bottom of a short page rather than floating mid-screen. USER_JOURNEY §7.4:
+     the statement is never dismissible and never in a modal, which means it has
+     to have somewhere to live on every route. */
+  body {
+    min-block-size: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rp-app-main {
+    flex: 1 0 auto;
+    padding-block: var(--rp-s-6, 1.5rem) var(--rp-s-8, 2rem);
+  }
+
+  .rp-app-footer {
+    flex: 0 0 auto;
+    padding-block: var(--rp-s-6, 1.5rem);
+  }
+}

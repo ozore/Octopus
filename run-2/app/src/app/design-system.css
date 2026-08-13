@@ -1,0 +1,1878 @@
+/* ==========================================================================
+   RATEPIN — DESIGN SYSTEM v1
+   Certified-payroll rate-of-record engine for open-shop specialty
+   subcontractors on Davis-Bacon work.
+
+   Spec: /home/user/Octopus/run-2/phase-2-build/identity/DESIGN_SYSTEM.md
+   Every value here is traceable to a numbered section of that document.
+
+   THE ROOM THIS IS DESIGNED FOR
+     A fifteen-inch laptop in a job trailer at 15:40 on a Friday. A TN panel
+     with sun on it. A payroll administrator who has done this 180 times, is
+     over fifty, is between two other things, and is about to personally sign
+     a federal certification (29 CFR 5.5(a)(3)(ii)(C), 18 U.S.C. 1001).
+
+   THE FIVE RULES THIS FILE ENFORCES  (DESIGN_SYSTEM.md §1)
+     R1  Paper, not glass.      No backdrop-filter. No blur. No shadow used
+                                for hierarchy. Zero elevation tokens.
+     R2  Colour means state.    The status hues (ok / dated / draft) may not
+                                be used for a button, a link, or a brand mark.
+                                The primary action is filled with INK.
+     R3  State is a word, a     Every status carries glyph + word + border
+         glyph and a border.    style. It survives a monochrome laser and a fax.
+     R4  Nothing under 15px     ...is an interface element. 13px exists only
+                                for the provenance block and legal micro-print.
+     R5  Motion has an          transform is capped at 2px; nothing loops
+         allow-list.            except a determinate bar; no skeletons.
+
+   No imports. No web fonts. No external requests. No build step.
+   ========================================================================== */
+
+@layer wl.reset, wl.tokens, wl.base, wl.components, wl.utilities, wl.adaptive;
+
+/* ==========================================================================
+   RESET  (minimal; the host may already apply one)
+   ========================================================================== */
+@layer wl.reset {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+  body, h1, h2, h3, h4, h5, h6,
+  p, figure, blockquote, dl, dd, ol, ul, fieldset { margin: 0; }
+
+  fieldset { padding: 0; border: 0; min-inline-size: 0; }
+
+  ol[class], ul[class] { padding: 0; list-style: none; }
+
+  img, svg, video, canvas { display: block; max-inline-size: 100%; height: auto; }
+
+  input, button, textarea, select { font: inherit; color: inherit; }
+
+  button { background: none; border: 0; }
+
+  :where(a) { color: inherit; }
+
+  /* Tables are the primary content type in this product, so the reset is
+     opinionated about them rather than leaving UA defaults in play. */
+  table { border-collapse: collapse; border-spacing: 0; }
+  th { text-align: start; font-weight: inherit; }
+}
+
+/* ==========================================================================
+   TOKENS — TIER 1: PRIMITIVES  (§4.2)
+   Components must NEVER reference these. Use the semantic tier (§4.3).
+   Naming: the ramps are named for the substance, not the hue, because the
+   substance is what this product is about.
+   ========================================================================== */
+@layer wl.tokens {
+  :root {
+    /* -- STOCK (warm neutral; the paper and the desk it sits on) ---------- */
+    --rp-stock-000: #FFFFFF;   /* the sheet itself                          */
+    --rp-stock-050: #F3F1EB;   /* sunken: table head, inset panel           */
+    --rp-stock-100: #EFEDE6;   /* row hover                                 */
+    --rp-stock-150: #E9E6DE;   /* the desk — light page ground              */
+    --rp-stock-200: #D8D3C7;   /* hairline rule (decorative)                */
+    --rp-stock-400: #87806E;   /* light meaningful border — 3.15:1 worst    */
+    --rp-stock-500: #8A8375;   /* light disabled ink — 3.02:1 (exempt)      */
+
+    /* -- INK (warm near-black through to warm near-white) ----------------- */
+    --rp-ink-950: #14120E;     /* light primary   — 15.00:1 worst           */
+    --rp-ink-800: #403A30;     /* light secondary —  9.02:1 worst           */
+    --rp-ink-600: #5C5648;     /* light tertiary  —  5.85:1 worst           */
+
+    /* -- NIGHT (dark-side stock, authored independently — A11) ------------ */
+    --rp-night-000: #131210;   /* dark page ground                          */
+    --rp-night-050: #1C1A16;   /* dark surface                              */
+    --rp-night-100: #242119;   /* dark sunken                               */
+    --rp-night-150: #26231C;   /* dark row hover                            */
+    --rp-night-300: #39352C;   /* dark hairline                             */
+    --rp-night-500: #847C6B;   /* dark meaningful border — 3.89:1 worst     */
+    --rp-night-600: #7A7364;   /* dark disabled ink — 3.42:1 (exempt)       */
+    --rp-night-900: #A69E8C;   /* dark tertiary ink —  6.04:1 worst         */
+    --rp-night-950: #CEC7B8;   /* dark secondary ink —  9.56:1 worst        */
+    --rp-night-999: #F3F0E8;   /* dark primary ink — 14.11:1 worst; not #FFF */
+
+    /* -- PIN (the one brand hue: links, provenance, focus, selection) ----- */
+    --rp-pin-700: #12508F;    /* light — 7.24:1 worst                      */
+    --rp-pin-800: #0E3E70;    /* light hover/active                        */
+    --rp-pin-300: #8FB8EC;    /* dark  — 7.83:1 worst                      */
+    --rp-pin-200: #B0CCF3;    /* dark hover/active                         */
+    --rp-pin-tint-l: #E4ECF7; /* light selection ground                    */
+    --rp-pin-tint-d: #182437; /* dark selection ground                     */
+
+    /* -- STATUS: CERTIFIABLE ---------------------------------------------- */
+    --rp-ok-700: #0F6B37;      /* light — 5.85:1 worst                      */
+    --rp-ok-300: #5FC085;      /* dark  — 7.17:1 worst                      */
+    --rp-ok-tint-l: #E2EFE5;
+    --rp-ok-tint-d: #152A1D;
+
+    /* -- STATUS: CERTIFIABLE (DATED) — the narrowed freshness claim ------- */
+    --rp-dated-700: #8A5200;   /* light — 5.66:1 worst                      */
+    --rp-dated-300: #E2A83F;   /* dark  — 7.58:1 worst                      */
+    --rp-dated-tint-l: #FAEDD6;
+    --rp-dated-tint-d: #2C2415;
+
+    /* -- STATUS: DRAFT — NOT CERTIFIABLE ---------------------------------- */
+    /* Run 1 reserved rose for destructive actions only. Ratepin inverts
+       that deliberately (§1 R2 / §4.1): the strongest signal in the palette
+       belongs to the strongest instruction in the product — do not sign this. */
+    --rp-draft-700: #A61B10;   /* light — 6.67:1 worst                      */
+    --rp-draft-300: #F28A7C;   /* dark  — 6.66:1 worst                      */
+    --rp-draft-tint-l: #FBE6E2;
+    --rp-draft-tint-d: #2F1C19;
+
+    /* -- HIGH-CONTRAST PIGMENTS (§10.3) ----------------------------------- */
+    /* Referenced only by the two prefers-contrast blocks. Kept as primitives
+       so the boost is ONE rule that works in both themes (§10.4). */
+    --rp-hc-ground:      #FFFFFF;
+    --rp-hc-surface:     #FFFFFF;
+    --rp-hc-sunken:      #EFEDE6;
+    --rp-hc-ink:         #000000;
+    --rp-hc-ink-2:       #2B261D;
+    --rp-hc-ink-3:       #3A342A;
+    --rp-hc-rule:        #7A7362;
+    --rp-hc-rule-strong: #2A251C;
+    --rp-hc-pin:        #0B3D75;
+    --rp-hc-ok:          #0A5629;
+    --rp-hc-dated:       #6B4300;
+    --rp-hc-draft:       #8A1208;
+    --rp-hc-ok-tint:     #DDEEE2;
+    --rp-hc-dated-tint:  #F7E9CE;
+    --rp-hc-draft-tint:  #FADFDA;
+    --rp-hc-pin-tint:   #DEE8F5;
+  }
+
+  /* ========================================================================
+     TOKENS — TIER 2: SEMANTIC  (§4.3)    *** LIGHT IS THE BARE :root ***
+     Every colour gets its first definition HERE. The dark, high-contrast and
+     forced-colors blocks below only REDEFINE. Nothing is ever defined for the
+     first time inside a media query — a page whose default theme lives in a
+     query renders unthemed on the engines that miss it.
+     ====================================================================== */
+  :root {
+    color-scheme: light dark;
+
+    /* -- Ground and surfaces (§4.3.1) — exactly three, all opaque --------- */
+    --rp-ground:          var(--rp-stock-150);  /* the desk                  */
+    --rp-surface:         var(--rp-stock-000);  /* the sheet                 */
+    --rp-sunken:          var(--rp-stock-050);  /* table head, inset panel   */
+    --rp-field:           var(--rp-stock-000);  /* input interior            */
+    --rp-row-hover:       var(--rp-stock-100);
+    --rp-row-selected:    var(--rp-pin-tint-l);
+
+    /* -- Ink (§4.3.2) ----------------------------------------------------- */
+    --rp-ink:             var(--rp-ink-950);
+    --rp-ink-2:           var(--rp-ink-800);
+    --rp-ink-3:           var(--rp-ink-600);    /* floor for informational   */
+    --rp-ink-mute:        var(--rp-stock-500);  /* disabled ONLY (1.4.3 exempt) */
+    --rp-ink-on-fill:     var(--rp-stock-000);  /* label on the ink button   */
+
+    /* -- Rules (§4.3.3) — this system's only hierarchy device besides weight */
+    --rp-rule:            var(--rp-stock-200);  /* decorative separator      */
+    --rp-rule-strong:     var(--rp-stock-400);  /* meaningful boundary, >=3:1 */
+    --rp-rule-ink:        var(--rp-ink-950);    /* the 2px structural rule   */
+
+    /* -- Pin: links, provenance, focus, selection (§4.3.4) ---------------- */
+    --rp-pin:            var(--rp-pin-700);
+    --rp-pin-strong:     var(--rp-pin-800);
+    --rp-pin-tint:       var(--rp-pin-tint-l);
+
+    /* -- Status (§4.3.5) — NEVER used for a control (§1 R2) --------------- */
+    --rp-ok:              var(--rp-ok-700);
+    --rp-ok-tint:         var(--rp-ok-tint-l);
+    --rp-dated:           var(--rp-dated-700);
+    --rp-dated-tint:      var(--rp-dated-tint-l);
+    --rp-draft:           var(--rp-draft-700);
+    --rp-draft-tint:      var(--rp-draft-tint-l);
+
+    /* -- The DRAFT overlay (§8.8) — bounded to ONE colour at ONE alpha ---- */
+    --rp-mark:            var(--rp-draft-700);
+    --rp-mark-alpha:      0.20;   /* composite #EDD1CF; ink-3 holds 5.08:1  */
+    --rp-mark-alpha-print: 0.24;  /* composite #EAC8C6; ink-3 holds 4.71:1  */
+
+    /* -- Focus (§9.1) — three parts, never removed ------------------------ */
+    --rp-focus:           var(--rp-pin-700);
+    --rp-focus-halo:      var(--rp-stock-000);
+    --rp-focus-w:         3px;
+    --rp-focus-gap:       2px;
+
+    /* -- Type (§5) -------------------------------------------------------- */
+    /* No web fonts: a trailer laptop on a phone hotspot should not wait for
+       a 90 KB font before it can read a rate. System stacks only (§5.1). */
+    --rp-font-ui:
+      -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI",
+      Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif;
+    --rp-font-num:
+      ui-monospace, "Cascadia Mono", "Segoe UI Mono", "SF Mono", Menlo,
+      Consolas, "Liberation Mono", "DejaVu Sans Mono", monospace;
+
+    /* §5.2 — eight steps. There is no step below 13px, and 13px is not an
+       interface size (§1 R4). Ratio ~1.22, flatter than a display scale
+       because this product has almost no display type. */
+    --rp-t-micro: 0.8125rem;   /* 13px — provenance block, legal micro-print */
+    --rp-t-data:  0.9375rem;   /* 15px — table cell, help text, chip         */
+    --rp-t-base:  1.0625rem;   /* 17px — THE DEFAULT for UI and prose        */
+    --rp-t-lead:  1.1875rem;   /* 19px — section lead, field group heading   */
+    --rp-t-h3:    1.4375rem;   /* 23px                                        */
+    --rp-t-h2:    1.75rem;     /* 28px                                        */
+    --rp-t-h1:    2.125rem;    /* 34px                                        */
+    --rp-t-fig:   2.75rem;     /* 44px — a price, a total. Nothing else.      */
+
+    --rp-lh-tight: 1.2;
+    --rp-lh-data:  1.35;   /* table cells; density without collision        */
+    --rp-lh-ui:    1.45;
+    --rp-lh-prose: 1.6;
+
+    --rp-measure:  66ch;
+    --rp-measure-narrow: 52ch;
+
+    /* -- Space (§6.1) — 4px grid ------------------------------------------ */
+    --rp-s-0: 0;
+    --rp-s-1: 0.25rem;   /*  4 */
+    --rp-s-2: 0.5rem;    /*  8 */
+    --rp-s-3: 0.75rem;   /* 12 */
+    --rp-s-4: 1rem;      /* 16 */
+    --rp-s-5: 1.25rem;   /* 20 */
+    --rp-s-6: 1.5rem;    /* 24 */
+    --rp-s-7: 2rem;      /* 32 */
+    --rp-s-8: 2.5rem;    /* 40 */
+    --rp-s-9: 3.5rem;    /* 56 */
+    --rp-s-10: 4.5rem;   /* 72 */
+
+    /* -- Density (§6.2) — the one thing a user may tune ------------------- */
+    --rp-row-h:      2.75rem;   /* 44px comfortable                          */
+    --rp-cell-pad-y: var(--rp-s-2);
+    --rp-cell-pad-x: var(--rp-s-3);
+    --rp-target-min: 2.75rem;   /* 44px, SC 2.5.5 AAA adopted (§3 A6)        */
+    --rp-target-abs: 1.5rem;    /* 24px, SC 2.5.8 AA floor, in-table only    */
+
+    /* -- Radius (§6.3) — a form has square corners ------------------------ */
+    --rp-r-0: 0;        /* the artifact sheet, always                        */
+    --rp-r-1: 2px;      /* chips, cells, inputs                              */
+    --rp-r-2: 3px;      /* buttons, cards                                    */
+    /* There is no larger step. There is no pill. See §6.3.                  */
+
+    /* -- Motion (§7) — the allow-list ------------------------------------- */
+    --rp-dur-tick:   90ms;    /* hover, press, focus                         */
+    --rp-dur-state: 160ms;    /* a state that CHANGED and must be noticed    */
+    --rp-dur-open:  200ms;    /* disclosure height only                      */
+    --rp-ease: cubic-bezier(0.2, 0, 0, 1);
+    --rp-lift: 1px;           /* the entire transform budget (§7.2)          */
+
+    /* -- Layout ----------------------------------------------------------- */
+    --rp-shell-max:  84rem;   /* wide: the WH-347 is a landscape form        */
+    --rp-shell-text: 44rem;
+    --rp-header-h:   3.5rem;
+    --rp-z-base:   0;
+    --rp-z-sticky: 20;
+    --rp-z-header: 100;
+    --rp-z-modal:  500;
+  }
+
+  /* ========================================================================
+     DARK — system preference. Guarded so an explicit light choice wins.
+     REDEFINES ONLY. Independently authored, not a filter (§4.4 / A11).
+     ====================================================================== */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --rp-ground:       var(--rp-night-000);
+      --rp-surface:      var(--rp-night-050);
+      --rp-sunken:       var(--rp-night-100);
+      --rp-field:        #15130F;
+      --rp-row-hover:    var(--rp-night-150);
+      --rp-row-selected: var(--rp-pin-tint-d);
+
+      --rp-ink:          var(--rp-night-999);
+      --rp-ink-2:        var(--rp-night-950);
+      --rp-ink-3:        var(--rp-night-900);
+      --rp-ink-mute:     var(--rp-night-600);
+      --rp-ink-on-fill:  var(--rp-night-000);
+
+      --rp-rule:         var(--rp-night-300);
+      --rp-rule-strong:  var(--rp-night-500);
+      --rp-rule-ink:     var(--rp-night-999);
+
+      --rp-pin:         var(--rp-pin-300);
+      --rp-pin-strong:  var(--rp-pin-200);
+      --rp-pin-tint:    var(--rp-pin-tint-d);
+
+      --rp-ok:           var(--rp-ok-300);
+      --rp-ok-tint:      var(--rp-ok-tint-d);
+      --rp-dated:        var(--rp-dated-300);
+      --rp-dated-tint:   var(--rp-dated-tint-d);
+      --rp-draft:        var(--rp-draft-300);
+      --rp-draft-tint:   var(--rp-draft-tint-d);
+
+      --rp-mark:         var(--rp-draft-300);
+      --rp-mark-alpha:   0.18;   /* composite #432E28; ink-3 holds 4.75:1   */
+      --rp-mark-alpha-print: 0.18;
+
+      --rp-focus:        var(--rp-pin-300);
+      --rp-focus-halo:   var(--rp-night-000);
+
+      /* Dark-side high-contrast pigments (§10.3). */
+      --rp-hc-ground:      #080706;
+      --rp-hc-surface:     #141310;
+      --rp-hc-sunken:      #1E1B15;
+      --rp-hc-ink:         #FFFFFF;
+      --rp-hc-ink-2:       #DED8CA;
+      --rp-hc-ink-3:       #C5BEAE;
+      --rp-hc-rule:        #767060;
+      --rp-hc-rule-strong: #CFC8B8;
+      --rp-hc-pin:        #A9CBF5;
+      --rp-hc-ok:          #7FD79F;
+      --rp-hc-dated:       #F2C165;
+      --rp-hc-draft:       #FFA79A;
+      --rp-hc-ok-tint:     #0F2114;
+      --rp-hc-dated-tint:  #241D10;
+      --rp-hc-draft-tint:  #291613;
+      --rp-hc-pin-tint:   #111C2E;
+    }
+  }
+
+  /* ========================================================================
+     DARK — explicit toggle. Same redefinition, higher precedence, so the
+     toggle wins in BOTH directions regardless of the system setting.
+     ====================================================================== */
+  :root[data-theme="dark"] {
+    --rp-ground:       var(--rp-night-000);
+    --rp-surface:      var(--rp-night-050);
+    --rp-sunken:       var(--rp-night-100);
+    --rp-field:        #15130F;
+    --rp-row-hover:    var(--rp-night-150);
+    --rp-row-selected: var(--rp-pin-tint-d);
+
+    --rp-ink:          var(--rp-night-999);
+    --rp-ink-2:        var(--rp-night-950);
+    --rp-ink-3:        var(--rp-night-900);
+    --rp-ink-mute:     var(--rp-night-600);
+    --rp-ink-on-fill:  var(--rp-night-000);
+
+    --rp-rule:         var(--rp-night-300);
+    --rp-rule-strong:  var(--rp-night-500);
+    --rp-rule-ink:     var(--rp-night-999);
+
+    --rp-pin:         var(--rp-pin-300);
+    --rp-pin-strong:  var(--rp-pin-200);
+    --rp-pin-tint:    var(--rp-pin-tint-d);
+
+    --rp-ok:           var(--rp-ok-300);
+    --rp-ok-tint:      var(--rp-ok-tint-d);
+    --rp-dated:        var(--rp-dated-300);
+    --rp-dated-tint:   var(--rp-dated-tint-d);
+    --rp-draft:        var(--rp-draft-300);
+    --rp-draft-tint:   var(--rp-draft-tint-d);
+
+    --rp-mark:         var(--rp-draft-300);
+    --rp-mark-alpha:   0.18;
+    --rp-mark-alpha-print: 0.18;
+
+    --rp-focus:        var(--rp-pin-300);
+    --rp-focus-halo:   var(--rp-night-000);
+
+    --rp-hc-ground:      #080706;
+    --rp-hc-surface:     #141310;
+    --rp-hc-sunken:      #1E1B15;
+    --rp-hc-ink:         #FFFFFF;
+    --rp-hc-ink-2:       #DED8CA;
+    --rp-hc-ink-3:       #C5BEAE;
+    --rp-hc-rule:        #767060;
+    --rp-hc-rule-strong: #CFC8B8;
+    --rp-hc-pin:        #A9CBF5;
+    --rp-hc-ok:          #7FD79F;
+    --rp-hc-dated:       #F2C165;
+    --rp-hc-draft:       #FFA79A;
+    --rp-hc-ok-tint:     #0F2114;
+    --rp-hc-dated-tint:  #241D10;
+    --rp-hc-draft-tint:  #291613;
+    --rp-hc-pin-tint:   #111C2E;
+  }
+
+  /* ========================================================================
+     HIGH CONTRAST (§10.3) — sun on the screen at 15:40, or a ten-year-old
+     TN panel, or a user who set it deliberately.
+
+     ONE rule per trigger covers BOTH themes: the block only references
+     --rp-hc-* primitives, and those are already theme-resolved by the blocks
+     above. Custom-property substitution takes the *computed* value of the
+     referenced property, so the same declarations resolve light in light and
+     dark in dark. It must come AFTER the dark blocks to win the cascade.
+     ====================================================================== */
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast="normal"]) {
+      --rp-ground:       var(--rp-hc-ground);
+      --rp-surface:      var(--rp-hc-surface);
+      --rp-sunken:       var(--rp-hc-sunken);
+      --rp-field:        var(--rp-hc-surface);
+      --rp-row-hover:    var(--rp-hc-sunken);
+      --rp-row-selected: var(--rp-hc-pin-tint);
+      --rp-ink:          var(--rp-hc-ink);
+      --rp-ink-2:        var(--rp-hc-ink-2);
+      --rp-ink-3:        var(--rp-hc-ink-3);
+      --rp-rule:         var(--rp-hc-rule);
+      --rp-rule-strong:  var(--rp-hc-rule-strong);
+      --rp-rule-ink:     var(--rp-hc-ink);
+      --rp-pin:         var(--rp-hc-pin);
+      --rp-pin-tint:    var(--rp-hc-pin-tint);
+      --rp-ok:           var(--rp-hc-ok);
+      --rp-ok-tint:      var(--rp-hc-ok-tint);
+      --rp-dated:        var(--rp-hc-dated);
+      --rp-dated-tint:   var(--rp-hc-dated-tint);
+      --rp-draft:        var(--rp-hc-draft);
+      --rp-draft-tint:   var(--rp-hc-draft-tint);
+      --rp-mark:         var(--rp-hc-draft);
+      --rp-focus:        var(--rp-hc-pin);
+      --rp-focus-halo:   var(--rp-hc-surface);
+      --rp-focus-w:      4px;
+    }
+  }
+
+  :root[data-contrast="high"] {
+    --rp-ground:       var(--rp-hc-ground);
+    --rp-surface:      var(--rp-hc-surface);
+    --rp-sunken:       var(--rp-hc-sunken);
+    --rp-field:        var(--rp-hc-surface);
+    --rp-row-hover:    var(--rp-hc-sunken);
+    --rp-row-selected: var(--rp-hc-pin-tint);
+    --rp-ink:          var(--rp-hc-ink);
+    --rp-ink-2:        var(--rp-hc-ink-2);
+    --rp-ink-3:        var(--rp-hc-ink-3);
+    --rp-rule:         var(--rp-hc-rule);
+    --rp-rule-strong:  var(--rp-hc-rule-strong);
+    --rp-rule-ink:     var(--rp-hc-ink);
+    --rp-pin:         var(--rp-hc-pin);
+    --rp-pin-tint:    var(--rp-hc-pin-tint);
+    --rp-ok:           var(--rp-hc-ok);
+    --rp-ok-tint:      var(--rp-hc-ok-tint);
+    --rp-dated:        var(--rp-hc-dated);
+    --rp-dated-tint:   var(--rp-hc-dated-tint);
+    --rp-draft:        var(--rp-hc-draft);
+    --rp-draft-tint:   var(--rp-hc-draft-tint);
+    --rp-mark:         var(--rp-hc-draft);
+    --rp-focus:        var(--rp-hc-pin);
+    --rp-focus-halo:   var(--rp-hc-surface);
+    --rp-focus-w:      4px;
+  }
+
+  /* ========================================================================
+     DENSITY (§6.2) — a stored account preference, not a viewport guess.
+     Compact never goes below the SC 2.5.8 floor of 24px for a target.
+     ====================================================================== */
+  :root[data-density="compact"] {
+    --rp-row-h:      2.25rem;   /* 36px */
+    --rp-cell-pad-y: var(--rp-s-1);
+    --rp-cell-pad-x: var(--rp-s-2);
+  }
+  :root[data-density="roomy"] {
+    --rp-row-h:      3.25rem;   /* 52px */
+    --rp-cell-pad-y: var(--rp-s-3);
+    --rp-cell-pad-x: var(--rp-s-4);
+  }
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+@layer wl.base {
+  html { block-size: 100%; }
+
+  body {
+    min-block-size: 100%;
+    margin: 0;
+    font-family: var(--rp-font-ui);
+    font-size: var(--rp-t-base);
+    line-height: var(--rp-lh-ui);
+    color: var(--rp-ink);
+
+    /* Always painted. A transparent body borrows the host's theme, and this
+       page must be able to state its own contrast (§4.5). Flat: there is no
+       gradient, no ambient field, no image. The ground is the desk. */
+    background-color: var(--rp-ground);
+
+    /* No antialiasing overrides: -webkit-font-smoothing: antialiased thins
+       stems, which is the wrong trade on a low-contrast panel for a reader
+       over fifty (§5.1). We take the platform default deliberately. */
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    font-weight: 650;
+    line-height: var(--rp-lh-tight);
+    text-wrap: balance;
+    color: var(--rp-ink);
+  }
+  h1 { font-size: var(--rp-t-h1); letter-spacing: -0.012em; }
+  h2 { font-size: var(--rp-t-h2); letter-spacing: -0.008em; }
+  h3 { font-size: var(--rp-t-h3); letter-spacing: -0.004em; }
+  h4 { font-size: var(--rp-t-lead); }
+
+  p { max-inline-size: var(--rp-measure); text-wrap: pretty; }
+
+  /* Links are underlined at rest, everywhere, forever. Underline removal
+     relies on colour alone to signal a link (SC 1.4.1) and is a measurable
+     loss for older readers (§5.4). */
+  a {
+    color: var(--rp-pin);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.16em;
+  }
+  a:hover  { color: var(--rp-pin-strong); text-decoration-thickness: 2px; }
+  a:active { color: var(--rp-pin-strong); }
+
+  strong, b { font-weight: 650; }
+
+  code, kbd, samp { font-family: var(--rp-font-num); font-size: 0.94em; }
+
+  ::selection { background-color: var(--rp-pin-tint); color: var(--rp-ink); }
+
+  /* -- §9.1 THE FOCUS INDICATOR --------------------------------------------
+     Three parts: a 2px halo in the local surface colour, then a 3px ring in
+     the line hue, drawn OUTSIDE the control. Because the halo separates the
+     ring from the control, the ring's two adjacent colours are always the
+     halo and the page ground — never the control's own fill. That is what
+     lets the ink-filled primary button keep a compliant ring (SC 2.4.13):
+     ring/ground 6.55:1, ring/halo 8.17:1, halo/ink-fill 18.71:1 (§4.5).
+     outline is never set to none without a replacement in the same rule. */
+  /* border-radius is deliberately NOT set here: the halo is a box-shadow and
+     already follows whatever radius the element itself has. Setting it would
+     silently reshape every control at the moment it is focused. */
+  :focus-visible {
+    outline: var(--rp-focus-w) solid var(--rp-focus);
+    outline-offset: var(--rp-focus-gap);
+    box-shadow: 0 0 0 var(--rp-focus-gap) var(--rp-focus-halo);
+  }
+
+  @supports not selector(:focus-visible) {
+    :focus {
+      outline: var(--rp-focus-w) solid var(--rp-focus);
+      outline-offset: var(--rp-focus-gap);
+    }
+  }
+
+  /* SC 2.4.11 Focus Not Obscured (Minimum). The sticky header and the sticky
+     table head are the only two things in this system that can cover a
+     focused control, so every focusable element reserves their height when
+     scrolled into view. This is the whole compliance mechanism (§9.3). */
+  :where(a, button, input, select, textarea, summary, [tabindex]) {
+    scroll-margin-block-start: calc(var(--rp-header-h) + var(--rp-row-h) + var(--rp-s-3));
+    scroll-margin-block-end: var(--rp-s-6);
+  }
+}
+
+/* ==========================================================================
+   COMPONENTS
+   ========================================================================== */
+@layer wl.components {
+
+  /* ------------------------------------------------------------------------
+     §8.1  SHELL, HEADER, BOUNDARY STATEMENT
+     ---------------------------------------------------------------------- */
+  .rp-shell {
+    inline-size: 100%;
+    max-inline-size: var(--rp-shell-max);
+    margin-inline: auto;
+    padding-inline: var(--rp-s-5);
+  }
+  .rp-shell--text { max-inline-size: var(--rp-shell-text); }
+
+  .rp-header {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: var(--rp-z-header);
+    display: flex;
+    align-items: center;
+    gap: var(--rp-s-5);
+    min-block-size: var(--rp-header-h);
+    padding-inline: var(--rp-s-5);
+    /* Opaque, always. A translucent header over a scrolling rate table makes
+       the contrast of the header's own text indeterminate (§1 R1). */
+    background-color: var(--rp-surface);
+    border-block-end: 2px solid var(--rp-rule-ink);
+  }
+
+  .rp-wordmark {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.14em;
+    font-size: var(--rp-t-lead);
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    color: var(--rp-ink);
+    text-decoration: none;
+  }
+  .rp-wordmark:hover { text-decoration: none; }
+  /* The rule under the mark is the mark. It is the only ornament in the
+     system and it is the same 2px ink rule that structures every table. */
+  .rp-wordmark__rule {
+    display: block;
+    block-size: 2px;
+    inline-size: 100%;
+    margin-block-start: 2px;
+    background-color: var(--rp-rule-ink);
+  }
+
+  /* USER_JOURNEY §7.4 — never dismissible, never in a modal, never smaller
+     than body text. It is a permanent structural element, so it is styled
+     like structure: a rule and ink, not a callout. */
+  .rp-boundary {
+    max-inline-size: var(--rp-measure);
+    margin-block-start: var(--rp-s-7);
+    padding-block-start: var(--rp-s-4);
+    border-block-start: 1px solid var(--rp-rule-strong);
+    font-size: var(--rp-t-base);
+    line-height: var(--rp-lh-prose);
+    color: var(--rp-ink-2);
+  }
+  .rp-boundary strong { color: var(--rp-ink); }
+
+  /* ------------------------------------------------------------------------
+     §8.2  BUTTONS
+     §1 R2: the primary fill is INK, never a status hue and never the line
+     hue. Colour in this interface only ever means state.
+     ---------------------------------------------------------------------- */
+  .rp-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--rp-s-2);
+
+    min-block-size: var(--rp-target-min);
+    min-inline-size: var(--rp-target-min);
+    padding-inline: var(--rp-s-5);
+    padding-block: var(--rp-s-2);
+
+    font-family: var(--rp-font-ui);
+    font-size: var(--rp-t-base);
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+
+    background-color: var(--rp-surface);
+    color: var(--rp-ink);
+    /* Every control carries a >=3:1 border at rest. In a system with no
+       shadows, the border is the only thing that says "this is a control",
+       and it is SC 1.4.11 compliance for free (§3 A2). */
+    border: 1px solid var(--rp-rule-strong);
+    border-radius: var(--rp-r-2);
+    cursor: pointer;
+
+    transition:
+      background-color var(--rp-dur-tick) var(--rp-ease),
+      border-color     var(--rp-dur-tick) var(--rp-ease),
+      color            var(--rp-dur-tick) var(--rp-ease);
+  }
+  .rp-btn:hover  { background-color: var(--rp-sunken); border-color: var(--rp-ink-3); }
+  .rp-btn:active { background-color: var(--rp-row-hover); }
+
+  .rp-btn--primary {
+    background-color: var(--rp-ink);
+    color: var(--rp-ink-on-fill);
+    border-color: var(--rp-ink);
+    font-weight: 650;
+  }
+  .rp-btn--primary:hover  { background-color: var(--rp-ink-2); border-color: var(--rp-ink-2); }
+  .rp-btn--primary:active { background-color: var(--rp-ink); }
+
+  /* Quiet is still a control: it keeps a border. There is no borderless
+     button in this system, because "is that a button?" costs more seconds at
+     15:40 on a Friday than a border costs elegance. */
+  .rp-btn--quiet { color: var(--rp-ink-2); border-color: var(--rp-rule); }
+  .rp-btn--quiet:hover { color: var(--rp-ink); border-color: var(--rp-rule-strong); }
+
+  .rp-btn--sm {
+    min-block-size: var(--rp-target-abs);   /* 24px — in-table only (§3 A6) */
+    padding-inline: var(--rp-s-3);
+    font-size: var(--rp-t-data);
+  }
+  .rp-btn--block { display: flex; inline-size: 100%; }
+
+  /* Destructive: outlined in the draft hue, never filled, never pre-focused.
+     The draft hue is on-message here — it is the same "do not proceed
+     casually" channel as the artifact watermark. */
+  .rp-btn--destructive { color: var(--rp-draft); border-color: var(--rp-draft); }
+  .rp-btn--destructive:hover { background-color: var(--rp-draft-tint); }
+
+  .rp-btn[disabled],
+  .rp-btn[aria-disabled="true"] {
+    background-color: var(--rp-sunken);
+    border-color: var(--rp-rule);
+    color: var(--rp-ink-mute);
+    cursor: not-allowed;
+  }
+  /* Nielsen #1: a disabled control MUST be accompanied by a stated reason.
+     This class is the slot; a disabled button with no adjacent .rp-btn__why
+     is a review failure (§8.2 test). */
+  .rp-btn__why {
+    display: block;
+    margin-block-start: var(--rp-s-2);
+    max-inline-size: var(--rp-measure-narrow);
+    font-size: var(--rp-t-data);
+    color: var(--rp-ink-2);
+  }
+
+  /* Busy: the label is replaced by a word, not by a spinner. Under Nielsen's
+     1-second limit no indicator is warranted at all; over it, a word beats a
+     rotating shape because a word says WHAT is happening (§7.3). */
+  .rp-btn[aria-busy="true"] { cursor: progress; pointer-events: none; }
+
+  .rp-btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--rp-s-3);
+  }
+
+  /* ------------------------------------------------------------------------
+     §8.3  FORM CONTROLS
+     Visible <label>, always. Never placeholder-as-label (Nielsen #6).
+     ---------------------------------------------------------------------- */
+  .rp-field { display: grid; gap: var(--rp-s-2); max-inline-size: 32rem; }
+  .rp-field--wide { max-inline-size: none; }
+
+  .rp-field__label {
+    font-size: var(--rp-t-base);
+    font-weight: 600;
+    color: var(--rp-ink);
+  }
+  .rp-field__label[data-optional]::after {
+    content: " (optional)";
+    font-weight: 400;
+    color: var(--rp-ink-3);
+  }
+
+  .rp-input,
+  .rp-select,
+  .rp-textarea {
+    inline-size: 100%;
+    min-block-size: var(--rp-target-min);
+    padding-inline: var(--rp-s-3);
+    padding-block: var(--rp-s-2);
+    font-family: var(--rp-font-ui);
+    font-size: var(--rp-t-base);
+    line-height: var(--rp-lh-ui);
+    color: var(--rp-ink);
+    background-color: var(--rp-field);
+    border: 1px solid var(--rp-rule-strong);
+    border-radius: var(--rp-r-1);
+    transition: border-color var(--rp-dur-tick) var(--rp-ease);
+  }
+  .rp-textarea { min-block-size: 8rem; resize: vertical; }
+  .rp-select { padding-inline-end: var(--rp-s-6); }
+
+  .rp-input::placeholder,
+  .rp-textarea::placeholder { color: var(--rp-ink-3); opacity: 1; }
+
+  .rp-input:hover, .rp-select:hover, .rp-textarea:hover { border-color: var(--rp-ink-3); }
+  .rp-input:focus-visible, .rp-select:focus-visible, .rp-textarea:focus-visible {
+    border-color: var(--rp-ink);
+  }
+
+  /* Anything that is a number, an identifier, a date or a hash. Slashed zero
+     because a WD number, an SSN last-four and a snapshot hash all contain
+     characters a reader must not guess at (§5.3). */
+  .rp-input--num,
+  .rp-num {
+    font-family: var(--rp-font-num);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-feature-settings: "tnum" 1, "lnum" 1, "zero" 1;
+    letter-spacing: 0;
+  }
+  .rp-input--num { text-align: end; }
+
+  .rp-input[aria-invalid="true"],
+  .rp-select[aria-invalid="true"],
+  .rp-textarea[aria-invalid="true"] {
+    border-color: var(--rp-draft);
+    border-inline-start-width: 3px;
+  }
+  .rp-input[disabled], .rp-select[disabled], .rp-textarea[disabled] {
+    background-color: var(--rp-sunken);
+    border-color: var(--rp-rule);
+    color: var(--rp-ink-mute);
+    cursor: not-allowed;
+  }
+  .rp-input[readonly], .rp-textarea[readonly] { background-color: var(--rp-sunken); }
+
+  .rp-field__help {
+    font-size: var(--rp-t-data);
+    line-height: var(--rp-lh-ui);
+    color: var(--rp-ink-3);
+    max-inline-size: var(--rp-measure-narrow);
+  }
+  /* SC 1.4.1: never colour alone. Glyph + words + the invalid border. */
+  .rp-field__error {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--rp-s-2);
+    font-size: var(--rp-t-data);
+    font-weight: 600;
+    color: var(--rp-draft);
+  }
+  .rp-field__error::before { content: "\2715"; flex: none; font-weight: 700; }
+
+  /* Checkbox and radio, sized so a gloved hand on a trackpad can hit them. */
+  .rp-check {
+    display: grid;
+    grid-template-columns: 1.375rem 1fr;
+    align-items: start;
+    gap: var(--rp-s-3);
+    min-block-size: var(--rp-target-min);
+    padding-block: var(--rp-s-2);
+    cursor: pointer;
+  }
+  .rp-check input[type="checkbox"],
+  .rp-check input[type="radio"] {
+    inline-size: 1.375rem;
+    block-size: 1.375rem;
+    margin: 0;
+    accent-color: var(--rp-ink);
+    cursor: pointer;
+  }
+  .rp-check__text { font-size: var(--rp-t-base); line-height: var(--rp-lh-ui); }
+  .rp-check__note { display: block; font-size: var(--rp-t-data); color: var(--rp-ink-3); }
+
+  .rp-fieldset { display: grid; gap: var(--rp-s-4); }
+  .rp-fieldset > legend {
+    padding: 0;
+    margin-block-end: var(--rp-s-2);
+    font-size: var(--rp-t-lead);
+    font-weight: 650;
+    color: var(--rp-ink);
+  }
+
+  /* ------------------------------------------------------------------------
+     §8.4  FILE DROPZONE  (S13 CSV upload, S01 free generator)
+     The drop target is an enhancement. The BUTTON is the control: drag and
+     drop is not keyboard-operable and a trailer tablet has no drag (§8.4).
+     ---------------------------------------------------------------------- */
+  .rp-drop {
+    display: grid;
+    gap: var(--rp-s-4);
+    justify-items: start;
+    padding: var(--rp-s-7);
+    background-color: var(--rp-sunken);
+    /* Dashed = "not yet filled". The border style is the state channel here,
+       exactly as it is on the status chip (§1 R3). */
+    border: 2px dashed var(--rp-rule-strong);
+    border-radius: var(--rp-r-2);
+    transition:
+      background-color var(--rp-dur-tick) var(--rp-ease),
+      border-color     var(--rp-dur-tick) var(--rp-ease);
+  }
+  .rp-drop__title { font-size: var(--rp-t-lead); font-weight: 650; color: var(--rp-ink); }
+  .rp-drop__hint  { font-size: var(--rp-t-data); color: var(--rp-ink-2); max-inline-size: var(--rp-measure-narrow); }
+  .rp-drop__input {
+    position: absolute;
+    inline-size: 1px; block-size: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+  }
+  /* The zone shows the ring when the visually-hidden input is focused, so
+     keyboard users see the same target mouse users see (§9.2). */
+  .rp-drop:has(.rp-drop__input:focus-visible) {
+    outline: var(--rp-focus-w) solid var(--rp-focus);
+    outline-offset: var(--rp-focus-gap);
+    box-shadow: 0 0 0 var(--rp-focus-gap) var(--rp-focus-halo);
+  }
+
+  .rp-drop[data-state="over"] {
+    background-color: var(--rp-pin-tint);
+    border-style: solid;
+    border-color: var(--rp-pin);
+  }
+  .rp-drop[data-state="reading"] { border-style: solid; border-color: var(--rp-ink-3); }
+  .rp-drop[data-state="accepted"] {
+    background-color: var(--rp-surface);
+    border-style: solid;
+    border-color: var(--rp-ok);
+  }
+  .rp-drop[data-state="rejected"] {
+    background-color: var(--rp-draft-tint);
+    border-style: solid;
+    border-color: var(--rp-draft);
+  }
+
+  /* The receipt. Four facts, tabular, so re-uploading the same file is
+     visibly the same file (SC 3.3.7 Redundant Entry, §3 A8). */
+  .rp-drop__receipt {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--rp-s-1) var(--rp-s-4);
+    inline-size: 100%;
+    padding-block-start: var(--rp-s-3);
+    border-block-start: 1px solid var(--rp-rule);
+    font-size: var(--rp-t-data);
+  }
+  .rp-drop__receipt dt { color: var(--rp-ink-3); }
+  .rp-drop__receipt dd {
+    margin: 0;
+    font-family: var(--rp-font-num);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    color: var(--rp-ink);
+    overflow-wrap: anywhere;
+  }
+
+  /* ------------------------------------------------------------------------
+     §8.5  DATA TABLE  (S14 mapping, S15 resolve, S16 review, S18 the week)
+     No zebra striping. Enders' paired study over 244 participants found no
+     statistically significant accuracy gain and very little speed gain from
+     striping; a hairline per row plus a hover/focus band does the same job
+     and costs nothing on a monochrome print (§8.5.2).
+     ---------------------------------------------------------------------- */
+  .rp-tablewrap {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    border: 1px solid var(--rp-rule-strong);
+    border-radius: var(--rp-r-1);
+    background-color: var(--rp-surface);
+  }
+
+  .rp-table {
+    inline-size: 100%;
+    font-size: var(--rp-t-data);
+    line-height: var(--rp-lh-data);
+    color: var(--rp-ink);
+  }
+
+  .rp-table th,
+  .rp-table td {
+    padding-block: var(--rp-cell-pad-y);
+    padding-inline: var(--rp-cell-pad-x);
+    border-block-end: 1px solid var(--rp-rule);
+    vertical-align: baseline;
+  }
+
+  .rp-table thead th {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: var(--rp-z-sticky);
+    background-color: var(--rp-sunken);
+    /* Sentence case, not uppercase: all-caps costs word-shape recognition,
+       which is the wrong trade for this reader (§5.4). */
+    font-weight: 650;
+    color: var(--rp-ink-2);
+    white-space: nowrap;
+    border-block-end: 2px solid var(--rp-rule-ink);
+  }
+  /* A second sticky band for the two-level WH-347 header (hours block, money
+     block). Offset by one row height so it sits under the first. */
+  .rp-table thead tr:nth-child(2) th { inset-block-start: var(--rp-row-h); }
+
+  .rp-table tbody tr { block-size: var(--rp-row-h); }
+
+  .rp-table tbody tr:hover,
+  .rp-table tbody tr:focus-within {
+    background-color: var(--rp-row-hover);
+  }
+  /* The place-keeper: a 3px marker in the start margin of the active row.
+     This is what zebra striping was supposed to do, done with one element
+     and no cost to the printed page. */
+  .rp-table tbody tr:focus-within > :first-child {
+    box-shadow: inset 3px 0 0 var(--rp-pin);
+  }
+  .rp-table tbody tr[aria-selected="true"] {
+    background-color: var(--rp-row-selected);
+  }
+
+  /* Column-group rules mirror the WH-347's own ruled blocks (Nielsen #2). */
+  .rp-table .rp-group-start { border-inline-start: 1px solid var(--rp-rule-strong); }
+
+  /* Numbers: right-aligned, monospaced, tabular, slashed zero. A column of
+     dollars that does not align on the decimal cannot be scanned (§8.5.3). */
+  .rp-table td.rp-td--num,
+  .rp-table th.rp-th--num {
+    text-align: end;
+    font-family: var(--rp-font-num);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-feature-settings: "tnum" 1, "lnum" 1, "zero" 1;
+    white-space: nowrap;
+  }
+  .rp-table td.rp-td--id {
+    font-family: var(--rp-font-num);
+    font-variant-numeric: lining-nums slashed-zero;
+    white-space: nowrap;
+  }
+  /* A value the customer asserted rather than one we derived (6B, 6C). It is
+     underdotted, and the legend says so once, per USER_JOURNEY §7. */
+  .rp-table td[data-asserted="true"] {
+    text-decoration: underline dotted var(--rp-ink-3);
+    text-underline-offset: 0.25em;
+  }
+
+  .rp-table tfoot td {
+    background-color: var(--rp-sunken);
+    font-weight: 650;
+    border-block-start: 2px solid var(--rp-rule-ink);
+    border-block-end: 0;
+  }
+
+  /* Row states. Every one carries a word in the row's own status cell; the
+     tint and the start rule are the second and third channels (§1 R3). */
+  .rp-table tbody tr[data-row="blocked"] > :first-child {
+    box-shadow: inset 3px 0 0 var(--rp-draft);
+  }
+  .rp-table tbody tr[data-row="blocked"] { background-color: var(--rp-draft-tint); }
+  .rp-table tbody tr[data-row="asserted"] > :first-child {
+    box-shadow: inset 3px 0 0 var(--rp-dated);
+  }
+  /* The ONE state animation in the table: a resolved row holds a tint for
+     160ms and lets go. It is a change notification, not decoration (§7.2). */
+  .rp-table tbody tr[data-row="resolved"] {
+    animation: rp-settle var(--rp-dur-state) var(--rp-ease) 1;
+  }
+  @keyframes rp-settle {
+    from { background-color: var(--rp-ok-tint); }
+    to   { background-color: transparent; }
+  }
+
+  .rp-table caption {
+    caption-side: top;
+    padding: var(--rp-s-3) var(--rp-cell-pad-x);
+    text-align: start;
+    font-size: var(--rp-t-base);
+    font-weight: 650;
+    color: var(--rp-ink);
+    background-color: var(--rp-surface);
+    border-block-end: 1px solid var(--rp-rule);
+  }
+  .rp-table__legend {
+    display: block;
+    margin-block-start: var(--rp-s-1);
+    font-size: var(--rp-t-data);
+    font-weight: 400;
+    color: var(--rp-ink-3);
+  }
+
+  /* ------------------------------------------------------------------------
+     §8.6  CLASSIFICATION PICKER  (S15 — the journey the autonomy claim rests on)
+     Markup contract: <fieldset role="radiogroup"> > legend = the payroll
+     title VERBATIM > N <label> options. No option is visually heavier than
+     another; a pre-selection is announced in WORDS (§8.6.3).
+     ---------------------------------------------------------------------- */
+  .rp-pick {
+    display: grid;
+    gap: var(--rp-s-4);
+    padding: var(--rp-s-5);
+    background-color: var(--rp-surface);
+    border: 1px solid var(--rp-rule-strong);
+    border-inline-start: 4px solid var(--rp-draft);
+    border-radius: var(--rp-r-2);
+  }
+
+  .rp-pick__legend { display: grid; gap: var(--rp-s-1); }
+  /* The title exactly as her payroll system wrote it. Monospace so trailing
+     spaces, doubled hyphens and stray digits are visible (§8.6.1). */
+  .rp-pick__title {
+    font-family: var(--rp-font-num);
+    font-size: var(--rp-t-base);
+    font-weight: 650;
+    color: var(--rp-ink);
+    overflow-wrap: anywhere;
+  }
+  .rp-pick__stakes {
+    font-size: var(--rp-t-data);
+    color: var(--rp-ink-2);
+  }
+  .rp-pick__stakes .rp-num { font-weight: 650; color: var(--rp-ink); }
+
+  .rp-pick__options { display: grid; gap: var(--rp-s-3); }
+
+  .rp-pick__option {
+    display: grid;
+    grid-template-columns: 1.375rem 1fr;
+    gap: var(--rp-s-3);
+    padding: var(--rp-s-4);
+    background-color: var(--rp-surface);
+    border: 1px solid var(--rp-rule-strong);
+    border-radius: var(--rp-r-1);
+    cursor: pointer;
+    transition: background-color var(--rp-dur-tick) var(--rp-ease),
+                border-color     var(--rp-dur-tick) var(--rp-ease);
+  }
+  .rp-pick__option:hover { background-color: var(--rp-row-hover); }
+  .rp-pick__option input[type="radio"] {
+    inline-size: 1.375rem; block-size: 1.375rem; margin: 0;
+    accent-color: var(--rp-ink);
+  }
+  /* Selection is carried by a 3px start rule and the line tint, not by a
+     colour a colour-blind reader cannot separate from the neighbours. */
+  .rp-pick__option:has(input:checked) {
+    background-color: var(--rp-pin-tint);
+    border-color: var(--rp-pin);
+    box-shadow: inset 3px 0 0 var(--rp-pin);
+  }
+  @supports not selector(:has(*)) {
+    .rp-pick__option[data-checked="true"] {
+      background-color: var(--rp-pin-tint);
+      border-color: var(--rp-pin);
+      box-shadow: inset 3px 0 0 var(--rp-pin);
+    }
+  }
+
+  .rp-pick__body { display: grid; gap: var(--rp-s-2); min-inline-size: 0; }
+
+  .rp-pick__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--rp-s-2) var(--rp-s-4);
+  }
+  .rp-pick__class { font-size: var(--rp-t-base); font-weight: 650; color: var(--rp-ink); }
+  .rp-pick__group {
+    font-family: var(--rp-font-num);
+    font-size: var(--rp-t-data);
+    font-variant-numeric: lining-nums slashed-zero;
+    color: var(--rp-ink-2);
+  }
+
+  /* Verbatim scope text from the determination. This is the thing she is
+     actually reading, so it gets the widest measure and the prose leading;
+     it is a quotation and it is marked as one. */
+  .rp-pick__scope {
+    margin: 0;
+    padding-inline-start: var(--rp-s-4);
+    border-inline-start: 2px solid var(--rp-rule-strong);
+    font-size: var(--rp-t-base);
+    line-height: var(--rp-lh-prose);
+    color: var(--rp-ink);
+    max-inline-size: var(--rp-measure);
+  }
+
+  .rp-pick__rates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--rp-s-2) var(--rp-s-6);
+    font-family: var(--rp-font-num);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--rp-t-data);
+    color: var(--rp-ink);
+  }
+  .rp-pick__rates dt { color: var(--rp-ink-3); }
+  .rp-pick__rates dd { margin: 0 0 0 var(--rp-s-2); font-weight: 650; }
+  .rp-pick__rate-pair { display: flex; align-items: baseline; }
+
+  .rp-pick__source { font-size: var(--rp-t-data); }
+
+  /* Pre-selection (ENGINE lattice L-B / L-C) says so in words and takes no
+     extra visual weight. It is still blocked until she clicks (§8.6.3). */
+  .rp-pick__preselect {
+    font-size: var(--rp-t-data);
+    font-weight: 650;
+    color: var(--rp-ink-2);
+  }
+  /* Reduced-mode notice: the model is unavailable, the list is the
+     determination's own, unranked. Neutral ink — this is not an error. */
+  .rp-pick__reduced {
+    padding: var(--rp-s-3) var(--rp-s-4);
+    font-size: var(--rp-t-data);
+    color: var(--rp-ink-2);
+    background-color: var(--rp-sunken);
+    border-inline-start: 3px solid var(--rp-rule-strong);
+  }
+
+  /* "None of these" opens the determination's full class list. It is the
+     last thing on the card and there is nothing after it. No chat bubble,
+     no mailto, no "ask an expert" — A3 is enforced by absence (§8.6.4). */
+  .rp-pick__escape { display: grid; gap: var(--rp-s-3); }
+
+  /* ------------------------------------------------------------------------
+     §8.7  STATUS CHIP — three members, and the type is total
+     Colour is the THIRD channel. First the word, then the glyph, then the
+     border style: solid / dashed / double. A fax keeps all three.
+     ---------------------------------------------------------------------- */
+  .rp-status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--rp-s-2);
+    padding-inline: var(--rp-s-3);
+    padding-block: var(--rp-s-2);
+    min-block-size: var(--rp-target-abs);
+    font-size: var(--rp-t-data);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border-radius: var(--rp-r-1);
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .rp-status__glyph { font-size: 1.05em; line-height: 1; flex: none; }
+
+  .rp-status--certifiable {
+    color: var(--rp-ok);
+    background-color: var(--rp-ok-tint);
+    border: 2px solid var(--rp-ok);          /* SOLID  — settled            */
+  }
+  .rp-status--dated {
+    color: var(--rp-dated);
+    background-color: var(--rp-dated-tint);
+    border: 2px dashed var(--rp-dated);      /* DASHED — a claim narrowed   */
+  }
+  .rp-status--draft {
+    color: var(--rp-draft);
+    background-color: var(--rp-draft-tint);
+    border: 4px double var(--rp-draft);      /* DOUBLE — do not sign        */
+  }
+  /* The chip is large on the artifact review screen, because USER_JOURNEY
+     §7.1 puts it first on the page and it is the thing she must not miss. */
+  .rp-status--lg { font-size: var(--rp-t-lead); padding-inline: var(--rp-s-4); padding-block: var(--rp-s-3); }
+
+  /* ------------------------------------------------------------------------
+     §8.8  THE ARTIFACT SHEET AND THE DRAFT WATERMARK
+     The preview is the WH-347 at true proportion: US Letter LANDSCAPE
+     (verified: the DOL PDF's MediaBox is 0 0 792 612 pt across both pages).
+     ---------------------------------------------------------------------- */
+  .rp-sheet {
+    position: relative;
+    inline-size: 100%;
+    max-inline-size: 66rem;
+    aspect-ratio: 11 / 8.5;
+    margin-inline: auto;
+    padding: 0.35in;
+    background-color: var(--rp-surface);
+    color: var(--rp-ink);
+    border: 1px solid var(--rp-rule-strong);
+    border-radius: var(--rp-r-0);   /* paper has square corners */
+    overflow: hidden;
+  }
+  .rp-sheet__body { position: relative; z-index: 1; block-size: 100%; }
+
+  /* The overlay. Bounded by construction (§4.6): exactly one colour at
+     exactly one alpha over exactly one surface, so a reader looking at the
+     form is on either the paper or ONE known composite, and both are
+     certified. Light composite #EDD1CF holds 5.08:1 for --rp-ink-3, the
+     smallest ink the form uses. */
+  .rp-sheet__mark {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 2.2em;
+    overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+    transform: rotate(-24deg) scale(1.35);
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .rp-sheet__mark span {
+    font-family: var(--rp-font-ui);
+    font-size: clamp(1.5rem, 5.2vw, 3.25rem);
+    font-weight: 800;
+    letter-spacing: 0.10em;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--rp-mark);
+    opacity: var(--rp-mark-alpha);
+  }
+
+  /* The watermark is decorative and aria-hidden. The instruction it carries
+     is announced ONCE, at full contrast, by this bar and by the withheld
+     signature block below — never by opacity alone (§8.8.2). */
+  .rp-sheet__band {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--rp-s-2) var(--rp-s-4);
+    margin-block-end: var(--rp-s-4);
+    padding: var(--rp-s-3) var(--rp-s-4);
+    font-size: var(--rp-t-base);
+    font-weight: 700;
+    color: var(--rp-draft);
+    background-color: var(--rp-draft-tint);
+    border-block: 3px solid var(--rp-draft);
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .rp-sheet__band-note { font-weight: 400; color: var(--rp-ink); }
+
+  /* The signature block. Rendered ONLY at CERTIFIABLE / CERTIFIABLE (DATED).
+     Withheld is not "greyed out" — it is structurally replaced, because a
+     greyed-out signature line photocopies into a signable signature line. */
+  .rp-signature {
+    margin-block-start: var(--rp-s-6);
+    padding-block-start: var(--rp-s-5);
+    border-block-start: 2px solid var(--rp-rule-ink);
+  }
+  .rp-signature__line {
+    inline-size: min(24rem, 100%);
+    block-size: var(--rp-s-8);
+    border-block-end: 1px solid var(--rp-ink);
+  }
+  .rp-signature__caption { margin-block-start: var(--rp-s-2); font-size: var(--rp-t-data); color: var(--rp-ink-2); }
+
+  .rp-signature--withheld {
+    padding: var(--rp-s-5);
+    border: 4px double var(--rp-draft);
+    background-color: var(--rp-draft-tint);
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .rp-signature--withheld .rp-signature__line { display: none; }
+  .rp-signature__withheld-title {
+    font-size: var(--rp-t-lead);
+    font-weight: 700;
+    color: var(--rp-draft);
+  }
+  .rp-signature__withheld-why {
+    margin-block-start: var(--rp-s-2);
+    font-size: var(--rp-t-base);
+    color: var(--rp-ink);
+    max-inline-size: var(--rp-measure);
+  }
+
+  /* ------------------------------------------------------------------------
+     §8.9  PROVENANCE FOOTER  (USER_JOURNEY §7.3 — D8's channel)
+     The one component with NO print override anywhere in this file. What is
+     on the screen is what is on the paper the GC receives, byte for byte.
+     ---------------------------------------------------------------------- */
+  .rp-prov {
+    max-inline-size: var(--rp-measure);
+    margin-block-start: var(--rp-s-5);
+    padding-block-start: var(--rp-s-3);
+    border-block-start: 2px solid var(--rp-rule-ink);
+    font-family: var(--rp-font-num);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-feature-settings: "tnum" 1, "lnum" 1, "zero" 1;
+    font-size: var(--rp-t-micro);
+    line-height: 1.55;
+    color: var(--rp-ink-2);
+  }
+  .rp-prov > * { margin: 0; }
+  /* Line 1 — the rate claim. This is the product, so it is ink, not grey. */
+  .rp-prov__claim { color: var(--rp-ink); font-weight: 650; }
+  /* Line 2 — the freshness sentence. Dated/stale narrows the SENTENCE, never
+     the status (D7), so the only change here is the wording plus this hue. */
+  .rp-prov__freshness { color: var(--rp-ink-2); }
+  .rp-prov[data-freshness="dated"] .rp-prov__freshness,
+  .rp-prov[data-freshness="stale"] .rp-prov__freshness { color: var(--rp-dated); font-weight: 650; }
+  /* Line 3 — the evidence triple: snapshot hash, engine version, timestamp. */
+  .rp-prov__build { color: var(--rp-ink-3); overflow-wrap: anywhere; }
+  /* Line 4 — the boundary sentence. Line 5 — the verification URL. */
+  .rp-prov__boundary { color: var(--rp-ink); }
+  .rp-prov__url { color: var(--rp-pin); overflow-wrap: anywhere; }
+
+  /* Inline form, for a Friday-board row or a filing list. Same tokens, one
+     line, still monospaced and still carrying the revision number. */
+  .rp-prov--chip {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--rp-s-1) var(--rp-s-3);
+    max-inline-size: none;
+    margin: 0;
+    padding: var(--rp-s-1) var(--rp-s-2);
+    border-block-start: 0;
+    border: 1px solid var(--rp-rule-strong);
+    border-radius: var(--rp-r-1);
+    background-color: var(--rp-sunken);
+    font-size: var(--rp-t-micro);
+    line-height: 1.3;
+  }
+
+  /* ------------------------------------------------------------------------
+     §8.10  ALERT BANNER — one per refusal primitive, and no success variant
+     P-A blocked / P-C narrowed / P-D declined / system notice. There is
+     deliberately no --success: "your filing is compliant" is banned copy
+     (USER_JOURNEY §16.3), so the system ships no component that could say it.
+     ---------------------------------------------------------------------- */
+  .rp-alert {
+    display: grid;
+    grid-template-columns: 1.5rem 1fr;
+    gap: var(--rp-s-2) var(--rp-s-3);
+    padding: var(--rp-s-4) var(--rp-s-5);
+    background-color: var(--rp-surface);
+    border: 1px solid var(--rp-rule-strong);
+    border-inline-start: 4px solid var(--rp-rule-strong);
+    border-radius: var(--rp-r-1);
+    color: var(--rp-ink);
+  }
+  .rp-alert__glyph { font-size: 1.15em; line-height: 1.3; font-weight: 700; }
+  .rp-alert__title { font-size: var(--rp-t-base); font-weight: 650; }
+  .rp-alert__body  { grid-column: 2; font-size: var(--rp-t-base); line-height: var(--rp-lh-prose); max-inline-size: var(--rp-measure); }
+  .rp-alert__body > * + * { margin-block-start: var(--rp-s-3); }
+  .rp-alert__actions { grid-column: 2; margin-block-start: var(--rp-s-3); }
+
+  /* P-C — narrowed claim. The rate did not change; our knowledge of
+     successors aged. Dated hue, and the credit sentence is IN the body. */
+  .rp-alert--narrowed {
+    background-color: var(--rp-dated-tint);
+    border-color: var(--rp-dated);
+    border-inline-start-color: var(--rp-dated);
+  }
+  .rp-alert--narrowed .rp-alert__glyph,
+  .rp-alert--narrowed .rp-alert__title { color: var(--rp-dated); }
+
+  /* P-A / P-B — a line is blocked, or the artifact is a draft. */
+  .rp-alert--blocked {
+    background-color: var(--rp-draft-tint);
+    border-color: var(--rp-draft);
+    border-inline-start-color: var(--rp-draft);
+  }
+  .rp-alert--blocked .rp-alert__glyph,
+  .rp-alert--blocked .rp-alert__title { color: var(--rp-draft); }
+
+  /* P-D — declined conclusion (FAR 22.404-6, annualization, permissibility).
+     NO HUE AT ALL. A declined conclusion is not a warning and not an error;
+     it is the most honest thing the product says, and colouring it would
+     turn a statement of epistemic limits into an alarm (§8.10.2). */
+  .rp-alert--declined {
+    background-color: var(--rp-sunken);
+    border-color: var(--rp-rule-strong);
+    border-inline-start-color: var(--rp-ink);
+  }
+
+  /* System notice: /status, corpus cold start, scheduled work. */
+  .rp-alert--notice {
+    background-color: var(--rp-pin-tint);
+    border-color: var(--rp-pin);
+    border-inline-start-color: var(--rp-pin);
+  }
+  .rp-alert--notice .rp-alert__glyph,
+  .rp-alert--notice .rp-alert__title { color: var(--rp-pin); }
+
+  /* A banner carrying a live claim narrowing is not dismissible. The class
+     exists so a reviewer can see, in the markup, that someone tried. */
+  .rp-alert--narrowed .rp-alert__dismiss,
+  .rp-alert--blocked .rp-alert__dismiss { display: none; }
+
+  /* ------------------------------------------------------------------------
+     §8.11  PRICING CARD
+     No badge that outweighs a tier, no strikethrough, no scarcity, no
+     countdown. The system ships no component capable of expressing one; the
+     omission is the enforcement (§8.11.2).
+     ---------------------------------------------------------------------- */
+  .rp-price {
+    display: flex;
+    flex-direction: column;
+    gap: var(--rp-s-4);
+    padding: var(--rp-s-6);
+    background-color: var(--rp-surface);
+    border: 1px solid var(--rp-rule-strong);
+    border-radius: var(--rp-r-2);
+  }
+  /* The recommendation is stated in words she can disagree with, and marked
+     by a 4px ink rule at the top — the same rule that structures a table,
+     not a coloured halo (Nielsen #3). */
+  .rp-price--recommended { border-block-start: 4px solid var(--rp-ink); }
+
+  .rp-price__tier {
+    font-size: var(--rp-t-data);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--rp-ink-2);
+  }
+  .rp-price__amount {
+    display: flex;
+    align-items: baseline;
+    gap: var(--rp-s-2);
+    font-family: var(--rp-font-num);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--rp-t-fig);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--rp-ink);
+  }
+  .rp-price__unit { font-size: var(--rp-t-data); font-weight: 400; color: var(--rp-ink-3); }
+  .rp-price__who  { font-size: var(--rp-t-base); color: var(--rp-ink-2); max-inline-size: 30ch; }
+
+  /* The allowance table. The value metric is the certified filing, single
+     variable, so the card shows it as a table rather than as a feature list
+     with a cap buried in it. */
+  .rp-price__meter {
+    inline-size: 100%;
+    font-size: var(--rp-t-data);
+    border-block: 1px solid var(--rp-rule);
+  }
+  .rp-price__meter th,
+  .rp-price__meter td { padding-block: var(--rp-s-2); vertical-align: baseline; }
+  .rp-price__meter th { font-weight: 400; color: var(--rp-ink-3); }
+  .rp-price__meter td {
+    text-align: end;
+    font-family: var(--rp-font-num);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-weight: 650;
+    color: var(--rp-ink);
+  }
+
+  .rp-price__list { display: grid; gap: var(--rp-s-2); margin: 0; padding: 0; list-style: none; }
+  .rp-price__item {
+    display: grid;
+    grid-template-columns: 1.25rem 1fr;
+    gap: var(--rp-s-2);
+    font-size: var(--rp-t-data);
+    line-height: var(--rp-lh-ui);
+    color: var(--rp-ink-2);
+  }
+  .rp-price__item::before { content: "\2713"; color: var(--rp-ink); font-weight: 700; }
+  /* What this tier does NOT do, printed on the card. */
+  .rp-price__item--not { color: var(--rp-ink-3); }
+  .rp-price__item--not::before { content: "\2014"; color: var(--rp-ink-3); }
+
+  .rp-price__terms { margin-block-start: auto; font-size: var(--rp-t-micro); color: var(--rp-ink-2); }
+
+  /* ------------------------------------------------------------------------
+     §8.12  DISCLOSURE, PROGRESS, KEY HINTS, EMPTY STATE
+     ---------------------------------------------------------------------- */
+  .rp-disclose { border: 1px solid var(--rp-rule-strong); border-radius: var(--rp-r-1); background-color: var(--rp-surface); }
+  .rp-disclose > summary {
+    display: flex;
+    align-items: center;
+    gap: var(--rp-s-2);
+    min-block-size: var(--rp-target-min);
+    padding: var(--rp-s-3) var(--rp-s-4);
+    font-size: var(--rp-t-base);
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+  }
+  .rp-disclose > summary::-webkit-details-marker { display: none; }
+  .rp-disclose > summary::before { content: "\25B8"; flex: none; color: var(--rp-ink-3); }
+  .rp-disclose[open] > summary::before { content: "\25BE"; }
+  .rp-disclose[open] > summary { border-block-end: 1px solid var(--rp-rule); }
+  .rp-disclose__body { padding: var(--rp-s-4); }
+
+  /* Determinate only. There is no indeterminate variant: where no honest
+     proportion exists the interface lists items and resolves them one at a
+     time instead (§7.3, USER_JOURNEY §17). */
+  .rp-progress {
+    inline-size: 100%;
+    block-size: 0.5rem;
+    background-color: var(--rp-sunken);
+    border: 1px solid var(--rp-rule-strong);
+    border-radius: var(--rp-r-1);
+    overflow: hidden;
+  }
+  .rp-progress__fill {
+    block-size: 100%;
+    background-color: var(--rp-ink);
+    transition: inline-size var(--rp-dur-state) linear;
+  }
+  .rp-progress__label {
+    margin-block-start: var(--rp-s-2);
+    font-size: var(--rp-t-data);
+    font-variant-numeric: tabular-nums lining-nums;
+    color: var(--rp-ink-2);
+  }
+
+  kbd, .rp-kbd {
+    display: inline-block;
+    padding: 0.1em 0.42em;
+    font-family: var(--rp-font-num);
+    font-size: 0.9em;
+    color: var(--rp-ink);
+    background-color: var(--rp-sunken);
+    border: 1px solid var(--rp-rule-strong);
+    border-block-end-width: 2px;
+    border-radius: var(--rp-r-1);
+    white-space: nowrap;
+  }
+
+  .rp-empty {
+    display: grid;
+    gap: var(--rp-s-4);
+    justify-items: start;
+    padding: var(--rp-s-8) var(--rp-s-6);
+    background-color: var(--rp-surface);
+    border: 1px dashed var(--rp-rule-strong);
+    border-radius: var(--rp-r-2);
+  }
+  .rp-empty__title { font-size: var(--rp-t-h3); font-weight: 650; }
+  .rp-empty__body  { font-size: var(--rp-t-base); color: var(--rp-ink-2); max-inline-size: var(--rp-measure-narrow); }
+
+  /* ------------------------------------------------------------------------
+     §8.13  MODAL — the only surface that may take precedence, and it may
+     never carry a compliance decision (USER_JOURNEY §7.4).
+     ---------------------------------------------------------------------- */
+  .rp-modal {
+    z-index: var(--rp-z-modal);   /* only load-bearing if not in the top layer */
+    inline-size: min(38rem, calc(100vw - var(--rp-s-7)));
+    max-block-size: calc(100dvh - var(--rp-s-8));
+    padding: var(--rp-s-6);
+    background-color: var(--rp-surface);
+    color: var(--rp-ink);
+    border: 2px solid var(--rp-rule-ink);
+    border-radius: var(--rp-r-2);
+  }
+  .rp-modal::backdrop { background-color: rgb(20 18 14 / 0.55); }
+
+  /* ------------------------------------------------------------------------
+     §8.14  LEGAL MICRO-PRINT — the second and last permitted use of 13px
+     (§1 R4). Terms, the DO-NOT-ASSERT paragraph on a marketing page, the
+     OMB burden notice reproduced under the form. It is --rp-ink-2, never
+     --rp-ink-mute: "small" is a size, not permission to be unreadable.
+     ---------------------------------------------------------------------- */
+  .rp-legal {
+    max-inline-size: var(--rp-measure);
+    font-size: var(--rp-t-micro);
+    line-height: 1.55;
+    color: var(--rp-ink-2);
+  }
+  .rp-legal > * + * { margin-block-start: var(--rp-s-2); }
+}
+
+/* ==========================================================================
+   UTILITIES
+   ========================================================================== */
+@layer wl.utilities {
+  .rp-stack        { display: grid; gap: var(--rp-s-4); }
+  .rp-stack--tight { gap: var(--rp-s-2); }
+  .rp-stack--loose { gap: var(--rp-s-6); }
+  .rp-stack--section { gap: var(--rp-s-8); }
+
+  .rp-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--rp-s-3); }
+  .rp-row--between { justify-content: space-between; }
+
+  .rp-measure  { max-inline-size: var(--rp-measure); }
+  .rp-narrow   { max-inline-size: var(--rp-measure-narrow); }
+
+  /* Long-form reading: marketing copy, /status explanations, the export
+     README. The ONLY context where the print block appends link URLs — an
+     artifact already carries exactly one URL and a second copy is noise. */
+  .rp-prose { max-inline-size: var(--rp-measure); line-height: var(--rp-lh-prose); }
+  .rp-prose > * + * { margin-block-start: var(--rp-s-4); }
+  .rp-prose h2 { margin-block-start: var(--rp-s-8); }
+  .rp-prose h3 { margin-block-start: var(--rp-s-7); }
+
+  .rp-t-micro  { font-size: var(--rp-t-micro); }
+  .rp-t-data   { font-size: var(--rp-t-data); }
+  .rp-t-lead   { font-size: var(--rp-t-lead); }
+  .rp-ink-2    { color: var(--rp-ink-2); }
+  .rp-ink-3    { color: var(--rp-ink-3); }
+
+  .rp-rule-top { border-block-start: 1px solid var(--rp-rule); padding-block-start: var(--rp-s-4); }
+  .rp-rule-top--ink { border-block-start: 2px solid var(--rp-rule-ink); }
+
+  .rp-scroll-x { overflow-x: auto; overscroll-behavior-x: contain; }
+
+  .rp-sr-only {
+    position: absolute !important;
+    inline-size: 1px; block-size: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip-path: inset(50%);
+    white-space: nowrap; border: 0;
+  }
+  /* The skip link is the first focusable element on every page (§9.2). It is
+     hidden by POSITION, not by transform: the transform budget is 1px and
+     this system does not spend it on layout (§7.2). */
+  .rp-skip {
+    position: absolute;
+    inset-block-start: -100vh;
+    inset-inline-start: var(--rp-s-2);
+    z-index: calc(var(--rp-z-header) + 1);
+    padding: var(--rp-s-3) var(--rp-s-4);
+    background-color: var(--rp-surface);
+    color: var(--rp-ink);
+    border: 2px solid var(--rp-rule-ink);
+    border-radius: var(--rp-r-1);
+    text-decoration: none;
+  }
+  .rp-skip:focus-visible { inset-block-start: var(--rp-s-2); }
+
+  /* 44px hit area without enlarging the visual (§3 A6). */
+  .rp-hitslop { position: relative; }
+  .rp-hitslop::after {
+    content: "";
+    position: absolute;
+    inset: 50% 50%;
+    inline-size: var(--rp-target-min);
+    block-size: var(--rp-target-min);
+    transform: translate(-50%, -50%);
+  }
+
+  .rp-no-print { }   /* semantic marker; the print block does the hiding */
+}
+
+/* ==========================================================================
+   ADAPTIVE — reduced motion, forced colors, print
+   ========================================================================== */
+@layer wl.adaptive {
+
+  /* ------------------------------------------------------------------------
+     §7.4  prefers-reduced-motion
+     Durations collapse to 0.01ms, never 0, so transitionend/animationend
+     handlers still fire. Every state stays distinguishable without motion,
+     because no state in this system was ever carried by motion (§7.1).
+     ---------------------------------------------------------------------- */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    /* The settle animation ends on a transparent background either way, so
+       removing it loses nothing; the row's status cell already says
+       "resolved". */
+    .rp-table tbody tr[data-row="resolved"] { animation: none; }
+  }
+
+  /* ------------------------------------------------------------------------
+     §10.5  forced-colors (Windows High Contrast)
+     forced-color-adjust is used NOWHERE. The system's colours win. The
+     structure survives because hierarchy here is carried by borders and
+     weight, which forced-colors preserves — the payoff for §1 R1.
+     ---------------------------------------------------------------------- */
+  @media (forced-colors: active) {
+    .rp-header, .rp-tablewrap, .rp-pick, .rp-price, .rp-alert,
+    .rp-drop, .rp-disclose, .rp-modal, .rp-sheet, .rp-empty {
+      background-color: Canvas;
+      color: CanvasText;
+      border-color: CanvasText;
+    }
+    .rp-btn { border: 1px solid ButtonText; background-color: ButtonFace; color: ButtonText; }
+    .rp-btn--primary { background-color: Highlight; color: HighlightText; border-color: Highlight; }
+    .rp-btn[disabled], .rp-btn[aria-disabled="true"] { color: GrayText; border-color: GrayText; }
+
+    .rp-table thead th { background-color: Canvas; color: CanvasText; border-block-end-color: CanvasText; }
+    .rp-table tbody tr[aria-selected="true"] { background-color: Highlight; color: HighlightText; }
+
+    /* Border STYLE is what separates the three statuses here, and it is the
+       reason the status system was designed on border style in the first
+       place: solid / dashed / double all survive forced-colors intact. */
+    .rp-status { background-color: Canvas; color: CanvasText; border-color: CanvasText; }
+
+    .rp-progress { border-color: CanvasText; }
+    .rp-progress__fill { background-color: Highlight; }
+
+    /* An overlay drawn with opacity is meaningless once colours are forced,
+       so the watermark is dropped and the band and the withheld signature
+       block carry the instruction alone. They always could (§8.8.2). */
+    .rp-sheet__mark { display: none; }
+    .rp-sheet__band, .rp-signature--withheld { border-color: CanvasText; background-color: Canvas; color: CanvasText; }
+
+    :focus-visible { outline: 3px solid Highlight; outline-offset: 2px; }
+  }
+
+  /* ------------------------------------------------------------------------
+     §11  PRINT
+     Two print paths, because they are two different documents.
+
+     (A) THE REVIEW SCREEN — portrait Letter. Chrome is dropped; the
+         provenance block, the boundary statement and the exception report
+         survive, because those are the parts a GC or an auditor reads.
+     (B) THE WH-347 PREVIEW — landscape Letter at true size, named page.
+         Verified against the DOL form itself: MediaBox 0 0 792 612 pt on
+         both pages = 11in x 8.5in.
+
+     HONEST LIMIT (§11.4): the downloaded PDF from our renderer is the
+     artifact. This stylesheet makes the browser's print path usable; it
+     cannot switch off the browser's own headers, footers or "fit to page"
+     scaling, and the in-product copy says so rather than pretending.
+     ---------------------------------------------------------------------- */
+  @media print {
+    @page { size: letter portrait; margin: 0.6in; }
+    @page rp-wh347 { size: letter landscape; margin: 0.35in; }
+
+    /* Print the light palette regardless of the reader's screen theme: an
+       inverted artifact is not the artifact. These are the only places in
+       this file where a colour is written outside the token system, and it
+       is deliberate — paper has one theme. */
+    :root, :root[data-theme="dark"] {
+      --rp-ground:      #FFFFFF;
+      --rp-surface:     #FFFFFF;
+      --rp-sunken:      #F3F1EB;
+      --rp-field:       #FFFFFF;
+      --rp-ink:         #14120E;
+      --rp-ink-2:       #403A30;
+      --rp-ink-3:       #5C5648;
+      --rp-rule:        #C4BEAF;
+      --rp-rule-strong: #6B6455;
+      --rp-rule-ink:    #14120E;
+      --rp-pin:        #12508F;
+      --rp-ok:          #0F6B37;
+      --rp-dated:       #8A5200;
+      --rp-draft:       #A61B10;
+      --rp-ok-tint:     #E2EFE5;
+      --rp-dated-tint:  #FAEDD6;
+      --rp-draft-tint:  #FBE6E2;
+      --rp-mark:        #A61B10;
+      --rp-mark-alpha:  var(--rp-mark-alpha-print);
+    }
+
+    body {
+      background: #FFFFFF;
+      color: var(--rp-ink);
+      font-size: 10.5pt;
+      line-height: 1.4;
+    }
+
+    .rp-header, .rp-skip, .rp-btn, .rp-btn-row, .rp-drop, .rp-progress,
+    .rp-modal, .rp-alert__dismiss, .rp-no-print,
+    nav, [role="navigation"] { display: none !important; }
+
+    .rp-shell { max-inline-size: none; padding-inline: 0; }
+
+    /* Rules print. Tints print only where the tint IS the message. */
+    .rp-tablewrap { border: 1px solid var(--rp-rule-strong); overflow: visible; }
+    .rp-table { font-size: 8.5pt; }
+    .rp-table thead { display: table-header-group; }   /* repeat on every page */
+    .rp-table tfoot { display: table-footer-group; }
+    .rp-table tbody tr { break-inside: avoid; page-break-inside: avoid; }
+    .rp-table thead th { position: static; }
+
+    .rp-status, .rp-sheet__band, .rp-signature--withheld, .rp-sheet__mark,
+    .rp-alert--blocked, .rp-alert--narrowed {
+      print-color-adjust: exact;
+      -webkit-print-color-adjust: exact;
+    }
+
+    .rp-alert, .rp-pick, .rp-price, .rp-signature, .rp-prov {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    /* The provenance block has NO override. It renders on paper exactly as
+       it renders on screen, which is the whole point of D8: the artifact is
+       the channel, and the channel is a footer somebody else reads. */
+
+    .rp-boundary { display: block !important; }
+
+    /* URLs are printed for links in prose, but never inside the artifact —
+       the artifact already carries exactly one URL, in the provenance block,
+       and a second copy of it would be noise on a federal form. */
+    .rp-prose a[href^="http"]::after {
+      content: " (" attr(href) ")";
+      font-size: 8pt;
+      color: var(--rp-ink-3);
+      overflow-wrap: anywhere;
+    }
+
+    p, li { orphans: 3; widows: 3; }
+    h1, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
+
+    /* -- (B) the artifact ------------------------------------------------- */
+    /* Named pages are progressive: where `page:` is unsupported the sheet
+       prints on the portrait default rather than failing. Degraded, not
+       broken — and the downloaded PDF is the artifact either way (§11.4). */
+    .rp-sheet {
+      page: rp-wh347;
+      inline-size: 100%;
+      max-inline-size: none;
+      aspect-ratio: auto;
+      min-block-size: 0;
+      padding: 0;
+      border: 0;
+      overflow: visible;
+      break-after: page;
+      page-break-after: always;
+    }
+    .rp-sheet:last-of-type { break-after: auto; page-break-after: auto; }
+    .rp-sheet__mark span { font-size: 46pt; }
+
+    /* Printing only the artifact: the app sets this on <html> before
+       window.print() so the review chrome never reaches the tray. */
+    :root[data-print="artifact"] body > *:not(.rp-print-root) { display: none !important; }
+  }
+}

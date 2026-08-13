@@ -1,0 +1,49 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js
+.next/
+out/
+next-env.d.ts.timestamp
+*.tsbuildinfo
+
+# Build output
+dist/
+build/
+
+# Environment — Twelve-Factor III: zero secrets in the repo.
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Test / tooling artifacts
+coverage/
+playwright-report/
+test-results/
+blob-report/
+.playwright/
+
+# The frozen golden corpus (ENGINE §22) and the recorded upstream fixtures ARE
+# version-controlled — they are the oracles G1 gates on. Only derived artefacts
+# are ignored.
+corpus/dist/
+
+# Generated artifacts and local uploads (Twelve-Factor VI: no local file writes
+# that outlive a request; artifacts stream to R2, never to local disk).
+tmp/
+*.pdf
+!corpus/**/*.pdf
+
+# Editors and OS
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*.log
+
+# TypeScript incremental build info
+tsconfig.tsbuildinfo

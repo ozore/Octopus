@@ -1,0 +1,15 @@
+# The repository root ignores `*.pdf`, and correctly so: Twelve-Factor VI forbids
+# local file writes that outlive a request, and every artifact Ratepin generates in
+# production streams to R2 rather than to disk.
+#
+# These four are the exception, and they are the opposite of a generated artifact:
+# they are ORACLES. `golden.test.ts` compares today's renderer against them byte for
+# byte, which is the RENDER_DIFF gate of `ENGINE.md` §27 — "is the page a customer
+# downloads today the page they downloaded last month?". An ignored oracle is a test
+# that passes on a fresh clone because there is nothing to compare against, which is
+# the worst kind of green.
+#
+# Re-including works here because the DIRECTORY is not excluded, only the pattern;
+# git cannot re-include a file inside an excluded directory, but it can re-include a
+# file matched by a pattern.
+!*.pdf

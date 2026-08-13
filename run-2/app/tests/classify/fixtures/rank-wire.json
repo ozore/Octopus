@@ -1,0 +1,271 @@
+{
+  "_note": [
+    "Recorded /v1/messages response bodies for the ranking call (ENGINE.md §15.4).",
+    "Every one of them is fed through the SAME interpretWireResponse the live",
+    "adapter uses, so a change to the parse is caught by these fixtures rather than",
+    "by a second, drifting copy of it. No test in this repository is permitted to",
+    "reach Anthropic: vitest.setup.ts closes the socket, and the failure message",
+    "says to record a response here instead."
+  ],
+
+  "accepted": {
+    "id": "msg_01RatepinRankAccepted",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-sonnet-5",
+    "stop_reason": "end_turn",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"ranked\":[1,2,0],\"confidence\":\"high\",\"rationale_span\":\"PUMP OPERATOR\"}"
+      }
+    ],
+    "usage": {
+      "input_tokens": 351,
+      "output_tokens": 38,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 2114
+    }
+  },
+
+  "accepted_cold_cache": {
+    "id": "msg_01RatepinRankColdCache",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-sonnet-5",
+    "stop_reason": "end_turn",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"ranked\":[1,0,2],\"confidence\":\"high\",\"rationale_span\":\"CONCRETE PUMP\"}"
+      }
+    ],
+    "usage": {
+      "input_tokens": 351,
+      "output_tokens": 38,
+      "cache_creation_input_tokens": 2114,
+      "cache_read_input_tokens": 0
+    }
+  },
+
+  "declined": {
+    "id": "msg_01RatepinRankDeclined",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-sonnet-5",
+    "stop_reason": "end_turn",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"ranked\":[],\"confidence\":\"low\",\"rationale_span\":\"\",\"no_suitable_candidate\":true}"
+      }
+    ],
+    "usage": {
+      "input_tokens": 349,
+      "output_tokens": 27,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 2114
+    }
+  },
+
+  "numeric_prose": {
+    "id": "msg_01RatepinRankNumericProse",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-sonnet-5",
+    "stop_reason": "end_turn",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"ranked\":[1,0],\"confidence\":\"high\",\"rationale_span\":\"PUMP OPERATOR at $20.74\"}"
+      }
+    ],
+    "usage": {
+      "input_tokens": 351,
+      "output_tokens": 44,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 2114
+    }
+  },
+
+  "asserting_prose": {
+    "id": "msg_01RatepinRankAsserts",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-sonnet-5",
+    "stop_reason": "end_turn",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"ranked\":[1,0],\"confidence\":\"high\",\"rationale_span\":\"PUMP OPERATOR is compliant\"}"
+      }
+    ],
+    "usage": {
+      "input_tokens": 351,
+      "output_tokens": 44,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 2114
+    }
+  },
+
+  "extra_field": {
+    "id": "msg_01RatepinRankExtraField",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-sonnet-5",
+    "stop_reason": "end_turn",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"ranked\":[0],\"confidence\":\"high\",\"rationale_span\":\"PUMP\",\"base_rate\":20.74}"
+      }
+    ],
+    "usage": {
+      "input_tokens": 351,
+      "output_tokens": 40,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 2114
+    }
+  },
+
+  "index_out_of_range": {
+    "id": "msg_01RatepinRankOutOfRange",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-sonnet-5",
+    "stop_reason": "end_turn",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"ranked\":[9,1],\"confidence\":\"high\",\"rationale_span\":\"PUMP\"}"
+      }
+    ],
+    "usage": {
+      "input_tokens": 351,
+      "output_tokens": 33,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 2114
+    }
+  },
+
+  "duplicate_index": {
+    "id": "msg_01RatepinRankDuplicate",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-sonnet-5",
+    "stop_reason": "end_turn",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"ranked\":[1,1,0],\"confidence\":\"high\",\"rationale_span\":\"PUMP\"}"
+      }
+    ],
+    "usage": {
+      "input_tokens": 351,
+      "output_tokens": 34,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 2114
+    }
+  },
+
+  "span_mismatch": {
+    "id": "msg_01RatepinRankSpanMismatch",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-sonnet-5",
+    "stop_reason": "end_turn",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"ranked\":[1,0],\"confidence\":\"high\",\"rationale_span\":\"CEMENT MASON\"}"
+      }
+    ],
+    "usage": {
+      "input_tokens": 351,
+      "output_tokens": 35,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 2114
+    }
+  },
+
+  "low_confidence": {
+    "id": "msg_01RatepinRankLowConfidence",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-sonnet-5",
+    "stop_reason": "end_turn",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"ranked\":[1,0,2],\"confidence\":\"medium\",\"rationale_span\":\"PUMP\"}"
+      }
+    ],
+    "usage": {
+      "input_tokens": 351,
+      "output_tokens": 36,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 2114
+    }
+  },
+
+  "truncated_json": {
+    "id": "msg_01RatepinRankTruncated",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-sonnet-5",
+    "stop_reason": "end_turn",
+    "content": [{ "type": "text", "text": "{\"ranked\":[1," }],
+    "usage": {
+      "input_tokens": 351,
+      "output_tokens": 512,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 2114
+    }
+  },
+
+  "refusal": {
+    "id": "msg_01RatepinRankRefusal",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-sonnet-5",
+    "stop_reason": "refusal",
+    "stop_details": { "type": "refusal", "category": null },
+    "content": [],
+    "usage": {
+      "input_tokens": 351,
+      "output_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 2114
+    }
+  },
+
+  "max_tokens": {
+    "id": "msg_01RatepinRankMaxTokens",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-sonnet-5",
+    "stop_reason": "max_tokens",
+    "content": [{ "type": "text", "text": "{\"ranked\":[1,2" }],
+    "usage": {
+      "input_tokens": 351,
+      "output_tokens": 512,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 2114
+    }
+  },
+
+  "no_text_block": {
+    "id": "msg_01RatepinRankNoText",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-sonnet-5",
+    "stop_reason": "end_turn",
+    "content": [{ "type": "thinking", "thinking": "" }],
+    "usage": {
+      "input_tokens": 351,
+      "output_tokens": 4,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 2114
+    }
+  }
+}

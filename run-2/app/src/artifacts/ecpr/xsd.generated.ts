@@ -1,0 +1,226 @@
+/**
+ * GENERATED FILE — do not edit. Regenerate from the schema beside it:
+ *
+ *   node -e "…" (see tests/artifacts/xsd-parity.test.ts, which fails the build if
+ *   this file and CPR.xsd have drifted a single byte)
+ *
+ * The .xsd is the artifact an operator diffs against the one DIR serves. THIS file
+ * is what the runtime hashes and what the validator reads its rules from, because a
+ * bundler that does not trace a .xsd out of src/ would otherwise turn a fail-closed
+ * schema gate into a missing-file crash at 16:00 on a Friday. The parity test is what
+ * keeps the two from becoming two different schemas.
+ */
+
+/* eslint-disable */
+export const CPR_XSD_TEXT = String.raw`<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  RATEPIN — CALIFORNIA DIR eCPR SCHEMA, SHIPPED IN THE IMAGE.
+
+  WHAT THIS FILE IS, STATED PLAINLY SO NOBODY MISREADS IT.
+
+  This is a TRANSCRIPTION of the constraint set verified against DIR's published
+  schema at http://www.dir.ca.gov/dlse/CPR-Prod-Test/CPR.xsd on 2026-08-13
+  (49,325 bytes, 83 element declarations, sha256
+  2ea52e977ab4ac74f7bb99aa9fb7634de8b48db7e090864150428b63c800d01a). It is NOT a
+  byte copy of that file, and it must never be presented as one: its own sha256 is
+  recorded separately as SHIPPED_XSD_SHA256 in schema.ts.
+
+  The distinction is operationally load-bearing (ADR-009). The L4 gate compares the
+  hash DIR SERVES against the hash PINNED IN CONFIG — neither of which is this
+  file's hash. This file is what the emitter is built against and what the validator
+  reads its rules from, so that a schema change is a diff between two artifacts we
+  control rather than a surprise at generation time.
+
+  VERIFIED CONSTRAINTS ENCODED BELOW, each traceable to deep dive 04 §1.6:
+    day               minOccurs="7" maxOccurs="7"
+    employee          maxOccurs="500"
+    ssn               [0-9]{9}, required
+    payrollNum        fixed=""  — DIR auto-increments; must be emitted empty
+    amendmentNum      fixed=""  — as above
+    contractorPWCR    [0-9]{10}|NA
+    contractorFEIN    [0-9]{9}
+    licenseType       CSLB | PL | OTHER
+    name              carries id, uppercased, matching ssn
+    numWithholdingExemp  required by CA, deleted from the revised federal form
+    deductionsContribPay fedTax, FICA, stateTax, SDI, vacationHoliday,
+                         healthWelfare, pension, training, fundAdmin, dues,
+                         travelSubs, savings, other, total, notes
+    version           "1.0" — while DIR publishes the schema as V1.3, which is
+                      exactly why the pin is a content hash and never the version
+                      attribute.
+
+  There is no fringe-benefit-credit element anywhere in the CA schema. That is a
+  fact about the schema, not an omission here.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://www.dir.ca.gov/dlse/CPR-Prod-Test/CPR.xsd"
+           targetNamespace="http://www.dir.ca.gov/dlse/CPR-Prod-Test/CPR.xsd"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="1.0">
+
+  <!-- ================================================================== -->
+  <!-- Simple types                                                       -->
+  <!-- ================================================================== -->
+
+  <xs:simpleType name="ssnType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]{9}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="pwcrType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]{10}|NA"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="feinType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]{9}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="licenseTypeType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CSLB"/>
+      <xs:enumeration value="PL"/>
+      <xs:enumeration value="OTHER"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="emptyType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="moneyType">
+    <xs:restriction base="xs:decimal">
+      <xs:fractionDigits value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="hoursType">
+    <xs:restriction base="xs:decimal">
+      <xs:fractionDigits value="2"/>
+      <xs:minInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="nameIdType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]{9}::.+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- ================================================================== -->
+  <!-- The document                                                       -->
+  <!-- ================================================================== -->
+
+  <xs:element name="eCPR">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="cprInfo" type="cprInfoType"/>
+        <xs:element name="employees" type="employeesType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="cprInfoType">
+    <xs:sequence>
+      <xs:element name="contractorName" type="xs:string"/>
+      <xs:element name="contractorAddress" type="xs:string"/>
+      <xs:element name="contractorCity" type="xs:string"/>
+      <xs:element name="contractorState" type="xs:string"/>
+      <xs:element name="contractorZip" type="xs:string"/>
+      <xs:element name="contractorPWCR" type="pwcrType"/>
+      <xs:element name="contractorFEIN" type="feinType"/>
+      <xs:element name="licenseType" type="licenseTypeType"/>
+      <xs:element name="licenseNum" type="xs:string"/>
+      <xs:element name="awardingBodyProjectId" type="xs:string"/>
+      <xs:element name="projectName" type="xs:string"/>
+      <xs:element name="contractAgency" type="xs:string" minOccurs="0"/>
+      <xs:element name="payrollNum" type="emptyType" fixed=""/>
+      <xs:element name="amendmentNum" type="emptyType" fixed=""/>
+      <xs:element name="weekEndDate" type="xs:date"/>
+      <xs:element name="isFinalPayroll" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="employeesType">
+    <xs:sequence>
+      <xs:element name="employee" type="employeeType" minOccurs="0" maxOccurs="500"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="employeeType">
+    <xs:sequence>
+      <xs:element name="name" type="employeeNameType"/>
+      <xs:element name="ssn" type="ssnType"/>
+      <xs:element name="address" type="xs:string" minOccurs="0"/>
+      <xs:element name="city" type="xs:string" minOccurs="0"/>
+      <xs:element name="state" type="xs:string" minOccurs="0"/>
+      <xs:element name="zip" type="xs:string" minOccurs="0"/>
+      <xs:element name="numWithholdingExemp" type="xs:nonNegativeInteger"/>
+      <xs:element name="classification" type="xs:string"/>
+      <xs:element name="craft" type="xs:string" minOccurs="0"/>
+      <xs:element name="days" type="daysType"/>
+      <xs:element name="hourlyRate" type="moneyType"/>
+      <xs:element name="grossPayThisProject" type="moneyType"/>
+      <xs:element name="grossPayAll" type="moneyType"/>
+      <xs:element name="deductionsContribPay" type="deductionsType"/>
+      <xs:element name="checkNum" type="xs:string" minOccurs="0"/>
+      <xs:element name="netPay" type="moneyType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="employeeNameType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="id" type="nameIdType" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="daysType">
+    <xs:sequence>
+      <xs:element name="day" type="dayType" minOccurs="7" maxOccurs="7"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="dayType">
+    <xs:sequence>
+      <xs:element name="date" type="xs:date"/>
+      <xs:element name="stHours" type="hoursType"/>
+      <xs:element name="otHours" type="hoursType"/>
+      <xs:element name="dtHours" type="hoursType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="deductionsType">
+    <xs:sequence>
+      <xs:element name="fedTax" type="moneyType"/>
+      <xs:element name="FICA" type="moneyType"/>
+      <xs:element name="stateTax" type="moneyType"/>
+      <xs:element name="SDI" type="moneyType"/>
+      <xs:element name="vacationHoliday" type="moneyType"/>
+      <xs:element name="healthWelfare" type="moneyType"/>
+      <xs:element name="pension" type="moneyType"/>
+      <xs:element name="training" type="moneyType"/>
+      <xs:element name="fundAdmin" type="moneyType"/>
+      <xs:element name="dues" type="moneyType"/>
+      <xs:element name="travelSubs" type="moneyType"/>
+      <xs:element name="savings" type="moneyType"/>
+      <xs:element name="other" type="moneyType"/>
+      <xs:element name="total" type="moneyType"/>
+      <xs:element name="notes" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+`;
+
+/** sha256 of CPR_XSD_TEXT as UTF-8 bytes. NOT DIR's published hash — see the
+ *  schema file's own header, and SHIPPED_XSD_SHA256 in schema.ts. */
+export const CPR_XSD_TEXT_SHA256 = "67363c970d73b6b1b43cd220c2a2bfc6a9f0e89fabfaabc23560942352aa494f";
