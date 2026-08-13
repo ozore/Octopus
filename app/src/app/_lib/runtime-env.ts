@@ -27,7 +27,7 @@ export function appBaseUrl(): string {
   }
 }
 
-export function adapterMode(): 'live' | 'mock' {
+export function adapterMode(): 'live' | 'mock' | 'claude-cli' {
   try {
     return getEnv().ADAPTER_MODE;
   } catch (error) {

@@ -43,8 +43,13 @@ export type DatabaseDriver = z.infer<typeof DatabaseDriver>;
  * `mock` binds the in-repo fake adapters (Anthropic, Stripe, Resend,
  * NoticeSource). Tests and CI run in `mock`; no test may require a real key or
  * a network call.
+ *
+ * `claude-cli` binds the real pipeline to a locally installed Claude Code CLI
+ * (a Claude SUBSCRIPTION login, no API key) and mocks for the other vendors —
+ * a founder's personal machine, never a server. Rejected in production like
+ * every non-`live` mode.
  */
-export const AdapterMode = z.enum(['live', 'mock']);
+export const AdapterMode = z.enum(['live', 'mock', 'claude-cli']);
 export type AdapterMode = z.infer<typeof AdapterMode>;
 
 const EnvSchema = z
@@ -63,6 +68,8 @@ const EnvSchema = z
 
     ANTHROPIC_API_KEY: z.string().optional(),
     ANTHROPIC_BASE_URL: z.string().url().optional(),
+    /** ADAPTER_MODE=claude-cli only: path to the Claude Code binary. */
+    CLAUDE_CLI_PATH: z.string().default('claude'),
 
     STRIPE_SECRET_KEY: z.string().optional(),
     STRIPE_WEBHOOK_SECRET: z.string().optional(),
@@ -138,7 +145,7 @@ const EnvSchema = z
         ctx.addIssue({
           code: 'custom',
           path: ['ADAPTER_MODE'],
-          message: 'mock adapters are not permitted in production',
+          message: 'only live adapters are permitted in production (mock and claude-cli are dev-only)',
         });
       }
     }

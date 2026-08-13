@@ -108,6 +108,24 @@ npm run worker:dev                  # worker process (separate terminal)
 ADAPTER_MODE=mock DATABASE_DRIVER=pglite npm run dev
 ```
 
+**On a Claude subscription — real drafts, no API key (dev-only):**
+
+```bash
+# Prerequisite: Claude Code installed and logged in (`npm i -g @anthropic-ai/claude-code`,
+# then `claude` once to sign in with your Claude subscription).
+ADAPTER_MODE=claude-cli DATABASE_DRIVER=pglite npm run dev
+```
+
+`claude-cli` is the mock formation with one substitution: the model adapter
+shells out to the local Claude Code binary (`CLAUDE_CLI_PATH` to override), so
+classify/draft/critique run on YOUR subscription while Stripe/Resend stay
+mocked. Structured outputs are emulated by schema-in-prompt + downstream Zod;
+the Citations API is emulated with a STRICTER check — the model must return a
+verbatim quote per citation and the adapter drops any quote that is not a
+character-for-character substring of the named corpus block, so the citation
+gate still fails closed. Personal-machine use only: `src/env.ts` rejects this
+mode in production, and a consumer subscription must never back a server.
+
 > **This mode is dev-only, and the boundary is enforced in code, not by convention.**
 > `src/env.ts` fails the boot when `NODE_ENV=production` is combined with either
 > `DATABASE_DRIVER=pglite` or `ADAPTER_MODE=mock`. **Production is PostgreSQL 16 with

@@ -16,6 +16,7 @@ import { getEnv } from '../../env';
 import type { AnthropicAdapter } from './anthropic';
 import { LiveAnthropicAdapter } from './anthropic.live';
 import { MockAnthropicAdapter } from './anthropic.mock';
+import { ClaudeCliAnthropicAdapter } from './anthropic.claude-cli';
 import type { NoticeSource } from './notice-source';
 import { InMemoryNoticeSource } from './notice-source.mock';
 import type { ResendAdapter } from './resend';
@@ -57,9 +58,15 @@ const globalRef = globalThis as typeof globalThis & { __cwAdapters?: Adapters };
 export function buildAdapters(): Adapters {
   const env = getEnv();
 
-  if (env.ADAPTER_MODE === 'mock') {
+  if (env.ADAPTER_MODE === 'mock' || env.ADAPTER_MODE === 'claude-cli') {
     return {
-      model: new MockAnthropicAdapter(),
+      // `claude-cli` is the mock formation with ONE substitution: the model is
+      // real (the founder's Claude subscription via the local Claude Code
+      // binary). Stripe/Resend/NoticeSource stay mocked — dev-only mode.
+      model:
+        env.ADAPTER_MODE === 'claude-cli'
+          ? new ClaudeCliAnthropicAdapter({ cliPath: env.CLAUDE_CLI_PATH })
+          : new MockAnthropicAdapter(),
       billing: new MockStripeAdapter(env.STRIPE_WEBHOOK_SECRET ?? 'whsec_test'),
       email: new MockResendAdapter(
         env.RESEND_INBOUND_SIGNING_SECRET ?? 'inbound_test',

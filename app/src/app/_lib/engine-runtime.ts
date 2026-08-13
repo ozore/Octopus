@@ -176,7 +176,9 @@ export async function bindEngine(noticeText: string): Promise<EngineBinding> {
   // corpus in a mock-mode process still has no API key, and per-commit runs use
   // recorded responses precisely so they are deterministic and free
   // (ARCHITECTURE.md §2.2 factor X).
-  if (adapterMode() === 'live') {
+  // `claude-cli` is a REAL model surface (the founder's subscription through
+  // the local Claude Code binary) — only billing/email stay mocked.
+  if (adapterMode() === 'live' || adapterMode() === 'claude-cli') {
     return { corpus, model: getAdapters().model, syntheticCorpus: !built, recordedModel: false };
   }
   return {
