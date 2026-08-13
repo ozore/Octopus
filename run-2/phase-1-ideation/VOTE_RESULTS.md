@@ -1,5 +1,12 @@
 # Run 2 — Phase 1 vote results (Borda count, 6 literature-anchored lenses)
 
+> **Historical record.** The winner ships as **Ratepin** (renamed in phase 2b,
+> `../phase-2-build/identity/NAMING.md`). The moat-and-retention lens below
+> rests on a claim phase 2 falsified — superseded wage-determination
+> revisions are publicly retrievable — which does not change the ranking
+> (Wage Line also placed 1st on PMF evidence and 1st on willingness to pay)
+> but does change what may be said about the moat. See `IDEA_DOSSIER.md`.
+
 **Winner: Wage Line** — Pins every federally funded job to the exact wage-determination revision in force, then generates the week's WH-347 and state e-CPR XML from a payroll CSV — so the rate on the certified payroll is the rate the auditor will look up.
 
 Autonomy (A1–A6, `../PLAN.md`) was applied as a *hard gate before the vote*, not as a lens weight:

@@ -1,8 +1,8 @@
-# CORPUS DESIGN — Wage Line
+# CORPUS DESIGN — Ratepin
 
 **The self-maintaining wage-determination corpus: immutable revision store, dual-ingest reconciliation, and the classification crosswalk**
 
-**Product:** Wage Line — *certified-payroll rate-of-record engine for open-shop specialty subcontractors on Davis-Bacon work*
+**Product:** Ratepin — *certified-payroll rate-of-record engine for open-shop specialty subcontractors on Davis-Bacon work*
 **The claim the corpus exists to support:** *"Every rate on this form traces to wage determination VA20260195, revision 2, published 06 August 2026, corpus snapshot 9f3c…"*
 **Owner:** Corpus engineering
 **Date:** 2026-08-13
@@ -15,7 +15,7 @@
 
 ### 0.1 The corpus is not a supporting asset — it is the assertion
 
-Wage Line's arithmetic is unremarkable. Gross pay, fringe credit, cash in lieu, CWHSSA premium, permissible deductions, net — that is a few hundred lines of deterministic code under property tests, and D6 forbids a model anywhere near it. What the customer actually buys, per D2 and D3, is a *defensible rate*: the claim that the number in column 6A of a signed WH-347 is the number that a named wage determination, at a named revision, published on a named date, actually contained.
+Ratepin's arithmetic is unremarkable. Gross pay, fringe credit, cash in lieu, CWHSSA premium, permissible deductions, net — that is a few hundred lines of deterministic code under property tests, and D6 forbids a model anywhere near it. What the customer actually buys, per D2 and D3, is a *defensible rate*: the claim that the number in column 6A of a signed WH-347 is the number that a named wage determination, at a named revision, published on a named date, actually contained.
 
 That claim is a claim about a corpus. If the corpus is wrong, the contractor has signed a false statement under 18 U.S.C. 1001 with our arithmetic inside it (R3). If the corpus cannot *reproduce* what it said eighteen months ago, the claim is unfalsifiable and therefore worthless in the only moment it matters — a Wage and Hour investigation or a withheld progress payment. So this document treats the corpus the way Karpathy's *Software 2.0* treats a dataset: as the primary artifact, with the accumulation, cleaning, labelling and inspection of that dataset — not the code around it — as the actual engineering problem ([Software 2.0](https://karpathy.medium.com/software-2-0-a64152b37c35), 2017; verified live 2026-08-13).
 
@@ -42,7 +42,7 @@ D1–D10 are binding and are implemented as specified. Four are implemented *and
 
 **Challenge C1 — The revision archive is not a cornered resource. Every superseded revision is publicly retrievable today.**
 
-The dossier's moat argument (§"Moat and retention") states: *"SAM publishes no documented bulk download or public API… You cannot retroactively buy what a WD said last March"*, and the runner-up analysis contrasts Ship Record's reconstructable SBOMs with Wage Line, *"SAM overwrites, and a superseded revision is gone."*
+The dossier's moat argument (§"Moat and retention") states: *"SAM publishes no documented bulk download or public API… You cannot retroactively buy what a WD said last March"*, and the runner-up analysis contrasts Ship Record's reconstructable SBOMs with Ratepin, *"SAM overwrites, and a superseded revision is gone."*
 
 Verified live 2026-08-13, this is false:
 
@@ -415,7 +415,7 @@ The rule: **`response_sha256` proves what an endpoint said; `canonical_sha256` p
 |---|---|---|---|
 | Revision | `revision` | The publisher's ordinal for this text | WHD |
 | Valid time | `publish_date` … `superseded_on` | When this text governed work in the world | WHD |
-| System time | `first_seen_at` … | When Wage Line first held these bytes | us |
+| System time | `first_seen_at` … | When Ratepin first held these bytes | us |
 
 The eighteen-month reproduction (§8.4) is a query across all three: *"Show me the text that was valid for work performed in week ending 2026-08-14, at the revision pinned to project P, as our system knew it at generation time T."* Collapsing valid time into system time — the common shortcut of stamping rows with `created_at` and treating that as effectivity — makes that query unanswerable, because a revision published on 2026-08-06 that we first fetched on 2026-08-11 governed five days of work before we ever saw it.
 
@@ -661,7 +661,7 @@ So the corpus stores both facts and refuses the right one:
 
 In a 30-WD random sample, **546 of 1,013 classifications (53.9%) carried a union identifier and 467 (46.1%) a survey identifier**; no UAVG or SA identifiers appeared in that sample. Slightly over half the classification surface therefore lands in the "aggregate usable, schedule unpublished" bucket. D9's signup-time refusal is scoped accordingly: we refuse *"tell me what my CBA fringe schedule requires"*, not *"what is the WD's fringe obligation for this class"* — the latter is on the form, in column 6B's neighbourhood, and refusing it would refuse half the corpus.
 
-The artifact states the boundary in one line, per D7's disclaimer discipline: *"Fringe shown is the aggregate published in the wage determination. Wage Line does not hold, compute or verify collectively-bargained benefit schedules."*
+The artifact states the boundary in one line, per D7's disclaimer discipline: *"Fringe shown is the aggregate published in the wage determination. Ratepin does not hold, compute or verify collectively-bargained benefit schedules."*
 
 ### 4.3 DDL — classifications
 
@@ -1103,7 +1103,7 @@ A corpus snapshot is a Merkle tree over the promoted corpus ([Merkle 1987](https
 - **Interior nodes**: `SHA-256(0x01 || left || right)`; an odd node is promoted unchanged.
 - **Root**: `corpus_snapshot.merkle_root`, 32 bytes.
 
-The properties that matter: the root commits to every determination text in the corpus at that moment; an inclusion proof is `⌈log₂(9,424)⌉ = 14` hashes, about 450 bytes; and the proof can be checked by anyone with the root and the determination text, using no Wage Line code.
+The properties that matter: the root commits to every determination text in the corpus at that moment; an inclusion proof is `⌈log₂(9,424)⌉ = 14` hashes, about 450 bytes; and the proof can be checked by anyone with the root and the determination text, using no Ratepin code.
 
 ### 8.2 DDL — snapshots and artifact provenance
 
@@ -1215,7 +1215,7 @@ The artifact footer, per D5, is generated from this row:
 Rates from wage determination VA20260195 revision 2, published 2026-08-06.
 Determination hash 5bd58170…  Corpus snapshot cs_2026-08-13T06:00Z (root 9f3c1a2e…).
 Newer-revision check last completed 2026-08-13 06:04 UTC.
-Wage Line computes and formats certified payroll from data you supply. You certify it.
+Ratepin computes and formats certified payroll from data you supply. You certify it.
 We do not file, submit or sign on your behalf. This is not legal advice.
 ```
 
@@ -1230,13 +1230,13 @@ February 2028. A GC withholds a progress payment, asserting that the electrician
 5. **The revision history is shown from path D's `mod_table`** — modification 0 on 2026-01-02, 1 on 2026-05-18, 2 on 2026-08-06 — establishing that revision 2 was the operative revision for work performed in the week ending 2026-08-14, and `wd_class_diff` shows what moved between the award revision and the pinned one.
 6. **Independent verification is offered, not required.** The page prints the live path-B URL so any party can fetch `…/wd/VA20260195/2` and compare canonical hashes themselves. Challenge C1 turns out to be a feature here: because the archive *is* public, a sceptical GC can check our bytes against GSA's without asking us for anything.
 
-No human at Wage Line participates in any of this. That is A3: the unhappy path terminates in a page, not a person.
+No human at Ratepin participates in any of this. That is A3: the unhappy path terminates in a page, not a person.
 
 ### 8.4 What the snapshot does not promise
 
 The snapshot commits to *what we held*. It does not commit to *what SAM published*, because we cannot prove a negative about an endpoint we do not control. The precise claim on the provenance page is:
 
-> "At {timestamp}, Wage Line held this determination text, and its hash was committed to corpus snapshot {ref}. Wage Line does not assert that this was the operative wage determination for your contract — that turns on the contracting officer's incorporation of a determination into the contract under FAR 22.404-6, which Wage Line cannot observe."
+> "At {timestamp}, Ratepin held this determination text, and its hash was committed to corpus snapshot {ref}. Ratepin does not assert that this was the operative wage determination for your contract — that turns on the contracting officer's incorporation of a determination into the contract under FAR 22.404-6, which Ratepin cannot observe."
 
 That second sentence is D7's FAR 22.404-6 discipline, stated on the artifact rather than only in the flow, and it is why the corpus never carries an `is_effective` column. Effectiveness is a legal conclusion; we store observable dates and decline the conclusion.
 

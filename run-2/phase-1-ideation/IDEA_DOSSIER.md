@@ -1,5 +1,25 @@
 # Decision Record — Wage Line
 
+> **Historical record — read with two phase-2 corrections.**
+> 1. **The product is named Ratepin.** "Wage Line" was the phase-1 working
+>    name; it was struck in phase 2b for naming the topic rather than the
+>    record, and because `topic + contact-noun` is helpline grammar — it
+>    promises the human that D7 forbids. See
+>    `../phase-2-build/identity/NAMING.md`.
+> 2. **The moat claim below is falsified.** Superseded WD revisions *are*
+>    publicly retrievable (`wdol/v1/wd/WA20200002/0/download` → 303 → S3
+>    archive, verified live), and govconapi.com resells the full series at
+>    $19/mo. "You cannot retroactively buy what a WD said last March" is
+>    wrong and must never be reprinted. The moat is **assembly + latency +
+>    crosswalk memory**. See `research/02-competition-positioning.md` §C1 and
+>    `../phase-2-build/DESIGN_REVIEW.md` HIGH-7.
+>
+> Four demand claims in this document were also refuted by the deep dives and
+> are struck at their point of use: the per-employee WH-347 burden, "168 data
+> points per worker", "$995–$4,995 setup fees" as a sub-facing fact, and
+> "$28,619 DBA penalty" (that figure is the False Claims Act per-claim
+> maximum). The D1–D10 decisions and the G1–G6 gates stand.
+
 **Decision: build Wage Line.** Borda leader at 40 (next: Ship Record, 33). **No override.**
 
 ---

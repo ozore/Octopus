@@ -1,6 +1,6 @@
 # WAGE LINE — USER JOURNEYS (v1)
 
-**Product:** Wage Line — the certified-payroll **rate-of-record** engine for open-shop specialty subcontractors on Davis-Bacon work.
+**Product:** Ratepin — the certified-payroll **rate-of-record** engine for open-shop specialty subcontractors on Davis-Bacon work.
 **Document owner:** UX researcher (Phase 2, run 2)
 **Date:** 2026-08-13
 **Status:** Binding for the Phase-2 build. Amendments require a named source and a note of what they supersede.
@@ -204,7 +204,7 @@ flowchart TB
 |---|---|---|---|
 | A payroll title matches no classification and no crosswalk entry | The row is marked; below it, the determination's own classification list, filtered by deterministic string similarity, each row showing group id, verbatim label, base and fringe | He picks one. Copy: *"Free lookup doesn't rank candidates for you. These are the classifications this determination actually lists. Pick the one whose scope matches the work."* No model call, no ticket. | P-A |
 | He picks nothing and generates anyway | The PDF renders, watermarked, **signature block withheld**, with a one-page exception report listing the row, the title as entered, and the dollars affected | He can still hand it to his GC as a draft, which is exactly what a draft is for. | P-B |
-| He selects a **union CBA group** (e.g. a group id prefixed `ELEC`) | Immediate refusal at selection, before any arithmetic | *"This group's rates come from a collective bargaining agreement. The agreement's fringe schedule is not published in the wage determination, so Wage Line will not compute it — we would be guessing. Survey groups (SU) and averages (UAVG) on this determination are available."* (D9, `is_union_group`) | P-D |
+| He selects a **union CBA group** (e.g. a group id prefixed `ELEC`) | Immediate refusal at selection, before any arithmetic | *"This group's rates come from a collective bargaining agreement. The agreement's fringe schedule is not published in the wage determination, so Ratepin will not compute it — we would be guessing. Survey groups (SU) and averages (UAVG) on this determination are available."* (D9, `is_union_group`) | P-D |
 | Deduction column he can't classify | The row blocks with the eight categories of 29 CFR 3.5 offered as a closed list | *"'Other' on a signed form is an assertion that the deduction is permissible. That's a legal question about your specific deduction, and we don't answer it. Pick the category it actually falls under, or leave the row blocked."* | P-A + P-D |
 | Hours >24 in a day, 8 days in a week, negative hours, OT with no ST | Inline, at the cell, before generation | Error text names the cell, the value and the constraint, per [NN/g error-message guidelines](https://www.nngroup.com/articles/error-message-guidelines/): specific, human-readable, constructive, and the entered data is preserved. | prevention |
 | He closes the tab, comes back tomorrow | `/wh347/p/[token]` says: *"This preview expired at 14:02 PT on 14 Aug 2026. Free previews are kept 24 hours and then deleted. Nothing was billed and nothing was kept."* | Re-entry is 90 seconds of typing, or a CSV. We do not offer to email it to him — that would be an email capture dressed as help. | honest expiry |
@@ -217,7 +217,7 @@ It never asserts a **revision-of-record**. It will look a determination up, prin
 
 The upsell is therefore not a nag. It is one line under the footer:
 
-> *Wage Line kept nothing from this session. Pin this determination to a project and we'll keep the revision, tell you when a newer one publishes, and remember every classification you just picked.*
+> *Ratepin kept nothing from this session. Pin this determination to a project and we'll keep the revision, tell you when a newer one publishes, and remember every classification you just picked.*
 
 ---
 
@@ -260,10 +260,10 @@ flowchart LR
 | Trigger | What the visitor sees | Resolution | Primitive |
 |---|---|---|---|
 | No active determination covers the county × type × craft | A named empty state, dated, with the three real causes listed: the county may be covered under a different construction type; the contract may carry a **project wage determination** issued to the contracting agency and never published; the work may not be DBA-covered at all | Links to the county's other construction types, and to J1 with "type the rates yourself". **We never interpolate a rate from a neighbouring county.** ([NN/g on empty states](https://www.nngroup.com/articles/empty-state-interface-design/)) | P-D |
-| The visitor is in a state with its own prevailing-wage law | A standing note under the rate | *"This is the federal Davis-Bacon rate for this determination. {State} has its own prevailing-wage law that may set a different rate for the same work. Wage Line does not track state determinations outside California."* (D9) | P-D |
+| The visitor is in a state with its own prevailing-wage law | A standing note under the rate | *"This is the federal Davis-Bacon rate for this determination. {State} has its own prevailing-wage law that may set a different rate for the same work. Ratepin does not track state determinations outside California."* (D9) | P-D |
 | Corpus at L1 or L2 | The page's "as of" line narrows | *"Rates from {WD} revision {N}, published {date}. Our newer-revision check last completed {ts} and has not re-run since."* Same sentence the artifact footer uses (ARCHITECTURE §6.4) — one source, three surfaces. | P-C |
 | A quarantined WD (L3) | The page renders from the **last agreed snapshot** and says so, with the date | Never a blank page, never a silent stale page. | P-C |
-| The classification is a union CBA group | The rate is shown (it is in the public determination) with the fringe treatment flagged | *"The fringe figure for this group is set by a collective bargaining agreement that is not published here. Wage Line will not compute a fringe credit against it."* | P-D |
+| The classification is a union CBA group | The rate is shown (it is in the public determination) with the fringe treatment flagged | *"The fringe figure for this group is set by a collective bargaining agreement that is not published here. Ratepin will not compute a fringe credit against it."* | P-D |
 | Someone subscribes to alerts with a typo'd email | Double opt-in; nothing is sent until the confirmation is clicked; every alert carries one-click unsubscribe | Standard CAN-SPAM hygiene ([FTC compliance guide](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)), and it means an abandoned typo costs nobody anything. | — |
 
 ### 2.4 Why the diff is above the fold
@@ -306,7 +306,7 @@ EFFECTIVENESS — WHAT WE CAN SHOW, AND WHAT WE WILL NOT SAY
 
   FAR 22.404-6 governs which revision applies to a contract, and
   the answer can turn on a finding by the contracting officer —
-  a finding Wage Line cannot observe.
+  a finding Ratepin cannot observe.
 
   WAGE LINE DOES NOT CONCLUDE WHICH REVISION IS EFFECTIVE FOR
   YOUR CONTRACT. The dates above are what we can see. The
@@ -369,7 +369,7 @@ The email from the Checkout Session becomes the delivery address. A `tenants` ro
 | He bought the wrong county or the wrong construction type | On S08, a control: **"Wrong determination? Rebuild this rate card for a different one — free, within 14 days."** | Cheaper for both sides than a refund and it fixes the actual problem. Unlimited rebuilds inside the window; after that, the refund button. | #3, #9 |
 | He wants his money back | An in-app button on S08, no email address, no reason field: **full refund within 14 days, no questions** (ARCHITECTURE §9.3) | `stripe.refunds.create` with an idempotency key ([Stripe idempotency](https://docs.stripe.com/api/idempotent_requests)). The confirmation states the amount and the arrival window. The artifact link keeps working — clawing back a document he already read would be theatre. | — |
 | He names a WD number that does not exist, or is inactive | Resolved on S06, **before** Checkout | *"CA20260012 revision 9 isn't in the published record. Active revisions we hold: 0, 1, 2, 3, 4."* We never take money for an input we cannot resolve. | prevention |
-| The determination's classification list contains only union CBA groups | Refusal before purchase | *"Every classification on this determination comes from a collective bargaining agreement. Wage Line doesn't compute CBA fringe schedules, so a rate card here would be half a document. We're not selling you one."* | P-D |
+| The determination's classification list contains only union CBA groups | Refusal before purchase | *"Every classification on this determination comes from a collective bargaining agreement. Ratepin doesn't compute CBA fringe schedules, so a rate card here would be half a document. We're not selling you one."* | P-D |
 
 ---
 
@@ -435,7 +435,7 @@ sequenceDiagram
 
 D9 refuses union CBA fringe schedules and says the refusal happens *at signup, not by approximation*. Concretely, `wd_classifications.is_union_group` is scanned at pin time and, if any of the determination's groups are CBA-derived, Dee sees this before she uploads anything:
 
-> **4 of this determination's 31 classification groups come from collective bargaining agreements** (ELEC0100-004, PLUM0246-009, IRON0155-011, OPEN0003-021). Their fringe schedules are not published in the determination, so Wage Line will not compute a fringe credit against them. If your crew works under any of those classifications, those payroll lines will block and the filing will render as **DRAFT — NOT CERTIFIABLE**.
+> **4 of this determination's 31 classification groups come from collective bargaining agreements** (ELEC0100-004, PLUM0246-009, IRON0155-011, OPEN0003-021). Their fringe schedules are not published in the determination, so Ratepin will not compute a fringe credit against them. If your crew works under any of those classifications, those payroll lines will block and the filing will render as **DRAFT — NOT CERTIFIABLE**.
 >
 > The other 27 groups — survey rates (SU) and averages (UAVG) — are fully supported.
 
@@ -445,7 +445,7 @@ Telling her at minute 3 rather than at minute 40 on a Friday is the whole point.
 
 | Trigger | What Dee sees | Resolution | Primitive |
 |---|---|---|---|
-| **Funding source = "state or local money only"** | The flow stops, politely and immediately | *"Then this isn't a Davis-Bacon project and Wage Line isn't the right tool. If it's California public works, you still owe DIR a certified payroll — but under state law, and we only cover the federal determination plus the DIR XML format. We'd rather say so now than take your money."* Refusing an unqualified buyer at setup is A6 in practice: an unqualified customer is a support load we cannot serve. | P-D |
+| **Funding source = "state or local money only"** | The flow stops, politely and immediately | *"Then this isn't a Davis-Bacon project and Ratepin isn't the right tool. If it's California public works, you still owe DIR a certified payroll — but under state law, and we only cover the federal determination plus the DIR XML format. We'd rather say so now than take your money."* Refusing an unqualified buyer at setup is A6 in practice: an unqualified customer is a support load we cannot serve. | P-D |
 | Zero candidate determinations for county × type | Named empty state with the three real causes (as J2) plus a fourth path: **"paste the determination number from my contract"** | If the pasted number is in the mirror, we pin it even if our county index did not predict it — the contract governs, not our index. If it is **not** in the mirror (e.g. a project wage determination issued directly to the agency and never published), the project is created **unpinned**, and every filing on it can only ever be **DRAFT — NOT CERTIFIABLE**, stated in that sentence at creation time. | P-B stated in advance |
 | Several determinations, and she is not sure which construction type | Each candidate shows the determination's own construction-type string plus the classifications it lists; a "what if I pick wrong?" disclosure says: *"Nothing is destroyed. Change the type and the candidates change. A pin can be replaced; the old one is kept."* | Reversibility is heuristic #3, and stating it up front is what stops a wrong-but-committed choice. | — |
 | Ladder at **L2 STALE** at pin time | Project saves in `pin_pending`; banner names the exact last-successful-check timestamp; the staleness credit is already accruing on her account | She is not blocked from *using the product* — the free generator path still produces a document. She is blocked from us **asserting a revision-of-record we have not verified**. Fail closed on the claim, not the artifact (ADR-006). | P-C |
@@ -547,7 +547,7 @@ Below the three: *"None of these"* → the full searchable list of that revision
 
 She reads the second candidate's scope text, recognises the work, clicks it. Then the sentence that is the actual product:
 
-> **Remembered.** Wage Line will use **Cement Mason (SUCA2020-005)** for `CEM MASON - FINISH` on every determination in this group, on every project, from now on. Change it in Settings → Classification memory.
+> **Remembered.** Ratepin will use **Cement Mason (SUCA2020-005)** for `CEM MASON - FINISH` on every determination in this group, on every project, from now on. Change it in Settings → Classification memory.
 
 ### 6.2 Sequence
 
@@ -602,7 +602,7 @@ That line, appearing on the fourth Friday, is the peak-end moment of the entire 
 
 | Trigger | What Dee sees | Resolution | Primitive |
 |---|---|---|---|
-| **None of the three fit, and neither does anything in the full list** | The row stays blocked. The filing renders **DRAFT — NOT CERTIFIABLE**, signature block withheld, exception report attached, naming the title and the dollars | And then the honest end: *"If the work your crew performs isn't listed on this determination, the route is a conformance request under 29 CFR 5.5(a)(1)(ii) — Standard Form 1444, submitted by the contracting officer. **Wage Line does not prepare or file SF-1444s and will not do it for you.** Here is what the process is, and here is your draft with this row flagged."* (D7, D9) | P-B + P-D |
+| **None of the three fit, and neither does anything in the full list** | The row stays blocked. The filing renders **DRAFT — NOT CERTIFIABLE**, signature block withheld, exception report attached, naming the title and the dollars | And then the honest end: *"If the work your crew performs isn't listed on this determination, the route is a conformance request under 29 CFR 5.5(a)(1)(ii) — Standard Form 1444, submitted by the contracting officer. **Ratepin does not prepare or file SF-1444s and will not do it for you.** Here is what the process is, and here is your draft with this row flagged."* (D7, D9) | P-B + P-D |
 | Anthropic unreachable, or P12 budget tripped | Identical layout, one changed sentence: *"Candidate ranking is in reduced mode right now. Below is this determination's own classification list, matched on text, not ranked."* | The degraded path **is** the free generator's path — the most-exercised code in the product (ARCHITECTURE §10.4). Nothing is blocked, nothing is queued, nobody is paged. | P-C |
 | Model returns an id outside the closed enum | Nothing. Schema rejection, one retry, then reduced mode | `schema_reject_total` is a counter, not a customer-facing event. A silent regression with no functional symptom is exactly what a counter is for. | — |
 | Injected instructions inside a payroll title | Nothing. The model's response schema has **no numeric field** and the candidate set is a closed enum of parsed rows; only a ≤128-char character-class-filtered title ever reaches it | Worst case is a wrong *suggestion*, shown beside verbatim scope text and a rate, which Dee then rejects. The blast radius is a bad ordering of three real options. | — |
@@ -648,7 +648,7 @@ Printed on every artifact at every tier, including free. This is simultaneously 
 Rates from wage determination CA20260012 revision 4, published 2026-07-31.
 No newer revision existed as of 2026-08-13 02:41 ET.
 Corpus snapshot 9f2c…a17e · engine 1.4.2 · generated 2026-08-14 15:52 PT
-Wage Line computed and formatted this document. The contractor certifies it.
+Ratepin computed and formatted this document. The contractor certifies it.
 wageline.app/v/8c1f-22a9
 ```
 
@@ -664,7 +664,7 @@ The three freshness sentences (ARCHITECTURE §6.4):
 
 Never dismissible, never in a modal, never smaller than body text:
 
-> Wage Line computes and formats. **You certify.** We do not file, we do not submit, we do not e-sign, and we do not hold your portal credentials. This is not legal advice. We do not conclude that a filing is accepted, compliant or approved; that a wage determination is effective for your contract; that a fringe credit is bona fide or annualized; that a deduction is permissible; or that a classification is correct.
+> Ratepin computes and formats. **You certify.** We do not file, we do not submit, we do not e-sign, and we do not hold your portal credentials. This is not legal advice. We do not conclude that a filing is accepted, compliant or approved; that a wage determination is effective for your contract; that a fringe credit is bona fide or annualized; that a deduction is permissible; or that a classification is correct.
 
 That paragraph is the DO-NOT-ASSERT list (ARCHITECTURE §11.7) rendered as copy, and the same list is enforced by a lint over the copy bundle and the artifact templates.
 
@@ -739,7 +739,7 @@ Revision 5 published 2026-08-11 — 11 days after your award date.
 EFFECTIVENESS
   Revision 5 published 2026-08-11. Your award date is 2026-07-31.
   FAR 22.404-6 governs which revision applies, and that can turn on a
-  finding by the contracting officer, which Wage Line cannot observe.
+  finding by the contracting officer, which Ratepin cannot observe.
   WE DO NOT CONCLUDE WHICH REVISION APPLIES TO YOUR CONTRACT.
 ```
 
@@ -896,7 +896,7 @@ flowchart TB
 
 ### 10.1 What we cannot do for her, said at setup
 
-Challenge 4 in ARCHITECTURE §16, first flagged in deep dive 04: **California revenue arrives a gate later than the pitch implies.** eCPR submission requires two identifiers Wage Line cannot obtain on her behalf — her own **PWCR** (Public Works Contractor Registration) number, and a **DIR Project ID**, which exists only after the *awarding body* files a PWC-100 ([DIR eCPR user guide](https://www.dir.ca.gov/public-works/ecpruserguide.pdf); [DIR Public Works](https://www.dir.ca.gov/Public-Works/PublicWorks.html)).
+Challenge 4 in ARCHITECTURE §16, first flagged in deep dive 04: **California revenue arrives a gate later than the pitch implies.** eCPR submission requires two identifiers Ratepin cannot obtain on her behalf — her own **PWCR** (Public Works Contractor Registration) number, and a **DIR Project ID**, which exists only after the *awarding body* files a PWC-100 ([DIR eCPR user guide](https://www.dir.ca.gov/public-works/ecpruserguide.pdf); [DIR Public Works](https://www.dir.ca.gov/Public-Works/PublicWorks.html)).
 
 So both are collected at project setup as optional fields, with the reason stated:
 
@@ -1083,7 +1083,7 @@ Deletion is genuinely self-serve — CCPA's **right to delete** implemented as a
 
 > ## Deleting Coastline Insulation
 >
-> **You are required to keep these records for three years.** 29 CFR 5.5(a)(3)(i)(A) requires that payroll records *"be maintained by the contractor and any subcontractor during the course of the work and preserved… for a period of at least 3 years after all the work on the prime contract is completed."* Deleting your Wage Line account does not delete that obligation — it only deletes our copy. **We cannot recover it later.**
+> **You are required to keep these records for three years.** 29 CFR 5.5(a)(3)(i)(A) requires that payroll records *"be maintained by the contractor and any subcontractor during the course of the work and preserved… for a period of at least 3 years after all the work on the prime contract is completed."* Deleting your Ratepin account does not delete that obligation — it only deletes our copy. **We cannot recover it later.**
 >
 > **Download your archive first.** [Download 148 filings (312 MB)] — done automatically before deletion unless you turn it off.
 >
@@ -1246,7 +1246,7 @@ stateDiagram-v2
 
 ## 15. Nielsen heuristic audit, all ten
 
-| # | Heuristic | Where Wage Line carries it | The specific failure it prevents |
+| # | Heuristic | Where Ratepin carries it | The specific failure it prevents |
 |---|---|---|---|
 | **1** | Visibility of system status | The provenance footer's three freshness sentences; the ladder banner naming an exact timestamp; per-project chips on the Friday board; the pre-run cost disclosure; *"we also emailed this — this page is the record"* | A user cannot tell a working system from a silently broken one. **Silence is always explained**: when no WD-change alerts are being generated, we say why. |
 | **2** | Match between system and the real world | The preview *is* the WH-347, column 1A to column 9, in the form's own headings; classification candidates carry the determination's **verbatim** label and scope text and a link to the source lines; "no work performed this week" is a real certified-payroll concept, not a UI convenience | Renaming the form's own vocabulary would force the user to translate twice — once into our words and once back into the auditor's. |
@@ -1359,7 +1359,7 @@ Marked as hypotheses because they are not evidenced, per the run's literature-gr
 3. **H-J6b — Does anyone read scope text?** The picker's whole error-prevention value assumes the user reads the verbatim scope paragraph before choosing. If they click the first candidate every time, the model's ranking becomes load-bearing in a way D6 does not intend, and `llm_ranked` entries would need a different treatment from `user_confirmed` ones in the k≥5 aggregate.
 4. **H-J7 — Does the DRAFT watermark build trust or destroy it?** The design bet is that a withheld signature block reads as integrity. The opposite reading — "this product couldn't finish the job" — is equally available, and `filings_total{status}` (the DRAFT-to-CERTIFIABLE ratio) is the leading churn indicator precisely because we do not know which reading wins.
 5. **H-J8 — Does anyone act on a WD-change alert?** The alert is D8 channel 3 and J8's justification. If the modal response is "keep revision 4" forever, the diff is a comfort feature, not a decision feature, and its position above the fold on S04 is wrong.
-6. **H-J3 — Does the $49 rate card sell at all?** Deep dive 01 is blunt: nobody has been asked to pay for Wage Line, and no primary contractor voice was obtained. The rate card is designed as an acquisition instrument at ~$47 contribution with instantaneous payback; that arithmetic holds only if the conversion exists.
+6. **H-J3 — Does the $49 rate card sell at all?** Deep dive 01 is blunt: nobody has been asked to pay for Ratepin, and no primary contractor voice was obtained. The rate card is designed as an acquisition instrument at ~$47 contribution with instantaneous payback; that arithmetic holds only if the conversion exists.
 7. **Q1 — Does "pinned revision" survive contact with a user who has never thought about revisions?** The entire paid boundary rests on a concept the buyer may not have a word for. The mitigation in this document is to always show the consequence (*"we'll tell you when a newer one publishes"*) rather than the mechanism. Unvalidated.
 8. **Q2 — Is the free generator a funnel or a leak?** Deep dive 02 notes PrevailComply already ships a free WH-347 generator, so this is table stakes rather than a wedge. Whether free users convert is H5 in ARCHITECTURE §17 and is Phase 3's problem; the only instrument is the attribution parameter in the provenance footer's URL.
 

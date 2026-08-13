@@ -1,6 +1,6 @@
 # WAGE LINE — SYSTEM ARCHITECTURE (v1)
 
-**Product:** Wage Line — *certified-payroll rate-of-record engine for open-shop specialty subcontractors on Davis-Bacon work.*
+**Product:** Ratepin — *certified-payroll rate-of-record engine for open-shop specialty subcontractors on Davis-Bacon work.*
 **Job (D2):** "Get Friday's certified payroll out the door with rates I can defend."
 **Document owner:** System architect
 **Date:** 2026-08-13
@@ -35,7 +35,7 @@ Everything else in this document is elaboration. These seven are the calls. Each
 
 ## 1. Architecture at a glance
 
-Wage Line is **a deterministic document factory sitting on a self-refreshing public-data mirror**, with a language model bolted to the side of the setup path and nowhere else.
+Ratepin is **a deterministic document factory sitting on a self-refreshing public-data mirror**, with a language model bolted to the side of the setup path and nowhere else.
 
 Sized honestly: at the 50-paying-account threshold G5 requires, with a mix of 20 Solo / 25 Crew / 5 Multi, the weekly load is on the order of **2,000–4,000 certified filings per month** — call it 150 a day, peaking Thursday afternoon and Friday morning because that is when payroll closes. The nightly ingest fetches **4,236 active DBA determinations** (verified live today, `totalElements: 4236`) plus the per-WD documents that changed. That is not a distributed-systems problem. It is one Postgres, one image, two process types, and a great deal of care about what is allowed to depend on what.
 
@@ -70,7 +70,7 @@ The load shape has one property worth designing for and one worth refusing to de
 
 ### 2.2 Justification against the Twelve-Factor App
 
-| Factor | How Wage Line satisfies it | Why it matters *here* |
+| Factor | How Ratepin satisfies it | Why it matters *here* |
 |---|---|---|
 | **I. Codebase** | One repo, one deployable, preview and production from the same commit. The parser, the WH-347 geometry, the golden canary payrolls and the app are one versioned unit. | A corpus *parser* change and a corpus *content* change must be attributable to the same release, because a dispute asks "what did your software think this WD said, on the day you filed?" |
 | **II. Dependencies** | Explicit `package.json` + lockfile. The WASM XSD validator and the PDF library are pinned in the image; no system `xmllint` is assumed. | Dev/prod parity on schema validation is the difference between "we validated" and "we validated with whatever was on the box." |
@@ -115,8 +115,8 @@ Run 1 (Clausewright) is the default. Four departures:
 |---|---|
 | **+ Cloudflare R2** (run 1 had no object store) | Artifacts are the product and must be retained for the life of the account with a 3-year regulatory floor behind them (29 CFR 5.5(a)(3)(i)(A): records preserved *"for a period of at least 3 years after all the work on the prime contract is completed"*). Postgres is the wrong home for tens of thousands of PDFs, and R2's free egress is what keeps D8's forwarding loop costless. |
 | **− Headless Chromium, + vector PDF composition** | §2.3. |
-| **− Inbound email adapter** | Run 1 needed inbound mail to observe marketplace notices. Wage Line has no inbound requirement, and **A3** makes an inbound address in the compliance flow an anti-feature. |
-| **+ Row-Level Security as the tenant boundary** | Run 1 was single-session and effectively single-tenant per case. Wage Line holds multi-user accounts, worker SSNs and money-bearing artifacts. Application-layer scoping alone is OWASP API1:2023 (Broken Object Level Authorization) waiting to happen. **ADR-011.** |
+| **− Inbound email adapter** | Run 1 needed inbound mail to observe marketplace notices. Ratepin has no inbound requirement, and **A3** makes an inbound address in the compliance flow an anti-feature. |
+| **+ Row-Level Security as the tenant boundary** | Run 1 was single-session and effectively single-tenant per case. Ratepin holds multi-user accounts, worker SSNs and money-bearing artifacts. Application-layer scoping alone is OWASP API1:2023 (Broken Object Level Authorization) waiting to happen. **ADR-011.** |
 
 ---
 
@@ -268,7 +268,7 @@ flowchart TB
     class sam,ecfr,dir,whd src
 ```
 
-**Read the double arrows.** The customer transmits, and the customer uploads. Wage Line never files, never submits, never e-signs and never holds a portal credential (**D9**). That removes an entire risk class for free and is also the honest description of what the DIR portal permits: eCPR upload requires the contractor's own PWCR and a DIR Project ID created when the awarding body files a PWC-100 — neither of which we can self-serve. **G2 exists precisely because acceptance is unobservable from inside our system.**
+**Read the double arrows.** The customer transmits, and the customer uploads. Ratepin never files, never submits, never e-signs and never holds a portal credential (**D9**). That removes an entire risk class for free and is also the honest description of what the DIR portal permits: eCPR upload requires the contractor's own PWCR and a DIR Project ID created when the awarding body files a PWC-100 — neither of which we can self-serve. **G2 exists precisely because acceptance is unobservable from inside our system.**
 
 ### 4.2 Container diagram (C4 level 2)
 
@@ -632,7 +632,7 @@ wd_county_coverage(wd_revision_id, state, county_code, county_name)
 obligation_changelog(id, cfr_title, part, section, amendment_date, observed_at, summary)
 ```
 
-**Two time axes, deliberately.** `wd_published_date` is *valid time* — when the determination took effect in the world. `observed_at` / `fetched_at` is *transaction time* — when we learned it. A dispute eighteen months later asks two different questions: *what did the WD say on the day we filed*, and *what did Wage Line know on the day it filed*. Only both axes answer both. This is the same reason event sourcing keeps the log: the current state is a projection, and the projection is not the evidence.
+**Two time axes, deliberately.** `wd_published_date` is *valid time* — when the determination took effect in the world. `observed_at` / `fetched_at` is *transaction time* — when we learned it. A dispute eighteen months later asks two different questions: *what did the WD say on the day we filed*, and *what did Ratepin know on the day it filed*. Only both axes answer both. This is the same reason event sourcing keeps the log: the current state is a projection, and the projection is not the evidence.
 
 **`is_union_group` is the D9 refusal, in a column.** Groups prefixed with a union identifier (e.g. `ELEC0080-011`) carry CBA-derived rates whose fringe schedules are not in the public WD. Survey groups (`SUVA2016-080`) and averages (`UAVG`) are not. The flag drives a refusal at project setup rather than an approximation at generation.
 
@@ -947,7 +947,7 @@ Global candidate ordering reads `(wd_group, normalized_title) → classification
 
 ### 11.7 The DO-NOT-ASSERT list, enforced in code
 
-Compiled from deep dive 04 and enforced by a lint rule over the copy bundle and the artifact templates. Wage Line never asserts: that a filing is accepted, compliant or approved; that a wage determination is *effective* for a contract (FAR 22.404-6 turns on a contracting-officer finding); that EO 13658's floor applies (it depends on award date and DBA-versus-Related-Acts coverage we do not hold); that a fringe credit is annualized, bona fide or WHD-approved; that a deduction is permissible under 29 CFR 3.5; that a classification is *correct*; that a cash payment is genuinely "in lieu of" a fringe rather than straight-time wage — 29 CFR 5.32(c) makes that a question of fact and it moves the overtime base; that an apprenticeship ratio is met; or any measured-performance number before its gate clears.
+Compiled from deep dive 04 and enforced by a lint rule over the copy bundle and the artifact templates. Ratepin never asserts: that a filing is accepted, compliant or approved; that a wage determination is *effective* for a contract (FAR 22.404-6 turns on a contracting-officer finding); that EO 13658's floor applies (it depends on award date and DBA-versus-Related-Acts coverage we do not hold); that a fringe credit is annualized, bona fide or WHD-approved; that a deduction is permissible under 29 CFR 3.5; that a classification is *correct*; that a cash payment is genuinely "in lieu of" a fringe rather than straight-time wage — 29 CFR 5.32(c) makes that a question of fact and it moves the overtime base; that an apprenticeship ratio is met; or any measured-performance number before its gate clears.
 
 Two numbers are banned from all copy by name: **"over an hour per employee"** (the DOL burden is 55 minutes *per response*, verified on the form page today) and **"$28,619 DBA civil penalty"** (that is the False Claims Act per-claim maximum; DBRA's own remedies are back wages with interest, withholding, and three-year debarment under 29 CFR 5.12, and CWHSSA liquidated damages are **$33 per worker per calendar day**, itself an inflation-adjusted **corpus value with an effective date, never a constant in code**).
 
