@@ -1,0 +1,24 @@
+{
+  "rejected_for_autonomy": [
+    {
+      "name": "Tierline",
+      "gate_failed": "A4",
+      "why": "The core asset is a hand-authored 50-state EPCRA Tier II requirements matrix \u2014 submission platform, accepted file format, state-specific fields, fees, deadlines, state ID format rules (Florida wants pounds not range codes; Utah wants UT001234; Colorado has its own State Field tab) \u2014 and the idea's own text concedes EPA's state-requirements page confirms no consolidated database or standardised format exists. Content-hash crawling 50+ SERC pages detects THAT a page changed; it cannot re-derive the new fee, field or format rule, which is an interpretive extraction from prose. The declared fail-closed state proves the point: the product flips the state to 'verify before filing', suppresses the auto-generated cover letter, and offers a refund \u2014 i.e. it hands the judgement back to the customer on the very artifact they paid for. That is a knowledge base maintained by a person, not one that refreshes itself from machine-readable sources. The threshold arithmetic (TPQ/EHS lists via eCFR, CAS matching) genuinely is self-maintaining, but it is the free tier, not the paid deliverable."
+    },
+    {
+      "name": "Trustline",
+      "gate_failed": "A4",
+      "why": "Same defect as Tierline. The declared moat is a 50-state trust/escrow rules matrix (reconciliation frequency, retention period, permitted broker funds such as Arizona's $5,000 ceiling, interest handling, required worksheet elements, signature and dating rules, separate-ledger rules) scraped from state real estate commission pages, plus a mined disciplinary-order corpus \u2014 'this matrix does not exist anywhere as a machine-readable resource; it is the whole moat.' The stated refresh includes 'quarterly full re-verification of the rules matrix', which with no machine-readable source is human work on a recurring schedule, and the differentiator is precisely the layer that cannot self-maintain. The deterministic three-way reconciliation engine underneath does pass the gate, but with citations suppressed on stale rows it collapses to a reconciliation feature that AppFolio, Buildium and Rent Manager already bundle \u2014 so what survives autonomously is not the product."
+    },
+    {
+      "name": "NexusPilot",
+      "gate_failed": "A4",
+      "why": "Self-admitted in the candidate's own risk section: 'The weakest A4 in this set: the threshold table is extracted from human-readable state pages, and while the diff-and-flag mechanism makes staleness detectable, the extraction itself still has to be right and there is no authoritative machine-readable feed for all 46 jurisdictions.' Detecting that a state DOR page changed is not the same as re-deriving the new threshold, measurement period (calendar year versus trailing twelve months differ by state) and marketplace-facilitator treatment \u2014 and the product's whole claim is a dated legal assertion ('your Illinois sales crossed $100,000 on 2026-07-14'). The failure mode is a wrong date on a registration obligation. Aggravating rather than causal: Shopify ships a free built-in nexus tracker, so the substitute is already in the buyer's admin."
+    },
+    {
+      "name": "Tariffgrid",
+      "gate_failed": "A4",
+      "why": "The primary corpus, OpenEI's URDB, is a free API but is itself 'collected and quality-controlled continuously by Illinois State University' \u2014 the freshness of the knowledge base is a third party's human curation programme, not a machine-readable publication cadence we can monitor. The idea's own mitigation makes the dependency explicit: 'URDB coverage and accuracy vary by utility - mitigated by PUC-sourced verification for the top ~100 IOUs', i.e. a standing human verification effort across a hundred utilities, plus a monthly crawl of PUC tariff-filing dockets per state to extract eligibility clauses ('you may not switch back for 12 months', kW/kWh thresholds) that live in prose inside thousands of per-utility tariff PDFs. Because the paid output is a ranked recommendation to change rate schedules, a stale or mis-extracted eligibility clause produces a switch the customer cannot make \u2014 and the honest degrade (mark the tariff 'not modelable' and exclude it) shrinks the deliverable rather than preserving it."
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "tally": [
+    [
+      "Wage Line",
+      40
+    ],
+    [
+      "Ship Record",
+      33
+    ],
+    [
+      "Rate Card",
+      28
+    ],
+    [
+      "Portfolio Guard",
+      27
+    ],
+    [
+      "Sunset Graph",
+      26
+    ],
+    [
+      "Landed",
+      21
+    ],
+    [
+      "Redlist",
+      21
+    ],
+    [
+      "Allowed Amount",
+      20
+    ]
+  ],
+  "votes": [
+    {
+      "lens": "Autonomy integrity \u2014 can this actually run with zero human minutes on the unhappy paths (ambiguous input, stale corpus, angry customer, refund/chargeback, legal exposure), judged against 12-Factor App and Karpathy on LLM systems",
+      "ranking": [
+        "Sunset Graph",
+        "Rate Card",
+        "Ship Record",
+        "Wage Line",
+        "Portfolio Guard",
+        "Landed",
+        "Allowed Amount",
+        "Redlist"
+      ],
+      "rationale": "Judged on whether autonomy survives the unhappy path, not on how many fail-closed sentences a pitch contains.\n\nSunset Graph leads because it exports verification: the customer's own CI adjudicates every codemod, so Karpathy's generation-verification loop closes without an operator, and the corpus is entirely versioned machine artifacts (SDL, OpenAPI, endoflife.date \u2014 83KB JSON, verified live). A bad output is a closed PR, not a fine. Rate Card is the purest 12-Factor build \u2014 no LLM in the money path, a golden-canary invoice gating deploys (dev/prod parity), Stripe auto-credit on Partial runs \u2014 docked because card-statement geometry is a standing parsing tax and a null $149 teardown is a refund conversation. Ship Record designs the money unhappy path end to end (UNWATCHED banner plus auto-credit), though subprocessor pages behind bot walls quietly shrink coverage. Wage Line's arithmetic is the most deterministic here and its FAR 22.404-6 refusal the pool's most honest boundary, but failing closed against an undocumented SAM endpoint on a Friday statutory deadline manufactures precisely the angry customer for whom it declares no support path. Portfolio Guard's clause\u2192observable-fact join is permanent human editorial work, and Apple/Google enforcement is discretionary, not a function of a published page. Landed's sources really are APIs (HTS reststop returned JSON), yet its headline liability number hinges on a future Commerce decision. Allowed Amount carries terabyte per-payer ingest against CRS-documented bad data \u2014 engineering minutes forever. Redlist last: both corpora are HTML-only (verified \u2014 no API; FDA 302s), and its crown jewel is LLM extraction of ppm limits from legal PDFs."
+    },
+    {
+      "lens": "PMF evidence: Mom Test (real money/behaviour beats stated interest), Ellis 40% rule, Andreessen market pull \u2014 ranked by strength of proof that money already changes hands for a worse solution to the same job.",
+      "ranking": [
+        "Wage Line",
+        "Rate Card",
+        "Ship Record",
+        "Portfolio Guard",
+        "Redlist",
+        "Allowed Amount",
+        "Landed",
+        "Sunset Graph"
+      ],
+      "rationale": "Mom Test evidence means a named vendor cashing a named check for a worse version of the same job. Wage Line wins outright: contractors pay LCPtracker/eBacon $175\u2013$1,200/mo plus $995\u2013$4,995 setup \u2014 nobody pays four-figure onboarding out of curiosity \u2014 and the substitute is ~$19,500/yr of clerical labour already funded. Andreessen pull is structural: the GC will not release payment without a defensible WH-347. Rate Card is second on cash velocity: LateShipment already takes 25\u201335% of recoveries, the purest revealed preference here. Discount it, though \u2014 contingency converts because nothing leaves the buyer's pocket, and Swipesum/FeeQuery giving statement analysis away free prices the diagnostic at zero; the beachhead is deliberately below where Sifted or Shipware quote, so pull is proven one tier up, not in-segment. Ship Record third: FOSSA at ~$207 and sbomify at $159 are money moving for attribution today, but the CRA half is a September 2026 deadline, and anticipated compliance is stated interest until the first fine lands. Portfolio Guard's Opteo/Optmyzr/WP Remote comparables prove agencies buy software, not that anyone buys policy monitoring \u2014 today's incumbent is a free Google email. Redlist's $10k\u2013$90k settlements flow to plaintiffs' counsel, and it concedes purchase is trigger-driven; Ellis's 40% needs habitual use. Allowed Amount and Landed both confess non-purchase in their own copy \u2014 pharmacies \"never executed the appeal,\" importers \"reserve nothing\" \u2014 and Landed skips the crowded paid end for the unpaid one. Sunset Graph rests on HN comments against free Dependabot: pain stated, never purchased."
+    },
+    {
+      "lens": "speed-to-revenue-selfserve \u2014 Ries lean MVP with the concierge shortcut banned: how fast can a fully automated v1 be built and charge a real credit card, judged on ingestion friction, pre-revenue corpus burden, determinism of the output, external human gates, and whether the buyer purchases without a call.",
+      "ranking": [
+        "Rate Card",
+        "Ship Record",
+        "Wage Line",
+        "Redlist",
+        "Portfolio Guard",
+        "Sunset Graph",
+        "Landed",
+        "Allowed Amount"
+      ],
+      "rationale": "Ries's MVP test here is build-time to a charged card, so I discount every Helmer moat that must be assembled before v1 emits anything. Rate Card wins: ingestion is a file the customer already owns (UPS Billing Data export) \u2014 no OAuth, no API approval, no scraping exposure \u2014 the recompute is arithmetic with no LLM in the money path, and the pure error findings (address correction $25.50, DIM, residential misclass) compute without contract rates, so the $149 teardown ships before the effective-dated rulebook is finished. Dunford's flat-fee-not-contingency line removes a buying objection rather than adding a concept. Ship Record is second: SPDX license-list-data and KEV/OSV are free and structured, the CRA 11 September clock is four weeks out, and FOSSA/sbomify bracket a proven self-serve price. Wage Line's WH-347 math and PDF are bounded, but eCPR XSD conformance is untestable without a DIR account and the $49 rate card is free public data reformatted. Redlist's $199 category report needs only the AG notice mirror, but both corpora are HTML scrapes with no API and settlement-PDF ppm extraction is a research project. Portfolio Guard is gated on Google Ads developer-token approval \u2014 a human external dependency that breaks the automated premise \u2014 atop a hand-authored clause-to-fact join. Sunset Graph needs four language surface-diff toolchains and sandboxed test-gated codemods before Moore's beachhead pays. Landed's fast half, classification, is commoditized by Zonos/3CE; its wedge, the AD/CVD rate graph, is the slow half. Allowed Amount is last: terabyte MRF ingest plus healthcare's slowest buyers, even at Ramanujam-friendly $149."
+    },
+    {
+      "lens": "Willingness to pay and monetization clarity \u2014 Ramanujam (WTP-first, value metric, packaging, price ceiling), Hormozi (value equation, risk reversal), Poyar/OpenView (value-metric alignment, expansion/NDR, self-serve price bands). Ranked by price ceiling defensibility for a no-human product.",
+      "ranking": [
+        "Wage Line",
+        "Landed",
+        "Allowed Amount",
+        "Portfolio Guard",
+        "Ship Record",
+        "Rate Card",
+        "Redlist",
+        "Sunset Graph"
+      ],
+      "rationale": "Ramanujam's WTP-first test: is the budget already forced, and does a reference price exist? Wage Line leads \u2014 WH-347 filing is legally mandatory weekly, DBA penalties run $28,619/violation plus FCA trebling, and it emits the filed artifact (PDF plus XSD-validated eCPR XML), which is what carries Hormozi's perceived-likelihood term; the per-report metric is market-validated. Skeptical hit: I verified CertifiedPayrollPro already sells self-serve at $49\u2013$249/mo plus $1\u20135/report with no setup fee, so \"zero setup fee is the wedge\" is occupied \u2014 the premium must come from the WD revision-history corner, not from price. Landed second: I found no self-serve AD/CVD comparable (Descartes-class is quote-only), so $899 against six-figure retroactive liquidation sets its own anchor, with the >20%-unresolved auto-refund as genuine Hormozi risk reversal. Caveat \u2014 no reference price also means unproven budget. Allowed Amount and Portfolio Guard own the best Poyar value metrics (NPIs aggregated via RCM resellers; accounts \u00d7 managed spend), yet both self-cap: $149\u2013$399 chosen explicitly to dodge physician sign-off, and I confirmed Opteo at $129/$249/$499 for 10/25/75 accounts \u2014 the market has already priced that exact metric low. Ship Record splits three jobs across no single metric against FOSSA's $207 and free SBOM tooling, then hits an urgency trough between Sept 2026 and Dec 2027. Rate Card has the clearest ROI and worst ceiling: LateShipment charges 25\u201335% contingency \u2014 $0 upfront \u2014 so flat $149 fights a zero-risk alternative while forfeiting all upside. Redlist confesses trigger-driven churn. Sunset Graph substitutes $700/engineer-day labour against free Dependabot for the pool's poorest buyers."
+    },
+    {
+      "lens": "Moat and retention: compounding, time-locked or usage-fed data advantage (Helmer 7 Powers, Thiel proprietary tech) combined with habitual, high-frequency use and automatic expansion (Vohra Superhuman PMF, Poyar frequency/NRR). One-off transactional jobs rank low.",
+      "ranking": [
+        "Wage Line",
+        "Allowed Amount",
+        "Portfolio Guard",
+        "Sunset Graph",
+        "Ship Record",
+        "Landed",
+        "Redlist",
+        "Rate Card"
+      ],
+      "rationale": "Wage Line wins both axes. A legally compelled weekly WH-347 is the highest-frequency habit here (Poyar), and the payroll-title\u2192SOC\u2192WD-class crosswalk is the pool's only asset compounding from customer corrections rather than crawling \u2014 real Thiel proprietary tech atop a WD revision history SAM.gov won't bulk-export (Helmer cornered resource). Vohra's 40% test passes trivially when Friday's filing gates payment. Allowed Amount: payers overwrite MRFs and CMS ships snapshots, not changelogs, so the longitudinal series is genuinely unreconstructable; terabyte ingest is a scale economy; Turquoise's cannibalization fear is real counter-positioning. But alerting is ambient, not obligatory, and RCM resale, not habit, supplies NRR. Portfolio Guard has the best NRR mechanic \u2014 accounts and spend metered from the API \u2014 and a buyer living in those accounts daily; yet policy pages are cheap to crawl, only diff history is locked, and Opteo/Optmyzr sit adjacent. Sunset Graph is the most workflow-embedded (push webhooks, PRs) and surface-diffing is genuine proprietary tech, but npm/PyPI artifacts are immutable, so a later entrant re-derives that half retroactively; \"cannot backfill\" is half-true, and Dependabot is free. Ship Record's per-release SBOMs and LICENSE history are rebuildable from git, and CRA demand is deadline-shaped \u2014 latent after September. Landed's AD/CVD graph is strong assembly, but its recurring event is an annual review anniversary, and it concedes classification, the sticky part. Redlist names its own defect \u2014 trigger-driven purchase, hostile to renewal \u2014 despite the best cornered resource. Rate Card last: a $149 one-shot whose value self-terminates once the leak is fixed; flat-fee positioning is copyable in a week."
+    },
+    {
+      "lens": "Distribution without a salesperson \u2014 strength of compounding self-serve channels (Weinberg & Mares Bullseye, Hormozi Core Four minus human selling): programmatic SEO, app stores/marketplaces, communities, integrations, free tools",
+      "ranking": [
+        "Sunset Graph",
+        "Redlist",
+        "Ship Record",
+        "Wage Line",
+        "Landed",
+        "Portfolio Guard",
+        "Rate Card",
+        "Allowed Amount"
+      ],
+      "rationale": "Bullseye (Weinberg & Mares) rewards breadth then concentration; Hormozi's Core Four minus human selling leaves cold content, free tools, marketplaces, integrations. Sunset Graph alone hits four: GitHub Marketplace, the GitHub App as channel-and-integration, HN/Shopify-Partner communities that adopt dev tools without a call, and a free single-repo scan whose output \u2014 a draft PR \u2014 every engineer in the repo sees, the pool's only in-org viral loop. Discount its SEO; endoflife.date already owns those queries, free. Redlist has the deepest programmatic asset: tens of thousands of notice, defendant, plaintiff-firm and import-alert pages over a corpus with no API or export, matched to the panic query \u2014 your own company name, the day the letter lands. Second only because it is single-channel and itself admits trigger-driven purchase. Ship Record stacks three link-earning free tools, but the CRA hook decays past 11 Sept 2026 and the subprocessor-feed reader isn't reliably the buyer. Wage Line has the best free-tool-to-product intent match (WH-347 generator) plus a county\u00d7craft long tail \u2014 but davisbaconrates.com sits in its own evidence list, there's no marketplace or integration, and it leans on SAM.gov cold lists into a demo-and-quote buyer. Landed's Shopify listing and HTS pages feed classification, the commodity it concedes isn't the wedge, while AD/CVD importers arrive via broker BD. Portfolio Guard's digest compounds across only a few hundred policy pages. Rate Card owns one calculator on SERPs saturated by contingency lead-gen. Allowed Amount last: AMA licensing bars publishing the CPT descriptors its SEO needs, no store or integration exists, and its named route is reselling through billing companies \u2014 partnership selling by a human."
+    }
+  ]
+}
