@@ -99,7 +99,18 @@ export async function buildBoard(
   tx: Tx,
   input: { readonly accountId: string; readonly weekEnding: string; readonly now: Date },
 ): Promise<Board> {
-  const corpus = await corpusState(db, input.now);
+  /**
+   * ONE HANDLE, ONE TRANSACTION. Every read below — including the GLOBAL mirror
+   * reads, which are not tenant-scoped — goes through `tx` rather than through the
+   * pool handle. On a pooled driver a second handle is merely a second connection;
+   * on a single-connection driver it is a query waiting for a transaction that is
+   * waiting for it. `Tx` is a `PgDatabase`, so the mirror read model takes it
+   * unchanged, and reading the rates inside the transaction that writes the row is
+   * the correct semantics anyway.
+   */
+  const ex: Db = tx;
+
+  const corpus = await corpusState(ex, input.now);
 
   const rows = rowsOf<BoardDbRow>(
     await tx.execute(sql`
@@ -175,7 +186,7 @@ export async function buildBoard(
   });
 
   const runnable = board.filter((row) => row.group === 'ready' || row.group === 'narrowed').length;
-  const cost = await runCost(db, tx, { accountId: input.accountId, runnable });
+  const cost = await runCost(ex, tx, { accountId: input.accountId, runnable });
 
   return {
     weekEnding: input.weekEnding,
@@ -236,11 +247,30 @@ export async function runCost(
   tx: Tx,
   input: { readonly accountId: string; readonly runnable: number },
 ): Promise<RunCost> {
-  const plans = await loadPlans(db);
+  /**
+   * ONE HANDLE, ONE TRANSACTION. Every read below — including the GLOBAL mirror
+   * reads, which are not tenant-scoped — goes through `tx` rather than through the
+   * pool handle. On a pooled driver a second handle is merely a second connection;
+   * on a single-connection driver it is a query waiting for a transaction that is
+   * waiting for it. `Tx` is a `PgDatabase`, so the mirror read model takes it
+   * unchanged, and reading the rates inside the transaction that writes the row is
+   * the correct semantics anyway.
+   */
+  const ex: Db = tx;
+
+  const plans = await loadPlans(ex);
   const subscription = rowsOf<{ plan_id: string | null }>(
     await tx.execute(sql`SELECT plan_id FROM subscriptions WHERE account_id = ${input.accountId}::uuid`),
   )[0];
-  const plan = (await loadPlan(db, subscription?.plan_id ?? null)) ?? plans[0] ?? null;
+  /**
+   * NO SUBSCRIPTION MEANS NO PLAN — not "the cheapest one".
+   *
+   * Falling back to the first row of the catalogue would quote Solo's allowance and
+   * Solo's overage price to an account that has bought neither, which is a bill
+   * invented from a default. The no-plan branch below says what is true instead:
+   * nothing is billed, and drafts are never billed at any tier.
+   */
+  const plan = await loadPlan(ex, subscription?.plan_id ?? null);
 
   const billableSoFar = Number(
     rowsOf<{ n: number | string }>(

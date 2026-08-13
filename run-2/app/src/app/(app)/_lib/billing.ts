@@ -86,8 +86,19 @@ export async function billingView(
   tx: Tx,
   input: { readonly accountId: string; readonly now?: Date },
 ): Promise<BillingView> {
+  /**
+   * ONE HANDLE, ONE TRANSACTION. Every read below — including the GLOBAL mirror
+   * reads, which are not tenant-scoped — goes through `tx` rather than through the
+   * pool handle. On a pooled driver a second handle is merely a second connection;
+   * on a single-connection driver it is a query waiting for a transaction that is
+   * waiting for it. `Tx` is a `PgDatabase`, so the mirror read model takes it
+   * unchanged, and reading the rates inside the transaction that writes the row is
+   * the correct semantics anyway.
+   */
+  const ex: Db = tx;
+
   const now = input.now ?? appClock().now();
-  const account = await readBillingAccount(db, input.accountId);
+  const account = await readBillingAccount(ex, input.accountId);
   const entitlement = account
     ? entitlementOf(account, { now: () => now })
     : entitlementOf(
@@ -104,8 +115,8 @@ export async function billingView(
         { now: () => now },
       );
 
-  const plans = await loadPlans(db);
-  const plan = await loadPlan(db, account?.planId ?? null);
+  const plans = await loadPlans(ex);
+  const plan = await loadPlan(ex, account?.planId ?? null);
 
   const periodStart = account?.currentPeriodStart ?? startOfMonth(now);
   const periodEnd = account?.currentPeriodEnd ?? endOfMonth(now);

@@ -21,9 +21,10 @@
  *    constants, so a rewrite that softened a refusal fails a test rather than
  *    shipping.
  * 3. **The forbidden things are absent from one file rather than from twenty.**
- *    There is no support address here, no contact form, no "we'll get back to you",
- *    and no claim of accuracy, time saved, acceptance or completeness — the four
- *    families `CORRECTIONS.md` strikes and the one A3 forbids. A lint over this
+ *    There is no address here, no form that routes to a person, no promise that
+ *    anyone will reply, and no claim of accuracy, time saved, acceptance or
+ *    completeness — the four families `CORRECTIONS.md` strikes and the one A3
+ *    forbids. A lint over this
  *    route group enforces it, and a single home for the prose is what makes that
  *    lint meaningful.
  */
@@ -88,6 +89,28 @@ export const BAND_CHANGE_NOTE =
   'Changing this does not alter filings already generated — artifacts are immutable. Where a ' +
   'filing is affected, Ratepin offers an amendment: a new certified payroll that amends the one ' +
   'you already submitted.';
+
+// ===========================================================================
+// §4.1 fields 3 and 4 — the two closed lists the setup form renders
+//
+// They live here rather than beside the queries because a CLIENT component reads
+// them, and a value import from the data layer would pull drizzle and the database
+// client into the browser bundle.
+// ===========================================================================
+
+export const CONSTRUCTION_TYPES = ['BUILDING', 'HEAVY', 'HIGHWAY', 'RESIDENTIAL'] as const;
+export type ConstructionType = (typeof CONSTRUCTION_TYPES)[number];
+
+/**
+ * §4.1 field 4. The value that ends the flow is a first-class member rather than an
+ * absence, so the refusal is reachable by construction and testable.
+ */
+export const FUNDING_SOURCES = [
+  { value: 'dba_direct', label: 'Federal contract — Davis-Bacon direct' },
+  { value: 'related_act', label: 'Federally assisted — a Davis-Bacon Related Act' },
+  { value: 'state_only', label: 'State or local money only, no federal money' },
+] as const;
+export type FundingSource = (typeof FUNDING_SOURCES)[number]['value'];
 
 // ===========================================================================
 // §4.5 — the unqualified buyer, refused at setup

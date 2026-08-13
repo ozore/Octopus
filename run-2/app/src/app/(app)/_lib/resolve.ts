@@ -168,7 +168,18 @@ export async function resolveWeek(
     readonly pin: PinRecord;
   },
 ): Promise<WeekResolution> {
-  const classifications = await classificationsOf(db, input.pin.wdNumber, input.pin.revision);
+  /**
+   * ONE HANDLE, ONE TRANSACTION. Every read below — including the GLOBAL mirror
+   * reads, which are not tenant-scoped — goes through `tx` rather than through the
+   * pool handle. On a pooled driver a second handle is merely a second connection;
+   * on a single-connection driver it is a query waiting for a transaction that is
+   * waiting for it. `Tx` is a `PgDatabase`, so the mirror read model takes it
+   * unchanged, and reading the rates inside the transaction that writes the row is
+   * the correct semantics anyway.
+   */
+  const ex: Db = tx;
+
+  const classifications = await classificationsOf(ex, input.pin.wdNumber, input.pin.revision);
   const lines = await weekLines(tx, input.weekId);
   const pin = pinnedRevisionOf(input.project, input.pin);
   const transport = rankerTransport();
@@ -290,7 +301,18 @@ export async function confirmClassification(
     readonly chosenOrdinal: number;
   },
 ): Promise<ConfirmResult | null> {
-  const classifications = await classificationsOf(db, input.pin.wdNumber, input.pin.revision);
+  /**
+   * ONE HANDLE, ONE TRANSACTION. Every read below — including the GLOBAL mirror
+   * reads, which are not tenant-scoped — goes through `tx` rather than through the
+   * pool handle. On a pooled driver a second handle is merely a second connection;
+   * on a single-connection driver it is a query waiting for a transaction that is
+   * waiting for it. `Tx` is a `PgDatabase`, so the mirror read model takes it
+   * unchanged, and reading the rates inside the transaction that writes the row is
+   * the correct semantics anyway.
+   */
+  const ex: Db = tx;
+
+  const classifications = await classificationsOf(ex, input.pin.wdNumber, input.pin.revision);
   const chosen = classifications.find((row) => row.ordinal === input.chosenOrdinal);
   if (!chosen) return null;
 

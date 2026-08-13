@@ -30,7 +30,7 @@
  * would silently erase statutory overtime from a certified payroll.
  */
 
-import { sql } from 'drizzle-orm';
+import { sql, type SQL } from 'drizzle-orm';
 
 import { normalizeTitle } from '@/classify';
 import { rowsOf, type Tx } from '@/db';
@@ -106,7 +106,7 @@ export async function rememberedMap(
     await tx.execute(sql`
       SELECT id, project_id, uploaded_at, column_map
         FROM payroll_imports
-       WHERE state <> 'discarded' AND column_map <> '{}'::jsonb
+       WHERE state <> 'expired' AND column_map <> '{}'::jsonb
        ORDER BY (project_id IS NOT DISTINCT FROM ${input.projectId}::uuid) DESC, uploaded_at DESC
        LIMIT 10
     `),
@@ -148,7 +148,7 @@ export async function listColumnMaps(tx: Tx): Promise<
       SELECT i.id, p.name AS project_name, i.uploaded_at, i.column_map, i.row_count
         FROM payroll_imports i
         LEFT JOIN projects p ON p.id = i.project_id
-       WHERE i.state <> 'discarded'
+       WHERE i.state <> 'expired'
        ORDER BY i.uploaded_at DESC
     `),
   ).map((row) => ({
@@ -253,7 +253,7 @@ export async function ingestPayroll(
         FROM payroll_imports i
        WHERE i.project_id = ${input.projectId}::uuid
          AND i.source_sha256 = decode(${input.sourceSha256}, 'hex')
-         AND i.state <> 'discarded'
+         AND i.state <> 'expired'
        ORDER BY i.uploaded_at DESC LIMIT 1
     `),
   )[0];
@@ -324,7 +324,7 @@ export async function ingestPayroll(
         VALUES
           (${newId()}::uuid, ${input.accountId}::uuid, ${workerWeekId}::uuid, ${ordinal},
            ${line.rawTitle}, ${titleNorm},
-           ${sevenOf(line.st)}::int[], ${sevenOf(line.ot)}::int[], ${sevenOf(line.dt)}::int[],
+           ${intArray(line.st)}, ${intArray(line.ot)}, ${intArray(line.dt)},
            ${line.cashRateMilli}, ${line.cashInLieuMilli}, ${line.otRateMilli}, ${line.dtRateMilli},
            'pending', '{}')
       `);
@@ -418,6 +418,19 @@ function sevenOf(values: readonly number[]): number[] {
   const out = [0, 0, 0, 0, 0, 0, 0];
   for (let index = 0; index < 7; index += 1) out[index] = Math.trunc(values[index] ?? 0);
   return out;
+}
+
+/**
+ * A seven-element `integer[]` literal, built element by element.
+ *
+ * A JS array handed to a template parameter is serialized as a ROW, not as an array,
+ * and `record::int[]` is a cast Postgres refuses. Each element is still a bound
+ * parameter — the only thing composed here is the `ARRAY[...]` syntax, so nothing
+ * from a payroll file is ever concatenated into SQL text.
+ */
+function intArray(values: readonly number[]): SQL {
+  const seven = sevenOf(values);
+  return sql`ARRAY[${sql.join(seven.map((value) => sql`${value}`), sql`, `)}]::int[]`;
 }
 
 // ===========================================================================

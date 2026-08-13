@@ -2,6 +2,7 @@
 
 **Subject:** the ethics and the mechanics of a no-human product in other people's forums. What it may publish, what it may never publish, and the exact disclosure that has to travel with anything it does.
 **Status:** **DRAFT ON DISK. Nothing in this file has been posted anywhere, and no venue account exists.**
+**BUILD STATE:** two mechanisms this file relies on are marked in place. §7's published-address invariant **is built** (`app/tests/platform/g5.test.ts`, run by CI). §6's citation instrumentation **is not** — no referrer or attribution field exists in the app — and §4 row 1's permission is now conditional on an unread verification step (§4.1). Nothing else here describes machinery: §§1–5 are an argument and a disclosure text, and both stand on their own.
 **Method:** every rule quoted below was fetched in-session on **2026-08-13** from the venue or the regulator that wrote it. Where a rule could not be read, it is marked unread and nothing is inferred from it.
 **Binding:** `PLAN.md` A1–A6 · `IDEA_DOSSIER.md` D1, D9 · `CORRECTIONS.md` (Scope A) · `BRAND.md` §3.5, §5.3 · `research/03-communities-and-lists.md`.
 
@@ -64,12 +65,18 @@ That single paragraph eliminates the comfortable version of this whole exercise 
 
 One text, three lengths, used unmodified wherever any of it applies. It is not tuned for conversion and it is never A/B tested; a disclosure with variants is a disclosure being optimised against its own purpose.
 
+**One sentence in it takes two forms, and that is not a variant.** The no-next-turn sentence differs between a post and a message because *the plumbing behind it differs*: a reply to a post reaches nobody, and a reply to a message reaches a counted mailbox. Choosing the true one is not tuning; printing the same absolute on both surfaces would be. Nothing else in the text changes, and nothing changes for any other reason.
+
 ### 3.1 Full form — the canonical text
+
+**The no-next-turn sentence is scoped to its surface, and there are two surfaces.** The old text carried one absolute — *"Nothing you write in reply is delivered to anyone"* — which is true of a post in somebody else's venue and **false of an email we send**, because a reply to an email lands at a published address, increments G5's raw counter and is answered inside the minutes the gate charges us (`lifecycle-emails.md` §2 C1, §7). A disclosure that is false on one of the two surfaces it is used on is not a disclosure; §465.1(c)(7) requires that it not be *"contradicted or mitigated by, or inconsistent with, anything else in the communication."* So the sentence is now written per surface, and each version is true of the surface it appears on.
 
 > **Published by Ratepin, automatically.**
 > Ratepin is a paid product and this is its vendor's own message, not a user's. It was written and published by software; no person at Ratepin composed it, chose where it went, or is reading this page.
-> **Nothing you write in reply is delivered to anyone.** There is no support queue and no human reviews any Ratepin output, at any tier.
-> If something here is wrong, the correction path is in the product itself and it is dated: `{correction_url}`. One address does reach a mailbox — it is on the billing page, for payment disputes — and every message it receives is counted and published at `{status_url}`.
+> **`{no_next_turn_sentence}`** — exactly one of the two, chosen by surface and never edited:
+> · *In a post, a listing or any page we publish:* **Nothing you write in reply to this post reaches anyone. There is no support queue and no human reviews any Ratepin output, at any tier.**
+> · *In a message we send to an address:* **No one is waiting on a reply to this message. There is no support queue and no human reviews any Ratepin output, at any tier — and one address does reach a mailbox, the billing address, where every message received is counted and published.**
+> If something here is wrong, the correction path is in the product itself and it is dated: `{correction_url}`. The billing address and its counter are at `{status_url}`.
 
 Five properties, and each does a specific job:
 
@@ -77,19 +84,27 @@ Five properties, and each does a specific job:
 |---|---|---|
 | **Authorship** | "Published by Ratepin, automatically" | §465.5(a): the material relationship, unavoidable, in the body |
 | **Non-human origin** | "written and published by software; no person… composed it" | The venue rules in §2.1 exist because readers assume a person. Where a venue permits the post at all, the assumption still has to be corrected |
-| **No next turn** | "Nothing you write in reply is delivered to anyone" | The whole ethical load. It is stated as a fact about the plumbing, not as an apology |
+| **No next turn** | `{no_next_turn_sentence}`, one of the two above | The whole ethical load. It is stated as a fact about the plumbing, not as an apology — and it is stated **per surface**, because the plumbing differs between a post and a message. The post version is an absolute because it is true absolutely; the message version does not claim an absolute it cannot keep |
 | **Where the answer lives instead** | the correction path | A refusal without a route is abandonment. A3 requires the resolution to be in-product, and this points at it |
 | **The one real address, and its cost to us** | the billing address and the published counter | It closes the evasion. We do not get to claim autonomy while hiding a mailbox — `USER_JOURNEY.md` §11.8 makes every published address countable, and this sentence tells the reader the counter exists |
 
 ### 3.2 One-line form — for fields with a length limit
 
-> *Published automatically by Ratepin, the vendor. No reply here reaches a person; corrections at `{correction_url}`.*
+Two forms, same rule: the one that ships is the one true of the surface.
 
-**Rule:** if a venue's field is too short to carry even this, the venue is one where a §465.1(c)(4)-compliant disclosure is impossible, and we do not post. The shortness of the field is the finding, not an obstacle to route around.
+> *For a post, a listing or a page:* **Published automatically by Ratepin, the vendor. Replies here reach nobody; the billing address is the only address that reaches a mailbox. Corrections at `{correction_url}`.**
+>
+> *For a message sent to an address:* **Sent automatically by Ratepin, the vendor. No one is waiting on a reply; the billing address is the only one that is read, and every message to it is counted. Corrections at `{correction_url}`.**
+
+**Why the billing-address clause survives even the short form.** The one-line version is the one most likely to be read alone, and the absolute it used to carry — *"No reply here reaches a person"* — was the sentence the full form had already hedged two lines later. A short disclosure that is more absolute than the long one is a short disclosure that is less true.
+
+**Rule:** if a venue's field is too short to carry even this — including the billing-address clause — the venue is one where a §465.1(c)(4)-compliant disclosure is impossible, and we do not post. The shortness of the field is the finding, not an obstacle to route around.
 
 ### 3.3 Artifact form — for anything that travels
 
-Already specified and already shipping (`BRAND.md` §6.7): the artifact footer's third line — *"Ratepin computes and formats. The contractor certifies and files."* — is the disclosure in the place it matters most, on a document that will be read by more strangers than any page we publish. It is non-configurable and has no white-label option at any tier.
+Already specified and already shipping (`BRAND.md` §6.7): the artifact footer's boundary line — **"Ratepin computes and formats. You certify and file. This is not legal advice."** — is the disclosure in the place it matters most, on a document that will be read by more strangers than any page we publish. It is non-configurable and has no white-label option at any tier.
+
+Quoted from `app/src/artifacts/provenance.ts:58` (`BOUNDARY_STATEMENT`), which is where `provenanceFooterLines()` reads it. **An earlier draft of this section paraphrased it** as *"the third line — Ratepin computes and formats. The contractor certifies and files."* Both halves were wrong: it is not the third line, and the shipped sentence addresses the reader in the second person and carries a third clause. A disclosure quoted from memory is not quoted.
 
 ---
 
@@ -97,8 +112,8 @@ Already specified and already shipping (`BRAND.md` §6.7): the artifact footer's
 
 | # | Contribution | Permitted? | Reason |
 |---|---|---|---|
-| 1 | A factual product listing in a directory (name, description, price, category, screenshots) | **Yes**, with §3.2 | It is data about ourselves in a slot built for data about ourselves. `research/03` is right that it is a placement, not a channel |
-| 2 | A public dataset, feed or changelog on our own domain that others may cite | **Yes** | An object. A citation by a forum member is community reach we did not have to be awake for |
+| 1 | A factual product listing in a directory (name, description, price, category, screenshots) | **Conditional — see §4.1** | It is data about ourselves in a slot built for data about ourselves. `research/03` is right that it is a placement, not a channel. But the submission is not the end of it, and §4.1 is the A1 test the row had not been given |
+| 2 | A public dataset, feed or changelog on our own domain that others may cite | **Yes** | An object, on our own domain, submitted to nobody. **Audited under §4.1 and clean: there is no counterparty**, so no reply can be required of us |
 | 3 | A correction to a factual error **about our own product** in someone else's post | **No** | It is a conversational turn, and it invites the follow-up we will not answer. The correction belongs on our page, dated, where the reader who cares will find it |
 | 4 | Answering a technical question in a help forum, with or without a link | **No** — see §5 | The core case. It fails on the venue rules and on the deeper ground in §5 |
 | 5 | A review of Ratepin, by anyone with a material relationship to Ratepin | **Never** | 16 CFR 465.2, 465.5. No exception for a disclosed one — the honest version is simply not writing it |
@@ -109,6 +124,21 @@ Already specified and already shipping (`BRAND.md` §6.7): the artifact footer's
 | 10 | Paying a person to post on our behalf | **No** | It converts a structural constraint into a laundered one, and §465.5(b)(1) puts the disclosure duty back on us anyway |
 | 11 | A comparison site or "alternatives" property we own | **Never** | §465.6 |
 | 12 | Editing an encyclopedia or wiki entry about ourselves or the category | **No** | Conflict of interest by construction, and the edit is a conversational act in a venue with a talk page |
+
+### 4.1 The question the two "yes" rows were never asked
+
+The twelve rows above were argued to a quoted rule or a statute wherever the answer was *no*, and the two rows where the answer was *yes* carried no venue-rule probe at all. That asymmetry is the one that survives review, because refusals look rigorous by themselves. **A1 is a gate, not a weight**, and it applies with the same force to a channel we are keeping.
+
+**The test, applied to every permitted contribution, now and in future:** *what happens when they reply asking for something?* If the answer is "someone writes back", the contribution is dead by A1 and belongs in §8 with its reason, not softened into a condition.
+
+| Row | Is there a person on their side? | Ruling |
+|---|---|---|
+| 2 — a dataset, feed or changelog on our own domain | **No.** Nothing is submitted to anyone; a third party may read it or not | **Permitted.** This is the only community contribution that passes cleanly |
+| 1 — a directory listing | **Unresolved, and it is the whole question.** `launch-posts.md` §2 records the G2 Digital Markets vendor path behind a login we did not create; the listing flow ends in a submitted form **awaiting verification**, and nobody has established that the verification is unattended | **Conditional, and the condition is a gate, not a caveat** |
+
+**The condition on row 1, stated so it can be failed.** The listing is permitted only if the whole path — submit, verify, publish — completes without a person at the vendor requiring anything of us. If verification returns a question, a document request, a call, or a "reply to this email to confirm", **then a human is required on our side and the row is dead by A1**: it moves to §8's refused list with the reason *"vendor verification is a correspondence"*, and `launch-posts.md` LP-2 is abandoned rather than answered. That is the same ruling `research/01` §3 gave the onboarding call, and there is no version of it we get to keep because the listing is free.
+
+**What resolves it:** reading what `app.g2digitalmarkets.com/get-listed/start` actually asks for. That has not been done, and until it is, row 1 is **unverified**, not permitted — which is also the correction `channels.csv` CH-15f needs.
 
 ---
 
@@ -139,7 +169,7 @@ The only community mechanism compatible with A1–A6 is that **somebody else** m
 3. **No login, no wall, no interstitial.** `BRAND.md` C-B3 resolved the free generator in favour of proof over capture; the same resolution applies to everything a stranger might link.
 4. **Self-describing.** A reader who arrives from a link with no context must be able to tell within one screen what this is and who publishes it — which is LP-5, the colophon.
 
-**Instrumented, not assumed.** Referrer-attributed sessions from third-party domains, and accounts whose first session began at a cited URL. `research/03` is explicit: no coefficient exists, so this is counted, never planned against.
+**Instrumented, not assumed — and the instrument is specified, not built.** Referrer-attributed sessions from third-party domains, and accounts whose first session began at a cited URL. **Nothing in `run-2/app` records a referrer**: no referrer, UTM or attribution field exists anywhere under `src/platform` or `src/app`, so there is no counter here to read yet. What must be built is a first-session field on the account row carrying the entry path and the referring host, written once at session creation (`src/platform/auth/session.ts`) and never updated. `research/03` is explicit that no coefficient exists, so when it is built this is counted, never planned against.
 
 ---
 
@@ -150,7 +180,7 @@ The only community mechanism compatible with A1–A6 is that **somebody else** m
 **Three rules follow for this playbook:**
 
 - That address is never posted in a community, a directory field, a launch note or a signature. It lives on the billing page.
-- No second address is created for any acquisition purpose. CI asserts the published-address set is exactly the set of addresses that can receive mail anywhere the company can be written to; an undeclared mailbox fails the build.
+- No second address is created for any acquisition purpose. **This one is built and can be pointed at:** `app/tests/platform/g5.test.ts` asserts *"finds no undeclared company address anywhere in the shipping source"* and runs in the `unit` step of `.github/workflows/ci.yml`, so an undeclared mailbox does fail the build today.
 - No copy anywhere describes the company as autonomous, human-free or self-running. Until the counter has been under 2.00 minutes per customer per month for 90 consecutive days at ≥50 paying accounts, the permitted sentences are the mechanism ones: *there is no support queue; no human reviews any output, at any tier; refunds are a button* (`CORRECTIONS.md` F-4, `BRAND.md` §5.2 G5).
 
 ---

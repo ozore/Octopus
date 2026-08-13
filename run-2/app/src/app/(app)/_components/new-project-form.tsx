@@ -38,11 +38,12 @@ import {
   BAND_WHERE_TO_READ,
   BAND_WHY_WE_ASK,
   CALIFORNIA_IDENTIFIERS,
+  CONSTRUCTION_TYPES,
+  FUNDING_SOURCES,
   LOCK_EXPLANATION,
   LOCK_IS_YOURS,
   STATE_ONLY_REFUSAL,
 } from '../_lib/copy';
-import { CONSTRUCTION_TYPES, FUNDING_SOURCES } from '../_lib/projects';
 
 export interface NewProjectFormProps {
   readonly action: (formData: FormData) => void | Promise<void>;

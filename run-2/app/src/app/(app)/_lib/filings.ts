@@ -118,15 +118,15 @@ interface LineDbRow {
   readonly class_revision: number | string | null;
   readonly class_wd_number: string | null;
   readonly resolved_at_level: string | null;
-  readonly day_st_hours: number[];
-  readonly day_ot_hours: number[];
-  readonly day_dt_hours: number[];
+  readonly day_st_hours: number[] | string;
+  readonly day_ot_hours: number[] | string;
+  readonly day_dt_hours: number[] | string;
   readonly cash_rate_milli: number | string;
   readonly cash_in_lieu_milli: number | string;
   readonly ot_rate_milli: number | string | null;
   readonly dt_rate_milli: number | string | null;
   readonly resolution_state: 'pending' | 'resolved' | 'blocked';
-  readonly block_reasons: string[];
+  readonly block_reasons: string[] | string;
 }
 
 export interface WeekRecord {
@@ -184,7 +184,18 @@ export async function loadWeek(
   tx: Tx,
   input: { readonly week: WeekRecord; readonly project: ProjectRecord; readonly pin: PinRecord },
 ): Promise<LoadedWeek> {
-  const classifications = await classificationsOf(db, input.pin.wdNumber, input.pin.revision);
+  /**
+   * ONE HANDLE, ONE TRANSACTION. Every read below — including the GLOBAL mirror
+   * reads, which are not tenant-scoped — goes through `tx` rather than through the
+   * pool handle. On a pooled driver a second handle is merely a second connection;
+   * on a single-connection driver it is a query waiting for a transaction that is
+   * waiting for it. `Tx` is a `PgDatabase`, so the mirror read model takes it
+   * unchanged, and reading the rates inside the transaction that writes the row is
+   * the correct semantics anyway.
+   */
+  const ex: Db = tx;
+
+  const classifications = await classificationsOf(ex, input.pin.wdNumber, input.pin.revision);
   const byOrdinal = new Map(classifications.map((row) => [row.ordinal, row]));
 
   const workerRows = rowsOf<WorkerWeekDbRow>(
@@ -282,7 +293,7 @@ export async function loadWeek(
           dtRate: line.dt_rate_milli === null ? null : MilliRate.of(Number(line.dt_rate_milli)),
           fringeCreditPlans: plans,
           resolutionState: classification === undefined ? 'blocked' : line.resolution_state,
-          blockReasons: (line.block_reasons ?? []) as readonly BlockReason[],
+          blockReasons: pgArray(line.block_reasons) as readonly BlockReason[],
         } satisfies PayrollLine;
       });
 
@@ -328,11 +339,30 @@ export async function loadWeek(
   };
 }
 
+/**
+ * A Postgres array column, as a JS array — whichever shape the driver hands back.
+ *
+ * postgres-js parses `integer[]` into an array; PGlite hands back the literal
+ * `{0,800,…}`. Indexing the literal would return a CHARACTER, and the character
+ * would become an hour on a document somebody signs. That is the class of bug that
+ * looks completely normal in the output, so it is parsed rather than assumed.
+ */
+function pgArray(value: unknown): readonly string[] {
+  if (Array.isArray(value)) return value.map((entry) => String(entry));
+  if (typeof value !== 'string') return [];
+  const inner = value.replace(/^\{/, '').replace(/\}$/, '').trim();
+  if (inner === '') return [];
+  return inner.split(',').map((entry) => entry.trim().replace(/^"|"$/g, ''));
+}
+
 function sevenDayHours(line: LineDbRow): PayrollLine['dayHours'] {
+  const st = pgArray(line.day_st_hours);
+  const ot = pgArray(line.day_ot_hours);
+  const dt = pgArray(line.day_dt_hours);
   const day = (index: number): DayHours => ({
-    st: Hours.of(Number(line.day_st_hours?.[index] ?? 0)),
-    ot: Hours.of(Number(line.day_ot_hours?.[index] ?? 0)),
-    dt: Hours.of(Number(line.day_dt_hours?.[index] ?? 0)),
+    st: Hours.of(Number(st[index] ?? 0)),
+    ot: Hours.of(Number(ot[index] ?? 0)),
+    dt: Hours.of(Number(dt[index] ?? 0)),
   });
   return [day(0), day(1), day(2), day(3), day(4), day(5), day(6)];
 }
@@ -399,12 +429,23 @@ interface Composed extends Omit<GeneratedFiling, 'filingId' | 'sequence'> {
  * the question an artifact exists to settle.
  */
 async function composeFiling(db: Db, tx: Tx, input: ComposeInput): Promise<Composed> {
+  /**
+   * ONE HANDLE, ONE TRANSACTION. Every read below — including the GLOBAL mirror
+   * reads, which are not tenant-scoped — goes through `tx` rather than through the
+   * pool handle. On a pooled driver a second handle is merely a second connection;
+   * on a single-connection driver it is a query waiting for a transaction that is
+   * waiting for it. `Tx` is a `PgDatabase`, so the mirror read model takes it
+   * unchanged, and reading the rates inside the transaction that writes the row is
+   * the correct semantics anyway.
+   */
+  const ex: Db = tx;
+
   const { week, project, pin } = input;
   const config = appConfig();
-  const corpus = await corpusState(db, input.now);
+  const corpus = await corpusState(ex, input.now);
 
-  const loaded = await loadWeek(db, tx, { week, project, pin });
-  const classifications = await classificationsOf(db, pin.wdNumber, pin.revision);
+  const loaded = await loadWeek(ex, tx, { week, project, pin });
+  const classifications = await classificationsOf(ex, pin.wdNumber, pin.revision);
 
   const rates: WdRate[] = classifications.map((classification) => ({
     classificationId: classification.id,
@@ -440,20 +481,20 @@ async function composeFiling(db: Db, tx: Tx, input: ComposeInput): Promise<Compo
     freshness,
   });
 
-  const obligations = input.obligations ?? (await loadObligations(db));
+  const obligations = input.obligations ?? (await loadObligations(ex));
   const refusals = buildExceptionReport({ week: loaded.week, computation, obligations });
   const exceptions = [...exceptionSentences(refusals)];
 
-  const snapshot = await promotedSnapshot(db);
+  const snapshot = await promotedSnapshot(ex);
   const proof =
     snapshot === null
       ? { leafIndex: -1, siblings: [] }
-      : await proofFor(db, {
+      : await proofFor(ex, {
           snapshotId: snapshot.snapshotId,
           wdNumber: pin.wdNumber,
           revision: pin.revision,
         });
-  const canonical = await canonicalShaOf(db, pin.wdNumber, pin.revision);
+  const canonical = await canonicalShaOf(ex, pin.wdNumber, pin.revision);
 
   const provenance: ArtifactProvenance = {
     wdNumber: pin.wdNumber,
@@ -513,7 +554,7 @@ async function composeFiling(db: Db, tx: Tx, input: ComposeInput): Promise<Compo
   });
 
   const withSupersession = await narrowFooterIfSuperseded({
-    db,
+    db: ex,
     artifact,
     pin,
     lockRecordedOn:
@@ -577,7 +618,7 @@ export async function generateFiling(
   const sequence = await nextSequence(tx, project.id, week.weekEnding);
   const filingId = newId();
 
-  const composed = await composeFiling(db, tx, {
+  const composed = await composeFiling(tx, tx, {
     week,
     project,
     pin,
@@ -598,7 +639,7 @@ export async function generateFiling(
        freshness_state, freshness_checked_at, generated_at, amends_filing_id, billable)
     VALUES
       (${filingId}::uuid, ${input.accountId}::uuid, ${project.id}::uuid, ${week.weekId}::uuid,
-       ${week.weekEnding}::date, ${sequence}, 'GENERATED', ${verdict.status},
+       ${week.weekEnding}::date, ${sequence}, 'DRAFT', ${verdict.status},
        ${blockReasonArray(verdict)}::block_reason[],
        ${violationArray(computation)}::violation_flag[],
        ${pin.id}::uuid, ${composed.snapshotId}, ${config.ENGINE_VERSION}, ${config.BUILD_SHA},
@@ -659,7 +700,7 @@ export async function rebuildFiling(
   const pin = await pinOfFiling(tx, filingId);
   if (pin === null) return null;
 
-  const composed = await composeFiling(db, tx, {
+  const composed = await composeFiling(tx, tx, {
     week,
     project,
     pin,
@@ -843,7 +884,7 @@ interface FilingDbRow {
   readonly sequence: number | string;
   readonly state: string;
   readonly status: ArtifactStatus;
-  readonly block_reasons: string[];
+  readonly block_reasons: string[] | string;
   readonly freshness_state: Freshness['state'];
   readonly generated_at: string | Date;
   readonly released_at: string | Date | null;
@@ -861,7 +902,7 @@ function toFiling(row: FilingDbRow): FilingRecord {
     sequence: Number(row.sequence),
     state: row.state,
     status: row.status,
-    blockReasons: (row.block_reasons ?? []) as readonly BlockReason[],
+    blockReasons: pgArray(row.block_reasons) as readonly BlockReason[],
     freshnessState: row.freshness_state,
     generatedAt: new Date(row.generated_at),
     releasedAt: row.released_at === null ? null : new Date(row.released_at),

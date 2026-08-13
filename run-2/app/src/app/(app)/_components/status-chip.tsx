@@ -10,9 +10,10 @@
  * render a status the gate did not produce — which is the point: a screen that could
  * choose its own chip would be a second status machine.
  *
- * THERE IS NO SUCCESS CHIP. `DESIGN_SYSTEM.md` §4.1: "a design system that ships an
- * `alert--success` component is a system in which somebody will eventually write
- * 'Your filing is compliant.'" CERTIFIABLE is a status, not a congratulation.
+ * THERE IS NO SUCCESS CHIP. `DESIGN_SYSTEM.md` §4.1: a design system that ships an
+ * `alert--success` component is a system in which somebody eventually writes the one
+ * sentence `USER_JOURNEY.md` §16.3 bans — the one asserting that a filing has been
+ * accepted or approved. CERTIFIABLE is a status, not a congratulation.
  */
 
 import type { ArtifactStatus } from '@/lib/types';

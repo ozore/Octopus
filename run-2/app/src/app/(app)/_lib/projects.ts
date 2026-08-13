@@ -45,19 +45,14 @@ import { activeDetermination, corpusState, newerRevisionThan, promotedSnapshot }
 // Row shapes
 // ===========================================================================
 
-export const CONSTRUCTION_TYPES = ['BUILDING', 'HEAVY', 'HIGHWAY', 'RESIDENTIAL'] as const;
-export type ConstructionType = (typeof CONSTRUCTION_TYPES)[number];
-
-/**
- * §4.1 field 4. The value that ends the flow is a first-class member rather than an
- * absence, so the refusal is reachable by construction and testable.
- */
-export const FUNDING_SOURCES = [
-  { value: 'dba_direct', label: 'Federal contract — Davis-Bacon direct' },
-  { value: 'related_act', label: 'Federally assisted — a Davis-Bacon Related Act' },
-  { value: 'state_only', label: 'State or local money only, no federal money' },
-] as const;
-export type FundingSource = (typeof FUNDING_SOURCES)[number]['value'];
+/** The two closed lists live in `copy.ts` because the setup form is a client
+ *  component; re-exported here so a server caller has one import for the domain. */
+export {
+  CONSTRUCTION_TYPES,
+  FUNDING_SOURCES,
+  type ConstructionType,
+  type FundingSource,
+} from './copy';
 
 export interface ProjectRecord {
   readonly id: string;
@@ -254,6 +249,19 @@ export async function createProject(
   tx: Tx,
   input: NewProjectInput & { readonly accountId: string; readonly userId: string; readonly now: Date },
 ): Promise<Result<CreatedProject>> {
+  /**
+   * ONE HANDLE, ONE TRANSACTION.
+   *
+   * Every read below — including the GLOBAL mirror reads, which are not
+   * tenant-scoped — goes through `tx` rather than through the pool handle. On a
+   * pooled driver a second handle is merely a second connection; on a
+   * single-connection driver it is a query waiting for a transaction that is waiting
+   * for it, which is a deadlock with no error message. `Tx` is a `PgDatabase`, so
+   * the mirror read model takes it unchanged — and reading the rates inside the same
+   * transaction that writes the row is the correct semantics anyway.
+   */
+  const ex: Db = tx;
+
   if (input.fundingSource === 'state_only') {
     return refuse(
       declinedConclusion({
@@ -299,7 +307,7 @@ export async function createProject(
     return ok({ projectId, pin: null, pinDeferred: null, unionGroups: [] });
   }
 
-  const pinned = await pinDetermination(db, tx, {
+  const pinned = await pinDetermination(ex, tx, {
     accountId: input.accountId,
     userId: input.userId,
     projectId,
@@ -340,7 +348,20 @@ export async function pinDetermination(
     readonly now: Date;
   },
 ): Promise<PinAttempt> {
-  const corpus = await corpusState(db, input.now);
+  /**
+   * ONE HANDLE, ONE TRANSACTION.
+   *
+   * Every read below — including the GLOBAL mirror reads, which are not
+   * tenant-scoped — goes through `tx` rather than through the pool handle. On a
+   * pooled driver a second handle is merely a second connection; on a
+   * single-connection driver it is a query waiting for a transaction that is waiting
+   * for it, which is a deadlock with no error message. `Tx` is a `PgDatabase`, so
+   * the mirror read model takes it unchanged — and reading the rates inside the same
+   * transaction that writes the row is the correct semantics anyway.
+   */
+  const ex: Db = tx;
+
+  const corpus = await corpusState(ex, input.now);
 
   if (suppressesNewRateAssertions(corpus.levels)) {
     return {
@@ -368,10 +389,10 @@ export async function pinDetermination(
     };
   }
 
-  const held = await activeDetermination(db, toWdNumber(input.wdNumber.trim().toUpperCase()));
+  const held = await activeDetermination(ex, toWdNumber(input.wdNumber.trim().toUpperCase()));
   if (held === null) return { pin: null, deferred: null, unionGroups: [] };
 
-  const snapshot = await promotedSnapshot(db);
+  const snapshot = await promotedSnapshot(ex);
   if (snapshot === null) return { pin: null, deferred: null, unionGroups: [] };
 
   const revision = input.revision ?? held.revision;
@@ -495,12 +516,25 @@ export interface ProjectStanding {
 }
 
 export async function standingOf(db: Db, tx: Tx, projectId: string): Promise<ProjectStanding | null> {
+  /**
+   * ONE HANDLE, ONE TRANSACTION.
+   *
+   * Every read below — including the GLOBAL mirror reads, which are not
+   * tenant-scoped — goes through `tx` rather than through the pool handle. On a
+   * pooled driver a second handle is merely a second connection; on a
+   * single-connection driver it is a query waiting for a transaction that is waiting
+   * for it, which is a deadlock with no error message. `Tx` is a `PgDatabase`, so
+   * the mirror read model takes it unchanged — and reading the rates inside the same
+   * transaction that writes the row is the correct semantics anyway.
+   */
+  const ex: Db = tx;
+
   const project = await readProject(tx, projectId);
   if (!project) return null;
   const pin = await currentPin(tx, projectId);
   if (!pin) return { project, pin: null, newer: null, standing: 'unpinned' };
 
-  const newer = await newerRevisionThan(db, pin.wdNumber, pin.revision);
+  const newer = await newerRevisionThan(ex, pin.wdNumber, pin.revision);
   const standing =
     newer === null
       ? 'current'

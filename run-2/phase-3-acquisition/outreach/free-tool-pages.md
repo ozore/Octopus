@@ -1,7 +1,8 @@
 # Free Tool Pages — the copy for the two surfaces at the top of the funnel
 
 **Subject:** the customer-facing copy for the free unlimited WH-347 generator (`/wh347`) and the county × craft rate lookup (`/rates/…`), including the DRAFT — NOT CERTIFIABLE framing every free artifact carries and the argument for why that is honest rather than a downgrade.
-**Status:** **DRAFT ON DISK.** Copy is written against what the app already renders (`app/src/app/(free)/`); where this file and the shipped page differ, the shipped page is the thing to change, not this file to quietly match.
+**Status:** **DRAFT ON DISK.** Copy is written against what the app already renders (`app/src/app/(free)/`); where this file and the shipped page differ, the shipped page is the thing to change, not this file to quietly match. **One such difference is outstanding and named in §2.1** — the shipped `wh347/page.tsx:51` still carries the ungated correctness claim this file has replaced.
+**BUILD STATE:** `claims.json`, `claims-lint`, `CL-1` and `CL-2` are specified in `CORRECTIONS.md` §5 and **are not in the repository**; the gate machinery that is built is `app/src/platform/ops/gates.ts` (`GATE_MECHANISM`, `gateSentence()`), refreshed by the `gates.refresh` job and published by `ops/status.ts`. Every rule below that says a check "fails the build" now says whether that check exists, and §5 marks each one.
 **Binding:** `PLAN.md` A1–A6 · `IDEA_DOSSIER.md` D3, D8 channels 1–3, D9, G1–G6 · `CORRECTIONS.md` Scope A, CL-1, CL-2, F-1…F-4 · `BRAND.md` §5.6, §6.5, C-B2, C-B3 · `USER_JOURNEY.md` J1, J2, §16 · `research/02-demand-seo.md`.
 **Date:** 2026-08-13.
 
@@ -27,11 +28,13 @@
 
 > # WH-347 generator
 >
-> Type a crew or drop a payroll CSV, name the wage determination, and get the federal form with the arithmetic done and the geometry right. No account, no email address, no card, and no limit on how many you generate.
+> Type a crew or drop a payroll CSV, name the wage determination, and get the federal form with the arithmetic computed by deterministic code and the form rendered to the DOL geometry. No account, no email address, no card, and no limit on how many you generate.
 >
 > Every form this page produces comes out marked **DRAFT — NOT CERTIFIABLE**, with the signature block withheld. That is deliberate, and the reason is two paragraphs down.
 
 No headline claim about speed, ease, accuracy or acceptance appears anywhere on this page. Per `BRAND.md` §6.2 the economic case for the ladder is the rate-of-record and nothing else, and per G4 a time claim is unmeasurable today in either direction.
+
+**What that first sentence used to say, and why it changed.** It read *"the arithmetic done and **the geometry right**."* "Right" asserts that our output is correct, which `CORRECTIONS.md` §4 **F-1** forbids until **G1** — a 500-line golden suite green for 30 consecutive days — has cleared, and G1 has not been attempted. The replacement says the mechanism instead: *deterministic code* and *rendered to the DOL geometry* are both descriptions of how the thing works rather than verdicts on whether it worked, and both phrasings already existed in our own documents (`dashboard.md` §3, G1 and G2 rows) and were available when this line was written. **The same string is live in the shipped page** at `app/src/app/(free)/wh347/page.tsx:51` — per this file's Status line the shipped page is the thing to change, and that change is outstanding. `geometry right`, `gets it right`, `done right` and `correct(ly)` belong in the F-1 probe set, because a paraphrase is what a reprint-only probe cannot catch.
 
 ### 2.2 The three inputs, and the honest third option
 
@@ -82,14 +85,23 @@ This is the section the free tier lives or dies on, so the argument is written o
 
 **The risk, named rather than smoothed over.** `USER_JOURNEY.md` H-J1b records it: a withheld signature block may read as *failure* rather than as *integrity*, and applying it to 100% of free artifacts puts that hypothesis directly onto the acquisition channel, where a bad reading costs conversion. **The instrument is the free-session → account-creation rate**, and the pre-registered response if it reads as failure is copy on the page, never a signature block on an unpinned document.
 
-**Exact artifact copy.** Watermark: `DRAFT — NOT CERTIFIABLE`. Footer, per `BRAND.md` §6.7, monospace, minimum 7.5pt, no logo, no colour, non-configurable at every tier including free:
+**Exact artifact copy — read from the shipped renderer, not drafted here.** Watermark: `DRAFT — NOT CERTIFIABLE`. Footer, per `BRAND.md` §6.7, non-configurable at every tier including free. The lines are assembled by `provenanceFooterLines()` in `app/src/artifacts/provenance.ts`, in this order:
 
 ```
-Rates of record: WD {wd_number}, Modification {r}, published {published_date}.
-Corpus snapshot {hash} · generated {generated_at} · ratepin.com/v/{serial}
-Ratepin computes and formats. The contractor certifies and files.
-No revision of record was pinned for this document, so the signature block is withheld.
+Rates from wage determination {wd_number} revision {r}, published {published_date}.
+{freshness sentence — "No newer revision existed as of {ts}." at FRESH;
+ "Newer-revision check last completed {ts}; not re-checked since." at DATED and STALE}
+{contract-value-band sentence — on the free path usually "No contract value band is
+ recorded, so the overtime premium is not computed either way."}
+Corpus snapshot {hash} · determination {hash} · Merkle root {hash} leaf {n} · engine {v} ·
+ build {sha} · form {layout} {hash} · generated {generated_at}
+DRAFT — NOT CERTIFIABLE. The signature block is withheld and this document must not be
+ signed or filed. {n} payroll lines are unresolved: {reasons}. Resolve and regenerate;
+ the rates and the arithmetic do not change.
+Ratepin computes and formats. You certify and file. This is not legal advice.
 ```
+
+**Three corrections this block absorbs**, because the earlier draft of it was written from memory rather than from the renderer. The claim line reads *"Rates from wage determination … revision …"*, not *"Rates of record: WD …, Modification …"*. The boundary line is `BOUNDARY_STATEMENT` (`provenance.ts:58`) — *"You certify and file. This is not legal advice."* — not *"The contractor certifies and files."*, and the version in `community-playbook.md` §3.3 has been corrected to match. And **`ratepin.com/v/{serial}` does not appear on a free artifact at all**: `FooterInput.verifyUrl` is documented as *"Omitted for the free generator, which persists nothing beyond 24 hours and therefore has nothing to resolve."* Printing a verification URL on a document that resolves to nothing would have been the single worst error available on this page.
 
 ---
 
@@ -118,7 +130,9 @@ No revision of record was pinned for this document, so the signature block is wi
 ### 4.3 The two calls to action, neither of them a wall
 
 > **Generate a WH-347 with this rate** → `/wh347?wd={wd_number}` · no account, no limit
-> **Get an email when this determination changes** → one field, double opt-in, one-click unsubscribe in every message, and nothing is sent until you confirm.
+> **Get an email when this determination changes** → one field, **double opt-in (confirm click); nothing is sent before confirmation**, and one-click unsubscribe in every message afterwards.
+
+The consent rule is stated in exactly these words in `lifecycle-emails.md` §2 C5 and §4.4, `crm/CRM.md` §5 and `crm/channels.csv` CH-09; there is no single-opt-in variant of this list anywhere. **Specified, not built:** there is no watch table, no confirm route and no sender — the message that implements it is `wd_watch_confirm`, listed as unbuilt in `lifecycle-emails.md` §3.1.
 
 ### 4.4 The three standing notes
 
@@ -140,19 +154,21 @@ The state-law note is not a courtesy: `research/02` §4 found that the highest-i
 
 ### 4.6 The publication gate, restated as a copy rule
 
-**A page with nothing of its own to say does not get copy.** If the determination has never been modified and the craft has no crosswalk entry, the page is a reformatted federal table and is not published. Both inputs are columns, so the build enforces it rather than a reviewer. Counties covered by the same determination share one page; county URLs are hubs that route, not tables that repeat.
+**A page with nothing of its own to say does not get copy.** If the determination has never been modified and the craft has no crosswalk entry, the page is a reformatted federal table and is not published. Counties covered by the same determination share one page; county URLs are hubs that route, not tables that repeat.
+
+**Specified, not built.** Both inputs are columns, so this *can* be enforced by the build rather than by a reviewer — but nothing enforces it today: `app/src/app/(free)/rates/[state]/[county]/[craft]/page.tsx` renders any county × craft the mirror holds and `notFound()`s only on a missing row, and there is no sitemap route and no publication filter anywhere in `src/app`. What must exist is a publication predicate — *has a diff between two held revisions, or has a crosswalk entry* — applied at both the route and the sitemap, with a test that asserts a diffless, crosswalkless page is not emitted. Until it does, §4.6 is a copy rule someone has to remember.
 
 ---
 
 ## 5. Rules binding both pages
 
 1. **No rate without its determination**, ever, on any surface (`BRAND.md` §6.5).
-2. **Every number carries its as-of date in the same sentence** or it does not appear (CL-2).
+2. **Every number carries its as-of date in the same sentence** or it does not appear. This is `CORRECTIONS.md`'s CL-2, which **is not built** — no lint reads these pages for a bare numeral. Held by writing, and by the fact that every figure on both pages is a slot filled from a corpus row that carries its own date.
 3. **No coverage claim.** Not "every determination", not "all 4,236", not "nationwide". G3 gates it; the status page publishes the live count and delta with a timestamp instead.
-4. **No accuracy, acceptance, time or human-minutes claim.** G1, G2, G4, G5. Gate-locked sentences render from `claims.json`; hand-writing one fails CL-1.
+4. **No accuracy, acceptance, time or human-minutes claim.** G1, G2, G4, G5. Gate-locked sentences must render from the gate reading, never be typed. **Partly built:** `gateSentence()` / `GATE_MECHANISM` in `app/src/platform/ops/gates.ts` render them for the surfaces that read the gates table, and `.github/workflows/ci.yml` runs the citation invariant and the golden-set eval — but **`claims.json` and `CL-1` do not exist**, so nothing fails the build on a hand-written gate-locked sentence. §2.1 is the demonstration: an F-1 violation shipped in `wh347/page.tsx` and no build noticed. The missing check is a probe set over the rendered marketing and free routes; it has to be written.
 5. **No fear.** No penalty figure, no enforcement framing, no withheld-payment threat dressed as help. The reason to use the page is that the number is traceable.
-6. **No contact affordance and no chat.** A3, enforced by a route-level test.
-7. **Zero exclamation marks.** `BRAND.md` trait 3, enforced by lint.
+6. **No contact affordance and no chat.** A3. **Built:** `app/tests/web/free.test.ts:588` — *"contains no contact affordance of any kind"* — and the escalation-path pattern at `tests/web/marketing.test.ts:468`, both run in the `unit` step of CI.
+7. **Zero exclamation marks.** `BRAND.md` trait 3. **Specified, not built** — no lint or test in `run-2/app` matches on `!` in rendered copy; the natural home is the same route-level suite as rule 6 (`tests/web/free.test.ts`), which already reads the rendered page and would need one more assertion.
 8. **The generator link appears once per rate page, below the data, with no interstitial and no email wall** (`BRAND.md` C-B3, resolved in favour of proof over capture, at a recorded cost in list growth).
 
 ---
@@ -161,7 +177,7 @@ The state-law note is not a courtesy: `research/02` §4 found that the highest-i
 
 Per Ries, and consistent with `research/01` T1 and `research/02` §9:
 
-- **Free-generator sessions**, plain runs versus runs that supplied a determination and got a diff. *Kill the differentiation hypothesis if diff-bearing runs do not exceed plain runs by week 8.* That is a direct test of the brand's load-bearing assumption — that provenance is the draw.
+- **Free-generator sessions**, plain runs versus runs that supplied a determination and got a diff — a **descriptive counter, carrying no kill line.** The run-ratio criterion that stood here until 2026-08-13 (*"kill the differentiation hypothesis if diff-bearing runs do not exceed plain runs by week 8"*) is **withdrawn**: it could not answer its own question, because a visitor who arrives without a determination number cannot produce a diff whatever she thinks of provenance, so the ratio measures what people brought with them and not what they came for. T1's kill now sits on `t1.tool_to_account`, split by tool, with a floor of 200 runs per arm and an explicit UNRUN state below it (`CRM.md` §10.2).
 - **Free session → account creation**, tracked against the pre-DRAFT baseline as H-J1b's instrument.
 - **`/rates/` indexed share, impressions, and generator starts attributable to a `/rates/` entry**, with the free-generator pages as the control arm at 90 days. *Any template whose indexed share trails the control arm is deleted, not iterated.*
 - **No target values are asserted.** Asserting one would repeat the volume error `research/02` §1 refused to commit.

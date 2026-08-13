@@ -66,7 +66,7 @@ A page per county × craft that reformats a SAM table is both, verbatim — and 
 3. **Effectivity dates, rule stated and conclusion declined.** A revision issued *"less than 10 calendar days before the opening of bids… is effective… unless the agency finds that there is not a reasonable time still available"* (DOL). Showing *"Mod 4 published six days before your bid opening — whether it binds turns on a contracting-officer finding Ratepin cannot observe"* is D7 on a public surface, and is credible only because the dates are shown.
 4. **The payroll-title crosswalk entry** — *"what does this determination call a sprinkler fitter?"* — seeded from O*NET's 1,595 alternate titles under SOC 47-2 (`CORPUS_DESIGN.md` §7.1).
 
-**Publication gate, binding: a page ships only if it carries item 1 or item 4.** A page whose determination was never modified and whose craft has no crosswalk entry is a reformatted table and should not exist. Both inputs are columns, so the build enforces it.
+**Publication gate, binding: a page ships only if it carries item 1 or item 4.** A page whose determination was never modified and whose craft has no crosswalk entry is a reformatted table and should not exist. Both inputs are columns, which is what makes the gate mechanisable rather than editorial — **but the build does not enforce it today**: the builder is `pages.rebuild`, specified in `ARCHITECTURE.md` §7.1 and absent from the app's job registry (`app/src/worker/jobs.ts`). Until that job exists and the gate is a condition inside it, this paragraph is a specification for a builder, not a description of one. The distinction matters here more than anywhere else in the document, because a gate nobody implements is precisely how ~500 reformatted tables get published.
 
 ---
 
@@ -91,10 +91,10 @@ Link on **relations the corpus knows**, never on a generated grid. **T1 → T2 �
 
 ## 8. Refresh cadence, tied to corpus promotion
 
-The mechanism exists: nightly crawl at 02:00 ET, promotion, then `pages.rebuild`, *"skipped entirely if the snapshot did not promote"* (`ARCHITECTURE.md`). Four rules make it safe publicly.
+**Half the mechanism exists and the publishing half does not.** The nightly crawl and promotion are built and running — `ingest.corpus.nightly`, daily 02:00 ET, one staged transaction, in the app's job registry. The step that turns a promotion into pages, `pages.rebuild`, is specified in `ARCHITECTURE.md` §7.1 (*"skipped entirely if the snapshot did not promote"*) and **is not in the registry**. So the four rules below are the specification that job must be built to, written in the imperative on purpose: none of them is running.
 
 1. **Rebuild on the promotion diff, not on a schedule.** Only pages whose rate rows changed regenerate. Re-stamping unchanged pages nightly is churn — which is what *"automated transformations… where little value is provided"* looks like from outside.
-2. **Two dates, two facts.** `last verified` moves on every promotion; `last changed` only on a real rate change, and **sitemap `lastmod` carries `last changed`**. A sitemap claiming thousands of pages changed last night when they did not is a false machine-readable claim — what CL-2 catches.
+2. **Two dates, two facts.** `last verified` moves on every promotion; `last changed` only on a real rate change, and **sitemap `lastmod` carries `last changed`**. A sitemap claiming thousands of pages changed last night when they did not is a false machine-readable claim — the kind CL-2 is specified to catch, once CL-2 exists (`CORRECTIONS.md` §3.4; no linter is built today).
 3. **Friday is the high-yield window.** DOL publishes changes *"generally on Friday"*, so Friday-night and Saturday promotions are when T4 earns its keep: a weekly publication with a real weekly event behind it.
 4. **Staleness degrades the sentence, never the page.** Per `CORPUS_DESIGN.md` §6.4: at L1 the "as of" line narrows (P-C); at L2 the page renders from the last promoted snapshot with a dated narrowing — never blank, never silently stale.
 

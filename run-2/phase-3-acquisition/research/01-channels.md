@@ -65,7 +65,13 @@ Catch-all test for any later proposal: **does the channel's output stop if nobod
 
 ## 4. Parked, with the condition that revives each
 
-- **Existing platforms (QuickBooks App Store, Procore, ADP).** Distribution where the payroll CSV already lives, blocked by a human gate on the *platform's* side: Intuit reviews every app before listing, in staged technical / security / marketing passes, developer-reported at six weeks to six months. **Revives** on a fully asynchronous submission path we can complete unattended.
+- **Existing platforms (QuickBooks App Store, Procore, ADP).** Distribution where the payroll CSV already lives, blocked by a human gate on the *platform's* side. Two things were wrong with the earlier version of this row and both flattered the channel.
+
+  **First, the timing.** Intuit's own documentation states staged technical / security / marketing review with targets of **3 / 7 / 5 business days** (`research/04` §3.2). A vendor blog reports real-world timelines of **six weeks to six months**. Both may be true — target versus observed — but a target read from the platform and an observation read from a blog are different classes of evidence, and `CORRECTIONS.md` §0.1 rules that the blog figure is *repeated, not sourced*. **Both are recorded here; neither is carried forward alone.**
+
+  **Second, and decisively: a review is a correspondence, not a submission.** The revival condition as written — "a fully asynchronous submission path" — measured the wrong thing. Submitting is asynchronous; being *rejected* is not, because a review that returns required changes returns them to a person, and this company has no responder. Re-fetched 2026-08-13, Intuit's review page could not be read in full by our reader, so **what happens on a rejection remains unread**. Per R-H7 the row therefore leaves the parking bay: it is blocked by A1 until the rejection path is read and shown to require nothing but a resubmitted build. Procore (a signed agreement), Gusto (a Partnerships-team review) and ADP (a named BD counterparty) are not parked at all — they are dead by A1 and sit in `GTM_PLAYBOOK.md` §9.
+
+  **The question this row failed for three drafts, now asked of every platform: *what happens when they reply asking for something?*** If the answer is "someone writes back", the channel is gone, and the honest place for it is the retired list rather than a softer verb.
 - **Email / free WD-change alerts** (D8 channel 3). Compounding, but **not acquisition**: with no independent source of subscribers it is a conversion layer on whatever fills it — and partly substituted at source, since SAM.gov's follow function alerts on changes (DOE PF 2019-24) and `davisbaconwages.com` already offers free alerts. Ours differentiates only *after* an account has filings ("four of your filings used the superseded modification"). Build it behind T2.
 - **Affiliate.** Self-serve *signup* is zero-human; *recruiting* affiliates is BD. `davisbaconrates.com` monetises by referring demos; we have none, so we are structurally the worse payer.
 - **Cold outreach from award feeds** (D8 channel 4). **Demoted below programmatic SEO — the mechanism fails, not merely the volume.** FY2025 reporting shows 52,820 prime construction awards against 4,186 reported construction subcontracts, and DBRA Related Acts work produces no contractor rows at all. Confirmed today: SAM's public entity data exposes POC **name and address only**; "points of contact email address, phone, and fax numbers" are FOUO/CUI. There is no lawful, machine-readable, self-serve email list of D1 in the federal data we depend on.
@@ -82,9 +88,11 @@ Thresholds written before the data, per Ries; a kill criterion authored afterwar
 
 **Why this asset.** The free layer is occupied but shallow (all read 2026-08-13): PrevailComply gives "one federal certified payroll report" free without signup; `constructionbids.ai` makes the user type the determination number and never renders it on the output; `davisbaconwages.com` publishes weekly rates, "Free, no login required"; `wagefinder.org` advertises "492,044 Wages And Growing" and sells an API. **None publishes modification history or diffs.** The diff view is U1 made free and falsifiable in ten seconds — the pre-paywall proof `BRAND.md` §5.6 requires.
 
-**Signal.** Completed diff runs per week; diff runs as a ratio of plain-generator runs; free-tool session → account creation.
+**Signal.** Completed diff runs per week; diff runs as a ratio of plain-generator runs, **descriptive, with no verdict attached**; free-tool session → account creation, **split by tool**.
 
-**Kill.** Kill the differentiation hypothesis if diff runs do not exceed plain-generator runs by week 8 — a direct test of whether provenance is the draw, the load-bearing assumption of the brand (`BRAND.md` §10). Hard kill if zero paid conversions originate in tool sessions by week 12.
+**Kill.** *Corrected — the earlier line could not answer its own question.* It read: kill the differentiation hypothesis if diff runs do not exceed plain-generator runs by week 8. The two tools do not share a population. The generator needs nothing — type a crew or your own rates; the diff checker needs a determination number **and** an award date the visitor must already hold. Requiring the constrained tool to out-run the unconstrained one tests input availability, not draw, so a ratio below 1.0 is the expected outcome *even if provenance is exactly the draw* — which pre-registered the plan to kill its own load-bearing assumption on a measurement that cannot speak to it. Ries' requirement is that a threshold be written before the data **and** be capable of answering the question asked; only the first half was satisfied.
+
+**The replacement, population-matched:** kill the differentiation hypothesis at week 8 if **diff-session → account creation does not exceed generator-session → account creation**, each computed inside its own denominator (`crm/dashboard.md` §2.1, `t1.tool_to_account` split by tool). That compares conversion within each tool's own traffic, which is what "is provenance the draw" actually asks. Hard kill unchanged: zero paid conversions originating in tool sessions by week 12.
 
 **Cost.** Engineering only; the corpus is already crawled nightly under D5 and hosting sits inside the ≈$175/month fixed platform cost. Incremental cash ≈ $0.
 
@@ -106,9 +114,9 @@ Thresholds written before the data, per Ries; a kill criterion authored afterwar
 
 **Signal.** Measured cost per $49 purchase. CPC is an output of this test, not an input.
 
-**Kill.** Stop at $2,000 cumulative spend with zero purchases — under two Solo CACs against the $1,038 affordable-CAC ceiling. Stop when cost per $49 purchase exceeds $47 for two consecutive weeks: the rate card's contribution is $46.98, so above that line the instrument stops self-funding and becomes a subsidy.
+**Kill.** Stop at $2,000 cumulative spend with zero purchases — **42.6 rate cards at the $46.98 contribution line** ($2,000 ÷ $46.98), which is the unit this test buys. (The earlier framing, "under two Solo CACs against the $1,038 affordable-CAC ceiling", borrowed an eleven-month subscription LTV to make a cap on a one-time SKU look conservative; that ceiling also assumes eleven months of retention, which nothing measures — `GTM_PLAYBOOK.md` §6, ASSUMPTION F4.) Stop when cost per $49 purchase exceeds $47 for two consecutive weeks: the rate card's contribution is $46.98, so above that line the instrument stops self-funding and becomes a subsidy.
 
-**Cost.** $2,000, capped, with a daily budget cap that fails closed.
+**Cost.** $2,000, capped — **by a job that does not exist yet.** The daily-budget-to-zero meter is `crm.sem.meter`, specified in `crm/CRM.md` §3 and absent from the app's job registry (`app/src/worker/jobs.ts`, sixteen jobs, no `crm.*`). Google publishes no lifetime cash cap to delegate to, so until that job runs and is observed writing a zero, **this test cannot be started at all**: an uncapped card in an unattended company is the A5 failure, not the A5 mechanism.
 
 ---
 
@@ -123,7 +131,7 @@ D8 names it first: every WH-347 travels weekly to a GC and often several other p
 5. **The footer was optimised for a different job** — 7.5pt monospace, non-configurable, no marketing language (§6.7): correct for provenance, handicapped for persuasion.
 6. **Adverse selection and path loss.** A sub may prefer the GC not know the vendor, and where the GC mandates a portal, what the GC sees may be an upload payload, not our PDF.
 
-**What makes it measurable at near-zero cost, and should be built now:** a per-artifact short URL in the footer resolving to a public read-only verification page for that artifact's provenance tuple — useful to the recipient, which is the only reason anyone clicks, and countable by us. Report **third-party verification loads per 100 artifacts generated**, separating first-party re-checks by referrer and session, plus **accounts whose first session began at a verification URL**. Until that counter has a denominator, the loop falls under G1–G6's discipline: no plan assumes yield from it, and no surface calls it a channel.
+**What makes it measurable at near-zero cost, and is half-built today — in the wrong half:** a per-artifact short URL in the footer resolving to a public read-only verification page for that artifact's provenance tuple. **The footer already prints that URL and no route serves it** (`app/src/app/(app)/_lib/filings.ts` (the `verifyUrl` field); there is no `/v/` route in `src/app`), so the recipient who does exactly what this section hopes for reaches a 404 — the one shipped surface where the loop is currently worse than not instrumented. The short URL described here — useful to the recipient, which is the only reason anyone clicks, and countable by us. Report **third-party verification loads per 100 artifacts generated**, separating first-party re-checks by referrer and session, plus **accounts whose first session began at a verification URL**. Until that counter has a denominator, the loop falls under G1–G6's discipline: no plan assumes yield from it, and no surface calls it a channel.
 
 ---
 
@@ -139,16 +147,19 @@ Flagged as hypotheses: that search demand for the diff surface exists at all —
 
 **Fetched or searched in-session, 2026-08-13**
 
-- https://growthmethod.com/traction-channels/ — the nineteen traction channels as enumerated; Bullseye's brainstorm → rank → focus steps ("run cheap, fast experiments on your top three channels simultaneously")
-- https://tractionbook.com/ — Weinberg & Mares, *Traction*; the Bullseye method
-- https://www.shortform.com/blog/100m-leads-alex-hormozi/ — Hormozi, *$100M Leads*; the Core Four
+- **Bullseye and the nineteen channels are cited to the book itself** — Gabriel Weinberg & Justin Mares, *Traction* — and not to a summary of it. The governing framework of this phase was previously sourced to `growthmethod.com/traction-channels/`, and Hormozi's Core Four to `shortform.com/blog/100m-leads-alex-hormozi/`; both are the category `CORRECTIONS.md` §0.1 calls **repeated, not sourced**, and it is not defensible for the framework doing the most work in the document to rest on the weakest evidence in it. Both remain listed below as **convenience links, marked as such**, and nothing above turns on either
+- https://growthmethod.com/traction-channels/ — *secondary summary, not a source.* Convenience link for the channel enumeration
+- https://tractionbook.com/ — the publisher page for *Traction*. **HTTP 503 on 2026-08-13**; recorded with its status rather than presented as read
+- https://www.acquisition.com/books — Hormozi's own listing for *$100M Offers* and *$100M Leads*, fetched 2026-08-13, cited in place of the summary site
+- https://www.shortform.com/blog/100m-leads-alex-hormozi/ — *secondary summary, not a source.* Convenience link only
 - https://prevailcomply.com/ — "Create one federal certified payroll report without starting from a blank form"; free generator without signup; no price on the page
 - https://davisbaconwages.com/ — "Data updated: August 12, 2026"; "Data updates weekly"; "Free, no login required"; WD reference shown; free alerts offered; no modification history or diffs
 - https://wagefinder.org/ — "492,044 Wages And Growing"; weekly automatic updates; API key and paid subscription; no revision history
 - https://constructionbids.ai/tools/sub/wh-347-payroll-generator — free WH-347 generator; the user supplies the determination number and it is not rendered on the output
 - https://open.gsa.gov/api/entity-api/ — SAM Entity Management API: public level exposes POC "name and address" only; "points of contact email address, phone, and fax numbers" are FOUO/CUI
 - https://developer.intuit.com/app/developer/qbo/docs/go-live/publish-app/technical-requirements — apps are reviewed against technical requirements before listing on the QuickBooks App Store
-- https://satvasolutions.com/blog/intuit-app-store-approval-timeline-developer-guide — staged technical / security / marketing review; developer-reported real-world timelines of six weeks to six months
+- https://developer.intuit.com/app/developer/qbo/docs/go-live/list-on-the-app-store/what-to-expect-during-the-review — the platform's own review stages and 3 / 7 / 5 business-day targets (recorded in `research/04` §3.2). **Re-fetched 2026-08-13: our reader could not extract the page text, so the rejection path is unread** (§4)
+- https://satvasolutions.com/blog/intuit-app-store-approval-timeline-developer-guide — *a vendor blog, i.e. repeated and not sourced (`CORRECTIONS.md` §0.1).* Developer-reported real-world timelines of six weeks to six months, recorded beside the platform's targets and not carried forward alone
 - https://www.energy.gov/node/4241465 — DOE PF 2019-24: SAM.gov "follow" function alerts users when wage determinations change
 - https://davisbaconrates.com/prevailing-wage-rates — free state → county → trade lookup, affiliate-supported
 - https://www.federalregister.gov/documents/2024/08/30/2024-19482/agency-information-collection-activities-comment-request-information-collections-davis-bacon — 89 FR 70670: 122,936 respondents; 11,310,112 annual responses

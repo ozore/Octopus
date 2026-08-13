@@ -80,6 +80,20 @@ const ConfigSchema = z
     DATABASE_URL: z.string().optional(),
     DATABASE_POOL_MAX: z.coerce.number().int().positive().default(10),
     DATABASE_APP_ROLE: z.string().default('ratepin_app'),
+    /**
+     * Where PGlite keeps its files, when it keeps any.
+     *
+     * Unset — the default, and what the whole test suite runs under — is an
+     * in-memory database that dies with the process. That is correct for tests and
+     * useless for `npm run seed`, which writes in one process so that `npm run dev`
+     * can read in another; without a directory the two are two empty databases and
+     * the seeded end-to-end path cannot be walked at all.
+     *
+     * It is not a production escape hatch: `DATABASE_DRIVER=pglite` is already
+     * refused outright under NODE_ENV=production below, so a persistent PGlite is
+     * unreachable there for the same reason an ephemeral one is.
+     */
+    PGLITE_DATA_DIR: z.string().optional(),
 
     // --- Adapters -----------------------------------------------------------
     ADAPTER_MODE: AdapterMode.default('live'),

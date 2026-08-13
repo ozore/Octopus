@@ -94,6 +94,14 @@ It cannot mean what R2's sentence implies. Rewritten to what is true and buildab
 > spreadsheet upload, that CSV is what you map into it. We do not hold your portal
 > credentials and we do not submit for you (D9).**
 
+**Build state of that sentence, 2026-08-13, because half of it is a claim about an output that does not
+exist yet.** The eCPR XML emitter is built and tested against the schema (`app/src/artifacts/ecpr`,
+`tests/artifacts/ecpr.test.ts`, `tests/artifacts/xsd-parity.test.ts`). **The generic portal CSV is not
+built** — there is no CSV emitter in `app/src/artifacts`. So the sentence above is the claim we may make
+*once the CSV ships*, and until then the honest half is the XML alone. A copy sentence that names an output
+we do not emit is the same defect as a document describing an unbuilt job in the present tense, and it is
+worth catching here rather than on a pricing page.
+
 Three reasons this is the correct claim rather than a weaker one:
 
 1. **It is verifiable before purchase.** Per `BRAND.md` §5.6 the buyer must be able to check
@@ -140,22 +148,32 @@ Jonas, Miter, Paycom, Paylocity, Paynet, Quantum, Sunburst and Viewpoint as alli
 emitting an LCPtracker Excel upload since October 2005. The path to a portal format exists; it
 runs through a partner relationship, which is the gate.
 
-### 3.2 Marketplaces, ranked by reachability at zero human minutes
+### 3.2 Marketplaces, and the column that was missing
 
-| Rank | Marketplace | Human gate | Verdict |
-|---|---|---|---|
-| **1** | **Zapier Developer Platform** | Free, *"self-serve from creation to deployment"*; async review; 90-day public beta requiring 10 Zap templates and 50 active users | **Reachable now**, async end to end — but the 50-user threshold makes it an amplifier after traction, not a source of first customers |
-| **2** | **Intuit QuickBooks App Store** | Three-part async review — technical, security, marketing; targets 3 / 7 / 5 business days | **Reachable, slowly.** No call documented; `research/01` §4's revival condition is met on paper. The cost is calendar |
-| **3** | **Procore Marketplace** | Developer signup, a Certification Assessment, and *"a standard agreement is signed"* | Borderline — a signature is not a demo, but the journey is relationship-shaped |
-| **4** | **Gusto App Directory** | Production Pre-Approval + Security Review by the Partnerships team; asks for SOC 2 Type 2, ISO 27001 or PCI | **Blocked in v1** — not by the review but by audit artefacts a new company does not have |
-| **5** | **ADP Marketplace** | Reviewed by Sales, Security and Legal; *"your Developer's Participation Agreement (DPA) can be executed with your ADP Marketplace Business Development resource"* | **Dead by A1.** A named BD counterparty is the salesperson we do not have |
+The earlier version of this table ranked marketplaces by *reachability at zero human minutes* and scored
+that as a property of the **submission**. It is a property of the **correspondence**. Every gate below was
+re-read for one question, and it is the question that decides A1:
 
-**Recommendation.** Build the CSV importer against the QuickBooks Online and Gusto payroll
-exports — files the customer already has, which we need nobody's permission to accept. Treat
-the Intuit listing as the only marketplace worth attempting in v1: the largest surface where
-D1 plausibly is, with an asynchronous gate. Hold Zapier until there are users to satisfy its
-beta threshold. Do not open ADP or Gusto — per Dunford, entering a frame whose entry ritual is
-a partnership call mis-positions us in exactly the direction the product argues against.
+> **`human_on_their_side`: what happens when they reply asking for something?**
+
+A submission can be asynchronous and the channel still dead, because a review that returns required changes
+returns them to somebody, and there is nobody here. Applying R-H7, four of the five rows move.
+
+| Rank | Marketplace | Human gate | `human_on_their_side` | Verdict |
+|---|---|---|---|---|
+| **1** | **Zapier Developer Platform** | Free, *"self-serve from creation to deployment"*; async review; 90-day public beta requiring 10 Zap templates and 50 active users | Unread. The published flow is self-serve; what a failed review returns is not documented on the page we read | **Held, not recommended.** The 50-user threshold makes it an amplifier after traction, not a source of first customers, so nothing is lost by leaving the A1 question open until there are users |
+| **2** | **Intuit QuickBooks App Store** | Three-part async review — technical, security, marketing; targets 3 / 7 / 5 business days | **Unread, and load-bearing.** Re-fetched 2026-08-13; our reader could not extract the page's text, so what a rejection returns — and whether answering it is prose to a named reviewer — is unknown | **Blocked by A1 pending that one fact**, where the earlier draft read "reachable, slowly". `research/01` §4's revival condition was *"a fully asynchronous submission path"*, which measured submission and not review; the condition is corrected there to require that the only response ever needed is a resubmitted build |
+| **3** | **Procore Marketplace** | Developer signup, a Certification Assessment, and *"a standard agreement is signed"* | **Yes — a counterparty signs.** A signature is not a demo, but it is a person, and a company with no humans cannot sign | **Dead by A1. Retired**, not parked: `GTM_PLAYBOOK.md` §9 |
+| **4** | **Gusto App Directory** | Production Pre-Approval + Security Review by the Partnerships team; asks for SOC 2 Type 2, ISO 27001 or PCI | **Yes — a Partnerships team reviews and replies** | **Dead by A1**, and separately blocked by audit artefacts a new company does not have. Retired: `GTM_PLAYBOOK.md` §9 |
+| **5** | **ADP Marketplace** | Reviewed by Sales, Security and Legal; *"your Developer's Participation Agreement (DPA) can be executed with your ADP Marketplace Business Development resource"* | **Yes — a named BD resource** | **Dead by A1.** Already retired |
+
+**Recommendation, revised.** Build the CSV importer against the QuickBooks Online and Gusto payroll
+exports — files the customer already has, which we need nobody's permission to accept. **That is the whole
+of the upstream recommendation.** No marketplace is recommended for v1: the one the earlier draft chose was
+chosen on an unread rejection path, and "no call documented" is the absence of evidence, which is what this
+document's own §1 exists to refuse to trade on. Per Dunford, entering a frame whose entry ritual is a
+partnership call mis-positions us in exactly the direction the product argues against — and the same is
+true of a frame whose *exit* ritual is a reply we cannot write.
 
 ---
 
@@ -165,8 +183,10 @@ a partnership call mis-positions us in exactly the direction the product argues 
   importers. Unverified — §1.1. Falsifiable only with a customer account.
 - **H-I2.** That QuickBooks Online and Gusto exports dominate D1's installed base. Inferred
   from firm size, not measured. First 25 accounts settle it.
-- **H-I3.** That an Intuit listing converts at all for a compliance tool. Untested; the kill
-  criterion should be authored before submission, per Ries.
+- **H-I3.** That an Intuit listing converts at all for a compliance tool. Untested — and now
+  moot in v1, because §3.2 blocks the channel on A1 before conversion is reached. If the
+  rejection path is ever read and cleared, the kill criterion is authored before submission,
+  per Ries, and not after the calendar has been spent.
 
 ---
 

@@ -70,7 +70,7 @@ export interface DbHandle {
  */
 const globalRef = globalThis as typeof globalThis & { __ratepinDb?: Promise<DbHandle> };
 
-async function createPglite(): Promise<DbHandle> {
+async function createPglite(dataDir?: string): Promise<DbHandle> {
   // Dynamic import: PGlite is a devDependency and must not be a hard require in
   // the production image.
   const { PGlite } = await import('@electric-sql/pglite');
@@ -82,8 +82,20 @@ async function createPglite(): Promise<DbHandle> {
   // CHECK constraint, which is what makes content-addressing a property of the
   // database rather than of the ingest code (CORPUS_DESIGN §3.3). `pg_trgm` backs
   // the classification-name index the L-C2 lexical ladder reads.
-  const client = new PGlite({ extensions: { pgcrypto, pg_trgm } });
+  const options = { extensions: { pgcrypto, pg_trgm } };
+  const client = dataDir === undefined ? new PGlite(options) : new PGlite(dataDir, options);
 
+  /**
+   * MIGRATIONS ARE REPLAYED ON EVERY OPEN, INCLUDING A PERSISTENT ONE.
+   *
+   * `0000_init.sql` is written to be re-runnable, so replaying it against a
+   * directory `npm run seed` already migrated is a no-op rather than a conflict.
+   * The alternative — track applied migrations in a table and skip them — would
+   * make the dev fallback diverge from the production path, where migrations are a
+   * separate admin process (factor XII) and the web process assumes a migrated
+   * database. Replaying keeps `npm run dev` working against a fresh directory with
+   * no extra step, which is the only reason the persistent mode exists.
+   */
   const { readMigrations } = await import('./migrations');
   for (const migration of readMigrations()) {
     await client.exec(migration.sql);
