@@ -20,6 +20,8 @@ import { wdNumber as toWdNumber } from '@/lib/types';
 import { buyRateCardAction } from '../_actions/rate-card';
 import { appClock } from '../_lib/deps';
 import { activeDetermination, classificationsOf, corpusState, revisionsHeld } from '../_lib/mirror';
+import { effectivenessDeclined, notInPublishedRecord } from '../_lib/refusals';
+import { RefusalView } from '@/app/_components/refusal';
 
 export const dynamic = 'force-dynamic';
 
@@ -95,22 +97,13 @@ export default async function RateCardPage({
       </form>
 
       {raw !== '' && held === null ? (
-        <div className="rp-alert rp-alert--declined">
-          <span className="rp-alert__glyph" aria-hidden="true">
-            §
-          </span>
-          <div className="rp-alert__body">
-            <p className="rp-alert__title">
-              {raw} is not in the active published record Ratepin holds
-            </p>
-            <p>
-              Ratepin does not conclude that this determination does not exist. It concludes only
-              that it is not in the published record we mirror — a project wage determination issued
-              directly to a contracting agency is never published — so we will not sell you a card
-              about it.
-            </p>
-          </div>
-        </div>
+        <RefusalView
+          refusal={notInPublishedRecord(raw, {
+            kind: 'link',
+            label: 'Use the free WH-347 generator instead',
+            href: '/wh347',
+          })}
+        />
       ) : null}
 
       {held === null ? null : (
@@ -161,61 +154,44 @@ export default async function RateCardPage({
             </p>
           </section>
 
-          {/* §3.2 — the panel that concludes nothing, shown before purchase. */}
-          <div className="rp-alert rp-alert--declined">
-            <span className="rp-alert__glyph" aria-hidden="true">
-              §
-            </span>
-            <div className="rp-alert__body rp-stack rp-stack--tight">
-              <p className="rp-alert__title">
-                Effectiveness — what we can show, and what we will not say
-              </p>
-              <p className="rp-num">
-                Revision {held.revision} of {String(held.wdNumber)} was published{' '}
-                {String(held.publishDate)}.
-              </p>
-              <p>
-                FAR 22.404-6 governs which revision applies to a contract, and the answer can turn
-                on a finding by the contracting officer — a finding Ratepin cannot observe.
-              </p>
-              <p>
-                <strong>
-                  Ratepin does not conclude which revision is effective for your contract.
-                </strong>{' '}
-                The dates on the card are what we can see. The determination incorporated into your
-                solicitation, and any amendment your contracting officer issues, govern.
-              </p>
-            </div>
-          </div>
+          {/* §3.2 — the panel that concludes nothing, shown before purchase. One
+              constructor, three screens: `_lib/refusals.ts`. */}
+          <RefusalView
+            refusal={effectivenessDeclined([
+              { label: 'Determination', value: String(held.wdNumber) },
+              { label: 'Revision shown here', value: String(held.revision) },
+              { label: 'Published', value: String(held.publishDate) },
+            ])}
+          />
 
           {stale || refused === 'stale' ? (
             /* §3.5 — WE REFUSE THE MONEY. Not a warning above a live button: the
                button is replaced, because a rate card is a claim about what is
                current and we have not verified that claim. */
-            <div className="rp-alert rp-alert--narrowed">
-              <span className="rp-alert__glyph" aria-hidden="true">
-                !
-              </span>
-              <div className="rp-alert__body rp-stack rp-stack--tight">
-                <p className="rp-alert__title">
-                  We’re not selling a rate card for {String(held.wdNumber)} right now
-                </p>
-                <p className="rp-num">
-                  {corpus.verifiedAt === null
+            <RefusalView
+              refusal={{
+                primitive: 'P-S',
+                headline: `We’re not selling a rate card for ${String(held.wdNumber)} right now`,
+                blocked:
+                  'A rate card is a claim about what is current, so the sale is off until our ' +
+                  'newer-revision check for this determination clears.',
+                because:
+                  corpus.verifiedAt === null
                     ? 'No corpus snapshot has been promoted yet.'
-                    : `Our newer-revision check for this determination last completed ${corpus.verifiedAt.toISOString().slice(0, 16).replace('T', ' ')} UTC.`}
-                </p>
-                <p>
-                  A rate card is a claim about what is current, so the sale is off until that check
-                  clears. It clears itself. The free generator still works, and the county rate
-                  pages still answer from the last snapshot that passed every gate, dated.
-                </p>
-                <p>
-                  <Link href="/wh347">Use the free WH-347 generator</Link> ·{' '}
-                  <Link href="/rates">Look up a county and craft</Link>
-                </p>
-              </div>
-            </div>
+                    : `Our newer-revision check for this determination last completed ${corpus.verifiedAt.toISOString().slice(0, 16).replace('T', ' ')} UTC.`,
+                clearedBy: null,
+                clearsItself:
+                  'It clears itself — nothing is required of you. The free generator still works, ' +
+                  'and the county rate pages still answer from the last snapshot that passed every ' +
+                  'gate, dated.',
+                severity: 'narrowed',
+              }}
+            >
+              <p>
+                <Link href="/wh347">Use the free WH-347 generator</Link> ·{' '}
+                <Link href="/rates">Look up a county and craft</Link>
+              </p>
+            </RefusalView>
           ) : (
             <form className="rp-stack" action={buyRateCardAction}>
               <input type="hidden" name="wdNumber" value={String(held.wdNumber)} />

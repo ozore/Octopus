@@ -128,11 +128,13 @@ const SCOPE = [
   },
   {
     id: 'auth',
-    label: 'Sign-in links, sessions and memberships',
+    label: 'Sign-in links, sessions, memberships and the email address on them',
     disposition: 'erased',
     mechanism:
-      'Hard delete. A sign-in link that still works after deletion is a way back into ' +
-      'an account that no longer exists.',
+      'Hard delete, and the address itself is overwritten with a tombstone. A sign-in ' +
+      'link that still works after deletion is a way back into an account that no ' +
+      'longer exists. The address is kept only where the person is also a member of ' +
+      'another company, because deleting it there would take their access with it.',
   },
   {
     id: 'filings_and_artifacts',
@@ -328,14 +330,21 @@ export async function requestAccountDeletion(
   const clock = deps.clock ?? systemClock;
   const now = clock.now();
 
-  const account = await readAccountRow(db, input.accountId);
+  // `accounts` and `account_deletions` are both tenant-scoped, so every statement
+  // in this function that touches either runs inside the account's own context.
+  // Unscoped, the read returns no account, the screen reports `no_account` for an
+  // account the customer is signed into, and the INSERT is refused by WITH CHECK.
+  const scoped = <T>(fn: (tx: Tx) => Promise<T>): Promise<T> =>
+    withTenant(db, { accountId: brandAccountId(input.accountId) }, fn);
+
+  const account = await scoped((tx) => readAccountRow(tx, input.accountId));
   if (!account || account.deleted_at !== null) return { ok: false, reason: 'no_account' };
 
   if (normaliseAccountName(input.typedConfirmation) !== normaliseAccountName(account.name)) {
     return { ok: false, reason: 'name_mismatch' };
   }
 
-  const pending = await readDeletion(db, input.accountId);
+  const pending = await scoped((tx) => readDeletionScoped(tx, input.accountId));
   if (pending && pending.undoneAt === null && pending.executedAt === null) {
     return { ok: false, reason: 'already_scheduled' };
   }
@@ -350,23 +359,25 @@ export async function requestAccountDeletion(
     await deps.stripe.cancelSubscription({ subscriptionId, atPeriodEnd: false });
   }
 
-  await db.execute(sql`
-    INSERT INTO account_deletions (account_id, requested_at, requested_by, effective_at, export_key, report)
-    VALUES (${input.accountId}::uuid, ${now.toISOString()}::timestamptz, ${input.requestedBy}::uuid,
-            ${effectiveAt.toISOString()}::timestamptz, ${deps.exportKey ?? null}, '{}'::jsonb)
-    ON CONFLICT (account_id) DO UPDATE SET
-      requested_at = EXCLUDED.requested_at,
-      requested_by = EXCLUDED.requested_by,
-      effective_at = EXCLUDED.effective_at,
-      export_key   = EXCLUDED.export_key,
-      undone_at    = NULL,
-      executed_at  = NULL,
-      report       = '{}'::jsonb
-  `);
-  await db.execute(sql`
-    UPDATE accounts SET deletion_requested_at = ${now.toISOString()}::timestamptz
-     WHERE id = ${input.accountId}::uuid
-  `);
+  await scoped(async (tx) => {
+    await tx.execute(sql`
+      INSERT INTO account_deletions (account_id, requested_at, requested_by, effective_at, export_key, report)
+      VALUES (${input.accountId}::uuid, ${now.toISOString()}::timestamptz, ${input.requestedBy}::uuid,
+              ${effectiveAt.toISOString()}::timestamptz, ${deps.exportKey ?? null}, '{}'::jsonb)
+      ON CONFLICT (account_id) DO UPDATE SET
+        requested_at = EXCLUDED.requested_at,
+        requested_by = EXCLUDED.requested_by,
+        effective_at = EXCLUDED.effective_at,
+        export_key   = EXCLUDED.export_key,
+        undone_at    = NULL,
+        executed_at  = NULL,
+        report       = '{}'::jsonb
+    `);
+    await tx.execute(sql`
+      UPDATE accounts SET deletion_requested_at = ${now.toISOString()}::timestamptz
+       WHERE id = ${input.accountId}::uuid
+    `);
+  });
 
   await queueEmail(
     db,
@@ -424,9 +435,24 @@ async function readAccountRow(
   );
 }
 
-export async function readDeletion(db: Db | Tx, account: string): Promise<DeletionRecord | null> {
+/**
+ * The deletion record for one account.
+ *
+ * IT OPENS ITS OWN TENANT TRANSACTION, and that is the difference between working
+ * and silently returning `null`. `account_deletions` carries a tenant policy — the
+ * customer's own settings screen reads it — so an unscoped read on the application
+ * role matches nothing at all. Every caller here is asking about ONE account and
+ * has its id in hand, so the context is never in doubt.
+ */
+export async function readDeletion(db: Db, account: string): Promise<DeletionRecord | null> {
+  return withTenant(db, { accountId: brandAccountId(account) }, (tx) =>
+    readDeletionScoped(tx, account),
+  );
+}
+
+async function readDeletionScoped(tx: Tx, account: string): Promise<DeletionRecord | null> {
   const row = rowsOf<DeletionRow>(
-    await db.execute(sql`
+    await tx.execute(sql`
       SELECT account_id, requested_at, requested_by, effective_at, undone_at, executed_at,
              export_key, report
         FROM account_deletions WHERE account_id = ${account}::uuid
@@ -461,27 +487,49 @@ export async function undoAccountDeletion(
   }
 
   const now = clock.now().toISOString();
-  await db.execute(sql`
-    UPDATE account_deletions SET undone_at = ${now}::timestamptz WHERE account_id = ${account}::uuid
-  `);
-  await db.execute(sql`
-    UPDATE accounts SET deletion_requested_at = NULL WHERE id = ${account}::uuid
-  `);
+  await withTenant(db, { accountId: brandAccountId(account) }, async (tx) => {
+    await tx.execute(sql`
+      UPDATE account_deletions SET undone_at = ${now}::timestamptz WHERE account_id = ${account}::uuid
+    `);
+    await tx.execute(sql`
+      UPDATE accounts SET deletion_requested_at = NULL WHERE id = ${account}::uuid
+    `);
+  });
   const updated = await readDeletion(db, account);
   if (!updated) throw new Error('account_deletions: the row disappeared during undo');
   return { ok: true, record: updated };
 }
 
-/** Accounts whose window has closed and which nobody undid. The worker's only input. */
-export async function dueDeletions(db: Db | Tx, now: Date): Promise<readonly string[]> {
-  return rowsOf<{ account_id: string }>(
-    await db.execute(sql`
-      SELECT account_id FROM account_deletions
-       WHERE undone_at IS NULL AND executed_at IS NULL
-         AND effective_at <= ${now.toISOString()}::timestamptz
-       ORDER BY effective_at
-    `),
+/**
+ * Accounts whose window has closed and which nobody undid. The worker's only input.
+ *
+ * A FAN-OUT, NOT A SCAN, AND FOR THE REASON EVERY OTHER FAN-OUT IN THIS PRODUCT IS.
+ * `account_deletions` is tenant-scoped, so the single `SELECT` this used to be
+ * returned the empty set for every account on the application role — which is to
+ * say the deletion job had no input, ever, and §5.5's seven-day promise ran on a
+ * schedule that could not fire. The worker enumerates the fleet exactly as
+ * `billing.credit` and `billing.dunning` do, from `billing_account_index` — the one
+ * global surface, which holds a row for every account by construction
+ * (`ratepin_provision_identity` writes it in the same transaction as the account) —
+ * and then asks each account's own context. The alternative, a role that can read
+ * every tenant's rows, trades the tenant boundary for a cron job.
+ */
+export async function dueDeletions(db: Db, now: Date): Promise<readonly string[]> {
+  const accounts = rowsOf<{ account_id: string }>(
+    await db.execute(sql`SELECT account_id FROM billing_account_index ORDER BY account_id`),
   ).map((row) => row.account_id);
+
+  const due: { readonly account: string; readonly effectiveAt: Date }[] = [];
+  for (const account of accounts) {
+    const record = await readDeletion(db, account);
+    if (!record) continue;
+    if (record.undoneAt !== null || record.executedAt !== null) continue;
+    if (record.effectiveAt.getTime() > now.getTime()) continue;
+    due.push({ account, effectiveAt: record.effectiveAt });
+  }
+  return due
+    .sort((a, b) => a.effectiveAt.getTime() - b.effectiveAt.getTime())
+    .map((entry) => entry.account);
 }
 
 // ===========================================================================
@@ -631,6 +679,34 @@ const ERASURE_STEP: Readonly<Record<ScopeId, ErasureStep>> = {
     // one-way digest, the data key is destroyed, and every email on it goes with the
     // memberships.
     async run({ tx, account, now, salt }) {
+      // ORDER IS THE FIX, AND IT IS NOT COSMETIC.
+      //
+      // The email erasure used to run in `after()`, after the memberships had been
+      // deleted. `users` is scoped BY MEMBERSHIP — it has no account_id — so
+      // deleting the memberships is precisely what makes the user row invisible to
+      // the statement that must rewrite it. On the application role it matched zero
+      // rows on every deletion that has ever run, while this step returned a
+      // non-zero count and the report read as a success. It is done FIRST, while the
+      // memberships that answer "whose identity is this?" still exist, and through
+      // `ratepin_erase_identity` — a SECURITY DEFINER function that can also answer
+      // "does this person belong to anyone else?", which no query inside one
+      // tenant's context can (drizzle/0000_init.sql, the provisioning surface).
+      //
+      // The function raises if a row that should have been rewritten was not, so a
+      // failed erasure leaves `executed_at` unset and the hourly job runs it again.
+      // The alternative — the one that was here — is a report claiming an erasure
+      // that did not happen, and under A3 there is nobody for the customer to tell.
+      const identities = Number(
+        rowsOf<{ erased: number }>(
+          await tx.execute(sql`
+            SELECT ratepin_erase_identity(
+                     ${account}::uuid,
+                     ${`deleted-${tombstoneDigest(account, 'user')}`},
+                     ${now.toISOString()}::timestamptz) AS erased
+          `),
+        )[0]?.erased ?? 0,
+      );
+
       const rows = rowsOf(
         await tx.execute(sql`DELETE FROM memberships WHERE account_id = ${account}::uuid RETURNING user_id`),
       ).length;
@@ -643,24 +719,18 @@ const ERASURE_STEP: Readonly<Record<ScopeId, ErasureStep>> = {
                data_key_destroyed_at = ${now.toISOString()}::timestamptz
          WHERE id = ${account}::uuid
       `);
-      return rows;
+      return identities + rows;
     },
-    async after({ db, account, now }) {
+    async after({ db, account }) {
+      // Sessions and magic links carry no tenant policy — they are read to LEARN
+      // the tenant — so they are deleted outside the tenant transaction, on the
+      // grants the application role holds directly.
       const sessions = rowsOf(
         await db.execute(sql`DELETE FROM auth_sessions WHERE account_id = ${account}::uuid RETURNING id`),
       ).length;
       const links = rowsOf(
         await db.execute(sql`DELETE FROM auth_magic_links WHERE account_id = ${account}::uuid RETURNING id`),
       ).length;
-      // Users left with no membership anywhere lose their email, which is the only
-      // identifying thing we hold about a person as opposed to about a company.
-      await db.execute(sql`
-        UPDATE users
-           SET email = ${`deleted-${tombstoneDigest(account, 'user')}`} || '-' || left(id::text, 8) || '@deleted.invalid',
-               deleted_at = ${now.toISOString()}::timestamptz
-         WHERE deleted_at IS NULL
-           AND NOT EXISTS (SELECT 1 FROM memberships m WHERE m.user_id = users.id)
-      `);
       return sessions + links;
     },
   },
@@ -748,11 +818,13 @@ export async function executeAccountDeletion(
 
   const report = buildErasureReport({ accountId: account, executedAt: now, affected, notes });
 
-  await db.execute(sql`
-    UPDATE account_deletions
-       SET executed_at = ${now.toISOString()}::timestamptz, report = ${JSON.stringify(report)}::jsonb
-     WHERE account_id = ${account}::uuid
-  `);
+  await withTenant(db, { accountId: brandAccountId(account) }, async (tx) => {
+    await tx.execute(sql`
+      UPDATE account_deletions
+         SET executed_at = ${now.toISOString()}::timestamptz, report = ${JSON.stringify(report)}::jsonb
+       WHERE account_id = ${account}::uuid
+    `);
+  });
 
   return { ok: true, report };
 }

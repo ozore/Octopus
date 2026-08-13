@@ -47,6 +47,8 @@ import {
   revisionsHeld,
 } from '../../../../(free)/_data/mirror';
 import { appClock } from '../../../_lib/deps';
+import { effectivenessDeclined, notInPublishedRecord } from '../../../_lib/refusals';
+import { RefusalView } from '@/app/_components/refusal';
 
 export const dynamic = 'force-dynamic';
 
@@ -126,18 +128,19 @@ export default async function RateCardDeliveryPage({
       </section>
 
       {expired ? (
-        <div className="rp-alert rp-alert--narrowed">
-          <span className="rp-alert__glyph" aria-hidden="true">
-            !
-          </span>
-          <div className="rp-alert__body">
-            <p className="rp-alert__title">This link expired</p>
-            <p>
-              Rate-card links are kept twelve months and then deleted. Nothing was billed again and
-              nothing is being kept.
-            </p>
-          </div>
-        </div>
+        <RefusalView
+          refusal={{
+            primitive: 'P-S',
+            headline: 'This link expired',
+            blocked: 'This rate card can no longer be rebuilt from this link.',
+            because:
+              'Rate-card links are kept twelve months and then deleted. Nothing was billed again ' +
+              'and nothing is being kept.',
+            clearedBy: { kind: 'link', label: 'Buy a current rate card', href: '/rate-card' },
+            clearsItself: null,
+            severity: 'narrowed',
+          }}
+        />
       ) : (
         <>
           {/* The determination selector. This is the rebuild control §3.5 promises,
@@ -169,23 +172,14 @@ export default async function RateCardDeliveryPage({
           </form>
 
           {raw !== '' && held === null ? (
-            <div className="rp-alert rp-alert--declined">
-              <span className="rp-alert__glyph" aria-hidden="true">
-                §
-              </span>
-              <div className="rp-alert__body">
-                <p className="rp-alert__title">
-                  {raw} is not in the active published record Ratepin holds
-                </p>
-                <p>
-                  Ratepin does not conclude that this determination does not exist. It concludes
-                  only that it is not in the published record we mirror — a project wage
-                  determination issued directly to a contracting agency is never published. Try
-                  another number, or take the refund below; the button is on this page and there is
-                  no reason field.
-                </p>
-              </div>
-            </div>
+            <RefusalView
+              refusal={notInPublishedRecord(raw, {
+                kind: 'onThisScreen',
+                label:
+                  'Try another number above, or take the refund below — the button is on this ' +
+                  'page and there is no reason field.',
+              })}
+            />
           ) : null}
 
           {held === null ? null : (
@@ -288,32 +282,15 @@ export default async function RateCardDeliveryPage({
               </section>
 
               {/* §3.2 — the panel that concludes nothing, on the delivered document
-                  and not only on the preview. */}
-              <div className="rp-alert rp-alert--declined">
-                <span className="rp-alert__glyph" aria-hidden="true">
-                  §
-                </span>
-                <div className="rp-alert__body rp-stack rp-stack--tight">
-                  <p className="rp-alert__title">
-                    Effectiveness — what we can show, and what we will not say
-                  </p>
-                  <p className="rp-num">
-                    Revision {held.revision} of {String(held.wdNumber)} was published{' '}
-                    {String(held.publishDate)}.
-                  </p>
-                  <p>
-                    FAR 22.404-6 governs which revision applies to a contract, and the answer can
-                    turn on a finding by the contracting officer — a finding Ratepin cannot observe.
-                  </p>
-                  <p>
-                    <strong>
-                      Ratepin does not conclude which revision is effective for your contract.
-                    </strong>{' '}
-                    The dates on this card are what we can see. The determination incorporated into
-                    your solicitation, and any amendment your contracting officer issues, govern.
-                  </p>
-                </div>
-              </div>
+                  and not only on the preview. Same constructor as the preview, so the
+                  document and the thing she bought cannot say different things. */}
+              <RefusalView
+                refusal={effectivenessDeclined([
+                  { label: 'Determination', value: String(held.wdNumber) },
+                  { label: 'Revision on this card', value: String(held.revision) },
+                  { label: 'Published', value: String(held.publishDate) },
+                ])}
+              />
 
               <section className="rp-stack rp-measure">
                 <h3>Where this came from</h3>

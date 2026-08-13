@@ -29,16 +29,15 @@ import { ArtifactChip, StatusChip } from '../../../_components/status-chip';
 import { readAs, requireSession } from '../../../_lib/auth';
 import {
   BAND_UNKNOWN_ACTION,
-  BAND_UNKNOWN_BODY,
-  BAND_UNKNOWN_HEADLINE,
   DRAFT_NEVER_BILLED,
   FRESHNESS_NEVER_DRAFTS,
   THREE_DRAFT_CONDITIONS,
   WE_DO_NOT_FILE,
 } from '../../../_lib/copy';
-import { ecprChip, listArtifacts, rebuildFiling } from '../../../_lib/filings';
+import { ecprArtifact, listArtifacts, rebuildFiling } from '../../../_lib/filings';
 import { readProject } from '../../../_lib/projects';
-import { RefusalView } from '../../../../(free)/_components/refusal';
+import { bandUnknown } from '../../../_lib/refusals';
+import { RefusalView } from '@/app/_components/refusal';
 
 export const dynamic = 'force-dynamic';
 
@@ -60,22 +59,26 @@ export default async function FilingPage({
     if (rebuilt === null) return null;
     const project = await readProject(tx, rebuilt.filing.projectId);
     if (project === null) return null;
-    return { rebuilt, project, artifacts: await listArtifacts(tx, id) };
+    /**
+     * R-BUILD C-3. The screen BUILDS the California XML rather than predicting it.
+     * The chip below and the Download link beside it are both derived from this one
+     * answer, and the link is rendered only on the arm that carries bytes — so the
+     * screen can no longer offer a file `/api/artifacts` cannot serve, which is what
+     * it did for every California project that cleared the old chip's four checks.
+     */
+    return {
+      rebuilt,
+      project,
+      artifacts: await listArtifacts(tx, id),
+      xml: await ecprArtifact(db, tx, { rebuilt, project }),
+    };
   });
 
   if (view === null) notFound();
 
-  const { rebuilt, project } = view;
+  const { rebuilt, project, xml } = view;
   const { filing, verdict, artifact, computation } = rebuilt;
   const signature = rendersSignatureBlock(verdict);
-
-  const xml = ecprChip({
-    project,
-    workersMissingSsn: rebuilt.loaded.workersMissingSsn,
-    workerCount: rebuilt.loaded.identities.length,
-    xsdObservedSha256: null,
-    xsdObservedAt: null,
-  });
 
   return (
     <div className="rp-stack rp-stack--section">
@@ -94,22 +97,13 @@ export default async function FilingPage({
 
       {/* §4.4.3 — the band block, above the preview, with one button. */}
       {project.contractValueBand === 'unknown' ? (
-        <div className="rp-alert rp-alert--blocked">
-          <span className="rp-alert__glyph" aria-hidden="true">
-            ✕
-          </span>
-          <div className="rp-alert__body rp-stack rp-stack--tight">
-            <p className="rp-alert__title">{BAND_UNKNOWN_HEADLINE}</p>
-            {BAND_UNKNOWN_BODY.map((paragraph) => (
-              <p key={paragraph.slice(0, 32)}>{paragraph}</p>
-            ))}
-            <p>
-              <Link className="rp-btn rp-btn--primary" href={`/app/projects/${project.id}`}>
-                {BAND_UNKNOWN_ACTION}
-              </Link>
-            </p>
-          </div>
-        </div>
+        <RefusalView
+          refusal={bandUnknown({
+            kind: 'link',
+            label: BAND_UNKNOWN_ACTION,
+            href: `/app/projects/${project.id}`,
+          })}
+        />
       ) : null}
 
       {/* 2 — the artifact. The screen prints what the paper prints, from the same
@@ -243,7 +237,18 @@ export default async function FilingPage({
                   {xml.kind === 'blocked' ? (
                     <span className="rp-t-data">why?</span>
                   ) : (
-                    <Link href={`/api/artifacts/${id}?kind=ecpr_xml`}>Download</Link>
+                    <>
+                      <Link href={`/api/artifacts/${id}?kind=ecpr_xml`}>Download</Link>
+                      {/* The file exists: it was built to render this row, and the
+                          figures below are read off it rather than described. */}
+                      <p className="rp-t-micro rp-num">
+                        {xml.artifact.employeeCount} employee records · schema{' '}
+                        {String(xml.artifact.xsdSha256).slice(0, 12)}
+                        {xml.artifact.xsdObservedAt === null
+                          ? ' · no dated observation of DIR’s published schema is on record in this build'
+                          : ` · DIR served this digest as of ${xml.artifact.xsdObservedAt.toISOString().slice(0, 16).replace('T', ' ')} UTC`}
+                      </p>
+                    </>
                   )}
                 </td>
               </tr>
@@ -251,16 +256,16 @@ export default async function FilingPage({
           </table>
         </div>
 
+        {/* A refusal from the emitter is rendered by the component that owns the
+            four primitives, because it carries the per-worker exception report the
+            customer has to act on — the missing field, named, worker by worker. A
+            hand-rolled alert here would print the headline and silently drop the
+            list, which is the difference between "something is missing" and "add a
+            withholding-exemption count for Dee Alvarado". */}
         {xml.kind === 'blocked' ? (
-          <div className="rp-alert rp-alert--blocked">
-            <span className="rp-alert__glyph" aria-hidden="true">
-              ✕
-            </span>
-            <div className="rp-alert__body">
-              <p className="rp-alert__title">{xml.headline}</p>
-              <p>{xml.detail}</p>
-              <p className="rp-t-micro">{WE_DO_NOT_FILE}</p>
-            </div>
+          <div className="rp-stack rp-stack--tight">
+            <RefusalView refusal={xml.refusal} />
+            <p className="rp-t-micro">{WE_DO_NOT_FILE}</p>
           </div>
         ) : null}
 

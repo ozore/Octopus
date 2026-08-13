@@ -14,6 +14,7 @@ import { getDb } from '@/db';
 import { readAs, requireSession } from '../../../../_lib/auth';
 import { findWdCandidates } from '../../../../_lib/mirror';
 import { confirmedClassNorms } from '../../../../_lib/resolve';
+import { RefusalView } from '@/app/_components/refusal';
 
 export const dynamic = 'force-dynamic';
 
@@ -133,28 +134,29 @@ export default async function FindWdPage({
           {candidates
             .filter((candidate) => candidate.unionGroups.length > 0)
             .map((candidate) => (
-              <div className="rp-alert rp-alert--declined" key={String(candidate.wdNumber)}>
-                <span className="rp-alert__glyph" aria-hidden="true">
-                  §
-                </span>
-                <div className="rp-alert__body">
-                  <p className="rp-alert__title">
-                    {candidate.unionGroups.length} of this determination’s {candidate.groupCount}{' '}
-                    classification groups come from collective bargaining agreements
-                  </p>
-                  <p className="rp-num">{candidate.unionGroups.join(', ')}</p>
-                  <p>
-                    Their fringe schedules are not published in the determination, so Ratepin will
-                    not compute a fringe credit against them. If your crew works under any of those
-                    classifications, those payroll lines will block and the filing will render as{' '}
-                    <strong>DRAFT — NOT CERTIFIABLE</strong>. The other groups — survey rates and
-                    averages — are fully supported.
-                  </p>
-                  <p>
-                    We would rather tell you at minute three than at minute forty on a Friday.
-                  </p>
-                </div>
-              </div>
+              <RefusalView
+                key={String(candidate.wdNumber)}
+                /* P-S rather than P-D. This looks like a declined conclusion and is
+                   not one: we are not refusing to apply a rule, we are reporting that
+                   the determination does not publish these fringe schedules. Typing it
+                   as P-D would have meant inventing a `citation` for it, which is the
+                   thing the P-S variant exists to make unnecessary. */
+                refusal={{
+                  primitive: 'P-S',
+                  headline: `${String(candidate.unionGroups.length)} of this determination’s ${String(candidate.groupCount)} classification groups come from collective bargaining agreements`,
+                  blocked:
+                    'Ratepin will not compute a fringe credit against those groups. If your crew ' +
+                    'works under any of them, those payroll lines will block and the filing will ' +
+                    'render as DRAFT — NOT CERTIFIABLE. The other groups — survey rates and ' +
+                    'averages — are fully supported.',
+                  because: `Their fringe schedules are not published in the determination. The groups are ${candidate.unionGroups.join(', ')}.`,
+                  clearedBy: null,
+                  clearsItself:
+                    'Nothing is required of you now. We would rather tell you at minute three ' +
+                    'than at minute forty on a Friday.',
+                  severity: 'noted',
+                }}
+              />
             ))}
         </section>
       ) : null}

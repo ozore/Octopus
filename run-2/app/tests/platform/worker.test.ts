@@ -450,3 +450,56 @@ describe('the freshness sweep never blocks a filing', () => {
     expect(staleness?.level).toBe('L2_STALE');
   });
 });
+
+/**
+ * NEW-4 / security C-3's second half — the purge that had no caller.
+ *
+ * `purgeDeadSessions` was written, tested and never run: `grep -rn purgeDeadSessions`
+ * returned its definition and one test. Expired sessions, consumed magic links and
+ * sent outbox payloads accumulated forever in the two customer-adjacent tables that
+ * carry no tenant policy. The registry entry, not the function, is the fix, so the
+ * registry entry is what this drives.
+ */
+describe('the retention sweep purges the auth classes it is the only purge for', () => {
+  it('reports them by name, and does so with no object store configured', async () => {
+    await setup();
+    const clock = fixedClock(NOW);
+    const deps = depsFor(clock);
+
+    // One dead session, one consumed link, one sent message — the three classes.
+    await tdb.client.query(
+      `INSERT INTO auth_sessions (id, token_hash, user_id, account_id, email, expires_at)
+       VALUES (gen_random_uuid(), 'dead-hash', $1, $2, 'gone@ratepin.test', now() - interval '1 day')`,
+      [IDS.userA, IDS.accountA],
+    );
+    await tdb.client.query(
+      `INSERT INTO auth_magic_links (id, email, token_hash, expires_at, consumed_at)
+       VALUES (gen_random_uuid(), 'gone@ratepin.test', 'used-hash', now() + interval '1 hour', now())`,
+    );
+    await tdb.client.query(
+      `INSERT INTO email_outbox (id, to_address, template, payload, sent_at, idempotency_key)
+       VALUES (gen_random_uuid(), 'gone@ratepin.test', 'magic_link',
+               '{"link_id":"whatever"}'::jsonb, now(), 'sweep-probe')`,
+    );
+
+    const sweep = jobByKind('retention.sweep');
+    expect(sweep).not.toBeNull();
+    const result = await sweep!.run({ deps, payload: {} });
+    const counts = result.detail['counts'] as Record<string, number>;
+
+    expect(counts['auth_sessions']).toBe(1);
+    expect(counts['auth_magic_links']).toBe(1);
+    expect(counts['outbox_payloads']).toBe(1);
+    // `retention: null` here, which is the branch that returns early. The auth
+    // classes must not be able to ride on an optional adapter.
+    expect(result.performed).toBe(false);
+    expect(result.detail['unswept_classes']).toEqual(['ecpr_objects', 'raw_csv', 'free_generator']);
+
+    const left = await tdb.client.query<{ sessions: string; links: string; payloads: string }>(
+      `SELECT (SELECT count(*)::text FROM auth_sessions)  AS sessions,
+              (SELECT count(*)::text FROM auth_magic_links) AS links,
+              (SELECT count(*)::text FROM email_outbox WHERE payload <> '{}'::jsonb) AS payloads`,
+    );
+    expect(left.rows[0]).toEqual({ sessions: '0', links: '0', payloads: '0' });
+  });
+});

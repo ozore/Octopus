@@ -33,6 +33,7 @@ import {
 } from '../../(free)/_lib/csv';
 import { ENCODING_REJECTION, SSN_SENTENCE, rememberedMapSentence } from '../_lib/copy';
 import type { DeductionColumn, PostedWorker, StoredColumnMap } from '../_lib/imports';
+import { RefusalView } from '@/app/_components/refusal';
 
 /** The ten lettered paragraphs of 29 CFR 3.5, and the sentinel that blocks. */
 const DEDUCTION_CATEGORIES: readonly { readonly value: string; readonly label: string }[] = [
@@ -158,18 +159,23 @@ export function ImportWizard(props: ImportWizardProps): React.ReactElement {
 
   if (rejection !== null) {
     return (
-      <div className="rp-alert rp-alert--blocked" role="group" aria-label="File not read">
-        <span className="rp-alert__glyph" aria-hidden="true">
-          ✕
-        </span>
-        <div className="rp-alert__body">
-          <p className="rp-alert__title">This file was not read</p>
-          <p>{rejection}</p>
+      <RefusalView
+        refusal={{
+          primitive: 'P-S',
+          headline: 'This file was not read',
+          blocked: 'No rows were posted and nothing was written to this week.',
+          because: rejection,
+          clearedBy: { kind: 'onThisScreen', label: 'Try another file' },
+          clearsItself: null,
+          severity: 'blocked',
+        }}
+      >
+        <div className="rp-btn-row">
           <button type="button" className="rp-btn rp-btn--quiet" onClick={() => setRejection(null)}>
             Try another file
           </button>
         </div>
-      </div>
+      </RefusalView>
     );
   }
 
@@ -395,28 +401,31 @@ export function ImportWizard(props: ImportWizardProps): React.ReactElement {
          * WH-347 says the worker was paid nothing; "we could not read the cell" says
          * something else entirely, and only one of the two is true.
          */
-        <div className="rp-alert rp-alert--blocked">
-          <span className="rp-alert__glyph" aria-hidden="true">
-            ✕
-          </span>
-          <div className="rp-alert__body">
-            <p className="rp-alert__title">
-              {unreadableCells.length === 1
+        <RefusalView
+          refusal={{
+            primitive: 'P-S',
+            headline:
+              unreadableCells.length === 1
                 ? 'One cell could not be read as a number'
-                : `${unreadableCells.length} cells could not be read as a number`}
-            </p>
-            <ul className="rp-stack rp-stack--tight">
-              {unreadableCells.map((sentence) => (
-                <li key={sentence}>{sentence}</li>
-              ))}
-            </ul>
-            <p>
-              Ratepin does not coerce a cell it could not read into a zero, because a zero on this
-              form means the worker was paid nothing rather than that we could not tell. Fix the
-              cell in your export, or map that field to a different column.
-            </p>
-          </div>
-        </div>
+                : `${String(unreadableCells.length)} cells could not be read as a number`,
+            blocked:
+              'Ratepin does not coerce a cell it could not read into a zero, because a zero on ' +
+              'this form means the worker was paid nothing rather than that we could not tell.',
+            because: 'The cells below did not parse as hours or as money.',
+            clearedBy: {
+              kind: 'onThisScreen',
+              label: 'Fix the cell in your export, or map that field to a different column',
+            },
+            clearsItself: null,
+            severity: 'blocked',
+          }}
+        >
+          <ul className="rp-stack rp-stack--tight">
+            {unreadableCells.map((sentence) => (
+              <li key={sentence}>{sentence}</li>
+            ))}
+          </ul>
+        </RefusalView>
       ) : null}
       {unmappedDeductionCount > 0 ? (
         <p className="rp-btn__why">

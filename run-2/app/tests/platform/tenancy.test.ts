@@ -25,7 +25,11 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 import { rowsOf } from '../../src/db';
 import { accountId, withTenant, withoutTenant } from '../../src/db/tenant';
-import { redeemMagicLink, requestMagicLink } from '../../src/platform/auth/magic-link';
+import {
+  mintMagicLinkToken,
+  redeemMagicLink,
+  requestMagicLink,
+} from '../../src/platform/auth/magic-link';
 import {
   createSession,
   resolveSession,
@@ -99,8 +103,12 @@ afterAll(async () => {
 /** Mint a link and redeem it, on the application role, the way the product does. */
 async function signIn(email: string): Promise<{ token: string; account: string }> {
   return tdb.asApp(async () => {
-    const issued = await requestMagicLink(tdb.db, { email }, { baseUrl: BASE, clock });
-    const outcome = await redeemMagicLink(tdb.db, issued.token, { clock });
+    const issued = await requestMagicLink(tdb.db, { email }, { clock });
+    // The token is minted by the send, not by the request (security C-3), so the
+    // harness does here what `drainOutbox` does in production.
+    const minted = await mintMagicLinkToken(tdb.db, issued.id, { baseUrl: BASE, clock });
+    if (!minted) throw new Error('sign-in failed: the link could not be minted');
+    const outcome = await redeemMagicLink(tdb.db, minted.token, { clock });
     if (!outcome.ok) throw new Error(`sign-in failed: ${outcome.reason}`);
     return { token: outcome.issued.token, account: outcome.issued.session.accountId };
   });
@@ -230,7 +238,37 @@ describe('the pre-tenant surface is exactly two tables and one function', () => 
       'memberships:SELECT',
       'users:INSERT',
       'users:SELECT',
+      // The other end of the identity lifecycle: `ratepin_erase_identity` writes the
+      // tombstone at deletion, because `users` is scoped by membership and no
+      // statement inside one tenant's context can reach the row (or answer "does
+      // this person belong to anyone else?"). It is ONE more verb on ONE table, and
+      // the policy below is what keeps it from being a general edit.
+      'users:UPDATE',
     ]);
+  });
+
+  it('lets that UPDATE write a tombstone and nothing else', async () => {
+    // The grant above is only as narrow as its policy. This is the policy, read out
+    // of the catalogue: through this role a users row may travel from live to
+    // tombstoned, and by no other route — not to a different live address (the
+    // check demands a `@deleted.invalid` tombstone) and not back to life (the USING
+    // clause only ever sees rows that are still live).
+    const rows = await tdb.client.query<{
+      polname: string;
+      cmd: string;
+      using_expr: string | null;
+      check_expr: string | null;
+    }>(
+      `SELECT polname, polcmd AS cmd,
+              pg_get_expr(polqual, polrelid)      AS using_expr,
+              pg_get_expr(polwithcheck, polrelid) AS check_expr
+         FROM pg_policy WHERE polrelid = 'users'::regclass AND polname = 'users_erasure_write'`,
+    );
+    const policy = rows.rows[0];
+    expect(policy?.cmd, 'UPDATE only').toBe('w');
+    expect(policy?.using_expr).toContain('deleted_at IS NULL');
+    expect(policy?.check_expr).toContain('deleted_at IS NOT NULL');
+    expect(policy?.check_expr).toContain('@deleted.invalid');
   });
 
   it('refuses an address the caller did not normalise', async () => {

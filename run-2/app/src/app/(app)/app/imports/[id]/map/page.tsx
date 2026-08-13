@@ -16,6 +16,7 @@ import { notFound } from 'next/navigation';
 
 import { readAs, requireSession } from '../../../../_lib/auth';
 import { MAP_TARGETS, readImport } from '../../../../_lib/imports';
+import { RefusalView } from '@/app/_components/refusal';
 
 export const dynamic = 'force-dynamic';
 
@@ -45,19 +46,24 @@ export default async function ImportMapPage({
       </section>
 
       {duplicate ? (
-        <div className="rp-alert rp-alert--narrowed" role="group" aria-label="Same file">
-          <span className="rp-alert__glyph" aria-hidden="true">
-            !
-          </span>
-          <div className="rp-alert__body rp-stack rp-stack--tight">
-            <p className="rp-alert__title">
-              This is the same file you uploaded at{' '}
-              {record.uploadedAt.toISOString().slice(11, 16)}
-            </p>
-            <p>
-              Nothing was written twice — imports are idempotent on the file’s digest. Two things
-              you can do, and they are different documents.
-            </p>
+        <RefusalView
+          refusal={{
+            primitive: 'P-S',
+            headline: `This is the same file you uploaded at ${record.uploadedAt.toISOString().slice(11, 16)}`,
+            blocked:
+              'Ratepin did not create a second week from it. Imports are idempotent on the file’s ' +
+              'digest, so nothing was written twice.',
+            because:
+              'The bytes you just uploaded hash to the digest already recorded against this ' +
+              'import.',
+            clearedBy: {
+              kind: 'onThisScreen',
+              label: 'Two things you can do, and they are different documents',
+            },
+            clearsItself: null,
+            severity: 'narrowed',
+          }}
+        >
             <div className="rp-btn-row">
               {record.weekId === null ? null : (
                 <Link className="rp-btn rp-btn--quiet" href={`/app/imports/${id}/resolve`}>
@@ -77,8 +83,7 @@ export default async function ImportMapPage({
               An amended certified payroll is a distinct legal document, not an edit to a signed
               one. It gets its own sequence number and you sign it again.
             </p>
-          </div>
-        </div>
+        </RefusalView>
       ) : null}
 
       <section className="rp-stack">

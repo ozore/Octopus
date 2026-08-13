@@ -308,6 +308,112 @@ describe('deletion honours the undo window', () => {
     if (!second.ok) expect(second.reason).toBe('already_executed');
   });
 
+  /**
+   * THE SUITE THAT WOULD HAVE CAUGHT IT, RUN ON THE ROLE THAT HAS THE DEFECT.
+   *
+   * Everything above this point runs as the pglite superuser, which BYPASSES EVERY
+   * POLICY SILENTLY — so a deletion that erased nothing at all passed all of it.
+   * `users` is scoped by membership, the memberships were deleted first, and the
+   * de-identifying UPDATE therefore matched zero rows on `ratepin_app` while the
+   * erasure report counted the step a success. A report that claims an erasure that
+   * did not happen is worse than not erasing, and under A3 the customer who notices
+   * has nobody to tell.
+   *
+   * `asApp()` is the whole point of this block. Request, undo-window and execution
+   * all run inside it, on the NOBYPASSRLS role, which is the posture production
+   * runs in and the only one in which any of this is a test of anything.
+   */
+  describe('on the application role, where the policies are real', () => {
+    it('actually erases the email address, and says so truthfully', async () => {
+      await setup();
+      const stripe = createFakeStripe();
+      await tdb.asApp(() =>
+        requestAccountDeletion(
+          tdb.db,
+          { accountId: IDS.accountA, requestedBy: IDS.userA, typedConfirmation: NAME },
+          { stripe, clock: fixedClock(REQUESTED) },
+        ),
+      );
+
+      const before = await tdb.client.query<{ email: string }>(
+        `SELECT email FROM users WHERE id = $1`,
+        [IDS.userA],
+      );
+      expect(before.rows[0]?.email).toBe('coastline.insulation@example.test');
+
+      const dayEight = fixedClock(new Date(REQUESTED.getTime() + 8 * 86_400_000));
+      // The worker's own input, on the worker's own role. This returned the empty
+      // set for every account before the fan-out landed, which meant §5.5's seven-day
+      // promise ran on a schedule that could not fire.
+      expect(await tdb.asApp(() => dueDeletions(tdb.db, dayEight.now()))).toEqual([IDS.accountA]);
+
+      const result = await tdb.asApp(() =>
+        executeAccountDeletion(tdb.db, IDS.accountA, { stripe, clock: dayEight }),
+      );
+      expect(result.ok, result.ok ? '' : `execution failed: ${result.reason}`).toBe(true);
+      if (!result.ok) return;
+
+      // Read back as the OWNER, so the assertion cannot be satisfied by a policy
+      // hiding the row from the reader. The address is gone from the database, not
+      // merely from one role's view of it.
+      const after = await tdb.client.query<{ email: string; deleted_at: string | null }>(
+        `SELECT email, deleted_at FROM users WHERE id = $1`,
+        [IDS.userA],
+      );
+      expect(after.rows[0]?.email).not.toContain('coastline');
+      expect(after.rows[0]?.email).toMatch(/^deleted-[0-9a-f]+-[0-9a-f]{8}@deleted\.invalid$/);
+      expect(after.rows[0]?.deleted_at).not.toBeNull();
+
+      // The number in the report is the number of rows that moved, and it counts
+      // the identity it says it erased.
+      const auth = result.report.lines.find((line) => line.id === 'auth');
+      expect(auth?.disposition).toBe('erased');
+      expect(auth?.affected).toBeGreaterThanOrEqual(2);
+
+      // The whole enumeration ran, not just the step under examination.
+      const workers = await tdb.client.query<{ n: string }>(
+        `SELECT COUNT(*)::text AS n FROM workers WHERE account_id = $1`,
+        [IDS.accountA],
+      );
+      expect(Number(workers.rows[0]?.n)).toBe(0);
+    });
+
+    it('keeps the address of a person who still belongs to another account', async () => {
+      await setup();
+      // The same human, invited into a second company. Deleting the first must not
+      // destroy her sign-in identity at the second — and the question "does she
+      // belong to anyone else?" is unanswerable from inside one tenant's context,
+      // which is why it is asked inside the definer function.
+      // `setup()` already created the second account. All this needs is her
+      // membership in it.
+      await tdb.client.query(
+        `INSERT INTO memberships (account_id, user_id, role) VALUES ($1, $2, 'admin')`,
+        [IDS.accountB, IDS.userA],
+      );
+
+      const stripe = createFakeStripe();
+      const dayEight = fixedClock(new Date(REQUESTED.getTime() + 8 * 86_400_000));
+      await tdb.asApp(() =>
+        requestAccountDeletion(
+          tdb.db,
+          { accountId: IDS.accountA, requestedBy: IDS.userA, typedConfirmation: NAME },
+          { stripe, clock: fixedClock(REQUESTED) },
+        ),
+      );
+      const result = await tdb.asApp(() =>
+        executeAccountDeletion(tdb.db, IDS.accountA, { stripe, clock: dayEight }),
+      );
+      expect(result.ok).toBe(true);
+
+      const user = await tdb.client.query<{ email: string; deleted_at: string | null }>(
+        `SELECT email, deleted_at FROM users WHERE id = $1`,
+        [IDS.userA],
+      );
+      expect(user.rows[0]?.email).toBe('coastline.insulation@example.test');
+      expect(user.rows[0]?.deleted_at).toBeNull();
+    });
+  });
+
   it('leaves the gate counters standing, de-identified rather than deleted', async () => {
     await schedule();
     // A metered filing, which is what G5's and A6's denominators are counted from.

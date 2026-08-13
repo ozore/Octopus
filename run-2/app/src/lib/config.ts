@@ -25,10 +25,11 @@
  *    (ADR-011). The name check here is cheap and catches the common mistake; the
  *    authoritative runtime assertion is `assertRlsEnforced` in `src/db`.
  *
- * The gate flags at the bottom are the other half of CORRECTIONS.md: a claim is
- * rendered FROM ITS COUNTER, never from an opinion about the counter. While a gate
- * is locked the renderer emits the mechanism sentence and declines the outcome
- * sentence (P-D). None of them may be flipped by hand to make copy read better.
+ * WHAT THIS MODULE NO LONGER HAS IS AS LOAD-BEARING AS WHAT IT HAS. There are no
+ * gate flags here. A claim is rendered FROM ITS COUNTER, and a counter is a query,
+ * so the only way to state a measured outcome is to hold a reading that came from
+ * the database. There is deliberately no env var, and therefore no deploy-time
+ * edit, that can promote a claim — see the note where they used to be.
  */
 
 import { z } from 'zod';
@@ -148,12 +149,22 @@ const ConfigSchema = z
     CREDIT_FLOOR_CENTS: z.coerce.number().int().nonnegative().default(100),
     CREDIT_GUARANTEE_ADVERTISED: boolFromEnv(false),
 
-    // --- Gate flags: locked until a counter says otherwise -------------------
-    CLAIM_G1_RATE_CORRECTNESS: boolFromEnv(false),
-    CLAIM_G2_FORM_ACCEPTANCE: boolFromEnv(false),
-    CLAIM_G3_CORPUS_COMPLETENESS: boolFromEnv(false),
-    CLAIM_G4_TIME_SAVED: boolFromEnv(false),
-    CLAIM_G5_AUTONOMY: boolFromEnv(false),
+    /* --- THE GATE FLAGS ARE NOT HERE, AND THAT IS THE POINT ------------------
+     *
+     * `CLAIM_G1_RATE_CORRECTNESS … CLAIM_G5_AUTONOMY` used to live on this object as
+     * env booleans. They were inert — nothing rendered read them — but build review
+     * claims H-1 is right that a dormant promotion surface is still a promotion
+     * surface: while they existed, "nobody here can promote a claim by editing copy"
+     * was false, because anyone with deploy access could promote one by setting a
+     * variable. The gate state now has exactly one source, `readGates` in
+     * `src/platform/ops/gates.ts`, which reads counters out of the database, and
+     * exactly one renderer, `gateSentence`, which returns `null` for the outcome
+     * sentence unless that reading says `unlocked` and takes no override parameter.
+     *
+     * Zod strips unknown keys, so setting `CLAIM_G1_RATE_CORRECTNESS=true` on a
+     * production deploy now parses to nothing at all — asserted in
+     * `tests/web/refusal-primitives.test.ts` rather than left as a claim here.
+     * ---------------------------------------------------------------------- */
 
     // --- Encryption ----------------------------------------------------------
     KMS_KEY_URI: z.string().optional(),
@@ -253,25 +264,4 @@ export function resetConfigCache(): void {
 
 export function isProduction(config: Config = getConfig()): boolean {
   return config.NODE_ENV === 'production';
-}
-
-/**
- * The gate flags, in one place, so a renderer asks "may I state this outcome?"
- * rather than deciding. CORRECTIONS.md §0.2: while a gate is locked the answer is
- * the mechanism sentence plus the gate that would unlock the number — in-product,
- * never a sales contact (A3).
- */
-export function claimUnlocked(gate: 'G1' | 'G2' | 'G3' | 'G4' | 'G5', config: Config = getConfig()): boolean {
-  switch (gate) {
-    case 'G1':
-      return config.CLAIM_G1_RATE_CORRECTNESS;
-    case 'G2':
-      return config.CLAIM_G2_FORM_ACCEPTANCE;
-    case 'G3':
-      return config.CLAIM_G3_CORPUS_COMPLETENESS;
-    case 'G4':
-      return config.CLAIM_G4_TIME_SAVED;
-    case 'G5':
-      return config.CLAIM_G5_AUTONOMY;
-  }
 }

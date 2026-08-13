@@ -723,15 +723,24 @@ export default async function LandingPage(): Promise<React.ReactElement> {
               What IS enforced is narrower and testable, so that is what is printed.
               `gateSentence` takes a reading that can only come from a counter,
               returns null unless it says `unlocked`, and has no parameter that
-              overrides it. Every outcome sentence on this site comes through it.
+              overrides it. Every GATE OUTCOME sentence comes through it — which is
+              narrower than "every claim on this site", and the sentence below says
+              the narrower thing on purpose.
+
+              Build review claims H-1: `CLAIM_G1…G5` used to exist as env booleans
+              beside the counters. Nothing rendered read them, but while they existed
+              a deploy could have promoted a claim, so the second half of the sentence
+              below would have been false. They are gone; `src/lib/config.ts` records
+              why and a test asserts that setting one parses to nothing.
             */}
-            Every performance claim on this site is rendered from a counter, not typed into a
+            The gate outcome sentences below are rendered from their counters, not typed into a
             template. While a gate is locked the page renders the mechanism sentence — what the
             software does — and the outcome sentence is structurally absent. A measured claim that
-            regresses is demoted back to the mechanism automatically.{' '}
+            regresses is demoted back to the mechanism on the next reading.{' '}
             <strong>
               Every gate outcome below is rendered by one function that takes a database reading and
-              returns nothing while the counter is locked; it has no override parameter.
+              returns nothing while the counter is locked; it has no override parameter, and there
+              is no configuration value that can unlock a gate.
             </strong>{' '}
             The live counters are on <Link href="/status">the status page</Link>.
           </p>

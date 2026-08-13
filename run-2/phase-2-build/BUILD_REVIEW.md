@@ -1,10 +1,12 @@
-# BUILD_REVIEW — consolidated verification audit
+# BUILD_REVIEW — consolidated verification audit, round 2
 
-**Auditor lens:** independent verification of the three remediation agents' work across all four
-build-review documents, plus a concurrent-edit hunt and a re-run of the `CORRECTIONS.md` probes.
-**Date:** 2026-08-13. **Tree:** `run-2/app` at `b7b6078` + uncommitted remediation.
-**Method:** every command below was executed by the auditor. No verdict rests on an agent's report,
-and where an agent's summary and the code disagree, the code is quoted.
+**Auditor lens:** independent verification of the three remediation agents who closed what round 1
+left OPEN, plus a concurrent-edit hunt and a re-run of the `CORRECTIONS.md` probes.
+**Date:** 2026-08-13. **Tree:** `run-2/app` at `9a5eb9e` + uncommitted remediation.
+**Method:** every command in §0 was executed by the auditor. No verdict rests on an agent's report.
+Where an agent's summary and the code disagree, the code is quoted. Four of the load-bearing
+claims were re-proved by **probes the auditor wrote**, not by re-reading the agents' tests — the
+whole point being that a test can assert the wrong layer and still be green (§3, NEW-6).
 
 ---
 
@@ -13,83 +15,50 @@ and where an agent's summary and the code disagree, the code is quoted.
 | Command | Result |
 |---|---|
 | `npm run typecheck` | **clean**, zero diagnostics |
-| `npm test` | **897 passed / 897**, 47 files, 79.01s |
-| `npm run build` | **compiled**, **35 routes** (`/api/exports` is the new one) |
+| `npm test` | **937 passed / 937**, **49 files**, 86.20s |
+| `npm run build` | **compiled** in 5.0s, **35 routes** |
 
-All three are green. That is the floor, not the headline.
+Round 1 measured 897/47 and 35 routes. The remediation added **40 tests and 2 files** and no route.
 
-Additionally executed against a **real PostgreSQL 16.13 cluster** (`ratepin_audit`, migrated fresh
-by `npm run db:migrate` with `DATABASE_APP_PASSWORD`, seeded by `npm run seed` as the owner):
+Additionally, the auditor wrote a throwaway probe suite (`tests/zz-auditor-probe.test.ts`, deleted
+after the run) against the PGlite harness with `SET ROLE ratepin_app` — the NOBYPASSRLS posture
+production runs in — reusing **no assertion any agent wrote**:
 
-| Command | Result |
+| Probe | Result |
 |---|---|
-| `npx playwright test e2e/tenancy.spec.ts` | **5 passed** — real assertions, `test.fail()` gone |
-| Production build booted on `postgres://ratepin_app@…` | `/signin` **200**, `/app` **307** anonymous |
-| Cross-tenant HTTP reproduction (below) | **no leak** |
+| Credential recovery from `email_outbox` + `auth_magic_links` | **4 attacks refused** |
+| Deletion erases the email, provisioned through the real signup path | **passed** |
+| `filing_durations` / `form_acceptance_confirmations` append-only | **UPDATE and DELETE refused** |
+| Direct `INSERT` into `users` / `accounts` / `memberships` on `ratepin_app` | **all three denied** |
+
+**What this round did NOT re-run**, stated so nothing is inherited silently: the real
+PostgreSQL 16.13 cluster, `npx playwright test e2e/tenancy.spec.ts`, and the HTTP cross-tenant
+reproduction. Those are round 1's evidence (§1), and nothing in this round's diff touches the
+policies or the roles they exercised — but they were not re-executed, so they are cited as
+**prior-round evidence**, not as this round's.
 
 ---
 
-## 1. The tenancy fix, proved rather than accepted
+## 1. The tenancy fix — prior-round evidence, carried forward
 
-The task named this specifically. Three independent proofs were run.
+Round 1 proved the boundary three independent ways: a SQL probe over all 25 policied relations on
+the NOBYPASSRLS role (`LEAKS: none`, cross-tenant `UPDATE`/`DELETE` 0 rows, `INSERT` refused by
+policy, no-context reads fail closed); a 5-passing `e2e/tenancy.spec.ts` with `test.fail()` deleted;
+and the security review's own HTTP reproduction re-run against a server connected as `ratepin_app`,
+which **did not reproduce**.
 
-### 1.1 SQL layer — every policied relation, on the NOBYPASSRLS role
-
-A probe written by the auditor (not the agents' test) seeded two tenants as the owner, then
-enumerated `pg_policies` and read across the boundary as `ratepin_app`:
-
-```
-ROLE {"rolsuper":false,"rolbypassrls":false,"rolcanlogin":false}
-POLICIED RELATIONS: 25  accounts, artifact_provenance, artifacts, credits,
-  crosswalk_observation, filing_durations, filing_events, filings,
-  form_acceptance_confirmations, memberships, meter_events, payroll_imports,
-  payroll_line_fringe_credits, payroll_lines, payroll_weeks,
-  payroll_worker_deductions, payroll_worker_weeks, project_band_events, projects,
-  refunds, staleness_windows, subscriptions, users, wd_pins, workers
-OWNER sees projects: 2      current_user = ratepin_app
-LEAKS: none
-cross-tenant UPDATE projects rows: 0
-cross-tenant DELETE workers rows:  0
-cross-tenant INSERT projects: error: new row violates row-level security policy
-no-context projects: 0      ← fails CLOSED
-```
-
-The role posture is the one the policies are written `TO`, and `SET ROLE` genuinely engages RLS —
-the owner sees 2 projects, the app role sees 1.
-
-### 1.2 e2e — real Postgres, real assertions
+This round re-verified the half that the remediation could have broken — the provisioning door —
+directly, and it holds:
 
 ```
-✓ the tenant role › exists and cannot bypass row-level security
-✓ … › crosses the tenant boundary through one function owned by a role nothing can connect as
-✓ … › can provision a brand-new identity, the way sign-in does
-✓ … › cannot provision one any other way
-✓ … › shows one tenant nothing of another, on every policied relation
-  5 passed (8.9s)
+INSERT INTO users       … on ratepin_app → denied
+INSERT INTO accounts    … on ratepin_app → denied
+INSERT INTO memberships … on ratepin_app → denied
 ```
 
-`e2e/tenancy.spec.ts` is **a real passing assertion, not a renamed expected failure**. The
-`test.fail()` marker is deleted (confirmed in `git diff`), and the file now asserts the *shape* of
-the fix: `prosecdef` true, owner `ratepin_provisioner`, `rolcanlogin` false, `rolbypassrls` false,
-and that a direct `INSERT INTO users` / `INSERT INTO accounts` is refused with `permission denied`.
-
-### 1.3 HTTP — the reviewer's own reproduction, re-run
-
-A brand-new account (`mallory@evil.test`) provisioned and signed in through the product's own
-`/auth/callback` against a server connected as `ratepin_app`:
-
-```
-callback=307   cookie rp_session set
-mallory /app   app=200   grep "Route 17|Rio Vista|Gloucester|VA20260195|Alvarado" → (nothing)
-victim filing by id      → 404
-/api/artifacts/<victim>?kind=exception_report
-                         → 404 {"error":"no such filing on this account"}
-?next=//attacker.example.com/harvest → http://127.0.0.1:3199/signin?state=unknown
-```
-
-The security review's headline reproduction — another company's project, workers and SSN
-last-fours on a stranger's dashboard — **does not reproduce**. The sentence
-`no such filing on this account` is now true. The open redirect is closed.
+`src/platform/schema.ts:234` is the **only** `INSERT INTO accounts` in `src/**` outside the seed
+script. That matters more than it did last round, because a new invariant now rests on it (§3,
+NEW-1).
 
 ---
 
@@ -98,269 +67,351 @@ last-fours on a stranger's dashboard — **does not reproduce**. The sentence
 Legend: **CLOSED** = defect gone, verified by the auditor. **PARTIAL** = the exploitable half is
 closed, a named half is not. **OPEN** = present in the current tree.
 
+**Round 2 tally: 26 of 29 CRITICAL/HIGH CLOSED, 3 PARTIAL, 0 OPEN.** Round 1's tally was 19
+CLOSED, 6 PARTIAL, 4 OPEN. Every finding round 1 left OPEN is now closed. The residue is three
+PARTIALs, all structural rather than exploitable, and five hunt findings — **two of them new**.
+
 ### 2.1 Security and multi-tenancy
 
-| # | Sev | Finding | Verdict | Auditor evidence |
-|---|---|---|---|---|
-| C-1 | CRIT | Total cross-tenant read on the deployable configuration | **PARTIAL** | Leak closed — §1.1–1.3. But ADR-011 requires **two** mechanisms and there is still one: 76 `execute` statements in `src/app/(app)/_lib/**`, and only **three lines** carry an account predicate (`billing.ts:301`, `:304`, `week.ts:263`). RLS is now genuinely enforced and `getDb()` asserts it (`src/db/index.ts:273`), so the risk is real-but-single-layer. |
-| C-2 | CRIT | No authenticated request can execute on `ratepin_app` | **CLOSED** | The production build boots on `ratepin_app` and serves `/signin` 200, `/app` 200 signed-in. `auth_sessions` carries `email`, `resolveSession` joins nothing tenant-scoped, and provisioning crosses the boundary in one `SECURITY DEFINER` function owned by a NOLOGIN, NOBYPASSRLS role. |
-| C-3 | CRIT | Live magic-link bearer tokens in plaintext in `email_outbox` | **OPEN** | `src/app/(app)/_actions/auth.ts:53` still writes `url: … issued.url` into `payload`. The purge exists (`session.ts:255`, `UPDATE email_outbox SET payload='{}'`) but `purgeDeadSessions` has **zero production callers** — `grep -rn purgeDeadSessions` returns only its definition and `tests/platform/tenancy.test.ts:391`. `retention.sweep` does not call it. |
-| H-1 | HIGH | Open redirect + login CSRF / session fixation | **PARTIAL** | Redirect **closed** and verified over HTTP; `safeDestination` resolves and compares `origin`. The **CSRF/fixation half is untouched**: redemption is still an unauthenticated GET with no nonce cookie bound to the requesting browser and no interstitial naming the address being signed in. The reviewer's chain — attacker mails the victim a link minted for the *attacker's* address, victim uploads payroll into the attacker's tenant — still works. The route docblock now reads as though H-1 were fully addressed, which is the more dangerous form. |
-| H-2 | HIGH | Cross-tenant destructive / billing-bearing writes through guessable ids | **CLOSED** | Proven at §1.1: cross-tenant `UPDATE` and `DELETE` affect **0 rows**, `INSERT` is refused by policy. Residual noted as NEW-1: the fix's `rowCount === 1` half was not added, so a cross-tenant write is a silent no-op rather than an error. |
-| H-3 | HIGH | The archive can never serve a filing generated with a signatory | **OPEN (latent)** | `grep -n "signatory\|remarks" src/db/schema.ts drizzle/0000_init.sql` → **no matches**. `rebuildFiling` (`filings.ts:769-792`) does not pass them. The digest-equality test the reviewer asked for exists (`tests/web/app.test.ts:661`) but **never supplies a signatory**, so it passes trivially. No UI supplies one today, so it is a trap rather than a live 409. |
+| # | Sev | Finding | R1 | R2 | Auditor evidence |
+|---|---|---|---|---|---|
+| C-1 | CRIT | Total cross-tenant read on the deployable configuration | PARTIAL | **PARTIAL** | Leak closed (§1). ADR-011 requires **two** mechanisms and there is still one. Precisely measured this round by parsing every `` .execute(sql`…`) `` block under `src/app/(app)/_lib/`: **76 blocks, 2 carrying an explicit `account_id =` predicate** (`week.ts`, `billing.ts`). RLS is real and `getDb()` asserts it at boot; the repository predicates ADR-011 names as the *first* mechanism do not exist. |
+| C-2 | CRIT | No authenticated request can execute on `ratepin_app` | CLOSED | **CLOSED** | Round 1 booted the production build on `ratepin_app`. Re-verified this round from the other side: the provisioning door is one `SECURITY DEFINER` function and the three direct inserts are denied. |
+| C-3 | CRIT | Live magic-link bearer tokens in plaintext in `email_outbox` | OPEN | **CLOSED** | Proved by the auditor's own attack, not by reading the fix. `_actions/auth.ts:62` queues `link_id`. The probe stole **every string at every depth** from both rows on `ratepin_app`, then: (a) no string matches `/auth/callback` or `[?&]token=`; (b) **every** string tried as a token was refused by `redeemMagicLink`; (c) no string hashes to the digest at rest — the row is born from `hashToken(newToken())` with the token discarded (`magic-link.ts:149`), so it is *unredeemable*, not merely unsent; (d) after `drainOutbox` mints and mails a working token, the row still contains it nowhere. `assertNoRedeemableToken` (`outbox.ts:88`) throws at the write site so a future template cannot reintroduce it. |
+| H-1 | HIGH | Open redirect + login CSRF / session fixation | PARTIAL | **PARTIAL** | Redirect **closed** — `safeDestination` resolves and compares origin. The **CSRF/fixation half is untouched**: `auth/callback/route.ts` is still an unauthenticated `GET` that sets the session cookie with no nonce bound to the requesting browser and no interstitial naming the address being signed in. The reviewer's chain still works. Round 1's aggravating factor is gone — the docblock no longer reads as though H-1 were fully addressed; it now claims only the redirect fix. |
+| H-2 | HIGH | Cross-tenant destructive / billing-bearing writes through guessable ids | CLOSED | **CLOSED** | Predicate enforced by RLS (§1). Residual unchanged and worth restating: `grep -rn "rowCount === 1"` over `_lib` and `platform` returns **nothing**, so a cross-tenant write is still a silent no-op rather than an error. |
+| H-3 | HIGH | The archive can never serve a filing generated with a signatory | OPEN (latent) | **CLOSED** | `filings.signatory_name / signatory_title / remarks` exist in `drizzle/0000_init.sql:1270-1272` and `src/db/schema.ts`, written by `generateFiling`, read back by `rebuildFiling`. The digest-equality test now **supplies both** (`app.test.ts:704`) and asserts they reach the bytes *and* the row — and a companion test (`:739`) proves a filing without the signatory renders **different** bytes, which is what stops the test going trivial again. That companion is the part round 1 asked for and did not get. |
 
 ### 2.2 Correctness and arithmetic
 
-| # | Sev | Finding | Verdict | Auditor evidence |
-|---|---|---|---|---|
-| C-1 | CRIT | `paidTotal` prices double-time hours at a rate never paid | **CLOSED — and the reviewer's proposed fix was correctly refused** | `compliance.ts` now computes `N10 = cashRate × (st+ot) + min(cashRate, dtRate) × dt`, with a counterexample recorded showing the reviewer's `straightTimeCash + doubleTimeCash` carries the identical defect mirrored (WD $30+$10, 40 ST + 8 DT, cash $35, dt $70 → $1,960 vs $1,920 required, straight-time rate $35 against $40). Verified against 29 CFR 5.31(b) fetched 2026-08-13. **Both** bounds asserted as properties. This is the strongest single piece of work in the remediation. |
-| C-2 | CRIT | No violation finding reaches a customer-visible surface | **CLOSED** | `exceptions.ts:296-330` carries `WD_UNDERPAYMENT`, `FRINGE_BELOW_WD` and `PREMIUM_BELOW_STATUTORY` with a `rule` and `citation` each. A class-closing test asserts *every* flag in `findings` appears in the report. |
-| C-3 | CRIT | The filing screen offers an eCPR download the route 409s | **OPEN** | `src/app/(app)/app/filings/[id]/page.tsx:246` still renders `<Link href={/api/artifacts/${id}?kind=ecpr_xml}>Download</Link>` whenever the chip is `ready`, and `api/artifacts/[id]/route.ts:59-68` returns **409 for every kind but `wh347_pdf` and `exception_report`**. The 409's text — "the filing screen states which condition is unmet" — is false: the screen said *Generated, not acceptance-tested* and offered the link. A live A3 dead end on the California artifact, which is a named product deliverable. |
-| H-1 | HIGH | Column 7A can exceed 7B with no block | **CLOSED** | Four targeted regressions, incl. the two non-firing cases (blank 7B, 7B properly containing 7A). |
-| H-2 | HIGH | Worker-scoped blocks vanish when the worker has no payroll lines | **CLOSED** | Four regressions; `deriveStatus` treats the worker channel as the filing channel. |
-| H-3 | HIGH | An unfunded fringe plan's credit is silently accepted | **PARTIAL** | Engine half closed and tested (blocks, DRAFT, signature withheld, names 5.28(b)(5) and the 5.28(c) path). **No `unfunded` column exists on the ingest path**, so no real payroll can carry the fact the block needs. The gap is recorded at both call sites but the block is unreachable in production. |
-| H-4 | HIGH | `PREMIUM_BELOW_STATUTORY` accuses DOL's own compliant oracle, pinned as expected | **CLOSED** | The fixture change was inspected line by line: it is a **correction, not a weakening**. `requiredTotal` / `paidTotal` are unchanged; only the accusation moved, replaced by `premiumRateNotReported`, a P-D that declines the conclusion. The rationale cites the self-contradiction (col7A on case-2 is $464.00 = $440.00 + the same $24.00 the flag called unpaid). |
-| M-1 | MED | 29 CFR 3.5(j) truncated and presented as verbatim | **CLOSED** | Character-for-character test against the eCFR text; ten lettered paragraphs; both consent alternatives. |
-| M-2 | MED | `rateCell` is a second rounding function outside `money.ts` | **PARTIAL** | Fixed in `artifacts/wh347/project.ts`. See **NEW-3**: the identical defect survives in the free surface. |
+| # | Sev | Finding | R1 | R2 | Auditor evidence |
+|---|---|---|---|---|---|
+| C-1 | CRIT | `paidTotal` prices double-time hours at a rate never paid | CLOSED | **CLOSED** | Unchanged, and still the strongest single piece of work in the remediation: `N10 = cashRate × (st+ot) + min(cashRate, dtRate) × dt`, with an executed counterexample refusing the reviewer's own proposed fix, against 29 CFR 5.31(b). |
+| C-2 | CRIT | No violation finding reaches a customer-visible surface | CLOSED | **CLOSED** | Unchanged. |
+| C-3 | CRIT | The filing screen offers an eCPR download the route 409s | OPEN | **CLOSED** — with a new reachability gap, NEW-7 | `ecprArtifact` (`_lib/filings.ts:1579`) is now the single function the screen and `api/artifacts/[id]/route.ts:62` both call, so the two cannot hold different opinions. The screen renders `Download` **only** on the arm carrying an `EcprArtifact` (`filings/[id]/page.tsx:237-241`) — a link the route cannot serve is unconstructible. The route serves `application/xml` with rebuild-and-digest comparison, and returns the refusal **whole**, with its per-worker exception report, instead of the old blanket 409 whose text was false. The DRAFT gate is real and tested (`render.ts:393`; `app.test.ts` "refuses to emit an XML for a DRAFT filing"). A lint asserts every `kind` the screen links is a `kind` the route names. **The defect as written is gone. What the artifact still cannot do is NEW-7.** |
+| H-1 | HIGH | Column 7A can exceed 7B with no block | CLOSED | **CLOSED** | Unchanged. |
+| H-2 | HIGH | Worker-scoped blocks vanish when the worker has no payroll lines | CLOSED | **CLOSED** | Unchanged. |
+| H-3 | HIGH | An unfunded fringe plan's credit is silently accepted | PARTIAL | **PARTIAL** | Unchanged and untouched by this round. `grep -rn unfunded src/` returns **one comment** (`_lib/filings.ts:324`) and no column, no CSV target, no mapping UI. The engine will block correctly the moment it is told; nothing on the ingest path can tell it. |
+| H-4 | HIGH | `PREMIUM_BELOW_STATUTORY` accuses DOL's own compliant oracle | CLOSED | **CLOSED** | Unchanged. A correction, not a weakening: amounts identical, accusation replaced by a P-D. |
+| M-1 | MED | 29 CFR 3.5(j) truncated and presented as verbatim | CLOSED | **CLOSED** | Unchanged. |
+| M-2 | MED | `rateCell` is a second rounding function outside `money.ts` | PARTIAL | **PARTIAL** | Fixed in `artifacts/wh347/project.ts`; survives at `(free)/_lib/format.ts:26`. See NEW-3, whose severity this round **narrows** on evidence. |
 
 ### 2.3 Autonomy and degradation
 
-| # | Sev | Finding | Verdict | Auditor evidence |
-|---|---|---|---|---|
-| C1 | CRIT | The corpus never refreshes itself; A4 unimplemented in the worker | **CLOSED** | `buildIngestPort` at `src/worker/index.ts:323`, wired at `:408`; `ADAPTER_MODE=live` with a null ingest is a **boot failure** (`:497-501`), not a degraded mode. |
-| C2 | CRIT | The $49 rate card is never delivered and its refund does not exist | **CLOSED** | `rate_card_ready` queued from `billing/webhook.ts:203` with an idempotency key; the token page is the document; `refundRateCardAction` executes from `settings/billing/page.tsx:457`. |
-| C3 | CRIT | Deletion unreachable — the screen names a name the server rejects | **CLOSED** … **but see NEW-1** | The confirmation reads *this* account's name; all 8 outcomes render; trimmed and case-folded comparison. The screen is reachable. What it then performs is incomplete. |
-| C4 | CRIT | The export button produces nothing obtainable | **CLOSED** | `GET /api/exports` is in the build's 35 routes; `src/platform/account/zip.ts` is a deterministic store-only ZIP; artifact bytes are rebuilt and digest-checked; unincludable entries are named in `manifest.json` rather than dropped. |
-| H1 | HIGH | A job that kills the worker re-runs forever and starves the queue | **CLOSED** | `MAX_ATTEMPTS` now enforced in `reclaimExpiredLeases` (`queue.ts:239`) as well as `failJob` (`:163`) — the cap used to live only in the path a killed process never reaches. |
-| H2 | HIGH | `billing.overage` not idempotent, silently undoes the revert | **CLOSED** | Period-idempotent; "calls Stripe once across three hourly runs before the webhook lands"; honours the revert for the rest of the period. |
-| H3 | HIGH | Six billing outcomes redirect to a parameter no screen renders | **CLOSED** | `billingOutcomes()` (`settings/billing/page.tsx:77`) enumerates all six with a distinguishable sentence each and an explicit fallback for a status neither side enumerated. |
-| H4 | HIGH | The four primitives are a closed union in types and hand-rolled JSX on 15 of 16 screens | **OPEN** | `grep -rn "rp-alert--blocked" src/app/(app)` → **6**; `grep -rn "RefusalView" src/app/(app)` → **2**. The `(free)` surface uses `RefusalView` consistently; the authenticated surface does not. Agent 3 disclosed this and gave an honest reason (the `Refusal` union has no shape for billing states without fabricating a regulatory `rule`/`citation`). Refusing to fabricate a citation is correct; the divergence remains. |
+| # | Sev | Finding | R1 | R2 | Auditor evidence |
+|---|---|---|---|---|---|
+| C1 | CRIT | The corpus never refreshes itself; A4 unimplemented | CLOSED | **CLOSED** | Unchanged. |
+| C2 | CRIT | The $49 rate card is never delivered and its refund does not exist | CLOSED | **CLOSED** | Unchanged. |
+| C3 | CRIT | Deletion unreachable — the screen names a name the server rejects | CLOSED | **CLOSED** | And what it performs is now complete — NEW-1 is closed below. |
+| C4 | CRIT | The export button produces nothing obtainable | CLOSED | **CLOSED** | Unchanged. |
+| H1 | HIGH | A job that kills the worker re-runs forever | CLOSED | **CLOSED** | Unchanged. |
+| H2 | HIGH | `billing.overage` not idempotent | CLOSED | **CLOSED** | Unchanged. |
+| H3 | HIGH | Six billing outcomes redirect to a parameter no screen renders | CLOSED | **CLOSED** | Unchanged. |
+| H4 | HIGH | The four primitives are hand-rolled JSX on 15 of 16 screens | OPEN | **CLOSED** — with a rendering defect, NEW-6 | `grep -rn "rp-alert--blocked" src/app/(app)` → **0** (was 6). `RefusalView` → **16 files** (was 2). One implementation at `src/app/_components/refusal.tsx`; `(free)` re-exports it. The fifth member `P-S` has **no `rule` and no `citation` field** (`types.ts:681-696`), so a billing state cannot borrow a regulation's authority — enforcement by absence, the same mechanism that keeps a support address out of the union. `REFUSAL_PRIMITIVES` still lists exactly the four **claim** primitives; `ClaimRefusalPrimitive = Exclude<RefusalPrimitive, 'P-S'>` makes that a type, not a convention. `productStateHasAWayOut` requires exactly one of `clearedBy` / `clearsItself`. Two exhaustive switches broke on the new member and were extended — the mechanism working. **The structural finding is closed. The renderer drops the way out for one arm: NEW-6.** |
 
 ### 2.4 Claims and gates
 
-| # | Sev | Finding | Verdict | Auditor evidence |
-|---|---|---|---|---|
-| C-1 | CRIT | Four of six gates have no write path, while both public pages describe them as live | **CLOSED** | Production call sites now exist: `recordFilingDuration` ← `_lib/filings.ts:748`; `recordAcceptanceConfirmation` ← `_actions/filings.ts:156`; `recordChaosCreditRun` ← `worker/jobs.ts:984`. |
-| C-2 | CRIT | G5 is structurally unclearable — perfect autonomy yields a zero-day streak | **CLOSED** | Calendar-based streak; "unlocks on ninety days of zero inbound at fifty paying accounts" and "breaks the streak on a day that is actually over the ceiling". |
-| C-3 | CRIT | `/legal` states a deletion promise the product does not perform | **CLOSED (as copy)** | `legal/page.tsx:45-50` imports `DELETION_ERASED` / `DELETION_RETAINED` / `ARTIFACT_RETENTION_YEARS` from `deletion.ts` — screen, executor, report and legal page are one enumeration. **NEW-1 reopens the underlying substance for one scope row.** |
-| H-1 | HIGH | A human with commit access can promote a claim by editing copy | **PARTIAL** | `gateSentence` (`gates.ts:357`) takes only a `GateReading` and returns `null` unless the counter says `unlocked` — there is no override parameter. Both pages' sentences narrowed to what it enforces. **But `CLAIM_G1_RATE_CORRECTNESS … CLAIM_G5_AUTONOMY` still exist as env booleans** (`src/lib/config.ts:152-156`). They are currently **inert** — `claimUnlocked` has no rendered-surface consumer, only `src/scripts/canary.ts` JSON output — so nothing ships from them today. A dormant promotion surface is not the same as no promotion surface. |
-| H-2 | HIGH | G6 advertises the staleness credit D10 forbids pre-chaos-test | **CLOSED** | The mechanism sentence is now a description of what the code does; the promise lives in the locked outcome branch of `gateSentence`, with a test pinning it. |
-| H-3 | HIGH | "Consecutive green days" is neither consecutive nor anchored to today | **CLOSED** | Gap-break implemented; `STREAK_STALE_HOURS = 48` (`gates.ts:511`); tests refuse to unlock G1 on "thirty green runs one a month, last seen a year ago" and do unlock on thirty contiguous days ending today. |
-| H-4 | HIGH | `filing_durations` and `form_acceptance_confirmations` are UPDATE/DELETE-able by the app role | **OPEN** | `drizzle/0000_init.sql:1774` — the shared helper issues `GRANT SELECT, INSERT, UPDATE, DELETE ON %I TO ratepin_app` — and it is applied to `filing_durations` (`:1798`) and `form_acceptance_confirmations` (`:1799`). No append-only trigger on either. The two tables that are the evidence for G2 and G4 remain mutable by the web tier, one file from the rule saying they must not be. |
-| H-5 | HIGH | `project_cap` / `worker_cap` divergence; a marketing claim rests on the gap | **CLOSED** | `grep -rn "project_cap\|worker_cap\|projectCap\|workerCap" src tests e2e drizzle fixtures` returns only **explanatory comments** and two negative assertions in `tests/web/marketing.test.ts:292-293`. Columns dropped from schema, migration, seed, catalog, pricing and the plans view. "No project caps" is now true by construction. |
+| # | Sev | Finding | R1 | R2 | Auditor evidence |
+|---|---|---|---|---|---|
+| C-1 | CRIT | Four of six gates have no write path | CLOSED | **CLOSED** | Unchanged. |
+| C-2 | CRIT | G5 is structurally unclearable | CLOSED | **CLOSED** | Unchanged. |
+| C-3 | CRIT | `/legal` states a deletion promise the product does not perform | CLOSED (as copy) | **CLOSED (copy and substance)** | The copy was one enumeration already; the substance now performs, NEW-1 below. |
+| H-1 | HIGH | A human with commit access can promote a claim by editing copy | PARTIAL | **CLOSED** | `gateSentence(reading: GateReading)` (`platform/ops/gates.ts:357`) returns `outcome: null` unless the counter says `unlocked`, and takes no override parameter. `CLAIM_G1…G5` and `claimUnlocked` are **gone from `src/lib/config.ts`, `.env.example` and `README.md`** — `grep -rn CLAIM_G src` returns only explanatory comments and two tests that set all five and assert they parse to nothing (Zod strips unknown keys). Both pages were narrowed *truthfully*: "Every performance claim on this site" → "The gate outcome sentences below", "demoted automatically" → "on the next reading", plus the newly-true "there is no configuration value that can unlock a gate". A dormant promotion surface is gone rather than documented. |
+| H-2 | HIGH | G6 advertises the staleness credit D10 forbids pre-chaos-test | CLOSED | **CLOSED** | Unchanged. |
+| H-3 | HIGH | "Consecutive green days" is neither consecutive nor anchored to today | CLOSED | **CLOSED** | Unchanged. |
+| H-4 | HIGH | `filing_durations` and `form_acceptance_confirmations` are UPDATE/DELETE-able | OPEN | **CLOSED** | Proved from the catalog and then live, not from the migration text. `ratepin_enable_tenant_rls` takes `p_append_only` and **never issues the mutating grant at all** for those two (`0000_init.sql:1828-1833`), rather than granting and revoking. `information_schema.role_table_grants` for `ratepin_app` on both tables: `SELECT` ✓, `INSERT` ✓, `UPDATE` ✗, `DELETE` ✗. Both `*_append_only` triggers present in `pg_trigger`. Live attempt on `ratepin_app`: `UPDATE` **threw**, `DELETE` **threw**, the row's value unchanged. Checked for the classic concurrent-edit failure — a grant revoked in one place and re-granted in another — by reading every `GRANT`/`REVOKE` after the two call sites: **no re-grant**. |
+| H-5 | HIGH | `project_cap` / `worker_cap` divergence | CLOSED | **CLOSED** | Unchanged. |
 
 ---
 
-## 3. Concurrent-edit hunt — what three agents editing one app broke
+## 3. Concurrent-edit hunt — what three agents editing one app did to each other
 
-This section is the auditor's own, not a re-verdict on anyone's finding.
+Round 1's five hunt findings, re-verdicted, plus two the auditor found this round.
 
-### NEW-1 · **CRITICAL** — account deletion no longer erases the customer's email address
+### NEW-1 · **CLOSED** — account deletion now erases the customer's email address
 
-`src/platform/account/deletion.ts:656-663`, against `drizzle/0000_init.sql:1811`.
+Round 1's blocker. The fix is ordering plus a definer function, and the reasoning is right: the
+erasure runs **first**, while the memberships that answer "whose identity is this?" still exist,
+through `ratepin_erase_identity` (`0000_init.sql:1990`) — `SECURITY DEFINER`, owned by
+`ratepin_provisioner`, with one new `UPDATE` policy whose `WITH CHECK` admits **only** a tombstone
+(`deleted_at IS NOT NULL AND email LIKE 'deleted-%@deleted.invalid'`). It re-counts survivors and
+`RAISE`s if any live address remains, so a failed erasure leaves `executed_at` unset and the hourly
+job retries — fail closed, rather than a report claiming an erasure that did not happen.
 
-The `auth` erasure step deletes the account's memberships and then de-identifies any user left
-without one:
-
-```sql
-DELETE FROM memberships WHERE account_id = $account;      -- run()
--- then, in after():
-UPDATE users
-   SET email = 'deleted-…@deleted.invalid', deleted_at = now()
- WHERE deleted_at IS NULL
-   AND NOT EXISTS (SELECT 1 FROM memberships m WHERE m.user_id = users.id)
-```
-
-`users` is scoped **by membership**, because it has no `account_id`:
-
-```sql
-CREATE POLICY users_tenant_isolation ON users FOR ALL TO ratepin_app
-  USING (EXISTS (SELECT 1 FROM memberships m
-                 WHERE m.user_id = users.id AND m.account_id = ratepin_current_account()));
-```
-
-Deleting the memberships makes the user row invisible to the very statement that must rewrite it.
-Executed by the auditor on `ratepin_app`:
+Proved by the auditor **through the real signup path**, because a fixture that seeds as the owner
+would not have exercised it:
 
 ```
-users visible before membership delete: 1
-memberships deleted: 1
-users visible AFTER membership delete: 0
-AUTH-STEP UPDATE users affected rows: 0
-RESULT email still on row: {"email":"alpha.co@example.test","deleted_at":null}
+provisioned via redeemMagicLink on ratepin_app  → account + user + billing index row
+requestAccountDeletion   (asApp, typed '  coastline INSULATION ')  → ok
+dueDeletions(day 8)      (asApp)  → [the account]
+executeAccountDeletion   (asApp)  → ok
+read back AS OWNER: email = deleted-<digest>-<id8>@deleted.invalid, deleted_at set
+SELECT count(*) FROM users WHERE email LIKE '%coastline%'  → 0
 ```
 
-The customer's email address survives a completed deletion, indefinitely. The step returns
-`sessions + links` — a non-zero count — so the deletion report reads as success. This defect did
-not exist before the tenancy remediation: it is created by RLS becoming real, and it is invisible
-because `tests/platform/deletion.test.ts` does not use `asApp()` (see NEW-5). Under A3 there is no
-support address, so a customer who notices has nowhere to go.
+The read-back is as the **owner**, so no policy can satisfy the assertion by hiding the row.
 
-Cross-lens: this is the concrete cost of closing security H-2 without its second half. The fix
-proposal was "`DELETE … AND account_id = $2`, **assert `rowCount === 1` and refuse otherwise**".
-The predicate landed via RLS; the assertion did not, so a boundary violation is a silent no-op.
+Round 1 also found `dueDeletions` returning `[]` for every account, which meant the seven-day
+promise ran on a schedule that could not fire. It now fans out from `billing_account_index`. **That
+moves the deletion job's correctness onto a new invariant** — "every account has an index row" —
+so the auditor checked it rather than accepting the docblock: `ratepin_provision_identity` writes
+that row in the same transaction as the account (`schema.ts:252`), and `schema.ts:234` is the only
+`INSERT INTO accounts` in `src/**`. The invariant holds by construction. It is now load-bearing for
+data protection and should be treated that way.
 
-### NEW-2 · **HIGH** — money rendered as a float on three screens, disagreeing with the artifact
+### NEW-2 · **OPEN** — money rendered as a float on four screens
 
-House rule: money is integer cents/micro-dollars, never a float. Four rendered surfaces divide a
-`MilliRate` by 10 000 in floating point and call `toFixed(2)`:
-
-- `src/app/(app)/rate-card/page.tsx:149,150`
-- `src/app/(app)/rate-card/r/[token]/page.tsx:59`
-- `src/app/(app)/app/projects/[id]/wd-change/page.tsx:323`
-- `src/app/(app)/_components/import-wizard.tsx:362,365`
-
-`toFixed` is IEEE-754 round-half-to-even on a binary approximation; `money.ts` is R1/R3 half-up.
-They differ on real inputs:
+Unchanged and unclaimed by any agent. Four surfaces divide a `MilliRate` by 10 000 in floating
+point and call `toFixed(2)`: `rate-card/page.tsx:142,143`, `rate-card/r/[token]/page.tsx:61`,
+`projects/[id]/wd-change/page.tsx:307`, `_components/import-wizard.tsx:371`. Reproduced this round:
 
 ```
-milli 200050  ($20.0050)   screen (milli/10000).toFixed(2) = "20.00"
-                           house-rule half-up               =  20.01
-                           artifact (after M-2's fix)       =  "20.0050"
+milli 200050   screen (milli/10000).toFixed(2)  = "20.00"
+               money.ts R1/R3 half-up            =  20.01
 ```
 
-The rate card is the $49 product whose entire proposition is a rate pinned to a named
-determination. It can print a rate half a cent below the pinned figure, and a different figure
-from the WH-347 built from the same pin. M-2 was closed on the artifact and re-opened on the
-screens.
+`toFixed` is IEEE-754 on a binary approximation; `money.ts` is half-up. The rate card is the $49
+product whose whole proposition is a rate pinned to a named determination, and it can print a rate
+half a cent below the pinned figure.
 
-### NEW-3 · **MEDIUM** — the M-2 rounding fix landed in one half of the removal
+### NEW-3 · **OPEN, severity narrowed** — a second rounding function survives on the free surface
 
-`src/artifacts/wh347/project.ts:104` records that `Math.round(magnitude / 100)` was "a second
-rounding function, outside `money.ts`" and replaces it. The identical expression survives at
-`src/app/(free)/_lib/format.ts:26` in `rate()`, which renders the public `/rates/[state]/[county]/[craft]`
-pages and the free WH-347 preview — the acquisition surface. Same defect, same class, one file
-fixed and one not.
+`(free)/_lib/format.ts:26` still contains `Math.round(magnitude / 100)` — the expression M-2 removed
+from `artifacts/wh347/project.ts` as "a second rounding function, outside `money.ts`". Round 1 called
+it "same defect, same class". This round measured it: on the probe input above it returns **20.01**,
+agreeing with `money.ts` and disagreeing with the screens of NEW-2. So it is **duplication and drift
+risk, not a live wrong number** — a real M-2 violation, but a weaker one than round 1 recorded, and
+that correction is owed.
 
-### NEW-4 · **MEDIUM** — a remediation with no caller
+### NEW-4 · **CLOSED** — the remediation with no caller now has one
 
-`purgeDeadSessions` (`session.ts:243`) is the sole purge for expired sessions, consumed magic
-links and outbox payloads. `grep -rn purgeDeadSessions` across the whole tree returns its
-definition and one test. It is not a job kind, it is not called by `retention.sweep`, and it is
-not called at boot. Dead sessions, consumed links **and the plaintext tokens of security C-3**
-accumulate forever.
+`purgeDeadSessions` is invoked from `retention.sweep` (`worker/jobs.ts:807`), returning counts by
+class into the sweep's report, and placed **before** the object-store branch precisely because that
+branch can return early — a class whose sweep depends on an optional adapter must not be able to
+skip a class that depends on nothing. Dead sessions, consumed links and sent payloads are now
+bounded.
 
-### NEW-5 · **MEDIUM** — one suite uses the RLS harness; the rest still test as superuser
+### NEW-5 · **PARTIAL** — the RLS harness spread, but most suites are still superuser-green
 
-`tests/helpers/pglite.ts` documents the point precisely: "a superuser BYPASSES EVERY RLS POLICY
-SILENTLY. A suite that seeded and queried as the owner would pass with the policies deleted."
-`asApp()` exists. Only `tests/platform/tenancy.test.ts` uses it. `deletion.test.ts`,
-`metering.test.ts`, `credits.test.ts`, `dunning.test.ts`, `worker.test.ts` and every
-`tests/web/**` suite run as the pglite superuser — i.e. **897 green tests do not exercise the
-posture the product now runs in**. NEW-1 is what that gap costs; it is unlikely to be the only one.
+`asApp()` was used by one suite in round 1. It is now used by six: `platform/tenancy`,
+`platform/deletion`, `platform/magic-link-outbox`, `classify/aggregate`, `classify/crosswalk`,
+`smoke`. That is the right six — they are where NEW-1 hid. But **43 of 49 files still run as the
+pglite superuser**, which bypasses every policy silently, so 937 green tests still do not
+predominantly exercise the posture the product runs in. Two deliberate exceptions are correct and
+recorded: the append-only and `retention.sweep` cases run as owner because they assert grants and a
+trigger the owner cannot escape either.
+
+### NEW-6 · **HIGH, NEW** — a P-S names a way out that the renderer throws away
+
+This is the finding the audit method exists for: the invariant is enforced in the **data** and
+asserted by a test on the data, while the **render** silently drops it.
+
+`RefusalAction` has two members, and `ActionLine` returns `null` for one of them:
+
+```tsx
+// src/app/_components/refusal.tsx:46-47
+function ActionLine({ action }: { readonly action: RefusalAction }): React.ReactElement | null {
+  if (action.kind === 'onThisScreen') return null;
+```
+
+The type's own docblock says `onThisScreen` "is for the case where the control is a form submit
+**rendered inside the block** — the label still lives in the refusal value so the sentence and the
+button cannot drift apart" (`types.ts:566-568`), and the component's docblock claims "The way out is
+rendered LAST and always … so this block cannot end on a statement of a problem with nothing after
+it" (`refusal.tsx:165-169`). Both are false wherever the control is *not* passed as `children`.
+
+Parsed across `src/app/**`: **13 `RefusalView` elements carry an `onThisScreen` way-out, and 8 are
+self-closing** — no control inside the block, so the authored way-out sentence renders nowhere:
+
+| Screen | The sentence that never renders |
+|---|---|
+| `rate-card/r/[token]/page.tsx:175` | "Try another number above, or **take the refund below** — the button is on this page and there is no reason field." |
+| `signin/page.tsx:92` | "Ask for a new link below — same address, one click" |
+| `app/workers/page.tsx:89` | "Map the Social Security column on your next payroll upload" |
+| `app/settings/billing/page.tsx:222` | "Update your card, or re-check your payment status, on this page" |
+| `app/settings/billing/page.tsx:248` | `outcome.clearedBy ?? ''` — empty even as data |
+| `app/settings/billing/page.tsx:340` | "Move up a plan yourself on the cards below, if you would rather choose" |
+| `app/projects/new/page.tsx:66` | "Choose a federal funding source in the form below, if one applies" |
+| `_components/new-project-form.tsx:177` | "Choose a federal funding source above, if one applies" |
+
+`tests/web/refusal-primitives.test.ts` asserts `productStateHasAWayOut` over **constructed values**
+and never renders the component, so all 16 of its tests pass while 8 blocks end on a statement of a
+problem with nothing after it. Under A3 that is the exact state the P-S variant was added to make
+unrepresentable: on the `$49` rate-card screen the dropped sentence is how the customer learns the
+refund exists, and there is nobody to email.
+
+Not a dead end in the strict sense — the controls are elsewhere on each page — but the pointer to
+them is authored, stored, tested, and discarded at render.
+
+### NEW-7 · **HIGH, NEW** — the California eCPR is correct, tested, and unreachable in production
+
+Correctness C-3 is genuinely closed: the screen and the route are one function and the DRAFT gate
+is real. But the artifact requires a contractor block and a nine-digit number per worker, and
+**no screen collects either**:
+
+```
+grep -rn "contractor_fein|ca_license_number|dir_project_id|contractorFein" src/app/(app) --include=*.tsx
+  → (nothing)
+```
+
+The columns exist (`projects.contractor_fein`, `ca_license_type`, `ca_license_number`,
+`contractor_address/city/state/zip`, `dir_project_id`, `workers.num_withholding_exemp`), the emitter
+reads them, the test suite writes them with `UPDATE projects SET …` from a fixture — and no
+customer-facing form writes them at all. `workers.ssn_ciphertext` is the same story, and security
+M-2 records that the envelope cipher does not exist in this build.
+
+The agent disclosed this honestly and the product behaves honestly: `ecprChip` blocks and **names
+each missing field**, which is strictly better than round 1's ready-chip-over-a-409. But the honest
+sentence a Californian customer gets is a refusal she cannot clear, on the artifact the product
+names as a headline deliverable, with nobody to ask. That is the A3 failure mode with a truthful
+message on it.
 
 ### What the hunt did *not* find
 
-- **No weakened tests.** `git diff HEAD -- tests/ e2e/` removes exactly three assertion families:
-  `test.fail()` (correctly deleted), `expect(multi?.projectCap).toBeNull()` (deleted with the
-  columns), and one `toContain('ok')` inside the rewritten `e2e/tenancy.spec.ts`. The canary
-  fixture change (correctness H-4) was read line by line and is a substantiated correction with
-  the underlying amounts unchanged.
-- **No status derived two ways.** `deriveStatus` is the single producer; both the paid path
-  (`_lib/filings.ts:520`) and the free path (`(free)/_lib/generate.ts:445`) call it, and the free
-  path's comment names keeping them from drifting as the reason.
-- **`project_cap`/`worker_cap` removal is complete** across schema, migration, seed, catalog,
-  pricing, plans view and tests.
+- **No weakened tests.** `git diff HEAD -- tests/ e2e/` is **+784 / −23**, and all 23 removed lines
+  are mechanical: the e2e helper can no longer read a URL out of `email_outbox` **because the URL is
+  no longer there** (it now stands in for the mailer, mints the token and clicks the link — the
+  product still does everything after the click), plus one renamed `it(...)` for the expanded
+  signatory test. Not one assertion was deleted or loosened.
+- **No grant revoked in one place and re-granted in another.** Every `GRANT`/`REVOKE` after
+  `ratepin_enable_tenant_rls`'s call sites was read; the append-only pair is never re-granted, and
+  `REVOKE INSERT ON accounts, memberships FROM ratepin_app` is the intended narrowing, not a
+  collision.
+- **No schema column added twice.** A duplicate-column scan flagged `projects.ca_license_type` and
+  `workers.num_withholding_exemp` — both the eCPR agent's new columns — and both are false
+  positives: the second occurrence is the column's own `CHECK` constraint. There is one migration
+  file and one `ADD COLUMN` in the tree (`schema.ts:101`, idempotent, unrelated). The migration
+  applies cleanly under PGlite, which a genuine duplicate would prevent.
+- **No refusal whose copy changed meaning in the move to `RefusalView`.** Spot-checked the
+  substantive rewrites; the sentences are carried across verbatim. Two changes are *improvements* and
+  were checked as such: the week page's P-C no longer invents an `asOf` when no snapshot exists (it
+  becomes a P-S instead), and the CBA-fringe notice was correctly **not** given a `29 CFR 1.3(b)`
+  citation the agent could not verify. One information loss worth recording: the week page's banner
+  used to print `board.levels.join(' · ')` — every non-normal ladder level — and the P-C now carries
+  a single `ladderLevel`, so a corpus at two levels at once names one.
 
 ---
 
 ## 4. CORRECTIONS.md probes, re-run over every rendered surface
 
-Probes extracted mechanically from `CORRECTIONS.md` §3.3 by the documented one-liner (6 entries,
-35 regexes, all compiled), applied with the negation guard to **193 files** across `src/**` and
-`public/**` — every `.ts`, `.tsx`, `.css`, `.html`, `.json`, `.md` from which a string can reach a
-screen, an artifact or an email.
+Probes extracted mechanically from §3.3 by the documented one-liner. **6 entries, 35 regexes, all
+compiled.** Applied with the negation guard to **195 files** across `src/**` and `public/**` — every
+`.ts`, `.tsx`, `.css`, `.html`, `.json`, `.md` from which a string can reach a screen, an artifact or
+an email. (Round 1 scanned 193; the two new files are `_lib/refusals.ts` and `_components/refusal.tsx`.)
 
 ```
-FILES SCANNED 193    BLOCKING HITS 0
-hyg  X-5  src/classify/ladder.ts:21  /debarment/
-          "…back wages, interest, withholding and three-year debarment under 29 CFR 5.12"
+FILES SCANNED 195    BLOCKING HITS 0    ADVISORY 10
 ```
 
-**Zero blocking hits.** The single advisory is a code comment, correctly attributed to 29 CFR 5.12
-— the debarment authority — and is not the X-5 misattribution (which pairs a *civil money penalty*
-figure with Davis-Bacon). It is `hygiene`, which §3.2 defines as recorded and never blocking.
+**Zero blocking hits.** All ten advisories are legitimate copy and were read individually: four are
+our own `$0 setup` stated as a fact about ourselves (X-4 hygiene, never a competitor claim); four are
+the marketing page's own honesty section, which must state *"there is no Davis-Bacon civil money
+penalty"* in order to correct X-5, and which the negation guard catches; one is a checkout docblock;
+one is `classify/ladder.ts:21`, a code comment correctly attributing three-year debarment to
+**29 CFR 5.12**, which is the debarment authority and not the X-5 misattribution.
 
-The F-1…F-4 families were checked separately by string search. Nothing asserts accuracy,
-acceptance, coverage or an outcome figure. `gateSentence` is the only producer of an outcome
-sentence and it cannot produce one without a counter reading. `/pricing` explicitly states the
-$49 "does not buy an acceptance guarantee", and the eCPR chip's label is the mandated
-*generated, not acceptance-tested*.
+F-1…F-4 re-checked by string search. Nothing asserts accuracy, acceptance, coverage or an outcome
+figure. `gateSentence` remains the only producer of an outcome sentence and cannot produce one
+without an unlocked counter reading. The eCPR's label is still the mandated *generated, not
+acceptance-tested*, asserted in `app.test.ts`.
 
 ---
 
 ## 5. Verdict
 
-### Is this shippable?
+### Is this shippable to a paying subcontractor on Davis-Bacon work?
 
-**No — not to a paying customer on Davis-Bacon work, on three specific blockers.** It is much
-closer than it was, and the tenancy work in particular is genuinely finished rather than
-asserted.
+**To a federal-only subcontractor outside California: yes, with the caveats in the list below.**
+**To a California subcontractor: no.** That split is the honest answer and it is new — round 1's
+answer was an unqualified no on three blockers, and all three are now closed.
 
-**Blocking:**
+What changed. The magic-link token is recoverable from nothing at rest, proved by attacking it
+rather than by reading the fix. Account deletion erases the address, proved through the real signup
+path on the role production runs as. The evidence tables behind two gates cannot be edited by the
+tier that reports from them, proved from the catalog and then live. The eCPR screen and route are one
+function, and no configuration value can promote a gated claim. Nothing was weakened to get there:
++784 test lines, −23, and not one assertion removed.
 
-1. **NEW-1 — deletion does not delete.** A stated erasure silently performs nothing, the report
-   says it succeeded, and under A3 the customer has no one to tell. This is a data-protection
-   failure with an autonomy failure stacked on top. It is a small fix (run the `users` update
-   through the provisioner function, or before the membership delete) and it must be accompanied
-   by running `deletion.test.ts` under `asApp()`.
-2. **Security C-3 — plaintext magic-link tokens in `email_outbox`, forever.** Any read of one
-   table is account takeover for every sign-in in the last 15 minutes plus a permanent record of
-   every address that ever signed in. `ratepin_app` holds `SELECT` on it and it carries no tenant
-   policy. The purge that would bound it has no caller.
-3. **Correctness C-3 — the eCPR download is a live dead end.** The filing screen offers a
-   California artifact and the route refuses it every time, with a message asserting the screen
-   explained why. The CA eCPR is a headline deliverable and California is the largest
-   prevailing-wage market in the country.
+**What blocks a California sale — NEW-7.** The CA DIR eCPR XML is a named deliverable in the
+product's own pitch. The emitter is correct, gated, tested end to end, and cannot be reached,
+because no screen collects the FEIN, the CSLB licence, the contractor address, the DIR project id or
+a worker's SSN. The customer gets a truthful refusal naming each missing field and no way to supply
+one. Under A3 there is no one to ask. This is one form and one column-mapping target away from
+closed, and until it lands the product should not be sold on the California artifact.
 
-**Should ship with the blockers fixed, and these known open:** security H-1's login-CSRF half,
-security H-3's unpersisted signatory, correctness H-3's missing `unfunded` ingest column, claims
-H-4's mutable evidence tables, autonomy H4's hand-rolled refusals, NEW-2 through NEW-5.
+**What should be fixed before any sale, though neither is a blocker on its own:**
+
+1. **NEW-6** — eight refusals discard the sentence that tells the customer how to clear them,
+   including the one that names the refund path on the $49 product. Small fix: render
+   `action.label` for `onThisScreen` instead of returning `null`, and add a test that renders the
+   component rather than asserting the value.
+2. **NEW-2** — four screens can print a rate half a cent from the artifact built off the same pin,
+   on a product whose proposition is that the rate is pinned and reproducible.
+
+**Known open, accepted for a first paying customer:** security C-1's missing second mechanism,
+security H-1's login-CSRF half, security H-2's absent `rowCount === 1` assertion, correctness H-3's
+missing `unfunded` ingest column, correctness M-2 / NEW-3's duplicated rounding function, NEW-5's
+superuser-green majority.
 
 ### The honest list of what Ratepin does not do
 
-Stated plainly, because the product's own standard is that an unmeasured claim is not written
-into a rendered string.
+Stated plainly, because the product's own standard is that an unmeasured claim is not written into a
+rendered string. Round 1's list had ten entries; three are struck.
 
-1. **It does not delete your email address when you delete your account.** It says it deletes
-   sign-in identity; the statement that would do it matches zero rows.
-2. **It cannot produce the California eCPR XML.** The screen offers it; the download refuses it.
-3. **It cannot return a certified payroll that was generated with a named signatory.** The
-   signatory is not persisted, so the rebuild renders a different document and the digest check
-   refuses to serve it. No screen supplies a signatory today, so this is a trap rather than a
-   loss — but the archive guarantee is narrower than "we can always rebuild it".
-4. **It cannot represent an unfunded fringe plan.** The engine will block the line correctly the
-   moment it is told; nothing on the ingest path can tell it.
-5. **It does not defend the tenant boundary twice.** RLS is real, enforced, and asserted at boot.
-   The repository predicates ADR-011 names as the *first* mechanism do not exist — 3 of 76
-   statements carry one. A single `SET ROLE`, a superuser connection string, or one
-   `withTenant` forgotten in a future edit is the whole boundary.
-6. **A magic link is not bound to the browser that asked for it.** Anyone who can get a victim to
-   click a link can put that victim inside an account the attacker controls.
-7. **Its evidence tables are editable by the tier that reports from them.** G2 and G4 rest on two
-   tables the web role may `UPDATE` and `DELETE`.
-8. **Six of six gates are locked, and no outcome number is claimed anywhere.** That is correct
-   and honest — but it means the product currently makes no measured claim about accuracy,
-   acceptance, coverage, time saved, autonomy or the staleness credit. Everything it says about
-   itself is a description of a mechanism.
-9. **897 tests do not test the configuration it runs in.** One suite uses the NOBYPASSRLS
-   harness. The rest are superuser-green.
-10. **Rate figures on three screens can disagree, by a half-cent, with the artifact built from
-    the same pin.** On a product whose proposition is that a rate is pinned and reproducible.
+1. ~~It does not delete your email address when you delete your account.~~ **Closed.** It does,
+   and the statement that does it now runs before the one that used to hide the row from it.
+2. ~~It cannot produce the California eCPR XML.~~ **Half closed, and the remaining half is worse
+   than it looks.** It produces a correct eCPR from stored inputs — but nothing in the product can
+   store those inputs, so on a live account it cannot produce one at all.
+3. ~~It cannot return a certified payroll generated with a named signatory.~~ **Closed.** The
+   signatory and remarks are persisted and the rebuild is byte-identical, with a companion test
+   proving the assertion is not trivial.
+4. **It cannot represent an unfunded fringe plan.** The engine blocks correctly the moment it is
+   told; nothing on the ingest path can tell it.
+5. **It does not defend the tenant boundary twice.** RLS is real, enforced and asserted at boot. The
+   repository predicates ADR-011 names as the *first* mechanism do not exist — 2 of 76 statements
+   carry one. A single `SET ROLE`, a superuser connection string, or one `withTenant` forgotten in a
+   future edit is the whole boundary. And a cross-tenant write is still a silent no-op, not an error.
+6. **A magic link is not bound to the browser that asked for it.** The token is now safe at rest and
+   safe in the database; it is still redeemable by whoever holds it, from any browser, with no
+   interstitial naming the address being signed into. Anyone who can get a victim to click a link
+   can put that victim inside an account the attacker controls.
+7. **It tells eight refusals' worth of customers what is wrong and, at render, not what to do about
+   it.** The sentence exists, is authored, is stored on the value and is tested — and is dropped by
+   the component.
+8. **Six of six gates are locked, and no outcome number is claimed anywhere.** That is correct and
+   honest — and it means the product currently makes no measured claim about accuracy, acceptance,
+   coverage, time saved, autonomy or the staleness credit. Everything it says about itself is a
+   description of a mechanism. It can no longer be talked out of that by an environment variable.
+9. **43 of 49 test files do not test the configuration it runs in.** Six suites use the NOBYPASSRLS
+   harness — the right six, and one more than the count that would have caught NEW-1. The rest are
+   superuser-green, which means green with the policies deleted.
+10. **Rate figures on four screens can disagree, by a half-cent, with the artifact built from the
+    same pin.**
 
 ### What is genuinely finished
 
-Worth recording, because it is the larger share. The tenancy boundary is real and independently
-reproduced three ways. The `paidTotal` correction is better than the fix that was proposed to it,
-refuses the obvious repair with an executed counterexample, and cites primary law fetched the same
-day. The H-4 fixture correction removed an accusation against DOL's own compliant worked example
-without moving a single amount. `project_cap`/`worker_cap` is cleanly gone. The gates cannot be
-promoted by editing copy. And the CORRECTIONS register is clean across every rendered surface.
+Worth recording, because it is now much the larger share. The tenant boundary is real,
+independently reproduced, and its one provisioning door was re-verified from the other side this
+round. The magic-link design chose the harder correct option — a reference in the row and the token
+minted inside the send — over encryption or derivation, and gave the reason from `ARCHITECTURE`
+§11.3's own threat table rather than inventing one; it survived four separate attacks written to
+break it. Deletion fails closed by raising rather than reporting a success it did not achieve. The
+append-only grant was never issued rather than issued and revoked, which is the difference between a
+rule and a habit. `P-S` was added with no `rule` and no `citation` field, so a login error can never
+borrow a federal regulation's authority — enforcement by absence, the same move that keeps a support
+address out of the type. Two agents refused to fabricate something to satisfy a type — a
+`29 CFR 1.3(b)` citation and an `asOf` date — and said so. The `paidTotal` correction still stands as
+the best single piece of work in either round. And the CORRECTIONS register is clean across every
+rendered surface, at 195 files and zero blocking hits.
 
 ---
 
-*Auditor's note on method: this document takes nobody's word. Where an agent's report and the tree
-disagreed — security C-3 reported closed by one lens and open by another, correctness C-3 claimed
-by neither — the tree decided. Three of the twenty-nine CRITICAL/HIGH findings were verdicted
-differently from the reporting agent's own summary, and five defects in this document were found
-by the auditor rather than reported by anyone.*
+*Auditor's note on method: this document takes nobody's word. The four claims the task named were
+re-proved by probes the auditor wrote and then deleted, not by re-reading the agents' tests — which
+is how NEW-6 was found, since the agents' test asserts the same invariant one layer above where it
+fails. Two of this round's seven hunt findings are new, one round-1 finding (NEW-3) is **downgraded**
+on measurement, and one closed finding (correctness C-3) is recorded as closed **with a new
+higher-severity gap behind it**, because "the dead end is gone" and "the artifact works" are not the
+same sentence.*

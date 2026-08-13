@@ -37,6 +37,7 @@ import {
 } from '../../../_actions/billing';
 import { readAs, requireSession } from '../../../_lib/auth';
 import { billingView } from '../../../_lib/billing';
+import { RefusalView } from '@/app/_components/refusal';
 import {
   CREDIT_NOTE,
   NO_CUSTOM_TIER,
@@ -52,11 +53,23 @@ export const dynamic = 'force-dynamic';
 
 export const metadata = { title: 'Billing — Ratepin' };
 
+/**
+ * `tone` decides which of the two shapes an outcome takes, and they are different
+ * KINDS of statement rather than two colours of one.
+ *
+ * `declined` is a refusal — the thing she asked for did not happen — so it renders
+ * as a P-S through the one refusal component, with the control that clears it named
+ * in the value. `narrowed` is a REPORT of something that did happen; it is not a
+ * refusal and it is not a live claim narrowing (§8.10.4), so it renders as a
+ * `role="status"` notice and does not borrow a refusal primitive's markup.
+ */
 interface Outcome {
   readonly key: string;
   readonly tone: 'narrowed' | 'declined';
   readonly title: string;
   readonly detail: string;
+  /** Named on `declined` outcomes only: the control on this screen that clears it. */
+  readonly clearedBy: string | null;
 }
 
 /**
@@ -102,6 +115,7 @@ function billingOutcomes(params: Record<string, string | string[] | undefined>):
     };
     outcomes.push({
       key: 'rechecked',
+      clearedBy: null,
       tone: 'narrowed',
       title: 'We asked Stripe directly',
       detail:
@@ -115,6 +129,7 @@ function billingOutcomes(params: Record<string, string | string[] | undefined>):
   if (changed !== null) {
     outcomes.push({
       key: 'changed',
+      clearedBy: null,
       tone: 'narrowed',
       title: changed === 'upgrade' ? 'You moved up a plan' : 'You moved down a plan',
       detail:
@@ -129,6 +144,7 @@ function billingOutcomes(params: Record<string, string | string[] | undefined>):
   if (read('reverted') !== null) {
     outcomes.push({
       key: 'reverted',
+      clearedBy: null,
       tone: 'narrowed',
       title: 'You are back on the plan you chose',
       detail:
@@ -159,6 +175,7 @@ function billingOutcomes(params: Record<string, string | string[] | undefined>):
     };
     outcomes.push({
       key: 'error',
+      clearedBy: 'Every control on this screen is safe to press again.',
       tone: 'declined',
       title: 'That did not happen, and nothing was charged',
       detail:
@@ -196,20 +213,29 @@ export default async function BillingPage({
             ? 'No subscription on this account.'
             : `${view.plan.name} · ${Cents.toDollarString(view.plan.priceCents)} per period`}
         </p>
+        {/* THE BILLING STATE, AS A REFUSAL PRIMITIVE.
+            This is the state autonomy H4 said had no shape in the union without
+            inventing a regulatory `rule` and `citation` for a declined card. P-S has
+            neither field, so it does not have to invent one — and it requires the way
+            out, which on this screen is a control a few centimetres below. */}
         {view.entitlement.banner === null ? null : (
-          <div className="rp-alert rp-alert--narrowed">
-            <span className="rp-alert__glyph" aria-hidden="true">
-              !
-            </span>
-            <div className="rp-alert__body">
-              <p>{view.entitlement.banner}</p>
-              <p className="rp-t-micro">
-                Your archive and your export stay open in every billing state, including this one.
-                A product that held a contractor’s certified-payroll archive during a card failure
-                would deserve the chargeback it got.
-              </p>
-            </div>
-          </div>
+          <RefusalView
+            refusal={{
+              primitive: 'P-S',
+              headline: 'Your billing state changes what this account can do',
+              blocked: view.entitlement.banner,
+              because:
+                'Your archive and your export stay open in every billing state, including this ' +
+                'one. A product that held a contractor’s certified-payroll archive during a card ' +
+                'failure would deserve the chargeback it got.',
+              clearedBy: {
+                kind: 'onThisScreen',
+                label: 'Update your card, or re-check your payment status, on this page',
+              },
+              clearsItself: null,
+              severity: 'narrowed',
+            }}
+          />
         )}
       </section>
 
@@ -217,17 +243,46 @@ export default async function BillingPage({
           parameter no branch renders is a byte-identical page reload, which tells the
           customer nothing about whether the thing ran, found nothing, or did not run
           — and under A3 there is nobody to ask. */}
-      {outcomes.map((outcome) => (
-        <div key={outcome.key} className={`rp-alert rp-alert--${outcome.tone}`}>
-          <span className="rp-alert__glyph" aria-hidden="true">
-            {outcome.tone === 'declined' ? '§' : '!'}
-          </span>
-          <div className="rp-alert__body rp-stack rp-stack--tight">
-            <p className="rp-alert__title">{outcome.title}</p>
-            <p>{outcome.detail}</p>
+      {outcomes.map((outcome) =>
+        outcome.tone === 'declined' ? (
+          <RefusalView
+            key={outcome.key}
+            refusal={{
+              primitive: 'P-S',
+              headline: outcome.title,
+              blocked: 'Nothing on this account was changed and nothing was charged.',
+              because: outcome.detail,
+              /* NEW-6: `?? ''` here would have produced a P-S that satisfies
+                 `productStateHasAWayOut` and shows the reader nothing. Only the
+                 `error` outcome carries `tone: 'declined'` and it always sets
+                 `clearedBy`, so the null branch is unreachable — and it is now
+                 unreachable by construction rather than by inspection. */
+              clearedBy:
+                outcome.clearedBy === null
+                  ? null
+                  : { kind: 'onThisScreen', label: outcome.clearedBy },
+              clearsItself:
+                outcome.clearedBy === null
+                  ? 'Nothing is pending on this account.'
+                  : null,
+              severity: 'noted',
+            }}
+          />
+        ) : (
+          /* Not a refusal: a report that something happened. `--notice` with
+             role="status", so it neither borrows a primitive's markup nor pretends
+             to be a live claim narrowing (§8.10.4). */
+          <div key={outcome.key} className="rp-alert rp-alert--notice" role="status">
+            <span className="rp-alert__glyph" aria-hidden="true">
+              ·
+            </span>
+            <div className="rp-alert__body rp-stack rp-stack--tight">
+              <p className="rp-alert__title">{outcome.title}</p>
+              <p>{outcome.detail}</p>
+            </div>
           </div>
-        </div>
-      ))}
+        ),
+      )}
 
       {/* §11.7 — the button that closes the worst failure mode in the product. */}
       <section className="rp-stack rp-measure">
@@ -293,19 +348,24 @@ export default async function BillingPage({
           )}
         </dl>
         {view.usage?.approachingCap === true ? (
-          <div className="rp-alert rp-alert--narrowed">
-            <span className="rp-alert__glyph" aria-hidden="true">
-              !
-            </span>
-            <div className="rp-alert__body">
-              <p className="rp-alert__title">You are within reach of the overage cap</p>
-              <p>
-                At the cap Ratepin moves you to the next plan and stops charging overage. That is
-                announced now, announced again when it fires, and reversible in one click — an
-                automatic upgrade you cannot undo would be a fait accompli rather than a service.
-              </p>
-            </div>
-          </div>
+          <RefusalView
+            refusal={{
+              primitive: 'P-S',
+              headline: 'You are within reach of the overage cap',
+              blocked:
+                'At the cap Ratepin moves you to the next plan and stops charging overage.',
+              because:
+                'That is announced now, announced again when it fires, and reversible in one ' +
+                'click — an automatic upgrade you cannot undo would be a fait accompli rather ' +
+                'than a service.',
+              clearedBy: {
+                kind: 'onThisScreen',
+                label: 'Move up a plan yourself on the cards below, if you would rather choose',
+              },
+              clearsItself: null,
+              severity: 'narrowed',
+            }}
+          />
         ) : null}
       </section>
 

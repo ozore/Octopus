@@ -20,6 +20,7 @@ import { readAs, requireSession } from '../../_lib/auth';
 import { appClock } from '../../_lib/deps';
 import { NO_WORK_NOTE } from '../../_lib/copy';
 import { buildBoard, type BoardGroup, type BoardRow } from '../../_lib/week';
+import { RefusalView } from '@/app/_components/refusal';
 
 export const dynamic = 'force-dynamic';
 
@@ -172,24 +173,44 @@ export default async function WeekPage({
       </section>
 
       {board.levels.some((level) => level !== 'L0_NORMAL') ? (
-        <div className="rp-alert rp-alert--narrowed">
-          <span className="rp-alert__glyph" aria-hidden="true">
-            !
-          </span>
-          <div className="rp-alert__body">
-            <p className="rp-alert__title">The corpus is not at its normal level</p>
-            <p className="rp-num">
-              {board.levels.join(' · ')} ·{' '}
-              {board.corpusVerifiedAt === null
-                ? 'no snapshot has been promoted'
-                : `last verified ${board.corpusVerifiedAt.toISOString().slice(0, 16).replace('T', ' ')} UTC`}
-            </p>
-            <p>
-              Rates on your filings are unchanged — a stale check moves a sentence, not a number.
-              Filings on already-pinned projects generate normally at every level of this ladder.
-            </p>
-          </div>
-        </div>
+        /* A real P-C: the artifact and the rate are unchanged, the sentence about
+           currency narrows, and the banner carries the date the primitive requires.
+           Hand-rolled, it carried the date only by convention. */
+        /* P-C requires a date and there is no default for one: a narrowing without
+           a timestamp is vagueness wearing a refusal's clothes. When no snapshot has
+           ever been promoted there IS no verification date, so that case is the other
+           primitive rather than an invented `asOf`. */
+        board.corpusVerifiedAt === null ? (
+          <RefusalView
+            refusal={{
+              primitive: 'P-S',
+              headline: 'No corpus snapshot has been promoted yet',
+              blocked:
+                'Ratepin cannot pin a new project until a snapshot passes its gates. Filings on ' +
+                'already-pinned projects generate normally.',
+              because:
+                'Nothing has cleared the ingest gates on this deployment, so there is no ' +
+                'verification date to show you.',
+              clearedBy: null,
+              clearsItself: 'It clears itself on the next successful ingest.',
+              severity: 'narrowed',
+            }}
+          />
+        ) : (
+          <RefusalView
+            refusal={{
+              primitive: 'P-C',
+              headline: 'The corpus is not at its normal level',
+              narrowedClaim:
+                'Rates on your filings are unchanged — a stale check moves a sentence, not a ' +
+                'number. Filings on already-pinned projects generate normally at every level of ' +
+                'this ladder.',
+              asOf: board.corpusVerifiedAt,
+              ladderLevel: board.levels.find((level) => level !== 'L0_NORMAL') ?? 'L0_NORMAL',
+              credit: null,
+            }}
+          />
+        )
       ) : null}
     </div>
   );

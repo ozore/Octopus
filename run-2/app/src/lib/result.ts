@@ -209,12 +209,15 @@ export function declinedConclusion(input: {
 // ===========================================================================
 
 /**
- * Total over the four primitives. Every renderer that shows a refusal goes through
- * a `switch` closed by `assertNever`, so adding a primitive is a compile error in
- * every place that displays one — which is the only way "there is no fifth shape"
- * stays true after the first deadline.
+ * Total over the primitives. Every renderer that shows a refusal goes through a
+ * `switch` closed by `assertNever`, so adding a primitive is a compile error in
+ * every place that displays one — which is the only way "there is no other shape"
+ * stays true after the first deadline. Adding P-S broke this function, which is the
+ * mechanism working rather than a cost of it.
  */
-export function refusalKind(refusal: Refusal): 'choice' | 'draft' | 'narrowed' | 'declined' {
+export function refusalKind(
+  refusal: Refusal,
+): 'choice' | 'draft' | 'narrowed' | 'declined' | 'product-state' {
   switch (refusal.primitive) {
     case 'P-A':
       return 'choice';
@@ -224,6 +227,8 @@ export function refusalKind(refusal: Refusal): 'choice' | 'draft' | 'narrowed' |
       return 'narrowed';
     case 'P-D':
       return 'declined';
+    case 'P-S':
+      return 'product-state';
     default:
       return assertNever(refusal, 'unknown refusal primitive');
   }
@@ -234,9 +239,10 @@ export function withholdsSignature(refusal: Refusal): boolean {
   return refusal.primitive === 'P-B';
 }
 
-/** True when the refusal leaves the artifact and the rate untouched. P-C and P-D
- *  both do: one narrows a sentence, the other declines a conclusion, and neither
- *  moves a number. */
+/** True when the refusal leaves the artifact and the rate untouched. P-C, P-D and
+ *  P-S all do: one narrows a sentence, one declines a conclusion, one reports a
+ *  product state, and none of the three moves a number. Only P-A and P-B touch what
+ *  the artifact says. */
 export function leavesArtifactIntact(refusal: Refusal): boolean {
-  return refusal.primitive === 'P-C' || refusal.primitive === 'P-D';
+  return refusal.primitive !== 'P-A' && refusal.primitive !== 'P-B';
 }

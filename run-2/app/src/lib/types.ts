@@ -17,10 +17,12 @@
  * 1. IT MAKES THE WRONG STATE UNREPRESENTABLE RATHER THAN MERELY DETECTABLE.
  *    `ClassificationId` has one constructor and it lives on the mirror side, so a
  *    classification that is not on the pinned WD revision cannot be typed and
- *    therefore cannot reach the arithmetic (I2). `Refusal` has exactly four
- *    members and none of them has a field in which a support address, a ticket id
- *    or an escalation target could be carried — A3 is enforced by the absence of a
- *    field, not by a code review. `otRate`/`dtRate` are `MilliRate | null` and
+ *    therefore cannot reach the arithmetic (I2). `Refusal` has exactly four CLAIM
+ *    members plus P-S for product state, and none of them has a field in which a
+ *    support address, a ticket id or an escalation target could be carried — A3 is
+ *    enforced by the absence of a field, not by a code review. P-S in turn has no
+ *    `rule` and no `citation`, so a billing state cannot borrow the authority of a
+ *    regulation. `otRate`/`dtRate` are `MilliRate | null` and
  *    null is NOT zero, because "we cannot prove a premium was paid" and "nothing
  *    was paid" are different facts that a `0` would silently merge (P-A).
  *
@@ -513,7 +515,7 @@ export function statusOf(verdict: ArtifactVerdict): ArtifactStatus {
 }
 
 // ===========================================================================
-// The four refusal primitives — USER_JOURNEY §0.3
+// The four CLAIM refusal primitives — USER_JOURNEY §0.3 — plus P-S
 //
 // "If a proposed error state is not P-A, P-B, P-C or P-D, it is either a bug we
 // should fix rather than surface, or a request for a human, which is out of
@@ -523,7 +525,50 @@ export function statusOf(verdict: ArtifactVerdict): ArtifactStatus {
 // `supportUrl`, no `ticketId` and no `escalateTo` on any member, and there must
 // never be one: a field is the only way such a thing could reach a screen, so its
 // absence is the mechanism rather than the intention.
+//
+// ---------------------------------------------------------------------------
+// WHY P-S EXISTS, AND WHY ADDING IT IS THE OPPOSITE OF INVENTING A FIFTH CLAIM
+//
+// P-A..P-D are the vocabulary for refusals ABOUT THE REGULATORY WORLD: a line we
+// will not classify, a certification we will not sign, a currency claim we narrow,
+// a conclusion we decline. Every one of them is anchored in something federal —
+// P-D literally carries `rule` and `citation`, quoted verbatim.
+//
+// The authenticated surface also has to refuse things that are facts about OUR OWN
+// PRODUCT: a card that failed, a link that expired, a file we could not read, an
+// account scheduled for deletion. Those are real refusals — something the customer
+// wanted is not happening — and they have no regulatory basis at all.
+//
+// The build review found fifteen of sixteen authenticated screens hand-rolling
+// alert markup rather than using `RefusalView`, and the honest reason given was
+// that these states could not be typed without inventing a `rule` and a `citation`
+// for a declined credit card. Inventing one would have been a fabricated
+// regulatory citation, which this codebase does not do. So the fix is the type:
+//
+//   - P-S HAS NO `rule` AND NO `citation` FIELD, and must never get one. A product
+//     state cannot be dressed up as a regulation because there is nowhere to put
+//     the regulation. That is the same enforcement-by-absence as A3 above.
+//   - P-S REQUIRES A WAY OUT. Exactly one of `clearedBy` (the single in-product
+//     action that clears it) or `clearsItself` (what we are waiting on, so the
+//     reader does nothing) is non-null. A product-state refusal that can name
+//     neither IS a request for a human, which §0.3 puts out of bounds — so the
+//     invariant, asserted in `tests/web`, is what keeps that door shut.
+//   - `clearedBy.href` is an in-product path. Not a mailto:, not a host.
+//
+// `REFUSAL_PRIMITIVES` below still lists exactly P-A..P-D, because the count that
+// §0.3 is about — how many shapes of claim refusal exist — is still four.
 // ===========================================================================
+
+/** The one action that clears a P-S.
+ *
+ *  There is no `email` member, no `phone` member and no `external` member, and
+ *  `link.href` is an app-relative path rather than a URL: the only exit from a
+ *  product state is a screen in this product. `onThisScreen` is for the case where
+ *  the control is a form submit rendered inside the block — the label still lives
+ *  in the refusal value so the sentence and the button cannot drift apart. */
+export type RefusalAction =
+  | { readonly kind: 'link'; readonly label: string; readonly href: string }
+  | { readonly kind: 'onThisScreen'; readonly label: string };
 
 /** One option in a CLOSED choice. Every option carries the source text that
  *  justifies it, because help here is inline provenance rather than a help centre
@@ -618,11 +663,59 @@ export type Refusal =
       readonly observableFacts: readonly { readonly label: string; readonly value: string }[];
       /** The sentence that declines. Contains no verb that could be read as advice. */
       readonly declined: string;
+    }
+  /**
+   * P-S — PRODUCT STATE. What is blocked, why, and the one action that clears it.
+   *
+   * NOT a claim primitive: it makes no assertion about a wage determination, a
+   * classification or a regulation, and it CANNOT — there is no `rule` field and no
+   * `citation` field, so a declined card cannot be given the authority of a
+   * regulation by anyone editing this file. See the block comment above.
+   *
+   * `severity` picks the alert variant. It is not a new visual: `--blocked` and
+   * `--narrowed` and `--declined` already exist and already serve more than one
+   * primitive each (P-A and P-B share `--blocked`). `noted` takes the no-hue
+   * `--declined` surface for the same reason P-D does — DESIGN_SYSTEM §8.10.2, the
+   * palette must not editorialise — and there is still no success variant.
+   */
+  | {
+      readonly primitive: 'P-S';
+      readonly headline: string;
+      /** What the reader cannot do right now, stated as the effect rather than as a
+       *  status code. */
+      readonly blocked: string;
+      /** Why — a fact about this account's own state that the reader can check. */
+      readonly because: string;
+      /** Exactly one of `clearedBy` / `clearsItself` is non-null. Both null is a
+       *  dead end, and a dead end under A3 is the state a customer would resolve by
+       *  emailing somebody. */
+      readonly clearedBy: RefusalAction | null;
+      /** What we are waiting on, when the reader does not have to do anything. */
+      readonly clearsItself: string | null;
+      readonly severity: 'blocked' | 'narrowed' | 'noted';
     };
 
 export type RefusalPrimitive = Refusal['primitive'];
 
-export const REFUSAL_PRIMITIVES: readonly RefusalPrimitive[] = ['P-A', 'P-B', 'P-C', 'P-D'] as const;
+/** The claim primitives, and there are still exactly four of them (§0.3). P-S is
+ *  deliberately absent: this array is what a test counts when it asserts that
+ *  nobody added a fifth *claim*. */
+export type ClaimRefusalPrimitive = Exclude<RefusalPrimitive, 'P-S'>;
+
+export const REFUSAL_PRIMITIVES: readonly ClaimRefusalPrimitive[] = [
+  'P-A',
+  'P-B',
+  'P-C',
+  'P-D',
+] as const;
+
+/** True when a P-S names a way out. A P-S that names neither is unrepresentable in
+ *  intent and caught by test; this predicate is what the test and any future
+ *  constructor share. */
+export function productStateHasAWayOut(refusal: Refusal): boolean {
+  if (refusal.primitive !== 'P-S') return true;
+  return (refusal.clearedBy === null) !== (refusal.clearsItself === null);
+}
 
 /** Exhaustiveness helper. `assertNever` on a `Refusal` switch is what makes adding
  *  a fifth primitive a compile error — which is the test §0.3 sets for a new
@@ -661,7 +754,7 @@ export interface CorpusLadderRule {
   readonly blocksPromotion: boolean;
   readonly blocksBuild: boolean;
   readonly accruesCredit: boolean;
-  readonly primitive: RefusalPrimitive | null;
+  readonly primitive: ClaimRefusalPrimitive | null;
 }
 
 /** States COMPOSE: L1 and L3 can hold simultaneously and the banner is their

@@ -716,8 +716,23 @@ export const projects = pgTable(
     wdRevisionLockedAtAward: boolean('wd_revision_locked_at_award'),
     lockAssertedAt: ts('lock_asserted_at'),
 
+    /**
+     * The California transmittal's contractor block (USER_JOURNEY §10). Nullable
+     * with no default in either layer: "we can't get either for you — the first is
+     * yours, the second is theirs", and a defaulted FEIN or PWCR is a wrong one on
+     * somebody's certified payroll. Absence blocks the XML with the field named and
+     * leaves the WH-347 untouched (§10.2).
+     */
     dirProjectId: text('dir_project_id'),
     contractorPwcr: text('contractor_pwcr'),
+    contractorFein: text('contractor_fein'),
+    /** One of the pinned XSD's three `licenseTypeType` values; CHECKed in the DDL. */
+    caLicenseType: text('ca_license_type'),
+    caLicenseNumber: text('ca_license_number'),
+    contractorAddress: text('contractor_address'),
+    contractorCity: text('contractor_city'),
+    contractorState: char('contractor_state', { length: 2 }),
+    contractorZip: text('contractor_zip'),
     wh347Layout: wh347LayoutEnum('wh347_layout').notNull().default('wh347_rev_2025_01'),
     workweekStartDay: smallint('workweek_start_day').notNull().default(0),
 
@@ -793,6 +808,13 @@ export const workers = pgTable(
     /** The full SSN exists in exactly one column, under a per-tenant key. */
     ssnCiphertext: bytea('ssn_ciphertext'),
     ssnLast4: char('ssn_last4', { length: 4 }),
+    /**
+     * Required by the CA eCPR schema, deleted from the Rev. January 2025 WH-347, so
+     * it is underivable from the federal path. `null` means the account does not
+     * hold it — that worker is ineligible for the XML and is named. Never zero by
+     * default: zero is an assertion about someone's tax situation.
+     */
+    numWithholdingExemp: integer('num_withholding_exemp'),
     keyVersion: integer('key_version').notNull().default(1),
     createdAt: ts('created_at').notNull().defaultNow(),
     ssnPurgedAt: ts('ssn_purged_at'),
@@ -983,6 +1005,18 @@ export const filings = pgTable(
     generatedAt: ts('generated_at').notNull().defaultNow(),
     releasedAt: ts('released_at'),
     amendsFilingId: uuid('amends_filing_id'),
+
+    /**
+     * R-BUILD security H-3. Inputs to the rendered bytes, so they must be stored:
+     * the object store is a cache of a pure function of the stored inputs (§7.6),
+     * and an input that is not stored is an artifact that cannot be rebuilt. A
+     * filing generated with a signatory used to be unreproducible — every later
+     * download would fail the digest comparison — which is the eighteen-months-later
+     * promise broken by an omitted column.
+     */
+    signatoryName: text('signatory_name'),
+    signatoryTitle: text('signatory_title'),
+    remarks: text('remarks'),
 
     /** A filing our own missing input blocked is never billed (§9.5). */
     billable: boolean('billable').notNull().default(false),

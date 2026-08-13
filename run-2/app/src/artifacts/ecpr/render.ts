@@ -11,7 +11,10 @@
  *   1. THE PINNED-HASH GATE, FIRST. Nothing is built if the schema we validate
  *      against is not the schema DIR is serving. Failing closed after building
  *      would leave a valid-looking document in memory next to a refusal, and the
- *      next refactor hands it to the download route.
+ *      next refactor hands it to the download route. The gate runs on EVIDENCE:
+ *      `observation` is `XsdObservation | null`, `null` meaning the probe has
+ *      never reported, and that absence is carried out on the artifact rather than
+ *      filled in with the pinned digest — see `EcprRenderInput.observation`.
  *   1b. THE ARTIFACT STATUS, SECOND — R-BUILD C-3. Nothing is built for a filing
  *      whose federal verdict is `DRAFT_NOT_CERTIFIABLE`.
  *   2. ELIGIBILITY, PER WORKER. A worker with no SSN on file, no withholding-
@@ -327,6 +330,13 @@ export interface EcprArtifact {
   readonly xsdSha256: Sha256Hex;
   /** Present while G2 is below threshold; `null` once the counter clears. */
   readonly acceptanceLabel: string | null;
+  /**
+   * When the probe last observed DIR's published schema, or `null` when no
+   * observation is on record. A caller that prints a sentence about the pin reads
+   * this rather than assuming one: "validated against the schema DIR is serving"
+   * is a claim only the non-null case supports.
+   */
+  readonly xsdObservedAt: Date | null;
   /** Exactly which schema rules were applied, so a caller can say so without
    *  claiming full XSD validation. */
   readonly rulesApplied: readonly string[];
@@ -336,8 +346,21 @@ export interface EcprRenderInput extends EcprInput {
   readonly computation: FilingComputation;
   readonly provenance: ArtifactProvenance;
   readonly footer: readonly FooterLine[];
-  /** What the nightly probe last saw at DIR. The gate compares this to `pinned`. */
-  readonly observation: XsdObservation;
+  /**
+   * What the nightly probe last saw at DIR. The gate compares this to `pinned`.
+   *
+   * `null` means NO OBSERVATION IS ON RECORD, and it is spelled explicitly rather
+   * than allowed by omission — the field is required, so a caller must decide. The
+   * distinction is not cosmetic. `ingest.dir.xsd` records a MISMATCH as an incident
+   * and records a match by closing one; a build that has never run the probe has no
+   * digest at all, and manufacturing one — passing `pinned` back as though it had
+   * been fetched — would turn "we have not looked" into "we looked and it matched",
+   * which is the exact green-gate-comparing-our-file-to-our-file failure `schema.ts`
+   * warns about. So the gate runs on evidence and only on evidence: a recorded
+   * mismatch blocks the XML; an absence of evidence is carried out on
+   * `EcprArtifact.xsdObservedAt` as `null` for whoever prints a sentence about it.
+   */
+  readonly observation: XsdObservation | null;
   /** `DIR_XSD_SHA256` from config. In config rather than in code so that rotating
    *  it is a release record (ADR-009). */
   readonly pinnedSha256: Sha256Hex;
@@ -361,8 +384,10 @@ export interface EcprRenderInput extends EcprInput {
  */
 export function renderEcprXml(input: EcprRenderInput): Result<EcprArtifact> {
   // -- 1. The pinned-hash gate, before anything is built -------------------
-  const pin = checkXsdPin(input.pinnedSha256, input.observation);
-  if (!pin.ok) return refuse(pin.refusal);
+  if (input.observation !== null) {
+    const pin = checkXsdPin(input.pinnedSha256, input.observation);
+    if (!pin.ok) return refuse(pin.refusal);
+  }
 
   // -- 1b. The artifact status, before anything is built (R-BUILD C-3) ------
   if (input.verdict.status === 'DRAFT_NOT_CERTIFIABLE') {
@@ -482,6 +507,7 @@ export function renderEcprXml(input: EcprRenderInput): Result<EcprArtifact> {
     excluded,
     xsdSha256: input.pinnedSha256,
     acceptanceLabel,
+    xsdObservedAt: input.observation?.observedAt ?? null,
     rulesApplied: validation.rulesApplied,
   });
 }

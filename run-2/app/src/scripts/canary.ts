@@ -18,7 +18,6 @@
 
 import { runGoldenSuite } from '@/engine/canary';
 import { COVERAGE_FLOORS, G1_SUITE_STATUS, REGULATORY_FIXTURES, evaluateCoverage } from '@/engine';
-import { claimUnlocked } from '@/lib/config';
 
 function main(): void {
   const verdict = runGoldenSuite();
@@ -33,8 +32,10 @@ function main(): void {
       shortfalls: coverage.shortfalls,
       floors: COVERAGE_FLOORS.map((floor) => ({ dimension: floor.dimension, floor: floor.floor })),
       // The gate and the runner are different things, and a report that printed only
-      // one of them would let a working runner be read as a cleared gate.
-      g1: { suite: G1_SUITE_STATUS.suite, claimUnlocked: claimUnlocked('G1') },
+      // one of them would let a working runner be read as a cleared gate. The gate
+      // state comes off the suite's own status, not off config: there is no longer an
+      // env var that could say otherwise (build review claims H-1).
+      g1: { suite: G1_SUITE_STATUS.suite, claimUnlocked: G1_SUITE_STATUS.claimUnlocked },
     })}\n`,
   );
 

@@ -28,6 +28,22 @@
  * and compares against it. That is §7.6's "it's a pure function of your inputs, so
  * nothing is lost" implemented rather than promised: losing the object is an
  * availability problem and never a correctness one.
+ *
+ * THE COROLLARY, WHICH R-BUILD SECURITY H-3 IS THE COST OF FORGETTING: *a function
+ * of stored inputs* means every input must be stored. `signatory` and `remarks` were
+ * accepted at generation, printed into the bytes and persisted nowhere, so the
+ * rebuild was a different document and the digest comparison above would have
+ * refused to serve it — eighteen months later, on the one request the archive exists
+ * to answer. They are columns now, threaded through `generateFiling` and read back
+ * by `rebuildFiling`, and the test that asserts the equality supplies one.
+ *
+ * ===========================================================================
+ * TWO ARTIFACTS, TWO STATUSES, ONE FUNCTION EACH SURFACE ASKS
+ *
+ * §10.2's second artifact is built at the bottom of this file by `ecprArtifact`,
+ * which the filing screen and the download route both call. Nothing offers the
+ * California XML that has not built it (R-BUILD correctness C-3), and nothing about
+ * California can reach the federal PDF.
  */
 
 import { sql } from 'drizzle-orm';
@@ -35,12 +51,21 @@ import { sql } from 'drizzle-orm';
 import {
   BOUNDARY_STATEMENT,
   checkXsdPin,
+  ecprFooter,
   projectWh347,
+  renderEcprXml,
   renderWh347,
   SHIPPED_XSD_SHA256,
+  ssn9,
+  type CaLicenseType,
+  type EcprArtifact,
+  type EcprContractor,
+  type EcprWorkerIdentity,
   type FooterLine,
+  type Ssn9,
   type Wh347Artifact,
   type Wh347WorkerIdentity,
+  type XsdObservation,
 } from '@/artifacts';
 import { rowsOf, type Db, type Tx } from '@/db';
 import {
@@ -54,9 +79,10 @@ import {
 } from '@/engine';
 import { Cents, Hours, MilliRate } from '@/lib/money';
 import { newId, sha256Hex as digestOf } from '@/platform/ids';
-import { recordFilingDuration } from '@/platform/ops/gates';
+import { readGate, recordFilingDuration } from '@/platform/ops/gates';
 import {
   isoDate,
+  sha256Hex,
   type ArtifactProvenance,
   type ArtifactStatus,
   type ArtifactVerdict,
@@ -171,6 +197,13 @@ export async function readWeek(tx: Tx, weekId: string): Promise<WeekRecord | nul
 export interface LoadedWeek {
   readonly week: PayrollWeek;
   readonly identities: readonly Wh347WorkerIdentity[];
+  /**
+   * PRESENCE, not readability — `ssn_ciphertext IS NOT NULL`, which is all a loader
+   * on the FEDERAL path may ask. It is reported for the roster screen's count and
+   * is deliberately NOT what gates the California XML: `ecprArtifact` derives that
+   * list from the one function that actually reads the value, so a column holding
+   * something that is not nine digits cannot clear a chip and then fail a download.
+   */
   readonly workersMissingSsn: readonly { readonly workerRef: string; readonly name: string }[];
   readonly unresolvedTitles: readonly string[];
 }
@@ -453,10 +486,15 @@ interface ComposeInput {
   readonly remarks?: string | undefined;
 }
 
-interface Composed extends Omit<GeneratedFiling, 'filingId' | 'sequence'> {
+export interface ComposedFiling extends Omit<GeneratedFiling, 'filingId' | 'sequence'> {
   readonly snapshotId: number | null;
   readonly loaded: LoadedWeek;
 }
+
+/** What `rebuildFiling` returns: everything `composeFiling` produced, plus the row
+ *  it was rebuilt from. Exported because the download route and the eCPR emitter
+ *  both take one rather than each rebuilding independently. */
+export type RebuiltFiling = ComposedFiling & { readonly filing: FilingRecord };
 
 /**
  * Compute, gate, render — with no writes.
@@ -470,7 +508,7 @@ interface Composed extends Omit<GeneratedFiling, 'filingId' | 'sequence'> {
  * path would be a second answer to "what does this document say", which is exactly
  * the question an artifact exists to settle.
  */
-async function composeFiling(db: Db, tx: Tx, input: ComposeInput): Promise<Composed> {
+async function composeFiling(db: Db, tx: Tx, input: ComposeInput): Promise<ComposedFiling> {
   /**
    * ONE HANDLE, ONE TRANSACTION. Every read below — including the GLOBAL mirror
    * reads, which are not tenant-scoped — goes through `tx` rather than through the
@@ -679,11 +717,23 @@ export async function generateFiling(
 
   const { verdict, computation, freshness, provenance, exceptions, billable, pdfSha256 } = composed;
 
+  /**
+   * R-BUILD security H-3. `signatory_name`, `signatory_title` and `remarks` are
+   * written HERE because they are inputs to the bytes: they print in the statement
+   * of compliance and the remarks band, and the artifact is a pure function of the
+   * stored inputs. Passing them to `projectWh347` and not to this INSERT is how the
+   * archive came to hold filings it could not reproduce — `rebuildFiling` would
+   * render the same week with an empty signature line, the digest would differ from
+   * the one recorded, and the download route would (correctly) refuse to serve
+   * bytes that are not the bytes it recorded. The failure would have surfaced
+   * eighteen months later, on the one request the archive exists to answer.
+   */
   await tx.execute(sql`
     INSERT INTO filings
       (id, account_id, project_id, week_id, week_ending, sequence, state, artifact_status,
        block_reasons, violation_flags, pin_id, corpus_snapshot_id, engine_version, build_sha,
-       freshness_state, freshness_checked_at, generated_at, amends_filing_id, billable)
+       freshness_state, freshness_checked_at, generated_at, amends_filing_id, billable,
+       signatory_name, signatory_title, remarks)
     VALUES
       (${filingId}::uuid, ${input.accountId}::uuid, ${project.id}::uuid, ${week.weekId}::uuid,
        ${week.weekEnding}::date, ${sequence}, 'DRAFT', ${verdict.status},
@@ -691,7 +741,8 @@ export async function generateFiling(
        ${violationArray(computation)}::violation_flag[],
        ${pin.id}::uuid, ${composed.snapshotId}, ${config.ENGINE_VERSION}, ${config.BUILD_SHA},
        ${freshness.state}, ${freshness.checkedAt === null ? null : freshness.checkedAt.toISOString()}::timestamptz,
-       ${input.now.toISOString()}::timestamptz, ${input.amendsFilingId ?? null}::uuid, ${billable})
+       ${input.now.toISOString()}::timestamptz, ${input.amendsFilingId ?? null}::uuid, ${billable},
+       ${input.signatory?.name ?? null}, ${input.signatory?.title ?? null}, ${input.remarks ?? null})
   `);
 
   await recordArtifact(tx, {
@@ -712,6 +763,43 @@ export async function generateFiling(
       byteSize: Buffer.byteLength(exceptions.join('\n'), 'utf8'),
       provenance,
     });
+  }
+
+  /**
+   * THE SECOND ARTIFACT, RECORDED THE SAME WAY AS THE FIRST (R-BUILD C-3).
+   *
+   * The XML is emitted here when it can be, and the row it writes is a DIGEST, not
+   * the bytes — the eCPR is `ssn_bearing`, and §5.4 puts a shorter clock on it than
+   * on the filing. Recording it gives the download route the same
+   * rebuild-and-compare property the PDF has, gives `form_acceptance_confirmations`
+   * an `ecpr_xml` artifact to point at (G2), and makes the filing screen's second
+   * chip a report of something that happened rather than a prediction.
+   *
+   * A blocked XML is not an error and never touches the filing: §10.2's two statuses
+   * are independent and the direction that matters is that nothing about California
+   * can move a federal artifact.
+   */
+  const filingRow = await readFiling(tx, filingId);
+  if (filingRow !== null) {
+    const xml = await ecprArtifact(tx, tx, {
+      rebuilt: { ...composed, filing: filingRow },
+      project,
+    });
+    if (xml.kind === 'ready') {
+      const bytes = Buffer.from(xml.artifact.xml, 'utf8');
+      await recordArtifact(tx, {
+        accountId: input.accountId,
+        filingId,
+        kind: 'ecpr_xml',
+        sha256: digestOf(bytes),
+        byteSize: bytes.byteLength,
+        provenance: { ...provenance, xsdSha256: xml.artifact.xsdSha256 },
+      });
+      await tx.execute(sql`
+        UPDATE filings SET xsd_sha256 = decode(${String(xml.artifact.xsdSha256)}, 'hex')
+         WHERE id = ${filingId}::uuid
+      `);
+    }
   }
 
   await tx.execute(sql`
@@ -770,7 +858,7 @@ export async function rebuildFiling(
   db: Db,
   tx: Tx,
   filingId: string,
-): Promise<(Composed & { readonly filing: FilingRecord }) | null> {
+): Promise<RebuiltFiling | null> {
   const filing = await readFiling(tx, filingId);
   if (filing === null || filing.weekId === null) return null;
   const week = await readWeek(tx, filing.weekId);
@@ -781,6 +869,12 @@ export async function rebuildFiling(
   const pin = await pinOfFiling(tx, filingId);
   if (pin === null) return null;
 
+  /**
+   * EVERY INPUT THE GENERATOR HAD, OR THE REBUILD IS NOT A REBUILD. The signatory
+   * and the remarks are read back off the row and passed through unchanged; an
+   * omission here does not fail loudly, it produces a DIFFERENT DOCUMENT that the
+   * digest comparison then rejects at download time (R-BUILD security H-3).
+   */
   const composed = await composeFiling(tx, tx, {
     week,
     project,
@@ -788,6 +882,11 @@ export async function rebuildFiling(
     sequence: filing.sequence,
     filingId,
     now: filing.generatedAt,
+    signatory:
+      filing.signatoryName === null && filing.signatoryTitle === null
+        ? undefined
+        : { name: filing.signatoryName ?? '', title: filing.signatoryTitle ?? '' },
+    remarks: filing.remarks ?? undefined,
   });
   return { ...composed, filing };
 }
@@ -947,13 +1046,18 @@ export interface FilingRecord {
   readonly releasedAt: Date | null;
   readonly amendsFilingId: string | null;
   readonly billable: boolean;
+  /** The three rendering inputs the archive must be able to hand back (H-3). */
+  readonly signatoryName: string | null;
+  readonly signatoryTitle: string | null;
+  readonly remarks: string | null;
 }
 
 const FILING_COLUMNS = sql`
   f.id, f.project_id, p.name AS project_name, f.week_id,
   to_char(f.week_ending, 'YYYY-MM-DD') AS week_ending, f.sequence, f.state::text AS state,
   f.artifact_status AS status, f.block_reasons, f.freshness_state, f.generated_at,
-  f.released_at, f.amends_filing_id, f.billable
+  f.released_at, f.amends_filing_id, f.billable,
+  f.signatory_name, f.signatory_title, f.remarks
 `;
 
 interface FilingDbRow {
@@ -971,6 +1075,9 @@ interface FilingDbRow {
   readonly released_at: string | Date | null;
   readonly amends_filing_id: string | null;
   readonly billable: boolean;
+  readonly signatory_name: string | null;
+  readonly signatory_title: string | null;
+  readonly remarks: string | null;
 }
 
 function toFiling(row: FilingDbRow): FilingRecord {
@@ -989,6 +1096,9 @@ function toFiling(row: FilingDbRow): FilingRecord {
     releasedAt: row.released_at === null ? null : new Date(row.released_at),
     amendsFilingId: row.amends_filing_id,
     billable: row.billable,
+    signatoryName: row.signatory_name,
+    signatoryTitle: row.signatory_title,
+    remarks: row.remarks,
   };
 }
 
@@ -1073,12 +1183,233 @@ export async function releaseFiling(
 }
 
 // ===========================================================================
-// §10.2 — the second chip
+// §10.2 — the second artifact, its own status, and the bytes behind it
 // ===========================================================================
 
+/**
+ * R-BUILD CORRECTNESS C-3, AND THE RULE THAT REPLACES IT.
+ *
+ * `renderEcprXml` had no caller. The filing screen rendered *Generated, not
+ * acceptance-tested* and a Download link whenever `ecprChip` returned `ready`, and
+ * the download route returned 409 for every kind but the PDF — with a body reading
+ * "the filing screen states which condition is unmet", which the screen did not,
+ * because the screen said the file existed. A rendered claim about an artifact's
+ * existence, false, in front of a dead link, on a named product deliverable.
+ *
+ * The rule this section now enforces is one sentence: **the screen and the route
+ * ask the same function, and nothing offers the file that has not built it.**
+ * `ecprArtifact` is that function. It returns the bytes or the refusal, the chip is
+ * derived from its answer rather than guessing at it, and the link exists only on
+ * the arm that carries an `EcprArtifact`. There is no path on which the screen can
+ * be optimistic about a file the route cannot produce, because the screen no longer
+ * has an opinion of its own.
+ *
+ * The independence of §10.2 is untouched and is the reason all of this is separate
+ * from `composeFiling`: every refusal below blocks the XML alone. Nothing here can
+ * reach the PDF, and `renderWh347` has already run by the time any of it is called.
+ */
 export type EcprChip =
-  | { readonly kind: 'blocked'; readonly headline: string; readonly detail: string; readonly refusal: Refusal | null }
+  | { readonly kind: 'blocked'; readonly headline: string; readonly detail: string; readonly refusal: Refusal }
   | { readonly kind: 'ready'; readonly label: string };
+
+/** The chip, plus the bytes when there are bytes. The `ready` arm cannot be
+ *  constructed without a rendered artifact, which is the whole point. */
+export type EcprOutcome =
+  | { readonly kind: 'blocked'; readonly headline: string; readonly detail: string; readonly refusal: Refusal }
+  | { readonly kind: 'ready'; readonly label: string; readonly artifact: EcprArtifact };
+
+/**
+ * The California contractor block, as stored. Every member is nullable and none has
+ * a default: §10's "we can't get either for you" applies to all of them, and a
+ * defaulted FEIN on a certified payroll is worse than a blocked file.
+ */
+export interface EcprContractorFields {
+  readonly fein: string | null;
+  readonly licenseType: CaLicenseType | null;
+  readonly licenseNumber: string | null;
+  readonly address: string | null;
+  readonly city: string | null;
+  readonly state: string | null;
+  readonly zip: string | null;
+}
+
+export const NO_CONTRACTOR_FIELDS: EcprContractorFields = {
+  fein: null,
+  licenseType: null,
+  licenseNumber: null,
+  address: null,
+  city: null,
+  state: null,
+  zip: null,
+};
+
+/**
+ * Read the contractor block off the project.
+ *
+ * RECORDED GAP, and it is the same shape as the `unfunded` gap above. The project
+ * screen collects `contractorPwcr` and `dirProjectId` today; it does not yet collect
+ * the FEIN, the licence or the contractor address, and no screen collects a worker's
+ * nine-digit SSN or withholding-exemption count either — security M-2 records that
+ * `ssn_ciphertext` has no writer, no cipher and no key. So on a live account these
+ * columns are null, `ecprChip` blocks with each missing field NAMED, and the link is
+ * not rendered. That is a smaller lie than the one this section replaces: a blocked
+ * chip that says exactly what is missing is true, where a ready chip over a 409 was
+ * not. Closing the gap is one form on the project screen and one on the worker
+ * roster, plus M-2's envelope encryption — all outside this file.
+ */
+export async function ecprContractorFields(
+  tx: Tx,
+  projectId: string,
+): Promise<EcprContractorFields> {
+  const row = rowsOf<{
+    contractor_fein: string | null;
+    ca_license_type: string | null;
+    ca_license_number: string | null;
+    contractor_address: string | null;
+    contractor_city: string | null;
+    contractor_state: string | null;
+    contractor_zip: string | null;
+  }>(
+    await tx.execute(sql`
+      SELECT contractor_fein, ca_license_type, ca_license_number, contractor_address,
+             contractor_city, contractor_state, contractor_zip
+        FROM projects WHERE id = ${projectId}::uuid
+    `),
+  )[0];
+  if (!row) return NO_CONTRACTOR_FIELDS;
+  const licenseType = row.ca_license_type;
+  return {
+    fein: blankToNull(row.contractor_fein),
+    // The DDL CHECKs this against the pinned schema's three enumerated values, so a
+    // value that is not one of them cannot be in the column. The narrowing is a
+    // read-side restatement of that constraint rather than a second opinion.
+    licenseType:
+      licenseType === 'CSLB' || licenseType === 'PL' || licenseType === 'OTHER'
+        ? licenseType
+        : null,
+    licenseNumber: blankToNull(row.ca_license_number),
+    address: blankToNull(row.contractor_address),
+    city: blankToNull(row.contractor_city),
+    state: blankToNull(row.contractor_state),
+    zip: blankToNull(row.contractor_zip),
+  };
+}
+
+function blankToNull(value: string | null): string | null {
+  const trimmed = value?.trim() ?? '';
+  return trimmed === '' ? null : trimmed;
+}
+
+/**
+ * The eCPR's worker identities — THE ONLY QUERY IN THE PRODUCT THAT READS
+ * `workers.ssn_ciphertext`, and the only place an `Ssn9` is constructed outside the
+ * artifact module's own constructor.
+ *
+ * `loadWeek`, which feeds the WH-347, selects `ssn_last4` and a boolean and cannot
+ * hold nine digits at all: `Wh347WorkerIdentity` has no field of type `Ssn9` and
+ * `identifyingNumber` rejects anything that is not exactly four digits rather than
+ * truncating. The projection is therefore enforced by the type system on the federal
+ * path and by this function being the only aperture on the state one.
+ *
+ * WHAT THIS IS NOT. `ARCHITECTURE.md` §11.3 specifies the column as the SSN under a
+ * per-tenant data key wrapped by a KMS root. **That module does not exist in this
+ * build** — security M-2: no writer, no cipher, no key, `key_version` a constant 1.
+ * This function therefore does not pretend to decrypt anything. It reads the column
+ * and accepts the value only if it is exactly nine digits; anything else — including
+ * real ciphertext, on the day the envelope module lands and this function has not
+ * been taught to unwrap it — yields `null`, which makes the worker `NO_SSN_ON_FILE`
+ * and BLOCKS the XML with that worker named. Failing closed means the cost of
+ * forgetting to update this function is a refusal, not nine bytes of ciphertext in
+ * an `ssn` element on a certified payroll. It is the single point that changes when
+ * §11.3 is built.
+ */
+async function ecprIdentities(tx: Tx, weekId: string): Promise<readonly EcprWorkerIdentity[]> {
+  const rows = rowsOf<{
+    id: string;
+    last_name: string;
+    first_name: string;
+    middle_initial: string | null;
+    ssn_stored: string | null;
+    num_withholding_exemp: number | string | null;
+  }>(
+    await tx.execute(sql`
+      SELECT ww.id, w.last_name, w.first_name, w.middle_initial,
+             encode(w.ssn_ciphertext, 'escape') AS ssn_stored,
+             w.num_withholding_exemp
+        FROM payroll_worker_weeks ww
+        JOIN workers w ON w.id = ww.worker_id
+       WHERE ww.week_id = ${weekId}::uuid
+       ORDER BY w.last_name, w.first_name
+    `),
+  );
+
+  return rows.map((row) => ({
+    workerRef: row.id as WorkerRef,
+    lastName: row.last_name,
+    firstName: row.first_name,
+    middleInitial: row.middle_initial,
+    ssn: nineDigitsOrNull(row.ssn_stored),
+    // No column holds a worker's home address, and California's schema declares all
+    // four as minOccurs="0". Absent is absent; nothing is invented to fill an
+    // optional element.
+    address: null,
+    city: null,
+    state: null,
+    zip: null,
+    numWithholdingExemp:
+      row.num_withholding_exemp === null ? null : Number(row.num_withholding_exemp),
+    checkNumber: null,
+  }));
+}
+
+function nineDigitsOrNull(stored: string | null): Ssn9 | null {
+  if (stored === null) return null;
+  try {
+    return ssn9(stored);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * What the probe last observed at DIR, or `null` when nothing is on record.
+ *
+ * `ingest.dir.xsd` records a MISMATCH by opening an incident carrying both digests,
+ * and records a match by closing that incident. So an open incident is a dated
+ * observation that the schema changed, a closed one is a dated observation that it
+ * matched, and no row at all means the probe has never reported. The third case is
+ * carried out as `null` rather than manufactured into "we fetched it and it matched"
+ * — see `EcprRenderInput.observation`.
+ */
+const XSD_MISMATCH_CAUSE = 'the CA DIR eCPR schema hash does not match the pinned value';
+
+export async function dirXsdObservation(tx: Tx): Promise<XsdObservation | null> {
+  const row = rowsOf<{
+    opened_at: string | Date;
+    closed_at: string | Date | null;
+    detail: Record<string, unknown> | null;
+  }>(
+    await tx.execute(sql`
+      SELECT opened_at, closed_at, detail FROM incidents
+       WHERE cause = ${XSD_MISMATCH_CAUSE}
+       ORDER BY opened_at DESC LIMIT 1
+    `),
+  )[0];
+  if (!row) return null;
+
+  if (row.closed_at !== null) {
+    // The condition cleared: at that instant DIR was serving the pinned digest.
+    return {
+      sha256: sha256Hex(appConfig().DIR_XSD_SHA256),
+      byteLength: 0,
+      observedAt: new Date(row.closed_at),
+    };
+  }
+
+  const observed = row.detail?.['observed'];
+  if (typeof observed !== 'string') return null;
+  return { sha256: sha256Hex(observed), byteLength: 0, observedAt: new Date(row.opened_at) };
+}
 
 /**
  * The California artifact's OWN status.
@@ -1090,6 +1421,9 @@ export type EcprChip =
  */
 export function ecprChip(input: {
   readonly project: ProjectRecord;
+  /** The stored contractor block. `NO_CONTRACTOR_FIELDS` is the honest value for a
+   *  caller that has not read it — it blocks, naming every field. */
+  readonly contractor: EcprContractorFields;
   readonly workersMissingSsn: readonly { readonly workerRef: string; readonly name: string }[];
   readonly workerCount: number;
   readonly xsdObservedSha256: string | null;
@@ -1102,7 +1436,24 @@ export function ecprChip(input: {
       detail:
         'This project is not in California. Ratepin emits the DIR eCPR format for California ' +
         'public works only, and does not track state determinations outside California.',
-      refusal: null,
+      /* P-S, not P-D: there is no regulation we are declining to apply here, only a
+         fact about which state this project is in. `clearsItself` rather than
+         `clearedBy` because the reader has nothing to do — and a product-state
+         refusal that named neither would be a dead end on a product with nobody to
+         email (`src/lib/types.ts`, P-S). */
+      refusal: {
+        primitive: 'P-S',
+        headline: 'CA eCPR XML — not applicable',
+        blocked: 'Ratepin will not produce a DIR eCPR XML for this project.',
+        because:
+          'This project is not in California. Ratepin emits the DIR eCPR format for California ' +
+          'public works only, and does not track state determinations outside California.',
+        clearedBy: null,
+        clearsItself:
+          'There is nothing to clear. Your WH-347 is the artifact this project needs, and it is ' +
+          'unaffected.',
+        severity: 'noted',
+      },
     };
   }
 
@@ -1125,16 +1476,54 @@ export function ecprChip(input: {
     }
   }
 
-  if (!input.project.dirProjectId || !input.project.contractorPwcr) {
-    const missing = [
-      input.project.contractorPwcr ? null : 'your contractor registration number (PWCR)',
-      input.project.dirProjectId ? null : 'the DIR Project ID from the awarding body’s PWC-100',
-    ].filter((value): value is string => value !== null);
+  /**
+   * The contractor block DIR requires, field by field, each one named when it is
+   * absent. The list is ordered so the two the customer will recognise come first;
+   * every entry is a value only she or the awarding body holds, which is why none of
+   * them has a default anywhere in this product.
+   */
+  const missing = [
+    input.project.contractorPwcr ? null : 'your contractor registration number (PWCR)',
+    input.project.dirProjectId ? null : 'the DIR Project ID from the awarding body’s PWC-100',
+    input.contractor.fein ? null : 'your federal employer identification number (FEIN)',
+    input.contractor.licenseType ? null : 'your licence type (CSLB, PL or OTHER)',
+    input.contractor.licenseNumber ? null : 'your licence number',
+    input.contractor.address ? null : 'your business street address',
+    input.contractor.city ? null : 'your business city',
+    input.contractor.state ? null : 'your business state',
+    input.contractor.zip ? null : 'your business ZIP code',
+  ].filter((value): value is string => value !== null);
+
+  if (missing.length > 0) {
     return {
       kind: 'blocked',
-      headline: 'CA eCPR XML — BLOCKED, two identifiers are missing',
-      detail: `DIR needs ${missing.join(' and ')}. We can’t get either for you — the first is yours, the second is theirs. Add them on the project and the XML becomes available. The WH-347 PDF is unaffected.`,
-      refusal: null,
+      headline:
+        missing.length === 1
+          ? 'CA eCPR XML — BLOCKED, one identifier is missing'
+          : `CA eCPR XML — BLOCKED, ${String(missing.length)} identifiers are missing`,
+      detail:
+        `DIR needs ${missing.join('; ')}. We can’t get any of these for you — they are yours, ` +
+        `or the awarding body’s. Add them on the project and the XML becomes available. ` +
+        `The WH-347 PDF is unaffected.`,
+      refusal: {
+        primitive: 'P-S',
+        headline:
+          missing.length === 1
+            ? 'CA eCPR XML — BLOCKED, one identifier is missing'
+            : `CA eCPR XML — BLOCKED, ${String(missing.length)} identifiers are missing`,
+        blocked:
+          'Ratepin will not emit the eCPR XML for this filing. The WH-347 PDF is unaffected.',
+        because:
+          `DIR needs ${missing.join('; ')}. We can’t get any of these for you — they are yours, ` +
+          `or the awarding body’s.`,
+        clearedBy: {
+          kind: 'link',
+          label: 'Add them on the project',
+          href: `/app/projects/${input.project.id}`,
+        },
+        clearsItself: null,
+        severity: 'blocked',
+      },
     };
   }
 
@@ -1148,11 +1537,248 @@ export function ecprChip(input: {
         `29 CFR 5.5(a)(3)(ii)(B) forbids nine digits on the WH-347 — so the two artifacts disagree ` +
         `about the same field and carry separate statuses. Ratepin holds no nine-digit number for ` +
         `${names}. The WH-347 PDF is unaffected.`,
-      refusal: null,
+      refusal: {
+        primitive: 'P-S',
+        headline: `CA eCPR XML — BLOCKED, ${String(input.workersMissingSsn.length)} of ${String(input.workerCount)} workers have no Social Security number on file`,
+        blocked:
+          'Ratepin will not emit the eCPR XML for this filing. The WH-347 PDF is unaffected.',
+        because:
+          `California’s eCPR schema declares ssn as nine required digits, and the federal rule at ` +
+          `29 CFR 5.5(a)(3)(ii)(B) forbids nine digits on the WH-347 — so the two artifacts ` +
+          `disagree about the same field and carry separate statuses. Ratepin holds no nine-digit ` +
+          `number for ${names}.`,
+        clearedBy: { kind: 'link', label: 'Add the numbers on the workers page', href: '/app/workers' },
+        clearsItself: null,
+        severity: 'blocked',
+      },
     };
   }
 
   return { kind: 'ready', label: 'generated, not acceptance-tested' };
+}
+
+/**
+ * BUILD THE CALIFORNIA XML, OR SAY WHY NOT — the one function the screen and the
+ * download route both call.
+ *
+ * The order is the order `ecpr/render.ts` documents and it is a safety property, not
+ * a style: the pre-conditions this module can see (applicability, the identifiers,
+ * the schema pin, the workers with no nine-digit number) are checked first, then the
+ * emitter runs its own gates — the federal verdict, per-worker eligibility, the
+ * 500-employee ceiling, schema validation — and only a document that survives all of
+ * them is returned. A refusal from either half becomes the same blocked chip, so the
+ * screen has exactly one thing to render and the route has exactly one thing to
+ * serve.
+ *
+ * THE PDF IS NOT REACHABLE FROM HERE. `input.rebuilt` already holds the rendered
+ * WH-347 and its digest; nothing below is passed back into it. That is §10.2's
+ * independence expressed as call order rather than as a promise, and it is what
+ * makes "the XSD hash gate blocks the XML alone" checkable: this function is the
+ * only consumer of the gate, and its only output is XML.
+ */
+export async function ecprArtifact(
+  db: Db,
+  tx: Tx,
+  input: { readonly rebuilt: RebuiltFiling; readonly project: ProjectRecord },
+): Promise<EcprOutcome> {
+  const { rebuilt, project } = input;
+
+  // Not California: answered without touching the database, because 49 states'
+  // filings should not pay for a query about a form they will never emit. The
+  // sentence is the chip's own, so there is one place it is written.
+  if (project.stateCode.toUpperCase() !== 'CA') {
+    const outside = ecprChip({
+      project,
+      contractor: NO_CONTRACTOR_FIELDS,
+      workersMissingSsn: [],
+      workerCount: 0,
+      xsdObservedSha256: null,
+      xsdObservedAt: null,
+    });
+    if (outside.kind === 'blocked') return outside;
+  }
+
+  const weekId = rebuilt.filing.weekId;
+  if (weekId === null) {
+    return {
+      kind: 'blocked',
+      headline: 'CA eCPR XML — BLOCKED, the payroll week behind this filing is gone',
+      detail:
+        'The XML is built from the week’s own rows, and this filing’s week has been deleted. The ' +
+        'WH-347 PDF is unaffected: it is rebuilt from the same rows and would fail the same way, ' +
+        'so if you are reading this the PDF is telling you the same thing.',
+      refusal: {
+        primitive: 'P-S',
+        headline: 'CA eCPR XML — BLOCKED, the payroll week behind this filing is gone',
+        blocked: 'Ratepin will not emit the eCPR XML for this filing.',
+        because:
+          'The XML is built from the week’s own rows, and this filing’s week has been deleted. ' +
+          'Ratepin does not reconstruct a week from an artifact, because an artifact is what the ' +
+          'week produced and not a copy of it.',
+        clearedBy: {
+          kind: 'link',
+          label: 'Upload this project’s payroll again',
+          href: `/app/projects/${project.id}/imports/new`,
+        },
+        clearsItself: null,
+        severity: 'blocked',
+      },
+    };
+  }
+
+  const contractorFields = await ecprContractorFields(tx, project.id);
+  const observation = await dirXsdObservation(tx);
+
+  /**
+   * The identities are loaded BEFORE the chip, and the chip's "who has no
+   * nine-digit number" list is derived from them.
+   *
+   * `loadWeek` also reports a `workersMissingSsn`, from `ssn_ciphertext IS NOT
+   * NULL` — presence, not readability. Feeding the chip from that while the
+   * emitter reads the value would let the two disagree about the same worker: a
+   * column holding something that is not nine digits would clear the chip and then
+   * refuse inside `renderEcprXml`, which is a screen saying `ready` over a route
+   * that blocks — the exact shape of the defect this whole section exists to close.
+   * One aperture, one fact.
+   */
+  const identities = await ecprIdentities(tx, weekId);
+  const missingSsn = identities
+    .filter((identity) => identity.ssn === null)
+    .map((identity) => ({
+      workerRef: String(identity.workerRef),
+      name: `${identity.firstName} ${identity.lastName}`,
+    }));
+
+  const chip = ecprChip({
+    project,
+    contractor: contractorFields,
+    workersMissingSsn: missingSsn,
+    workerCount: identities.length,
+    xsdObservedSha256: observation === null ? null : String(observation.sha256),
+    xsdObservedAt: observation?.observedAt ?? null,
+  });
+  if (chip.kind === 'blocked') return chip;
+
+  /**
+   * Every field below is a stored value or a value the chip has already proved
+   * present. `contractorFields` is re-read here in narrowed form rather than
+   * asserted with `!`: the chip decided, and this restates the decision in types so
+   * a future edit that loosens the chip cannot silently emit an empty FEIN.
+   */
+  const contractor: EcprContractor | null = completeContractor(await accountName(tx), {
+    pwcr: project.contractorPwcr,
+    fields: contractorFields,
+  });
+  const dirProjectId = project.dirProjectId;
+  if (contractor === null || dirProjectId === null) {
+    throw new Error(
+      'ecprArtifact: the chip cleared but the contractor block is incomplete. These two ' +
+        'checks must stay one decision — see `ecprChip`.',
+    );
+  }
+
+  // ONE HANDLE, ONE TRANSACTION — `tx`, not the pool handle, for the same reason
+  // every other read in this file goes through it: on a single-connection driver a
+  // second handle is a query waiting for a transaction that is waiting for it.
+  const g2 = await readGate(tx, 'G2');
+
+  const result = renderEcprXml({
+    contractor,
+    project: {
+      dirProjectId,
+      name: project.name,
+      awardingAgency: project.primeName,
+      // ADR-013: an amendment is a new filing. Ratepin has no field in which the
+      // customer has told us a week is her last on this contract, and inferring it
+      // from "no later week exists yet" would be a claim about the future.
+      isFinalPayroll: false,
+    },
+    weekEnding: isoDate(rebuilt.filing.weekEnding),
+    workers: identities,
+    // §10.5: an ineligible worker who is not explicitly acknowledged BLOCKS the file.
+    // There is no screen on which that acknowledgement can be made yet, so the list
+    // is empty — which is the strict direction, and the refusal names each worker.
+    acknowledgedExclusions: [],
+    g2Cleared: g2.state === 'unlocked',
+    computation: rebuilt.computation,
+    provenance: rebuilt.provenance,
+    footer: ecprFooter({
+      provenance: rebuilt.provenance,
+      computation: rebuilt.computation,
+      verdict: rebuilt.verdict,
+      bandRecordedOn:
+        project.contractValueBand === 'unknown'
+          ? null
+          : isoDate(project.bandAssertedAt.toISOString().slice(0, 10)),
+    }),
+    observation,
+    pinnedSha256: sha256Hex(appConfig().DIR_XSD_SHA256),
+    // The federal verdict, from the same `deriveStatus` call the PDF used. A DRAFT
+    // filing cannot produce a submittable XML: the schema has no field in which a
+    // draft can be marked, and DIR's parser discards comments.
+    verdict: rebuilt.verdict,
+  });
+
+  if (!result.ok) {
+    return {
+      kind: 'blocked',
+      headline: `CA eCPR XML — BLOCKED. ${result.refusal.headline}`,
+      detail: refusalDetail(result.refusal),
+      refusal: result.refusal,
+    };
+  }
+
+  return { kind: 'ready', label: chip.label, artifact: result.value };
+}
+
+/** All-or-nothing. A partial contractor block is not a contractor block: an empty
+ *  FEIN element is a file DIR rejects days later, which looks like the customer's
+ *  failure rather than ours. */
+function completeContractor(
+  name: string,
+  input: { readonly pwcr: string | null; readonly fields: EcprContractorFields },
+): EcprContractor | null {
+  const { pwcr, fields } = input;
+  if (
+    pwcr === null ||
+    fields.fein === null ||
+    fields.licenseType === null ||
+    fields.licenseNumber === null ||
+    fields.address === null ||
+    fields.city === null ||
+    fields.state === null ||
+    fields.zip === null
+  ) {
+    return null;
+  }
+  return {
+    name,
+    address: fields.address,
+    city: fields.city,
+    state: fields.state,
+    zip: fields.zip,
+    pwcr,
+    fein: fields.fein,
+    licenseType: fields.licenseType,
+    licenseNumber: fields.licenseNumber,
+  };
+}
+
+/** The sentence a refusal already carries. Each primitive names its own field; there
+ *  is no default arm, so a fifth primitive is a compile error rather than a blank. */
+function refusalDetail(refusal: Refusal): string {
+  switch (refusal.primitive) {
+    case 'P-A':
+      return refusal.detail;
+    case 'P-B':
+      return refusal.detail;
+    case 'P-C':
+      return refusal.narrowedClaim;
+    case 'P-D':
+      return refusal.declined;
+    case 'P-S':
+      return `${refusal.blocked} ${refusal.because}`;
+  }
 }
 
 export const ECPR_SHIPPED_SHA256 = SHIPPED_XSD_SHA256;

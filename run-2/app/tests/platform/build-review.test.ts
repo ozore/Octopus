@@ -34,6 +34,7 @@ import { buildExport, createZipSink } from '../../src/platform/account/export';
 import { crc32 } from '../../src/platform/account/zip';
 import {
   readGate,
+  recordAcceptanceConfirmation,
   recordCanaryRun,
   recordChaosCreditRun,
   recordFilingDuration,
@@ -457,6 +458,128 @@ describe('the four gates that had no writer now have one', () => {
     // comfortable has not tested the guarantee.
     expect(reading.measured).toBe(1);
     expect(reading.state).toBe('measuring');
+  });
+});
+
+// ===========================================================================
+// claims H-4 — the evidence for G2 and G4 was editable by the tier that reports it
+// ===========================================================================
+
+/**
+ * `filing_durations` is G4's every reading and `form_acceptance_confirmations` is
+ * the whole of G2, and the shared RLS helper handed `ratepin_app` `UPDATE` and
+ * `DELETE` on both by default. A gate whose evidence the web tier can edit is not a
+ * gate; it is a preference with a number next to it. Both mechanisms are asserted
+ * here, because either alone is a convention: no mutating grant, so the application
+ * cannot try — and a trigger, so not even the owner succeeds.
+ */
+describe('the two tables the gates are measured on are append-only', () => {
+  async function seedEvidence(): Promise<string> {
+    await setup();
+    const filing = uuidFor(0xac, 1);
+    await tdb.client.query(
+      `INSERT INTO payroll_weeks (id, account_id, project_id, week_ending, workweek_start_day,
+                                  contract_value_band)
+       VALUES ($1, $2, $3, '2026-08-08', 1, 'over_100k')`,
+      [uuidFor(0xad, 1), IDS.accountA, IDS.projectA],
+    );
+    await seedFiling(tdb, {
+      id: filing,
+      account: IDS.accountA,
+      project: IDS.projectA,
+      weekEnding: '2026-08-08',
+      status: 'CERTIFIABLE',
+    });
+    await recordFilingDuration(tdb.db, {
+      accountId: IDS.accountA,
+      filingId: filing,
+      uploadAt: new Date(NOW.getTime() - 600_000),
+      artifactAt: NOW,
+      realFiling: true,
+    });
+    await recordAcceptanceConfirmation(
+      tdb.db,
+      {
+        id: uuidFor(0xae, 1),
+        accountId: IDS.accountA,
+        filingId: filing,
+        artifactKind: 'wh347_pdf',
+        receiver: 'gc',
+        accepted: true,
+      },
+      CLOCK,
+    );
+    return filing;
+  }
+
+  it('holds no UPDATE or DELETE grant for the application role', async () => {
+    await seedEvidence();
+    const rows = await tdb.client.query<{ table_name: string; privilege_type: string }>(
+      `SELECT table_name, privilege_type FROM information_schema.table_privileges
+        WHERE grantee = 'ratepin_app'
+          AND table_name IN ('filing_durations', 'form_acceptance_confirmations')
+        ORDER BY table_name, privilege_type`,
+    );
+    expect(rows.rows.map((r) => `${r.table_name}:${r.privilege_type}`)).toEqual([
+      'filing_durations:INSERT',
+      'filing_durations:SELECT',
+      'form_acceptance_confirmations:INSERT',
+      'form_acceptance_confirmations:SELECT',
+    ]);
+  });
+
+  it('refuses the edit at the database, even for the owner', async () => {
+    await seedEvidence();
+    // As the OWNER — the role that holds every grant there is. The trigger is what
+    // makes the rule survive a migration, a psql session and a future grant.
+    for (const statement of [
+      `UPDATE filing_durations SET seconds = 1`,
+      `DELETE FROM filing_durations`,
+      `UPDATE form_acceptance_confirmations SET accepted = true`,
+      `DELETE FROM form_acceptance_confirmations`,
+    ]) {
+      const thrown = await tdb.client.query(statement).then(
+        () => null,
+        (error: unknown) => String(error),
+      );
+      expect(thrown, `ACCEPTED: ${statement}`).toMatch(/append-only/);
+    }
+  });
+
+  it('still accepts the INSERTs the two writers actually make', async () => {
+    const filing = await seedEvidence();
+    // Both writers are idempotent by ON CONFLICT … DO NOTHING, which is an INSERT
+    // that writes nothing rather than an UPDATE — so re-running them must not trip
+    // the trigger. This is the case that would have broken if append-only had been
+    // implemented as a blanket rule instead of read out of the writers.
+    const again = await recordFilingDuration(tdb.db, {
+      accountId: IDS.accountA,
+      filingId: filing,
+      uploadAt: new Date(NOW.getTime() - 60_000),
+      artifactAt: NOW,
+      realFiling: true,
+    });
+    expect(again.recorded).toBe(false);
+    await recordAcceptanceConfirmation(
+      tdb.db,
+      {
+        id: uuidFor(0xae, 1),
+        accountId: IDS.accountA,
+        filingId: filing,
+        artifactKind: 'wh347_pdf',
+        receiver: 'gc',
+        accepted: false,
+      },
+      CLOCK,
+    );
+    const kept = await tdb.client.query<{ seconds: number; accepted: boolean }>(
+      `SELECT d.seconds, c.accepted
+         FROM filing_durations d, form_acceptance_confirmations c
+        WHERE d.filing_id = $1 AND c.filing_id = $1`,
+      [filing],
+    );
+    expect(Number(kept.rows[0]?.seconds)).toBe(600);
+    expect(kept.rows[0]?.accepted).toBe(true);
   });
 });
 

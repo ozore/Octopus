@@ -206,7 +206,13 @@ export const constraintsEnforced: readonly string[] = [
 export interface XsdObservation {
   /** The digest the nightly probe computed over the bytes DIR served. */
   readonly sha256: Sha256Hex;
-  readonly byteLength: number;
+  /**
+   * The size of what the probe fetched, when the probe recorded it. `null` means
+   * it did not, and the refusal below then omits the parenthetical rather than
+   * printing `(0 bytes)` — a figure nobody measured, in a rendered string, is the
+   * one thing this codebase may not do even when the figure is harmless.
+   */
+  readonly byteLength: number | null;
   readonly observedAt: Date;
   /** The bytes themselves, when the probe stored them. Present means we can show a
    *  line-level diff instead of two hashes; absent means we show the hashes and say
@@ -274,7 +280,9 @@ export function checkXsdPin(pinned: Sha256Hex, observation: XsdObservation): Res
     observation.text === undefined
       ? [
           `pinned   ${pinned}`,
-          `observed ${observation.sha256} (${observation.byteLength} bytes)`,
+          observation.byteLength === null
+            ? `observed ${observation.sha256}`
+            : `observed ${observation.sha256} (${observation.byteLength} bytes)`,
           'The probe recorded a digest but not the bytes, so no line-level diff is available.',
         ]
       : [`pinned   ${pinned}`, `observed ${observation.sha256}`, ...schemaDiff(CPR_XSD_TEXT, observation.text)];

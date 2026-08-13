@@ -24,6 +24,8 @@
 
 import { useState } from 'react';
 
+import { RefusalView } from '@/app/_components/refusal';
+
 export interface PickerCandidate {
   readonly ordinal: number;
   readonly className: string;
@@ -107,20 +109,16 @@ export function Picker(props: PickerProps): React.ReactElement {
       {props.banner === null ? null : <p className="rp-pick__reduced">{props.banner}</p>}
 
       {props.conformance === null ? null : (
-        <div className="rp-alert rp-alert--declined">
-          <span className="rp-alert__glyph" aria-hidden="true">
-            §
-          </span>
-          <div className="rp-alert__body">
-            <p className="rp-alert__title">Whether this work requires a conformance request</p>
-            <blockquote className="rp-prose">
-              <p>{props.conformance.rule}</p>
-              <p className="rp-t-micro rp-num">{props.conformance.citation}</p>
-            </blockquote>
-            <p>{props.conformance.path}</p>
-            <p>{props.conformance.declined}</p>
-          </div>
-        </div>
+        <RefusalView
+          refusal={{
+            primitive: 'P-D',
+            headline: 'Whether this work requires a conformance request',
+            rule: props.conformance.rule,
+            citation: props.conformance.citation,
+            observableFacts: [],
+            declined: `${props.conformance.path} ${props.conformance.declined}`,
+          }}
+        />
       )}
 
       {showAll ? (

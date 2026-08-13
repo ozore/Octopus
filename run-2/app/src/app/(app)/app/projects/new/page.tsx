@@ -17,7 +17,8 @@ import { sql } from 'drizzle-orm';
 import { createProjectAction } from '../../../_actions/projects';
 import { NewProjectForm } from '../../../_components/new-project-form';
 import { requireSession } from '../../../_lib/auth';
-import { STATE_ONLY_REFUSAL } from '../../../_lib/copy';
+import { notDavisBacon } from '../../../_lib/refusals';
+import { RefusalView } from '@/app/_components/refusal';
 
 export const dynamic = 'force-dynamic';
 
@@ -62,15 +63,12 @@ export default async function NewProjectPage({
       </section>
 
       {one('refused') === 'funding' ? (
-        <div className="rp-alert rp-alert--declined">
-          <span className="rp-alert__glyph" aria-hidden="true">
-            §
-          </span>
-          <div className="rp-alert__body">
-            <p className="rp-alert__title">This is not a Davis-Bacon project</p>
-            <p>{STATE_ONLY_REFUSAL}</p>
-          </div>
-        </div>
+        <RefusalView
+          refusal={notDavisBacon({
+            kind: 'onThisScreen',
+            label: 'Choose a federal funding source in the form below, if one applies',
+          })}
+        />
       ) : null}
 
       <NewProjectForm

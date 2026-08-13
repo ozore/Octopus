@@ -39,6 +39,8 @@ import {
 } from '../../../../_lib/copy';
 import { revisionDiff } from '../../../../_lib/mirror';
 import { standingOf } from '../../../../_lib/projects';
+import { effectivenessDeclined } from '../../../../_lib/refusals';
+import { RefusalView } from '@/app/_components/refusal';
 import { rowsOf } from '@/db';
 import { sql } from 'drizzle-orm';
 
@@ -169,70 +171,52 @@ export default async function WdChangePage({
 
           {/* The FAR panel — a P-D by construction. It concludes nothing, in either
               lock state, and setting the lock does not make it conclude anything. */}
-          <div className="rp-alert rp-alert--declined">
-            <span className="rp-alert__glyph" aria-hidden="true">
-              §
-            </span>
-            <div className="rp-alert__body rp-stack rp-stack--tight">
-              <p className="rp-alert__title">Effectiveness — what we can show, and what we will not say</p>
-              <dl className="rp-stack rp-stack--tight">
-                <div className="rp-row rp-row--between">
-                  <dt>Pinned revision</dt>
-                  <dd className="rp-num">
-                    {pin.revision}, published {String(pin.wdPublishedDate)}
-                  </dd>
-                </div>
-                <div className="rp-row rp-row--between">
-                  <dt>Newer revision</dt>
-                  <dd className="rp-num">
-                    {newer.revision}, published {String(newer.publishDate)}
-                  </dd>
-                </div>
-                <div className="rp-row rp-row--between">
-                  <dt>Your award or bid date</dt>
-                  <dd className="rp-num">
-                    {standing.project.awardDate === null ? 'not recorded' : String(standing.project.awardDate)}
-                  </dd>
-                </div>
-              </dl>
-              <p>
-                FAR 22.404-6 governs which revision applies to a contract, and the answer can turn
-                on a finding by the contracting officer — a finding Ratepin cannot observe.
-              </p>
-              <p>
-                <strong>
-                  Ratepin does not conclude which revision is effective for your contract.
-                </strong>{' '}
-                The dates above are what we can see. The determination incorporated into your
-                solicitation, and any amendment your contracting officer issues, govern.
-              </p>
-            </div>
-          </div>
+          <RefusalView
+            refusal={effectivenessDeclined([
+              {
+                label: 'Pinned revision',
+                value: `${String(pin.revision)}, published ${String(pin.wdPublishedDate)}`,
+              },
+              {
+                label: 'Newer revision',
+                value: `${String(newer.revision)}, published ${String(newer.publishDate)}`,
+              },
+              {
+                label: 'Your award or bid date',
+                value:
+                  standing.project.awardDate === null
+                    ? 'not recorded'
+                    : String(standing.project.awardDate),
+              },
+            ])}
+          />
 
           {/* The narrowed claim (§8.4.3): the artifact and the rate are unchanged; the
               sentence about currency narrows; the banner is dated. No credit. */}
-          <div className="rp-alert rp-alert--narrowed">
-            <span className="rp-alert__glyph" aria-hidden="true">
-              !
-            </span>
-            <div className="rp-alert__body rp-stack rp-stack--tight">
-              <p className="rp-alert__title">What your filings will say from now on</p>
-              <p className="rp-num">
-                {supersededSentence({
-                  wdNumber: String(pin.wdNumber),
-                  pinnedRevision: pin.revision,
-                  pinnedPublished: String(pin.wdPublishedDate),
-                  newerRevision: newer.revision,
-                  newerPublished: String(newer.publishDate),
-                  lockRecordedOn:
-                    locked && standing.project.lockAssertedAt !== null
-                      ? standing.project.lockAssertedAt.toISOString().slice(0, 10)
-                      : null,
-                })}
-              </p>
-              <p>{SUPERSEDED_NO_CREDIT}</p>
-            </div>
-          </div>
+          {/* §8.4.3 — a superseded pin narrows the claim and carries no credit,
+              because nothing of ours failed. P-C, so the date is mandatory rather
+              than conventional: `asOf` is when the newer revision was published,
+              which is the fact that narrowed the sentence. */}
+          <RefusalView
+            refusal={{
+              primitive: 'P-C',
+              headline: 'What your filings will say from now on',
+              narrowedClaim: `${supersededSentence({
+                wdNumber: String(pin.wdNumber),
+                pinnedRevision: pin.revision,
+                pinnedPublished: String(pin.wdPublishedDate),
+                newerRevision: newer.revision,
+                newerPublished: String(newer.publishDate),
+                lockRecordedOn:
+                  locked && standing.project.lockAssertedAt !== null
+                    ? standing.project.lockAssertedAt.toISOString().slice(0, 10)
+                    : null,
+              })} ${SUPERSEDED_NO_CREDIT}`,
+              asOf: new Date(`${String(newer.publishDate)}T00:00:00Z`),
+              ladderLevel: 'L0_NORMAL',
+              credit: null,
+            }}
+          />
 
           {/* THE THREE ACTIONS. Same class, same size, same order, no default. */}
           <section className="rp-stack">

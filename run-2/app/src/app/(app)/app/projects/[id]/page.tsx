@@ -20,15 +20,15 @@ import {
   BAND_OPTIONS,
   BAND_QUESTION,
   BAND_UNKNOWN_ACTION,
-  BAND_UNKNOWN_BODY,
-  BAND_UNKNOWN_HEADLINE,
   BAND_WHERE_TO_READ,
   BAND_WHY_WE_ASK,
   CALIFORNIA_IDENTIFIERS,
 } from '../../../_lib/copy';
 import { listFilings } from '../../../_lib/filings';
 import { pinHistory, standingOf } from '../../../_lib/projects';
+import { bandUnknown } from '../../../_lib/refusals';
 import { StatusChip } from '../../../_components/status-chip';
+import { RefusalView } from '@/app/_components/refusal';
 
 export const dynamic = 'force-dynamic';
 
@@ -96,35 +96,28 @@ export default async function ProjectPage({
           §4.4.3 — the block, verbatim, with one button and no way round it.
           --------------------------------------------------------------- */}
       {project.contractValueBand === 'unknown' ? (
-        <div className="rp-alert rp-alert--blocked" role="group" aria-label="Contract value unresolved">
-          <span className="rp-alert__glyph" aria-hidden="true">
-            ✕
-          </span>
-          <div className="rp-alert__body rp-stack rp-stack--tight">
-            <p className="rp-alert__title">{BAND_UNKNOWN_HEADLINE}</p>
-            {BAND_UNKNOWN_BODY.map((paragraph) => (
-              <p key={paragraph.slice(0, 32)}>{paragraph}</p>
-            ))}
-            <form action={setBandAction} className="rp-stack rp-stack--tight">
-              <input type="hidden" name="projectId" value={id} />
-              <input type="hidden" name="returnTo" value={`/app/projects/${id}`} />
-              <fieldset className="rp-fieldset">
-                <legend className="rp-field__label">{BAND_QUESTION}</legend>
-                {BAND_OPTIONS.filter((option) => option.value !== 'unknown').map((option) => (
-                  <label className="rp-check" key={option.value}>
-                    <input type="radio" name="contractValueBand" value={option.value} />
-                    <span className="rp-check__text">{option.label}</span>
-                  </label>
-                ))}
-              </fieldset>
-              <div className="rp-btn-row">
-                <button type="submit" className="rp-btn rp-btn--primary">
-                  {BAND_UNKNOWN_ACTION}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <RefusalView
+          refusal={bandUnknown({ kind: 'onThisScreen', label: BAND_UNKNOWN_ACTION })}
+        >
+          <form action={setBandAction} className="rp-stack rp-stack--tight">
+            <input type="hidden" name="projectId" value={id} />
+            <input type="hidden" name="returnTo" value={`/app/projects/${id}`} />
+            <fieldset className="rp-fieldset">
+              <legend className="rp-field__label">{BAND_QUESTION}</legend>
+              {BAND_OPTIONS.filter((option) => option.value !== 'unknown').map((option) => (
+                <label className="rp-check" key={option.value}>
+                  <input type="radio" name="contractValueBand" value={option.value} />
+                  <span className="rp-check__text">{option.label}</span>
+                </label>
+              ))}
+            </fieldset>
+            <div className="rp-btn-row">
+              <button type="submit" className="rp-btn rp-btn--primary">
+                {BAND_UNKNOWN_ACTION}
+              </button>
+            </div>
+          </form>
+        </RefusalView>
       ) : (
         <section className="rp-stack rp-measure">
           <h2>Contract value</h2>

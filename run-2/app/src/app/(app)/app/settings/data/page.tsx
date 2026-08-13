@@ -25,6 +25,7 @@ import { requestDeletionAction, undoDeletionAction } from '../../../_actions/set
 import { readAs, requireSession } from '../../../_lib/auth';
 import { EXPORT_NOTE, RETENTION_HEADLINE, RETENTION_RULE, UNDO_NOTE } from '../../../_lib/copy';
 import { listFilings } from '../../../_lib/filings';
+import { RefusalView } from '@/app/_components/refusal';
 
 export const dynamic = 'force-dynamic';
 
@@ -102,52 +103,60 @@ export default async function DataPage({
       </section>
 
       {deletion !== null && deletion.undoneAt === null && deletion.executedAt === null ? (
-        <div className="rp-alert rp-alert--blocked">
-          <span className="rp-alert__glyph" aria-hidden="true">
-            ✕
-          </span>
-          <div className="rp-alert__body rp-stack rp-stack--tight">
-            <p className="rp-alert__title">
-              This account is scheduled for deletion on{' '}
-              <span className="rp-num">{deletion.effectiveAt.toISOString().slice(0, 10)}</span>
-            </p>
-            <p>{UNDO_NOTE}</p>
-            <p>
-              Your export stays downloadable for the whole window and is the only copy that survives
-              the date above:{' '}
-              <a href="/api/exports" download>
-                download the ZIP
-              </a>
-              .
-            </p>
-            <form action={undoDeletionAction}>
-              <div className="rp-btn-row">
-                <button type="submit" className="rp-btn rp-btn--primary">
-                  Undo the deletion
-                </button>
-              </div>
-            </form>
-            <p className="rp-t-micro">
-              Undoing restores everything, including artifacts. Your subscription does not resume
-              automatically — restoring data is a favour, restoring a charge is a liability.
-            </p>
-          </div>
-        </div>
+        <RefusalView
+          refusal={{
+            primitive: 'P-S',
+            headline: `This account is scheduled for deletion on ${deletion.effectiveAt.toISOString().slice(0, 10)}`,
+            blocked:
+              'On that date Ratepin erases its copy of your filings, and it cannot recover them ' +
+              'afterwards.',
+            because: UNDO_NOTE,
+            clearedBy: { kind: 'onThisScreen', label: 'Undo the deletion' },
+            clearsItself: null,
+            severity: 'blocked',
+          }}
+        >
+          <p>
+            Your export stays downloadable for the whole window and is the only copy that survives
+            the date above:{' '}
+            <a href="/api/exports" download>
+              download the ZIP
+            </a>
+            .
+          </p>
+          <form action={undoDeletionAction}>
+            <div className="rp-btn-row">
+              <button type="submit" className="rp-btn rp-btn--primary">
+                Undo the deletion
+              </button>
+            </div>
+          </form>
+          <p className="rp-t-micro">
+            Undoing restores everything, including artifacts. Your subscription does not resume
+            automatically — restoring data is a favour, restoring a charge is a liability.
+          </p>
+        </RefusalView>
       ) : (
         <section className="rp-stack rp-measure">
           <h2>Deleting {view.accountName}</h2>
 
           {/* §12.2 — the consequence IS the headline. Making this fine print would be
               the single most damaging design decision available to us. */}
-          <div className="rp-alert rp-alert--declined">
-            <span className="rp-alert__glyph" aria-hidden="true">
-              §
-            </span>
-            <div className="rp-alert__body">
-              <p className="rp-alert__title">{RETENTION_HEADLINE}</p>
-              <p>{RETENTION_RULE}</p>
-            </div>
-          </div>
+          {/* A real P-D: the rule is quoted, the citation is the one it is quoted
+              from, and the sentence we decline to draw is that deleting our copy
+              discharges the obligation. */}
+          <RefusalView
+            refusal={{
+              primitive: 'P-D',
+              headline: RETENTION_HEADLINE,
+              rule: RETENTION_RULE,
+              citation: '29 CFR 5.5(a)(3)(i)(A)',
+              observableFacts: [],
+              declined:
+                'Ratepin does not conclude that deleting this account satisfies, shortens or ' +
+                'ends that obligation. It deletes our copy and nothing else.',
+            }}
+          />
 
           <h3>What is deleted, and what is not</h3>
           <div className="rp-tablewrap">

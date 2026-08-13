@@ -9,7 +9,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { claimUnlocked, getConfig } from './config';
+import { getConfig } from './config';
 
 const PROD_MINIMUM = {
   NODE_ENV: 'production',
@@ -89,10 +89,21 @@ describe('production refuses the test substrate', () => {
 });
 
 describe('the measurement gates start locked (CORRECTIONS.md §0.2)', () => {
-  it('locks G1..G5 by default, so copy renders the mechanism sentence', () => {
-    const config = getConfig({});
-    for (const gate of ['G1', 'G2', 'G3', 'G4', 'G5'] as const) {
-      expect(claimUnlocked(gate, config), `${gate} must default to locked`).toBe(false);
+  it('has no gate flag at all, so a deploy cannot promote a claim', () => {
+    // Build review claims H-1: `CLAIM_G1_RATE_CORRECTNESS … CLAIM_G5_AUTONOMY` were
+    // inert env booleans, and a dormant promotion surface is still a promotion
+    // surface — "nobody here can promote a claim by editing copy" was false while
+    // anyone with deploy access could promote one by setting a variable. Zod strips
+    // unknown keys, so setting them now parses to nothing.
+    const config: Record<string, unknown> = getConfig({
+      CLAIM_G1_RATE_CORRECTNESS: 'true',
+      CLAIM_G2_FORM_ACCEPTANCE: 'true',
+      CLAIM_G3_CORPUS_COMPLETENESS: 'true',
+      CLAIM_G4_TIME_SAVED: 'true',
+      CLAIM_G5_AUTONOMY: 'true',
+    });
+    for (const key of Object.keys(config)) {
+      expect(key, 'no gate flag may survive config parsing').not.toMatch(/^CLAIM_G/);
     }
   });
 

@@ -22,6 +22,13 @@
  * filing. The web tier's role has no insert grant on `users`, `accounts` or
  * `memberships` at all, so this is not a convention — it is the only path there is.
  *
+ * THE TOKEN IS NEVER AT REST, IN ANY FORM. Requesting a link writes a row with a
+ * digest of a discarded token; `mintMagicLinkToken` creates the real one at the
+ * moment the outbox hands the message to the mail provider. Nothing between the two
+ * — not `email_outbox.payload`, not a log line, not a ciphertext column — holds a
+ * string that redeems. The reasoning, and the two designs it was chosen over, are
+ * on `requestMagicLink`.
+ *
  * WHY THE OUTCOME IS NOT A `Refusal`. USER_JOURNEY §0.3 closes the refusal set at
  * four primitives and says a proposed fifth is "either a bug we should fix rather
  * than surface, or a request for a human, which is out of bounds." An expired login
@@ -47,14 +54,37 @@ export interface MagicLinkRequest {
   readonly accountId?: string | null;
 }
 
+/** The template key the outbox resolves at send time. It lives here because the
+ *  resolution is this module's, not the mailer's. */
+export const MAGIC_LINK_TEMPLATE = 'magic_link';
+
+/**
+ * What requesting a link produces: a REFERENCE, and no credential.
+ *
+ * There is deliberately no `url` and no `token` on this type. The token does not
+ * exist yet when the request returns — it is minted by `mintMagicLinkToken` at the
+ * moment the message is handed to a mail provider, which is the only moment anyone
+ * needs it. See the header of `requestMagicLink`.
+ */
 export interface IssuedMagicLink {
   readonly id: string;
-  /** The URL to mail. The token appears here and nowhere else — not in the
-   *  database, not in a log line, not in the outbox payload. */
-  readonly url: string;
-  readonly token: string;
   readonly expiresAt: Date;
   readonly email: string;
+}
+
+/** The one place a live sign-in URL exists: a return value, in the process that is
+ *  about to hand it to the mail provider. It is never written back to any row. */
+export interface MintedMagicLink {
+  /** The credential itself, already inside `url`. Named separately for the two
+   *  callers that redeem it directly — the seed script and the test harness, both
+   *  standing in for a mail client. Persisting it anywhere is the defect this whole
+   *  design exists to remove. */
+  readonly token: string;
+  /** Absolute, for a mailer that renders a full URL. */
+  readonly url: string;
+  /** Relative, for `renderMessage`'s `link_path` field. */
+  readonly linkPath: string;
+  readonly expiresAt: Date;
 }
 
 export type RedeemOutcome =
@@ -72,35 +102,102 @@ export function isEmail(email: string): boolean {
 }
 
 /**
- * Mint a link. The row stores the DIGEST; the caller mails the URL and then has no
- * way to recover it, which is the property that makes a database leak not a
- * takeover.
+ * Request a link. NOTHING REDEEMABLE EXISTS WHEN THIS RETURNS.
+ *
+ * SECURITY C-3. The queued sign-in mail used to carry the live URL in
+ * `email_outbox.payload`, and `email_outbox` is a fleet surface: no tenant policy,
+ * `SELECT` held by `ratepin_app`, rows kept forever. One read of one table was
+ * therefore account takeover for every sign-in of the last fifteen minutes plus a
+ * permanent list of every address that had ever signed in.
+ *
+ * THE DESIGN, AND WHY IT IS THIS ONE. Three were available. **Encrypting the
+ * payload** puts a decryptable credential in the database and needs a key beside
+ * `DATABASE_URL`; ARCHITECTURE §11.3's threat table already settled that argument
+ * for `pgcrypto` — a key in a neighbouring env var "defends a stolen backup file
+ * and NOTHING ELSE — not an application compromise, not a statement log, not a
+ * leaked environment dump, not an insider with a shell", which is exactly the set
+ * of reads that matter here. **Deriving the token** from a server secret and the
+ * row id has the identical weakness with extra machinery. So the row carries a
+ * REFERENCE — the link id — and the token is minted by the process that is about
+ * to hand the message to the mail provider (`mintMagicLinkToken`, called from
+ * `drainOutbox`). §11.5's "hashed-at-rest tokens" then holds without an exception:
+ * the plaintext token exists in one process's memory and in one mailbox, and in no
+ * row, in no ciphertext, at no time.
+ *
+ * WHY THE ROW IS STILL BORN WITH A DIGEST. `token_hash` is NOT NULL UNIQUE, and
+ * relaxing it would make "a link row always has a digest" a thing to remember
+ * rather than a thing the database enforces. The row is therefore created with the
+ * digest of a token that is generated, never returned and immediately discarded —
+ * so between request and send the link is not merely unsent, it is UNREDEEMABLE:
+ * there is no string in the universe that hashes to it that anybody holds.
  */
 export async function requestMagicLink(
   db: Db | Tx,
   request: MagicLinkRequest,
-  options: { readonly baseUrl: string; readonly clock?: Clock },
+  options?: { readonly clock?: Clock },
 ): Promise<IssuedMagicLink> {
   const email = normalizeEmail(request.email);
   if (!isEmail(email)) throw new TypeError(`requestMagicLink: not an email address`);
 
-  const clock = options.clock ?? systemClock;
+  const clock = options?.clock ?? systemClock;
   const now = clock.now();
   const expiresAt = new Date(now.getTime() + MAGIC_LINK_TTL_MINUTES * 60_000);
-  const token = newToken();
   const id = newId();
 
   await db.execute(sql`
     INSERT INTO auth_magic_links (id, email, token_hash, created_at, expires_at, account_id)
-    VALUES (${id}::uuid, ${email}, ${hashToken(token)},
+    VALUES (${id}::uuid, ${email}, ${hashToken(newToken())},
             ${now.toISOString()}::timestamptz, ${expiresAt.toISOString()}::timestamptz,
             ${request.accountId ?? null}::uuid)
   `);
 
+  return { id, expiresAt, email };
+}
+
+/**
+ * Mint the token, at send time, for one link row. Returns `null` when there is
+ * nothing to mail.
+ *
+ * It is an UPDATE rather than a read because the token is created here: the row's
+ * digest is replaced with the digest of the token going into this message, so a
+ * retried send invalidates the token of the attempt before it and there is never
+ * more than one live token for a link. A row that is consumed, expired or purged
+ * matches nothing and the caller declines to send — a mail carrying a link that is
+ * already dead is worse than a mail that never arrives, because the screen it
+ * lands on says "this link was already used" about a link the customer never used.
+ */
+export async function mintMagicLinkToken(
+  db: Db | Tx,
+  linkId: string,
+  options: { readonly baseUrl: string; readonly next?: string | null; readonly clock?: Clock },
+): Promise<MintedMagicLink | null> {
+  const now = (options.clock ?? systemClock).now();
+  const token = newToken();
+
+  const claimed = rowsOf<{ expires_at: string | Date }>(
+    await db.execute(sql`
+      UPDATE auth_magic_links
+         SET token_hash = ${hashToken(token)}
+       WHERE id = ${linkId}::uuid
+         AND consumed_at IS NULL
+         AND expires_at > ${now.toISOString()}::timestamptz
+      RETURNING expires_at
+    `),
+  )[0];
+  if (!claimed) return null;
+
   const url = new URL('/auth/callback', options.baseUrl);
   url.searchParams.set('token', token);
+  if (options.next !== undefined && options.next !== null && options.next !== '') {
+    url.searchParams.set('next', options.next);
+  }
 
-  return { id, url: url.toString(), token, expiresAt, email };
+  return {
+    token,
+    url: url.toString(),
+    linkPath: `${url.pathname}${url.search}`,
+    expiresAt: new Date(claimed.expires_at),
+  };
 }
 
 interface LinkRow {

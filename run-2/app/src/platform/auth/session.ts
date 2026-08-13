@@ -227,33 +227,54 @@ export async function sessionStillAuthorized(db: Db, session: Session): Promise<
   });
 }
 
+/** What one purge removed, by class, so `retention.sweep` can report counts rather
+ *  than a boolean. §7.1: "deletes are idempotent and logged as COUNTS." */
+export interface PurgeCounts {
+  readonly sessions: number;
+  readonly magicLinks: number;
+  readonly outboxPayloads: number;
+}
+
 /**
- * Purge expired and revoked rows. Called by `retention.sweep`; deleting a dead
- * session is not a state change anyone can observe.
+ * Purge expired and revoked rows. **Called by `retention.sweep`** — and that was
+ * the whole of NEW-4: this function existed, was correct, and had zero production
+ * callers, so dead sessions and consumed links accumulated forever. Deleting a dead
+ * session is not a state change anyone can observe, which is why it is a sweep and
+ * not an event.
  *
- * The third statement is not about sessions. `email_outbox` is deliberately outside
- * RLS (it is a fleet surface), and the magic-link send puts a live sign-in URL into
- * `payload` — so the one customer-adjacent table with no tenant policy on it held a
- * bearer credential in plaintext, and held it after `auth_magic_links` had forgotten
- * the digest. Nulling the payload of a sent message bounds that to the send. It does
- * not close the hole — the write is in `_actions/auth.ts` and the fix there is to
- * stop putting the URL in the row at all — but it removes the permanent historical
- * record, which was the larger half.
+ * The third statement is not about sessions. `email_outbox` is a fleet surface —
+ * outside RLS, readable by the whole web tier — and §5.4's minimisation rule applies
+ * to it like anything else: once a message is sent, its payload has done its job. It
+ * is no longer the last line of defence for security C-3 (a payload can no longer
+ * contain a redeemable token: `_actions/auth.ts` queues a reference,
+ * `assertNoRedeemableToken` refuses anything else, and the token is minted inside
+ * the send), but a permanent record of who was mailed what is worth not keeping.
  */
-export async function purgeDeadSessions(db: Db | Tx, clock: Clock = systemClock): Promise<void> {
-  await db.execute(sql`
+export async function purgeDeadSessions(
+  db: Db | Tx,
+  clock: Clock = systemClock,
+): Promise<PurgeCounts> {
+  const sessions = await db.execute(sql`
     DELETE FROM auth_sessions
      WHERE expires_at < ${clock.now().toISOString()}::timestamptz
         OR revoked_at IS NOT NULL
+    RETURNING id
   `);
-  await db.execute(sql`
+  const magicLinks = await db.execute(sql`
     DELETE FROM auth_magic_links
      WHERE expires_at < ${clock.now().toISOString()}::timestamptz
         OR consumed_at IS NOT NULL
+    RETURNING id
   `);
-  await db.execute(sql`
+  const payloads = await db.execute(sql`
     UPDATE email_outbox
        SET payload = '{}'::jsonb
      WHERE sent_at IS NOT NULL AND payload <> '{}'::jsonb
+    RETURNING id
   `);
+  return {
+    sessions: rowsOf(sessions).length,
+    magicLinks: rowsOf(magicLinks).length,
+    outboxPayloads: rowsOf(payloads).length,
+  };
 }

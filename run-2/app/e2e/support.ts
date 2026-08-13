@@ -9,10 +9,11 @@
  *    see `hideDevIndicator` for why the journey runs against `next dev` at all.
  *
  * 2. **THE MAGIC LINK.** Ratepin has no passwords, so signing in inside a browser
- *    means reading the link out of `email_outbox` — the delivery record the app
- *    itself wrote. The test does not mint a session, does not set a cookie and does
- *    not call `redeemMagicLink`: it reads what the outbox holds and clicks it, which
- *    is what a customer's mail client does.
+ *    means standing in for the mail provider. The outbox row the app wrote holds the
+ *    link's ID and no credential (security C-3), so the harness does what the
+ *    worker's drain does — mint the token, then click the link. It still does not
+ *    mint a session, set a cookie or call `redeemMagicLink`: everything after the
+ *    click is the product's.
  *
  * 3. **THE STRIPE WEBHOOK.** ADR-007 makes webhooks the only input that moves
  *    entitlement, so an account cannot acquire a plan any other way — not by a
@@ -25,7 +26,7 @@
  * the product.
  */
 
-import { createHmac } from 'node:crypto';
+import { createHash, createHmac, randomBytes } from 'node:crypto';
 import { mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -102,7 +103,16 @@ export async function shot(page: Page, name: string): Promise<string> {
 
 /**
  * Sign in the way a customer does: type the address, wait for the outbox row the
- * server action queued, open the URL it holds.
+ * server action queued, open the link.
+ *
+ * THE HARNESS IS THE MAILER, and that is a change from reading a URL out of the row.
+ * Security C-3: an outbox row carries the magic link's ID and no credential — the
+ * token is minted inside the send, by `mintMagicLinkToken`, and exists only in the
+ * message. There is nothing redeemable in the database to read, which is the whole
+ * point of the fix, so this function does exactly what the worker's outbox drain
+ * does: take the reference, mint the token, open the link. It still does not create
+ * a session, set a cookie, or call `redeemMagicLink` — the product does all of that,
+ * from the click.
  */
 export async function signIn(page: Page, email: string): Promise<void> {
   const sql = db();
@@ -117,23 +127,37 @@ export async function signIn(page: Page, email: string): Promise<void> {
     await page.getByRole('button', { name: 'Send me a link' }).click();
     await page.waitForURL(/state=sent/);
 
-    let url: string | null = null;
-    for (let attempt = 0; attempt < 40 && url === null; attempt += 1) {
-      const rows = await sql<{ payload: { url?: string } }[]>`
+    let linkId: string | null = null;
+    for (let attempt = 0; attempt < 40 && linkId === null; attempt += 1) {
+      const rows = await sql<{ payload: { link_id?: string } }[]>`
         SELECT payload FROM email_outbox
          WHERE to_address = ${email} AND template = 'magic_link'
          ORDER BY queued_at DESC LIMIT 1
       `;
-      const candidate = rows[0]?.payload?.url ?? null;
+      const candidate = rows[0]?.payload?.link_id ?? null;
       const after = await sql<{ count: string }[]>`
         SELECT count(*)::text AS count FROM email_outbox WHERE to_address = ${email}
       `;
-      if (candidate && Number(after[0]?.count ?? '0') > seen) url = candidate;
+      if (candidate && Number(after[0]?.count ?? '0') > seen) linkId = candidate;
       else await new Promise((done) => setTimeout(done, 250));
     }
-    if (url === null) throw new Error(`no magic link was queued for ${email}`);
+    if (linkId === null) throw new Error(`no magic link was queued for ${email}`);
 
-    await page.goto(new URL(url).pathname + new URL(url).search);
+    // The send. `hashToken` is `sha256(token)` in lowercase hex (src/platform/ids.ts)
+    // and the token is 256 bits of CSPRNG entropy, base64url — the same two lines
+    // `mintMagicLinkToken` runs, spelled in the harness's own driver.
+    const token = randomBytes(32).toString('base64url');
+    const claimed = await sql<{ id: string }[]>`
+      UPDATE auth_magic_links
+         SET token_hash = ${createHash('sha256').update(token, 'utf8').digest('hex')}
+       WHERE id = ${linkId}::uuid AND consumed_at IS NULL AND expires_at > now()
+      RETURNING id
+    `;
+    if (claimed.length !== 1) throw new Error(`the magic link for ${email} was not mintable`);
+
+    const url = new URL('/auth/callback', 'http://127.0.0.1');
+    url.searchParams.set('token', token);
+    await page.goto(url.pathname + url.search);
     await page.waitForURL(/\/app/);
   } finally {
     await sql.end({ timeout: 5 });

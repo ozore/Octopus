@@ -22,6 +22,7 @@ import Link from 'next/link';
 import { readAs, requireSession } from '../../_lib/auth';
 import { SSN_SENTENCE } from '../../_lib/copy';
 import { workerRoster } from '../../_lib/imports';
+import { RefusalView } from '@/app/_components/refusal';
 
 export const dynamic = 'force-dynamic';
 
@@ -85,23 +86,26 @@ export default async function WorkersPage(): Promise<React.ReactElement> {
       )}
 
       {withoutNine > 0 ? (
-        <div className="rp-alert rp-alert--narrowed">
-          <span className="rp-alert__glyph" aria-hidden="true">
-            !
-          </span>
-          <div className="rp-alert__body">
-            <p className="rp-alert__title">
-              {withoutNine} worker{withoutNine === 1 ? ' has' : 's have'} no nine-digit number on
-              file
-            </p>
-            <p>
-              That affects the California eCPR XML only. Federal law forbids nine digits on the
-              WH-347 — 29 CFR 5.5(a)(3)(ii)(B) — and California’s schema requires them, so the two
-              artifacts disagree about the same field and carry separate statuses. Your WH-347 is
-              unaffected.
-            </p>
-          </div>
-        </div>
+        <RefusalView
+          refusal={{
+            primitive: 'P-S',
+            headline: `${String(withoutNine)} worker${withoutNine === 1 ? ' has' : 's have'} no nine-digit number on file`,
+            blocked:
+              'That affects the California eCPR XML only. Your WH-347 is unaffected — federal law ' +
+              'forbids nine digits on it, 29 CFR 5.5(a)(3)(ii)(B), and California’s schema ' +
+              'requires them, so the two artifacts disagree about the same field and carry ' +
+              'separate statuses.',
+            because:
+              'Ratepin holds no nine-digit number for those workers. It cannot obtain one: it is ' +
+              'the worker’s, and it reaches us only through your payroll export.',
+            clearedBy: {
+              kind: 'onThisScreen',
+              label: 'Map the Social Security column on your next payroll upload',
+            },
+            clearsItself: null,
+            severity: 'narrowed',
+          }}
+        />
       ) : null}
 
       <p>

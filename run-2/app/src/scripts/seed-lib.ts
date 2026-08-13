@@ -62,14 +62,20 @@ import { runIngest, SamClient, type CanaryRunner } from '@/corpus';
 import { closeDb, getDb, rowsOf, type Db, type Tx } from '@/db';
 import { withTenant } from '@/db/tenant';
 import { getConfig } from '@/lib/config';
-import { redeemMagicLink, requestMagicLink } from '@/platform/auth/magic-link';
+import { mintMagicLinkToken, redeemMagicLink, requestMagicLink } from '@/platform/auth/magic-link';
 
 import { mapRows, parseCsv, suggestMapping, type MapTarget } from '../app/(free)/_lib/csv';
 import { corpusState } from '../app/(app)/_lib/mirror';
 import { createProject, readProject, currentPin } from '../app/(app)/_lib/projects';
 import { ingestPayroll, type PostedWorker, type StoredColumnMap } from '../app/(app)/_lib/imports';
 import { confirmClassification, ordinalOf, resolveWeek } from '../app/(app)/_lib/resolve';
-import { ecprChip, generateFiling, listArtifacts, releaseFiling } from '../app/(app)/_lib/filings';
+import {
+  ecprChip,
+  generateFiling,
+  listArtifacts,
+  NO_CONTRACTOR_FIELDS,
+  releaseFiling,
+} from '../app/(app)/_lib/filings';
 
 import { fixtureFetcher, healthyRoutes, INDEX_BASE, WDOL_BASE } from '../../tests/corpus/fixtures';
 
@@ -248,12 +254,15 @@ export async function seedRatepin(
   // The real magic-link path: a link is minted, the token is redeemed once, and an
   // account, a user, a membership and a session come out of `redeemMagicLink`.
   // Nothing is inserted by hand.
-  const link = await requestMagicLink(
-    db,
-    { email: SEED.email },
-    { baseUrl: config.APP_BASE_URL, clock: { now: () => NOW } },
-  );
-  const redeemed = await redeemMagicLink(db, link.token, {
+  const link = await requestMagicLink(db, { email: SEED.email }, { clock: { now: () => NOW } });
+  // Standing in for the outbox drain, which is where the token is created: the row
+  // holds no redeemable value until the message is actually sent (security C-3).
+  const minted = await mintMagicLinkToken(db, link.id, {
+    baseUrl: config.APP_BASE_URL,
+    clock: { now: () => NOW },
+  });
+  if (!minted) throw new Error('sign-in failed: the link could not be minted');
+  const redeemed = await redeemMagicLink(db, minted.token, {
     clock: { now: () => NOW },
     accountName: SEED.accountName,
   });
@@ -485,6 +494,11 @@ export async function seedRatepin(
 
   const chip = ecprChip({
     project,
+    // The seeded project is not Californian, so the chip stops on applicability
+    // before it reads a contractor block at all. The absent one is passed
+    // explicitly rather than defaulted, because a defaulted "complete" would be the
+    // one value that could let a blank FEIN through on a project that IS Californian.
+    contractor: NO_CONTRACTOR_FIELDS,
     workersMissingSsn: [],
     workerCount: workers.length,
     // The worker verifies the live XSD and records what it saw. Nothing has run

@@ -175,7 +175,6 @@ ones that matter:
 | `ADAPTER_MODE` | `live` \| `mock`. `mock` binds the recorded fixtures and is **refused in production** |
 | `DIR_XSD_SHA256` | ADR-009 pins the CA schema by **content hash** — the XSD advertises `version="1.0"` while DIR publishes it as V1.3. Version attributes lie; hashes do not. Boot fails without it |
 | `FRESHNESS_DATED_HOURS` / `FRESHNESS_SLA_HOURS` | The L1/L2 ladder. The SLA threshold must be later than the DATED one |
-| `CLAIM_G1…G5` | The gate flags. All **false**. See below |
 | `ANTHROPIC_API_KEY` | Optional. Absent, the classification ladder degrades L-D → L-E, the lexical picker the free generator uses every day. **It never blocks a filing** |
 | `STRIPE_*`, `R2_*`, `RESEND_API_KEY`, `KMS_KEY_URI` | Required in production, unused offline |
 
@@ -186,11 +185,14 @@ ones that matter:
 Stated plainly, because a README that reads as a feature list is the first place a product
 starts lying about itself.
 
-**The four claim gates have not passed, and every one of them is locked in config.**
-`CLAIM_G1_RATE_CORRECTNESS`, `CLAIM_G2_FORM_ACCEPTANCE`, `CLAIM_G3_CORPUS_COMPLETENESS`,
-`CLAIM_G4_TIME_SAVED` and `CLAIM_G5_AUTONOMY` are all `false`. While a gate is locked the
-renderer emits the *mechanism* sentence and declines the *outcome* sentence — P-D. None of them
-may be flipped by hand to make copy read better.
+**The claim gates have not passed, and there is no configuration value that could say they had.**
+Gate state comes from `readGates` in `src/platform/ops/gates.ts`, which queries counters, and
+every outcome sentence on the site is produced by `gateSentence`, which returns `null` for the
+outcome unless the reading says `unlocked` and takes no override parameter. While a gate is
+locked the renderer emits the *mechanism* sentence and declines the *outcome* sentence — P-D.
+The `CLAIM_G1…G5` env booleans that used to sit beside them were removed in response to build
+review claims H-1: they were inert, but a dormant promotion surface is still a promotion
+surface.
 
 - **G1 — the golden payroll suite is a skeleton.** The eleven regulatory fixtures are
   implemented and they pass. The ≥500-line suite over ≥25 pinned determinations across ≥8

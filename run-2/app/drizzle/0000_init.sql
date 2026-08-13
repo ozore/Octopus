@@ -151,14 +151,16 @@ GRANT EXECUTE ON FUNCTION ratepin_current_account() TO ratepin_app;
 GRANT EXECUTE ON FUNCTION ratepin_set_account(uuid) TO ratepin_app;
 GRANT EXECUTE ON FUNCTION ratepin_clear_account() TO ratepin_app;
 
--- The append-only enforcement used by the mirror (CORPUS_DESIGN §3.4). I5: a
--- superseded WD revision is retained forever; corrections are new rows with a
--- later observed_at, never an UPDATE.
+-- The append-only enforcement used by the mirror (CORPUS_DESIGN §3.4) and by the
+-- gate-evidence tables (§11.8, claims H-4). I5: a superseded WD revision is
+-- retained forever; corrections are new rows with a later observed_at, never an
+-- UPDATE. The message names the table rather than a table CLASS, because the same
+-- function now guards two of them for two different reasons.
 CREATE OR REPLACE FUNCTION forbid_mutation() RETURNS trigger
 LANGUAGE plpgsql AS $$
 BEGIN
-  RAISE EXCEPTION 'corpus tables are append-only: % on %.% is forbidden',
-                  TG_OP, TG_TABLE_SCHEMA, TG_TABLE_NAME
+  RAISE EXCEPTION '%.% is append-only: % is forbidden',
+                  TG_TABLE_SCHEMA, TG_TABLE_NAME, TG_OP
     USING ERRCODE = 'restrict_violation';
 END $$;
 
@@ -925,8 +927,27 @@ CREATE TABLE projects (
   wd_revision_locked_at_award boolean,
   lock_asserted_at            timestamptz,
 
+  -- USER_JOURNEY §10. The California transmittal's contractor block. Every one of
+  -- these is NULLABLE and none has a default, for the reason §10 gives about the
+  -- first two: "we can't get either for you — the first is yours, the second is
+  -- theirs". A defaulted PWCR is a wrong PWCR on somebody's certified payroll, and
+  -- a defaulted FEIN is worse. Absence blocks the XML with the missing field named
+  -- (`ecprChip`) and leaves the WH-347 completely untouched — §10.2's two statuses.
+  --
+  -- They live on the PROJECT rather than on the account because that is where
+  -- `contractor_pwcr` and `dir_project_id` already lived and because DIR's
+  -- registration and licence are asserted per public-works project. A company-wide
+  -- profile that filled them in by default would be a convenience worth having and
+  -- is not one this table forecloses.
   dir_project_id    text,
   contractor_pwcr   text,
+  contractor_fein   text,
+  ca_license_type   text,
+  ca_license_number text,
+  contractor_address text,
+  contractor_city   text,
+  contractor_state  char(2),
+  contractor_zip    text,
   wh347_layout      wh347_layout NOT NULL DEFAULT 'wh347_rev_2025_01',
   workweek_start_day smallint NOT NULL DEFAULT 0,
 
@@ -935,7 +956,12 @@ CREATE TABLE projects (
 
   CONSTRAINT projects_workweek CHECK (workweek_start_day BETWEEN 0 AND 6),
   CONSTRAINT projects_lock_asserted CHECK (
-    (wd_revision_locked_at_award IS NULL) = (lock_asserted_at IS NULL))
+    (wd_revision_locked_at_award IS NULL) = (lock_asserted_at IS NULL)),
+  -- The three values the pinned eCPR XSD's `licenseTypeType` enumerates. Enforced
+  -- here as well as in the emitter so a value the schema cannot carry cannot be
+  -- stored and then discovered at generation time.
+  CONSTRAINT projects_ca_license_type CHECK (
+    ca_license_type IS NULL OR ca_license_type IN ('CSLB', 'PL', 'OTHER'))
 );
 CREATE INDEX projects_account ON projects (account_id, created_at DESC);
 
@@ -1028,10 +1054,18 @@ CREATE TABLE workers (
   -- transmittal, i.e. compliance data rather than surplus PII.
   ssn_ciphertext bytea,
   ssn_last4      char(4),
+  -- Required by the CA eCPR schema (`numWithholdingExemp`) and DELETED from the
+  -- Rev. January 2025 WH-347, so it cannot be derived from anything on the federal
+  -- path. NULL means the account does not hold it, which makes the worker
+  -- ineligible for the XML and is reported as such. It is NOT defaulted to zero:
+  -- zero is an assertion about someone's tax situation.
+  num_withholding_exemp integer,
   key_version    integer NOT NULL DEFAULT 1,
   created_at     timestamptz NOT NULL DEFAULT now(),
   ssn_purged_at  timestamptz,
-  CONSTRAINT workers_last4 CHECK (ssn_last4 IS NULL OR ssn_last4 ~ '^[0-9]{4}$')
+  CONSTRAINT workers_last4 CHECK (ssn_last4 IS NULL OR ssn_last4 ~ '^[0-9]{4}$'),
+  CONSTRAINT workers_exemptions CHECK (
+    num_withholding_exemp IS NULL OR num_withholding_exemp >= 0)
 );
 CREATE INDEX workers_account ON workers (account_id);
 CREATE UNIQUE INDEX workers_account_ref ON workers (account_id, external_ref)
@@ -1224,6 +1258,18 @@ CREATE TABLE filings (
   generated_at       timestamptz NOT NULL DEFAULT now(),
   released_at        timestamptz,
   amends_filing_id   uuid REFERENCES filings (id),
+
+  -- R-BUILD security H-3. These three are INPUTS TO THE RENDERED BYTES: the name
+  -- and title print in the statement of compliance and the remarks print in the
+  -- remarks band. Artifact bytes are not stored — §7.6 makes the object store a
+  -- cache of a pure function of the stored inputs — so an input that is not stored
+  -- is an artifact that cannot be rebuilt. Before these columns existed,
+  -- `generateFiling` accepted a signatory and `rebuildFiling` could not supply it,
+  -- so every download and every archive read of such a filing would have failed the
+  -- digest comparison. The eighteen-months-later promise is exactly this row.
+  signatory_name     text,
+  signatory_title    text,
+  remarks            text,
 
   -- §9.5: a filing our own missing input blocked is NOT BILLABLE. A customer is
   -- never charged for a DRAFT — NOT CERTIFIABLE.
@@ -1762,7 +1808,15 @@ CREATE TABLE claim_gates (
 -- customer data, and it carries a different protection: no UPDATE grant at all (I5).
 -- =============================================================================
 
-CREATE OR REPLACE FUNCTION ratepin_enable_tenant_rls(p_table text, p_column text DEFAULT 'account_id')
+-- `p_append_only` is the second argument the two GATE EVIDENCE tables need, and it
+-- is a parameter of the shared helper rather than a REVOKE afterwards on purpose:
+-- the mutating grant is then never issued at all, and a table added later declares
+-- which kind it is at the moment it is policied. See the two call sites, and
+-- `forbid_mutation()` above — the same enforcement the append-only mirror uses.
+CREATE OR REPLACE FUNCTION ratepin_enable_tenant_rls(
+  p_table       text,
+  p_column      text DEFAULT 'account_id',
+  p_append_only boolean DEFAULT false)
 RETURNS void LANGUAGE plpgsql AS $$
 BEGIN
   EXECUTE format('ALTER TABLE %I ENABLE ROW LEVEL SECURITY', p_table);
@@ -1771,7 +1825,15 @@ BEGIN
     'CREATE POLICY %I ON %I FOR ALL TO ratepin_app USING (%I = ratepin_current_account()) '
     || 'WITH CHECK (%I = ratepin_current_account())',
     p_table || '_tenant_isolation', p_table, p_column, p_column);
-  EXECUTE format('GRANT SELECT, INSERT, UPDATE, DELETE ON %I TO ratepin_app', p_table);
+  IF p_append_only THEN
+    EXECUTE format('GRANT SELECT, INSERT ON %I TO ratepin_app', p_table);
+    EXECUTE format(
+      'CREATE TRIGGER %I BEFORE UPDATE OR DELETE ON %I '
+      || 'FOR EACH STATEMENT EXECUTE FUNCTION forbid_mutation()',
+      p_table || '_append_only', p_table);
+  ELSE
+    EXECUTE format('GRANT SELECT, INSERT, UPDATE, DELETE ON %I TO ratepin_app', p_table);
+  END IF;
 END $$;
 
 SELECT ratepin_enable_tenant_rls('accounts', 'id');
@@ -1795,8 +1857,25 @@ SELECT ratepin_enable_tenant_rls('subscriptions');
 SELECT ratepin_enable_tenant_rls('meter_events');
 SELECT ratepin_enable_tenant_rls('credits');
 SELECT ratepin_enable_tenant_rls('refunds');
-SELECT ratepin_enable_tenant_rls('filing_durations');
-SELECT ratepin_enable_tenant_rls('form_acceptance_confirmations');
+-- THE TWO TABLES THAT ARE THE EVIDENCE FOR G2 AND G4 (claims H-4).
+--
+-- `filing_durations` is the measured upload-to-download of every real filing and
+-- `form_acceptance_confirmations` is the only record of a receiving party accepting
+-- a form — G4's numerator and G2's whole basis. Both were handed
+-- `GRANT … UPDATE, DELETE … TO ratepin_app` by this helper's default, which means
+-- the tier that REPORTS a gate could edit the readings the gate is computed from. A
+-- gate whose evidence the web tier can edit is not a gate; it is a preference with
+-- a number next to it (USER_JOURNEY §11.8's own phrase, applied to storage rather
+-- than to the counting rule, exactly as the G5 monotone trigger does for
+-- `inbound_messages`).
+--
+-- Append-only in both mechanisms, as everywhere else in this system: no mutating
+-- grant, so the application cannot try; and a trigger, so not even the owner can
+-- succeed. Neither writer needs one — `recordFilingDuration` is an INSERT … ON
+-- CONFLICT (filing_id) DO NOTHING and `recordAcceptanceConfirmation` is an INSERT
+-- … ON CONFLICT (id) DO NOTHING. A correction is a new row, never an edit.
+SELECT ratepin_enable_tenant_rls('filing_durations', 'account_id', true);
+SELECT ratepin_enable_tenant_rls('form_acceptance_confirmations', 'account_id', true);
 
 -- `users` is global-by-identity (one email, potentially several accounts), so it is
 -- scoped by MEMBERSHIP rather than by a column.
@@ -1834,11 +1913,13 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON staleness_windows TO ratepin_app;
 --     somebody?" requires and is the whole of its read power;
 --   * insert a live user, an active account, and an OWNER membership.
 --
--- It may not update or delete anything, it holds no grant on any table that
+-- It may delete nothing, and the ONE update it may make is the tombstone at the
+-- other end of the same lifecycle (`ratepin_erase_identity`, below, whose WITH
+-- CHECK admits no other shape of update). It holds no grant on any table that
 -- carries a worker, a rate, a payroll line, an artifact or money, and it is
--- NOLOGIN, so the only path to these policies is `ratepin_provision_identity` —
--- a SECURITY DEFINER function owned by this role, with a fixed body, returning
--- three ids. That is the entire pre-tenant write surface of the product.
+-- NOLOGIN, so the only path to these policies is one of two SECURITY DEFINER
+-- functions owned by this role, each with a fixed body. That is the entire
+-- pre-tenant write surface of the product.
 --
 -- The `WITH CHECK` clauses are the audit: an insert through this role that is not
 -- exactly a new live identity is refused by the database, not by the caller.
@@ -1860,6 +1941,102 @@ CREATE POLICY memberships_provisioning_read ON memberships FOR SELECT TO ratepin
   USING (true);
 CREATE POLICY memberships_provisioning_write ON memberships FOR INSERT TO ratepin_provisioner
   WITH CHECK (role = 'owner');
+
+-- ---------------------------------------------------------------------------
+-- THE OTHER END OF THE SAME LIFECYCLE — de-identifying a user at deletion.
+--
+-- §5.5 promises that deleting an account erases the sign-in identity on it. The
+-- statement that does it could not run, and the reason is the same chicken-and-egg
+-- the provisioning function exists for, mirrored:
+--
+--   `users` has no account_id, so `users_tenant_isolation` scopes it BY MEMBERSHIP.
+--   The erasure step deleted the account's memberships and then de-identified any
+--   user left without one — but deleting the memberships is exactly what makes the
+--   user row invisible to the very UPDATE that must rewrite it. It matched zero
+--   rows, every time, while the erasure report counted the step a success. A report
+--   that claims an erasure that did not happen is worse than not erasing.
+--
+-- The predicate has a second defect the ordering hides: `NOT EXISTS (SELECT 1 FROM
+-- memberships …)` is global. Under a role that can see every membership it also
+-- catches users of OTHER accounts, and under the application role it can see none.
+-- The question "does this person belong to anybody else?" is not answerable from
+-- inside one tenant's context at all, in either direction.
+--
+-- So it is answered here, in the one role that legitimately reads all memberships,
+-- with the same shape as `ratepin_provision_identity`: fixed body, one call, a
+-- count out. The role's power grows by exactly one verb, and the WITH CHECK is the
+-- audit — through this policy a users row can only travel from live to tombstoned.
+-- It cannot be edited to another live address (the check demands a tombstone) and
+-- it cannot be revived (the USING clause only sees live rows).
+-- ---------------------------------------------------------------------------
+
+GRANT UPDATE ON users TO ratepin_provisioner;
+
+CREATE POLICY users_erasure_write ON users FOR UPDATE TO ratepin_provisioner
+  USING (deleted_at IS NULL)
+  WITH CHECK (deleted_at IS NOT NULL AND email LIKE 'deleted-%@deleted.invalid');
+
+-- The tombstone has to be READABLE by the role that writes it, and that is not a
+-- loophole — it is documented Postgres behaviour that cost a debugging session, so
+-- it is written down. An UPDATE whose new values reference existing columns applies
+-- the SELECT policies to the NEW row as well as the old one; `users_provisioning_read`
+-- admits only live rows, so the tombstone failed its own SELECT policy and the whole
+-- statement was refused with "new row violates row-level security policy". This
+-- policy admits exactly the rows the one above may create — a tombstoned row, whose
+-- address is `…@deleted.invalid` and therefore identifies nobody — and nothing else.
+CREATE POLICY users_erasure_read ON users FOR SELECT TO ratepin_provisioner
+  USING (deleted_at IS NOT NULL AND email LIKE 'deleted-%@deleted.invalid');
+
+CREATE OR REPLACE FUNCTION ratepin_erase_identity(
+  p_account   uuid,
+  p_tombstone text,
+  p_now       timestamptz DEFAULT now()
+) RETURNS integer
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp AS $$
+DECLARE
+  v_erased    integer;
+  v_remaining integer;
+BEGIN
+  IF p_tombstone !~ '^deleted-[0-9a-f]+$' THEN
+    RAISE EXCEPTION 'ratepin_erase_identity: the tombstone must be deleted-<digest>'
+      USING ERRCODE = 'invalid_parameter_value';
+  END IF;
+
+  -- Members of THIS account who belong to no other account. A user who is also in
+  -- someone else's account keeps their address: it is still their sign-in identity
+  -- somewhere else, and destroying it would delete a second customer's access.
+  UPDATE users u
+     SET email = p_tombstone || '-' || left(u.id::text, 8) || '@deleted.invalid',
+         deleted_at = p_now
+   WHERE u.deleted_at IS NULL
+     AND EXISTS (SELECT 1 FROM memberships m
+                  WHERE m.user_id = u.id AND m.account_id = p_account)
+     AND NOT EXISTS (SELECT 1 FROM memberships o
+                      WHERE o.user_id = u.id AND o.account_id <> p_account);
+  GET DIAGNOSTICS v_erased = ROW_COUNT;
+
+  -- Fail closed rather than report a number nobody checked. If a row that should
+  -- have been rewritten still holds a live address, the erasure step throws, the
+  -- deletion's executed_at stays unset, and the hourly job runs it again — which is
+  -- the documented recovery for a half-finished deletion.
+  SELECT count(*) INTO v_remaining
+    FROM users u
+   WHERE u.deleted_at IS NULL
+     AND EXISTS (SELECT 1 FROM memberships m
+                  WHERE m.user_id = u.id AND m.account_id = p_account)
+     AND NOT EXISTS (SELECT 1 FROM memberships o
+                      WHERE o.user_id = u.id AND o.account_id <> p_account);
+  IF v_remaining > 0 THEN
+    RAISE EXCEPTION 'ratepin_erase_identity: % identities on account % were not erased',
+                    v_remaining, p_account USING ERRCODE = 'restrict_violation';
+  END IF;
+
+  RETURN v_erased;
+END $$;
+
+ALTER FUNCTION ratepin_erase_identity(uuid, text, timestamptz) OWNER TO ratepin_provisioner;
+REVOKE ALL ON FUNCTION ratepin_erase_identity(uuid, text, timestamptz) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION ratepin_erase_identity(uuid, text, timestamptz) TO ratepin_app;
 
 -- The application role does NOT provision. Every insert into the three identity
 -- tables now happens inside the definer function above, so these grants —

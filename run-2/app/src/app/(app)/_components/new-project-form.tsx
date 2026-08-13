@@ -42,8 +42,9 @@ import {
   FUNDING_SOURCES,
   LOCK_EXPLANATION,
   LOCK_IS_YOURS,
-  STATE_ONLY_REFUSAL,
 } from '../_lib/copy';
+import { notDavisBacon } from '../_lib/refusals';
+import { RefusalView } from '@/app/_components/refusal';
 
 export interface NewProjectFormProps {
   readonly action: (formData: FormData) => void | Promise<void>;
@@ -173,15 +174,12 @@ export function NewProjectForm(props: NewProjectFormProps): React.ReactElement {
         </fieldset>
 
         {stateOnly ? (
-          <div className="rp-alert rp-alert--declined" role="group" aria-label="Ratepin declines">
-            <span className="rp-alert__glyph" aria-hidden="true">
-              §
-            </span>
-            <div className="rp-alert__body">
-              <p className="rp-alert__title">This is not a Davis-Bacon project</p>
-              <p>{STATE_ONLY_REFUSAL}</p>
-            </div>
-          </div>
+          <RefusalView
+            refusal={notDavisBacon({
+              kind: 'onThisScreen',
+              label: 'Choose a federal funding source above, if one applies',
+            })}
+          />
         ) : null}
 
         <div className="rp-field">

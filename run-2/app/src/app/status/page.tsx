@@ -357,11 +357,11 @@ export default async function StatusPage(): Promise<React.ReactElement> {
         <h2>The six claim gates</h2>
         <p className="rp-lp-lead">
           Each gate is a counter. While it is locked the product may state the mechanism — what the
-          software does — and may not state the outcome. Every outcome sentence on this site is
+          software does — and may not state the outcome. Every gate outcome sentence on this site is
           produced by one function, <span className="rp-num">gateSentence</span>, which takes a
           reading that can only come from these counters and returns nothing while the reading says
-          locked; it has no override parameter. A measured claim that regresses narrows itself on
-          the next refresh.
+          locked; it has no override parameter, and there is no configuration value that can unlock
+          a gate. A measured claim that regresses narrows itself on the next refresh.
         </p>
         <div className="rp-lp-grid rp-lp-grid--2">
           {status.gates.map((gate) => (

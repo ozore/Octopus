@@ -52,6 +52,7 @@ import { reconcileDunning } from '../platform/billing/dunning';
 import type { StripeGateway } from '../platform/billing/gateway';
 import { enforceOverageCap } from '../platform/billing/meter';
 import { replayStripeEvents } from '../platform/billing/webhook';
+import { purgeDeadSessions } from '../platform/auth/session';
 import { assessFreshness } from '../platform/ops/freshness';
 import {
   recordCanaryRun,
@@ -734,7 +735,12 @@ const outboxDrain: JobDefinition = {
   probes: [],
   signalOnFailure: null,
   async run({ deps }) {
-    const result = await drainOutbox(deps.db, { mailer: deps.mailer, clock: deps.clock });
+    const result = await drainOutbox(deps.db, {
+      mailer: deps.mailer,
+      // The sign-in link is minted inside the send, from this base (security C-3).
+      baseUrl: deps.config.APP_BASE_URL,
+      clock: deps.clock,
+    });
     return { performed: true, detail: { sent: result.sent, failed: result.failed } };
   },
 };
@@ -781,13 +787,27 @@ const accountDeletionExecute: JobDefinition = {
 const retentionSweep: JobDefinition = {
   kind: 'retention.sweep',
   schedule: { kind: 'daily', hourEt: 5, minuteEt: 0 },
-  does: 'Purge SSN ciphertext and PII-class objects past their 30-day clock, raw CSVs past 90 days, free-generator inputs past 24 hours.',
+  does: 'Purge dead sessions, consumed magic links and sent outbox payloads; SSN ciphertext and PII-class objects past their 30-day clock, raw CSVs past 90 days, free-generator inputs past 24 hours.',
   failsClosedBy: 'A class that cannot be swept is reported by name, never skipped silently.',
   probes: ['P14'],
   signalOnFailure: null,
   async run({ deps }) {
     const now = deps.clock.now();
     const counts: Record<string, number> = {};
+
+    // THE AUTH CLASSES, FIRST AND UNCONDITIONALLY.
+    //
+    // `purgeDeadSessions` is the sole purge for expired sessions, consumed magic
+    // links and sent outbox payloads, and until now it had no caller anywhere —
+    // it was written, tested and never run (NEW-4). Dead credentials accumulated
+    // forever in the two tables that carry no tenant policy. It runs before the
+    // object-store branch below precisely because that branch can return early:
+    // a class whose sweep depends on an optional adapter must not be able to skip
+    // a class that depends on nothing.
+    const purged = await purgeDeadSessions(deps.db, deps.clock);
+    counts['auth_sessions'] = purged.sessions;
+    counts['auth_magic_links'] = purged.magicLinks;
+    counts['outbox_payloads'] = purged.outboxPayloads;
 
     // §5.4: `workers.ssn_ciphertext` is purged 30 days after export-on-cancel. The
     // ciphertext goes; `ssn_last4` stays on the three-year clock because it is the

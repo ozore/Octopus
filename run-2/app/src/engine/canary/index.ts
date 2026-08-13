@@ -33,8 +33,9 @@
  * measures that gap in numbers and `runSuite` refuses to call the result green,
  * so `runGoldenSuite` returns `pass: false` with the shortfalls named.
  *
- * Wiring a runner is therefore NOT unlocking G1. `CLAIM_G1_RATE_CORRECTNESS`
- * stays false, `claimUnlocked('G1')` stays false, and no rendered string moves.
+ * Wiring a runner is therefore NOT unlocking G1. `G1_SUITE_STATUS.claimUnlocked`
+ * stays false, G1's reading stays locked, and no rendered string moves. There is no
+ * env var that could say otherwise — see `src/lib/config.ts`.
  * A snapshot promoted tonight would be promoted on a suite that has not been
  * scored broadly enough to mean anything — which is precisely what §22's floors
  * exist to prevent, and why "the suite may not silently shrink" is a CI failure

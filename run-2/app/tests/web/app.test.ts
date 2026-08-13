@@ -21,13 +21,16 @@
  * property a screen can break on its own — that there is no way to reach a human.
  */
 
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { createHash } from 'node:crypto';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { runIngest, SamClient, type CanaryRunner } from '@/corpus';
 import type { Db, Tx } from '@/db';
 import { withTenant } from '@/db/tenant';
+import { nineDigitRuns } from '@/artifacts';
+import { autoResponseColumn, respond } from '@/platform/ops/response';
 import { rendersSignatureBlock } from '@/engine';
 import { CLASSIFICATION_LADDER, wdNumber } from '@/lib/types';
 import { newId } from '@/platform/ids';
@@ -57,12 +60,15 @@ import {
 } from '../../src/app/(app)/_lib/imports';
 import { confirmClassification, listMemory, resolveWeek } from '../../src/app/(app)/_lib/resolve';
 import {
+  ecprArtifact,
   ecprChip,
   generateFiling,
   listArtifacts,
+  NO_CONTRACTOR_FIELDS,
   readFiling,
   rebuildFiling,
   releaseFiling,
+  type EcprContractorFields,
 } from '../../src/app/(app)/_lib/filings';
 import { buildBoard } from '../../src/app/(app)/_lib/week';
 import { billingView } from '../../src/app/(app)/_lib/billing';
@@ -75,6 +81,21 @@ import {
 
 const INGEST_AT = new Date('2026-08-13T06:00:00Z');
 const greenCanary: CanaryRunner = () => Promise.resolve({ pass: true, lines: 512, detail: 'green' });
+
+/** The nine digits the CA schema requires and the federal form forbids. Held in one
+ *  constant so the two assertions about it cannot drift apart. */
+const SSN_ON_FILE = '123454417';
+
+/** A complete contractor block, for the chip tests that are about a LATER gate. */
+const CA_CONTRACTOR_ON_FILE: EcprContractorFields = {
+  fein: '941234567',
+  licenseType: 'CSLB',
+  licenseNumber: '1043928',
+  address: '1400 Levee Road',
+  city: 'Rio Vista',
+  state: 'CA',
+  zip: '94571',
+};
 
 const ACCOUNT = '77777777-7777-4777-8777-777777777777';
 const USER = '88888888-8888-4888-8888-888888888888';
@@ -553,7 +574,15 @@ describe('J6 — the ladder, and what may fill a radio', () => {
 // ===========================================================================
 
 describe('J7 — the three statuses, and the one rule that separates them', () => {
-  async function generate(band: 'over_100k' | 'unknown', title: string, sha: string) {
+  async function generate(
+    band: 'over_100k' | 'unknown',
+    title: string,
+    sha: string,
+    extra?: {
+      readonly signatory?: { readonly name: string; readonly title: string };
+      readonly remarks?: string;
+    },
+  ) {
     const projectId = await makeProject({ name: `Filing ${sha.slice(0, 4)}`, band });
     const ingested = await asTenant(async (tx) =>
       ingestPayroll(tx, {
@@ -577,7 +606,14 @@ describe('J7 — the three statuses, and the one rule that separates them', () =
     if (!project || !pin) throw new Error('fixture');
     await resolveAndClick({ weekId: ingested.weekId, project, pin });
     const generated = await asTenant(async (tx) =>
-      generateFiling(db, tx, { accountId: ACCOUNT, userId: USER, weekId: ingested.weekId, now: NOW }),
+      generateFiling(db, tx, {
+        accountId: ACCOUNT,
+        userId: USER,
+        weekId: ingested.weekId,
+        now: NOW,
+        ...(extra?.signatory === undefined ? {} : { signatory: extra.signatory }),
+        ...(extra?.remarks === undefined ? {} : { remarks: extra.remarks }),
+      }),
     );
     return { projectId, weekId: ingested.weekId, generated };
   }
@@ -652,17 +688,62 @@ describe('J7 — the three statuses, and the one rule that separates them', () =
     expect(generated.billable).toBe(true);
   });
 
-  it('rebuilds a filing byte-identically from its own pin, and records the digest as the identity', async () => {
+  /**
+   * R-BUILD SECURITY H-3. This test used to generate with NO signatory, so both
+   * sides of the comparison rendered the same empty signature line and it passed
+   * whether or not the value was persisted at all. `signatory` and `remarks` were
+   * accepted by `generateFiling`, printed into the bytes, and stored NOWHERE —
+   * `rebuildFiling` could not supply them, so the archive held filings whose only
+   * reproduction differed from the document that was signed, and the download route
+   * would have refused to serve them (correctly) eighteen months later.
+   *
+   * It now supplies both, which is what makes it a test. The assertion that matters
+   * is not that the digests match — it is that they match ONLY BECAUSE the columns
+   * carry the values, which the second half proves by reading them back off the row.
+   */
+  it('rebuilds a filing byte-identically from its own pin — signatory and remarks included', async () => {
     const exact = await firstClassName();
-    const { generated } = await generate('over_100k', exact, '4'.repeat(64));
+    const signatory = { name: 'Dolores Vasquez', title: 'Owner' } as const;
+    const remarks = 'Week includes a Saturday shift on the north abutment.';
+    const { generated } = await generate('over_100k', exact, '4'.repeat(64), { signatory, remarks });
     if (generated === null) throw new Error('fixture');
+
+    // The signatory reached the bytes: the certifiable artifact carries the name and
+    // title in its statement of compliance rather than an empty line.
+    expect(generated.artifact.statementOfCompliance.signatoryName).toBe(signatory.name);
+    expect(generated.artifact.statementOfCompliance.signatoryTitle).toBe(signatory.title);
+    expect(generated.artifact.statementOfCompliance.remarks).toContain(remarks);
 
     const rebuilt = await asTenant(async (tx) => rebuildFiling(db, tx, generated.filingId));
     expect(rebuilt?.pdfSha256).toBe(generated.pdfSha256);
+    expect(rebuilt?.artifact.statementOfCompliance.signatoryName).toBe(signatory.name);
+    expect(rebuilt?.artifact.statementOfCompliance.remarks).toContain(remarks);
+
+    // Read back off the row, because that is the thing that was missing.
+    const filing = await asTenant(async (tx) => readFiling(tx, generated.filingId));
+    expect(filing?.signatoryName).toBe(signatory.name);
+    expect(filing?.signatoryTitle).toBe(signatory.title);
+    expect(filing?.remarks).toBe(remarks);
 
     const artifacts = await asTenant(async (tx) => listArtifacts(tx, generated.filingId));
     const pdf = artifacts.find((artifact) => artifact.kind === 'wh347_pdf');
     expect(pdf?.sha256).toBe(generated.pdfSha256);
+  });
+
+  /**
+   * The negative half, and the reason the columns exist: a rebuild that DROPS the
+   * signatory produces different bytes. If this ever passes with `toBe`, the
+   * signature line has stopped reaching the document and the test above has gone
+   * trivial again.
+   */
+  it('produces different bytes without the signatory, which is why the archive must store it', async () => {
+    const exact = await firstClassName();
+    const withSignatory = await generate('over_100k', exact, '6'.repeat(64), {
+      signatory: { name: 'Dolores Vasquez', title: 'Owner' },
+    });
+    const without = await generate('over_100k', exact, '7'.repeat(64));
+    if (withSignatory.generated === null || without.generated === null) throw new Error('fixture');
+    expect(withSignatory.generated.pdfSha256).not.toBe(without.generated.pdfSha256);
   });
 
   it('marks a filing released on download, which is what makes an amendment the only correction', async () => {
@@ -689,6 +770,7 @@ describe('J10 — one filing, two artifacts, two independent statuses', () => {
     // than the button being hidden.
     const outside = ecprChip({
       project,
+      contractor: NO_CONTRACTOR_FIELDS,
       workersMissingSsn: [],
       workerCount: 3,
       xsdObservedSha256: null,
@@ -698,10 +780,11 @@ describe('J10 — one filing, two artifacts, two independent statuses', () => {
     if (outside.kind !== 'blocked') throw new Error('unreachable');
     expect(outside.detail).toContain('California');
 
-    // In California, missing identifiers block the XML and name both of them.
+    // In California, missing identifiers block the XML and name every one of them.
     const californian = { ...project, stateCode: 'CA', dirProjectId: null, contractorPwcr: null };
     const missing = ecprChip({
       project: californian,
+      contractor: NO_CONTRACTOR_FIELDS,
       workersMissingSsn: [],
       workerCount: 3,
       xsdObservedSha256: null,
@@ -710,13 +793,18 @@ describe('J10 — one filing, two artifacts, two independent statuses', () => {
     if (missing.kind !== 'blocked') throw new Error('unreachable');
     expect(missing.detail).toContain('PWCR');
     expect(missing.detail).toContain('PWC-100');
+    // The contractor block DIR needs is named too, rather than discovered at the
+    // portal: an empty FEIN element is a rejection three days later.
+    expect(missing.detail).toContain('FEIN');
+    expect(missing.detail).toContain('licence number');
     expect(missing.detail).toContain('WH-347 PDF is unaffected');
 
-    // With the identifiers present, workers with no nine-digit number block the XML
+    // With every identifier present, workers with no nine-digit number block the XML
     // — the federal form is unaffected, because the two artifacts disagree about
     // the same field and carry separate statuses.
     const noSsn = ecprChip({
       project: { ...californian, dirProjectId: '123456', contractorPwcr: '1000001234' },
+      contractor: CA_CONTRACTOR_ON_FILE,
       workersMissingSsn: [{ workerRef: 'w1', name: 'Dee Alvarado' }],
       workerCount: 3,
       xsdObservedSha256: null,
@@ -749,6 +837,7 @@ describe('J10 — one filing, two artifacts, two independent statuses', () => {
         lockAssertedAt: null,
         createdAt: NOW,
       },
+      contractor: CA_CONTRACTOR_ON_FILE,
       workersMissingSsn: [],
       workerCount: 2,
       xsdObservedSha256: 'f'.repeat(64),
@@ -758,6 +847,334 @@ describe('J10 — one filing, two artifacts, two independent statuses', () => {
     if (chip.kind !== 'blocked') throw new Error('unreachable');
     expect(chip.refusal?.primitive).toBe('P-B');
     expect(chip.detail).toContain('WH-347 PDF is unaffected');
+  });
+});
+
+// ===========================================================================
+// R-BUILD CORRECTNESS C-3 — the eCPR XML is generated, served, and gated
+//
+// The screen used to render "Generated, not acceptance-tested" and a download link
+// over a route that 409'd every time, because `renderEcprXml` had no caller
+// anywhere in the product. These tests exercise the wired path from the payroll
+// rows to the bytes, and each of the four gates that can stop it.
+//
+// WHY THE FIXTURE PROJECT IS PINNED TO A VIRGINIA DETERMINATION. The recorded
+// corpus holds VA20260195, LA20260005 and DC20260001 and no Californian one, and
+// seeding a fabricated CA determination to make a test look complete would put
+// rates nobody fetched into the mirror. Nothing in the eCPR path reads the pinned
+// WD's state: the emitter is selected by `projects.state_code`, and the rates,
+// hours and totals it carries come from the same `computeFiling` result the WH-347
+// used. So the fixture sets the project's state and identifiers directly and the
+// arithmetic stays the arithmetic the engine's own suites pin.
+// ===========================================================================
+
+describe('J10 — the California XML, generated and served', () => {
+  const CA_IDENTIFIERS = {
+    pwcr: '1000001234',
+    dirProjectId: '900123',
+    fein: '941234567',
+    licenseType: 'CSLB',
+    licenseNumber: '1043928',
+    address: '1400 Levee Road',
+    city: 'Rio Vista',
+    state: 'CA',
+    zip: '94571',
+  } as const;
+
+  /**
+   * A Californian filing: a resolved week, the DIR identifiers on the project, and
+   * nine-digit numbers plus withholding-exemption counts on the crew.
+   *
+   * The SSN is written straight into `workers.ssn_ciphertext`. That column is
+   * specified as envelope-encrypted (§11.3) and security M-2 records that the
+   * cipher does not exist in this build — `ecprIdentities` reads the column and
+   * accepts only nine digits, so this fixture is the shape that function actually
+   * reads today and the one place a test has to change when M-2 lands.
+   */
+  async function californianFiling(input: {
+    readonly name: string;
+    readonly sha: string;
+    readonly band?: 'over_100k' | 'unknown';
+    readonly withSsn?: boolean;
+    readonly withExemptions?: boolean;
+  }) {
+    const projectId = await makeProject({ name: input.name, band: input.band ?? 'over_100k' });
+    await tdb.client.query(
+      `UPDATE projects SET state_code = 'CA', contractor_pwcr = $2, dir_project_id = $3,
+              contractor_fein = $4, ca_license_type = $5, ca_license_number = $6,
+              contractor_address = $7, contractor_city = $8, contractor_state = $9,
+              contractor_zip = $10
+         WHERE id = $1`,
+      [
+        projectId,
+        CA_IDENTIFIERS.pwcr,
+        CA_IDENTIFIERS.dirProjectId,
+        CA_IDENTIFIERS.fein,
+        CA_IDENTIFIERS.licenseType,
+        CA_IDENTIFIERS.licenseNumber,
+        CA_IDENTIFIERS.address,
+        CA_IDENTIFIERS.city,
+        CA_IDENTIFIERS.state,
+        CA_IDENTIFIERS.zip,
+      ],
+    );
+
+    const exact = await firstClassName();
+    const ingested = await asTenant(async (tx) =>
+      ingestPayroll(tx, {
+        accountId: ACCOUNT,
+        userId: USER,
+        now: NOW,
+        projectId,
+        weekEnding: '2026-08-14',
+        workweekStartDay: 0,
+        contractValueBand: input.band ?? 'over_100k',
+        map: { targets: {}, deductions: [], header: ['a'] },
+        sourceSha256: input.sha,
+        byteSize: 128,
+        workers: crew(exact),
+      }),
+    );
+    if (ingested.duplicate) throw new Error('unreachable');
+
+    // BOTH BRANCHES ARE WRITTEN, always. The roster dedupes a worker by name within
+    // an account, so every test in this file shares one `workers` row — setting only
+    // the present case would leave an earlier test's SSN in place and the absent case
+    // would silently pass by testing nothing.
+    await tdb.client.query(
+      `UPDATE workers
+          SET ssn_ciphertext = CASE WHEN $1 THEN convert_to($2, 'UTF8') ELSE NULL END,
+              num_withholding_exemp = CASE WHEN $3 THEN 2 ELSE NULL END
+        WHERE account_id = $4`,
+      [input.withSsn !== false, SSN_ON_FILE, input.withExemptions !== false, ACCOUNT],
+    );
+
+    const project = await asTenant(async (tx) => readProject(tx, projectId));
+    const pin = await asTenant(async (tx) => currentPin(tx, projectId));
+    if (!project || !pin) throw new Error('fixture');
+    await resolveAndClick({ weekId: ingested.weekId, project, pin });
+
+    const generated = await asTenant(async (tx) =>
+      generateFiling(db, tx, { accountId: ACCOUNT, userId: USER, weekId: ingested.weekId, now: NOW }),
+    );
+    if (generated === null) throw new Error('fixture: nothing generated');
+    return { projectId, filingId: generated.filingId, generated };
+  }
+
+  async function outcomeFor(filingId: string) {
+    return asTenant(async (tx) => {
+      const rebuilt = await rebuildFiling(db, tx, filingId);
+      if (rebuilt === null) throw new Error('fixture: nothing to rebuild');
+      const project = await readProject(tx, rebuilt.filing.projectId);
+      if (project === null) throw new Error('fixture');
+      return ecprArtifact(db, tx, { rebuilt, project });
+    });
+  }
+
+  afterEach(async () => {
+    // The mismatch tests open a product-scoped incident. Left open it would block
+    // the XML for every later test, which is exactly the fail-closed behaviour
+    // being asserted — so it is cleared rather than tolerated.
+    await tdb.client.query(`DELETE FROM incidents`);
+  });
+
+  it('emits the XML for a certifiable Californian filing, and records its digest', async () => {
+    const { filingId } = await californianFiling({ name: 'CA emit', sha: 'a'.repeat(64) });
+
+    const outcome = await outcomeFor(filingId);
+    if (outcome.kind !== 'ready') {
+      throw new Error(`expected bytes, got: ${outcome.headline} — ${outcome.detail}`);
+    }
+
+    // A real document against the pinned schema: one employee, seven days, the
+    // identifiers the customer supplied, and the acceptance label the G2 counter
+    // (still at zero) enforces.
+    expect(outcome.artifact.employeeCount).toBe(1);
+    expect(outcome.artifact.acceptanceLabel).toBe('generated, not acceptance-tested');
+    expect(outcome.artifact.xml).toContain('<contractorFEIN>941234567</contractorFEIN>');
+    expect(outcome.artifact.xml).toContain('<licenseType>CSLB</licenseType>');
+    expect(outcome.artifact.xml).toContain(`<awardingBodyProjectId>${CA_IDENTIFIERS.dirProjectId}`);
+    expect(outcome.artifact.xml).toContain('<numWithholdingExemp>2</numWithholdingExemp>');
+    expect((outcome.artifact.xml.match(/<day>/g) ?? []).length).toBe(7);
+    // The fixed-empty pair, emitted in LONG form. `<payrollNum/>` is a different
+    // serialization of the same infoset that some consumers read as absent rather
+    // than empty, and this is a file whose acceptance we cannot observe (G2).
+    expect(outcome.artifact.xml).toContain('<payrollNum></payrollNum>');
+    expect(outcome.artifact.xml).toContain('<amendmentNum></amendmentNum>');
+
+    // The digest is recorded beside the PDF's, which is what gives the download
+    // route the same rebuild-and-compare property the WH-347 has.
+    const artifacts = await asTenant(async (tx) => listArtifacts(tx, filingId));
+    const row = artifacts.find((entry) => entry.kind === 'ecpr_xml');
+    expect(row).toBeDefined();
+    expect(row?.sha256).toBe(
+      createHash('sha256').update(Buffer.from(outcome.artifact.xml, 'utf8')).digest('hex'),
+    );
+
+    // Deterministic: the same stored inputs render the same bytes.
+    const again = await outcomeFor(filingId);
+    if (again.kind !== 'ready') throw new Error('unreachable');
+    expect(again.artifact.xml).toBe(outcome.artifact.xml);
+  });
+
+  /**
+   * THE NINE-DIGIT PROJECTION, ON ONE PATH AND ONLY ONE.
+   *
+   * 29 CFR 5.5(a)(3)(ii)(B) forbids a full SSN on the weekly transmittal; the CA
+   * schema declares `ssn` as `[0-9]{9}` and required. Same worker, same week,
+   * opposite rules — so the assertion is made on both artifacts at once, from one
+   * filing, rather than on either alone.
+   */
+  it('puts nine digits in the XML and never in the PDF, from the same filing', async () => {
+    const { filingId, generated } = await californianFiling({
+      name: 'CA projection',
+      sha: 'b'.repeat(64),
+    });
+
+    const outcome = await outcomeFor(filingId);
+    if (outcome.kind !== 'ready') throw new Error(`unexpected: ${outcome.headline}`);
+    expect(outcome.artifact.xml).toContain(`<ssn>${SSN_ON_FILE}</ssn>`);
+    // DIR's convention: name/@id carries the employee's own nine digits.
+    expect(outcome.artifact.xml).toContain(`id="${SSN_ON_FILE}::ALVARADO, DEE, R"`);
+
+    // The federal artifact, from the same week, in the same request: the last four
+    // and nothing wider. `nineDigitRuns` is the same scan `identity.ts` exports.
+    const pdfText = Buffer.from(generated.pdf).toString('latin1');
+    expect(nineDigitRuns(pdfText)).not.toContain(SSN_ON_FILE);
+    expect(generated.artifact.workers[0]?.identifyingNumber).toBe('4417');
+    // And structurally: the federal render model has no field that can hold nine
+    // digits, so this is a type error before it is a test failure.
+    expect(String(generated.artifact.workers[0]?.identifyingNumber ?? '')).toHaveLength(4);
+  });
+
+  it('refuses to emit an XML for a DRAFT filing, where the schema cannot mark a draft', async () => {
+    const { filingId, generated } = await californianFiling({
+      name: 'CA draft',
+      sha: 'c'.repeat(64),
+      band: 'unknown',
+    });
+    expect(generated.verdict.status).toBe('DRAFT_NOT_CERTIFIABLE');
+
+    const outcome = await outcomeFor(filingId);
+    expect(outcome.kind).toBe('blocked');
+    if (outcome.kind !== 'blocked') throw new Error('unreachable');
+    expect(outcome.refusal?.primitive).toBe('P-B');
+    expect(outcome.detail).toContain('no field in which a draft can be marked');
+    // The WH-347 still generates, watermarked, with the signature withheld — the
+    // two statuses are independent and only one of them moved.
+    expect(generated.pdf.byteLength).toBeGreaterThan(1000);
+    expect(generated.artifact.signatureBlockWithheld).toBe(true);
+
+    // And nothing was recorded: a blocked XML leaves no artifact row to download.
+    const artifacts = await asTenant(async (tx) => listArtifacts(tx, filingId));
+    expect(artifacts.some((entry) => entry.kind === 'ecpr_xml')).toBe(false);
+  });
+
+  it('blocks the XML alone when the DIR schema hash moves, and never the PDF', async () => {
+    const { filingId } = await californianFiling({ name: 'CA xsd', sha: 'd'.repeat(64) });
+
+    const before = await outcomeFor(filingId);
+    expect(before.kind).toBe('ready');
+
+    // What `ingest.dir.xsd` writes when the fetched digest does not match the pin.
+    await tdb.client.query(
+      `INSERT INTO incidents (opened_at, level, scope, cause, auto_response, detail)
+       VALUES (now(), 'L4_XML_BLOCKED', 'product', $1, $2, $3::jsonb)`,
+      [
+        'the CA DIR eCPR schema hash does not match the pinned value',
+        // The column the ops layer would write: `respond({kind:'xsd_hash_mismatch'})`
+        // is a FREEZE, and the CHECK on this table admits exactly four values.
+        autoResponseColumn(respond({ kind: 'xsd_hash_mismatch' })),
+        JSON.stringify({ pinned: 'unused', observed: 'f'.repeat(64) }),
+      ],
+    );
+
+    const after = await outcomeFor(filingId);
+    expect(after.kind).toBe('blocked');
+    if (after.kind !== 'blocked') throw new Error('unreachable');
+    expect(after.refusal?.primitive).toBe('P-B');
+    expect(after.detail).toContain('WH-347 PDF is unaffected');
+
+    // THE POINT OF THE TEST: the federal artifact is byte-identical across the
+    // schema change. L4 blocks XML generation and nothing else.
+    const rebuilt = await asTenant(async (tx) => rebuildFiling(db, tx, filingId));
+    const recorded = await asTenant(async (tx) => listArtifacts(tx, filingId));
+    const pdf = recorded.find((entry) => entry.kind === 'wh347_pdf');
+    expect(rebuilt?.pdfSha256).toBe(pdf?.sha256);
+  });
+
+  it('blocks the XML, naming the worker, when no nine-digit number is on file', async () => {
+    const { filingId, generated } = await californianFiling({
+      name: 'CA no ssn',
+      sha: 'e'.repeat(64),
+      withSsn: false,
+    });
+
+    const outcome = await outcomeFor(filingId);
+    expect(outcome.kind).toBe('blocked');
+    if (outcome.kind !== 'blocked') throw new Error('unreachable');
+    // Caught by the chip, before the emitter runs — and the chip counts the same
+    // nine-digit read the emitter would have done, so the two cannot disagree about
+    // the same worker.
+    expect(outcome.headline).toContain('1 of 1 workers have no Social Security number');
+    expect(outcome.detail).toContain('Dee Alvarado');
+    expect(outcome.detail).toContain('29 CFR 5.5(a)(3)(ii)(B)');
+    expect(outcome.detail).toContain('WH-347 PDF is unaffected');
+    // The federal form carries the last four and is completely unaffected.
+    expect(generated.artifact.workers[0]?.identifyingNumber).toBe('4417');
+  });
+
+  /**
+   * THE CLASS, CLOSED. C-3 was not "the eCPR is missing" — it was a screen offering
+   * a download the route had no branch for. That is a property of the pair of files
+   * and it is checkable without a browser: every `kind` the filing screen links to
+   * must be a `kind` the route names. A future artifact added to the screen and
+   * forgotten in the route fails here rather than at a customer's Friday deadline.
+   */
+  it('offers no artifact download the route has no branch for', () => {
+    const page = readFileSync(
+      join(process.cwd(), 'src', 'app', '(app)', 'app', 'filings', '[id]', 'page.tsx'),
+      'utf8',
+    );
+    const route = readFileSync(
+      join(process.cwd(), 'src', 'app', '(app)', 'api', 'artifacts', '[id]', 'route.ts'),
+      'utf8',
+    );
+
+    const linked = [...page.matchAll(/api\/artifacts\/\$\{id\}\?kind=([a-z0-9_]+)/g)].map(
+      (match) => match[1] ?? '',
+    );
+    expect(new Set(linked)).toEqual(new Set(['wh347_pdf', 'exception_report', 'ecpr_xml']));
+
+    for (const kind of new Set(linked)) {
+      const named = route.includes(`kind === '${kind}'`) || route.includes(`kind !== '${kind}'`);
+      expect(named, `${kind} is linked from the filing screen but not named by the route`).toBe(
+        true,
+      );
+    }
+  });
+
+  it('blocks the XML when California needs a withholding-exemption count nobody holds', async () => {
+    const { filingId } = await californianFiling({
+      name: 'CA no exemptions',
+      sha: '9'.repeat(64),
+      withExemptions: false,
+    });
+
+    const outcome = await outcomeFor(filingId);
+    expect(outcome.kind).toBe('blocked');
+    if (outcome.kind !== 'blocked') throw new Error('unreachable');
+    expect(outcome.refusal?.primitive).toBe('P-B');
+    if (outcome.refusal?.primitive !== 'P-B') throw new Error('unreachable');
+
+    // The actionable half is the exception report, worker by worker — the name and
+    // the field. A refusal that said only "blocked" would leave nothing to do, and
+    // there is nobody to ask (A3).
+    const report = outcome.refusal.exceptionReport.join('\n');
+    expect(report).toContain('Alvarado');
+    expect(report).toContain('numWithholdingExemp');
+    // Not defaulted to zero: zero is an assertion about someone's tax situation.
+    expect(report).toContain('Zero is not a safe default');
   });
 });
 
