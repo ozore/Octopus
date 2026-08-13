@@ -40,6 +40,12 @@ RUN npm run build
 # --- runtime -----------------------------------------------------------------
 FROM base AS runner
 ENV NODE_ENV=production
+# Release-verification metadata (ADR-008): the same values baked at build time
+# must be visible to the runtime process, or /api/health reports "unbuilt".
+ARG CORPUS_RELEASE=0
+ARG PROMPT_BUNDLE_HASH=unbuilt
+ARG BUILD_SHA=dev
+ENV CORPUS_RELEASE=$CORPUS_RELEASE PROMPT_BUNDLE_HASH=$PROMPT_BUNDLE_HASH BUILD_SHA=$BUILD_SHA
 
 RUN --mount=type=secret,id=cacert,target=/run/secrets/cacert \
     apt-get -o Acquire::https::CAInfo=/run/secrets/cacert update \

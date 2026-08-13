@@ -34,6 +34,12 @@ RUN npm run build
 # --- runtime -----------------------------------------------------------------
 FROM base AS runner
 ENV NODE_ENV=production
+# Release-verification metadata (ADR-008): the same values baked at build time
+# must be visible to the runtime process, or /api/health reports "unbuilt".
+ARG CORPUS_RELEASE=0
+ARG PROMPT_BUNDLE_HASH=unbuilt
+ARG BUILD_SHA=dev
+ENV CORPUS_RELEASE=$CORPUS_RELEASE PROMPT_BUNDLE_HASH=$PROMPT_BUNDLE_HASH BUILD_SHA=$BUILD_SHA
 
 # Chromium for the worker's PDF renderer. The branded PDF and the on-screen
 # document render from the SAME React component — divergence between them is a
