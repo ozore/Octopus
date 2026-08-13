@@ -136,6 +136,10 @@ export function encodeWinAnsi(text: string): EncodedText {
  */
 export function pdfLiteral(text: string): string {
   const { bytes } = encodeWinAnsi(text);
+  return escapeLiteral(bytes);
+}
+
+function escapeLiteral(bytes: readonly number[]): string {
   let out = '(';
   for (const byte of bytes) {
     if (byte === 0x28 || byte === 0x29 || byte === 0x5c) out += `\\${String.fromCharCode(byte)}`;
@@ -143,6 +147,51 @@ export function pdfLiteral(text: string): string {
     else out += String.fromCharCode(byte);
   }
   return `${out})`;
+}
+
+/** The UTF-16BE byte-order mark PDF uses to declare a text string's encoding. */
+const UTF16BE_BOM = [0xfe, 0xff] as const;
+
+/**
+ * A PDF **text string** — for the document information dictionary, NOT for a content
+ * stream. R-BUILD, and `JOURNEY_VERIFIED.md` §4.3.
+ *
+ * WHAT WAS WRONG. `pdfLiteral` was shared between content streams and `/Info`, so
+ * `/Title` on the generated WH-347 read `WH-347 payroll \227 … \227 week ending …`.
+ * Octal 227 is 0x97, which is an em dash in **WinAnsiEncoding** — correct for a
+ * content stream, because each font dictionary carries `/Encoding /WinAnsiEncoding` —
+ * and wrong for an information-dictionary string, which PDF 1.7 §7.9.2.2 reads as
+ * **PDFDocEncoding** unless the string opens with a UTF-16BE byte-order mark. The two
+ * encodings differ exactly in 0x80–0x9F, which is where the em dash lives. Chromium's
+ * viewer rendered it `Š`, visible in the tab title in
+ * `phase-2-build/screenshots/05-free-wh347-draft-preview.png`. `/Subject`'s middle dot
+ * (0xB7) was unaffected, because the two encodings agree above 0xA0.
+ *
+ * VERIFIED AGAINST. ISO 32000-1 (PDF 1.7) §7.9.2.2, "Text String Type": a text string
+ * is "either PDFDocEncoded or UTF-16BE with a leading byte order marker", and Table
+ * 317's `/Title`, `/Subject`, `/Producer` and `/Creator` are all of type text string.
+ * The WinAnsi assignment of 0x97 to the em dash is Annex D.2's Latin-character
+ * encoding table; PDFDocEncoding assigns 0x97 to a different character entirely.
+ *
+ * WHAT IT IS NOW. Every codepoint is emitted as UTF-16BE after the BOM, so the string
+ * is unambiguous, needs no encoding table at all, and can carry glyphs WinAnsi cannot
+ * — a worker's name outside Latin-1 no longer becomes `?` in the file's metadata.
+ * Surrogate pairs fall out of `charCodeAt` over the JS string, which is already
+ * UTF-16. The bytes are escaped by the same rule as any other literal, so the octal
+ * form is what a byte-level golden file compares and nothing binary reaches the file.
+ *
+ * The change moves every stored artifact digest, which is why it was deferred at
+ * journey time. It lands here with the arithmetic corrections, which move the same
+ * bytes for a stronger reason, so the golden files are regenerated once rather than
+ * twice.
+ */
+export function pdfTextString(text: string): string {
+  const bytes: number[] = [...UTF16BE_BOM];
+  for (let i = 0; i < text.length; i += 1) {
+    const unit = text.charCodeAt(i);
+    bytes.push((unit >> 8) & 0xff, unit & 0xff);
+  }
+  return escapeLiteral(bytes);
 }
 
 // ===========================================================================

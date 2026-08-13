@@ -178,6 +178,7 @@ async function notifyTransition(
             // this product from the ones that lock the archive.
             archive_open: true,
             export_open: true,
+            link_path: '/app/settings/data',
           },
           idempotencyKey: key(account.stateSince.toISOString()),
         },
@@ -191,7 +192,15 @@ async function notifyTransition(
         {
           accountId: account.accountId,
           template: 'archive_export_link',
-          payload: { reason: 'unpaid_30_days', archive_open: true },
+          // The subject line is "Your Ratepin archive, and how to download it", so
+          // the message has to carry the route that downloads it. Without
+          // `link_path` the mailer fell back to `/app` and the promise resolved to
+          // the dashboard.
+          payload: {
+            reason: 'unpaid_30_days',
+            archive_open: true,
+            link_path: '/app/settings/data',
+          },
           idempotencyKey: key(account.stateSince.toISOString()),
         },
         clock,

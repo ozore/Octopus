@@ -34,6 +34,8 @@
  * clearing goes back to `regressed` on the next refresh with nobody deciding.
  */
 
+import { createHash } from 'node:crypto';
+
 import { sql } from 'drizzle-orm';
 
 import { rowsOf, type Db, type Tx } from '../../db';
@@ -126,7 +128,7 @@ export async function recordReconciliation(
  * it is at the moment it produces it, and nobody revisits the question later.
  */
 export async function recordFilingDuration(
-  db: Db,
+  db: Db | Tx,
   input: {
     readonly accountId: string;
     readonly filingId: string;
@@ -156,7 +158,7 @@ export async function recordFilingDuration(
  * party did. Nothing in the product may infer it.
  */
 export async function recordAcceptanceConfirmation(
-  db: Db,
+  db: Db | Tx,
   input: {
     readonly id: string;
     readonly accountId: string;
@@ -178,6 +180,91 @@ export async function recordAcceptanceConfirmation(
             ${input.confirmedBy ?? null})
     ON CONFLICT (id) DO NOTHING
   `);
+}
+
+/**
+ * G6. The staleness window a credit was posted against.
+ *
+ * `staleness_windows` had no writer of any kind, so `readG6`'s join could never
+ * return a row and the gate could never leave zero — the same shape as G2 and G4.
+ * This is called from the credit path itself, so the evidence is a by-product of the
+ * guarantee firing rather than something anyone remembers to record.
+ *
+ * `chaosTest` marks a DRILL: the same code path, run deliberately against a synthetic
+ * incident, which is what §14 requires G6 to be measured on. It is a parameter rather
+ * than an inference, because a system that guessed which of its own runs were drills
+ * would eventually guess in the flattering direction.
+ */
+export async function recordStalenessWindow(
+  db: Db | Tx,
+  input: {
+    readonly id: string;
+    readonly accountId: string;
+    readonly verifiedAt: Date;
+    readonly creditId: number | null;
+    readonly chaosTest?: boolean;
+  },
+  clock: Clock = systemClock,
+): Promise<void> {
+  await db.execute(sql`
+    INSERT INTO staleness_windows (id, account_id, verified_at, opened_at, chaos_test, credit_id)
+    VALUES (${input.id}::uuid, ${input.accountId}::uuid, ${input.verifiedAt.toISOString()}::timestamptz,
+            ${clock.now().toISOString()}::timestamptz, ${input.chaosTest ?? false},
+            ${input.creditId})
+    ON CONFLICT (id) DO NOTHING
+  `);
+}
+
+/**
+ * G6's writer, named in this module's header since the first commit and never
+ * written until now.
+ *
+ * A chaos run is a credit run: it opens a synthetic staleness window, posts through
+ * the real credit path, and records the windows as `chaos_test`. The gate then reads
+ * the number of DISTINCT SCALES at which that happened, because §9.4's MED-3
+ * correction exists precisely because the ceiling used to bind at the scale where the
+ * guarantee first fires — a drill that only ever ran where the ceiling is comfortable
+ * has not tested the guarantee.
+ */
+export async function recordChaosCreditRun(
+  db: Db | Tx,
+  input: {
+    readonly incidentId: number;
+    readonly verifiedAt: Date;
+    readonly credits: readonly { readonly id: number; readonly accountId: string }[];
+  },
+  clock: Clock = systemClock,
+): Promise<{ readonly windows: number }> {
+  let windows = 0;
+  for (const credit of input.credits) {
+    await recordStalenessWindow(
+      db,
+      {
+        id: windowId(input.incidentId, credit.accountId),
+        accountId: credit.accountId,
+        verifiedAt: input.verifiedAt,
+        creditId: credit.id,
+        chaosTest: true,
+      },
+      clock,
+    );
+    windows += 1;
+  }
+  return { windows };
+}
+
+/** One window per incident per account, derived so a re-run records one fact. */
+export function windowId(incidentId: number, accountId: string): string {
+  const digest = createHash('sha256')
+    .update(`staleness:${String(incidentId)}:${accountId}`)
+    .digest('hex');
+  return [
+    digest.slice(0, 8),
+    digest.slice(8, 12),
+    `5${digest.slice(13, 16)}`,
+    ((parseInt(digest.slice(16, 17), 16) & 0x3) | 0x8).toString(16) + digest.slice(17, 20),
+    digest.slice(20, 32),
+  ].join('-');
 }
 
 // ===========================================================================
@@ -228,12 +315,35 @@ export const GATE_MECHANISM: Readonly<Record<GateKey, string>> = {
   G4:
     'The time from payroll-CSV upload to artifact download is measured in-product on ' +
     'every filing.',
+  /**
+   * G5's mechanism used to say "every address this company publishes", which implies
+   * there is at least one. There is not: the A3 lint asserts that no mail address is
+   * rendered anywhere on the site, and the rendered-HTML probe confirms it across
+   * every public route. A reader who goes looking for the address, finds none, and
+   * then reads the `0` as "messages we chose to acknowledge" has been misled by a
+   * sentence whose whole purpose was to prove we are not misleading them. So the
+   * sentence names the registry instead, which is a fact about our own code.
+   */
   G5:
-    'Every inbound message at every address this company publishes is counted, with ' +
-    'a one-minute floor per message, and the raw total is published monthly.',
+    'Every inbound message at every address in this company’s published-address ' +
+    'registry is counted, with a one-minute floor per message and no category called ' +
+    '"did not need an answer". The registry is empty today, so the count is of a ' +
+    'channel that does not exist yet rather than of messages we chose to acknowledge.',
+  /**
+   * G6's used to read "…and a service credit accrues automatically" — a promise about
+   * a money outcome, in the present indicative, on a public page, while the gate that
+   * governs it was LOCKED. `CORRECTIONS.md` §4 F-4 names that string and gates it on
+   * G6; `IDEA_DOSSIER.md` D10 G6 requires the auto-credit to fire correctly in a
+   * chaos test **before** the guarantee is advertised anywhere. It is now what the
+   * other five are — a description of what the code does — and the promise lives in
+   * the outcome branch of `gateSentence`, which returns null until the counter says
+   * otherwise.
+   */
   G6:
-    'When newer-revision checks stop completing, the claim on the artifact narrows, ' +
-    'a dated banner appears, and a service credit accrues automatically.',
+    'Staleness beyond the published window is recorded as an incident with a dated ' +
+    'window, the claim on the artifact narrows, a dated banner appears, and the credit ' +
+    'path is exercised against that incident with its ceiling published beside what it ' +
+    'posted.',
 } as const;
 
 /**
@@ -280,7 +390,12 @@ export function gateSentence(reading: GateReading): {
           `${String(reading.denominator ?? 0)} paying accounts.`,
       };
     case 'G6':
-      return { mechanism, outcome: 'The credit path has been exercised end to end in a chaos run.' };
+      return {
+        mechanism,
+        outcome:
+          'The credit path has been exercised end to end in a chaos run at both scales, so a ' +
+          'service credit accrues automatically when the corpus goes stale.',
+      };
   }
 }
 
@@ -377,14 +492,58 @@ interface CanaryDayRow {
   readonly states: number | string;
 }
 
+/**
+ * CONSECUTIVE MEANS CONSECUTIVE.
+ *
+ * Both `readG1` and `readG3` used to iterate the day-grouped rows of their evidence
+ * table and break only on a BAD day, so a gap counted as a pass: thirty green runs
+ * one every thirtieth day, the last of them fifteen months ago, satisfied "30
+ * consecutive green days" and released the correctness claim family — while the
+ * rendered sentence added "as of today", which was false. A monthly canary would have
+ * cleared the gate that stands between this company and a correctness claim on a
+ * signed federal certification.
+ *
+ * So the streak is walked over the CALENDAR from the most recent day that has
+ * evidence, and a day with no evidence breaks it exactly as a red day does. The
+ * anchor is checked separately: `STREAK_STALE_HOURS` since the last row, or the gate
+ * reports a stale instrument and cannot hold itself open on old evidence.
+ */
+export const STREAK_STALE_HOURS = 48;
+
+function dayKey(at: Date): string {
+  return at.toISOString().slice(0, 10);
+}
+
+function previousDay(key: string): string {
+  return dayKey(new Date(new Date(`${key}T00:00:00Z`).getTime() - 86_400_000));
+}
+
+/** Walk back one day at a time from `from`, stopping at the first day the predicate
+ *  refuses or has no answer for. */
+function calendarStreak(from: string, good: (day: string) => boolean | undefined): number {
+  let streak = 0;
+  let cursor = from;
+  for (let guard = 0; guard < 400; guard += 1) {
+    if (good(cursor) !== true) break;
+    streak += 1;
+    cursor = previousDay(cursor);
+  }
+  return streak;
+}
+
+function hoursSince(at: Date | null, now: Date): number | null {
+  return at === null ? null : (now.getTime() - at.getTime()) / 3_600_000;
+}
+
 async function readG1(db: Db | Tx, clock: Clock): Promise<GateReading> {
-  const days = rowsOf<CanaryDayRow>(
+  const days = rowsOf<CanaryDayRow & { last_at: string | Date }>(
     await db.execute(sql`
       SELECT to_char(at AT TIME ZONE 'UTC', 'YYYY-MM-DD') AS day,
              bool_and(green) AS green,
              MAX(total)::int AS lines,
              MAX(distinct_wds)::int AS wds,
-             MAX(distinct_states)::int AS states
+             MAX(distinct_states)::int AS states,
+             MAX(at) AS last_at
         FROM canary_runs
        GROUP BY 1
        ORDER BY 1 DESC
@@ -392,18 +551,13 @@ async function readG1(db: Db | Tx, clock: Clock): Promise<GateReading> {
     `),
   );
 
-  // Consecutive green days, counted backwards from the most recent day that has a
-  // run. A day with no run does not extend the streak and does not break it either:
-  // the streak is over days we have evidence for, which is the only kind we have.
-  let streak = 0;
-  for (const day of days) {
-    if (!day.green) break;
-    streak += 1;
-  }
-
+  const green = new Map(days.map((row) => [row.day, row.green]));
   const latest = days[0];
+  const streak = latest === undefined ? 0 : calendarStreak(latest.day, (day) => green.get(day));
+
   const lines = Number(latest?.lines ?? 0);
-  void clock;
+  const stale = hoursSince(latest ? new Date(latest.last_at) : null, clock.now());
+  const fresh = stale !== null && stale <= STREAK_STALE_HOURS ? 1 : 0;
 
   return assemble('G1', {
     measured: days.length === 0 ? null : streak,
@@ -417,6 +571,13 @@ async function readG1(db: Db | Tx, clock: Clock): Promise<GateReading> {
       { name: 'payroll lines in the suite', required: GATE_THRESHOLDS.G1.lines, actual: lines },
       { name: 'distinct wage determinations', required: GATE_THRESHOLDS.G1.wds, actual: Number(latest?.wds ?? 0) },
       { name: 'distinct states', required: GATE_THRESHOLDS.G1.states, actual: Number(latest?.states ?? 0) },
+      // A stale instrument may not hold a gate open. Expressed as a threshold rather
+      // than as a separate flag so the status page shows the shortfall like any other.
+      {
+        name: `canary run in the last ${String(STREAK_STALE_HOURS)} hours`,
+        required: 1,
+        actual: fresh,
+      },
     ],
   });
 }
@@ -449,24 +610,33 @@ async function readG2(db: Db | Tx): Promise<GateReading> {
 }
 
 async function readG3(db: Db | Tx, clock: Clock): Promise<GateReading> {
-  const rows = rowsOf<{ day: string; worst: string | number; unexplained: boolean }>(
+  const rows = rowsOf<{
+    day: string;
+    worst: string | number;
+    unexplained: boolean;
+    last_at: string | Date;
+  }>(
     await db.execute(sql`
       SELECT to_char(at AT TIME ZONE 'UTC', 'YYYY-MM-DD') AS day,
              MAX(delta_pct) AS worst,
              bool_or(delta_pct > ${String(GATE_THRESHOLDS.G3.deltaCeilingPct)}::numeric AND NOT explained)
-               AS unexplained
+               AS unexplained,
+             MAX(at) AS last_at
         FROM corpus_reconciliation
        GROUP BY 1
        ORDER BY 1 DESC
        LIMIT 400
     `),
   );
-  let streak = 0;
-  for (const row of rows) {
-    if (row.unexplained) break;
-    streak += 1;
-  }
-  void clock;
+
+  // Same correction as G1: a day with no reconciliation breaks the streak, because
+  // "60 days of zero unexplained delta" is a claim about sixty days and not about
+  // sixty rows written whenever the job happened to run.
+  const clean = new Map(rows.map((row) => [row.day, !row.unexplained]));
+  const latest = rows[0];
+  const streak = latest === undefined ? 0 : calendarStreak(latest.day, (day) => clean.get(day));
+  const stale = hoursSince(latest ? new Date(latest.last_at) : null, clock.now());
+  const fresh = stale !== null && stale <= STREAK_STALE_HOURS ? 1 : 0;
 
   return assemble('G3', {
     measured: rows.length === 0 ? null : Number(rows[0]?.worst ?? 0),
@@ -475,7 +645,14 @@ async function readG3(db: Db | Tx, clock: Clock): Promise<GateReading> {
     windowDays: GATE_THRESHOLDS.G3.cleanDays,
     consecutiveDays: streak,
     hasEvidence: rows.length > 0,
-    thresholds: [{ name: 'clean days', required: GATE_THRESHOLDS.G3.cleanDays, actual: streak }],
+    thresholds: [
+      { name: 'clean days', required: GATE_THRESHOLDS.G3.cleanDays, actual: streak },
+      {
+        name: `reconciliation in the last ${String(STREAK_STALE_HOURS)} hours`,
+        required: 1,
+        actual: fresh,
+      },
+    ],
   });
 }
 
@@ -513,9 +690,22 @@ async function readG5(db: Db | Tx, clock: Clock): Promise<G5GateReading> {
   const paying = await payingAccountCount(db);
   const report = await g5Report(db, { from, to: now }, paying);
 
-  // Consecutive days under the ceiling, computed over the daily series rather than
-  // over the window average — the gate is "90 days below 2", not "an average of 2
-  // across 90 days", and the two differ exactly when one bad month is buried.
+  /**
+   * CONSECUTIVE DAYS UNDER THE CEILING, OVER THE CALENDAR.
+   *
+   * This used to iterate the rows of a query grouped on `inbound_messages.
+   * received_at`, so a day on which NO message arrived produced no row and did not
+   * count as a day under the ceiling. The better the product performed the shorter
+   * the streak: ninety days at zero minutes with sixty paying accounts returned
+   * `consecutiveDays: 0`, and the only way to clear the one gate that exists to prove
+   * the zero-human-minutes thesis was to receive at least one message on each of
+   * ninety consecutive days. The instrument inverted the incentive it was built to
+   * measure.
+   *
+   * A day is now a day. The series is the calendar, the messages are joined onto it,
+   * and a day with no row is a day with zero minutes — which is a day under the
+   * ceiling, because it is.
+   */
   const daily = rowsOf<{ day: string; minutes: number | string }>(
     await db.execute(sql`
       SELECT to_char(received_at AT TIME ZONE 'UTC', 'YYYY-MM-DD') AS day,
@@ -526,15 +716,15 @@ async function readG5(db: Db | Tx, clock: Clock): Promise<G5GateReading> {
        LIMIT 400
     `),
   );
-  let streak = 0;
-  if (paying > 0) {
-    for (const day of daily) {
-      // A day's contribution to minutes/customer/month is (minutes / accounts) × 30.
-      const perCustomerMonth = (Number(day.minutes) / paying) * 30;
-      if (perCustomerMonth >= GATE_THRESHOLDS.G5.minutesPerCustomerMonth) break;
-      streak += 1;
-    }
-  }
+  const minutesByDay = new Map(daily.map((row) => [row.day, Number(row.minutes)]));
+  const streak =
+    paying > 0
+      ? calendarStreak(dayKey(now), (day) => {
+          // A day's contribution to minutes/customer/month is (minutes / accounts) × 30.
+          const perCustomerMonth = ((minutesByDay.get(day) ?? 0) / paying) * 30;
+          return perCustomerMonth < GATE_THRESHOLDS.G5.minutesPerCustomerMonth;
+        })
+      : 0;
 
   const base = assemble('G5', {
     measured: report.minutesPerCustomerPerMonth,
@@ -542,7 +732,9 @@ async function readG5(db: Db | Tx, clock: Clock): Promise<G5GateReading> {
     denominator: paying,
     windowDays: GATE_THRESHOLDS.G5.days,
     consecutiveDays: streak,
-    hasEvidence: report.inboundTotal > 0,
+    // A paying fleet with a silent inbox IS evidence — it is the evidence. Gating
+    // `hasEvidence` on inbound traffic alone was the same inversion as the streak.
+    hasEvidence: report.inboundTotal > 0 || paying > 0,
     thresholds: [
       { name: 'days under the ceiling', required: GATE_THRESHOLDS.G5.days, actual: streak },
       { name: 'paying accounts', required: GATE_THRESHOLDS.G5.payingAccounts, actual: paying },
@@ -604,9 +796,23 @@ export async function refreshClaimGates(
     const previous = rowsOf<{ state: GateState; unlocked_at: string | null }>(
       await db.execute(sql`SELECT state, unlocked_at FROM claim_gates WHERE gate_key = ${reading.key}`),
     )[0];
-    const hadCleared = previous?.state === 'unlocked' || previous?.unlocked_at !== null;
+    // `previous?.unlocked_at !== null` was TRUE when `previous` was undefined, so a
+    // gate with no seeded row computed as `regressed` — inert only because the
+    // following UPDATE matched nothing. A seventh gate added to `GATE_KEYS` without a
+    // seed row would have silently never appeared on `/status`, which is the one
+    // failure a gate ladder may not have.
+    const hadCleared =
+      previous !== undefined && (previous.state === 'unlocked' || previous.unlocked_at !== null);
     const state: GateState =
-      reading.state === 'unlocked' ? 'unlocked' : hadCleared === true ? 'regressed' : reading.state;
+      reading.state === 'unlocked' ? 'unlocked' : hadCleared ? 'regressed' : reading.state;
+
+    if (previous === undefined) {
+      throw new Error(
+        `claim_gates has no row for ${reading.key}. A gate with no row is a gate that never ` +
+          'appears on the status page and never blocks a claim, so this is a boot failure rather ' +
+          'than a silent absence.',
+      );
+    }
 
     await db.execute(sql`
       UPDATE claim_gates

@@ -444,6 +444,32 @@ export async function lastGoodActiveCount(db: Executor): Promise<number | null> 
   return value === undefined || value === null ? null : Number(value);
 }
 
+/**
+ * The two counts G3 reconciles, for one snapshot.
+ *
+ * `ourActiveCount` is what the mirror holds after this run; `indexTotalActive` is
+ * what the publisher's index said it should hold. They are read back from the
+ * snapshot row rather than returned from the run, so a HELD run — which is exactly
+ * when the delta is worth recording — still produces the pair.
+ */
+export async function snapshotCounts(
+  db: Executor,
+  snapshotId: number,
+): Promise<{ readonly ourActiveCount: number; readonly indexTotalActive: number }> {
+  const { rowsOf } = await import('@/db');
+  const row = rowsOf<{ ours: number | string; index_total_active: number | string | null }>(
+    await db.execute(sql`
+      SELECT (SELECT COUNT(*)::int FROM wd_revision WHERE superseded_on IS NULL) AS ours,
+             (SELECT index_total_active FROM corpus_snapshot WHERE snapshot_id = ${snapshotId})
+               AS index_total_active
+    `),
+  )[0];
+  return {
+    ourActiveCount: Number(row?.ours ?? 0),
+    indexTotalActive: Number(row?.index_total_active ?? 0),
+  };
+}
+
 export async function lastIndexAlias(db: Executor): Promise<string | null> {
   const { rowsOf } = await import('@/db');
   const rows = rowsOf<{ index_alias: string | null }>(

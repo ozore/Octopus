@@ -14,16 +14,21 @@
  * narrower promise made up front.
  *
  * ===========================================================================
- * ONE ENUMERATION, TWO RENDERERS
+ * ONE ENUMERATION, FOUR RENDERERS
  *
- * `DELETION_SCOPE` below is the whole specification. The confirmation screen renders
- * it before the click; `executeAccountDeletion` walks the same array to decide what
- * to do; the erasure report is built by pairing each entry with what its action
- * actually affected. There is no second list. That is the mechanism §5.5 asks for
- * when it says the report is "rendered from the same enumeration the screen renders
- * from, so what the customer was promised and what ran cannot drift" — an entry
- * added here changes all three surfaces, and an entry with no action fails the
- * exhaustiveness check in `actionFor`.
+ * `DELETION_SCOPE` below is the whole specification. The confirmation screen
+ * (`/app/settings/data`) renders it before the click; the public privacy page
+ * (`/legal`) renders the same array partitioned on `disposition`;
+ * `executeAccountDeletion` walks it to decide what to do; the erasure report is
+ * built by pairing each entry with what its action actually affected. There is no
+ * second list — the hardcoded prose that used to sit on `/legal` was a fourth,
+ * unwired copy, and it promised erasure of the three things this array retains.
+ *
+ * The drift is closed by the type system rather than by care: `ScopeId` is the
+ * literal union of the ids below, and `ERASURE_STEP` is a `Record<ScopeId, …>`. An
+ * entry added here with no step does not compile, and an entry whose step is
+ * `retained` can never be counted as erased, because `affected` is `null` for it by
+ * construction in the one function that builds the report.
  *
  * ===========================================================================
  * THE ONE CLAIM WE MAKE, AND THE ONE WE REFUSE
@@ -87,7 +92,7 @@ export interface ScopeEntry {
  * everything that goes, then everything that stays, then the sentence that says the
  * second list exists.
  */
-export const DELETION_SCOPE: readonly ScopeEntry[] = [
+const SCOPE = [
   {
     id: 'ssn_ciphertext',
     label: 'Every encrypted Social Security number, and the key that decrypts them',
@@ -224,7 +229,22 @@ export const DELETION_SCOPE: readonly ScopeEntry[] = [
     mechanism: 'Untouched.',
     why: 'It is public data. It was never yours or ours, and it never contained anything of yours.',
   },
-] as const;
+] as const satisfies readonly ScopeEntry[];
+
+export const DELETION_SCOPE: readonly ScopeEntry[] = SCOPE;
+
+/** The literal union of the ids above. Every renderer and the executor are indexed
+ *  by it, so a new entry cannot reach a screen without reaching the executor too. */
+export type ScopeId = (typeof SCOPE)[number]['id'];
+
+/** The two halves of the enumeration, for renderers that show them as facing lists
+ *  (`/legal`, the confirmation screen). Derived, never retyped. */
+export const DELETION_ERASED: readonly ScopeEntry[] = SCOPE.filter(
+  (entry) => entry.disposition === 'erased',
+);
+export const DELETION_RETAINED: readonly ScopeEntry[] = SCOPE.filter(
+  (entry) => entry.disposition === 'retained',
+);
 
 /** The sentence §5.5 insists on: the one thing we will not do. */
 export const DELETION_BOUNDARY_STATEMENT =
@@ -308,13 +328,10 @@ export async function requestAccountDeletion(
   const clock = deps.clock ?? systemClock;
   const now = clock.now();
 
-  const account = rowsOf<{ name: string; deleted_at: string | null }>(
-    await db.execute(sql`SELECT name, deleted_at FROM accounts WHERE id = ${input.accountId}::uuid`),
-  )[0];
+  const account = await readAccountRow(db, input.accountId);
   if (!account || account.deleted_at !== null) return { ok: false, reason: 'no_account' };
 
-  const normalise = (value: string): string => value.trim().replace(/\s+/g, ' ').toLowerCase();
-  if (normalise(input.typedConfirmation) !== normalise(account.name)) {
+  if (normaliseAccountName(input.typedConfirmation) !== normaliseAccountName(account.name)) {
     return { ok: false, reason: 'name_mismatch' };
   }
 
@@ -360,6 +377,10 @@ export async function requestAccountDeletion(
         effective_at: effectiveAt.toISOString(),
         undo_window_days: UNDO_WINDOW_DAYS,
         export_key: deps.exportKey ?? null,
+        // §11.3 — a link to the authenticated route, never the file. This is the
+        // screen carrying both the undo button and the export download, so the email
+        // is never the sole channel for either.
+        link_path: '/app/settings/data',
       },
       idempotencyKey: `deletion:${input.accountId}:${now.toISOString()}`,
     },
@@ -369,6 +390,38 @@ export async function requestAccountDeletion(
   const record = await readDeletion(db, input.accountId);
   if (!record) throw new Error('account_deletions: the row we just wrote is not there');
   return { ok: true, record };
+}
+
+/**
+ * The name the confirmation screen asks the customer to type, read the same way the
+ * comparison reads it.
+ *
+ * This function exists because the screen used to run its own `SELECT name FROM
+ * accounts LIMIT 1`, which under a role that can see more than one row printed a
+ * DIFFERENT account's name — so the only value the screen offered was the one value
+ * the comparison rejected, and the customer's deletion could not be completed by any
+ * input she was given. There is now one read and one comparison, in the module that
+ * owns both, and `normaliseAccountName` is exported so a screen cannot invent a
+ * second rule for "close enough".
+ */
+export async function readAccountName(db: Db | Tx, account: string): Promise<string | null> {
+  return (await readAccountRow(db, account))?.name ?? null;
+}
+
+/** Trimmed, whitespace-collapsed, case-folded. The whole of the comparison. */
+export function normaliseAccountName(value: string): string {
+  return value.trim().replace(/\s+/g, ' ').toLowerCase();
+}
+
+async function readAccountRow(
+  db: Db | Tx,
+  account: string,
+): Promise<{ readonly name: string; readonly deleted_at: string | null } | null> {
+  return (
+    rowsOf<{ name: string; deleted_at: string | null }>(
+      await db.execute(sql`SELECT name, deleted_at FROM accounts WHERE id = ${account}::uuid`),
+    )[0] ?? null
+  );
 }
 
 export async function readDeletion(db: Db | Tx, account: string): Promise<DeletionRecord | null> {
@@ -461,6 +514,183 @@ export type ExecutionResult =
   | { readonly ok: true; readonly report: ErasureReport }
   | { readonly ok: false; readonly reason: 'not_due' | 'undone' | 'already_executed' | 'not_scheduled' };
 
+// ---------------------------------------------------------------------------
+// The step table — the compile-time half of "one enumeration"
+// ---------------------------------------------------------------------------
+
+interface EraseContext {
+  readonly tx: Tx;
+  readonly account: string;
+  readonly now: Date;
+  readonly salt: string;
+  readonly deps: DeletionDeps;
+}
+
+interface OutsideContext {
+  readonly db: Db;
+  readonly account: string;
+  readonly now: Date;
+}
+
+interface DescribeContext {
+  readonly db: Db;
+  readonly account: string;
+  readonly deps: DeletionDeps;
+}
+
+type ErasureStep =
+  | {
+      readonly kind: 'erase';
+      run(ctx: EraseContext): Promise<number>;
+      /** Rows this entry owns that sit outside the tenant policies. */
+      after?(ctx: OutsideContext): Promise<number>;
+    }
+  | {
+      readonly kind: 'retained';
+      /** What a third party told us, for the entries where "retained" depends on
+       *  somebody else's answer rather than only on our own decision. */
+      describe?(ctx: DescribeContext): Promise<string>;
+    };
+
+/**
+ * Every id in `DELETION_SCOPE`, and what happens to it.
+ *
+ * This is a `Record<ScopeId, …>`, so adding a row to the enumeration without
+ * deciding what it does is a type error rather than a screen that promises an
+ * erasure nothing performs. That is the failure the build review found on `/legal`,
+ * and the type is the reason it cannot recur through this table.
+ */
+const ERASURE_STEP: Readonly<Record<ScopeId, ErasureStep>> = {
+  ssn_ciphertext: {
+    kind: 'erase',
+    // Counted BEFORE the row delete, because after it there is nothing to count. The
+    // key destruction itself is unconditional and happens in the `auth` step's
+    // account update — destroying a key that protected nothing is free, and skipping
+    // it because the table looked empty is how a backup keeps a decryptable secret.
+    async run({ tx, account }) {
+      return Number(
+        rowsOf<{ n: number | string }>(
+          await tx.execute(sql`
+            SELECT COUNT(*)::int AS n FROM workers
+             WHERE account_id = ${account}::uuid AND ssn_ciphertext IS NOT NULL
+          `),
+        )[0]?.n ?? 0,
+      );
+    },
+  },
+
+  workers_and_payroll: {
+    kind: 'erase',
+    // Order matters: `payroll_worker_weeks.worker_id` has no cascade, so the weeks
+    // (which cascade to worker-weeks and lines) go before the workers.
+    async run({ tx, account }) {
+      let rows = 0;
+      rows += rowsOf(
+        await tx.execute(sql`DELETE FROM payroll_weeks WHERE account_id = ${account}::uuid RETURNING id`),
+      ).length;
+      rows += rowsOf(
+        await tx.execute(sql`DELETE FROM payroll_imports WHERE account_id = ${account}::uuid RETURNING id`),
+      ).length;
+      rows += rowsOf(
+        await tx.execute(sql`DELETE FROM workers WHERE account_id = ${account}::uuid RETURNING id`),
+      ).length;
+      return rows;
+    },
+  },
+
+  ecpr_xml: {
+    kind: 'erase',
+    async run({ tx, account }) {
+      return rowsOf(
+        await tx.execute(sql`
+          DELETE FROM artifacts
+           WHERE account_id = ${account}::uuid AND pii_class = 'ssn_bearing'
+           RETURNING r2_key
+        `),
+      ).length;
+    },
+  },
+
+  classification_memory: {
+    kind: 'erase',
+    async run({ tx, account }) {
+      return rowsOf(
+        await tx.execute(sql`
+          DELETE FROM crosswalk_observation WHERE account_id = ${account}::uuid RETURNING observation_id
+        `),
+      ).length;
+    },
+  },
+
+  auth: {
+    kind: 'erase',
+    // The de-identification §5.5 requires. The account ROW survives, because every
+    // gate counter references it by foreign key and deleting it would cascade the
+    // counters away — which is exactly the silently-shrinking denominator §5.5
+    // forbids. What is destroyed is the identity ON the row: the name becomes a
+    // one-way digest, the data key is destroyed, and every email on it goes with the
+    // memberships.
+    async run({ tx, account, now, salt }) {
+      const rows = rowsOf(
+        await tx.execute(sql`DELETE FROM memberships WHERE account_id = ${account}::uuid RETURNING user_id`),
+      ).length;
+      await tx.execute(sql`
+        UPDATE accounts
+           SET name = ${`deleted-account-${tombstoneDigest(account, salt)}`},
+               status = 'deleted'::account_status,
+               deleted_at = ${now.toISOString()}::timestamptz,
+               data_key_uri = NULL,
+               data_key_destroyed_at = ${now.toISOString()}::timestamptz
+         WHERE id = ${account}::uuid
+      `);
+      return rows;
+    },
+    async after({ db, account, now }) {
+      const sessions = rowsOf(
+        await db.execute(sql`DELETE FROM auth_sessions WHERE account_id = ${account}::uuid RETURNING id`),
+      ).length;
+      const links = rowsOf(
+        await db.execute(sql`DELETE FROM auth_magic_links WHERE account_id = ${account}::uuid RETURNING id`),
+      ).length;
+      // Users left with no membership anywhere lose their email, which is the only
+      // identifying thing we hold about a person as opposed to about a company.
+      await db.execute(sql`
+        UPDATE users
+           SET email = ${`deleted-${tombstoneDigest(account, 'user')}`} || '-' || left(id::text, 8) || '@deleted.invalid',
+               deleted_at = ${now.toISOString()}::timestamptz
+         WHERE deleted_at IS NULL
+           AND NOT EXISTS (SELECT 1 FROM memberships m WHERE m.user_id = users.id)
+      `);
+      return sessions + links;
+    },
+  },
+
+  filings_and_artifacts: { kind: 'retained' },
+  last4_and_names_in_artifacts: { kind: 'retained' },
+  projects_and_pins: { kind: 'retained' },
+  backups: { kind: 'retained' },
+
+  stripe_record: {
+    kind: 'retained',
+    // We SUBMIT a redaction and report its state. We do not claim an erasure Stripe
+    // has told us it will not perform.
+    async describe({ db, account, deps }) {
+      const billing = await readBillingAccount(db, account);
+      if (!billing?.stripeCustomerId) {
+        return 'This account had no Stripe customer, so there was nothing to redact.';
+      }
+      const redaction = await deps.stripe.requestCustomerRedaction(billing.stripeCustomerId);
+      return redaction.state === 'submitted'
+        ? 'A redaction request was submitted to Stripe. Stripe may retain data as legally required after redaction.'
+        : 'Stripe reported that this record is not eligible for redaction yet. Transactions can only be redacted after 90 days.';
+    },
+  },
+
+  gate_counters: { kind: 'retained' },
+  crosswalk_aggregate: { kind: 'retained' },
+  mirror: { kind: 'retained' },
+};
+
 /**
  * Execute. One transaction per erasure step, walked in the order of the enumeration,
  * with the count of each step written straight into the report.
@@ -485,115 +715,35 @@ export async function executeAccountDeletion(
 
   const affected = new Map<string, number>();
   const notes = new Map<string, string>();
+  const salt = `${account}:${now.toISOString()}`;
 
+  // ONE WALK OVER THE ENUMERATION. The order of the steps is the order of the array,
+  // which is the order the screen printed them in — so "what she was told, top to
+  // bottom" and "what ran, first to last" are the same list read the same way.
   await withTenant(db, { accountId: brandAccountId(account) }, async (tx) => {
-    // --- ssn_ciphertext ---------------------------------------------------
-    // Counted BEFORE the row delete, because after it there is nothing to count.
-    const withCiphertext = Number(
-      rowsOf<{ n: number | string }>(
-        await tx.execute(sql`
-          SELECT COUNT(*)::int AS n FROM workers
-           WHERE account_id = ${account}::uuid AND ssn_ciphertext IS NOT NULL
-        `),
-      )[0]?.n ?? 0,
-    );
-    affected.set('ssn_ciphertext', withCiphertext);
-
-    // --- workers and payroll ---------------------------------------------
-    // Order matters: `payroll_worker_weeks.worker_id` has no cascade, so the weeks
-    // (which cascade to worker-weeks and lines) go before the workers.
-    let payrollRows = 0;
-    payrollRows += rowsOf(
-      await tx.execute(sql`DELETE FROM payroll_weeks WHERE account_id = ${account}::uuid RETURNING id`),
-    ).length;
-    payrollRows += rowsOf(
-      await tx.execute(sql`DELETE FROM payroll_imports WHERE account_id = ${account}::uuid RETURNING id`),
-    ).length;
-    payrollRows += rowsOf(
-      await tx.execute(sql`DELETE FROM workers WHERE account_id = ${account}::uuid RETURNING id`),
-    ).length;
-    affected.set('workers_and_payroll', payrollRows);
-
-    // --- the PII-class artifacts -----------------------------------------
-    const ecpr = rowsOf<{ r2_key: string }>(
-      await tx.execute(sql`
-        DELETE FROM artifacts
-         WHERE account_id = ${account}::uuid AND pii_class = 'ssn_bearing'
-         RETURNING r2_key
-      `),
-    );
-    affected.set('ecpr_xml', ecpr.length);
-    if (deps.exportKey === undefined) notes.set('ecpr_xml', 'No export was taken before deletion.');
-
-    // --- classification memory -------------------------------------------
-    const memory = rowsOf(
-      await tx.execute(sql`
-        DELETE FROM crosswalk_observation WHERE account_id = ${account}::uuid RETURNING observation_id
-      `),
-    ).length;
-    affected.set('classification_memory', memory);
-
-    // --- the identity ------------------------------------------------------
-    // The de-identification §5.5 requires. The account ROW survives, because every
-    // gate counter references it by foreign key and deleting it would cascade the
-    // counters away — which is exactly the silently-shrinking denominator §5.5
-    // forbids. What is destroyed is the identity ON the row: the name becomes a
-    // one-way digest and every email on it goes with the memberships.
-    const salt = `${account}:${now.toISOString()}`;
-    let authRows = 0;
-    authRows += rowsOf(
-      await tx.execute(sql`DELETE FROM memberships WHERE account_id = ${account}::uuid RETURNING user_id`),
-    ).length;
-    affected.set('auth', authRows);
-    await tx.execute(sql`
-      UPDATE accounts
-         SET name = ${`deleted-account-${tombstoneDigest(account, salt)}`},
-             status = 'deleted'::account_status,
-             deleted_at = ${now.toISOString()}::timestamptz,
-             data_key_uri = NULL,
-             data_key_destroyed_at = ${now.toISOString()}::timestamptz
-       WHERE id = ${account}::uuid
-    `);
+    for (const entry of SCOPE) {
+      const step = ERASURE_STEP[entry.id];
+      if (step.kind !== 'erase') continue;
+      affected.set(entry.id, await step.run({ tx, account, now, salt, deps }));
+    }
   });
 
-  // Sessions and magic links live outside the tenant policies by design (they are
-  // read to LEARN the tenant), so they are cleared outside `withTenant`.
-  const sessions = rowsOf(
-    await db.execute(sql`
-      DELETE FROM auth_sessions WHERE account_id = ${account}::uuid RETURNING id
-    `),
-  ).length;
-  const links = rowsOf(
-    await db.execute(sql`
-      DELETE FROM auth_magic_links WHERE account_id = ${account}::uuid RETURNING id
-    `),
-  ).length;
-  affected.set('auth', (affected.get('auth') ?? 0) + sessions + links);
+  // The steps whose rows live outside the tenant policies by design (sessions and
+  // magic links are read to LEARN the tenant, so they carry no policy). Same
+  // enumeration, same ids, counts added to the same entries.
+  for (const entry of SCOPE) {
+    const step = ERASURE_STEP[entry.id];
+    if (step.kind !== 'erase' || !step.after) continue;
+    affected.set(entry.id, (affected.get(entry.id) ?? 0) + (await step.after({ db, account, now })));
+  }
 
-  // Users left with no membership anywhere lose their email, which is the only
-  // identifying thing we hold about a person as opposed to about a company.
-  await db.execute(sql`
-    UPDATE users
-       SET email = ${`deleted-${tombstoneDigest(account, 'user')}`} || '-' || left(id::text, 8) || '@deleted.invalid',
-           deleted_at = ${now.toISOString()}::timestamptz
-     WHERE deleted_at IS NULL
-       AND NOT EXISTS (SELECT 1 FROM memberships m WHERE m.user_id = users.id)
-  `);
+  if (deps.exportKey === undefined) notes.set('ecpr_xml', 'No export was taken before deletion.');
 
-  // --- Stripe -------------------------------------------------------------
-  // We SUBMIT a redaction and report its state. We do not claim an erasure Stripe
-  // has told us it will not perform.
-  const billing = await readBillingAccount(db, account);
-  if (billing?.stripeCustomerId) {
-    const redaction = await deps.stripe.requestCustomerRedaction(billing.stripeCustomerId);
-    notes.set(
-      'stripe_record',
-      redaction.state === 'submitted'
-        ? 'A redaction request was submitted to Stripe. Stripe may retain data as legally required after redaction.'
-        : 'Stripe reported that this record is not eligible for redaction yet. Transactions can only be redacted after 90 days.',
-    );
-  } else {
-    notes.set('stripe_record', 'This account had no Stripe customer, so there was nothing to redact.');
+  // The retained entries that have something to say about what a third party did.
+  for (const entry of SCOPE) {
+    const step = ERASURE_STEP[entry.id];
+    if (step.kind !== 'retained' || !step.describe) continue;
+    notes.set(entry.id, await step.describe({ db, account, deps }));
   }
 
   const report = buildErasureReport({ accountId: account, executedAt: now, affected, notes });

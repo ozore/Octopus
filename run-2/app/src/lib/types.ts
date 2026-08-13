@@ -273,6 +273,31 @@ export interface DayHours {
 export interface FringePlanCredit {
   readonly planName: string;
   readonly hourlyCredit: MilliRate;
+  /**
+   * R-BUILD H-3. Is this an UNFUNDED plan — one whose benefits are paid from the
+   * contractor's general assets rather than irrevocably contributed to a trustee or
+   * third person?
+   *
+   * REQUIRED, with no default, for the same reason `contractValueBand` has none: the
+   * safe value differs by direction and neither guess is safe on a document signed
+   * under 18 U.S.C. 1001. Defaulting `false` credits an unapproved plan against the
+   * wage obligation; defaulting `true` blocks every compliant funded plan.
+   *
+   * 29 CFR 5.28(b), fetched from the eCFR versioner API on 2026-08-13 (title-29
+   * issue 2026-08-11): an unfunded plan "may not constitute a fringe benefit within
+   * the meaning of the Act unless" five conditions hold, of which (5) is that "the
+   * contractor or subcontractor requests and receives approval of the plan or program
+   * from the Secretary". Approval is a fact about a filing with WHD that no payroll
+   * CSV contains, so the credit is not evaluable and `week.ts` blocks the line.
+   *
+   * WHAT WAS WRONG. The field did not exist, so an unfunded plan was
+   * indistinguishable from a funded one: its credit was narrowed at N1 into column
+   * 6B, printed, used to check box 5 of the statement of compliance, and — the part
+   * that matters — added to `paidTotal`, where it could carry a line over
+   * `requiredTotal` and suppress `WD_UNDERPAYMENT` outright. The landing page told
+   * the customer Ratepin refuses unfunded plans while the engine credited them.
+   */
+  readonly unfunded: boolean;
 }
 
 /** ENGINE §9.1 — one member per lettered paragraph of 29 CFR 3.5, of which there
@@ -415,6 +440,24 @@ export type BlockReason =
   | 'UNSPLIT_CLASSIFICATION_TIME'
   | 'PREMIUM_HOURS_UNPROVEN'
   | 'NET_RECONCILIATION_FAILED'
+  /**
+   * R-BUILD H-1. WH-347 column 7A is "the worker's gross amount earned for the
+   * workweek for hours worked on this Federal or federally assisted project" and
+   * column 7B is "the total gross amount earned during the week for all work
+   * performed during the week" (WHD's own instructions to the form, fetched
+   * 2026-08-13). 7A is a subset of 7B by construction, so a form on which 7A exceeds
+   * a non-zero 7B is internally impossible and column 9's net cannot reconcile
+   * against it. WORKER-scoped: both figures are worker-week quantities.
+   */
+  | 'GROSS_EXCEEDS_ALL_WORK_GROSS'
+  /**
+   * R-BUILD H-3. A fringe credit is claimed against an UNFUNDED plan. 29 CFR
+   * 5.28(b)(5) conditions such a plan on the contractor having "request[ed] and
+   * receive[d] approval of the plan or program from the Secretary"; that approval is
+   * not in any payroll export, so the credit is not evaluable and the line blocks
+   * rather than the credit being taken. Line-scoped.
+   */
+  | 'UNFUNDED_PLAN_CREDIT'
   | 'NO_PINNED_REVISION'
   | 'CORPUS_STALE_NO_NEW_ASSERTION'
   | 'COUNTY_SCOPE_UNRESOLVED'

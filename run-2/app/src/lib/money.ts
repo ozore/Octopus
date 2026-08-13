@@ -391,7 +391,20 @@ export const NARROWING_SITES: readonly NarrowingSite[] = [
   { id: 'N7', site: 'premiumCredit', expression: 'provenPremiumHours × (rate − regularRate)', per: 'line x bucket' },
   { id: 'N8', site: 'premiumPaidTotal', expression: 'hours(bucket) × (rate − regularRate)', per: 'line x bucket' },
   { id: 'N9', site: 'requiredTotal', expression: '(BHR_WD + FRINGE_WD) × allHours', per: 'line' },
-  { id: 'N10', site: 'paidTotalCashTerm', expression: 'cashRate × allHours', per: 'line' },
+  /**
+   * R-BUILD C-1. Was `cashRate × allHours`, which priced double-time hours at a rate
+   * the row does not report and suppressed `WD_UNDERPAYMENT` on a real shortfall.
+   * 29 CFR 5.31(b) denominates all three discharge methods in a STRAIGHT TIME hourly
+   * rate, so each hour is credited at its straight-time equivalent and the
+   * double-time bucket at the lesser of the two rates the row itself carries.
+   * `compliance.ts` holds the derivation and the executed cases.
+   */
+  {
+    id: 'N10',
+    site: 'straightTimeEquivalentCash',
+    expression: 'cashRate × (st + ot) + min(cashRate, dtRate) × dt',
+    per: 'line',
+  },
 ] as const;
 
 /**

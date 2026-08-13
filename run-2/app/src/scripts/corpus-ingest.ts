@@ -23,7 +23,7 @@
  * ingest failure produces.
  */
 
-import { closeDb, getDb } from '@/db';
+import { createDb } from '@/db';
 import { getConfig } from '@/lib/config';
 
 import { runIngest, SamClient, httpFetcher, type CanaryRunner } from '@/corpus';
@@ -74,7 +74,12 @@ async function resolveCanary(): Promise<CanaryRunner> {
 
 async function main(): Promise<void> {
   const config = getConfig();
-  const db = await getDb();
+  // An admin process, as the owner: the mirror has no write grant for the
+  // application role (I5). `getDb()` is the serving handle and refuses a role that
+  // can bypass RLS, which is the right answer for a web process and the wrong
+  // question for this one.
+  const handle = await createDb();
+  const db = handle.db;
 
   const client = new SamClient({
     indexBase: config.SAM_INDEX_BASE,
@@ -106,7 +111,7 @@ async function main(): Promise<void> {
     })}\n`,
   );
 
-  await closeDb();
+  await handle.close();
   // A held snapshot is an ordinary event, not a failed job: exiting non-zero would
   // page somebody, and there is nobody to page (A3, A5).
   process.exit(0);

@@ -58,8 +58,6 @@ interface PlanDbRow {
   readonly included_filings: number | string | null;
   readonly overage_price_cents: number | string | null;
   readonly auto_upgrade_to: string | null;
-  readonly project_cap: number | string | null;
-  readonly worker_cap: number | string | null;
   readonly features: Record<string, unknown> | null;
 }
 
@@ -72,8 +70,6 @@ function toPlan(row: PlanDbRow): PlanRow {
     overagePriceCents:
       row.overage_price_cents === null ? null : Cents.of(Number(row.overage_price_cents)),
     autoUpgradeTo: row.auto_upgrade_to,
-    projectCap: row.project_cap === null ? null : Number(row.project_cap),
-    workerCap: row.worker_cap === null ? null : Number(row.worker_cap),
     features: row.features ?? {},
   };
 }
@@ -81,7 +77,7 @@ function toPlan(row: PlanDbRow): PlanRow {
 export async function loadPlans(db: Db | Tx): Promise<readonly PlanRow[]> {
   const result = await db.execute(sql`
     SELECT id, name, price_cents, included_filings, overage_price_cents,
-           auto_upgrade_to, project_cap, worker_cap, features
+           auto_upgrade_to, features
       FROM plans ORDER BY price_cents ASC
   `);
   return rowsOf<PlanDbRow>(result).map(toPlan);

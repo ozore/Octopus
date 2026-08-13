@@ -54,30 +54,33 @@ const PORT = Number(process.env['PORT'] ?? 3100);
 /**
  * TWO URLs, AND THE DIFFERENCE IS THE TENANT BOUNDARY.
  *
- * ADR-011 wants the server on `ratepin_app` — the NOBYPASSRLS role every policy in
- * `drizzle/0000_init.sql` is written `TO`. IT CANNOT RUN THERE TODAY, and the
- * default below is the owner because of a defect this journey found by trying:
- * `redeemMagicLink` provisions a brand-new identity with no tenant context set, so
- * `ratepin_current_account()` is NULL and every policy it must satisfy is false.
- * The first statement fails outright —
+ * The server runs on `ratepin_app` — the NOBYPASSRLS role every policy in
+ * `drizzle/0000_init.sql` is written `TO` — and the harness reads the outbox and
+ * the account id as the OWNER, which is what a migration and an admin process
+ * legitimately are. That is the posture ADR-011 describes.
  *
- *   INSERT INTO users … ON CONFLICT (email) DO NOTHING
- *   ERROR 42501: new row violates row-level security policy for table "users"
+ * IT USED TO BE THE OWNER ON BOTH SIDES, and the reason is worth keeping. The
+ * application could not boot on `ratepin_app` at all: `resolveSession` joined
+ * `users`, whose policy needs the account the session lookup exists to discover,
+ * and `redeemMagicLink` provisioned four rows with no tenant context to satisfy any
+ * policy with. Nobody could sign in on a correctly configured deployment, so the
+ * journey ran as a superuser — with row-level security silently INERT, which is why
+ * the sixteen screenshots prove the repositories and not the policies. Both halves
+ * are fixed (a pre-tenant surface with no join into tenant tables, and one
+ * SECURITY DEFINER provisioning function), `e2e/tenancy.spec.ts` asserts it rather
+ * than pinning it as expected-to-fail, and `getDb()` now refuses to serve on a role
+ * that can bypass RLS — so a regression here stops the process instead of quietly
+ * serving every tenant to every visitor.
  *
- * — and the ones after it would fail too. NOBODY CAN SIGN IN on a correctly
- * configured deployment. `e2e/tenancy.spec.ts` pins that as a known defect, so the
- * day it is fixed the suite says so; the write-up is in
- * `phase-2-build/JOURNEY_VERIFIED.md`.
+ * `ratepin_app` is created NOLOGIN, so it needs a credential before it can be
+ * connected as. `npm run db:migrate` sets one when `DATABASE_APP_PASSWORD` is in the
+ * environment:
  *
- * The consequence for these screenshots is stated rather than hidden: they were
- * captured with row-level security INERT, so the second half of ADR-011's two
- * mechanisms was not in force. The journey's last step drives the first half —
- * whether the repositories themselves scope — precisely because of that.
- *
- * Point `RATEPIN_E2E_APP_URL` at `ratepin_app` once provisioning is fixed.
+ *   DATABASE_URL=postgres://postgres:ratepin@127.0.0.1:5432/ratepin \
+ *   DATABASE_APP_PASSWORD=ratepin npm run db:migrate
  */
 const APP_DATABASE_URL =
-  process.env['RATEPIN_E2E_APP_URL'] ?? 'postgres://postgres:ratepin@127.0.0.1:5432/ratepin';
+  process.env['RATEPIN_E2E_APP_URL'] ?? 'postgres://ratepin_app:ratepin@127.0.0.1:5432/ratepin';
 
 const OWNER_DATABASE_URL =
   process.env['RATEPIN_E2E_OWNER_URL'] ?? 'postgres://postgres:ratepin@127.0.0.1:5432/ratepin';

@@ -24,6 +24,7 @@ import { ensurePlanCatalog } from '@/platform/billing/catalog';
 import { ensurePlatformSchema } from '@/platform/schema';
 import {
   applyMigrations,
+  ensureAppRoleLogin,
   MIGRATION_LEDGER,
   type AppliedMigration,
   type MigrationExecutor,
@@ -127,7 +128,25 @@ async function main(): Promise<void> {
      * it here costs three no-op UPDATEs and closes the gap.
      */
     await ensurePlanCatalog(db);
-    process.stdout.write(`${JSON.stringify({ driver: 'postgres', ...result })}\n`);
+    /**
+     * AND THE CREDENTIAL THE APPLICATION ROLE NEEDS IN ORDER TO BE USED AT ALL.
+     *
+     * `ratepin_app` is created NOLOGIN, which meant nothing could connect as it,
+     * which meant the deployment connected as the owner, which meant every policy
+     * in section 10 of the schema of record was inert with no symptom. The web
+     * process now refuses to serve on a role that can bypass RLS (`getDb`), so the
+     * role has to be reachable. The password comes from the environment and never
+     * from a literal in a SQL file; leaving it unset is a no-op, for a deployment
+     * that mints the credential some other way.
+     */
+    const roleReady = await ensureAppRoleLogin(
+      postgresExecutor(client),
+      config.DATABASE_APP_ROLE,
+      process.env['DATABASE_APP_PASSWORD'],
+    );
+    process.stdout.write(
+      `${JSON.stringify({ driver: 'postgres', ...result, appRoleLogin: roleReady })}\n`,
+    );
   } finally {
     await client.end({ timeout: 5 });
   }

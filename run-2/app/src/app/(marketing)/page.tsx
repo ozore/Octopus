@@ -708,12 +708,32 @@ export default async function LandingPage(): Promise<React.ReactElement> {
           <p className="rp-lp-eyebrow">The claims policy, published</p>
           <h2 id="claims-h">What we are not allowed to tell you yet</h2>
           <p className="rp-lp-lead">
+            {/*
+              THE SENTENCE THAT USED TO BE HERE WAS ITSELF AN UNMEASURED CLAIM.
+
+              The sentence that stood here asserted that no committer could promote a
+              claim by editing copy. That is itself a claim about a mechanism, on the
+              page whose subject is not making claims about mechanisms we have not
+              measured, and it is false as stated: the copy lint is
+              a string blacklist applied per sentence, so it catches the copy-paste
+              and not the rewrite — ten paraphrases of the five gated families pass
+              it, two of them because the negation guard that protects corrections
+              also exempts a superlative phrased in the negative.
+
+              What IS enforced is narrower and testable, so that is what is printed.
+              `gateSentence` takes a reading that can only come from a counter,
+              returns null unless it says `unlocked`, and has no parameter that
+              overrides it. Every outcome sentence on this site comes through it.
+            */}
             Every performance claim on this site is rendered from a counter, not typed into a
             template. While a gate is locked the page renders the mechanism sentence — what the
             software does — and the outcome sentence is structurally absent. A measured claim that
             regresses is demoted back to the mechanism automatically.{' '}
-            <strong>Nobody here can promote a claim by editing copy.</strong> The live counters are
-            on <Link href="/status">the status page</Link>.
+            <strong>
+              Every gate outcome below is rendered by one function that takes a database reading and
+              returns nothing while the counter is locked; it has no override parameter.
+            </strong>{' '}
+            The live counters are on <Link href="/status">the status page</Link>.
           </p>
         </div>
 

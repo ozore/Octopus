@@ -126,7 +126,13 @@ export interface LineSpec extends ClassSpec {
   readonly st?: string;
   readonly ot?: string;
   readonly dt?: string;
-  readonly plans?: readonly { readonly name: string; readonly credit: string }[];
+  readonly plans?: readonly {
+    readonly name: string;
+    readonly credit: string;
+    /** 29 CFR 5.28(b) — benefits paid from general assets rather than irrevocable
+     *  contributions. Blocks the line (R-BUILD H-3). */
+    readonly unfunded?: boolean;
+  }[];
   /** Set to simulate a line the classification ladder has not resolved. */
   readonly unresolved?: boolean;
   /** Set to simulate a classification absent from the pinned revision. */
@@ -174,6 +180,10 @@ function plansOf(spec: LineSpec): readonly FringePlanCredit[] {
   return (spec.plans ?? []).map((plan) => ({
     planName: plan.name,
     hourlyCredit: MilliRate.fromDecimalString(plan.credit),
+    // R-BUILD H-3. Every DOL oracle in `fixtures.ts` describes a plan the example
+    // treats as creditable, so the default here is the funded case; a fixture that
+    // wants the 5.28(b)(5) refusal sets `unfunded: true` on its own plan spec.
+    unfunded: plan.unfunded ?? false,
   }));
 }
 

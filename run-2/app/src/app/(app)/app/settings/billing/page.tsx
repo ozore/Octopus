@@ -31,6 +31,7 @@ import {
   openPortalAction,
   recheckPaymentAction,
   refundAction,
+  refundRateCardAction,
   revertUpgradeAction,
   startCheckoutAction,
 } from '../../../_actions/billing';
@@ -51,6 +52,125 @@ export const dynamic = 'force-dynamic';
 
 export const metadata = { title: 'Billing — Ratepin' };
 
+interface Outcome {
+  readonly key: string;
+  readonly tone: 'narrowed' | 'declined';
+  readonly title: string;
+  readonly detail: string;
+}
+
+/**
+ * The six redirect parameters `_actions/billing.ts` can produce, and what each one
+ * means.
+ *
+ * THIS IS AN ENUMERATION, NOT A BEST EFFORT. Every `redirect()` in that file lands
+ * here: `?error=` from checkout, plan change, revert and portal; `?changed=`;
+ * `?reverted=`; `?rechecked=`; `?refund=`. The screen used to read exactly one of
+ * them, so `Re-check my payment status` — which §11.7 calls "the whole of the
+ * escalation path" — and `Open the billing portal`, which is the only route to
+ * cancellation, both returned a byte-identical page and no information at all.
+ *
+ * Each sentence names what is true now and what she can do next ON THIS SCREEN.
+ * There is no address in any of them, because there is no address; what replaces it
+ * is that every state has a control beside it.
+ */
+function billingOutcomes(params: Record<string, string | string[] | undefined>): readonly Outcome[] {
+  const read = (name: string): string | null =>
+    typeof params[name] === 'string' ? (params[name] as string) : null;
+  const outcomes: Outcome[] = [];
+
+  const rechecked = read('rechecked');
+  if (rechecked !== null) {
+    const said: Readonly<Record<string, string>> = {
+      active:
+        'Stripe reports this subscription as active, and that is now what this page shows. If it ' +
+        'read restricted a moment ago, a webhook was dropped and this check replaced it.',
+      trialing: 'Stripe reports this subscription as trialing, and that is now what this page shows.',
+      past_due:
+        'Stripe reports this subscription as past due. The card was charged and declined; your ' +
+        'archive and export stay open, and updating the card in the portal below resolves it.',
+      canceled: 'Stripe reports this subscription as cancelled. Your archive and export stay open.',
+      unpaid:
+        'Stripe reports this subscription as unpaid. Your archive and export stay open; the plan ' +
+        'cards below start a new subscription whenever you want one.',
+      none:
+        'Stripe answered, and it holds no status for this subscription. Nothing on this page ' +
+        'changed, because there was nothing to apply.',
+      no_subscription:
+        'There is no subscription on this account to re-check. If you have just paid, the plan ' +
+        'cards below are what start one; nothing was charged and nothing is pending.',
+    };
+    outcomes.push({
+      key: 'rechecked',
+      tone: 'narrowed',
+      title: 'We asked Stripe directly',
+      detail:
+        said[rechecked] ??
+        `Stripe answered "${rechecked}", which is a status this screen does not have a sentence ` +
+          'for. It has been applied to your entitlement exactly as Stripe reported it.',
+    });
+  }
+
+  const changed = read('changed');
+  if (changed !== null) {
+    outcomes.push({
+      key: 'changed',
+      tone: 'narrowed',
+      title: changed === 'upgrade' ? 'You moved up a plan' : 'You moved down a plan',
+      detail:
+        changed === 'upgrade'
+          ? 'The change is immediate and prorated — you are charged for the difference for the days ' +
+            'left in this period, not a second full month.'
+          : 'The change takes effect at the end of this period, because you have already paid for ' +
+            'it. Nothing about your archive changes at either end.',
+    });
+  }
+
+  if (read('reverted') !== null) {
+    outcomes.push({
+      key: 'reverted',
+      tone: 'narrowed',
+      title: 'You are back on the plan you chose',
+      detail:
+        'The automatic upgrade has been reversed and prorated back. The overage job will not move ' +
+        'you again for the rest of this period — your choice ends the question rather than ' +
+        'postponing it by an hour.',
+    });
+  }
+
+  const error = read('error');
+  if (error !== null) {
+    const said: Readonly<Record<string, string>> = {
+      unknown_plan:
+        'That plan is not one we sell. Nothing was charged. The plans below are the whole ladder; ' +
+        'there is no custom tier and no quote.',
+      no_subscription:
+        'There is no subscription on this account, so there was nothing to change. Starting one is ' +
+        'a button on any plan card below.',
+      same_plan: 'That is already your plan, so nothing was changed and nothing was charged.',
+      no_auto_upgrade:
+        'There is no automatic upgrade on this account to reverse. If you moved plans yourself, ' +
+        'moving back is a button on the plan cards below.',
+      no_customer:
+        'Ratepin holds no Stripe customer for this account yet, so the hosted portal has nothing ' +
+        'to open — the portal is where a card and its invoices live, and this account has never ' +
+        'had one. Starting a plan below creates it; until then there is no card to change, no ' +
+        'invoice to download and nothing to cancel.',
+    };
+    outcomes.push({
+      key: 'error',
+      tone: 'declined',
+      title: 'That did not happen, and nothing was charged',
+      detail:
+        said[error] ??
+        'That request did not complete and nothing on this account was changed. Every control on ' +
+        'this screen is safe to press again.',
+    });
+  }
+
+  return outcomes;
+}
+
 export default async function BillingPage({
   searchParams,
 }: {
@@ -65,6 +185,7 @@ export default async function BillingPage({
   );
 
   const notice = typeof params['refund'] === 'string' ? (params['refund'] as string) : null;
+  const outcomes = billingOutcomes(params);
 
   return (
     <div className="rp-stack rp-stack--section">
@@ -91,6 +212,22 @@ export default async function BillingPage({
           </div>
         )}
       </section>
+
+      {/* Every outcome any action on this screen can redirect with. A redirect
+          parameter no branch renders is a byte-identical page reload, which tells the
+          customer nothing about whether the thing ran, found nothing, or did not run
+          — and under A3 there is nobody to ask. */}
+      {outcomes.map((outcome) => (
+        <div key={outcome.key} className={`rp-alert rp-alert--${outcome.tone}`}>
+          <span className="rp-alert__glyph" aria-hidden="true">
+            {outcome.tone === 'declined' ? '§' : '!'}
+          </span>
+          <div className="rp-alert__body rp-stack rp-stack--tight">
+            <p className="rp-alert__title">{outcome.title}</p>
+            <p>{outcome.detail}</p>
+          </div>
+        </div>
+      ))}
 
       {/* §11.7 — the button that closes the worst failure mode in the product. */}
       <section className="rp-stack rp-measure">
@@ -186,6 +323,15 @@ export default async function BillingPage({
               </button>
             </div>
           </form>
+          {/* The consequence, stated before the click rather than discovered after
+              it. The overage job reads this decision and stops re-firing, which is
+              what makes the button an undo rather than an hour's delay. */}
+          <p className="rp-btn__why">
+            Pressing this puts you back on {view.revertableUpgrade.fromPlanId} and prorates the
+            difference back. It also settles the question for the rest of this billing period:
+            Ratepin will not move you up again automatically before it renews, however many filings
+            you release. Overage is charged as usual, and the cap above is what it can reach.
+          </p>
         </section>
       )}
 
@@ -287,8 +433,49 @@ export default async function BillingPage({
             </tbody>
           </table>
         </div>
+        {/* The $49 card, which is a separate purchase with a separate policy and its
+            own button. The delivery page sends the buyer here for it. */}
+        {view.rateCardRefund === null ? null : (
+          <div className="rp-stack rp-stack--tight">
+            <h3>The bid rate card you bought</h3>
+            <p className="rp-num">
+              Bought {view.rateCardRefund.purchasedAt.toISOString().slice(0, 10)}
+            </p>
+            <p className="rp-measure">{view.rateCardRefund.quote.policy}</p>
+            {view.rateCardRefund.alreadyRefunded ? (
+              <p className="rp-btn__why">
+                This card has already been refunded. It appears in the ledger below and the
+                document stays downloadable — clawing back something you have read would be
+                theatre.
+              </p>
+            ) : view.rateCardRefund.paymentIntentId === null ? (
+              <p className="rp-btn__why">
+                Ratepin holds no completed charge for this purchase in Stripe’s event ledger, so
+                there is nothing here to reverse. Nothing was taken twice.
+              </p>
+            ) : (
+              <form action={refundRateCardAction}>
+                <div className="rp-btn-row">
+                  <button
+                    type="submit"
+                    className="rp-btn rp-btn--destructive"
+                    disabled={!view.rateCardRefund.quote.eligible}
+                  >
+                    Refund {Cents.toDollarString(view.rateCardRefund.quote.cents)}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        )}
+
         {view.refundQuote === null ? (
-          <p>There is no subscription on this account to refund.</p>
+          <p>
+            {view.rateCardRefund === null
+              ? 'There is no subscription and no one-time purchase on this account to refund.'
+              : 'There is no subscription on this account; the one-time purchase above is what ' +
+                'there is to refund.'}
+          </p>
         ) : (
           <>
             <p className="rp-measure">{view.refundQuote.policy}</p>
@@ -315,6 +502,18 @@ export default async function BillingPage({
         {notice === 'no_payment' ? (
           <p className="rp-btn__why">
             Ratepin holds no completed payment for this account, so there is no charge to reverse.
+          </p>
+        ) : null}
+        {notice === 'no_rate_card' ? (
+          <p className="rp-btn__why">
+            There is no bid rate card attached to this account. A card attaches itself when you
+            sign in with the address you bought it with; nothing needs to be reconciled by hand.
+          </p>
+        ) : null}
+        {notice === 'already_refunded' ? (
+          <p className="rp-btn__why">
+            That purchase has already been refunded, and it appears in the ledger below. Pressing
+            the button twice refunds once.
           </p>
         ) : null}
         {notice === 'done' ? <p className="rp-t-data">Refund requested. It appears below.</p> : null}

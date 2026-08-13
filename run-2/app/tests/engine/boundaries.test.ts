@@ -414,7 +414,14 @@ describe('§7.0 — the three bands over one identical week', () => {
     expect(moved.sort()).toEqual(
       [
         'filing.contractValueBand',
-        'filing.findings',
+        // R-BUILD H-4. `filing.findings` used to move, because `over_100k` raised
+        // PREMIUM_BELOW_STATUTORY on this week and `at_or_under_100k` did not. This
+        // week reports NO premium bucket with a stated rate, so there is no evidence
+        // to fall short of and the flag no longer fires on either side; the
+        // `WD_UNDERPAYMENT` this week does carry is ungated by the band (P-22) and is
+        // identical on both. That the findings no longer move is the correct
+        // statement of §7.0's gate: it moves the CWHSSA QUANTITIES and manufactures
+        // no accusation.
         'filing.totalCol7A',
         'filing.totalCwhssaPremium',
         'worker[0].col7A',

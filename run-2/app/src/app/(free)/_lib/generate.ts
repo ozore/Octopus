@@ -301,7 +301,16 @@ export function buildWeek(input: {
         dtRate: line.dtRateMilli === null ? null : MilliRate.of(line.dtRateMilli),
         fringeCreditPlans:
           line.fringeCreditMilli > 0
-            ? [{ planName: 'As entered', hourlyCredit: MilliRate.of(line.fringeCreditMilli) }]
+            ? [
+                {
+                  planName: 'As entered',
+                  hourlyCredit: MilliRate.of(line.fringeCreditMilli),
+                  // R-BUILD H-3's recorded gap — see the same note in
+                  // `src/app/(app)/_lib/filings.ts`. The free path has no plan-entry
+                  // screen at all, so there is nowhere to ask.
+                  unfunded: false,
+                },
+              ]
             : [],
         resolutionState: chosen === null ? 'blocked' : 'resolved',
         blockReasons: chosen === null ? (['UNMAPPED_TRADE'] as const) : [],
@@ -436,6 +445,11 @@ export async function generateFreeWh347(
   const verdict = deriveStatus({
     lines: computation.workers.flatMap((worker) => worker.lines),
     filingBlockReasons: [...computation.filingBlockReasons, 'NO_PINNED_REVISION'],
+    // R-BUILD H-2's third channel. Redundant here — the free path is always DRAFT
+    // because of `NO_PINNED_REVISION` above — but passed anyway, so the two call
+    // sites of `deriveStatus` cannot drift apart and a future change to the free
+    // path's gate cannot silently drop a worker-scoped block with it.
+    workerBlockReasons: computation.workers.flatMap((worker) => worker.workerScopedBlockReasons),
     freshness: corpus.freshness,
   });
 

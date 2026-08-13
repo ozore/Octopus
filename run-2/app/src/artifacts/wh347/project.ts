@@ -37,7 +37,7 @@
  *    construction path for the one gate that governs the signature block.
  */
 
-import { Cents, type Hours, type MilliRate } from '@/lib/money';
+import { Cents, MilliRate, type Hours } from '@/lib/money';
 import type {
   ArtifactProvenance,
   ArtifactVerdict,
@@ -98,16 +98,39 @@ export function hoursTotal(value: Hours): string {
   return `${negative ? '-' : ''}${whole}.${String(fraction).padStart(2, '0')}`;
 }
 
-/** A rate, to the cent — the precision a wage determination publishes and a payroll
- *  register shows. `MilliRate` carries four decimals so parsing is lossless; the
- *  extra two are an internal guarantee, not something to print at 6.5 pt. */
+/**
+ * A rate, at the precision the rate itself carries — R-BUILD M-2.
+ *
+ * WHAT WAS WRONG. This function was `Math.round(magnitude / 100)`: a second rounding
+ * function, outside `money.ts`, narrowing a `MilliRate` to cents and emitting a
+ * string. `ENGINE.md` §11.3's replacement for the withdrawn grep is a TYPE BOUNDARY —
+ * `Cents` is obtainable from a wider quantity only through `Cents.fromMicroDollars`
+ * or `Cents.fromRatio`, and `roundHalfUpToCents` is module-private — and this
+ * sidestepped it by rounding without ever constructing a `Cents`, so it was outside
+ * the boundary by type while being inside it by function.
+ *
+ * WHAT IT COST. Executed with a sub-cent rate, which payroll systems export: at
+ * `cashRate = $20.0050` over 40.00 hours, column 6A printed `20.01` and column 5
+ * printed `40.00`, while `col7A` carried $800.20. An auditor or a general contractor
+ * multiplying the two printed cells got $800.40 — a figure the form does not carry,
+ * on a week where nothing is wrong. `MilliRate.fromDecimalString` refuses to truncate
+ * a customer's rate on the way in ("silently truncating a customer's rate is a
+ * decision about their money that we are not entitled to make without telling them")
+ * and the renderer did exactly that on the way out.
+ *
+ * VERIFIED AGAINST. WHD's instructions to form WH-347 (dol.gov/agencies/whd/forms/
+ * wh347, fetched 2026-08-13), column 6: "list the ACTUAL HOURLY RATE PAID for
+ * straight time (top row) and overtime (bottom row)". The actual rate paid is
+ * $20.0050; $20.01 is a rate nobody paid.
+ *
+ * THE FIX IS TO DELETE THE ROUNDING, not to relocate it. `MilliRate.toDecimalString`
+ * is total, integer-only and already inside the boundary: it prints two decimals for
+ * a rate that carries two, and the third and fourth only when they are non-zero. So
+ * this module now performs no arithmetic on a rate at all, and §11.3's boundary
+ * covers the last printed money quantity that was outside it.
+ */
 export function rateCell(value: MilliRate): string {
-  const negative = value < 0;
-  const magnitude = Math.abs(value);
-  const cents = Math.round(magnitude / 100);
-  const dollars = Math.trunc(cents / 100);
-  const remainder = cents - dollars * 100;
-  return `${negative ? '-' : ''}${dollars}.${String(remainder).padStart(2, '0')}`;
+  return MilliRate.toDecimalString(value);
 }
 
 // ===========================================================================

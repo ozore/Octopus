@@ -42,19 +42,12 @@ export async function forgetColumnMapAction(formData: FormData): Promise<void> {
 /**
  * §12.1 — the export.
  *
- * It runs in the request rather than behind a queue, and it is available in every
- * billing state including `restricted`: export-on-cancel is a capability of that
- * state, not a favour. The bundle is built into a recording sink and its manifest is
- * shown; nothing here can refuse for a reason involving money.
+ * There is no action here any more, and that is the fix rather than an omission: the
+ * export is `GET /api/exports`, which builds the bundle in the request and returns
+ * the ZIP as the response. A server action could only redirect to a screen, and a
+ * screen that says "export built" beside a key nothing wrote is the dead end the
+ * build review found. The button on `/app/settings/data` is a link to that route.
  */
-export async function buildExportAction(): Promise<void> {
-  const session = await requireSession('/app/settings/data');
-  const db = await getDb();
-  const sink = createRecordingSink();
-  const bundle = await buildExport(db, session.accountId, { sink, clock: appClock() });
-  revalidatePath('/app/settings/data');
-  redirect(`/app/settings/data?exported=${encodeURIComponent(bundle.exportKey)}`);
-}
 
 /**
  * §12.2 — deletion.
@@ -69,6 +62,11 @@ export async function requestDeletionAction(formData: FormData): Promise<void> {
   const typed = String(formData.get('confirmation') ?? '');
   const exportFirst = formData.get('skipExport') !== 'true';
 
+  // §12.2 runs the export first by default. The bundle is BUILT here — the walk, the
+  // manifest and every digest — so a deletion is never scheduled against an account
+  // whose archive could not be assembled, and the key is recorded on the deletion row.
+  // The customer's copy of the bytes is the ZIP at `/api/exports`, which stays open
+  // for the whole undo window and is linked from this screen and from the email.
   let exportKey: string | null = null;
   if (exportFirst) {
     const sink = createRecordingSink();

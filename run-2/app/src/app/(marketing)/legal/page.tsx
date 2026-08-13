@@ -26,11 +26,28 @@
  *    Export and deletion are buttons in the product. A page that told a customer to
  *    write to an address in order to exercise a right they can exercise with a click
  *    would be manufacturing the human minute this company is built not to spend.
+ *
+ * 4. **The deletion tables are rendered from `DELETION_SCOPE`, not written here.**
+ *    They used to be prose, and the prose said deletion erased "every project, pin,
+ *    payroll line, filing and artifact" while the executor retained the filings, the
+ *    artifacts, the last-4 and names printed into them, and the projects and pins,
+ *    for three years (`ARCHITECTURE.md` §5.5 — the evidence layer of a signed federal
+ *    certification, and 29 CFR 5.5(a)(3)(i)(A)'s own three-year floor). A public
+ *    privacy promise that a regulator can falsify with one query is the worst
+ *    sentence on a site, and the fix is not a better sentence: it is that this page,
+ *    the in-app confirmation screen and the erasure report are three renderings of
+ *    one array, so the promise and the executor cannot disagree again.
  */
 
 import Link from 'next/link';
 
 import { getDb } from '@/db';
+import {
+  ARTIFACT_RETENTION_YEARS,
+  DELETION_BOUNDARY_STATEMENT,
+  DELETION_ERASED,
+  DELETION_RETAINED,
+} from '@/platform/account/deletion';
 import { backupWindowSentence, oldestRestorableAt } from '@/platform/ops/status';
 
 export const dynamic = 'force-dynamic';
@@ -174,9 +191,14 @@ export default async function LegalPage(): Promise<React.ReactElement> {
         <div className="rp-lp-grid rp-lp-grid--2">
           <div className="rp-lp-card">
             <p className="rp-lp-card__t">What deletion erases</p>
+            <ul className="rp-stack rp-stack--tight">
+              {DELETION_ERASED.map((entry) => (
+                <li key={entry.id}>
+                  <strong>{entry.label}.</strong> {entry.mechanism}
+                </li>
+              ))}
+            </ul>
             <p className="rp-lp-card__b">
-              Every project, pin, payroll line, filing and artifact. Every worker record, including
-              encrypted Social Security numbers. Your classification memory. Your column mappings.
               Your subscription is cancelled immediately and the unused days are refunded
               automatically. Deletion is reversible for seven days, with the permanent date stated on
               the confirmation, and the undo link is in the product for the whole window rather than
@@ -185,16 +207,26 @@ export default async function LegalPage(): Promise<React.ReactElement> {
           </div>
           <div className="rp-lp-card">
             <p className="rp-lp-card__t">What deletion does not erase</p>
+            <ul className="rp-stack rp-stack--tight">
+              {DELETION_RETAINED.map((entry) => (
+                <li key={entry.id}>
+                  <strong>{entry.label}</strong>
+                  {entry.retention === undefined ? '' : ` — kept ${entry.retention}`}.{' '}
+                  {entry.why ?? entry.mechanism}
+                </li>
+              ))}
+            </ul>
             <p className="rp-lp-card__b">
-              Anonymous aggregate counts of which payroll titles map to which classifications — kept
-              only where five or more unrelated companies made the same mapping, containing no
-              company or worker identity, and used only to <strong>order</strong> a list of
-              candidates for someone else, never to choose one for them. The public
-              wage-determination mirror, which is public data and was never yours or ours. And
-              billing records, which Stripe retains for tax and card-network purposes.
+              The first three of those are the reason this list exists at all: a filing is the
+              evidence layer of a signed federal certification, and 29 CFR 5.5(a)(3)(i)(A) puts a{' '}
+              {ARTIFACT_RETENTION_YEARS}-year floor under your own copy of exactly these documents.
+              You receive the full export before closure. What you cannot do is make our copy vanish
+              inside the window in which an investigator may ask about it.
             </p>
           </div>
         </div>
+
+        <p className="rp-legal">{DELETION_BOUNDARY_STATEMENT}</p>
 
         <div className="rp-alert rp-alert--declined rp-lp-actions">
           <span className="rp-alert__glyph" aria-hidden="true">

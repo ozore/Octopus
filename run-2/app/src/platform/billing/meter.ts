@@ -160,6 +160,58 @@ export interface CapOutcome {
   readonly assessment: UsageAssessment | null;
   readonly upgraded: boolean;
   readonly notice: string | null;
+  /** Why no upgrade happened, when the cap was reached and one did not. `null` when
+   *  the question does not arise. Recorded in the job ledger, so "the cap job ran and
+   *  the customer had already chosen her plan" and "the cap job did nothing" are
+   *  different rows. */
+  readonly skipped?: 'already_upgraded_this_period' | 'customer_reverted_this_period';
+}
+
+/**
+ * What this account has already decided this period.
+ *
+ * `enforceOverageCap` runs hourly and `account.planId` only moves when Stripe's
+ * `customer.subscription.updated` webhook lands, so an unguarded job re-read the old
+ * plan, re-computed `atCap` and called Stripe again — a second and third proration on
+ * one subscription for one crossing. Worse, it also re-fired after the customer used
+ * the one-click revert §11.4 calls the difference between a service and a fait
+ * accompli: within the hour she was back on the larger plan, with a fourth proration,
+ * and there was no state she could reach in which she stayed on the plan she chose.
+ *
+ * So the job asks the ledger rather than the plan column. Both answers are read in
+ * one query and both are period-scoped, because the cap is a per-period quantity.
+ */
+async function planDecisionsThisPeriod(
+  db: Db,
+  account: string,
+  period: { readonly from: Date; readonly to: Date },
+): Promise<{ readonly autoUpgraded: boolean; readonly reverted: boolean }> {
+  return withTenant(db, { accountId: brandAccountId(account) }, async (tx) => {
+    const row = rowsOf<{ auto_upgrades: number | string; reverts: number | string }>(
+      await tx.execute(sql`
+        SELECT COUNT(*) FILTER (WHERE kind = 'auto_upgrade')::int AS auto_upgrades,
+               COUNT(*) FILTER (WHERE kind = 'revert')::int       AS reverts
+          FROM plan_changes
+         WHERE account_id = ${account}::uuid
+           AND at >= ${period.from.toISOString()}::timestamptz
+           AND at <  ${period.to.toISOString()}::timestamptz
+      `),
+    )[0];
+    return {
+      autoUpgraded: Number(row?.auto_upgrades ?? 0) > 0,
+      reverted: Number(row?.reverts ?? 0) > 0,
+    };
+  });
+}
+
+/** The key the upgrade is claimed under. One crossing, one proration, whatever the
+ *  scheduler does — the same shape `credits.ts` and `refunds.ts` already use. */
+export function overageUpgradeKey(input: {
+  readonly accountId: string;
+  readonly periodStart: Date;
+  readonly fromPlanId: string;
+}): string {
+  return `overage:${input.accountId}:${input.periodStart.toISOString()}:${input.fromPlanId}`;
 }
 
 /**
@@ -194,14 +246,35 @@ export async function enforceOverageCap(
   const assessment = assessUsage({ plan, nextPlan: next, billableFilings });
   if (!assessment.atCap || !next) return { assessment, upgraded: false, notice: null };
 
+  // THE TWO GUARDS, BEFORE STRIPE IS TOUCHED.
+  //
+  // Idempotency: one crossing produces one proration, however many times the hourly
+  // job runs before the subscription webhook lands.
+  //
+  // Consent: an account that used the revert button this period keeps the plan she
+  // chose for the rest of it. Re-upgrading her within the hour is not a service; it
+  // is the automatic change §11.4 exists to make undoable, undone.
+  const decided = await planDecisionsThisPeriod(db, account.accountId, {
+    from: account.currentPeriodStart,
+    to: account.currentPeriodEnd,
+  });
+  if (decided.reverted) {
+    return { assessment, upgraded: false, notice: null, skipped: 'customer_reverted_this_period' };
+  }
+  if (decided.autoUpgraded) {
+    return { assessment, upgraded: false, notice: null, skipped: 'already_upgraded_this_period' };
+  }
+
   const priceId = deps.priceIdFor(next.id);
   if (!priceId || !account.stripeCustomerId) return { assessment, upgraded: false, notice: null };
 
   const subscription = await currentSubscriptionId(db, account.accountId);
   if (!subscription) return { assessment, upgraded: false, notice: null };
 
-  await deps.stripe.updateSubscriptionPrice({ subscriptionId: subscription, priceId, prorate: true });
-
+  // The ledger row is written BEFORE the Stripe call, under the period key, exactly
+  // as `credits.ts:170` and `refunds.ts:139` claim before they move money: a crash
+  // between the two leaves a recorded intent and no charge, which the next run
+  // declines to repeat. The reverse order leaves a charge nothing recorded.
   await recordPlanChange(
     db,
     {
@@ -214,10 +287,17 @@ export async function enforceOverageCap(
         billable_filings: assessment.billableFilings,
         overage_filings: assessment.overageFilings,
         cap_cents: assessment.capCents,
+        idempotency_key: overageUpgradeKey({
+          accountId: account.accountId,
+          periodStart: account.currentPeriodStart,
+          fromPlanId: plan.id,
+        }),
       },
     },
     clock,
   );
+
+  await deps.stripe.updateSubscriptionPrice({ subscriptionId: subscription, priceId, prorate: true });
 
   return {
     assessment,

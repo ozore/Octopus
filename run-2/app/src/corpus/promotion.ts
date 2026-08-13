@@ -110,6 +110,12 @@ export interface IngestResult {
   readonly merkleRoot: string | null;
   readonly holdReason: string | null;
   readonly goldenSuite: { readonly pass: boolean; readonly lines: number } | null;
+  /** The two counts G3 reconciles: what the mirror holds, and what the publisher's
+   *  index said it should hold. Returned on EVERY outcome including a hold, because
+   *  a held run is exactly when the delta is worth recording — an observation we
+   *  keep only when it is flattering is not a gate (`ARCHITECTURE.md` §14). */
+  readonly ourActiveCount: number;
+  readonly indexTotalActive: number;
 }
 
 /**
@@ -156,6 +162,7 @@ export async function runIngest(options: IngestOptions): Promise<IngestResult> {
       merkleRoot: null,
       holdReason: reason,
       goldenSuite: null,
+      ...(await store.snapshotCounts(db, snapshotId)),
     };
   };
 
@@ -549,6 +556,7 @@ export async function runIngest(options: IngestOptions): Promise<IngestResult> {
     merkleRoot: tree.root,
     holdReason: null,
     goldenSuite: { pass: canary.pass, lines: canary.lines },
+    ...(await store.snapshotCounts(db, snapshotId)),
   };
 }
 

@@ -158,6 +158,7 @@ const worker1: WorkerComputation = {
       wdFringeRate: MilliRate.of(62_700),
       requiredTotal: Cents.of(92_715),
       paidTotal: Cents.of(92_828),
+      straightTimeEquivalentCash: Cents.of(69_360),
       resolutionState: 'resolved',
       blockReasons: [],
       findings: [],
@@ -172,6 +173,7 @@ const worker1: WorkerComputation = {
   premiumCredit: Cents.of(0),
   cwhssaPremium: Cents.of(0),
   premiumPaidTotal: Cents.of(0),
+  premiumRatesStated: false,
   col7A: Cents.of(69_360),
   col7B: Cents.of(69_360),
   deductions: [
@@ -183,6 +185,7 @@ const worker1: WorkerComputation = {
   netPaid: Cents.of(60_435),
   dbaCompensationDue: Cents.of(92_715),
   blockReasons: [],
+  workerScopedBlockReasons: [],
   findings: [],
   narrowing: EMPTY_LEDGER,
 };
@@ -243,6 +246,7 @@ const worker2: WorkerComputation = {
       wdFringeRate: MilliRate.of(81_500),
       requiredTotal: Cents.of(131_790),
       paidTotal: Cents.of(133_400),
+      straightTimeEquivalentCash: Cents.of(119_600),
       resolutionState: 'resolved',
       blockReasons: [],
       findings: [],
@@ -257,6 +261,7 @@ const worker2: WorkerComputation = {
   premiumCredit: Cents.of(0),
   cwhssaPremium: Cents.of(7_500),
   premiumPaidTotal: Cents.of(8_400),
+  premiumRatesStated: true,
   col7A: Cents.of(127_100),
   col7B: Cents.of(127_100),
   deductions: [
@@ -268,6 +273,7 @@ const worker2: WorkerComputation = {
   netPaid: Cents.of(109_470),
   dbaCompensationDue: Cents.of(139_290),
   blockReasons: [],
+  workerScopedBlockReasons: [],
   findings: [],
   narrowing: EMPTY_LEDGER,
 };

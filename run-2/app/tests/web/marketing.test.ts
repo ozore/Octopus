@@ -275,11 +275,22 @@ describe('the price ladder is read from the catalogue, not typed', () => {
     }
   });
 
-  it('imposes no project or worker cap on the top tier', async () => {
-    const ladder = presentLadder(await loadPlans(tdb.db));
-    const multi = ladder.tiers.at(-1);
-    expect(multi?.projectCap).toBeNull();
-    expect(multi?.workerCap).toBeNull();
+  /**
+   * "No project caps. No worker caps." is rendered copy. It used to stand over two
+   * nullable columns that nothing on any write path read, which meant one `UPDATE
+   * plans` could falsify a public claim with no code change, no deploy, no lint hit
+   * and no failing test — and `presentTier` carried the columns into the view model,
+   * so this assertion was pinning the vestige in place. ACQUISITION_REVIEW N-4 ruled
+   * they be dropped. The honest form of the check is that there is nothing to set:
+   * the ladder has one variable, and the claim is now a statement about the schema.
+   */
+  it('has no project or worker cap to set — the ladder has one variable (N-4)', async () => {
+    const columns = await tdb.client.query<{ column_name: string }>(
+      `SELECT column_name FROM information_schema.columns WHERE table_name = 'plans'`,
+    );
+    const names = columns.rows.map((r) => r.column_name);
+    expect(names).not.toContain('project_cap');
+    expect(names).not.toContain('worker_cap');
   });
 
   it('renders the cards from those figures and from nothing else', async () => {

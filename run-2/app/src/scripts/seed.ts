@@ -10,7 +10,7 @@
 
 import { resolve } from 'node:path';
 
-import { closeDb, getDb } from '@/db';
+import { createDb } from '@/db';
 import { getConfig } from '@/lib/config';
 
 import { seedRatepin } from './seed-lib';
@@ -32,10 +32,21 @@ async function main(): Promise<void> {
     );
   }
 
-  const db = await getDb();
-  const report = await seedRatepin(db, { outDir: resolve(process.cwd(), '.seed-out') });
+  /**
+   * `createDb()` rather than `getDb()`, and the difference is which role this is.
+   *
+   * The seed writes the corpus mirror, which `ratepin_app` has no grant on at all
+   * (I5) — so it is an ADMIN process and it runs as the owner, exactly like
+   * `db:migrate`. `getDb()` is the SERVING handle and now refuses to hand back a
+   * connection whose role can bypass row-level security, because a web process on
+   * the owner is a product with no tenant boundary and no symptom. Asking for the
+   * serving handle here would make the seed fail that assertion for the one reason
+   * that is legitimate.
+   */
+  const handle = await createDb();
+  const report = await seedRatepin(handle.db, { outDir: resolve(process.cwd(), '.seed-out') });
   process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
-  await closeDb();
+  await handle.close();
 }
 
 void main().catch((error: unknown) => {

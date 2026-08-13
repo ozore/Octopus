@@ -24,7 +24,7 @@ import { WITHHELD_BODY, WITHHELD_HEADLINE } from '@/artifacts';
 import { getDb } from '@/db';
 import { rendersSignatureBlock } from '@/engine';
 
-import { releaseFilingAction } from '../../../_actions/filings';
+import { confirmAcceptanceAction, releaseFilingAction } from '../../../_actions/filings';
 import { ArtifactChip, StatusChip } from '../../../_components/status-chip';
 import { readAs, requireSession } from '../../../_lib/auth';
 import {
@@ -44,12 +44,16 @@ export const dynamic = 'force-dynamic';
 
 export default async function FilingPage({
   params,
+  searchParams,
 }: {
   readonly params: Promise<{ readonly id: string }>;
+  readonly searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }): Promise<React.ReactElement> {
   const { id } = await params;
   const session = await requireSession(`/app/filings/${id}`);
   const db = await getDb();
+  const query = searchParams === undefined ? {} : await searchParams;
+  const confirmed = typeof query['confirmed'] === 'string' ? (query['confirmed'] as string) : null;
 
   const view = await readAs(session, async (tx) => {
     const rebuilt = await rebuildFiling(db, tx, id);
@@ -277,6 +281,75 @@ export default async function FilingPage({
           ))}
         </section>
       ) : null}
+
+      {/* ============================================================== G2 ==
+          The acceptance counter, and the only place it can be written.
+
+          §14 instruments G2 on "in-product confirmation", because whether a general
+          contractor or a state portal ACCEPTED a document is unobservable from
+          inside this system — a download is not an acceptance and a silence is not
+          one either. Nothing in the product may infer it, so this pair of buttons is
+          the entire evidence path for the gate that stands between this company and
+          any claim about forms being accepted. A rejection is recorded exactly as
+          readily as an acceptance; a counter that only hears good news is not one. */}
+      <section className="rp-stack rp-measure">
+        <h2>Did the receiving party accept it?</h2>
+        <p>
+          This is the only way Ratepin learns the answer, and it is what the public acceptance
+          counter on <Link href="/status">the status page</Link> is made of. Answering costs you
+          nothing and buys you nothing; not answering leaves the counter where it is. A rejection is
+          as useful to us as an acceptance, and is recorded the same way.
+        </p>
+        <form action={confirmAcceptanceAction} className="rp-stack rp-stack--tight">
+          <input type="hidden" name="filingId" value={id} />
+          <div className="rp-field">
+            <label className="rp-field__label" htmlFor="artifactKind">
+              Which document
+            </label>
+            <select id="artifactKind" name="artifactKind" className="rp-input" defaultValue="wh347_pdf">
+              <option value="wh347_pdf">The WH-347 and statement of compliance</option>
+              <option value="ecpr_xml">The California eCPR XML</option>
+            </select>
+          </div>
+          <div className="rp-field">
+            <label className="rp-field__label" htmlFor="receiver">
+              Who received it
+            </label>
+            <select id="receiver" name="receiver" className="rp-input" defaultValue="gc">
+              <option value="gc">The general contractor</option>
+              <option value="agency">The contracting agency</option>
+              <option value="dir_portal">California DIR&rsquo;s portal</option>
+            </select>
+          </div>
+          <div className="rp-field">
+            <label className="rp-field__label" htmlFor="rejectionDetail">
+              If it was rejected, what did they say (optional)
+            </label>
+            <input
+              id="rejectionDetail"
+              name="rejectionDetail"
+              className="rp-input"
+              autoComplete="off"
+            />
+          </div>
+          <div className="rp-btn-row">
+            <button type="submit" name="accepted" value="true" className="rp-btn">
+              They accepted it
+            </button>
+            <button type="submit" name="accepted" value="false" className="rp-btn rp-btn--quiet">
+              They rejected it
+            </button>
+          </div>
+        </form>
+        {confirmed === null ? null : (
+          <p className="rp-t-data">
+            {confirmed === 'accepted'
+              ? 'Recorded as accepted. The counter moves on the next refresh.'
+              : 'Recorded as rejected, with what they said. The counter moves on the next refresh, ' +
+                'and a rejection is what the gate is for.'}
+          </p>
+        )}
+      </section>
 
       <section className="rp-stack">
         <h2>Totals, as computed</h2>

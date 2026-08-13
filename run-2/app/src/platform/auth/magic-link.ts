@@ -13,6 +13,15 @@
  * provisioning table is the mechanism, exactly as §15 puts it for the review queue
  * that also does not exist.
  *
+ * AND IT CROSSES THE TENANT BOUNDARY IN EXACTLY ONE NAMED PLACE. Those four inserts
+ * cannot satisfy a policy keyed on `ratepin_current_account()`, because at that
+ * moment there is no account. They therefore do not happen here: this module calls
+ * `ratepin_provision_identity`, declared with the auth tables in
+ * `src/platform/schema.ts` and running as a NOLOGIN, NOBYPASSRLS role that holds
+ * four narrow policies and no grant on anything carrying a worker, a rate or a
+ * filing. The web tier's role has no insert grant on `users`, `accounts` or
+ * `memberships` at all, so this is not a convention — it is the only path there is.
+ *
  * WHY THE OUTCOME IS NOT A `Refusal`. USER_JOURNEY §0.3 closes the refusal set at
  * four primitives and says a proposed fifth is "either a bug we should fix rather
  * than surface, or a request for a human, which is out of bounds." An expired login
@@ -108,9 +117,26 @@ interface LinkRow {
  * Single-use is enforced by a conditional UPDATE rather than by read-then-write:
  * two clicks arriving together (a mail client prefetching the link, then the human
  * clicking it) would otherwise both pass the read and both mint a session.
+ *
+ * ALL OF IT IN ONE TRANSACTION, AND THAT IS A CORRECTNESS PROPERTY, NOT TIDINESS.
+ * The consuming UPDATE used to commit on its own, before the provisioning inserts
+ * ran. When those inserts failed the link was already burned, so the retry the
+ * customer inevitably makes lands on "this link was already used", and requesting
+ * another repeats it forever. Under A3 there is no support address and no
+ * escalation path by design, so that state is an unrecoverable, self-inflicted
+ * denial of signup — and the screen misdescribes the cause. Wrapping the redemption
+ * means a failure anywhere in it rolls the consume back and the link still works.
  */
 export async function redeemMagicLink(
   db: Db | Tx,
+  token: string,
+  options?: { readonly clock?: Clock; readonly accountName?: string },
+): Promise<RedeemOutcome> {
+  return db.transaction((tx) => redeemInTransaction(tx as Tx, token, options));
+}
+
+async function redeemInTransaction(
+  db: Tx,
   token: string,
   options?: { readonly clock?: Clock; readonly accountName?: string },
 ): Promise<RedeemOutcome> {
@@ -144,62 +170,43 @@ export async function redeemMagicLink(
     return { ok: false, reason: 'expired' };
   }
 
-  const existing = rowsOf<{ user_id: string; account_id: string }>(
+  // ONE CALL, ACROSS THE ONE BOUNDARY. Everything that used to be five statements
+  // here — the identity lookup, the user, the account, the owner membership and the
+  // billing index row — is `ratepin_provision_identity`, a SECURITY DEFINER function
+  // owned by a NOLOGIN, NOBYPASSRLS role that holds four policies and nothing else
+  // (src/platform/schema.ts). The statements are gone from this module on purpose:
+  // an insert into `users` from the web tier's role is now refused by a missing
+  // grant, so there is no second way to do this and no way to grow one by accident.
+  //
+  // The invitation account comes off the link row the token digest resolved, never
+  // off the request. `p_now` is the injected clock, so a test can provision at a
+  // fixed instant without the database's own `now()` leaking into the fixture.
+  const provisioned = rowsOf<{
+    user_id: string;
+    account_id: string;
+    created_account: boolean;
+  }>(
     await db.execute(sql`
-      SELECT u.id AS user_id, m.account_id
-        FROM users u
-        LEFT JOIN memberships m ON m.user_id = u.id
-       WHERE u.email = ${link.email} AND u.deleted_at IS NULL
-       ORDER BY m.created_at ASC
-       LIMIT 1
+      SELECT user_id, account_id, created_account
+        FROM ratepin_provision_identity(
+               ${link.email},
+               ${options?.accountName ?? defaultAccountName(link.email)},
+               ${link.account_id}::uuid,
+               ${now.toISOString()}::timestamptz)
     `),
   )[0];
 
-  if (existing?.account_id) {
-    const issued = await createSession(
-      db,
-      { userId: existing.user_id, accountId: existing.account_id, email: link.email },
-      clock,
-    );
-    await claimRateCardPurchases(db, link.email, existing.account_id);
-    return { ok: true, issued, createdAccount: false };
+  if (!provisioned) {
+    throw new Error('redeemMagicLink: ratepin_provision_identity returned no identity');
   }
 
-  const userId = existing?.user_id ?? newId();
-  if (!existing) {
-    await db.execute(sql`
-      INSERT INTO users (id, email, created_at)
-      VALUES (${userId}::uuid, ${link.email}, ${now.toISOString()}::timestamptz)
-      ON CONFLICT (email) DO NOTHING
-    `);
-  }
-
-  const account = link.account_id ?? newId();
-  if (!link.account_id) {
-    await db.execute(sql`
-      INSERT INTO accounts (id, name, status, created_at)
-      VALUES (${account}::uuid, ${options?.accountName ?? defaultAccountName(link.email)},
-              'active', ${now.toISOString()}::timestamptz)
-    `);
-  }
-  await db.execute(sql`
-    INSERT INTO memberships (account_id, user_id, role, created_at)
-    VALUES (${account}::uuid, ${userId}::uuid, 'owner', ${now.toISOString()}::timestamptz)
-    ON CONFLICT (account_id, user_id) DO NOTHING
-  `);
-
-  // The free tier is a real state, not the absence of one: `entitlement_state =
-  // 'none'` means "no subscription", and every generation gate reads it rather than
-  // asking whether a subscriptions row exists.
-  await db.execute(sql`
-    INSERT INTO billing_account_index (account_id, entitlement_state, state_since, updated_at)
-    VALUES (${account}::uuid, 'none', ${now.toISOString()}::timestamptz, ${now.toISOString()}::timestamptz)
-    ON CONFLICT (account_id) DO NOTHING
-  `);
-
-  const issued = await createSession(db, { userId, accountId: account, email: link.email }, clock);
-  await claimRateCardPurchases(db, link.email, account);
-  return { ok: true, issued, createdAccount: !link.account_id };
+  const issued = await createSession(
+    db,
+    { userId: provisioned.user_id, accountId: provisioned.account_id, email: link.email },
+    clock,
+  );
+  await claimRateCardPurchases(db, link.email, provisioned.account_id);
+  return { ok: true, issued, createdAccount: provisioned.created_account };
 }
 
 /**

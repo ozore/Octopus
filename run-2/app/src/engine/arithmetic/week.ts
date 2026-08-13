@@ -176,6 +176,34 @@ function validateLine(line: PayrollLine, wdRate: WdRate | null, col6BTotal: Cent
   }
 
   /**
+   * R-BUILD H-3 — a credit claimed against an UNFUNDED plan.
+   *
+   * WHAT WAS WRONG. `FringePlanCredit` carried no `unfunded` field, so an unfunded
+   * plan was indistinguishable from a funded one. Its credit was narrowed at N1 into
+   * column 6B, printed there, used to check box 5 of the statement of compliance,
+   * and added to `paidTotal` — where it can carry a line over `requiredTotal` and
+   * suppress `WD_UNDERPAYMENT` outright. The marketing copy told the customer we
+   * refuse unfunded plans; the engine credited them.
+   *
+   * VERIFIED AGAINST. 29 CFR 5.28(b), eCFR versioner API, fetched 2026-08-13
+   * (title-29 issue 2026-08-11): such a plan "may not constitute a fringe benefit
+   * within the meaning of the Act unless" five conditions hold, the fifth of which is
+   * that "the contractor or subcontractor requests and receives approval of the plan
+   * or program from the Secretary, as described in paragraph (c) of this section."
+   * Whether that approval exists is a fact about a filing with the Wage and Hour
+   * Division, and no payroll export contains it — so the credit is not evaluable, and
+   * taking it would be Ratepin deciding a question 5.28(c) reserves to the Secretary.
+   *
+   * It BLOCKS rather than dropping the credit silently. Dropping it would restate the
+   * contractor's own assertion about their money without telling them, and would move
+   * column 6B on a signed federal document; the P-A names 5.28(c)'s approval path,
+   * which is a route the customer can walk alone.
+   */
+  if (line.fringeCreditPlans.some((plan) => plan.unfunded)) {
+    blocks.push('UNFUNDED_PLAN_CREDIT');
+  }
+
+  /**
    * ES-4, the NARROWED union refusal. `ARCHITECTURE.md` §5.2/§15's blanket
    * `is_union_group` setup refusal is superseded: refuse only a 6B CREDIT CLAIM.
    *
@@ -252,6 +280,9 @@ export function computeWorkerWeek(input: {
     readonly doubleTimeCash: Cents;
     readonly requiredTotal: Cents;
     readonly paidTotal: Cents;
+    /** The N10 cash term alone. Carried so the two C-1 bounds (`compliance.ts`) are
+     *  assertable at the line without re-deriving them from `paidTotal − col6B`. */
+    readonly straightTimeEquivalentCash: Cents;
     readonly findings: readonly ViolationFinding[];
     readonly blockReasons: readonly BlockReason[];
   }
@@ -285,6 +316,8 @@ export function computeWorkerWeek(input: {
       line: line.input,
       wdRate: line.wdRate,
       allHours: line.totalHours,
+      stOtHours,
+      dtHours: line.dtHours,
       col6B,
       col6C,
       ledger: recorder,
@@ -299,6 +332,7 @@ export function computeWorkerWeek(input: {
       doubleTimeCash,
       requiredTotal: compliance.requiredTotal,
       paidTotal: compliance.paidTotal,
+      straightTimeEquivalentCash: compliance.straightTimeEquivalentCash,
       findings: compliance.findings,
       blockReasons: validateLine(line.input, line.wdRate, col6B),
     };
@@ -311,12 +345,55 @@ export function computeWorkerWeek(input: {
   const unproven = new Set(cwhssa.unprovenLineIds);
   const premiumBlocks = premiumHoursUnproven(cwhssa);
 
+  // Column 7A — the sum stated in the module docblock, and nothing else. Computed
+  // here rather than at assembly because the 7A ≤ 7B check below is worker-scoped
+  // and has to run before the block list is frozen.
+  const col7A = Cents.sum([
+    ...perLine.map((e) => e.straightTimeCash),
+    ...perLine.map((e) => e.doubleTimeCash),
+    cwhssa.cwhssaPremium,
+  ]);
+
   // -----------------------------------------------------------------------
   // Stage F — column 8 and the column 9 reconciliation.
   // -----------------------------------------------------------------------
   const deductions = computeDeductions(worker);
 
   const workerBlocks: BlockReason[] = [];
+
+  /**
+   * R-BUILD H-1 — column 7A may not exceed column 7B.
+   *
+   * WHAT WAS WRONG. Nothing asserted the containment. `col7A` prices straight and
+   * overtime hours at `cashRate` and adds the CWHSSA premium AS COMPUTED, so when
+   * the row's own overtime rate is not `1.5 × regularRate` the printed 7A is gross
+   * OWED rather than gross EARNED. Executed: 36 ST + 8 OT, `cashRate $20.00`,
+   * `otRate $22.00`, `allWorkGross $896.00` printed `col7A = $920.00` against
+   * `col7B = $896.00` with no block and status CERTIFIABLE.
+   *
+   * VERIFIED AGAINST. WHD's instructions to form WH-347 (dol.gov/agencies/whd/forms/
+   * wh347, fetched 2026-08-13): 7A is "the worker's gross amount earned for the
+   * workweek for hours worked on this Federal or federally assisted project"; 7B is
+   * "the total gross amount earned during the week for all work performed during the
+   * week". The first is a subset of the second, and column 9 is "the actual dollar
+   * amount paid to the worker for all hours worked across all projects", which is
+   * reconciled against 7B. A 7A above a non-zero 7B is not a close call; it is a form
+   * that cannot be true.
+   *
+   * `col7B > 0` guards the check because WHD fills 7B only "if part of a worker's
+   * weekly wage was earned on projects or work other than the project described on
+   * this payroll" — a blank 7B is a legitimate all-work-on-this-project week, not a
+   * zero to compare against.
+   *
+   * It BLOCKS rather than flagging. The contradiction is on the face of the document
+   * the customer signs under 18 U.S.C. 1001, and we cannot tell which of the two
+   * figures is wrong: a P-A closed choice hands that decision back, which is the only
+   * place it belongs.
+   */
+  if (worker.allWorkGross > 0 && col7A > worker.allWorkGross) {
+    workerBlocks.push('GROSS_EXCEEDS_ALL_WORK_GROSS');
+  }
+
   if (deductions.hasUnmapped) workerBlocks.push('UNMAPPED_DEDUCTION');
   if (!deductions.reconciles) workerBlocks.push('NET_RECONCILIATION_FAILED');
   /**
@@ -369,23 +446,18 @@ export function computeWorkerWeek(input: {
       wdFringeRate: wdRate?.fringeRate ?? null,
       requiredTotal: entry.requiredTotal,
       paidTotal: entry.paidTotal,
+      straightTimeEquivalentCash: entry.straightTimeEquivalentCash,
       resolutionState: blocks.length > 0 ? 'blocked' : line.resolutionState,
       blockReasons: blocks,
       findings: entry.findings,
     };
   });
 
-  // Column 7A — the sum stated in the module docblock, and nothing else.
-  const col7A = Cents.sum([
-    ...perLine.map((e) => e.straightTimeCash),
-    ...perLine.map((e) => e.doubleTimeCash),
-    cwhssa.cwhssaPremium,
-  ]);
-
   const premiumFinding = premiumBelowStatutory({
     band,
     premiumOwed: cwhssa.premiumOwed,
     premiumPaidTotal: cwhssa.premiumPaidTotal,
+    premiumRatesStated: cwhssa.premiumRatesStated,
   });
 
   const findings: ViolationFinding[] = [
@@ -406,6 +478,7 @@ export function computeWorkerWeek(input: {
     premiumCredit: cwhssa.premiumCredit,
     cwhssaPremium: cwhssa.cwhssaPremium,
     premiumPaidTotal: cwhssa.premiumPaidTotal,
+    premiumRatesStated: cwhssa.premiumRatesStated,
     col7A,
     col7B: worker.allWorkGross,
     deductions: deductions.totals,
@@ -428,6 +501,33 @@ export function computeWorkerWeek(input: {
       cwhssa.premiumOwed,
     ),
     blockReasons: dedupe([...workerBlocks, ...lines.flatMap((l) => l.blockReasons)]),
+    /**
+     * R-BUILD H-2 — the worker-scoped blocks, on their own channel.
+     *
+     * WHAT WAS WRONG. `UNMAPPED_DEDUCTION`, `NET_RECONCILIATION_FAILED` and the
+     * missing-apprentice-level case reached the artifact ONLY by being spliced into
+     * each line's `blockReasons` above. `deriveStatus` reads line `resolutionState`
+     * and `filingBlockReasons` and nothing else, so with `worker.lines === []` the
+     * splice iterated zero times and both blocks were lost. Executed: one worker, no
+     * lines, `allWorkGross $1,000.00`, one `UNMAPPED` deduction of $200.00 and
+     * `netPaid $100.00` produced `blockReasons: ["UNMAPPED_DEDUCTION",
+     * "NET_RECONCILIATION_FAILED"]` on the worker, `filingBlockReasons: []`, and
+     * CERTIFIABLE with the signature block rendered. P-13 was satisfied vacuously by
+     * the empty line list, which is why the property suite stayed green.
+     *
+     * VERIFIED AGAINST. 29 CFR 5.5(a)(3)(ii)(C)(2), eCFR, fetched 2026-08-13: the
+     * signatory certifies "that no deductions have been made either directly or
+     * indirectly from the full wages earned, other than permissible deductions as set
+     * forth in 29 CFR part 3". Signing that with an unmapped deduction on the payroll
+     * and a net that does not match the cheque is the certification §9.3 D1 says we
+     * may not manufacture.
+     *
+     * The splice into lines STAYS, and is not redundant: it is what marks the
+     * worker's rows as blocked on the rendered form, which is a question about ink.
+     * This field is what governs the SIGNATURE BLOCK, which is a question about
+     * status, and `status.ts` is the only place that answers it.
+     */
+    workerScopedBlockReasons: dedupe(workerBlocks),
     findings,
     narrowing: ledger.freeze(),
   };

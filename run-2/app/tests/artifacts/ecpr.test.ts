@@ -59,6 +59,7 @@ function input(overrides: Partial<EcprRenderInput> = {}): EcprRenderInput {
     acknowledgedExclusions: [],
     computation: GOLDEN_COMPUTATION,
     provenance: PROVENANCE,
+    verdict: CERTIFIABLE_VERDICT,
     footer: [],
     observation: XSD_OBSERVATION_GREEN,
     pinnedSha256: PINNED_XSD_SHA256,

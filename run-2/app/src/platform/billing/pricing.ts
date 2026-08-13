@@ -36,8 +36,6 @@ export interface PlanRow {
   readonly includedFilings: number | null;
   readonly overagePriceCents: Cents | null;
   readonly autoUpgradeTo: string | null;
-  readonly projectCap: number | null;
-  readonly workerCap: number | null;
   readonly features: Readonly<Record<string, unknown>>;
 }
 

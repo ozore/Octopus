@@ -28,7 +28,11 @@ import { entitlementOf, readBillingAccount, type BillingAccount } from '@/platfo
 import { loadPlan, loadPlans, nextPlan } from '@/platform/billing/catalog';
 import type { Entitlement } from '@/platform/billing/entitlement';
 import { assessUsage, downgradeEffects, type PlanRow, type UsageAssessment } from '@/platform/billing/pricing';
-import { quoteSubscriptionRefund, type RefundQuote } from '@/platform/billing/refunds';
+import {
+  quoteRateCardRefund,
+  quoteSubscriptionRefund,
+  type RefundQuote,
+} from '@/platform/billing/refunds';
 
 import { appClock } from './deps';
 
@@ -73,6 +77,13 @@ export interface BillingView {
   /** The auto-upgrade that has not been reverted, if any — §11.4's one-click undo. */
   readonly revertableUpgrade: PlanChangeRow | null;
   readonly refundQuote: RefundQuote | null;
+  /** §3.5's refund on the one-time $49 card, for a buyer who has since signed in
+   *  with the address they bought it with. The screen used to derive `refundQuote`
+   *  from the SUBSCRIPTION alone, so a rate-card buyer with no subscription read
+   *  "There is no subscription on this account to refund" directly under a policy
+   *  table promising a full refund within fourteen days — the delivery page having
+   *  told them the button was here. */
+  readonly rateCardRefund: RateCardRefundView | null;
   readonly downgrades: readonly {
     readonly plan: PlanRow;
     readonly loses: readonly string[];
@@ -239,8 +250,71 @@ export async function billingView(
       planChanges.find((change) => change.kind === 'auto_upgrade' && change.revertedAt === null) ??
       null,
     refundQuote,
+    // Through `tx`, like every other read in this function: a second handle inside
+    // an open transaction is a query waiting for a transaction that is waiting for it.
+    rateCardRefund: await rateCardRefundView(tx, input.accountId, now),
     downgrades,
     upgrades,
+  };
+}
+
+export interface RateCardRefundView {
+  readonly purchaseId: string;
+  readonly purchasedAt: Date;
+  readonly quote: RefundQuote;
+  /** `null` when the event ledger holds no charge for this purchase, which the
+   *  screen renders as itself rather than as a button that fails at Stripe. */
+  readonly paymentIntentId: string | null;
+  readonly alreadyRefunded: boolean;
+}
+
+/**
+ * The claimed rate-card purchase and what the policy says about refunding it.
+ *
+ * The charge is read out of `stripe_events` by the purchase's own Stripe session id,
+ * because a rate-card checkout carries neither `metadata.account_id` nor
+ * `client_reference_id` — there was no account when it was paid for, which is the
+ * whole of J3. `latestPaymentIntent` therefore cannot see it, and that is why the
+ * refund needs its own read rather than a widened one.
+ */
+export async function rateCardRefundView(
+  db: Db | Tx,
+  accountId: string,
+  now: Date,
+): Promise<RateCardRefundView | null> {
+  const row = rowsOf<{
+    id: string;
+    cents: number | string;
+    purchased_at: string | Date;
+    payment_intent: string | null;
+    refunded: boolean;
+  }>(
+    await db.execute(sql`
+      SELECT p.id, p.cents, p.purchased_at,
+             (SELECT coalesce(e.payload #>> '{data,object,payment_intent}',
+                              e.payload #>> '{data,object,id}')
+                FROM stripe_events e
+               WHERE e.type = 'checkout.session.completed'
+                 AND e.payload #>> '{data,object,id}' = p.stripe_session_id
+               ORDER BY e.received_at DESC LIMIT 1) AS payment_intent,
+             EXISTS (SELECT 1 FROM refunds r
+                      WHERE r.account_id = ${accountId}::uuid
+                        AND r.reason_code = 'rate_card_14_day') AS refunded
+        FROM rate_card_purchases p
+       WHERE p.claimed_by_account_id = ${accountId}::uuid
+       ORDER BY p.purchased_at DESC
+       LIMIT 1
+    `),
+  )[0];
+  if (!row) return null;
+
+  const purchasedAt = new Date(row.purchased_at);
+  return {
+    purchaseId: row.id,
+    purchasedAt,
+    quote: quoteRateCardRefund({ priceCents: Cents.of(Number(row.cents)), purchasedAt, now }),
+    paymentIntentId: row.payment_intent === '' ? null : row.payment_intent,
+    alreadyRefunded: row.refunded,
   };
 }
 

@@ -135,10 +135,33 @@ export interface CwhssaResult {
   readonly premiumCredit: Cents;
   readonly cwhssaPremium: Cents;
   readonly premiumPaidTotal: Cents;
+  /**
+   * R-BUILD H-4. True when at least one premium bucket in the week carries hours AND
+   * a stated rate — i.e. the export contains EVIDENCE about premium pay, whatever
+   * that evidence says. `$0.00` counts as stated: it is an assertion that no premium
+   * was paid, which is a fact to compare against. `null` does not (§3 — `null` is not
+   * zero), because a payroll export with no overtime-rate column is silent, and
+   * `PREMIUM_BELOW_STATUTORY` must not read silence as a shortfall. See
+   * `compliance.ts`'s H-4 note for the DOL oracle the old reading accused.
+   */
+  readonly premiumRatesStated: boolean;
   /** Self-priced hours the row does not prove were paid at ≥1.5×. */
   readonly unprovenPremiumHours: Hours;
   /** The lines carrying them — P-A blocks these and no others. */
   readonly unprovenLineIds: readonly string[];
+}
+
+/** Does any premium bucket in the week carry hours and a stated rate? Computed over
+ *  `PREMIUM_BUCKETS` (both), matching `premiumPaidTotal`'s own breadth — the two
+ *  quantities answer the same question and must see the same rows. */
+function anyPremiumRateStated(lines: readonly PreparedLine[]): boolean {
+  for (const line of lines) {
+    for (const bucket of PREMIUM_BUCKETS) {
+      if (bucketHours(line, bucket) <= 0) continue;
+      if (bucketRate(line, bucket) !== null) return true;
+    }
+  }
+  return false;
 }
 
 /**
@@ -210,6 +233,7 @@ export function computeCwhssa(
       premiumCredit: Cents.of(0),
       cwhssaPremium: Cents.of(0),
       premiumPaidTotal: Cents.of(0),
+      premiumRatesStated: false,
       unprovenPremiumHours: Hours.of(0),
       unprovenLineIds: [],
     };
@@ -244,6 +268,7 @@ export function computeCwhssa(
       premiumCredit: Cents.of(0),
       cwhssaPremium: Cents.of(0),
       premiumPaidTotal: Cents.of(0),
+      premiumRatesStated: false,
       unprovenPremiumHours: Hours.of(0),
       unprovenLineIds: [],
     };
@@ -339,6 +364,7 @@ export function computeCwhssa(
     premiumCredit,
     cwhssaPremium,
     premiumPaidTotal: Cents.sum(premiumPaidParts),
+    premiumRatesStated: anyPremiumRateStated(lines),
     unprovenPremiumHours: Hours.sum(unprovenHoursPerLine),
     unprovenLineIds,
   };

@@ -174,12 +174,35 @@ async function onCheckoutCompleted(
     // J3 — bought before an account exists. There is nothing to attach it to yet and
     // that is the point; `claimRateCardPurchases` does it on first sign-in.
     if (!email) return false;
-    await recordRateCardPurchase(
+    const sessionId = str(object['id']) ?? envelope.id;
+    const purchase = await recordRateCardPurchase(
       db,
       {
-        sessionId: str(object['id']) ?? envelope.id,
+        sessionId,
         email,
         cents: num(object['amount_total']) ?? undefined,
+      },
+      clock,
+    );
+
+    /**
+     * AND THEN SEND IT. `recordRateCardPurchase` mints a delivery token and writes
+     * it to a table the buyer cannot query; nothing sent it, and the success page
+     * says "the link is in your inbox either way — closing this tab loses nothing".
+     * Closing the tab lost everything. This is the only delivery of a $49 purchase
+     * made by somebody who has no account, cannot sign in, and — under A3 — has
+     * nobody to ask.
+     *
+     * Keyed on the Stripe session, so a webhook redelivery sends one email.
+     */
+    await queueEmail(
+      db,
+      {
+        accountId: null,
+        to: email,
+        template: 'rate_card_ready',
+        payload: { link_path: `/rate-card/r/${purchase.deliveryToken}` },
+        idempotencyKey: `rate_card_ready:${sessionId}`,
       },
       clock,
     );

@@ -40,9 +40,15 @@
 
 import { Cents, Hours } from '@/lib/money';
 import { blockedLine, declinedConclusion, draftNotCertifiable } from '@/lib/result';
-import type { BlockReason, PayrollWeek, Refusal, RefusalChoice } from '@/lib/types';
+import type {
+  BlockReason,
+  PayrollWeek,
+  Refusal,
+  RefusalChoice,
+  ViolationFlag,
+} from '@/lib/types';
 
-import type { FilingComputation, WorkerComputation } from './arithmetic/model';
+import type { FilingComputation, ViolationFinding, WorkerComputation } from './arithmetic/model';
 import type { ObligationValues } from './arithmetic/rates';
 import { CITE, QUOTE } from './citations';
 
@@ -233,6 +239,144 @@ export function deductionConditionsDeclined(input: {
   });
 }
 
+// ===========================================================================
+// P-D — the violation findings, R-BUILD C-2
+// ===========================================================================
+
+/**
+ * THE THREE VIOLATION FLAGS, AS SENTENCES.
+ *
+ * WHAT WAS WRONG. `buildExceptionReport` produced no sentence for any member of
+ * `ViolationFlag`. `computation.findings` — which carries `shortfall`, `required`,
+ * `paid` and `citation` per finding — was read by nothing here, and the only other
+ * consumer flattened the findings to a bare flag-name array written into
+ * `filings.violation_flags`, a column nothing reads. Executed end to end and
+ * text-extracted from the PDF bytes: a week with `WD_UNDERPAYMENT $72.00`,
+ * `WD_UNDERPAYMENT $50.00` and `PREMIUM_BELOW_STATUTORY $21.82` rendered ONE
+ * exception sentence (the liquidated-damages rule) and contained the string "72.00"
+ * nowhere, "shortfall" nowhere, "underpa" nowhere — status CERTIFIABLE, signature
+ * block rendered. A $122.00 wage shortfall against the pinned determination,
+ * computed correctly, discarded before ink.
+ *
+ * That is worse than not computing it. `ENGINE.md` §10 is the product — "the engine
+ * performs one comparison that no incumbent form-filler performs" — and a contractor
+ * who bought Ratepin so the comparison would be made received a clean form. The
+ * product's own promise made the silence read as a pass.
+ *
+ * WHAT THESE ARE. P-D, not P-A and not P-B. §10 is explicit that the check never
+ * blocks and never characterises a shortfall as a violation of law: "Two things this
+ * module never does: it never characterises a shortfall as a violation of law, and it
+ * never computes liquidated damages for a customer. It states the arithmetic and
+ * names the rule." So each sentence shows required, paid and the difference, quotes
+ * the regulation, and declines the conclusion. The artifact stays CERTIFIABLE unless
+ * something else blocks it — which is the half of §10 that WAS implemented.
+ *
+ * VERIFIED AGAINST. 29 CFR 5.31(b) (the discharge methods, whose "straight time
+ * hourly rate" is what `WD_UNDERPAYMENT` compares), 29 CFR 5.32(a) (the overtime
+ * base), 29 CFR 5.5(b)(1) (the CWHSSA obligation) — all fetched from the eCFR
+ * versioner API on 2026-08-13, title-29 issue 2026-08-11, and already transcribed
+ * verbatim in `citations.ts`.
+ */
+/**
+ * THE ARITHMETIC RIDES IN THE HEADLINE, NOT IN `observableFacts`.
+ *
+ * `exceptionSentences` — the one flattener both the paid and the free path use to
+ * turn a `Refusal` into a line of the printed exception report — renders a P-D as
+ * `headline + citation + rule + declined` and DISCARDS `observableFacts`. So a
+ * refusal that carried its figures only in the facts array would satisfy every test
+ * about refusals existing and still put no number on the paper, which is the exact
+ * shape of the defect this is closing. The three figures are therefore in the
+ * sentence, and the facts array carries the same values for the richer screens.
+ *
+ * Each label is a statement of arithmetic. None of them says "violation",
+ * "underpaid" or "owes": §10 forbids characterising a shortfall as a violation of
+ * law, and `CORRECTIONS.md` forbids writing a conclusion we did not measure.
+ */
+const VIOLATION_LABEL: Readonly<Record<ViolationFlag, string>> = {
+  WD_UNDERPAYMENT:
+    'total straight-time compensation for these hours is below what the determination requires',
+  FRINGE_BELOW_WD:
+    'fringe contributions are below the determination’s fringe rate, with the total met in cash',
+  PREMIUM_BELOW_STATUTORY:
+    'the premium rates stated on this payroll are below the overtime premium computed for the week',
+} as const;
+
+function violationHeadline(finding: ViolationFinding): string {
+  const scope = finding.lineId === null ? 'This worker-week' : `Line ${finding.lineId}`;
+  return (
+    `${scope}: ${VIOLATION_LABEL[finding.flag]} — ` +
+    `required ${Cents.toDollarString(finding.required)}, ` +
+    `reported as paid ${Cents.toDollarString(finding.paid)}, ` +
+    `difference ${Cents.toDollarString(finding.shortfall)}.`
+  );
+}
+
+const VIOLATION_RULE: Readonly<Record<ViolationFlag, { rule: string; citation: string }>> = {
+  WD_UNDERPAYMENT: { rule: QUOTE.dischargeMethods, citation: CITE.dischargeMethods },
+  FRINGE_BELOW_WD: { rule: QUOTE.dischargeMethods, citation: CITE.dischargeMethods },
+  PREMIUM_BELOW_STATUTORY: { rule: QUOTE.cwhssaOvertime, citation: CITE.cwhssaOvertime },
+} as const;
+
+const VIOLATION_DECLINED: Readonly<Record<ViolationFlag, string>> = {
+  WD_UNDERPAYMENT:
+    'Ratepin states the arithmetic and names the rule. Ratepin does not determine whether this is ' +
+    'a violation of the Davis-Bacon Act, computes no back wages and computes no liquidated ' +
+    'damages. Nothing here blocks this filing.',
+  FRINGE_BELOW_WD:
+    'Discharging the obligation partly in cash and partly in fringe contributions is one of the ' +
+    'three methods 29 CFR 5.31(b) permits, so this is an observation and not a finding. Ratepin ' +
+    'does not determine whether a plan is bona fide and does not verify annualization. Nothing ' +
+    'here blocks this filing.',
+  PREMIUM_BELOW_STATUTORY:
+    'The premium Ratepin computed is already inside column 7A on this form. Ratepin states the ' +
+    'arithmetic and names the rule; it does not determine whether the Contract Work Hours and ' +
+    'Safety Standards Act was contravened, and computes no liquidated damages. Nothing here ' +
+    'blocks this filing.',
+} as const;
+
+/** One violation finding, as a declined conclusion with the arithmetic beside it. */
+export function violationObserved(finding: ViolationFinding): Refusal {
+  const { rule, citation } = VIOLATION_RULE[finding.flag];
+  return declinedConclusion({
+    headline: violationHeadline(finding),
+    rule,
+    citation: `${citation} (finding cites ${finding.citation})`,
+    observableFacts: [
+      { label: 'Required', value: Cents.toDollarString(finding.required) },
+      { label: 'Paid, as this payroll reports it', value: Cents.toDollarString(finding.paid) },
+      { label: 'Difference', value: Cents.toDollarString(finding.shortfall) },
+      { label: 'Scope', value: finding.lineId === null ? 'worker-week' : `line ${finding.lineId}` },
+    ],
+    declined: VIOLATION_DECLINED[finding.flag],
+  });
+}
+
+/**
+ * R-BUILD H-4's replacement for the accusation. A week with statutory overtime whose
+ * export states no premium rate anywhere: there is nothing to compare, so nothing is
+ * claimed. The sentence says what column 7A contains and stops.
+ */
+export function premiumRateNotReported(input: {
+  readonly premiumOwed: Cents;
+  readonly statutoryOtHours: Hours;
+}): Refusal {
+  return declinedConclusion({
+    headline: 'This payroll export states no overtime rate for a week with statutory overtime.',
+    rule: QUOTE.cwhssaOvertime,
+    citation: CITE.cwhssaOvertime,
+    observableFacts: [
+      { label: 'Hours over forty', value: Hours.toDecimalString(input.statutoryOtHours) },
+      { label: 'Overtime premium Ratepin computed', value: Cents.toDollarString(input.premiumOwed) },
+      { label: 'Where that premium appears', value: 'inside column 7A on this form' },
+      { label: 'Premium rate reported by the payroll export', value: 'none' },
+    ],
+    declined:
+      'Ratepin does not determine whether that premium was paid. No premium rate is stated on any ' +
+      'row of this week, so there is nothing to compare it against, and Ratepin will not read the ' +
+      'absence of a rate column as either payment or non-payment.',
+  });
+}
+
 /** §13 — apprenticeship ratios are an opinion about programme compliance. The
  *  status and the level of progression are recorded and printed; no ratio is
  *  computed. */
@@ -389,6 +533,41 @@ export function blockedLineRefusals(input: ExceptionInput): readonly Refusal[] {
         );
       }
 
+      if (line.blockReasons.includes('UNFUNDED_PLAN_CREDIT')) {
+        refusals.push(
+          blockedLine({
+            blockReason: 'UNFUNDED_PLAN_CREDIT',
+            lineId: line.lineId,
+            headline: 'A fringe credit on this line is claimed against an unfunded plan.',
+            detail:
+              'An unfunded plan pays its benefits from the contractor’s general assets rather than ' +
+              'from contributions irrevocably made to a trustee or a third person. 29 CFR 5.28(b) ' +
+              'sets five conditions on such a plan, and the fifth is approval by the Secretary. ' +
+              'Whether that approval was requested and received is not in any payroll export, so ' +
+              'Ratepin cannot evaluate the credit and will not place it in column 6B. 29 CFR ' +
+              '5.28(c) sets out how approval is requested: a written request to the Wage and Hour ' +
+              'Division demonstrating that the plan is bona fide and meets 5.28(b)(1) through (4).',
+            choices: [
+              {
+                value: 'plan_is_funded',
+                label:
+                  'The plan is funded — contributions are irrevocably made to a trustee or third ' +
+                  'person — and was recorded as unfunded in error.',
+                verbatimSource: QUOTE.unfundedPlanApproval,
+                sourceCitation: CITE.unfundedPlanApproval,
+              },
+              {
+                value: 'withdraw_unfunded_credit',
+                label: 'Remove the credit claimed on this line and discharge the obligation in cash.',
+                verbatimSource: QUOTE.dischargeMethodsShort,
+                sourceCitation: CITE.dischargeMethods,
+              },
+            ],
+            ladderLevel: 'L_F',
+          }),
+        );
+      }
+
       if (line.blockReasons.includes('UNION_GROUP_REFUSED')) {
         refusals.push(
           blockedLine({
@@ -433,6 +612,38 @@ export function blockedLineRefusals(input: ExceptionInput): readonly Refusal[] {
             'unrecognised deduction in it. Choosing the paragraph once records the mapping for this ' +
             'account.',
           choices: deductionChoices(input.obligations),
+          ladderLevel: 'L_F',
+        }),
+      );
+    }
+
+    if (worker.blockReasons.includes('GROSS_EXCEEDS_ALL_WORK_GROSS')) {
+      refusals.push(
+        blockedLine({
+          blockReason: 'GROSS_EXCEEDS_ALL_WORK_GROSS',
+          lineId: worker.lines[0]?.lineId ?? String(worker.workerRef),
+          headline: 'Column 7A is larger than column 7B on this worker.',
+          detail:
+            `Gross earned on this project (column 7A) is ${Cents.toDollarString(worker.col7A)}; gross ` +
+            `earned for all work in the week (column 7B) is ${Cents.toDollarString(worker.col7B)}. The ` +
+            'first is part of the second, so a form carrying both of these figures cannot be true, and ' +
+            'column 9’s net will not reconcile against it. Ratepin cannot tell which figure is wrong: ' +
+            'column 7A is computed from the hours, the rates and the overtime premium on these rows, ' +
+            'and column 7B came from your payroll system.',
+          choices: [
+            {
+              value: 'all_work_gross_restated',
+              label: 'Column 7B is understated; the gross for all work needs correcting.',
+              verbatimSource: QUOTE.statementOfComplianceDeductions,
+              sourceCitation: CITE.statementOfCompliance,
+            },
+            {
+              value: 'premium_rate_restated',
+              label: 'The overtime or premium rate on these rows is wrong and I will restate it.',
+              verbatimSource: QUOTE.cwhssaOvertime,
+              sourceCitation: CITE.cwhssaOvertime,
+            },
+          ],
           ladderLevel: 'L_F',
         }),
       );
@@ -539,6 +750,34 @@ export function buildExceptionReport(input: ExceptionInput): readonly Refusal[] 
     );
   }
 
+  /**
+   * R-BUILD C-2 — every violation finding becomes a sentence, in the order the
+   * arithmetic discovered it. There is no filter and no threshold: a finding that
+   * exists and is not rendered is a finding the customer paid us to make and did not
+   * receive, and `explainedViolationFlags` below is that promise as a test.
+   */
+  for (const finding of computation.findings) {
+    refusals.push(violationObserved(finding));
+  }
+
+  /**
+   * R-BUILD H-4 — the evidence-free week. Fires exactly where
+   * `PREMIUM_BELOW_STATUTORY` no longer does, so a week with statutory overtime is
+   * never silent about the premium: either the stated rates fall short and the
+   * finding above says by how much, or no rate is stated and this says so.
+   */
+  for (const worker of computation.workers) {
+    if (computation.contractValueBand !== 'over_100k') continue;
+    if (worker.statutoryOtHours <= 0 || worker.premiumOwed <= 0) continue;
+    if (worker.premiumRatesStated) continue;
+    refusals.push(
+      premiumRateNotReported({
+        premiumOwed: worker.premiumOwed,
+        statutoryOtHours: worker.statutoryOtHours,
+      }),
+    );
+  }
+
   const apprentices = computation.workers.filter((w) => w.status === 'RA').length;
   if (apprentices > 0) refusals.push(apprenticeRatioDeclined(apprentices));
 
@@ -567,6 +806,28 @@ export function explainedBlockReasons(refusals: readonly Refusal[]): readonly Bl
     if (refusal.primitive === 'P-B') reasons.push(...refusal.blockReasons);
   }
   return reasons;
+}
+
+/**
+ * Every violation flag the exception report accounts for — the finding-side twin of
+ * `explainedBlockReasons`, and the test that closes R-BUILD C-2's class: every
+ * `ViolationFlag` in `computation.findings` must appear here.
+ *
+ * The flag is recovered from the headline rather than carried on the refusal because
+ * `Refusal` has no field for it and widening that union to carry an engine concept
+ * would put an arithmetic type into the shape every renderer switches over. The
+ * labels are constants in this module, so the recovery is total and cannot drift: a
+ * new flag with no `VIOLATION_LABEL` entry fails to compile.
+ */
+export function explainedViolationFlags(refusals: readonly Refusal[]): readonly ViolationFlag[] {
+  const flags: ViolationFlag[] = [];
+  for (const refusal of refusals) {
+    if (refusal.primitive !== 'P-D') continue;
+    for (const [flag, label] of Object.entries(VIOLATION_LABEL) as [ViolationFlag, string][]) {
+      if (refusal.headline.includes(label)) flags.push(flag);
+    }
+  }
+  return flags;
 }
 
 /** Workers whose deductions carry an (i) or (j) category — never blocked, always

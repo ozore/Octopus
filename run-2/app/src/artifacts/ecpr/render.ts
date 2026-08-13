@@ -12,6 +12,8 @@
  *      against is not the schema DIR is serving. Failing closed after building
  *      would leave a valid-looking document in memory next to a refusal, and the
  *      next refactor hands it to the download route.
+ *   1b. THE ARTIFACT STATUS, SECOND — R-BUILD C-3. Nothing is built for a filing
+ *      whose federal verdict is `DRAFT_NOT_CERTIFIABLE`.
  *   2. ELIGIBILITY, PER WORKER. A worker with no SSN on file, no withholding-
  *      exemption count, or more than one classification line cannot be represented
  *      in this schema. Either the customer acknowledges the exclusion explicitly or
@@ -23,6 +25,27 @@
  * NONE OF THIS TOUCHES THE WH-347. §10.2: the same filing can be CERTIFIABLE as a
  * PDF and BLOCKED as XML, and S16 shows two chips. "A single blended status would
  * have to lie about one of them."
+ *
+ * The independence runs ONE WAY, and R-BUILD C-3 is why the direction matters. A
+ * federal PDF that is CERTIFIABLE may still be blocked as XML — a missing SSN, a
+ * two-classification week — and that is the case §10.2 describes. The converse is
+ * not symmetric: a filing that is `DRAFT — NOT CERTIFIABLE` federally has an
+ * unresolved classification, an undetermined contract-value band or an unproven
+ * premium bucket, and every one of those is a defect in the SAME arithmetic the XML
+ * carries. `renderEcprXml` previously never read `ArtifactStatus` at all, so such a
+ * filing produced a complete, well-formed, submittable eCPR whose only DRAFT marker
+ * was an XML COMMENT that DIR's parser discards. The signature block is structurally
+ * withheld on the PDF and structurally unrepresentable in the XML, so the P-B refusal
+ * governing the federal artifact simply did not exist on the state one — emitting a
+ * document a portal will accept when we know its central certification is unsupported
+ * is worse than emitting nothing, which is the same reason `checkXsdPin` refuses
+ * first.
+ *
+ * VERIFIED AGAINST. 29 CFR 5.5(a)(3)(ii)(C), eCFR, fetched 2026-08-13: the three
+ * certifications are certifications about the PAYROLL, not about a file format. The
+ * California transmittal restates the same payroll to a different awarding body under
+ * Labor Code § 1776's own certification, so a fact that makes the federal
+ * certification unsupportable makes the state one unsupportable too.
  *
  * ===========================================================================
  * NINE DIGITS HERE, FOUR DIGITS THERE
@@ -318,6 +341,13 @@ export interface EcprRenderInput extends EcprInput {
   /** `DIR_XSD_SHA256` from config. In config rather than in code so that rotating
    *  it is a release record (ADR-009). */
   readonly pinnedSha256: Sha256Hex;
+  /**
+   * The federal verdict for this same filing, from `deriveStatus` — the single total
+   * constructor. REQUIRED, with no default: a caller that has not derived a status
+   * has not established that the arithmetic underneath this document holds, and an
+   * optional field would let the gate be skipped by forgetting it (R-BUILD C-3).
+   */
+  readonly verdict: ArtifactVerdict;
 }
 
 /**
@@ -333,6 +363,24 @@ export function renderEcprXml(input: EcprRenderInput): Result<EcprArtifact> {
   // -- 1. The pinned-hash gate, before anything is built -------------------
   const pin = checkXsdPin(input.pinnedSha256, input.observation);
   if (!pin.ok) return refuse(pin.refusal);
+
+  // -- 1b. The artifact status, before anything is built (R-BUILD C-3) ------
+  if (input.verdict.status === 'DRAFT_NOT_CERTIFIABLE') {
+    return refuse(
+      draftNotCertifiable({
+        blockReasons: input.verdict.blocks,
+        headline: 'This filing is not certifiable, so no California eCPR is emitted.',
+        detail:
+          'The reasons below withhold the signature block on your WH-347, and they are reasons about ' +
+          'the payroll rather than about a file format — the same arithmetic goes into both ' +
+          'documents. The XML schema has no field in which a draft can be marked as a draft: DIR’s ' +
+          'parser discards comments, so a file emitted now would be indistinguishable from a ' +
+          'certified one at the portal. Your WH-347 still generates, watermarked, with the exception ' +
+          'report attached. Resolving the items below releases both artifacts together.',
+        exceptionReport: input.verdict.blocks.map((reason) => String(reason)),
+      }),
+    );
+  }
 
   const identities = new Map(input.workers.map((worker) => [String(worker.workerRef), worker]));
   const acknowledged = new Set(input.acknowledgedExclusions.map((ref) => String(ref)));
@@ -442,9 +490,18 @@ function describeViolation(violation: SchemaViolation): string {
   return `${violation.path}: found ${violation.found} — schema says ${violation.rule}`;
 }
 
-/** Convenience for callers that have a provenance struct and a verdict but have not
- *  built footer lines yet. Keeps the XML's comment header and the PDF's footer the
- *  same sentences, which is the point of `provenance.ts`. */
+/**
+ * Convenience for callers that have a provenance struct and a verdict but have not
+ * built footer lines yet. Keeps the XML's comment header and the PDF's footer the
+ * same sentences, which is the point of `provenance.ts`.
+ *
+ * R-BUILD L-1. `unresolvedLineCount` was passed as `0` unconditionally, and
+ * `draftSentence` branches on it: at zero the subject becomes "This filing is
+ * unresolved", where the PDF for the SAME filing said "3 payroll lines are
+ * unresolved". One artifact, two descriptions of one fact — and the count was
+ * already derivable from the `computation` this function receives. It is now counted
+ * from it, by exactly the expression `projectWh347` uses, so the two cannot drift.
+ */
 export function ecprFooter(input: {
   readonly provenance: ArtifactProvenance;
   readonly computation: FilingComputation;
@@ -459,6 +516,10 @@ export function ecprFooter(input: {
     bandRecordedOn: input.bandRecordedOn,
     contractLock: null,
     verifyUrl: null,
-    unresolvedLineCount: 0,
+    unresolvedLineCount: input.computation.workers.reduce(
+      (total, worker) =>
+        total + worker.lines.filter((line) => line.resolutionState !== 'resolved').length,
+      0,
+    ),
   });
 }

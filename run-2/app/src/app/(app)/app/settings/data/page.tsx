@@ -12,15 +12,16 @@
 
 import Link from 'next/link';
 
-import { DELETION_BOUNDARY_STATEMENT, deletionPreview, readDeletion } from '@/platform/account/deletion';
+import {
+  DELETION_BOUNDARY_STATEMENT,
+  deletionPreview,
+  readAccountName,
+  readDeletion,
+} from '@/platform/account/deletion';
 import { EXPORT_README } from '@/platform/account/export';
 import { getDb } from '@/db';
 
-import {
-  buildExportAction,
-  requestDeletionAction,
-  undoDeletionAction,
-} from '../../../_actions/settings';
+import { requestDeletionAction, undoDeletionAction } from '../../../_actions/settings';
 import { readAs, requireSession } from '../../../_lib/auth';
 import { EXPORT_NOTE, RETENTION_HEADLINE, RETENTION_RULE, UNDO_NOTE } from '../../../_lib/copy';
 import { listFilings } from '../../../_lib/filings';
@@ -28,6 +29,32 @@ import { listFilings } from '../../../_lib/filings';
 export const dynamic = 'force-dynamic';
 
 export const metadata = { title: 'Your data — Ratepin' };
+
+/**
+ * One sentence per outcome `requestDeletionAction` and `undoDeletionAction` can
+ * redirect with. The keys are the union members of `DeletionRequestResult['reason']`
+ * and `UndoResult['reason']` plus the two success states, and every one of them names
+ * the next thing the customer can do here — there is nowhere else to do it.
+ */
+const DELETION_OUTCOME: Readonly<Record<string, string>> = {
+  scheduled: 'Deletion is scheduled. The date and the undo button are above.',
+  undone: 'Deletion cancelled. Nothing was erased and your subscription has not resumed.',
+  name_mismatch:
+    'That is not the account name. The only accepted value is the name printed in bold above, ' +
+    'compared after trimming and case-folding and in no other way.',
+  already_scheduled:
+    'This account is already scheduled for deletion, so nothing was changed. The date and the ' +
+    'undo button are above.',
+  no_account:
+    'This account is already closed, so there is nothing left to schedule. Your export link above ' +
+    'still works while the retained records exist.',
+  not_scheduled: 'There is no scheduled deletion on this account, so there was nothing to undo.',
+  window_closed:
+    'The seven-day undo window has closed and the deletion is now running. It cannot be reversed, ' +
+    'which is the consequence stated on this screen before the click.',
+  already_executed:
+    'This deletion has already run. What survives it is the retained list above, and your export.',
+};
 
 export default async function DataPage({
   searchParams,
@@ -40,28 +67,34 @@ export default async function DataPage({
 
   const view = await readAs(session, async (tx) => ({
     filings: await listFilings(tx),
-    accountName: await accountNameOf(tx),
+    // The name comes from the deletion module's own read, keyed by THIS account, so
+    // the string the screen tells her to type is the string the comparison compares.
+    accountName: (await readAccountName(tx, session.accountId)) ?? 'this account',
   }));
   const deletion = await readDeletion(db, session.accountId);
   const report = deletionPreview();
   const state = typeof params['deletion'] === 'string' ? (params['deletion'] as string) : null;
-  const exported = typeof params['exported'] === 'string' ? (params['exported'] as string) : null;
 
   return (
     <div className="rp-stack rp-stack--section">
       <section className="rp-stack rp-measure">
         <h1>Your data</h1>
         <p className="rp-t-lead">{EXPORT_NOTE}</p>
-        <form action={buildExportAction}>
-          <div className="rp-btn-row">
-            <button type="submit" className="rp-btn rp-btn--primary">
-              Export {view.filings.length} filing{view.filings.length === 1 ? '' : 's'}
-            </button>
-          </div>
-        </form>
-        {exported === null ? null : (
-          <p className="rp-t-data rp-num">Export built: {exported}</p>
-        )}
+        {/* A LINK, not a form action. The bundle is built in the request and the ZIP
+            is the response, so the button and the file are the same click — there is
+            no key, no queue and no second screen on which a promised file could fail
+            to appear. */}
+        <div className="rp-btn-row">
+          <a className="rp-btn rp-btn--primary" href="/api/exports" download>
+            Export {view.filings.length} filing{view.filings.length === 1 ? '' : 's'} as a ZIP
+          </a>
+        </div>
+        <p className="rp-t-micro">
+          The bundle carries the WH-347 bytes themselves, re-rendered and checked against the sha256
+          recorded when each was generated. Anything that does not reproduce stays named in{' '}
+          <span className="rp-num">manifest.json</span> with its recorded digest and the reason,
+          because an archive that silently drops a file is worse than one that names it.
+        </p>
         <details className="rp-disclose">
           <summary>What is in the bundle</summary>
           <pre className="rp-prose rp-scroll-x">{EXPORT_README}</pre>
@@ -79,6 +112,14 @@ export default async function DataPage({
               <span className="rp-num">{deletion.effectiveAt.toISOString().slice(0, 10)}</span>
             </p>
             <p>{UNDO_NOTE}</p>
+            <p>
+              Your export stays downloadable for the whole window and is the only copy that survives
+              the date above:{' '}
+              <a href="/api/exports" download>
+                download the ZIP
+              </a>
+              .
+            </p>
             <form action={undoDeletionAction}>
               <div className="rp-btn-row">
                 <button type="submit" className="rp-btn rp-btn--primary">
@@ -161,12 +202,17 @@ export default async function DataPage({
             </p>
           </form>
 
-          {state === 'name_mismatch' ? (
-            <p className="rp-field__error">
-              That is not the account name. The only accepted value is the name above, compared
-              after trimming and case-folding and in no other way.
+          {/* EVERY outcome this form can redirect with renders a sentence. A
+              redirect parameter no branch reads is a silent no-op, and a silent
+              no-op on a destructive control is the state a customer would resolve by
+              asking a person. */}
+          {state === null ? null : (
+            <p className={state === 'undone' ? 'rp-t-data' : 'rp-field__error'}>
+              {DELETION_OUTCOME[state] ??
+                'That request did not complete and nothing was changed. The form above is the whole ' +
+                  'of the control: type the account name exactly as it is printed and submit again.'}
             </p>
-          ) : null}
+          )}
         </section>
       )}
 
@@ -176,11 +222,4 @@ export default async function DataPage({
       </p>
     </div>
   );
-}
-
-async function accountNameOf(tx: import('@/db').Tx): Promise<string> {
-  const { sql } = await import('drizzle-orm');
-  const { rowsOf } = await import('@/db');
-  const row = rowsOf<{ name: string }>(await tx.execute(sql`SELECT name FROM accounts LIMIT 1`))[0];
-  return row?.name ?? 'this account';
 }

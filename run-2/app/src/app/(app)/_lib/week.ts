@@ -291,8 +291,6 @@ export async function runCost(
         includedFilings: null,
         overagePriceCents: null,
         autoUpgradeTo: null,
-        projectCap: null,
-        workerCap: null,
         features: {},
       },
       nextPlan: null,

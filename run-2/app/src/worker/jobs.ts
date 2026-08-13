@@ -53,7 +53,12 @@ import type { StripeGateway } from '../platform/billing/gateway';
 import { enforceOverageCap } from '../platform/billing/meter';
 import { replayStripeEvents } from '../platform/billing/webhook';
 import { assessFreshness } from '../platform/ops/freshness';
-import { recordCanaryRun, recordReconciliation, refreshClaimGates } from '../platform/ops/gates';
+import {
+  recordCanaryRun,
+  recordChaosCreditRun,
+  recordReconciliation,
+  refreshClaimGates,
+} from '../platform/ops/gates';
 import { closeIncident, currentCreditIncidentId, openIncident } from '../platform/ops/incidents';
 import { ensurePublishedAddresses } from '../platform/ops/inbound';
 import { drainOutbox, type Mailer } from '../platform/ops/outbox';
@@ -801,22 +806,42 @@ const retentionSweep: JobDefinition = {
       `),
     ).length;
 
-    if (deps.retention) {
-      counts['ecpr_objects'] = await deps.retention.purgeBefore({
-        prefix: 'pii/ecpr/',
-        before: addDays(now, -30),
-      });
-      counts['raw_csv'] = await deps.retention.purgeBefore({
-        prefix: 'payroll/raw/',
-        before: addDays(now, -90),
-      });
-      counts['free_generator'] = await deps.retention.purgeBefore({
-        prefix: 'free/',
-        before: new Date(now.getTime() - 86_400_000),
+    // THE THREE OBJECT CLASSES, AND WHAT HAPPENS WHEN THERE IS NO STORE.
+    //
+    // This used to be `if (deps.retention) { … }` and then `performed: true`, so a
+    // run that swept nothing at all wrote the same ledger row as a run that swept
+    // everything and found nothing due. That is precisely the distinction
+    // `JobResult.performed` is documented to carry, and it is load-bearing here: the
+    // deletion screen promises "hard delete of the stored objects" for eCPR XML
+    // containing full Social Security numbers, and a promise nothing executes is the
+    // kind of gap that eventually requires a person, a lawyer, or both.
+    const objectClasses: readonly { readonly name: string; readonly prefix: string; readonly before: Date }[] = [
+      { name: 'ecpr_objects', prefix: 'pii/ecpr/', before: addDays(now, -30) },
+      { name: 'raw_csv', prefix: 'payroll/raw/', before: addDays(now, -90) },
+      { name: 'free_generator', prefix: 'free/', before: new Date(now.getTime() - 86_400_000) },
+    ];
+
+    if (!deps.retention) {
+      return {
+        performed: false,
+        detail: {
+          counts,
+          object_store: false,
+          reason: 'no_object_store_configured',
+          // Named, never skipped silently — this job's own `failsClosedBy`.
+          unswept_classes: objectClasses.map((entry) => entry.name),
+        },
+      };
+    }
+
+    for (const entry of objectClasses) {
+      counts[entry.name] = await deps.retention.purgeBefore({
+        prefix: entry.prefix,
+        before: entry.before,
       });
     }
 
-    return { performed: true, detail: { counts, object_store: deps.retention !== null } };
+    return { performed: true, detail: { counts, object_store: true } };
   },
 };
 
@@ -891,16 +916,113 @@ const gatesRefresh: JobDefinition = {
 };
 
 /**
+ * G6's evidence, produced by exercising the guarantee rather than by asserting it.
+ *
+ * `IDEA_DOSSIER.md` D10 G6 requires the staleness auto-credit to fire correctly in a
+ * chaos test, at both scales, BEFORE the guarantee is advertised anywhere. Nothing in
+ * this build ever set `staleness_windows.chaos_test`, and — worse — nothing ever
+ * wrote a `staleness_windows` row at all, so `readG6`'s join could not return a row
+ * under any sequence of events and the gate was `0 / 2` by construction.
+ *
+ * WHAT THIS DRILL IS. A synthetic L2 incident, the REAL credit path run against it,
+ * and the windows recorded with `chaos_test = true`. It runs twice on purpose: the
+ * second run must post nothing, because `credits.ts` claims each accrual under a
+ * unique key before it calls Stripe, and a guarantee whose second firing double-pays
+ * is not a guarantee that has been tested. The incident is closed at the end, so a
+ * drill cannot leave the fleet in L2.
+ */
+const chaosStalenessCredit: JobDefinition = {
+  kind: 'chaos.staleness.credit',
+  schedule: { kind: 'weekly', weekdayEt: 0, hourEt: 7, minuteEt: 0 },
+  does: 'Open a synthetic staleness incident, run the real credit path against it twice, record the windows as a chaos test, close it.',
+  failsClosedBy:
+    'The drill posts through the same ceiling as a real incident and closes its own incident; a failure leaves the incident open, which the ladder already handles.',
+  probes: [],
+  signalOnFailure: null,
+  async run({ deps }) {
+    const now = deps.clock.now();
+    const scope = 'chaos-drill';
+    const cause = 'scheduled chaos drill of the staleness credit path';
+    const opened = await openIncident(
+      deps.db,
+      {
+        signal: { kind: 'freshness_stale' },
+        level: 'L2_STALE',
+        scope,
+        cause,
+        detail: { chaos_test: true },
+      },
+      deps.clock,
+    );
+    const incidentId = opened.id;
+
+    const window = { from: addDays(now, -4), to: now };
+    const first = await issueStalenessCredits(
+      deps.db,
+      {
+        incidentId,
+        window,
+        floorCents: deps.config.CREDIT_FLOOR_CENTS,
+        ceilingPct: deps.config.CREDIT_CEILING_PCT,
+      },
+      { stripe: deps.stripe, clock: deps.clock },
+    );
+
+    // The idempotency half of the drill. A second run of the same incident must add
+    // nothing; if it does, the guarantee double-pays on any retry.
+    const second = await issueStalenessCredits(
+      deps.db,
+      {
+        incidentId,
+        window,
+        floorCents: deps.config.CREDIT_FLOOR_CENTS,
+        ceilingPct: deps.config.CREDIT_CEILING_PCT,
+      },
+      { stripe: deps.stripe, clock: deps.clock },
+    );
+
+    const recorded = await recordChaosCreditRun(
+      deps.db,
+      {
+        incidentId,
+        verifiedAt: window.from,
+        credits: first.rows
+          .filter((row) => row.outcome === 'posted')
+          .map((row) => ({ id: row.id, accountId: row.accountId })),
+      },
+      deps.clock,
+    );
+
+    await closeIncident(deps.db, { scope, cause }, deps.clock);
+
+    return {
+      performed: true,
+      detail: {
+        incident_id: incidentId,
+        posted_cents: first.postedCents,
+        withheld_cents: first.withheldCents,
+        ceiling_cents: first.ceilingCents,
+        ceiling_state: first.ceilingState,
+        accounts_credited: recorded.windows,
+        idempotent: second.postedCents === first.postedCents,
+      },
+    };
+  },
+};
+
+/**
  * The export-on-cancel bundle (§9.1: "export link emailed FIRST").
  *
- * On demand: it is enqueued by the dunning transition and by the deletion request,
- * not by the clock, because there is no daily moment at which somebody's account is
- * cancelled.
+ * On demand. It BUILDS the bundle — the walk, the manifest and every digest — so a
+ * transition that promises an archive is never announced against an account whose
+ * archive could not be assembled. It does not hand anybody bytes and does not claim
+ * to: the customer's copy is the ZIP at `/api/exports`, which is authenticated, open
+ * in every money state, and what the `archive_export_link` message links to.
  */
 const exportBundle: JobDefinition = {
   kind: 'account.export',
   schedule: { kind: 'onDemand' },
-  does: 'Build the export bundle for one account and queue the link.',
+  does: 'Verify the export bundle for one account is buildable and record its manifest counts.',
   failsClosedBy: 'Export is open in every money state; a failure retries and never revokes access.',
   probes: [],
   signalOnFailure: null,
@@ -946,6 +1068,7 @@ export const JOB_REGISTRY: readonly JobDefinition[] = [
   retentionSweep,
   backupVerify,
   gatesRefresh,
+  chaosStalenessCredit,
   exportBundle,
 ] as const;
 

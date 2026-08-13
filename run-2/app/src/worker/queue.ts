@@ -166,8 +166,7 @@ export async function failJob(
     `);
     return { state: 'dead', retryAt: null };
   }
-  const delayMs = Math.min(3_600_000, 60_000 * 2 ** Math.max(0, input.attempts - 1));
-  const retryAt = new Date(clock.now().getTime() + delayMs);
+  const retryAt = new Date(clock.now().getTime() + backoffMs(input.attempts));
   await db.execute(sql`
     UPDATE jobs SET state = 'ready', lease_until = NULL, last_error = ${input.error},
                     run_after = ${retryAt.toISOString()}::timestamptz
@@ -176,34 +175,94 @@ export async function failJob(
   return { state: 'ready', retryAt };
 }
 
+/** Exponential with a one-hour cap. One function, so the crash path and the throw
+ *  path cannot disagree about how long a failing job waits. */
+export function backoffMs(attempts: number): number {
+  return Math.min(3_600_000, 60_000 * 2 ** Math.max(0, attempts - 1));
+}
+
+export interface ReclaimReport {
+  readonly reclaimed: number;
+  /** Jobs that exhausted their attempts without any attempt ever reporting — the
+   *  crash-loop shape. Returned rather than logged, because the caller is the only
+   *  place that knows which signal the kind declares. */
+  readonly dead: readonly JobRow[];
+}
+
 /**
  * Return jobs whose lease has expired to the ready pool.
  *
  * This is the crash path, and it writes its own `job_runs` row so the ledger shows
  * "this attempt ended without ever reporting" rather than showing nothing — the two
  * are indistinguishable from the outside, and only one of them is worth knowing.
+ *
+ * ===========================================================================
+ * TWO THINGS THIS FUNCTION MUST DO THAT IT USED NOT TO
+ *
+ * 1. **Respect `MAX_ATTEMPTS`.** The cap used to live only in `failJob`, which runs
+ *    only when the handler THROWS. A handler that takes the process down — an OOM
+ *    parsing a large determination, a `process.exit`, a SIGKILL mid-deploy — never
+ *    reaches it, so the row came back to `ready` at 99 attempts, twenty times the
+ *    cap, forever.
+ *
+ * 2. **Push `run_after` out by the same backoff a thrown failure gets.** The row kept
+ *    its ORIGINAL slot instant, so it was the oldest row in the table and
+ *    `claimJobs`' `ORDER BY run_after` handed it back first every tick. One
+ *    crash-looping job therefore sat at the head of the queue and starved
+ *    `billing.credit`, `billing.dunning`, `outbox.drain`, `account.deletion.execute`
+ *    and `gates.refresh` — every customer-visible consequence of which looks exactly
+ *    like the product working.
+ *
+ * A job that dies here is `dead` and is RETURNED, so the caller can raise the kind's
+ * declared signal. §10.1's rule is that a signal terminates in an automatic response,
+ * not in a page; the point of reaching the ladder is that the response happens with
+ * nobody noticing, and a permanently crashing job that reached nothing at all was the
+ * one failure shape that produced silence.
  */
 export async function reclaimExpiredLeases(
   db: Db | Tx,
   clock: Clock = systemClock,
-): Promise<number> {
-  const now = clock.now().toISOString();
-  const reclaimed = rowsOf<RawJob>(
+): Promise<ReclaimReport> {
+  const now = clock.now();
+  const nowIso = now.toISOString();
+  const expired = rowsOf<RawJob>(
     await db.execute(sql`
-      UPDATE jobs SET state = 'ready', lease_until = NULL
-       WHERE state = 'claimed' AND lease_until IS NOT NULL AND lease_until < ${now}::timestamptz
-       RETURNING id, kind, payload, attempts, idempotency_key, run_after
+      SELECT id, kind, payload, attempts, idempotency_key, run_after
+        FROM jobs
+       WHERE state = 'claimed' AND lease_until IS NOT NULL AND lease_until < ${nowIso}::timestamptz
+       FOR UPDATE SKIP LOCKED
     `),
-  );
-  for (const row of reclaimed) {
+  ).map(toJob);
+
+  const dead: JobRow[] = [];
+  for (const job of expired) {
+    if (job.attempts >= MAX_ATTEMPTS) {
+      await db.execute(sql`
+        UPDATE jobs SET state = 'dead', lease_until = NULL,
+                        last_error = 'the lease expired without the attempt reporting an outcome'
+         WHERE id = ${job.id}
+      `);
+      dead.push(job);
+    } else {
+      const retryAt = new Date(now.getTime() + backoffMs(job.attempts)).toISOString();
+      await db.execute(sql`
+        UPDATE jobs SET state = 'ready', lease_until = NULL, run_after = ${retryAt}::timestamptz
+         WHERE id = ${job.id}
+      `);
+    }
     await db.execute(sql`
       INSERT INTO job_runs (job_id, kind, idempotency_key, attempt, started_at, finished_at, outcome, detail)
-      VALUES (${Number(row.id)}, ${row.kind}, ${row.idempotency_key}, ${Number(row.attempts)},
-              ${now}::timestamptz, ${now}::timestamptz, 'lease_expired',
-              '{"note":"the lease expired before the attempt reported an outcome"}'::jsonb)
+      VALUES (${job.id}, ${job.kind}, ${job.idempotencyKey}, ${job.attempts},
+              ${nowIso}::timestamptz, ${nowIso}::timestamptz, 'lease_expired',
+              ${JSON.stringify({
+                note: 'the lease expired before the attempt reported an outcome',
+                job_state: job.attempts >= MAX_ATTEMPTS ? 'dead' : 'ready',
+                attempts: job.attempts,
+                max_attempts: MAX_ATTEMPTS,
+              })}::jsonb)
     `);
   }
-  return reclaimed.length;
+  return { reclaimed: expired.length, dead };
 }
 
 // ---------------------------------------------------------------------------

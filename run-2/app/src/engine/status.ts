@@ -17,7 +17,12 @@
  * ===========================================================================
  * THE THREE RULES
  *
- *   - ANY line with `resolutionState !== 'resolved'` → DRAFT_NOT_CERTIFIABLE.
+ *   - ANY block on ANY of the three channels → DRAFT_NOT_CERTIFIABLE: a line with
+ *     `resolutionState !== 'resolved'`, a filing-scoped block, or a WORKER-scoped
+ *     block. The third channel was added by R-BUILD H-2; without it a worker with no
+ *     payroll lines carried an unmapped deduction and a failed net reconciliation
+ *     into a signed certification, because worker blocks reached the status only by
+ *     being spliced into lines that did not exist.
  *   - Otherwise FRESH → CERTIFIABLE; DATED or STALE → CERTIFIABLE_DATED.
  *   - FRESHNESS NEVER PRODUCES DRAFT_NOT_CERTIFIABLE. That single line is D7.
  *
@@ -73,15 +78,33 @@ export function deriveStatus(input: {
    *  about a row: `CWHSSA_COVERAGE_UNDETERMINED`, `NO_PINNED_REVISION`,
    *  `CORPUS_STALE_NO_NEW_ASSERTION`, `XSD_HASH_MISMATCH`. */
   readonly filingBlockReasons?: readonly BlockReason[];
+  /**
+   * R-BUILD H-2 — WORKER-scoped blocks: the question is about the worker's week
+   * rather than about a row. `UNMAPPED_DEDUCTION`, `NET_RECONCILIATION_FAILED`,
+   * `GROSS_EXCEEDS_ALL_WORK_GROSS` and the missing-apprentice-level case.
+   *
+   * The channel exists because these were previously propagated ONLY by being
+   * spliced into each line's `blockReasons`, and a worker with zero payroll lines has
+   * no line to splice into — so an unmapped deduction and a $700 net reconciliation
+   * failure produced CERTIFIABLE with the signature block rendered. There are now
+   * three channels and the rule over them is one rule: any block, anywhere, withholds
+   * the signature. `week.ts` carries the executed case.
+   */
+  readonly workerBlockReasons?: readonly BlockReason[];
   readonly freshness: Freshness;
 }): ArtifactVerdict {
   const filingBlocks = input.filingBlockReasons ?? [];
+  const workerBlocks = input.workerBlockReasons ?? [];
   const unresolved = input.lines.filter((line) => line.resolutionState !== 'resolved');
 
-  if (unresolved.length > 0 || filingBlocks.length > 0) {
+  if (unresolved.length > 0 || filingBlocks.length > 0 || workerBlocks.length > 0) {
     const seen = new Set<BlockReason>();
     const blocks: BlockReason[] = [];
-    for (const reason of [...filingBlocks, ...unresolved.flatMap((l) => l.blockReasons)]) {
+    for (const reason of [
+      ...filingBlocks,
+      ...workerBlocks,
+      ...unresolved.flatMap((l) => l.blockReasons),
+    ]) {
       if (seen.has(reason)) continue;
       seen.add(reason);
       blocks.push(reason);
@@ -115,6 +138,7 @@ export function deriveStatusForFiling(
   return deriveStatus({
     lines: computation.workers.flatMap((worker) => worker.lines),
     filingBlockReasons: computation.filingBlockReasons,
+    workerBlockReasons: computation.workers.flatMap((worker) => worker.workerScopedBlockReasons),
     freshness,
   });
 }

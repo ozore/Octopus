@@ -280,24 +280,43 @@ const F532_Y: CanaryCase = {
 // ===========================================================================
 
 /**
- * A NOTE ON `PREMIUM_BELOW_STATUTORY` IN DOL'S OWN EXAMPLES.
+ * A NOTE ON `PREMIUM_BELOW_STATUTORY` IN DOL'S OWN EXAMPLES — R-BUILD H-4.
  *
- * FOH 15k11(a) and the PWRB 44-hour example both describe a 44-hour week and state
- * no overtime RATE paid — DOL is computing what is owed, not transcribing a payroll
- * register. `premiumPaidTotal` (§10, N8) asks a different question: what does the
- * row show the contractor actually paid in premium? With no `otRate` on the line the
- * answer is nothing, so the flag fires with the full statutory premium as its
- * shortfall, and P-18 requires exactly that.
+ * WHAT THESE THREE FIXTURES USED TO PIN. `F-FOH-15k11a/case-1`, `/case-2` and
+ * `F-PWRB-44h` each expected `filing.findings` to carry
+ * `PREMIUM_BELOW_STATUTORY:-:$24.00` (or `$54.00`). The argument for it, recorded
+ * here, was that a payroll export showing no overtime rate does not show a premium
+ * being paid, and that suppressing the flag would treat "we cannot see it" as "it was
+ * paid" — the CRIT-4 error class.
  *
- * That is the honest reading rather than an artifact of the fixture. A payroll export
- * with no overtime-rate column does not show a premium being paid, and the flag says
- * so with the arithmetic beside it; the premium Ratepin computed is already inside
- * column 7A, so the customer sees both the observation and its resolution. Suppressing
- * it would mean treating "we cannot see it" as "it was paid", which is the CRIT-4
- * error class in a different column.
+ * WHY THAT WAS WRONG, AND WHAT IT COST. These are the examples DOL publishes as
+ * CORRECT computations. FOH 15k11(a)(1) states "4 hours x ½ x $12.00 = $24.00 for
+ * CWHSSA earnings; $662.00 Total" — the $24.00 is included as owed AND paid. The
+ * engine was accusing DOL's own compliant oracle of a $24.00 premium shortfall, and
+ * the expectation encoded OUR bug rather than DOL's answer: `filing.findings` is our
+ * field, not a published figure, so pinning it class-1 gave a defect the authority of
+ * the Field Operations Handbook.
+ *
+ * It was also self-contradictory on the artifact. `col7A` on case-2 is $464.00 =
+ * $440.00 straight-time cash + the SAME $24.00 premium. Once the findings reach ink
+ * (R-BUILD C-2) the form would have said of one $24.00 both "earned, and in column
+ * 7A" and "not paid". §10's claim that the two never disagree on a rendered artifact
+ * rested on unproven premium hours blocking at P-A, which is true only of
+ * `SELF_PRICED` buckets; `ot` is not self-priced, so nothing blocked.
+ *
+ * WHAT REPLACES IT. The flag now requires EVIDENCE: at least one premium bucket with
+ * a stated rate. On these weeks there is none, so no flag fires, and
+ * `premiumRateNotReported` (`exceptions.ts`) carries the honest sentence instead — it
+ * states the premium Ratepin computed, says it is inside column 7A, and declines to
+ * conclude whether it was paid. Nothing is credited and nothing is assumed, so the
+ * CRIT-4 objection is answered without the accusation.
+ *
+ * VERIFIED AGAINST. FOH 15k11(a)(1)–(2) as quoted below; 29 CFR 5.5(b)(1) and 5.32(a)
+ * from the eCFR versioner API, fetched 2026-08-13 (title-29 issue 2026-08-11).
  *
  * `WD_UNDERPAYMENT` is what §7.4 says must NOT fire here, and the pinned
- * `requiredTotal` / `paidTotal` pair is what proves it does not.
+ * `requiredTotal` / `paidTotal` pair is what proves it does not — those figures are
+ * unchanged, which is the point: the correction moved an accusation, not an amount.
  */
 
 const ELECTRICIAN = {
@@ -336,7 +355,9 @@ const F_FOH_15K11A_1: CanaryCase = {
     'worker[0].dbaCompensationDue': dollars('662.00'),
     'worker[0].line[0].requiredTotal': dollars('638.00'),
     'worker[0].line[0].paidTotal': dollars('638.00'),
-    'filing.findings': `PREMIUM_BELOW_STATUTORY:-:${dollars('24.00')}`,
+    // R-BUILD H-4: no premium bucket on this week carries a stated rate, so there
+    // is no evidence to fall short of. See the note above this fixture group.
+    'filing.findings': '',
   },
 };
 
@@ -376,7 +397,9 @@ const F_FOH_15K11A_2: CanaryCase = {
     'worker[0].cwhssaPremium': dollars('24.00'),
     'worker[0].dbaCompensationDue': dollars('662.00'),
     'worker[0].col7A': dollars('464.00'),
-    'filing.findings': `PREMIUM_BELOW_STATUTORY:-:${dollars('24.00')}`,
+    // R-BUILD H-4: no premium bucket on this week carries a stated rate, so there
+    // is no evidence to fall short of. See the note above this fixture group.
+    'filing.findings': '',
   },
 };
 
@@ -526,7 +549,9 @@ const F_PWRB_44H: CanaryCase = {
     'worker[0].cwhssaPremium': dollars('54.00'),
     'worker[0].dbaCompensationDue': dollars('2034.00'),
     'worker[0].col7A': dollars('1242.00'),
-    'filing.findings': `PREMIUM_BELOW_STATUTORY:-:${dollars('54.00')}`,
+    // R-BUILD H-4: no premium bucket on this week carries a stated rate, so there
+    // is no evidence to fall short of. See the note above this fixture group.
+    'filing.findings': '',
   },
 };
 

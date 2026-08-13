@@ -140,9 +140,15 @@ export interface LineComputation {
 
   /** N9 — `(BHR_WD + FRINGE_WD) × allHours`. */
   readonly requiredTotal: Cents;
-  /** N10 + column 6B. §10, corrected: cash-in-lieu is already inside the cash
-   *  term by definition, so adding column 6C would count it twice. */
+  /** N10 + column 6B. §10, corrected twice: cash-in-lieu is already inside the cash
+   *  term by definition, so adding column 6C would count it twice (CRIT-2); and the
+   *  cash term is a STRAIGHT-TIME EQUIVALENT rather than `cashRate × allHours`,
+   *  because 29 CFR 5.31(b) denominates all three discharge methods in a straight
+   *  time rate (R-BUILD C-1, `compliance.ts`). */
   readonly paidTotal: Cents;
+  /** N10 alone — `cashRate × (st + ot) + min(cashRate, dtRate) × dt`. Printed
+   *  nowhere; carried because the two bounds that close C-1 are asserted against it. */
+  readonly straightTimeEquivalentCash: Cents;
 
   /** `resolved` only when the line arrived resolved AND the arithmetic added no
    *  block of its own. P-13 turns on this field: any line that is not `resolved`
@@ -198,6 +204,15 @@ export interface WorkerComputation {
    *  ALL hours with a stated rate. Deliberately broader than `premiumCredit`;
    *  §10's table says why. */
   readonly premiumPaidTotal: Cents;
+  /**
+   * Does ANY premium bucket in this week carry hours and a stated rate? Printed
+   * nowhere; it decides which of two sentences the exception report carries, and it
+   * is the difference between `PREMIUM_BELOW_STATUTORY` and the P-D that replaced it
+   * on evidence-free weeks (R-BUILD H-4, `compliance.ts`). `premiumPaidTotal` alone
+   * cannot tell "stated as $0.00" from "not stated", and DOL's own compliant oracles
+   * are the second.
+   */
+  readonly premiumRatesStated: boolean;
 
   /** Column 7A — gross earned on this project. */
   readonly col7A: Cents;
@@ -215,7 +230,16 @@ export interface WorkerComputation {
   /** Σ `requiredTotal` + `premiumOwed`. NOT column 7A — see the module docblock. */
   readonly dbaCompensationDue: Cents;
 
+  /** Every block anywhere in this worker's week — worker-scoped and line-scoped. */
   readonly blockReasons: readonly BlockReason[];
+  /**
+   * The WORKER-scoped subset only: blocks about the worker's week rather than about
+   * a row. `deriveStatus` reads this as a third channel beside line
+   * `resolutionState` and `filingBlockReasons`, because a worker with ZERO payroll
+   * lines has no row to carry them and used to lose them entirely (R-BUILD H-2,
+   * `week.ts`).
+   */
+  readonly workerScopedBlockReasons: readonly BlockReason[];
   readonly findings: readonly ViolationFinding[];
   readonly narrowing: NarrowingLedger;
 }

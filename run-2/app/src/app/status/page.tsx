@@ -34,6 +34,7 @@ import { getDb } from '@/db';
 // marketing group so that a reader who lands on /status first gets the same page.
 import '../(marketing)/marketing.css';
 import { getConfig } from '@/lib/config';
+import { Cents } from '@/lib/money';
 import { readStatus } from '@/platform/ops/status';
 
 import {
@@ -356,8 +357,11 @@ export default async function StatusPage(): Promise<React.ReactElement> {
         <h2>The six claim gates</h2>
         <p className="rp-lp-lead">
           Each gate is a counter. While it is locked the product may state the mechanism — what the
-          software does — and may not state the outcome. Nobody here can promote a claim by editing
-          copy, and a measured claim that regresses narrows itself on the next refresh.
+          software does — and may not state the outcome. Every outcome sentence on this site is
+          produced by one function, <span className="rp-num">gateSentence</span>, which takes a
+          reading that can only come from these counters and returns nothing while the reading says
+          locked; it has no override parameter. A measured claim that regresses narrows itself on
+          the next refresh.
         </p>
         <div className="rp-lp-grid rp-lp-grid--2">
           {status.gates.map((gate) => (
@@ -398,14 +402,29 @@ export default async function StatusPage(): Promise<React.ReactElement> {
         <h2>Our own liability cap, in public</h2>
         <dl className="rp-lp-kv rp-lp-card">
           <Row label="Credit ceiling state" value={status.creditCeiling.state} />
-          <Row label="Credits posted this incident" value={status.creditCeiling.postedCents} />
-          <Row label="Credits withheld by the ceiling" value={status.creditCeiling.withheldCents} />
-          <Row label="Ceiling" value={status.creditCeiling.ceilingCents} />
+          {/* Formatted, not raw. "Ceiling: 100" beside two other integers reads as
+              dollars or as a percentage, and both readings are wrong by two orders of
+              magnitude IN OUR FAVOUR — on the one figure whose whole purpose is to
+              publish a limit on what we will pay. The raw integers stay available at
+              /api/status, where a machine reads them. */}
+          <Row
+            label="Credits posted this incident"
+            value={Cents.toDollarString(Cents.of(status.creditCeiling.postedCents))}
+          />
+          <Row
+            label="Credits withheld by the ceiling"
+            value={Cents.toDollarString(Cents.of(status.creditCeiling.withheldCents))}
+          />
+          <Row
+            label="Ceiling"
+            value={Cents.toDollarString(Cents.of(status.creditCeiling.ceilingCents))}
+          />
         </dl>
         <p className="rp-legal">
-          Figures above are in cents, as the ledger stores them. A company that hides its own
-          liability cap is running the same play as a competitor&rsquo;s silent rate lookup, so the
-          withheld figure is published beside the posted one.
+          The ledger stores those as integer cents and publishes them raw at{' '}
+          <span className="rp-num">/api/status</span>. A company that hides its own liability cap is
+          running the same play as a competitor&rsquo;s silent rate lookup, so the withheld figure
+          is published beside the posted one.
         </p>
         {status.banner !== null && (
           <div className="rp-alert rp-alert--narrowed">

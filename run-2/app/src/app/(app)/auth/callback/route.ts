@@ -39,12 +39,39 @@ export async function GET(request: Request): Promise<NextResponse> {
     );
   }
 
-  const destination = next && next.startsWith('/') ? next : '/app';
-  const response = NextResponse.redirect(new URL(destination, config.APP_BASE_URL));
+  /**
+   * `startsWith('/')` is not enough, and the difference is an open redirect on the
+   * one domain the product asks customers to trust with a login link.
+   * `new URL('//attacker.example.com/x', base)` is protocol-relative and resolves to
+   * `https://attacker.example.com/x`, so `?next=//attacker.example.com` sent the
+   * browser off-site WITH the session cookie already set. Resolving first and
+   * comparing origins is the check that cannot be talked around by a spelling:
+   * whatever `next` is, the place we go has to be this origin.
+   */
+  const destination = safeDestination(next, config.APP_BASE_URL);
+  const response = NextResponse.redirect(destination);
   response.cookies.set(
     SESSION_COOKIE,
     outcome.issued.token,
     sessionCookieOptions(outcome.issued.session.expiresAt, config.NODE_ENV === 'production'),
   );
   return response;
+}
+
+/**
+ * The post-sign-in landing, resolved against our own base URL and refused unless it
+ * lands on it. Exported so a test can name the cases rather than driving a browser
+ * at each of them.
+ */
+export function safeDestination(next: string | null, baseUrl: string): URL {
+  const base = new URL(baseUrl);
+  const fallback = new URL('/app', base);
+  if (!next) return fallback;
+  let candidate: URL;
+  try {
+    candidate = new URL(next, base);
+  } catch {
+    return fallback;
+  }
+  return candidate.origin === base.origin ? candidate : fallback;
 }

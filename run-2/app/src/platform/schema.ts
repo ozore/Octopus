@@ -21,6 +21,22 @@
  *    enumerable. No query in this module selects from either table without a
  *    token hash or an (account, user) pair in the predicate.
  *
+ *    THE RULE THAT MAKES THAT TRUE, AND THAT WAS BROKEN. A pre-tenant relation may
+ *    not be JOINED to a tenant-scoped one. `resolveSession` used to read the email
+ *    off `users` — a table whose policy requires the very account the session
+ *    lookup exists to discover — so on the NOBYPASSRLS role the join returned zero
+ *    rows, every request resolved to `reason: 'unknown'`, and no authenticated
+ *    screen was reachable at all. Not one of the tenant policies could be reached
+ *    from the web tier, which is not "RLS untested" but "RLS unreachable". The
+ *    session row therefore carries `email` itself: it is the identity that minted
+ *    the session, it is already outside RLS by the argument above, and denormalising
+ *    it is what keeps the pre-tenant surface closed under its own predicate.
+ *
+ *  - `ratepin_provision_identity` is the OTHER half of the same problem, and the
+ *    only place in the product where a write crosses the tenant boundary. See its
+ *    own header below; the role it runs as is declared in `drizzle/0000_init.sql`
+ *    section 0 and holds four policies and no bypass.
+ *
  *  - `billing_account_index` and `email_outbox` are the FLEET surfaces. A nightly
  *    credit run, a dunning reconcile and an outbox drain each have to enumerate
  *    every account, and the worker connects as `ratepin_app` — a NOBYPASSRLS role,
@@ -71,11 +87,21 @@ CREATE TABLE IF NOT EXISTS auth_sessions (
   -- runs under is fixed at authentication time and cannot be switched by a
   -- parameter (ADR-011).
   account_id    uuid        NOT NULL REFERENCES accounts (id) ON DELETE CASCADE,
+  -- The address that redeemed the link. Denormalised ON PURPOSE: see the header.
+  -- Resolving a session must touch nothing that carries a tenant policy, or the
+  -- lookup that establishes the tenant depends on the tenant.
+  email         text        NOT NULL,
   created_at    timestamptz NOT NULL DEFAULT now(),
   last_seen_at  timestamptz NOT NULL DEFAULT now(),
   expires_at    timestamptz NOT NULL,
   revoked_at    timestamptz
 );
+-- For databases created before email existed. Backfilled from users as the
+-- migration role, which is not subject to the policy the web tier is.
+ALTER TABLE auth_sessions ADD COLUMN IF NOT EXISTS email text;
+UPDATE auth_sessions s SET email = u.email FROM users u WHERE u.id = s.user_id AND s.email IS NULL;
+DELETE FROM auth_sessions WHERE email IS NULL;
+ALTER TABLE auth_sessions ALTER COLUMN email SET NOT NULL;
 CREATE INDEX IF NOT EXISTS auth_sessions_user ON auth_sessions (user_id, account_id);
 
 -- ---------------------------------------------------------------------------
@@ -118,6 +144,126 @@ CREATE TABLE IF NOT EXISTS plan_changes (
     kind IN ('upgrade', 'downgrade', 'auto_upgrade', 'revert', 'cancel', 'resume'))
 );
 CREATE INDEX IF NOT EXISTS plan_changes_account ON plan_changes (account_id, at DESC);
+
+-- ---------------------------------------------------------------------------
+-- PROVISIONING — the one place a write crosses the tenant boundary.
+--
+-- PLAN.md A1: "signup … happen[s] with no human on the seller side… NO MANUAL
+-- ACCOUNT PROVISIONING." Redemption of a magic link is therefore the provisioning
+-- step, and it necessarily runs before any account exists to scope it to. The four
+-- inserts it makes — user, account, owner membership, billing index — cannot
+-- satisfy a policy keyed on ratepin_current_account(), and the two ways to make
+-- them pass are both worse than the problem: connect as a superuser (every policy
+-- in the schema of record becomes inert, with no symptom) or admit a null tenant
+-- context in the tenant policies (a forgotten withTenant stops being a zero-row
+-- bug and becomes a cross-tenant read).
+--
+-- This is the third way. One function, fixed body, three ids out. It runs as
+-- ratepin_provisioner — NOLOGIN, NOBYPASSRLS, holding four INSERT/SELECT
+-- policies on three identity tables and no grant of any kind on any relation that
+-- carries a worker, a rate, a payroll line, an artifact or money. ratepin_app
+-- holds EXECUTE on it and no insert grant on users, accounts or memberships,
+-- so "provision an account" is a call the database can audit rather than a
+-- privilege the web tier carries around.
+--
+-- It is deliberately NOT parameterised by account id for the ordinary path. The
+-- caller may pass p_invite_account because an invitation link names the account
+-- it is an invitation into — and that value comes off the auth_magic_links row
+-- the token digest resolved, never off a request. The function grants OWNER on a
+-- new account only; joining an existing account by invitation reuses its id and
+-- creates no account row.
+--
+-- SET search_path is not decoration on a SECURITY DEFINER function: without it a
+-- caller who can create objects in a schema earlier on the path chooses which
+-- users table this body writes to.
+-- ---------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION ratepin_provision_identity(
+  p_email          text,
+  p_account_name   text,
+  p_invite_account uuid        DEFAULT NULL,
+  p_now            timestamptz DEFAULT now()
+) RETURNS TABLE (user_id uuid, account_id uuid, created_account boolean)
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp AS $$
+#variable_conflict use_column
+DECLARE
+  v_user    uuid;
+  v_account uuid;
+  v_created boolean := false;
+BEGIN
+  -- The caller normalises; this refuses rather than trusts. An address that is not
+  -- already lower-cased would violate users_email_lower two statements later, with
+  -- a message about a CHECK constraint instead of about the input.
+  IF p_email IS NULL OR p_email <> lower(p_email) OR p_email !~ '^[^[:space:]@]+@[^[:space:]@]+[.][^[:space:]@]+$' THEN
+    RAISE EXCEPTION 'ratepin_provision_identity: not a normalised email address'
+      USING ERRCODE = 'invalid_parameter_value';
+  END IF;
+
+  SELECT u.id INTO v_user FROM users u WHERE u.email = p_email AND u.deleted_at IS NULL;
+
+  IF v_user IS NOT NULL THEN
+    SELECT m.account_id INTO v_account
+      FROM memberships m
+     WHERE m.user_id = v_user
+       AND (p_invite_account IS NULL OR m.account_id = p_invite_account)
+     ORDER BY m.created_at ASC
+     LIMIT 1;
+  END IF;
+
+  -- A returning customer. Nothing is created and nothing is granted.
+  IF v_account IS NOT NULL THEN
+    RETURN QUERY SELECT v_user, v_account, false;
+    RETURN;
+  END IF;
+
+  IF v_user IS NULL THEN
+    v_user := gen_random_uuid();
+    INSERT INTO users (id, email, created_at) VALUES (v_user, p_email, p_now)
+      ON CONFLICT (email) DO NOTHING;
+    -- Two links for the same new address redeemed at once: one insert wins, and
+    -- the loser reads the winner's id rather than returning NULL.
+    IF NOT FOUND THEN
+      SELECT u.id INTO v_user FROM users u WHERE u.email = p_email;
+    END IF;
+  END IF;
+
+  IF p_invite_account IS NOT NULL THEN
+    v_account := p_invite_account;
+  ELSE
+    v_account := gen_random_uuid();
+    INSERT INTO accounts (id, name, status, created_at)
+      VALUES (v_account, coalesce(nullif(btrim(p_account_name), ''), 'New account'), 'active', p_now);
+    v_created := true;
+  END IF;
+
+  INSERT INTO memberships (account_id, user_id, role, created_at)
+    VALUES (v_account, v_user, 'owner', p_now)
+    ON CONFLICT (account_id, user_id) DO NOTHING;
+
+  -- The free tier is a real state, not the absence of one (see redeemMagicLink).
+  --
+  -- Caught rather than ON CONFLICT, and the difference is a grant. Postgres checks
+  -- SELECT on the target of an ON CONFLICT clause, so the tidier spelling would buy
+  -- this role a read of the fleet money index — every account's customer id, plan
+  -- and price — to avoid one duplicate-key error on a path that only ever inserts
+  -- for an account id minted four lines above. The provisioner's read surface stays
+  -- at two identity tables.
+  BEGIN
+    INSERT INTO billing_account_index (account_id, entitlement_state, state_since, updated_at)
+      VALUES (v_account, 'none', p_now, p_now);
+  EXCEPTION WHEN unique_violation THEN
+    NULL;
+  END;
+
+  RETURN QUERY SELECT v_user, v_account, v_created;
+END $$;
+
+ALTER FUNCTION ratepin_provision_identity(text, text, uuid, timestamptz)
+  OWNER TO ratepin_provisioner;
+REVOKE ALL ON FUNCTION ratepin_provision_identity(text, text, uuid, timestamptz) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION ratepin_provision_identity(text, text, uuid, timestamptz) TO ratepin_app;
+
+GRANT INSERT ON billing_account_index TO ratepin_provisioner;
 
 -- ---------------------------------------------------------------------------
 -- OUTBOX — every outbound message, queued and drained by the worker.

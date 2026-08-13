@@ -19,7 +19,12 @@
 import { sql } from 'drizzle-orm';
 
 import { rowsOf, type Db, type Tx } from '../../db';
-import { accountId as brandAccountId, type AccountId, type TenantContext } from '../../db/tenant';
+import {
+  accountId as brandAccountId,
+  withTenant,
+  type AccountId,
+  type TenantContext,
+} from '../../db/tenant';
 import { systemClock, type Clock } from '../clock';
 import { hashToken, newId, newToken } from '../ids';
 
@@ -82,8 +87,10 @@ export async function createSession(
   const id = newId();
 
   await db.execute(sql`
-    INSERT INTO auth_sessions (id, token_hash, user_id, account_id, created_at, last_seen_at, expires_at)
+    INSERT INTO auth_sessions (id, token_hash, user_id, account_id, email,
+                               created_at, last_seen_at, expires_at)
     VALUES (${id}::uuid, ${hashToken(token)}, ${input.userId}::uuid, ${input.accountId}::uuid,
+            ${input.email},
             ${now.toISOString()}::timestamptz, ${now.toISOString()}::timestamptz,
             ${expiresAt.toISOString()}::timestamptz)
   `);
@@ -113,6 +120,16 @@ interface SessionRow {
  * Resolve a bearer token to a session. The predicate is the token DIGEST, so the
  * table cannot be walked by guessing ids, and a leaked copy of it is not a set of
  * credentials.
+ *
+ * IT TOUCHES EXACTLY ONE TABLE, AND THAT IS THE POINT. This query runs on the pool
+ * handle with no tenant context, because discovering the tenant is what it is for.
+ * It therefore may not read any relation that carries a tenant policy. It used to
+ * join `users` for the email, and `users` is scoped by membership against
+ * `ratepin_current_account()` — which is NULL here — so on the NOBYPASSRLS role the
+ * join matched nothing, every request resolved `unknown`, and the product was
+ * reachable only as a superuser. The email now lives on the session row
+ * (`src/platform/schema.ts`), and the rule is stated there: a pre-tenant relation is
+ * never joined to a tenant-scoped one.
  */
 export async function resolveSession(
   db: Db | Tx,
@@ -122,9 +139,8 @@ export async function resolveSession(
   if (!token) return { ok: false, reason: 'absent' };
 
   const result = await db.execute(sql`
-    SELECT s.id, s.user_id, s.account_id, u.email, s.expires_at, s.revoked_at
+    SELECT s.id, s.user_id, s.account_id, s.email, s.expires_at, s.revoked_at
       FROM auth_sessions s
-      JOIN users u ON u.id = s.user_id
      WHERE s.token_hash = ${hashToken(token)}
      LIMIT 1
   `);
@@ -191,18 +207,39 @@ export function tenantContextFor(session: Session): TenantContext {
  * Membership check — the second half of the boundary, in the one place a session's
  * account could ever have gone stale (a membership revoked after the session was
  * issued). RLS then makes the same statement a second time on every query.
+ *
+ * IT TAKES `Db` AND OPENS ITS OWN TENANT TRANSACTION. `memberships` is a
+ * tenant-scoped relation, so the unscoped spelling this function used to carry
+ * returned zero rows for every session on the application role — a check that
+ * fails closed for everybody is not a check, and had it ever been called it would
+ * have signed the whole customer base out. The context it sets is the session's own
+ * account, which is the account the check is about; a session whose membership was
+ * revoked sees no row and the caller treats that as `revoked`.
  */
-export async function sessionStillAuthorized(db: Db | Tx, session: Session): Promise<boolean> {
-  const result = await db.execute(sql`
-    SELECT 1 FROM memberships
-     WHERE account_id = ${session.accountId}::uuid AND user_id = ${session.userId}::uuid
-     LIMIT 1
-  `);
-  return rowsOf(result).length > 0;
+export async function sessionStillAuthorized(db: Db, session: Session): Promise<boolean> {
+  return withTenant(db, tenantContextFor(session), async (tx) => {
+    const result = await tx.execute(sql`
+      SELECT 1 FROM memberships
+       WHERE account_id = ${session.accountId}::uuid AND user_id = ${session.userId}::uuid
+       LIMIT 1
+    `);
+    return rowsOf(result).length > 0;
+  });
 }
 
-/** Purge expired and revoked rows. Called by `retention.sweep`; deleting a dead
- *  session is not a state change anyone can observe. */
+/**
+ * Purge expired and revoked rows. Called by `retention.sweep`; deleting a dead
+ * session is not a state change anyone can observe.
+ *
+ * The third statement is not about sessions. `email_outbox` is deliberately outside
+ * RLS (it is a fleet surface), and the magic-link send puts a live sign-in URL into
+ * `payload` — so the one customer-adjacent table with no tenant policy on it held a
+ * bearer credential in plaintext, and held it after `auth_magic_links` had forgotten
+ * the digest. Nulling the payload of a sent message bounds that to the send. It does
+ * not close the hole — the write is in `_actions/auth.ts` and the fix there is to
+ * stop putting the URL in the row at all — but it removes the permanent historical
+ * record, which was the larger half.
+ */
 export async function purgeDeadSessions(db: Db | Tx, clock: Clock = systemClock): Promise<void> {
   await db.execute(sql`
     DELETE FROM auth_sessions
@@ -212,5 +249,11 @@ export async function purgeDeadSessions(db: Db | Tx, clock: Clock = systemClock)
   await db.execute(sql`
     DELETE FROM auth_magic_links
      WHERE expires_at < ${clock.now().toISOString()}::timestamptz
+        OR consumed_at IS NOT NULL
+  `);
+  await db.execute(sql`
+    UPDATE email_outbox
+       SET payload = '{}'::jsonb
+     WHERE sent_at IS NOT NULL AND payload <> '{}'::jsonb
   `);
 }

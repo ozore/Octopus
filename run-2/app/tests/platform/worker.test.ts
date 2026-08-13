@@ -24,10 +24,12 @@ import { fixedClock, mutableClock } from '../../src/platform/clock';
 import { getConfig } from '../../src/lib/config';
 import {
   JOB_REGISTRY,
+  MAX_ATTEMPTS,
   claimJobs,
   enqueue,
   engineCanary,
   jobByKind,
+  reclaimExpiredLeases,
   runOneJob,
   scheduleDueJobs,
   slotFor,
@@ -310,8 +312,55 @@ describe('a crashed attempt is re-claimable, and the ledger says so', () => {
       `SELECT outcome FROM job_runs WHERE kind = 'outbox.drain' ORDER BY id`,
     );
     expect(runs.rows.map((r) => r.outcome)).toContain('lease_expired');
-    // Re-claimed and run in the same tick, so a crash costs one poll interval.
-    expect(runs.rows.map((r) => r.outcome)).toContain('ok');
+
+    /**
+     * THE ROW COMES BACK WITH ITS `run_after` PUSHED OUT, NOT AT THE HEAD OF THE
+     * QUEUE.
+     *
+     * This assertion used to read `toContain('ok')` — the reclaimed job was expected
+     * to be re-claimed and run in the same tick, "so a crash costs one poll interval
+     * rather than a whole schedule slot". That contract is what made a crash LOOP
+     * unsurvivable: the row kept its original `run_after`, which made it the oldest
+     * row in the table, and `claimJobs`' `ORDER BY run_after` handed it back first
+     * every single tick. A handler that takes the process down — an OOM, a
+     * `process.exit`, a SIGKILL during a deploy — therefore ran first, died, and
+     * starved `billing.credit`, `billing.dunning`, `outbox.drain`,
+     * `account.deletion.execute` and `gates.refresh` behind it, forever, while every
+     * customer-visible consequence looked exactly like the product working.
+     *
+     * A crash now costs one BACKOFF rather than one poll — still nothing like a
+     * whole schedule slot, which is what the original assertion was defending, and
+     * the queue keeps moving.
+     */
+    const requeued = await tdb.client.query<{ state: string; run_after: Date }>(
+      `SELECT state, run_after FROM jobs WHERE kind = 'outbox.drain'`,
+    );
+    expect(requeued.rows[0]?.state).toBe('ready');
+    expect(new Date(requeued.rows[0]!.run_after).getTime()).toBeGreaterThan(clock.now().getTime());
+  });
+
+  it('kills a job that exhausts its attempts without any attempt ever reporting', async () => {
+    await setup();
+    const clock = mutableClock(NOW);
+    await enqueue(tdb.db, { kind: 'outbox.drain', idempotencyKey: 'outbox.drain:crashloop' }, clock);
+
+    // The crash-loop shape: claimed, the process dies, the lease expires, repeat.
+    // `failJob` never runs because the handler never throws — it never returns.
+    for (let attempt = 0; attempt < MAX_ATTEMPTS + 1; attempt += 1) {
+      // Past the backoff the previous reclaim imposed — which is itself the fix: a
+      // crashed job is not claimable again in the same instant, so it cannot hold
+      // the head of the queue.
+      clock.advanceHours(2);
+      await claimJobs(tdb.db, { clock, leaseSeconds: 60 });
+      clock.advanceHours(2);
+      await reclaimExpiredLeases(tdb.db, clock);
+    }
+
+    const job = await tdb.client.query<{ state: string; attempts: number }>(
+      `SELECT state, attempts FROM jobs WHERE kind = 'outbox.drain'`,
+    );
+    expect(job.rows[0]?.state).toBe('dead');
+    expect(Number(job.rows[0]?.attempts)).toBeGreaterThanOrEqual(MAX_ATTEMPTS);
   });
 });
 

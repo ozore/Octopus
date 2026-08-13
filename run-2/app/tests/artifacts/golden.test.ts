@@ -135,6 +135,7 @@ const ecprInput: EcprRenderInput = {
   acknowledgedExclusions: [],
   computation: GOLDEN_COMPUTATION,
   provenance: PROVENANCE,
+  verdict: CERTIFIABLE_VERDICT,
   // The XML's comment header carries the SAME sentences as the PDF's footer, from
   // the same builder — so the two artifacts of one filing cannot disagree about
   // how old our knowledge is (I6).

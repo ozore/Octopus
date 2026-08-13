@@ -162,6 +162,19 @@ export const QUOTE = {
   /** Whether a cash payment is in lieu of a fringe. */
   cashInLieuQuestionOfFact: 'a question of fact',
 
+  /**
+   * The condition an unfunded plan cannot satisfy from a payroll export (R-BUILD
+   * H-3). Fetched verbatim from the eCFR versioner API on 2026-08-13, title-29 issue
+   * 2026-08-11: `/api/versioner/v1/full/2026-08-11/title-29.xml?part=5&section=5.28`.
+   * `CITE.unfundedPlanApproval` existed with nothing quoting it; this is the sentence
+   * it was pointing at.
+   */
+  unfundedPlanApproval:
+    'Such a benefit plan or program, commonly referred to as an unfunded plan, may not constitute a ' +
+    'fringe benefit within the meaning of the Act unless: ... (5) The contractor or subcontractor ' +
+    'requests and receives approval of the plan or program from the Secretary, as described in ' +
+    'paragraph (c) of this section.',
+
   /** The conformance path, for a class that may not exist on this determination. */
   conformance:
     'the contracting officer must require that any class of laborers or mechanics ... which is not ' +

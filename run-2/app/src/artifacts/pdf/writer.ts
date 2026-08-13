@@ -37,7 +37,14 @@
 
 import { createHash } from 'node:crypto';
 
-import { FONT_IDS, FONT_POSTSCRIPT_NAME, measureText, pdfLiteral, type FontId } from './font';
+import {
+  FONT_IDS,
+  FONT_POSTSCRIPT_NAME,
+  measureText,
+  pdfLiteral,
+  pdfTextString,
+  type FontId,
+} from './font';
 
 // ===========================================================================
 // Geometry primitives
@@ -249,10 +256,21 @@ export function serializePdf(pages: readonly PdfPage[], meta: PdfMeta): Uint8Arr
         `/Encoding /WinAnsiEncoding >>`,
     );
   }
+  /**
+   * The information dictionary. Its four descriptive entries are PDF **text
+   * strings** and go through `pdfTextString`, which emits UTF-16BE behind a BOM;
+   * `pdfLiteral` is for content streams, where the font's `/Encoding
+   * /WinAnsiEncoding` governs. Sharing one function between the two put an em dash
+   * in `/Title` as WinAnsi 0x97 and made every viewer render it as a different
+   * character — `font.ts`'s `pdfTextString` carries the finding and the citation.
+   *
+   * `/CreationDate` and `/ModDate` stay on `pdfLiteral`: a PDF date is a **date
+   * string**, ASCII by construction (§7.9.4), and is not a text string.
+   */
   put(
     infoId,
-    `<< /Title ${pdfLiteral(meta.title)} /Subject ${pdfLiteral(meta.subject)} ` +
-      `/Producer ${pdfLiteral('Ratepin')} /Creator ${pdfLiteral('Ratepin')} ` +
+    `<< /Title ${pdfTextString(meta.title)} /Subject ${pdfTextString(meta.subject)} ` +
+      `/Producer ${pdfTextString('Ratepin')} /Creator ${pdfTextString('Ratepin')} ` +
       `/CreationDate ${pdfLiteral(pdfDate(meta.generatedAt))} /ModDate ${pdfLiteral(pdfDate(meta.generatedAt))} >>`,
   );
 

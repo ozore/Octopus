@@ -1174,8 +1174,8 @@ export const plans = pgTable('plans', {
   includedFilings: integer('included_filings'),
   overagePriceCents: integer('overage_price_cents'),
   autoUpgradeTo: text('auto_upgrade_to'),
-  projectCap: integer('project_cap'),
-  workerCap: integer('worker_cap'),
+  // No projectCap, no workerCap: ACQUISITION_REVIEW N-4 ruled the ladder has one
+  // variable. See the note on the `plans` table in drizzle/0000_init.sql.
   features: jsonb('features').notNull().default(sql`'{}'::jsonb`),
 });
 

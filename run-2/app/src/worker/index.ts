@@ -57,6 +57,7 @@ import {
   type WorkerDeps,
 } from './jobs';
 import {
+  MAX_ATTEMPTS,
   claimJobs,
   completeJob,
   enqueue,
@@ -207,7 +208,33 @@ export async function tick(
   deps: WorkerDeps,
   options?: { readonly limit?: number; readonly leaseSeconds?: number },
 ): Promise<TickReport> {
-  const reclaimed = await reclaimExpiredLeases(deps.db, deps.clock);
+  const reclaim = await reclaimExpiredLeases(deps.db, deps.clock);
+
+  // A job that exhausted its attempts without any attempt ever reporting took the
+  // process down every time it was claimed. It raises the kind's declared signal
+  // here — the same one `runOneJob`'s catch would have raised had the handler
+  // thrown — so the crash-loop shape reaches the ladder rather than nothing.
+  for (const row of reclaim.dead) {
+    const definition = jobByKind(row.kind);
+    if (!definition?.signalOnFailure) continue;
+    await openIncident(
+      deps.db,
+      {
+        signal: definition.signalOnFailure,
+        level: definition.signalOnFailure.kind === 'canary_red' ? 'L5_RELEASE_FROZEN' : 'L3_QUARANTINE',
+        scope: `job:${definition.kind}`,
+        cause: `${definition.kind} exhausted its attempts without reporting an outcome`,
+        detail: {
+          attempts: row.attempts,
+          max_attempts: MAX_ATTEMPTS,
+          fails_closed_by: definition.failsClosedBy,
+        },
+      },
+      deps.clock,
+    );
+  }
+
+  const reclaimed = reclaim.reclaimed;
   const scheduled = await scheduleDueJobs({ db: deps.db, clock: deps.clock });
   const claimed = await claimJobs(deps.db, {
     limit: options?.limit ?? 10,
@@ -275,6 +302,64 @@ export interface BuildDepsOptions {
 }
 
 /**
+ * The corpus ingest port — A4, wired.
+ *
+ * This closure is the whole of "the knowledge base refreshes itself on a schedule
+ * from public, machine-readable sources… no manual curation to stay correct". It was
+ * a literal `null` with a comment saying the real one was "wired in the deploy
+ * image"; there was no deploy image, so `ingest.corpus.nightly` recorded
+ * `performed: false` every night forever and the corpus aged to L2_STALE within
+ * seventy-two hours of any deploy — at which point every rate-card sale is refused
+ * by copy reading "It clears itself", which it did not, and the staleness credit
+ * accrues against every subscription with no end and nobody able to intervene from
+ * inside the product. That is the exact failure A4 and A5 exist to forbid, and the
+ * only missing piece was this function.
+ *
+ * The canary is resolved the same way `src/scripts/corpus-ingest.ts` resolves it and
+ * fails closed for the same reason: an unscored candidate corpus is HELD rather than
+ * promoted, because a corpus that has not been checked against known answers has not
+ * been verified just because the scorer is missing.
+ */
+export function buildIngestPort(
+  db: Db,
+  config: Config,
+): (() => Promise<import('./jobs').IngestOutcome>) | null {
+  if (config.ADAPTER_MODE !== 'live') return null;
+  return async () => {
+    const { runIngest, SamClient, httpFetcher } = await import('../corpus');
+    const result = await runIngest({
+      db,
+      client: new SamClient({
+        indexBase: config.SAM_INDEX_BASE,
+        wdolBase: config.SAM_WDOL_BASE,
+        fetcher: httpFetcher(),
+      }),
+      canary: async () => {
+        const verdict = await engineCanary()();
+        return {
+          pass: verdict.pass,
+          lines: verdict.total,
+          detail:
+            verdict.firstDivergence === null
+              ? ''
+              : `first divergence: ${JSON.stringify(verdict.firstDivergence)}`,
+        };
+      },
+    });
+    return {
+      snapshotId: result.snapshotId,
+      state: result.state,
+      newRevisions: result.newRevisions,
+      blockingVariances: result.blockingVariances,
+      quarantined: result.quarantined.length,
+      holdReason: result.holdReason,
+      ourActiveCount: result.ourActiveCount,
+      indexTotalActive: result.indexTotalActive,
+    };
+  };
+}
+
+/**
  * The dependency set a live worker runs with.
  *
  * Every upstream that has no configured credential resolves to `null` rather than to
@@ -282,6 +367,15 @@ export interface BuildDepsOptions {
  * `performed: false` with a reason, which is honest and is also the same
  * customer-visible outcome as an upstream that is down: the mirror does not move and
  * the freshness clock keeps running.
+ *
+ * WHAT `null` MAY AND MAY NOT MEAN. Under `ADAPTER_MODE=mock` — the offline suite and
+ * every local run — `null` is correct and the jobs say so. Under
+ * `ADAPTER_MODE=live` a null ingest is not a degraded mode, it is a product that
+ * cannot refresh its own corpus, so `main()` refuses to boot rather than running for
+ * seventy-two hours and then blaming the freshness ladder. That is the same decision
+ * `_lib/deps.ts` already makes about a live Stripe with no key, for the same stated
+ * reason: a process that quietly stopped talking to its upstream looks like a
+ * working product.
  */
 export function buildWorkerDeps(options: BuildDepsOptions): WorkerDeps {
   const config = options.config ?? getConfig();
@@ -289,7 +383,11 @@ export function buildWorkerDeps(options: BuildDepsOptions): WorkerDeps {
   const stripe =
     config.ADAPTER_MODE === 'live' && config.STRIPE_SECRET_KEY
       ? createLiveStripe(config.STRIPE_SECRET_KEY)
-      : createFakeStripe();
+      : // L3: the worker is where credits are posted, refunds executed and plans
+        // upgraded. A fake gateway there is strictly worse than a fake one on a
+        // screen, so live mode with no key is a boot failure in `main()` rather than
+        // a silent downgrade here.
+        createFakeStripe();
   const mailer =
     options.mailer ??
     (config.ADAPTER_MODE === 'live' && config.RESEND_API_KEY
@@ -307,10 +405,12 @@ export function buildWorkerDeps(options: BuildDepsOptions): WorkerDeps {
     stripe,
     mailer,
     canary: engineCanary(),
-    // The corpus ingest, the upstream probes, the backup verifier and the object
-    // store are wired in the deploy image; in every other environment they are
-    // absent and the jobs say so.
-    ingest: null,
+    ingest: buildIngestPort(options.db, config),
+    // The remaining three ports have no adapter in this build. That is now a stated
+    // absence rather than a comment claiming a deploy image that does not exist:
+    // `main()` refuses to boot in live mode without them, and each job reports
+    // `performed: false` with the classes it could not touch rather than a clean
+    // sweep it did not perform.
     probes: null,
     backups: null,
     retention: null,
@@ -382,6 +482,32 @@ export async function main(): Promise<void> {
   if (config.DATABASE_DRIVER !== 'pglite') await assertRlsEnforced(handle.db);
 
   const deps = buildWorkerDeps({ db: handle.db, config });
+
+  // A4 IS A BOOT CONDITION, NOT A DEGRADED MODE.
+  //
+  // A live worker with no ingest port cannot refresh the corpus, and the product's
+  // response to a corpus that stops moving is designed and correct: the claim
+  // narrows, the banner ages, new pins are refused and a credit accrues, forever,
+  // with nobody able to end it from inside the product. Every one of those is the
+  // right response to an upstream that is down and the wrong response to a process
+  // that was never wired to one, and from outside they are indistinguishable. So the
+  // process refuses to start instead, which is the only failure here that is
+  // recoverable without a person reading a status page they have no reason to open.
+  if (config.ADAPTER_MODE === 'live') {
+    if (!deps.ingest) {
+      throw new Error(
+        'ADAPTER_MODE=live with no corpus ingest port. The corpus would age to L2_STALE within ' +
+          `${String(72)} hours and never recover. Configure SAM_INDEX_BASE and SAM_WDOL_BASE.`,
+      );
+    }
+    if (!config.STRIPE_SECRET_KEY) {
+      throw new Error(
+        'ADAPTER_MODE=live with no STRIPE_SECRET_KEY. The worker posts credits, executes refunds ' +
+          'and changes plans; a fake gateway there would silently stop moving real money.',
+      );
+    }
+  }
+
   const worker = startWorker(deps);
 
   const shutdown = (signal: string): void => {

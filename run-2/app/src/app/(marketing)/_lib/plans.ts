@@ -62,8 +62,6 @@ export interface TierView {
    *  to the next tier's monthly price. */
   readonly maximumMonthly: string;
   readonly autoUpgradeTo: string | null;
-  readonly projectCap: number | null;
-  readonly workerCap: number | null;
   readonly features: Readonly<Record<string, unknown>>;
 }
 
@@ -95,8 +93,6 @@ export function presentTier(plan: PlanRow, next: PlanRow | null): TierView {
     overageFilingsToCap: assessment.overageFilingsToCap,
     maximumMonthly: Cents.toDollarString(assessment.periodTotalCents),
     autoUpgradeTo: next?.name ?? null,
-    projectCap: plan.projectCap,
-    workerCap: plan.workerCap,
     features: plan.features,
   };
 }

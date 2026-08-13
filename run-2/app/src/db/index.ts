@@ -247,16 +247,38 @@ export async function createDb(options?: {
   return createPostgres(url, options?.poolMax ?? config.DATABASE_POOL_MAX);
 }
 
+/**
+ * The web process's handle.
+ *
+ * IT ASSERTS THE SECOND MECHANISM BEFORE IT SERVES ANYTHING. `src/worker/index.ts`
+ * has always called `assertRlsEnforced` at boot; the web process never did, and the
+ * web process is the one a customer's browser reaches. ADR-011 puts two independent
+ * mechanisms under the tenant boundary and the second one is silently inert under a
+ * superuser or a BYPASSRLS role — a failure whose only symptom is queries returning
+ * MORE rows than they should, which reads as a working product. Asserting it here
+ * means a deployment that connects as the owner refuses to serve instead of serving
+ * every tenant's certified payroll to every visitor.
+ *
+ * Skipped on PGlite for the reason the worker skips it: PGlite connects as a
+ * superuser by construction, and `src/lib/config.ts` already refuses that driver
+ * outright when NODE_ENV=production. Every path that can reach a customer's data is
+ * checked; the one that cannot reach production is named.
+ */
 export async function getDb(): Promise<Db> {
   if (!globalRef.__ratepinDb) {
     // Assign the promise BEFORE awaiting, so a second caller arriving during
     // construction joins this one instead of starting a rival.
-    globalRef.__ratepinDb = createDb().catch((error: unknown) => {
-      // A failed connection must not be cached as the answer forever; the next
-      // caller should get to try again (a Postgres that was still booting).
-      delete globalRef.__ratepinDb;
-      throw error;
-    });
+    globalRef.__ratepinDb = createDb()
+      .then(async (handle) => {
+        if (getConfig().DATABASE_DRIVER !== 'pglite') await assertRlsEnforced(handle.db);
+        return handle;
+      })
+      .catch((error: unknown) => {
+        // A failed connection must not be cached as the answer forever; the next
+        // caller should get to try again (a Postgres that was still booting).
+        delete globalRef.__ratepinDb;
+        throw error;
+      });
   }
   return (await globalRef.__ratepinDb).db;
 }

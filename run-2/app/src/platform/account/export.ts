@@ -27,7 +27,18 @@
  * THE SINK IS A PORT because this module must run in the test suite with no object
  * store, no network and no ZIP dependency. `createRecordingSink` collects the
  * entries in memory, so a test asserts the SHAPE of the bundle — which is what
- * §12.1 specifies — rather than the bytes of a compressor.
+ * §12.1 specifies — rather than the bytes of a compressor. `createZipSink` is the
+ * one the product serves: the same walk, writing into `zip.ts`.
+ *
+ * 4. **The artifact bytes are IN the bundle, or the manifest says why not.** The
+ *    build review found the export button producing a redirect parameter naming a
+ *    key nothing had written — "one button, one ZIP" resolving to a string on a
+ *    screen with no link. The bytes now come from an `artifactBytes` port, which the
+ *    web route fills with the same rebuild-and-compare-digest function
+ *    `/api/artifacts/[id]` serves from, so the export cannot contain a document that
+ *    is not the document that was signed. When a rebuild does not match its recorded
+ *    digest the entry stays in the manifest with `included: false` and the reason,
+ *    because an archive that silently drops a file is worse than one that names it.
  */
 
 import { sql } from 'drizzle-orm';
@@ -36,33 +47,71 @@ import { rowsOf, type Db } from '../../db';
 import { withTenant, accountId as brandAccountId } from '../../db/tenant';
 import { sha256Hex } from '../ids';
 import { systemClock, type Clock } from '../clock';
+import { createZipBuilder } from './zip';
 
 export interface ExportEntry {
   /** Path inside the bundle, exactly as §12.1 draws the tree. */
   readonly path: string;
   readonly sha256: string;
   readonly byteSize: number;
-  /** `inline` — generated here, bytes included. `object` — an artifact in the
-   *  object store, addressed by its key and its stored digest. */
+  /** `inline` — generated here, bytes included. `object` — an artifact addressed by
+   *  its key and its stored digest. */
   readonly source: 'inline' | 'object';
+  /** False only when the bytes could not be produced. The entry stays, with `note`. */
+  readonly included: boolean;
+  readonly note?: string;
   readonly objectKey?: string;
   readonly filingId?: string;
 }
 
 export interface ExportSink {
-  put(entry: { readonly path: string; readonly bytes: string }): Promise<void>;
+  put(entry: { readonly path: string; readonly bytes: string | Uint8Array }): Promise<void>;
+}
+
+function toBytes(value: string | Uint8Array): Uint8Array {
+  return typeof value === 'string' ? new Uint8Array(Buffer.from(value, 'utf8')) : value;
 }
 
 export function createRecordingSink(): ExportSink & {
-  readonly files: ReadonlyMap<string, string>;
+  readonly files: ReadonlyMap<string, Uint8Array>;
 } {
-  const files = new Map<string, string>();
+  const files = new Map<string, Uint8Array>();
   return {
     files,
     async put(entry) {
-      files.set(entry.path, entry.bytes);
+      files.set(entry.path, toBytes(entry.bytes));
     },
   };
+}
+
+/** The sink the product serves. Deterministic: `finish` takes the bundle's own
+ *  `generatedAt`, so the archive contains no clock read of its own. */
+export function createZipSink(): ExportSink & { finish(generatedAt: Date): Uint8Array } {
+  const zip = createZipBuilder();
+  return {
+    async put(entry) {
+      zip.add(entry.path, toBytes(entry.bytes));
+    },
+    finish(generatedAt) {
+      return zip.finish(generatedAt);
+    },
+  };
+}
+
+/**
+ * Where an artifact's bytes come from.
+ *
+ * The port exists so this module never reaches the renderer, the object store or the
+ * network: the caller decides how a filing's bytes are obtained and this walk only
+ * decides what belongs in the bundle. Returning `null` is a normal answer and is
+ * reported in the manifest rather than swallowed.
+ */
+export interface ArtifactBytesPort {
+  (input: {
+    readonly filingId: string;
+    readonly kind: string;
+    readonly recordedSha256: string;
+  }): Promise<{ readonly bytes: Uint8Array; readonly sha256: string } | null>;
 }
 
 export interface ExportBundle {
@@ -158,7 +207,11 @@ function csv(rows: readonly (readonly (string | number | null)[])[]): string {
 export async function buildExport(
   db: Db,
   account: string,
-  deps: { readonly sink: ExportSink; readonly clock?: Clock },
+  deps: {
+    readonly sink: ExportSink;
+    readonly clock?: Clock;
+    readonly artifactBytes?: ArtifactBytesPort;
+  },
 ): Promise<ExportBundle> {
   const clock = deps.clock ?? systemClock;
   const generatedAt = clock.now();
@@ -171,6 +224,7 @@ export async function buildExport(
       sha256: sha256Hex(bytes),
       byteSize: Buffer.byteLength(bytes, 'utf8'),
       source: 'inline',
+      included: true,
       ...(filingId === undefined ? {} : { filingId }),
     });
   };
@@ -205,11 +259,39 @@ export async function buildExport(
       const name = ARTIFACT_FILENAME[artifact.kind] ?? `${artifact.kind}.bin`;
       filings.add(artifact.filing_id);
       artifactBytes += Number(artifact.byte_size);
+
+      // The bytes, when the caller can produce them. A digest that does not match
+      // the one recorded at generation is NOT put in the bundle under the artifact's
+      // name: §7.6's "the object store is a cache of a pure function" is only worth
+      // anything if the cache miss is checked rather than assumed.
+      const produced = deps.artifactBytes
+        ? await deps.artifactBytes({
+            filingId: artifact.filing_id,
+            kind: artifact.kind,
+            recordedSha256: artifact.sha256_hex,
+          })
+        : null;
+      const matches = produced !== null && produced.sha256 === artifact.sha256_hex;
+      if (matches) await deps.sink.put({ path: `${dir}/${name}`, bytes: produced.bytes });
+
       entries.push({
         path: `${dir}/${name}`,
         sha256: artifact.sha256_hex,
-        byteSize: Number(artifact.byte_size),
+        byteSize: matches ? produced.bytes.length : Number(artifact.byte_size),
         source: 'object',
+        included: matches,
+        ...(matches
+          ? {}
+          : {
+              note:
+                produced === null
+                  ? 'These bytes could not be produced when this bundle was built. The sha256 above ' +
+                    'is the digest recorded when the document was generated, and the document is ' +
+                    'downloadable from its filing screen.'
+                  : `Regenerating this document produced ${produced.sha256}, which is not the digest ` +
+                    'recorded at generation. Ratepin does not put a document in your archive under ' +
+                    'the name of one it cannot reproduce.',
+            }),
         objectKey: artifact.r2_key,
         filingId: artifact.filing_id,
       });
@@ -342,6 +424,8 @@ export async function buildExport(
       sha256: e.sha256,
       byte_size: e.byteSize,
       source: e.source,
+      included: e.included,
+      ...(e.note === undefined ? {} : { note: e.note }),
       ...(e.objectKey === undefined ? {} : { object_key: e.objectKey }),
       ...(e.filingId === undefined ? {} : { filing_id: e.filingId }),
     })),
@@ -359,6 +443,7 @@ export async function buildExport(
         sha256: sha256Hex(manifestJson),
         byteSize: Buffer.byteLength(manifestJson, 'utf8'),
         source: 'inline',
+        included: true,
       },
       ...entries,
     ],

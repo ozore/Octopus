@@ -54,6 +54,7 @@ import {
 } from '@/engine';
 import { Cents, Hours, MilliRate } from '@/lib/money';
 import { newId, sha256Hex as digestOf } from '@/platform/ids';
+import { recordFilingDuration } from '@/platform/ops/gates';
 import {
   isoDate,
   type ArtifactProvenance,
@@ -279,6 +280,20 @@ export async function loadWeek(
           .map((credit) => ({
             planName: credit.plan_name,
             hourlyCredit: MilliRate.of(Number(credit.hourly_credit_milli)),
+            /**
+             * R-BUILD H-3, RECORDED GAP. `unfunded` is now required on
+             * `FringePlanCredit` and `week.ts` blocks the line with
+             * `UNFUNDED_PLAN_CREDIT` the moment it is true (29 CFR 5.28(b)(5)). The
+             * ingest surface has no column and no question for it yet, so nothing
+             * upstream can set it: `false` here asserts only that Ratepin has not
+             * been told the plan is unfunded, which is exactly what was true before
+             * the field existed. Closing this needs a
+             * `payroll_line_fringe_credits.unfunded` column and one question at
+             * plan entry — both outside `src/engine` and `src/artifacts`. Until
+             * then the refusal is reachable by the engine and unreachable by a
+             * customer, which is a smaller lie than crediting an unapproved plan.
+             */
+            unfunded: false,
           }));
         return {
           lineId: line.id,
@@ -505,6 +520,11 @@ async function composeFiling(db: Db, tx: Tx, input: ComposeInput): Promise<Compo
   const verdict = deriveStatus({
     lines: computation.workers.flatMap((worker) => worker.lines),
     filingBlockReasons: computation.filingBlockReasons,
+    // R-BUILD H-2. The third channel. A worker with no payroll lines carries its
+    // blocks nowhere else, and without this an unmapped deduction and a failed net
+    // reconciliation reached a CERTIFIABLE artifact with the signature block
+    // rendered. `src/engine/status.ts` carries the finding.
+    workerBlockReasons: computation.workers.flatMap((worker) => worker.workerScopedBlockReasons),
     freshness,
   });
 
@@ -699,6 +719,40 @@ export async function generateFiling(
     VALUES (${input.accountId}::uuid, ${filingId}::uuid, ${input.now.toISOString()}::timestamptz,
             'generated', ${JSON.stringify({ status: verdict.status, sequence })}::jsonb)
   `);
+
+  /**
+   * G4's counter, written where the evidence is produced.
+   *
+   * `recordFilingDuration` existed with ZERO call sites, so `filing_durations` was
+   * permanently empty and `/status` published `0 / 100` for a gate no code path
+   * could ever advance — while both public pages described the gates as counters
+   * waiting for data. The measurement is upload → artifact: `payroll_imports.
+   * uploaded_at` when the week came from an upload, and the week row's own
+   * `created_at` when it did not, which is the same instant for a week created by
+   * the import wizard. `realFiling` is TRUE here because this is the customer path;
+   * our own traffic is excluded by flag at the moment it is produced, never by
+   * judgement afterwards.
+   *
+   * It is deliberately the last thing this function does and it is `ON CONFLICT DO
+   * NOTHING` on `filing_id`: a gate counter must never be able to fail a filing.
+   */
+  const upload = rowsOf<{ at: string | Date | null }>(
+    await tx.execute(sql`
+      SELECT COALESCE(i.uploaded_at, w.created_at) AS at
+        FROM payroll_weeks w
+        LEFT JOIN payroll_imports i ON i.id = w.import_id
+       WHERE w.id = ${week.weekId}::uuid
+    `),
+  )[0];
+  if (upload?.at) {
+    await recordFilingDuration(tx, {
+      accountId: input.accountId,
+      filingId,
+      uploadAt: new Date(upload.at),
+      artifactAt: input.now,
+      realFiling: true,
+    });
+  }
 
   return { filingId, sequence, ...composed };
 }

@@ -28,6 +28,7 @@ interface Rendered {
 
 const SUBJECT: Readonly<Record<string, string>> = {
   magic_link: 'Your Ratepin sign-in link',
+  rate_card_ready: 'Your Ratepin bid rate card',
   dunning_payment_failed: 'A payment did not go through',
   dunning_hard_decline: 'That card was declined and will not be retried',
   dunning_grace_started: 'A payment failed — everything still works for now',

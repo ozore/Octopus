@@ -29,7 +29,7 @@ import { executeRefund, quoteSubscriptionRefund } from '@/platform/billing/refun
 
 import { requireSession, writeAs } from '../_lib/auth';
 import { appClock, billingDeps } from '../_lib/deps';
-import { billingView, latestPaymentIntent } from '../_lib/billing';
+import { billingView, latestPaymentIntent, rateCardRefundView } from '../_lib/billing';
 
 const BILLING_PATH = '/app/settings/billing';
 
@@ -169,6 +169,47 @@ export async function refundAction(): Promise<void> {
       quote,
       paymentIntentId,
       periodStart: account.currentPeriodStart,
+    },
+    billingDeps(),
+  );
+
+  revalidatePath(BILLING_PATH);
+  redirect(`${BILLING_PATH}?refund=done`);
+}
+
+/**
+ * §3.5 — the refund on the one-time $49 bid rate card.
+ *
+ * The delivery page tells the buyer: "sign in with that address and the refund button
+ * is on your billing screen". It was not. `billingView` derived its quote from the
+ * subscription alone, so a buyer with no subscription read "There is no subscription
+ * on this account to refund" underneath a policy table promising a full refund within
+ * fourteen days, with no reason field, no address and nobody to ask — the exact shape
+ * A3 forbids, on the one transaction A1 exists to prove.
+ *
+ * The quote is recomputed here from the purchase rather than trusted from the form,
+ * and `executeRefund` claims the ledger row under a unique key before it calls
+ * Stripe, so a double submit refunds once.
+ */
+export async function refundRateCardAction(): Promise<void> {
+  const session = await requireSession(BILLING_PATH);
+  const db = await getDb();
+  const now = appClock().now();
+
+  const view = await rateCardRefundView(db, session.accountId, now);
+  if (view === null) redirect(`${BILLING_PATH}?refund=no_rate_card`);
+  if (view.alreadyRefunded) redirect(`${BILLING_PATH}?refund=already_refunded`);
+  if (!view.quote.eligible) redirect(`${BILLING_PATH}?refund=declined`);
+  if (view.paymentIntentId === null) redirect(`${BILLING_PATH}?refund=no_payment`);
+
+  await executeRefund(
+    db,
+    {
+      accountId: session.accountId,
+      quote: view.quote,
+      paymentIntentId: view.paymentIntentId,
+      // A one-time purchase has no period, and `executeRefund` keys it `one_time`.
+      periodStart: null,
     },
     billingDeps(),
   );

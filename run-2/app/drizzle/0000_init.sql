@@ -74,6 +74,57 @@ END $$;
 
 GRANT USAGE ON SCHEMA public TO ratepin_app;
 
+-- ---------------------------------------------------------------------------
+-- THE PRE-TENANT SURFACE, AND WHY IT IS A SECOND ROLE RATHER THAN A BYPASS.
+--
+-- Sign-in has a chicken-and-egg shape that no policy keyed on
+-- `ratepin_current_account()` can resolve: the statements that DISCOVER the
+-- tenant, and the statements that CREATE it on first sign-in, both run before a
+-- tenant context exists. The obvious escapes are both wrong. Connecting the web
+-- tier as the owner or a superuser makes every policy in section 10 inert and has
+-- no symptom other than queries returning more rows than they should. Adding
+-- `OR ratepin_current_account() IS NULL` to the tenant policies turns a forgotten
+-- `withTenant` from a zero-row bug into a full cross-tenant read — the exact
+-- inversion §11.2 exists to prevent.
+--
+-- So the boundary is crossed in one named, auditable place instead:
+--
+--   * `auth_magic_links` and `auth_sessions` (src/platform/schema.ts) have NO
+--     tenant column and are looked up ONLY by token digest. They carry no policy
+--     because there is no tenant to key one on; the boundary there is 256 bits of
+--     CSPRNG entropy stored as SHA-256, which is why neither table is enumerable
+--     and why `resolveSession` may not join anything that IS tenant-scoped.
+--
+--   * `ratepin_provisioner` owns exactly one SECURITY DEFINER function —
+--     `ratepin_provision_identity`, declared with the auth tables it belongs
+--     beside — and holds exactly the four policies below: insert a user, insert an
+--     account, insert an owner membership, and read back the identity for one
+--     email address. It is NOLOGIN and NOBYPASSRLS. It cannot be connected as, it
+--     cannot read a project, a payroll line, a worker or a filing, and the only
+--     way to reach its privileges is to call that one function, whose body is
+--     fixed SQL and whose return value is three ids.
+--
+-- `ratepin_app` therefore keeps NO insert grant on `users`, `accounts` or
+-- `memberships` (revoked at the end of section 10). Provisioning is a function
+-- call, not a privilege.
+-- ---------------------------------------------------------------------------
+
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'ratepin_provisioner') THEN
+    CREATE ROLE ratepin_provisioner NOLOGIN NOBYPASSRLS;
+  END IF;
+  -- Ownership of the definer function has to be transferable to this role, which
+  -- requires the migration role to be a member of it. A superuser already is in
+  -- effect; a non-superuser migration role would otherwise fail at ALTER FUNCTION
+  -- … OWNER TO with a message that names neither this file nor the reason.
+  IF NOT pg_has_role(current_user, 'ratepin_provisioner', 'MEMBER') THEN
+    EXECUTE format('GRANT ratepin_provisioner TO %I', current_user);
+  END IF;
+END $$;
+
+GRANT USAGE ON SCHEMA public TO ratepin_provisioner;
+
 -- The tenant context. `current_setting(…, true)` returns NULL when the GUC has
 -- never been set, so an unscoped connection matches NOTHING rather than
 -- everything: the boundary fails closed. There is no policy anywhere in this file
@@ -1425,8 +1476,14 @@ CREATE TABLE plans (
   included_filings    integer,
   overage_price_cents integer,
   auto_upgrade_to     text REFERENCES plans (id),
-  project_cap         integer,
-  worker_cap          integer,
+  -- NO project_cap AND NO worker_cap. ACQUISITION_REVIEW N-4 / GTM_PLAYBOOK §111
+  -- ruled the ladder has ONE variable — included filings — and that the two cap
+  -- columns were to be dropped from the seed and the read model. They were
+  -- vestigial in the strict sense: nothing read them on any write path, so the
+  -- landing page's "No project caps. No worker caps." was a claim standing over
+  -- two nullable columns that one UPDATE could falsify with no code change, no
+  -- deploy and no test failure. A claim whose truth depends on a column nothing
+  -- enforces is safest when the column does not exist.
   features            jsonb   NOT NULL DEFAULT '{}'::jsonb,
   CONSTRAINT plans_price_nonneg CHECK (price_cents >= 0)
 );
@@ -1743,13 +1800,20 @@ SELECT ratepin_enable_tenant_rls('form_acceptance_confirmations');
 
 -- `users` is global-by-identity (one email, potentially several accounts), so it is
 -- scoped by MEMBERSHIP rather than by a column.
+--
+-- `WITH CHECK` mirrors `USING` rather than being `true`. A `WITH CHECK (true)` here
+-- let the application role insert an arbitrary users row from an unscoped
+-- connection — the write half of the hole the USING clause closes on the read half
+-- — and it was the clause the old provisioning path leaned on. Provisioning now
+-- goes through `ratepin_provision_identity`, so nothing legitimate needs it.
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE users FORCE ROW LEVEL SECURITY;
 CREATE POLICY users_tenant_isolation ON users FOR ALL TO ratepin_app
   USING (EXISTS (SELECT 1 FROM memberships m
                  WHERE m.user_id = users.id AND m.account_id = ratepin_current_account()))
-  WITH CHECK (true);
-GRANT SELECT, INSERT, UPDATE, DELETE ON users TO ratepin_app;
+  WITH CHECK (EXISTS (SELECT 1 FROM memberships m
+                      WHERE m.user_id = users.id AND m.account_id = ratepin_current_account()));
+GRANT SELECT, UPDATE ON users TO ratepin_app;
 
 -- `staleness_windows` carries a NULLABLE account_id: a chaos-test window and a
 -- product-wide lapse belong to nobody.
@@ -1759,6 +1823,50 @@ CREATE POLICY staleness_windows_tenant_isolation ON staleness_windows FOR ALL TO
   USING (account_id IS NULL OR account_id = ratepin_current_account())
   WITH CHECK (account_id IS NULL OR account_id = ratepin_current_account());
 GRANT SELECT, INSERT, UPDATE, DELETE ON staleness_windows TO ratepin_app;
+
+-- ---------------------------------------------------------------------------
+-- THE PROVISIONING SURFACE — four policies, one role, one caller.
+--
+-- Read the header of section 0 for why this exists. What matters here is how
+-- narrow it is. `ratepin_provisioner` may:
+--
+--   * read `users` and `memberships`, which is what "is this address already
+--     somebody?" requires and is the whole of its read power;
+--   * insert a live user, an active account, and an OWNER membership.
+--
+-- It may not update or delete anything, it holds no grant on any table that
+-- carries a worker, a rate, a payroll line, an artifact or money, and it is
+-- NOLOGIN, so the only path to these policies is `ratepin_provision_identity` —
+-- a SECURITY DEFINER function owned by this role, with a fixed body, returning
+-- three ids. That is the entire pre-tenant write surface of the product.
+--
+-- The `WITH CHECK` clauses are the audit: an insert through this role that is not
+-- exactly a new live identity is refused by the database, not by the caller.
+-- ---------------------------------------------------------------------------
+
+GRANT SELECT, INSERT ON users       TO ratepin_provisioner;
+GRANT INSERT          ON accounts   TO ratepin_provisioner;
+GRANT SELECT, INSERT  ON memberships TO ratepin_provisioner;
+
+CREATE POLICY users_provisioning_read ON users FOR SELECT TO ratepin_provisioner
+  USING (deleted_at IS NULL);
+CREATE POLICY users_provisioning_write ON users FOR INSERT TO ratepin_provisioner
+  WITH CHECK (deleted_at IS NULL AND email = lower(email));
+
+CREATE POLICY accounts_provisioning_write ON accounts FOR INSERT TO ratepin_provisioner
+  WITH CHECK (status = 'active' AND deleted_at IS NULL AND deletion_requested_at IS NULL);
+
+CREATE POLICY memberships_provisioning_read ON memberships FOR SELECT TO ratepin_provisioner
+  USING (true);
+CREATE POLICY memberships_provisioning_write ON memberships FOR INSERT TO ratepin_provisioner
+  WITH CHECK (role = 'owner');
+
+-- The application role does NOT provision. Every insert into the three identity
+-- tables now happens inside the definer function above, so these grants —
+-- handed out wholesale by `ratepin_enable_tenant_rls` — are taken back. What is
+-- left is what an authenticated screen legitimately does: read its own account and
+-- members, rename the account, record a deletion request, remove a membership.
+REVOKE INSERT ON accounts, memberships FROM ratepin_app;
 
 -- ---------------------------------------------------------------------------
 -- Grants outside the tenant boundary.
@@ -1847,10 +1955,10 @@ INSERT INTO obligation_changelog (cfr_title, part, section, amendment_date, sour
   (29, '5', '5.5',  DATE '2023-08-23', 'https://www.ecfr.gov/api/versioner/v1/versions/title-29.json',
    'CWHSSA clauses inserted "in any contract in an amount in excess of $100,000"; (b)(2) liquidated damages $33/day.');
 
-INSERT INTO plans (id, name, price_cents, included_filings, overage_price_cents, project_cap, worker_cap, features) VALUES
-  ('solo',  'Solo',   9900, NULL, NULL,  1, 15, '{"ecpr":false,"wd_change_alerts":false,"portal_export":false}'::jsonb),
-  ('crew',  'Crew',  24900, NULL, NULL,  5, 75, '{"ecpr":true,"wd_change_alerts":true,"portal_export":false}'::jsonb),
-  ('multi', 'Multi', 59900, NULL, NULL, NULL, NULL, '{"ecpr":true,"wd_change_alerts":true,"portal_export":true,"full_archive":true}'::jsonb);
+INSERT INTO plans (id, name, price_cents, included_filings, overage_price_cents, features) VALUES
+  ('solo',  'Solo',   9900, NULL, NULL, '{"ecpr":false,"wd_change_alerts":false,"portal_export":false}'::jsonb),
+  ('crew',  'Crew',  24900, NULL, NULL, '{"ecpr":true,"wd_change_alerts":true,"portal_export":false}'::jsonb),
+  ('multi', 'Multi', 59900, NULL, NULL, '{"ecpr":true,"wd_change_alerts":true,"portal_export":true,"full_archive":true}'::jsonb);
 
 UPDATE plans SET auto_upgrade_to = 'crew'  WHERE id = 'solo';
 UPDATE plans SET auto_upgrade_to = 'multi' WHERE id = 'crew';
