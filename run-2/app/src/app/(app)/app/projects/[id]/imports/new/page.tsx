@@ -63,7 +63,13 @@ export default async function NewImportPage({
                 // The remembered map is only APPLIED when the file has the same
                 // header shape. A map from a different export is offered, not used:
                 // silently applying the wrong map is a wrong rate on a signed form.
-                sameShape: view.remembered.sameShape,
+                //
+                // That comparison is NOT made here and cannot be: the file is parsed
+                // in the browser and never uploaded, so this component has no header
+                // to compare against — which is why `rememberedMap` is called with an
+                // empty one. The wizard decides it in `onFile`, where the header
+                // exists. Passing a server-side `sameShape` was passing a constant
+                // `false`, and §5.1's silent re-application never once happened.
               }
         }
         defaultWeekEnding={now.toISOString().slice(0, 10)}

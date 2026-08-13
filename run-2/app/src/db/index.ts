@@ -17,6 +17,7 @@ import { drizzle as drizzlePg } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 
 import { getConfig } from '../lib/config';
+import { MIGRATION_LEDGER, type AppliedMigration, type MigrationExecutor } from './migrate';
 import { schema } from './schema';
 
 export type { Schema } from './schema';
@@ -70,6 +71,35 @@ export interface DbHandle {
  */
 const globalRef = globalThis as typeof globalThis & { __ratepinDb?: Promise<DbHandle> };
 
+/**
+ * The two calls `applyMigrations` needs from PGlite, named structurally.
+ *
+ * Structural rather than `import type { PGlite }` so this module keeps its promise
+ * that a devDependency is never a static edge of the production graph — the same
+ * reason the constructor is behind a dynamic import.
+ */
+interface PgliteLike {
+  exec(script: string): Promise<unknown>;
+  query<T>(sql: string, params?: unknown[]): Promise<{ rows: T[] }>;
+}
+
+export function pgliteExecutor(client: PgliteLike): MigrationExecutor {
+  return {
+    exec: async (script) => {
+      await client.exec(script);
+    },
+    applied: async () =>
+      (await client.query<AppliedMigration>(`SELECT name, sha256 FROM ${MIGRATION_LEDGER}`)).rows,
+    record: async (migration) => {
+      await client.query(
+        `INSERT INTO ${MIGRATION_LEDGER} (name, sha256) VALUES ($1, $2)
+         ON CONFLICT (name) DO NOTHING`,
+        [migration.name, migration.sha256],
+      );
+    },
+  };
+}
+
 async function createPglite(dataDir?: string): Promise<DbHandle> {
   // Dynamic import: PGlite is a devDependency and must not be a hard require in
   // the production image.
@@ -86,35 +116,112 @@ async function createPglite(dataDir?: string): Promise<DbHandle> {
   const client = dataDir === undefined ? new PGlite(options) : new PGlite(dataDir, options);
 
   /**
-   * MIGRATIONS ARE REPLAYED ON EVERY OPEN, INCLUDING A PERSISTENT ONE.
+   * MIGRATED THROUGH THE LEDGER, NOT BY REPLAY.
    *
-   * `0000_init.sql` is written to be re-runnable, so replaying it against a
-   * directory `npm run seed` already migrated is a no-op rather than a conflict.
-   * The alternative — track applied migrations in a table and skip them — would
-   * make the dev fallback diverge from the production path, where migrations are a
-   * separate admin process (factor XII) and the web process assumes a migrated
-   * database. Replaying keeps `npm run dev` working against a fresh directory with
-   * no extra step, which is the only reason the persistent mode exists.
+   * `0000_init.sql` holds 55 bare `CREATE TABLE`s, so replaying it into a
+   * directory that `npm run seed` already migrated fails on the first one.
+   * `applyMigrations` is the same runner `npm run db:migrate` uses, so a
+   * persistent dev database and a production database are brought up the same way
+   * and an empty in-memory instance still costs one extra `CREATE TABLE IF NOT
+   * EXISTS`.
    */
-  const { readMigrations } = await import('./migrations');
-  for (const migration of readMigrations()) {
-    await client.exec(migration.sql);
-  }
+  const { applyMigrations } = await import('./migrate');
+  await applyMigrations(pgliteExecutor(client));
+
+  const db = drizzlePglite(client, { schema }) as unknown as Db;
+
+  /**
+   * THE PLATFORM DDL, WHICH THE WEB PROCESS HAD NO WAY TO GET.
+   *
+   * `auth_magic_links`, `sessions`, `billing_account_index`, `meter_events`, the
+   * outbox and the job queue live in `PLATFORM_DDL` rather than in `drizzle/`, and
+   * `ensurePlatformSchema` was called from exactly two places: `src/worker/index.ts`
+   * and the platform test helper. Neither is the web process. A developer who ran
+   * `npm run dev` against a fresh database therefore got a schema with projects and
+   * determinations in it and no `auth_magic_links` — so `/signin` failed with a
+   * 42P01 and there was no way to reach any authenticated screen at all unless a
+   * worker happened to have been started first.
+   *
+   * It is idempotent and it is applied here, on the DEV fallback's bring-up path,
+   * for the same reason the migrations are: this driver's contract is "a working
+   * database with no admin steps". The production path gets it from
+   * `npm run db:migrate`, which is where an admin step belongs (factor XII).
+   */
+  const { ensurePlatformSchema } = await import('../platform/schema');
+  await ensurePlatformSchema(db);
+
+  /**
+   * And the plan allowances, for the same reason and with the same history:
+   * `0000_init.sql` seeds `included_filings` NULL, `pricing.ts` reads NULL as
+   * UNLIMITED, and `ensurePlanCatalog` was called only by the worker and the test
+   * helper. A dev database that had never run a worker therefore served a billing
+   * screen claiming every plan was unlimited with no overage. Idempotent, and it
+   * never overwrites a value already set.
+   */
+  const { ensurePlanCatalog } = await import('../platform/billing/catalog');
+  await ensurePlanCatalog(db);
 
   return {
-    db: drizzlePglite(client, { schema }) as unknown as Db,
+    db,
     close: async () => {
       await client.close();
     },
   };
 }
 
+/**
+ * The postgres-js date OIDs drizzle replaces with an identity serializer, listed
+ * here because the repair below has to name exactly the set it repairs:
+ * timestamptz, date, time, timestamp, timetz, tstzrange, tsrange, daterange.
+ */
+const DATE_OIDS = ['1184', '1082', '1083', '1114', '1182', '1185', '1115', '1231'] as const;
+
+/**
+ * REPAIR A DRIVER OVERRIDE THAT MAKES EVERY RAW `Date` PARAMETER A CRASH.
+ *
+ * `drizzle-orm/postgres-js`'s constructor reaches into `client.options` and
+ * overwrites the serializer for the eight date OIDs above with `(val) => val`.
+ * That is correct for the query builder — drizzle's own timestamp mappers already
+ * hand the driver a formatted string, and letting postgres-js re-parse it would
+ * reinterpret a `timestamp without time zone` through the process's local zone.
+ *
+ * It is wrong for a raw `sql` template, which this codebase uses everywhere the
+ * schema outgrows the builder (`insertBlob`, the snapshot and job tables, the
+ * platform DDL's queue). postgres-js infers OID 1184 for a JS `Date`, the identity
+ * serializer hands the Date on unchanged, and the wire writer calls
+ * `Buffer.byteLength(aDate)` — `TypeError: The "string" argument must be of type
+ * string … Received an instance of Date`. The statement never reaches the server,
+ * so there is no SQLSTATE and nothing in the Postgres log.
+ *
+ * IT WAS INVISIBLE TO THE WHOLE SUITE. `drizzle-orm/pglite` performs no such
+ * override, and every test, the seed and `npm run dev` run on PGlite. On the
+ * driver that actually ships — `DATABASE_DRIVER=postgres` — `runIngest` died on
+ * the first blob it stored, which is the first write of the first nightly job.
+ *
+ * The repair keeps drizzle's reason and drops its overreach: strings pass through
+ * untouched (the builder's path, unchanged), and a `Date` is serialized the way
+ * postgres-js would have serialized it. It is applied AFTER `drizzlePg(...)`
+ * because that call is what installs the override.
+ */
+function repairDateSerializers(client: postgres.Sql): void {
+  const options = (client as unknown as { options?: { serializers?: Record<string, unknown> } })
+    .options;
+  const serializers = options?.serializers;
+  if (!serializers) return;
+  for (const oid of DATE_OIDS) {
+    serializers[oid] = (value: unknown): unknown =>
+      value instanceof Date ? value.toISOString() : value;
+  }
+}
+
 function createPostgres(url: string, poolMax: number): DbHandle {
   // Twelve-Factor VI: share-nothing. Worker jobs hold connections for the length of
   // an ingest stage, so the pool is deliberately small.
   const client = postgres(url, { max: poolMax, prepare: false });
+  const db = drizzlePg(client, { schema }) as unknown as Db;
+  repairDateSerializers(client);
   return {
-    db: drizzlePg(client, { schema }) as unknown as Db,
+    db,
     close: async () => {
       await client.end({ timeout: 5 });
     },
@@ -126,10 +233,14 @@ export async function createDb(options?: {
   driver?: 'postgres' | 'pglite';
   url?: string;
   poolMax?: number;
+  /** A directory makes PGlite persistent, so `npm run seed` and `npm run dev` are
+   *  two processes over ONE database. Omitted, it is in-memory, which is what the
+   *  whole test suite runs on. */
+  dataDir?: string;
 }): Promise<DbHandle> {
   const config = getConfig();
   const driver = options?.driver ?? config.DATABASE_DRIVER;
-  if (driver === 'pglite') return createPglite();
+  if (driver === 'pglite') return createPglite(options?.dataDir ?? config.PGLITE_DATA_DIR);
 
   const url = options?.url ?? config.DATABASE_URL;
   if (!url) throw new Error('DATABASE_URL is required when DATABASE_DRIVER=postgres');

@@ -25,16 +25,14 @@ import { useMemo, useState } from 'react';
 import { ColumnMap, type ColumnMapping } from '../../(free)/_components/column-map';
 import {
   MAP_TARGETS,
-  hoursHundredths,
-  moneyCents,
+  mapRows,
   parseCsv,
-  rateMilli,
   suggestMapping,
   type CsvTable,
   type MapTarget,
 } from '../../(free)/_lib/csv';
 import { ENCODING_REJECTION, SSN_SENTENCE, rememberedMapSentence } from '../_lib/copy';
-import type { DeductionColumn, StoredColumnMap } from '../_lib/imports';
+import type { DeductionColumn, PostedWorker, StoredColumnMap } from '../_lib/imports';
 
 /** The ten lettered paragraphs of 29 CFR 3.5, and the sentinel that blocks. */
 const DEDUCTION_CATEGORIES: readonly { readonly value: string; readonly label: string }[] = [
@@ -53,10 +51,16 @@ const DEDUCTION_CATEGORIES: readonly { readonly value: string; readonly label: s
 export interface ImportWizardProps {
   readonly action: (formData: FormData) => void | Promise<void>;
   readonly projectId: string;
+  /**
+   * The last map this account confirmed, and when. There is deliberately NO
+   * `sameShape` here: whether it fits THIS file is decided in `onFile`, against a
+   * header only the browser has. A server-supplied answer to that question could
+   * only ever be `false` (see the note there), and a prop that is always false is
+   * worse than no prop — it reads like a decision somebody made.
+   */
   readonly remembered: {
     readonly map: StoredColumnMap;
     readonly uploadedOn: string;
-    readonly sameShape: boolean;
   } | null;
   readonly defaultWeekEnding: string;
 }
@@ -101,7 +105,33 @@ export function ImportWizard(props: ImportWizardProps): React.ReactElement {
     const sha256 = [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('');
 
     const remembered = props.remembered;
-    if (remembered !== null && remembered.sameShape) {
+    /**
+     * SHAPE IS DECIDED HERE, NOT ON THE SERVER, BECAUSE ONLY HERE IS THE HEADER KNOWN.
+     *
+     * S13 calls `rememberedMap(tx, { projectId, header: [] })` — and it has no choice:
+     * the file is parsed in the browser and never uploaded, so at render time the
+     * server has no header to compare against. `rememberedMap` hashes what it was
+     * given, compares it to the stored header, and returns `sameShape: false` for
+     * every file in the world.
+     *
+     * The consequence was that §5.1's central behaviour never happened. "The first
+     * upload maps; every upload after that applies the map silently" is what makes
+     * this screen "disappear after the first use", and instead every week walked the
+     * full column mapper again — the exact re-entry cost the product exists to remove,
+     * and heuristic #6 / WCAG 2.2 SC 3.3.7 unimplemented in practice.
+     *
+     * The comparison is `headerSignature`'s, spelled out rather than imported: that
+     * helper hashes, and pulling a sha256 into a client bundle to compare two arrays
+     * of strings would be a worse trade than writing the comparison down. It stays
+     * strict — trim and case only — because a map from a DIFFERENT export applied
+     * silently is a wrong rate on a document somebody signs.
+     */
+    const key = (header: readonly string[]): string =>
+      JSON.stringify(header.map((name) => name.trim().toLowerCase()));
+    const sameShape =
+      remembered !== null && key(remembered.map.header) === key(table.header);
+
+    if (remembered !== null && sameShape) {
       // §5.1 — applied SILENTLY. No confirmation step, no modal, no "does this look
       // right?". One quiet line above the preview says where it came from.
       setMapping(remembered.map.targets);
@@ -194,7 +224,7 @@ export function ImportWizard(props: ImportWizardProps): React.ReactElement {
     );
   }
 
-  const rows = buildRows({ table: file.table, mapping, deductions });
+  const { workers: rows, unreadableCells } = buildRows({ table: file.table, mapping, deductions });
   const unmappedDeductionCount = deductions.filter((column) => column.category === 'UNMAPPED').length;
 
   return (
@@ -348,8 +378,8 @@ export function ImportWizard(props: ImportWizardProps): React.ReactElement {
         <button
           type="submit"
           className="rp-btn rp-btn--primary"
-          aria-disabled={rows.length === 0 ? true : undefined}
-          disabled={rows.length === 0}
+          aria-disabled={rows.length === 0 || unreadableCells.length > 0 ? true : undefined}
+          disabled={rows.length === 0 || unreadableCells.length > 0}
         >
           Save this week
         </button>
@@ -357,6 +387,37 @@ export function ImportWizard(props: ImportWizardProps): React.ReactElement {
           Change the mapping
         </button>
       </div>
+      {unreadableCells.length > 0 ? (
+        /**
+         * P-A AT THE CELL — the same refusal the free tier has always shown, now on
+         * this tier too. Before `mapRows`, an unreadable hours or money cell was
+         * coerced to `?? 0` here and the week saved with a zero in it. A zero on a
+         * WH-347 says the worker was paid nothing; "we could not read the cell" says
+         * something else entirely, and only one of the two is true.
+         */
+        <div className="rp-alert rp-alert--blocked">
+          <span className="rp-alert__glyph" aria-hidden="true">
+            ✕
+          </span>
+          <div className="rp-alert__body">
+            <p className="rp-alert__title">
+              {unreadableCells.length === 1
+                ? 'One cell could not be read as a number'
+                : `${unreadableCells.length} cells could not be read as a number`}
+            </p>
+            <ul className="rp-stack rp-stack--tight">
+              {unreadableCells.map((sentence) => (
+                <li key={sentence}>{sentence}</li>
+              ))}
+            </ul>
+            <p>
+              Ratepin does not coerce a cell it could not read into a zero, because a zero on this
+              form means the worker was paid nothing rather than that we could not tell. Fix the
+              cell in your export, or map that field to a different column.
+            </p>
+          </div>
+        </div>
+      ) : null}
       {unmappedDeductionCount > 0 ? (
         <p className="rp-btn__why">
           {unmappedDeductionCount} deduction column
@@ -373,78 +434,50 @@ export function ImportWizard(props: ImportWizardProps): React.ReactElement {
 // Mapping the table onto posted rows
 // ===========================================================================
 
-interface WizardLine {
-  readonly rawTitle: string;
-  readonly st: number[];
-  readonly ot: number[];
-  readonly dt: number[];
-  readonly cashRateMilli: number;
-  readonly cashInLieuMilli: number;
-  readonly otRateMilli: number | null;
-  readonly dtRateMilli: number | null;
-  readonly fringeCreditMilli: number;
-}
-
-interface WizardWorker {
-  readonly externalRef: string | null;
-  readonly lastName: string;
-  readonly firstName: string;
-  readonly middleInitial: string | null;
-  readonly idLast4: string | null;
-  readonly status: 'J' | 'RA';
-  readonly allWorkGrossCents: number;
-  readonly netPaidCents: number;
-  readonly lines: readonly WizardLine[];
-  readonly deductions: readonly { rawLabel: string; category: string; amountCents: number }[];
-}
-
+/**
+ * `buildRows` USED TO LIVE HERE, AND WAS THE SECOND COPY OF ONE FUNCTION.
+ *
+ * §5.5 shares component **M** so "a free user who later pays meets no new UI".
+ * The screen was shared; the projection behind it was not, and the paid copy had
+ * drifted laxer than the free one on `idLast4`, `middleInitial`, `status` and the
+ * treatment of unreadable cells — on the tier whose output carries a signature.
+ * `mapRows` in `_lib/csv.ts` is now the only implementation; see its header for the
+ * four divergences and why the free reading won each of them.
+ *
+ * What remains here is the adapter: the neutral shape widened to `PostedWorker`,
+ * which is the wire type `ingestPayroll` takes.
+ */
 function buildRows(input: {
   readonly table: CsvTable;
   readonly mapping: ColumnMapping;
   readonly deductions: readonly DeductionColumn[];
-}): WizardWorker[] {
-  const cell = (row: readonly string[], target: MapTarget): string | undefined => {
-    const index = input.mapping[target];
-    return index === undefined ? undefined : row[index];
-  };
+}): { readonly workers: readonly PostedWorker[]; readonly unreadableCells: readonly string[] } {
+  const { workers, unreadableCells } = mapRows({
+    table: input.table,
+    mapping: input.mapping,
+    deductions: input.deductions.map((column) => ({
+      rawLabel: column.rawLabel,
+      category: column.category,
+      columnIndex: column.columnIndex,
+    })),
+  });
 
-  return input.table.rows
-    .filter((row) => (cell(row, 'lastName') ?? '').trim() !== '')
-    .map((row) => {
-      const days = (prefix: 'st' | 'ot'): number[] =>
-        [1, 2, 3, 4, 5, 6, 7].map(
-          (day) => hoursHundredths(cell(row, `${prefix}${String(day)}` as MapTarget)) ?? 0,
-        );
-      const line: WizardLine = {
-        rawTitle: (cell(row, 'classification') ?? '').trim(),
-        st: days('st'),
-        ot: days('ot'),
-        dt: [0, 0, 0, 0, 0, 0, 0],
-        cashRateMilli: rateMilli(cell(row, 'cashRate')) ?? 0,
-        cashInLieuMilli: rateMilli(cell(row, 'cashInLieu')) ?? 0,
-        // NULL IS NOT ZERO: an unproven premium is a different fact from $0.00 paid.
-        otRateMilli: cell(row, 'otRate') === undefined ? null : rateMilli(cell(row, 'otRate')),
-        dtRateMilli: cell(row, 'dtRate') === undefined ? null : rateMilli(cell(row, 'dtRate')),
-        fringeCreditMilli: rateMilli(cell(row, 'fringeCredit')) ?? 0,
-      };
-      const statusRaw = (cell(row, 'status') ?? 'J').trim().toUpperCase();
-      return {
-        externalRef: null,
-        lastName: (cell(row, 'lastName') ?? '').trim(),
-        firstName: (cell(row, 'firstName') ?? '').trim(),
-        middleInitial: (cell(row, 'middleInitial') ?? '').trim() || null,
-        idLast4: (cell(row, 'idLast4') ?? '').trim().slice(-4) || null,
-        status: statusRaw.startsWith('RA') || statusRaw.startsWith('A') ? 'RA' : 'J',
-        allWorkGrossCents: moneyCents(cell(row, 'allWorkGross')) ?? 0,
-        netPaidCents: moneyCents(cell(row, 'netPaid')) ?? 0,
-        lines: [line],
-        deductions: input.deductions.map((column) => ({
-          rawLabel: column.rawLabel,
-          category: column.category,
-          amountCents: moneyCents(row[column.columnIndex]) ?? 0,
-        })),
-      } satisfies WizardWorker;
-    });
+  return {
+    workers: workers.map((worker) => ({
+      ...worker,
+      externalRef: null,
+      // Box 1D holds one character; empty means the export had none, which is a
+      // fact rather than an empty string to print.
+      middleInitial: worker.middleInitial === '' ? null : worker.middleInitial,
+      apprenticeProgram: worker.apprenticeProgram === '' ? null : worker.apprenticeProgram,
+      apprenticeRegistrar:
+        worker.apprenticeRegistrar === 'OA' || worker.apprenticeRegistrar === 'SAA'
+          ? worker.apprenticeRegistrar
+          : null,
+      apprenticeLevel: worker.apprenticeLevel === '' ? null : worker.apprenticeLevel,
+    })),
+    unreadableCells,
+  };
 }
 
 /**

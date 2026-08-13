@@ -202,6 +202,16 @@ export interface PostedWorker {
   readonly middleInitial: string | null;
   readonly idLast4: string | null;
   readonly status: 'J' | 'RA';
+  /**
+   * 29 CFR 5.5(a)(4). Required in practice whenever `status` is `RA`: the engine
+   * blocks a registered apprentice with no level of progression, because the status
+   * is what permits a sub-journeyworker rate and the programme is what evidences it.
+   * `null` on a journeyworker, and the CHECK constraint `pww_apprentice` enforces
+   * that direction in the database.
+   */
+  readonly apprenticeProgram?: string | null;
+  readonly apprenticeRegistrar?: 'OA' | 'SAA' | null;
+  readonly apprenticeLevel?: string | null;
   readonly allWorkGrossCents: number;
   readonly netPaidCents: number;
   readonly lines: readonly PostedLine[];
@@ -305,12 +315,25 @@ export async function ingestPayroll(
   for (const worker of input.workers) {
     const workerId = await upsertWorker(tx, { ...worker, accountId: input.accountId });
     const workerWeekId = newId();
+    // The CHECK constraint `pww_apprentice` requires that a journeyworker carries no
+    // programme, so the status gates all three columns here rather than the caller
+    // being trusted to have cleared them.
+    const apprentice =
+      worker.status === 'RA'
+        ? {
+            program: worker.apprenticeProgram ?? null,
+            registrar: worker.apprenticeRegistrar ?? null,
+            level: worker.apprenticeLevel ?? null,
+          }
+        : { program: null, registrar: null, level: null };
     await tx.execute(sql`
       INSERT INTO payroll_worker_weeks
-        (id, account_id, week_id, worker_id, status, all_work_gross_cents, net_paid_cents)
+        (id, account_id, week_id, worker_id, status, all_work_gross_cents, net_paid_cents,
+         apprentice_program, apprentice_registrar, apprentice_level)
       VALUES
         (${workerWeekId}::uuid, ${input.accountId}::uuid, ${weekId}::uuid, ${workerId}::uuid,
-         ${worker.status}, ${worker.allWorkGrossCents}, ${worker.netPaidCents})
+         ${worker.status}, ${worker.allWorkGrossCents}, ${worker.netPaidCents},
+         ${apprentice.program}, ${apprentice.registrar}, ${apprentice.level})
     `);
 
     for (const [ordinal, line] of worker.lines.entries()) {

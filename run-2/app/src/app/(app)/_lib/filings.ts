@@ -100,6 +100,9 @@ interface WorkerWeekDbRow {
   readonly status: string;
   readonly all_work_gross_cents: number | string;
   readonly net_paid_cents: number | string;
+  readonly apprentice_program: string | null;
+  readonly apprentice_registrar: 'OA' | 'SAA' | null;
+  readonly apprentice_level: string | null;
   readonly last_name: string;
   readonly first_name: string;
   readonly middle_initial: string | null;
@@ -201,6 +204,7 @@ export async function loadWeek(
   const workerRows = rowsOf<WorkerWeekDbRow>(
     await tx.execute(sql`
       SELECT ww.id, ww.worker_id, ww.status, ww.all_work_gross_cents, ww.net_paid_cents,
+             ww.apprentice_program, ww.apprentice_registrar, ww.apprentice_level,
              w.last_name, w.first_name, w.middle_initial, w.ssn_last4,
              (w.ssn_ciphertext IS NOT NULL) AS has_ssn
         FROM payroll_worker_weeks ww
@@ -258,8 +262,8 @@ export async function loadWeek(
       middleInitial: row.middle_initial,
       ssnLast4: row.ssn_last4,
       numWithholdingExemptions: null,
-      levelOfProgression: null,
-      apprenticeProgram: null,
+      levelOfProgression: row.apprentice_level,
+      apprenticeProgram: row.apprentice_program,
       statutorySplit: null,
     });
     if (!row.has_ssn) missing.push({ workerRef: row.id, name: `${row.first_name} ${row.last_name}` });
@@ -297,9 +301,32 @@ export async function loadWeek(
         } satisfies PayrollLine;
       });
 
+    /**
+     * `apprentice` IS PRESENT ONLY WHEN ALL THREE ARE.
+     *
+     * `week.ts` blocks an `RA` worker whose `levelOfProgression` is empty. Building a
+     * partial object here — a programme with no level, a level with no registrar —
+     * would satisfy the presence check while leaving the form's box 2 incomplete, so
+     * the absence is kept whole and the block stands until the import carries all
+     * three columns.
+     */
+    const apprentice =
+      row.status === 'RA' &&
+      row.apprentice_program !== null &&
+      row.apprentice_registrar !== null &&
+      row.apprentice_level !== null &&
+      row.apprentice_level.trim() !== ''
+        ? {
+            programName: row.apprentice_program,
+            registrar: row.apprentice_registrar,
+            levelOfProgression: row.apprentice_level,
+          }
+        : undefined;
+
     return {
       workerRef,
       status: row.status === 'RA' ? 'RA' : 'J',
+      ...(apprentice === undefined ? {} : { apprentice }),
       lines,
       allWorkGross: Cents.of(Number(row.all_work_gross_cents)),
       deductions: deductionRows

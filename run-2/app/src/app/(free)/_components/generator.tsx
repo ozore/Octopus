@@ -126,20 +126,42 @@ export function FreeGenerator({
     }
   }
 
-  async function onGenerate(): Promise<void> {
+  /** The preview lives in this browser and nowhere else; the token is the key. */
+  function openPreview(artifact: Extract<WireGenerate, { ok: true }>['artifact']): void {
+    const token = crypto.randomUUID();
+    window.localStorage.setItem(
+      `${PREVIEW_KEY_PREFIX}${token}`,
+      JSON.stringify({ token, artifact }),
+    );
+    router.push(`/wh347/p/${token}`);
+  }
+
+  /**
+   * GENERATE — AND STOP HERE IF A ROW IS BLOCKED.
+   *
+   * §1.4 gives a blocked line two outcomes and they are two different clicks:
+   * "he picks one" from the determination's own list, or "he picks nothing and
+   * generates anyway", which renders the PDF with the row on the exception report.
+   *
+   * This used to navigate to the preview on ANY ok response. The picker block
+   * further down renders on `result.pickers.length > 0` and could therefore never
+   * be seen by anyone: the screen was already gone. The first of §1.4's two
+   * outcomes did not exist, and the free tier's only classification affordance was
+   * dead markup.
+   *
+   * So the first generate that comes back with blocked rows stays on the page and
+   * shows them; a second, separately labelled button takes the draft anyway, which
+   * is §1.4's other row and says out loud what it is doing.
+   */
+  async function onGenerate(options?: { readonly anyway?: boolean }): Promise<void> {
     if (band === null) return;
     setBusy('generate');
     const response = await generateAction({ ...session, contractValueBand: band });
     setBusy(null);
     setResult(response);
-    if (response.ok) {
-      const token = crypto.randomUUID();
-      window.localStorage.setItem(
-        `${PREVIEW_KEY_PREFIX}${token}`,
-        JSON.stringify({ token, artifact: response.artifact }),
-      );
-      router.push(`/wh347/p/${token}`);
-    }
+    if (!response.ok) return;
+    if (response.pickers.length > 0 && options?.anyway !== true) return;
+    openPreview(response.artifact);
   }
 
   const blockers: string[] = [];
@@ -881,9 +903,22 @@ export function FreeGenerator({
                 {picker.declined ? <RefusalView refusal={picker.declined} /> : null}
               </fieldset>
             ))}
+            {/*
+              §1.4's two rows, as two buttons of the same weight. Picking is not
+              required and generating anyway is not hidden: the blocked row adds a
+              REASON to the exception report, not a status — the status was fixed the
+              moment this path was chosen.
+            */}
             <div className="rp-btn-row">
               <button type="button" className="rp-btn" onClick={() => void onGenerate()}>
                 Generate again with these classifications
+              </button>
+              <button
+                type="button"
+                className="rp-btn"
+                onClick={() => void onGenerate({ anyway: true })}
+              >
+                Generate it anyway, with these rows on the exception report
               </button>
             </div>
           </div>

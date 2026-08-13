@@ -18,7 +18,8 @@
     "db:migrate": "tsx src/scripts/migrate.ts",
     "worker": "tsx src/worker/index.ts",
     "corpus:ingest": "tsx src/scripts/corpus-ingest.ts",
-    "canary": "tsx src/scripts/canary.ts"
+    "canary": "tsx src/scripts/canary.ts",
+    "seed": "tsx src/scripts/seed.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.0",

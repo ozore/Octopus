@@ -47,3 +47,8 @@ tmp/
 
 # TypeScript incremental build info
 tsconfig.tsbuildinfo
+
+# The dev fallback's persistent database and the seed's artifact output.
+# `npm run seed` writes both; neither is a build input and neither is committed.
+.pglite/
+.seed-out/

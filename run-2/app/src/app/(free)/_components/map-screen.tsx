@@ -23,10 +23,8 @@ import { useEffect, useState } from 'react';
 
 import {
   fileReceipt,
-  hoursHundredths,
-  moneyCents,
+  mapRows,
   parseCsv,
-  rateMilli,
   suggestMapping,
   type CsvTable,
   type FileReceipt,
@@ -142,91 +140,33 @@ export function MapScreen(): React.ReactElement {
 // The mapped rows
 // ===========================================================================
 
+/**
+ * The projection lives in `_lib/csv.ts`, with component **M** itself, because S14
+ * needs exactly this function and a second copy of it had already drifted from this
+ * one in four places (see `mapRows`). This adapter only widens the neutral shape to
+ * `FreeWorker`, which adds the free tier's own `chosenOrdinal`.
+ */
 function rowsToWorkers(
   table: CsvTable,
   mapping: ColumnMapping,
 ): { readonly workers: readonly FreeWorker[]; readonly unreadableCells: readonly string[] } {
-  const unreadableCells: string[] = [];
-  const cell = (row: readonly string[], target: MapTarget): string | undefined => {
-    const index = mapping[target];
-    return index === undefined ? undefined : row[index];
-  };
-
-  const readHours = (row: readonly string[], target: MapTarget, rowNumber: number): number => {
-    const value = hoursHundredths(cell(row, target));
-    if (value === null) {
-      unreadableCells.push(`Row ${rowNumber}, ${target}: “${cell(row, target) ?? ''}” is not a number of hours.`);
-      return 0;
-    }
-    return value;
-  };
-  const readRate = (row: readonly string[], target: MapTarget, rowNumber: number): number => {
-    const value = rateMilli(cell(row, target));
-    if (value === null) {
-      unreadableCells.push(`Row ${rowNumber}, ${target}: “${cell(row, target) ?? ''}” is not a rate.`);
-      return 0;
-    }
-    return value;
-  };
-  const readMoney = (row: readonly string[], target: MapTarget, rowNumber: number): number => {
-    const value = moneyCents(cell(row, target));
-    if (value === null) {
-      unreadableCells.push(`Row ${rowNumber}, ${target}: “${cell(row, target) ?? ''}” is not an amount.`);
-      return 0;
-    }
-    return value;
-  };
-
-  const workers = table.rows.map((row, index) => {
-    const rowNumber = index + 2; // header is row 1, as a spreadsheet counts
-    const worker = emptyWorker();
-    const line = emptyLine();
-    const idRaw = (cell(row, 'idLast4') ?? '').replace(/\D/g, '');
-    const statusRaw = (cell(row, 'status') ?? '').trim().toUpperCase();
-
-    return {
+  const { workers, unreadableCells } = mapRows({ table, mapping });
+  return {
+    workers: workers.map((worker) => ({
+      ...emptyWorker(),
       ...worker,
-      lastName: (cell(row, 'lastName') ?? '').trim(),
-      firstName: (cell(row, 'firstName') ?? '').trim(),
-      middleInitial: (cell(row, 'middleInitial') ?? '').trim().slice(0, 1),
-      // The LAST FOUR only, taken from the end of whatever the export carried. A
-      // nine-digit column is common; nine digits on the federal form are not
-      // permitted, and the renderer rejects anything but four.
-      idLast4: idRaw.length >= 4 ? idRaw.slice(-4) : null,
-      status: statusRaw === 'RA' || statusRaw.startsWith('APP') ? ('RA' as const) : ('J' as const),
-      lines: [
-        {
-          ...line,
-          rawTitle: (cell(row, 'classification') ?? '').trim(),
-          st: [
-            readHours(row, 'st1', rowNumber),
-            readHours(row, 'st2', rowNumber),
-            readHours(row, 'st3', rowNumber),
-            readHours(row, 'st4', rowNumber),
-            readHours(row, 'st5', rowNumber),
-            readHours(row, 'st6', rowNumber),
-            readHours(row, 'st7', rowNumber),
-          ],
-          ot: [
-            readHours(row, 'ot1', rowNumber),
-            readHours(row, 'ot2', rowNumber),
-            readHours(row, 'ot3', rowNumber),
-            readHours(row, 'ot4', rowNumber),
-            readHours(row, 'ot5', rowNumber),
-            readHours(row, 'ot6', rowNumber),
-            readHours(row, 'ot7', rowNumber),
-          ],
-          cashRateMilli: readRate(row, 'cashRate', rowNumber),
-          cashInLieuMilli: readRate(row, 'cashInLieu', rowNumber),
-          fringeCreditMilli: readRate(row, 'fringeCredit', rowNumber),
-          otRateMilli: mapping['otRate'] === undefined ? null : readRate(row, 'otRate', rowNumber),
-          dtRateMilli: mapping['dtRate'] === undefined ? null : readRate(row, 'dtRate', rowNumber),
-        },
-      ],
-      allWorkGrossCents: readMoney(row, 'allWorkGross', rowNumber),
-      netPaidCents: readMoney(row, 'netPaid', rowNumber),
-    } satisfies FreeWorker;
-  });
-
-  return { workers, unreadableCells };
+      // The day arrays are copied rather than aliased: `FreeSession` is edited in
+      // place by the generator's controlled inputs, and `MappedLine` is readonly.
+      lines: worker.lines.map((line) => ({
+        ...emptyLine(),
+        ...line,
+        st: [...line.st],
+        ot: [...line.ot],
+        dt: [...line.dt],
+        chosenOrdinal: null,
+      })),
+      deductions: [],
+    })),
+    unreadableCells,
+  };
 }

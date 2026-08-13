@@ -135,9 +135,21 @@ export default async function BillingPage({
               <div className="rp-row rp-row--between">
                 <dt>Overage cap</dt>
                 <dd className="rp-num">
+                  {/*
+                   * THE LABEL HAS TO NAME THE NUMBER BESIDE IT.
+                   *
+                   * `capCents` is `price(next) − price(current)` — the point at
+                   * which staying put stops being cheaper than moving up, which is
+                   * the only reading of "capped at the next tier's price" that
+                   * passes §11.4's test that the upgrade be defensible as cheaper
+                   * for her. `pricing.ts` says so at length and computes the
+                   * subtraction. This line said "the price of the next plan" while
+                   * printing the difference: on Solo it rendered "$150.00 — the
+                   * price of the next plan" next to a Crew card reading $249.00.
+                   */}
                   {view.usage.capCents === null
                     ? 'no cap — this is the top plan'
-                    : `${Cents.toDollarString(view.usage.capCents)} — the price of the next plan`}
+                    : `${Cents.toDollarString(view.usage.capCents)} — what closes the gap to the next plan`}
                 </dd>
               </div>
             </>
