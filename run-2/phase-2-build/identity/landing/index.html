@@ -1,0 +1,2380 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ratepin — Certified-Payroll Rate-of-Record Engine</title>
+<meta name="description" content="Friday's certified payroll, with every rate traced to the wage-determination number, modification and publication date it came from. Payroll CSV in, WH-347 PDF and California eCPR XML out. Make one free, no account.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#E9E6DE">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#131210">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ratepin — the rate of record, printed on the form">
+<meta property="og:description" content="Certified-payroll rate-of-record engine for open-shop specialty subcontractors on federally funded construction. Every rate pinned to a named wage determination, modification and publication date.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 17h18M9 4v13' stroke='%2314120E' stroke-width='2.6' fill='none' stroke-linecap='square'/%3E%3C/svg%3E">
+
+<style>
+/* ==========================================================================
+   RATEPIN — LANDING PAGE
+   Tokens, base and components are taken from
+   /run-2/phase-2-build/identity/design-system.css (v1) without alteration.
+   Landing-only rules are namespaced .rp-lp-* and are additive.
+
+   R1 paper not glass · R2 colour means state · R3 word + glyph + border style
+   R4 nothing under 15px is interface · R5 motion has an allow-list
+   ========================================================================== */
+@layer rp.reset, rp.tokens, rp.base, rp.components, rp.landing, rp.utilities, rp.adaptive;
+
+/* ---------------------------------------------------------------- RESET -- */
+@layer rp.reset {
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body, h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd, ol, ul, fieldset { margin: 0; }
+  fieldset { padding: 0; border: 0; min-inline-size: 0; }
+  ol[class], ul[class] { padding: 0; list-style: none; }
+  img, svg, video, canvas { display: block; max-inline-size: 100%; height: auto; }
+  input, button, textarea, select { font: inherit; color: inherit; }
+  button { background: none; border: 0; }
+  :where(a) { color: inherit; }
+  table { border-collapse: collapse; border-spacing: 0; }
+  th { text-align: start; font-weight: inherit; }
+}
+
+/* --------------------------------------------------------------- TOKENS -- */
+@layer rp.tokens {
+  :root {
+    /* STOCK — the paper and the desk it sits on */
+    --rp-stock-000: #FFFFFF;
+    --rp-stock-050: #F3F1EB;
+    --rp-stock-100: #EFEDE6;
+    --rp-stock-150: #E9E6DE;
+    --rp-stock-200: #D8D3C7;
+    --rp-stock-400: #87806E;
+    --rp-stock-500: #8A8375;
+    /* INK */
+    --rp-ink-950: #14120E;
+    --rp-ink-800: #403A30;
+    --rp-ink-600: #5C5648;
+    /* NIGHT — authored independently, not a filter */
+    --rp-night-000: #131210;
+    --rp-night-050: #1C1A16;
+    --rp-night-100: #242119;
+    --rp-night-150: #26231C;
+    --rp-night-300: #39352C;
+    --rp-night-500: #847C6B;
+    --rp-night-600: #7A7364;
+    --rp-night-900: #A69E8C;
+    --rp-night-950: #CEC7B8;
+    --rp-night-999: #F3F0E8;
+    /* PIN — the one brand hue */
+    --rp-pin-700: #12508F;
+    --rp-pin-800: #0E3E70;
+    --rp-pin-300: #8FB8EC;
+    --rp-pin-200: #B0CCF3;
+    --rp-pin-tint-l: #E4ECF7;
+    --rp-pin-tint-d: #182437;
+    /* STATUS */
+    --rp-ok-700: #0F6B37;   --rp-ok-300: #5FC085;
+    --rp-ok-tint-l: #E2EFE5; --rp-ok-tint-d: #152A1D;
+    --rp-dated-700: #8A5200; --rp-dated-300: #E2A83F;
+    --rp-dated-tint-l: #FAEDD6; --rp-dated-tint-d: #2C2415;
+    --rp-draft-700: #A61B10; --rp-draft-300: #F28A7C;
+    --rp-draft-tint-l: #FBE6E2; --rp-draft-tint-d: #2F1C19;
+    /* HIGH-CONTRAST PIGMENTS */
+    --rp-hc-ground: #FFFFFF;  --rp-hc-surface: #FFFFFF; --rp-hc-sunken: #EFEDE6;
+    --rp-hc-ink: #000000;     --rp-hc-ink-2: #2B261D;   --rp-hc-ink-3: #3A342A;
+    --rp-hc-rule: #7A7362;    --rp-hc-rule-strong: #2A251C;
+    --rp-hc-pin: #0B3D75;     --rp-hc-ok: #0A5629;
+    --rp-hc-dated: #6B4300;   --rp-hc-draft: #8A1208;
+    --rp-hc-ok-tint: #DDEEE2; --rp-hc-dated-tint: #F7E9CE;
+    --rp-hc-draft-tint: #FADFDA; --rp-hc-pin-tint: #DEE8F5;
+  }
+
+  /* SEMANTIC TIER — light is the bare :root. Nothing is first defined in a query. */
+  :root {
+    color-scheme: light dark;
+    --rp-ground: var(--rp-stock-150);
+    --rp-surface: var(--rp-stock-000);
+    --rp-sunken: var(--rp-stock-050);
+    --rp-field: var(--rp-stock-000);
+    --rp-row-hover: var(--rp-stock-100);
+    --rp-row-selected: var(--rp-pin-tint-l);
+
+    --rp-ink: var(--rp-ink-950);
+    --rp-ink-2: var(--rp-ink-800);
+    --rp-ink-3: var(--rp-ink-600);
+    --rp-ink-mute: var(--rp-stock-500);
+    --rp-ink-on-fill: var(--rp-stock-000);
+
+    --rp-rule: var(--rp-stock-200);
+    --rp-rule-strong: var(--rp-stock-400);
+    --rp-rule-ink: var(--rp-ink-950);
+
+    --rp-pin: var(--rp-pin-700);
+    --rp-pin-strong: var(--rp-pin-800);
+    --rp-pin-tint: var(--rp-pin-tint-l);
+
+    --rp-ok: var(--rp-ok-700);       --rp-ok-tint: var(--rp-ok-tint-l);
+    --rp-dated: var(--rp-dated-700); --rp-dated-tint: var(--rp-dated-tint-l);
+    --rp-draft: var(--rp-draft-700); --rp-draft-tint: var(--rp-draft-tint-l);
+
+    --rp-mark: var(--rp-draft-700);
+    --rp-mark-alpha: 0.20;
+    --rp-mark-alpha-print: 0.24;
+
+    --rp-focus: var(--rp-pin-700);
+    --rp-focus-halo: var(--rp-stock-000);
+    --rp-focus-w: 3px;
+    --rp-focus-gap: 2px;
+
+    --rp-font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI",
+      Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif;
+    --rp-font-num: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "SF Mono", Menlo,
+      Consolas, "Liberation Mono", "DejaVu Sans Mono", monospace;
+
+    --rp-t-micro: 0.8125rem; --rp-t-data: 0.9375rem; --rp-t-base: 1.0625rem;
+    --rp-t-lead: 1.1875rem;  --rp-t-h3: 1.4375rem;   --rp-t-h2: 1.75rem;
+    --rp-t-h1: 2.125rem;     --rp-t-fig: 2.75rem;
+
+    --rp-lh-tight: 1.2; --rp-lh-data: 1.35; --rp-lh-ui: 1.45; --rp-lh-prose: 1.6;
+    --rp-measure: 66ch; --rp-measure-narrow: 52ch;
+
+    --rp-s-0: 0;      --rp-s-1: 0.25rem; --rp-s-2: 0.5rem;  --rp-s-3: 0.75rem;
+    --rp-s-4: 1rem;   --rp-s-5: 1.25rem; --rp-s-6: 1.5rem;  --rp-s-7: 2rem;
+    --rp-s-8: 2.5rem; --rp-s-9: 3.5rem;  --rp-s-10: 4.5rem;
+
+    --rp-row-h: 2.75rem;
+    --rp-cell-pad-y: var(--rp-s-2);
+    --rp-cell-pad-x: var(--rp-s-3);
+    --rp-target-min: 2.75rem;
+    --rp-target-abs: 1.5rem;
+
+    --rp-r-0: 0; --rp-r-1: 2px; --rp-r-2: 3px;
+
+    --rp-dur-tick: 90ms; --rp-dur-state: 160ms; --rp-dur-open: 200ms;
+    --rp-ease: cubic-bezier(0.2, 0, 0, 1);
+    --rp-lift: 1px;
+
+    --rp-shell-max: 84rem;
+    --rp-shell-text: 44rem;
+    --rp-header-h: 3.5rem;
+    --rp-z-header: 100;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --rp-ground: var(--rp-night-000);
+      --rp-surface: var(--rp-night-050);
+      --rp-sunken: var(--rp-night-100);
+      --rp-field: #15130F;
+      --rp-row-hover: var(--rp-night-150);
+      --rp-row-selected: var(--rp-pin-tint-d);
+      --rp-ink: var(--rp-night-999);
+      --rp-ink-2: var(--rp-night-950);
+      --rp-ink-3: var(--rp-night-900);
+      --rp-ink-mute: var(--rp-night-600);
+      --rp-ink-on-fill: var(--rp-night-000);
+      --rp-rule: var(--rp-night-300);
+      --rp-rule-strong: var(--rp-night-500);
+      --rp-rule-ink: var(--rp-night-999);
+      --rp-pin: var(--rp-pin-300);
+      --rp-pin-strong: var(--rp-pin-200);
+      --rp-pin-tint: var(--rp-pin-tint-d);
+      --rp-ok: var(--rp-ok-300);       --rp-ok-tint: var(--rp-ok-tint-d);
+      --rp-dated: var(--rp-dated-300); --rp-dated-tint: var(--rp-dated-tint-d);
+      --rp-draft: var(--rp-draft-300); --rp-draft-tint: var(--rp-draft-tint-d);
+      --rp-mark: var(--rp-draft-300);
+      --rp-mark-alpha: 0.18; --rp-mark-alpha-print: 0.18;
+      --rp-focus: var(--rp-pin-300);
+      --rp-focus-halo: var(--rp-night-000);
+      --rp-hc-ground: #080706;  --rp-hc-surface: #141310; --rp-hc-sunken: #1E1B15;
+      --rp-hc-ink: #FFFFFF;     --rp-hc-ink-2: #DED8CA;   --rp-hc-ink-3: #C5BEAE;
+      --rp-hc-rule: #767060;    --rp-hc-rule-strong: #CFC8B8;
+      --rp-hc-pin: #A9CBF5;     --rp-hc-ok: #7FD79F;
+      --rp-hc-dated: #F2C165;   --rp-hc-draft: #FFA79A;
+      --rp-hc-ok-tint: #0F2114; --rp-hc-dated-tint: #241D10;
+      --rp-hc-draft-tint: #291613; --rp-hc-pin-tint: #111C2E;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --rp-ground: var(--rp-night-000);
+    --rp-surface: var(--rp-night-050);
+    --rp-sunken: var(--rp-night-100);
+    --rp-field: #15130F;
+    --rp-row-hover: var(--rp-night-150);
+    --rp-row-selected: var(--rp-pin-tint-d);
+    --rp-ink: var(--rp-night-999);
+    --rp-ink-2: var(--rp-night-950);
+    --rp-ink-3: var(--rp-night-900);
+    --rp-ink-mute: var(--rp-night-600);
+    --rp-ink-on-fill: var(--rp-night-000);
+    --rp-rule: var(--rp-night-300);
+    --rp-rule-strong: var(--rp-night-500);
+    --rp-rule-ink: var(--rp-night-999);
+    --rp-pin: var(--rp-pin-300);
+    --rp-pin-strong: var(--rp-pin-200);
+    --rp-pin-tint: var(--rp-pin-tint-d);
+    --rp-ok: var(--rp-ok-300);       --rp-ok-tint: var(--rp-ok-tint-d);
+    --rp-dated: var(--rp-dated-300); --rp-dated-tint: var(--rp-dated-tint-d);
+    --rp-draft: var(--rp-draft-300); --rp-draft-tint: var(--rp-draft-tint-d);
+    --rp-mark: var(--rp-draft-300);
+    --rp-mark-alpha: 0.18; --rp-mark-alpha-print: 0.18;
+    --rp-focus: var(--rp-pin-300);
+    --rp-focus-halo: var(--rp-night-000);
+    --rp-hc-ground: #080706;  --rp-hc-surface: #141310; --rp-hc-sunken: #1E1B15;
+    --rp-hc-ink: #FFFFFF;     --rp-hc-ink-2: #DED8CA;   --rp-hc-ink-3: #C5BEAE;
+    --rp-hc-rule: #767060;    --rp-hc-rule-strong: #CFC8B8;
+    --rp-hc-pin: #A9CBF5;     --rp-hc-ok: #7FD79F;
+    --rp-hc-dated: #F2C165;   --rp-hc-draft: #FFA79A;
+    --rp-hc-ok-tint: #0F2114; --rp-hc-dated-tint: #241D10;
+    --rp-hc-draft-tint: #291613; --rp-hc-pin-tint: #111C2E;
+  }
+
+  /* HIGH CONTRAST — one rule per trigger, resolves light in light, dark in dark */
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast="normal"]) {
+      --rp-ground: var(--rp-hc-ground); --rp-surface: var(--rp-hc-surface);
+      --rp-sunken: var(--rp-hc-sunken); --rp-field: var(--rp-hc-surface);
+      --rp-row-hover: var(--rp-hc-sunken); --rp-row-selected: var(--rp-hc-pin-tint);
+      --rp-ink: var(--rp-hc-ink); --rp-ink-2: var(--rp-hc-ink-2); --rp-ink-3: var(--rp-hc-ink-3);
+      --rp-rule: var(--rp-hc-rule); --rp-rule-strong: var(--rp-hc-rule-strong);
+      --rp-rule-ink: var(--rp-hc-ink);
+      --rp-pin: var(--rp-hc-pin); --rp-pin-tint: var(--rp-hc-pin-tint);
+      --rp-ok: var(--rp-hc-ok); --rp-ok-tint: var(--rp-hc-ok-tint);
+      --rp-dated: var(--rp-hc-dated); --rp-dated-tint: var(--rp-hc-dated-tint);
+      --rp-draft: var(--rp-hc-draft); --rp-draft-tint: var(--rp-hc-draft-tint);
+      --rp-mark: var(--rp-hc-draft);
+      --rp-focus: var(--rp-hc-pin); --rp-focus-halo: var(--rp-hc-surface); --rp-focus-w: 4px;
+    }
+  }
+  :root[data-contrast="high"] {
+    --rp-ground: var(--rp-hc-ground); --rp-surface: var(--rp-hc-surface);
+    --rp-sunken: var(--rp-hc-sunken); --rp-field: var(--rp-hc-surface);
+    --rp-row-hover: var(--rp-hc-sunken); --rp-row-selected: var(--rp-hc-pin-tint);
+    --rp-ink: var(--rp-hc-ink); --rp-ink-2: var(--rp-hc-ink-2); --rp-ink-3: var(--rp-hc-ink-3);
+    --rp-rule: var(--rp-hc-rule); --rp-rule-strong: var(--rp-hc-rule-strong);
+    --rp-rule-ink: var(--rp-hc-ink);
+    --rp-pin: var(--rp-hc-pin); --rp-pin-tint: var(--rp-hc-pin-tint);
+    --rp-ok: var(--rp-hc-ok); --rp-ok-tint: var(--rp-hc-ok-tint);
+    --rp-dated: var(--rp-hc-dated); --rp-dated-tint: var(--rp-hc-dated-tint);
+    --rp-draft: var(--rp-hc-draft); --rp-draft-tint: var(--rp-hc-draft-tint);
+    --rp-mark: var(--rp-hc-draft);
+    --rp-focus: var(--rp-hc-pin); --rp-focus-halo: var(--rp-hc-surface); --rp-focus-w: 4px;
+  }
+}
+</style>
+<style>
+/* ----------------------------------------------------------------- BASE -- */
+@layer rp.base {
+  html { block-size: 100%; scroll-behavior: smooth; }
+  body {
+    min-block-size: 100%;
+    margin: 0;
+    font-family: var(--rp-font-ui);
+    font-size: var(--rp-t-base);
+    line-height: var(--rp-lh-ui);
+    color: var(--rp-ink);
+    background-color: var(--rp-ground);
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 { font-weight: 650; line-height: var(--rp-lh-tight); text-wrap: balance; color: var(--rp-ink); }
+  h1 { font-size: var(--rp-t-h1); letter-spacing: -0.012em; }
+  h2 { font-size: var(--rp-t-h2); letter-spacing: -0.008em; }
+  h3 { font-size: var(--rp-t-h3); letter-spacing: -0.004em; }
+  h4 { font-size: var(--rp-t-lead); }
+  p { max-inline-size: var(--rp-measure); text-wrap: pretty; }
+  a {
+    color: var(--rp-pin);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.16em;
+  }
+  a:hover { color: var(--rp-pin-strong); text-decoration-thickness: 2px; }
+  a:active { color: var(--rp-pin-strong); }
+  strong, b { font-weight: 650; }
+  code, kbd, samp { font-family: var(--rp-font-num); font-size: 0.94em; }
+  ::selection { background-color: var(--rp-pin-tint); color: var(--rp-ink); }
+
+  /* Three-part focus: halo in the local surface, ring in the line hue, outside. */
+  :focus-visible {
+    outline: var(--rp-focus-w) solid var(--rp-focus);
+    outline-offset: var(--rp-focus-gap);
+    box-shadow: 0 0 0 var(--rp-focus-gap) var(--rp-focus-halo);
+  }
+  @supports not selector(:focus-visible) {
+    :focus { outline: var(--rp-focus-w) solid var(--rp-focus); outline-offset: var(--rp-focus-gap); }
+  }
+  /* SC 2.4.11 — the sticky header is the only thing that can obscure focus. */
+  :where(a, button, input, select, textarea, summary, [tabindex]) {
+    scroll-margin-block-start: calc(var(--rp-header-h) + var(--rp-s-6));
+    scroll-margin-block-end: var(--rp-s-6);
+  }
+}
+
+/* ----------------------------------------------------------- COMPONENTS -- */
+@layer rp.components {
+  .rp-shell { inline-size: 100%; max-inline-size: var(--rp-shell-max); margin-inline: auto; padding-inline: var(--rp-s-5); }
+  .rp-shell--text { max-inline-size: var(--rp-shell-text); }
+
+  .rp-skip {
+    position: absolute; inset-block-start: var(--rp-s-2); inset-inline-start: var(--rp-s-2);
+    z-index: 999; padding: var(--rp-s-3) var(--rp-s-4);
+    background-color: var(--rp-surface); color: var(--rp-ink);
+    border: 2px solid var(--rp-rule-ink); border-radius: var(--rp-r-2);
+    font-weight: 650; text-decoration: none;
+    transform: translateY(-200%);
+  }
+  .rp-skip:focus { transform: none; }
+
+  .rp-header {
+    position: sticky; inset-block-start: 0; z-index: var(--rp-z-header);
+    display: flex; align-items: center; gap: var(--rp-s-5);
+    min-block-size: var(--rp-header-h);
+    padding-inline: var(--rp-s-5);
+    background-color: var(--rp-surface);
+    border-block-end: 2px solid var(--rp-rule-ink);
+  }
+  .rp-wordmark {
+    display: inline-flex; align-items: baseline; gap: 0.14em;
+    font-size: var(--rp-t-lead); font-weight: 650; letter-spacing: -0.01em;
+    color: var(--rp-ink); text-decoration: none;
+  }
+  .rp-wordmark:hover { text-decoration: none; }
+  .rp-wordmark__rule { display: block; block-size: 2px; inline-size: 100%; margin-block-start: 2px; background-color: var(--rp-rule-ink); }
+
+  /* Boundary statement — permanent structure, never dismissible, never a callout. */
+  .rp-boundary {
+    max-inline-size: var(--rp-measure);
+    margin-block-start: var(--rp-s-7);
+    padding-block-start: var(--rp-s-4);
+    border-block-start: 1px solid var(--rp-rule-strong);
+    font-size: var(--rp-t-base); line-height: var(--rp-lh-prose); color: var(--rp-ink-2);
+  }
+  .rp-boundary strong { color: var(--rp-ink); }
+
+  /* Buttons — the primary fill is INK. Colour only ever means state. */
+  .rp-btn {
+    position: relative; display: inline-flex; align-items: center; justify-content: center;
+    gap: var(--rp-s-2);
+    min-block-size: var(--rp-target-min); min-inline-size: var(--rp-target-min);
+    padding-inline: var(--rp-s-5); padding-block: var(--rp-s-2);
+    font-family: var(--rp-font-ui); font-size: var(--rp-t-base); font-weight: 600;
+    line-height: 1.2; text-align: center; text-decoration: none; white-space: nowrap;
+    background-color: var(--rp-surface); color: var(--rp-ink);
+    border: 1px solid var(--rp-rule-strong); border-radius: var(--rp-r-2);
+    cursor: pointer;
+    transition: background-color var(--rp-dur-tick) var(--rp-ease),
+                border-color var(--rp-dur-tick) var(--rp-ease),
+                color var(--rp-dur-tick) var(--rp-ease);
+  }
+  .rp-btn:hover { background-color: var(--rp-sunken); border-color: var(--rp-ink-3); }
+  .rp-btn:active { background-color: var(--rp-row-hover); }
+  .rp-btn--primary { background-color: var(--rp-ink); color: var(--rp-ink-on-fill); border-color: var(--rp-ink); font-weight: 650; }
+  .rp-btn--primary:hover { background-color: var(--rp-ink-2); border-color: var(--rp-ink-2); }
+  .rp-btn--primary:active { background-color: var(--rp-ink); }
+  .rp-btn--quiet { color: var(--rp-ink-2); border-color: var(--rp-rule); }
+  .rp-btn--quiet:hover { color: var(--rp-ink); border-color: var(--rp-rule-strong); }
+  .rp-btn--sm { min-block-size: var(--rp-target-abs); padding-inline: var(--rp-s-3); font-size: var(--rp-t-data); }
+  .rp-btn-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--rp-s-3); }
+
+  /* Form controls */
+  .rp-field { display: grid; gap: var(--rp-s-2); max-inline-size: 32rem; }
+  .rp-field__label { font-size: var(--rp-t-base); font-weight: 600; color: var(--rp-ink); }
+  .rp-select {
+    inline-size: 100%; min-block-size: var(--rp-target-min);
+    padding-inline: var(--rp-s-3); padding-inline-end: var(--rp-s-6); padding-block: var(--rp-s-2);
+    font-family: var(--rp-font-ui); font-size: var(--rp-t-base); line-height: var(--rp-lh-ui);
+    color: var(--rp-ink); background-color: var(--rp-field);
+    border: 1px solid var(--rp-rule-strong); border-radius: var(--rp-r-1);
+    transition: border-color var(--rp-dur-tick) var(--rp-ease);
+  }
+
+  /* Data table — rules, never zebra fills: rules photocopy. */
+  .rp-tablewrap {
+    inline-size: 100%; overflow-x: auto; overscroll-behavior-x: contain;
+    background-color: var(--rp-surface);
+    border: 1px solid var(--rp-rule-strong); border-radius: var(--rp-r-1);
+  }
+  .rp-table { inline-size: 100%; font-size: var(--rp-t-data); line-height: var(--rp-lh-data); }
+  .rp-table thead th {
+    position: sticky; inset-block-start: 0;
+    padding: var(--rp-cell-pad-y) var(--rp-cell-pad-x);
+    font-weight: 650; color: var(--rp-ink);
+    background-color: var(--rp-sunken);
+    border-block-end: 2px solid var(--rp-rule-ink);
+    white-space: nowrap;
+  }
+  .rp-table td, .rp-table tbody th {
+    padding: var(--rp-cell-pad-y) var(--rp-cell-pad-x);
+    border-block-end: 1px solid var(--rp-rule);
+    vertical-align: baseline;
+  }
+  .rp-table tbody tr:last-child > * { border-block-end: 0; }
+  .rp-table tbody tr:hover { background-color: var(--rp-row-hover); }
+  .rp-th--num, .rp-td--num {
+    text-align: end;
+    font-family: var(--rp-font-num);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-feature-settings: "tnum" 1, "lnum" 1, "zero" 1;
+  }
+  .rp-td--id { font-family: var(--rp-font-num); font-variant-numeric: lining-nums slashed-zero; white-space: nowrap; }
+  .rp-num { font-family: var(--rp-font-num); font-variant-numeric: tabular-nums lining-nums slashed-zero; }
+
+  /* Status chip — word, glyph, border style, then hue. Total type: three members. */
+  .rp-status {
+    display: inline-flex; align-items: center; gap: var(--rp-s-2);
+    padding-inline: var(--rp-s-3); padding-block: var(--rp-s-2);
+    min-block-size: var(--rp-target-abs);
+    font-size: var(--rp-t-data); font-weight: 700; letter-spacing: 0.02em;
+    text-transform: uppercase; white-space: nowrap;
+    border-radius: var(--rp-r-1);
+    print-color-adjust: exact; -webkit-print-color-adjust: exact;
+  }
+  .rp-status__glyph { font-size: 1.05em; line-height: 1; flex: none; }
+  .rp-status--certifiable { color: var(--rp-ok); background-color: var(--rp-ok-tint); border: 2px solid var(--rp-ok); }
+  .rp-status--dated { color: var(--rp-dated); background-color: var(--rp-dated-tint); border: 2px dashed var(--rp-dated); }
+  .rp-status--draft { color: var(--rp-draft); background-color: var(--rp-draft-tint); border: 4px double var(--rp-draft); }
+  .rp-status--lg { font-size: var(--rp-t-lead); padding-inline: var(--rp-s-4); padding-block: var(--rp-s-3); }
+
+  /* Alert — one variant per refusal primitive. There is no success variant. */
+  .rp-alert {
+    display: grid; grid-template-columns: 1.5rem 1fr; gap: var(--rp-s-2) var(--rp-s-3);
+    padding: var(--rp-s-4) var(--rp-s-5);
+    background-color: var(--rp-surface);
+    border: 1px solid var(--rp-rule-strong);
+    border-inline-start: 4px solid var(--rp-rule-strong);
+    border-radius: var(--rp-r-1); color: var(--rp-ink);
+  }
+  .rp-alert__glyph { font-size: 1.15em; line-height: 1.3; font-weight: 700; }
+  .rp-alert__title { font-size: var(--rp-t-base); font-weight: 650; }
+  .rp-alert__body { grid-column: 2; font-size: var(--rp-t-base); line-height: var(--rp-lh-prose); max-inline-size: var(--rp-measure); }
+  .rp-alert__body > * + * { margin-block-start: var(--rp-s-3); }
+  .rp-alert--narrowed { background-color: var(--rp-dated-tint); border-color: var(--rp-dated); border-inline-start-color: var(--rp-dated); }
+  .rp-alert--narrowed .rp-alert__glyph, .rp-alert--narrowed .rp-alert__title { color: var(--rp-dated); }
+  .rp-alert--blocked { background-color: var(--rp-draft-tint); border-color: var(--rp-draft); border-inline-start-color: var(--rp-draft); }
+  .rp-alert--blocked .rp-alert__glyph, .rp-alert--blocked .rp-alert__title { color: var(--rp-draft); }
+  /* P-D — declined conclusion. No hue at all: it is not a warning. */
+  .rp-alert--declined { background-color: var(--rp-sunken); border-color: var(--rp-rule-strong); border-inline-start-color: var(--rp-ink); }
+  .rp-alert--notice { background-color: var(--rp-pin-tint); border-color: var(--rp-pin); border-inline-start-color: var(--rp-pin); }
+  .rp-alert--notice .rp-alert__glyph, .rp-alert--notice .rp-alert__title { color: var(--rp-pin); }
+
+  /* Pricing card — no badge outweighing a tier, no strikethrough, no scarcity. */
+  .rp-price {
+    display: flex; flex-direction: column; gap: var(--rp-s-4);
+    padding: var(--rp-s-6);
+    background-color: var(--rp-surface);
+    border: 1px solid var(--rp-rule-strong); border-radius: var(--rp-r-2);
+  }
+  .rp-price--recommended { border-block-start: 4px solid var(--rp-ink); }
+  .rp-price__tier { font-size: var(--rp-t-data); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--rp-ink-2); }
+  .rp-price__amount {
+    display: flex; align-items: baseline; gap: var(--rp-s-2);
+    font-family: var(--rp-font-num);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--rp-t-fig); font-weight: 700; line-height: 1; letter-spacing: -0.02em;
+    color: var(--rp-ink);
+  }
+  .rp-price__unit { font-size: var(--rp-t-data); font-weight: 400; color: var(--rp-ink-3); }
+  .rp-price__who { font-size: var(--rp-t-base); color: var(--rp-ink-2); max-inline-size: 30ch; }
+  .rp-price__meter { inline-size: 100%; font-size: var(--rp-t-data); border-block: 1px solid var(--rp-rule); }
+  .rp-price__meter th, .rp-price__meter td { padding-block: var(--rp-s-2); vertical-align: baseline; }
+  .rp-price__meter th { font-weight: 400; color: var(--rp-ink-3); }
+  .rp-price__meter td {
+    text-align: end; font-family: var(--rp-font-num);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-weight: 650; color: var(--rp-ink);
+  }
+  .rp-price__list { display: grid; gap: var(--rp-s-2); margin: 0; padding: 0; list-style: none; }
+  .rp-price__item {
+    display: grid; grid-template-columns: 1.25rem 1fr; gap: var(--rp-s-2);
+    font-size: var(--rp-t-data); line-height: var(--rp-lh-ui); color: var(--rp-ink-2);
+  }
+  .rp-price__item::before { content: "\2713"; color: var(--rp-ink); font-weight: 700; }
+  .rp-price__item--not { color: var(--rp-ink-3); }
+  .rp-price__item--not::before { content: "\2014"; color: var(--rp-ink-3); }
+  .rp-price__terms { margin-block-start: auto; font-size: var(--rp-t-micro); color: var(--rp-ink-2); }
+
+  /* Disclosure */
+  .rp-disclose { border: 1px solid var(--rp-rule-strong); border-radius: var(--rp-r-1); background-color: var(--rp-surface); }
+  .rp-disclose > summary {
+    display: flex; align-items: center; gap: var(--rp-s-2);
+    min-block-size: var(--rp-target-min); padding: var(--rp-s-3) var(--rp-s-4);
+    font-size: var(--rp-t-base); font-weight: 600; cursor: pointer; list-style: none;
+  }
+  .rp-disclose > summary::-webkit-details-marker { display: none; }
+  .rp-disclose > summary::before { content: "\25B8"; flex: none; color: var(--rp-ink-3); }
+  .rp-disclose[open] > summary::before { content: "\25BE"; }
+  .rp-disclose[open] > summary { border-block-end: 1px solid var(--rp-rule); }
+  .rp-disclose__body { padding: var(--rp-s-4); }
+
+  /* Legal micro-print — the second and last permitted use of 13px. */
+  .rp-legal { max-inline-size: var(--rp-measure); font-size: var(--rp-t-micro); line-height: 1.55; color: var(--rp-ink-2); }
+  .rp-legal > * + * { margin-block-start: var(--rp-s-2); }
+}
+</style>
+<style>
+/* --------------------------------------------- THE ARTIFACT SHEET (§8.8) --
+   True geometry. The DOL's WH-347 PDF declares MediaBox [0 0 792 612] on
+   both pages = 11in x 8.5in, US Letter LANDSCAPE. Everything inside the
+   sheet is expressed in cqi so the whole page is a pure proportional scale
+   of a real sheet of paper: if it fits at one width it fits at every width.
+   -------------------------------------------------------------------------- */
+@layer rp.components {
+  .rp-lp-paper { container-type: inline-size; inline-size: 100%; min-inline-size: 70rem; }
+  .rp-lp-scroll { inline-size: 100%; overflow-x: auto; overscroll-behavior-x: contain; padding-block-end: var(--rp-s-2); }
+
+  .rp-sheet {
+    position: relative;
+    inline-size: 100%;
+    aspect-ratio: 11 / 8.5;
+    padding: 3.2cqi;
+    background-color: var(--rp-surface);
+    color: var(--rp-ink);
+    border: 1px solid var(--rp-rule-strong);
+    border-radius: var(--rp-r-0);      /* paper has square corners */
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  /* A DRAFT artifact legitimately carries an extra band and a fourth footer
+     line. It is allowed to run past one page rather than clip a worker. */
+  [data-state="draft"] .rp-sheet { aspect-ratio: auto; min-block-size: 77.2cqi; }
+  /* flex:1 rather than height:100% so the body fills the sheet whether the
+     height came from the aspect ratio or from the content (draft). That is
+     what keeps the provenance block at the foot of the page in both. */
+  .rp-sheet__body { position: relative; z-index: 1; flex: 1 1 auto; display: flex; flex-direction: column; }
+
+  /* Bounded Overlay Rule: one colour, one alpha, over one surface. */
+  .rp-sheet__mark {
+    position: absolute; inset: 0; z-index: 0;
+    display: grid; align-content: center; justify-items: center; gap: 2.2em;
+    overflow: hidden; pointer-events: none; user-select: none;
+    transform: rotate(-24deg) scale(1.35);
+    print-color-adjust: exact; -webkit-print-color-adjust: exact;
+  }
+  .rp-sheet__mark span {
+    font-family: var(--rp-font-ui); font-size: 5.2cqi; font-weight: 800;
+    letter-spacing: 0.10em; line-height: 1; white-space: nowrap;
+    color: var(--rp-mark); opacity: var(--rp-mark-alpha);
+  }
+  .rp-sheet__band {
+    position: relative; z-index: 2;
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.6cqi 1.6cqi;
+    margin-block-end: 1.4cqi; padding: 1cqi 1.4cqi;
+    font-size: 1.15cqi; font-weight: 700;
+    color: var(--rp-draft); background-color: var(--rp-draft-tint);
+    border-block: 0.28cqi solid var(--rp-draft);
+    print-color-adjust: exact; -webkit-print-color-adjust: exact;
+  }
+  .rp-sheet__band-note { font-weight: 400; color: var(--rp-ink); }
+
+  /* Signature block. Rendered only at CERTIFIABLE / CERTIFIABLE (DATED).
+     Withheld is structurally replaced, never greyed: a greyed-out signature
+     line photocopies into a signable signature line. */
+  .rp-signature { margin-block-start: 1.6cqi; padding-block-start: 1.2cqi; border-block-start: 0.19cqi solid var(--rp-rule-ink); }
+  .rp-signature__line { inline-size: 30cqi; block-size: 3.2cqi; border-block-end: 0.1cqi solid var(--rp-ink); }
+  .rp-signature__caption { margin-block-start: 0.5cqi; font-size: 0.92cqi; color: var(--rp-ink-2); }
+  .rp-signature--withheld {
+    padding: 1.4cqi; border: 0.36cqi double var(--rp-draft);
+    background-color: var(--rp-draft-tint);
+    print-color-adjust: exact; -webkit-print-color-adjust: exact;
+  }
+  .rp-signature--withheld .rp-signature__line { display: none; }
+  .rp-signature__withheld-title { font-size: 1.3cqi; font-weight: 700; color: var(--rp-draft); }
+  .rp-signature__withheld-why { margin-block-start: 0.5cqi; font-size: 1.02cqi; color: var(--rp-ink); }
+
+  /* Provenance footer (§8.9 / BRAND §6.7). The one component with no print
+     override anywhere: what is on the screen is what is on the paper the
+     general contractor receives. Never abbreviated, never proportional. */
+  .rp-prov {
+    max-inline-size: var(--rp-measure);
+    margin-block-start: var(--rp-s-5);
+    padding-block-start: var(--rp-s-3);
+    border-block-start: 2px solid var(--rp-rule-ink);
+    font-family: var(--rp-font-num);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-feature-settings: "tnum" 1, "lnum" 1, "zero" 1;
+    font-size: var(--rp-t-micro); line-height: 1.55; color: var(--rp-ink-2);
+  }
+  .rp-prov > * { margin: 0; }
+  .rp-prov__claim { color: var(--rp-ink); font-weight: 650; }
+  .rp-prov__freshness { color: var(--rp-ink-2); }
+  .rp-prov[data-freshness="dated"] .rp-prov__freshness,
+  .rp-prov[data-freshness="stale"] .rp-prov__freshness { color: var(--rp-dated); font-weight: 650; }
+  .rp-prov__blocked { color: var(--rp-draft); font-weight: 650; }
+  .rp-prov__build { color: var(--rp-ink-3); overflow-wrap: anywhere; }
+  .rp-prov__boundary { color: var(--rp-ink); }
+  .rp-prov__url { color: var(--rp-pin); overflow-wrap: anywhere; }
+  /* Inside the sheet the footer scales with the paper, like everything else. */
+  .rp-sheet .rp-prov {
+    max-inline-size: none; margin-block-start: auto;
+    padding-block-start: 0.8cqi; border-block-start: 0.19cqi solid var(--rp-rule-ink);
+    font-size: 0.92cqi; line-height: 1.5;
+  }
+}
+
+/* ------------------------------------------------- THE WH-347 GRID ------ */
+@layer rp.components {
+  .rp-w347__title { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.6cqi 1.6cqi; }
+  .rp-w347__name { font-size: 1.9cqi; font-weight: 700; letter-spacing: 0.02em; }
+  .rp-w347__omb { font-family: var(--rp-font-num); font-size: 0.86cqi; color: var(--rp-ink-2); }
+  .rp-w347__use { margin-block-start: 0.25cqi; font-size: 0.86cqi; color: var(--rp-ink-3); }
+
+  .rp-w347__head {
+    display: grid; grid-template-columns: 2.1fr 1.4fr 0.7fr 1fr;
+    gap: 0.1cqi; margin-block: 1.2cqi 1cqi;
+    border: 0.1cqi solid var(--rp-rule-strong);
+    background-color: var(--rp-rule-strong);
+  }
+  .rp-w347__cell { padding: 0.6cqi 0.8cqi; background-color: var(--rp-surface); }
+  .rp-w347__cell--wd { background-color: var(--rp-pin-tint); }
+  .rp-w347__lab { display: block; font-size: 0.72cqi; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--rp-ink-3); }
+  .rp-w347__val { display: block; margin-block-start: 0.2cqi; font-size: 1.02cqi; font-weight: 600; color: var(--rp-ink); }
+  .rp-w347__val--id { font-family: var(--rp-font-num); font-variant-numeric: lining-nums slashed-zero; }
+
+  .rp-w347__grid { inline-size: 100%; font-variant-numeric: tabular-nums lining-nums slashed-zero; }
+  .rp-w347__grid th, .rp-w347__grid td {
+    border: 0.07cqi solid var(--rp-rule-strong);
+    padding: 0.28cqi 0.34cqi;
+    font-size: 0.86cqi; line-height: 1.25;
+  }
+  .rp-w347__grid thead th {
+    background-color: var(--rp-sunken);
+    font-size: 0.66cqi; font-weight: 700; line-height: 1.15;
+    letter-spacing: 0.02em; text-transform: uppercase; color: var(--rp-ink-2);
+    text-align: center; vertical-align: bottom;
+  }
+  .rp-w347__grid thead th.rp-w347__hl { text-align: start; }
+  .rp-w347__grid td { vertical-align: middle; }
+  .rp-w347__grid .rp-w347__n {
+    text-align: end; font-family: var(--rp-font-num);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+  }
+  .rp-w347__grid .rp-w347__c { text-align: center; font-family: var(--rp-font-num); }
+  .rp-w347__grid .rp-w347__cls { font-size: 0.8cqi; font-weight: 600; }
+  .rp-w347__grid .rp-w347__tag { font-family: var(--rp-font-num); font-size: 0.72cqi; color: var(--rp-ink-3); }
+  .rp-w347__grid tr[data-line="ot"] td { border-block-start-style: dashed; }
+  .rp-w347__grid tr[data-worker]:first-child td { border-block-start-width: 0.14cqi; }
+  /* The traced cell. Marked by a rule, never by a fill that could read as a
+     grade — the pin hue means "this is a link to the record", nothing more. */
+  .rp-w347__grid td.rp-w347__traced {
+    background-color: var(--rp-pin-tint);
+    box-shadow: inset 0 0 0 0.14cqi var(--rp-pin);
+    font-weight: 700;
+  }
+  /* A blocked line: the payroll title verbatim, and no money at all. */
+  .rp-w347__grid tr[data-blocked="true"] td { background-color: var(--rp-draft-tint); }
+  .rp-w347__grid tr[data-blocked="true"] td:first-child { box-shadow: inset 0.3cqi 0 0 var(--rp-draft); }
+  .rp-w347__raw { font-family: var(--rp-font-num); font-size: 0.78cqi; color: var(--rp-draft); font-weight: 700; }
+  .rp-w347__void { color: var(--rp-draft); font-weight: 700; }
+
+  .rp-w347__foot { display: flex; flex-wrap: wrap; gap: 0.5cqi 1.6cqi; margin-block-start: 0.7cqi; font-size: 0.8cqi; color: var(--rp-ink-3); }
+  .rp-w347__sigrow { display: flex; flex-wrap: wrap; gap: 1.2cqi 3cqi; align-items: flex-end; }
+  .rp-w347__certs { font-size: 0.9cqi; line-height: 1.45; color: var(--rp-ink-2); max-inline-size: 52cqi; }
+  .rp-w347__certs strong { color: var(--rp-ink); }
+}
+
+/* --------------------------------------------------------- LANDING ----- */
+@layer rp.landing {
+  .rp-lp-nav { display: flex; flex-wrap: wrap; align-items: center; gap: var(--rp-s-4); font-size: var(--rp-t-data); }
+  .rp-lp-nav a { color: var(--rp-ink-2); text-decoration-color: var(--rp-rule-strong); }
+  .rp-lp-nav a:hover { color: var(--rp-ink); text-decoration-color: currentColor; }
+  .rp-lp-spacer { margin-inline-start: auto; }
+  .rp-lp-navhide { display: none; }
+  @media (min-width: 62rem) { .rp-lp-navhide { display: flex; } }
+
+  .rp-lp-section { padding-block: var(--rp-s-10); border-block-start: 1px solid var(--rp-rule); }
+  .rp-lp-section--tight { padding-block: var(--rp-s-9); }
+  .rp-lp-section:first-of-type { border-block-start: 0; }
+  .rp-lp-head { display: grid; gap: var(--rp-s-3); margin-block-end: var(--rp-s-7); }
+  .rp-lp-eyebrow {
+    font-size: var(--rp-t-data); font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--rp-ink-3);
+  }
+  .rp-lp-lead { font-size: var(--rp-t-lead); line-height: var(--rp-lh-prose); color: var(--rp-ink-2); max-inline-size: var(--rp-measure); }
+
+  .rp-lp-hero { padding-block: var(--rp-s-9) var(--rp-s-7); }
+  .rp-lp-hero h1 { font-size: clamp(2rem, 1.15rem + 2.6vw, 3.15rem); max-inline-size: 22ch; letter-spacing: -0.018em; }
+  .rp-lp-hero__sub { margin-block-start: var(--rp-s-5); font-size: var(--rp-t-lead); line-height: var(--rp-lh-prose); color: var(--rp-ink-2); max-inline-size: 60ch; }
+  .rp-lp-tag {
+    display: inline-block; margin-block-end: var(--rp-s-4);
+    font-family: var(--rp-font-num); font-size: var(--rp-t-data);
+    letter-spacing: 0.02em; color: var(--rp-ink-2);
+    border-block-end: 2px solid var(--rp-rule-ink); padding-block-end: 2px;
+  }
+
+  .rp-lp-grid { display: grid; gap: var(--rp-s-6); }
+  @media (min-width: 48rem) { .rp-lp-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 60rem) { .rp-lp-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 72rem) { .rp-lp-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  @media (min-width: 76rem) { .rp-lp-grid--5 { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+
+  .rp-lp-card {
+    display: flex; flex-direction: column; gap: var(--rp-s-3);
+    padding: var(--rp-s-5);
+    background-color: var(--rp-surface);
+    border: 1px solid var(--rp-rule-strong); border-radius: var(--rp-r-2);
+  }
+  .rp-lp-card--ruled { border-block-start: 4px solid var(--rp-ink); }
+  .rp-lp-card__k {
+    font-family: var(--rp-font-num); font-size: var(--rp-t-data); font-weight: 700;
+    letter-spacing: 0.06em; color: var(--rp-ink-3);
+  }
+  .rp-lp-card__t { font-size: var(--rp-t-lead); font-weight: 650; }
+  .rp-lp-card__b { font-size: var(--rp-t-data); line-height: var(--rp-lh-prose); color: var(--rp-ink-2); }
+  .rp-lp-card__b strong { color: var(--rp-ink); }
+
+  /* The state switcher over the artifact. Real radios, styled as a ruled
+     segmented control. No option is visually heavier than another. */
+  .rp-lp-switch { display: grid; gap: var(--rp-s-3); }
+  .rp-lp-switch__legend { font-size: var(--rp-t-data); font-weight: 650; color: var(--rp-ink-2); }
+  .rp-lp-switch__set { display: flex; flex-wrap: wrap; gap: var(--rp-s-2); }
+  .rp-lp-switch__opt { position: relative; }
+  .rp-lp-switch__opt input { position: absolute; inset: 0; opacity: 0; inline-size: 100%; block-size: 100%; margin: 0; cursor: pointer; }
+  .rp-lp-switch__face {
+    display: inline-flex; align-items: center; gap: var(--rp-s-2);
+    min-block-size: var(--rp-target-min); padding-inline: var(--rp-s-4);
+    font-size: var(--rp-t-data); font-weight: 650;
+    background-color: var(--rp-surface); color: var(--rp-ink-2);
+    border: 1px solid var(--rp-rule-strong); border-radius: var(--rp-r-2);
+    transition: background-color var(--rp-dur-tick) var(--rp-ease), color var(--rp-dur-tick) var(--rp-ease);
+  }
+  .rp-lp-switch__opt:hover .rp-lp-switch__face { background-color: var(--rp-sunken); color: var(--rp-ink); }
+  .rp-lp-switch__opt input:checked + .rp-lp-switch__face {
+    background-color: var(--rp-ink); color: var(--rp-ink-on-fill); border-color: var(--rp-ink);
+  }
+  .rp-lp-switch__opt input:focus-visible + .rp-lp-switch__face {
+    outline: var(--rp-focus-w) solid var(--rp-focus); outline-offset: var(--rp-focus-gap);
+    box-shadow: 0 0 0 var(--rp-focus-gap) var(--rp-focus-halo);
+  }
+
+  /* State-driven visibility. Absence is the enforcement. */
+  [data-state="certifiable"] [data-when]:not([data-when~="certifiable"]),
+  [data-state="dated"]       [data-when]:not([data-when~="dated"]),
+  [data-state="draft"]       [data-when]:not([data-when~="draft"]) { display: none; }
+
+  /* The trace: form cell → determination text → the URL it was read from. */
+  .rp-lp-trace { display: grid; gap: var(--rp-s-4); align-items: stretch; }
+  @media (min-width: 62rem) { .rp-lp-trace { grid-template-columns: minmax(0,0.85fr) 1.6rem minmax(0,1.5fr) 1.6rem minmax(0,1fr); } }
+  .rp-lp-trace__arrow {
+    display: none; align-items: center; justify-content: center;
+    font-size: var(--rp-t-h3); color: var(--rp-ink-3);
+  }
+  @media (min-width: 62rem) { .rp-lp-trace__arrow { display: flex; } }
+  .rp-lp-pre {
+    margin: 0; padding: var(--rp-s-4);
+    background-color: var(--rp-sunken);
+    border: 1px solid var(--rp-rule-strong); border-radius: var(--rp-r-1);
+    font-family: var(--rp-font-num); font-size: var(--rp-t-micro); line-height: 1.5;
+    color: var(--rp-ink); white-space: pre; overflow-x: auto;
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+  }
+  .rp-lp-pre mark { background-color: var(--rp-pin-tint); color: var(--rp-ink); font-weight: 700; padding-inline: 2px; }
+
+  .rp-lp-figcell {
+    display: grid; gap: var(--rp-s-2); justify-items: start;
+    padding: var(--rp-s-5);
+    background-color: var(--rp-surface);
+    border: 1px solid var(--rp-rule-strong); border-radius: var(--rp-r-1);
+  }
+  .rp-lp-figcell__v {
+    font-family: var(--rp-font-num); font-size: var(--rp-t-h2); font-weight: 700;
+    font-variant-numeric: tabular-nums lining-nums slashed-zero; color: var(--rp-ink);
+  }
+  .rp-lp-cap { font-size: var(--rp-t-data); color: var(--rp-ink-3); }
+  .rp-lp-cap strong { color: var(--rp-ink-2); }
+
+  .rp-lp-kv { display: grid; gap: 0; margin: 0; }
+  .rp-lp-kv > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--rp-s-2) var(--rp-s-4); padding-block: var(--rp-s-3); border-block-end: 1px solid var(--rp-rule); }
+  .rp-lp-kv > div:last-child { border-block-end: 0; }
+  .rp-lp-kv dt { font-size: var(--rp-t-data); color: var(--rp-ink-2); }
+  .rp-lp-kv dd { margin: 0; font-family: var(--rp-font-num); font-size: var(--rp-t-data); font-weight: 650; font-variant-numeric: tabular-nums lining-nums slashed-zero; color: var(--rp-ink); }
+
+  .rp-lp-notlist { display: grid; gap: 0; }
+  .rp-lp-notlist li {
+    display: grid; grid-template-columns: 1.4rem 1fr; gap: var(--rp-s-3);
+    padding-block: var(--rp-s-4); border-block-end: 1px solid var(--rp-rule);
+    font-size: var(--rp-t-base); line-height: var(--rp-lh-prose); color: var(--rp-ink);
+  }
+  .rp-lp-notlist li:last-child { border-block-end: 0; }
+  .rp-lp-notlist li::before { content: "\2014"; color: var(--rp-ink-3); font-weight: 700; }
+
+  .rp-lp-gate { display: grid; gap: var(--rp-s-3); padding: var(--rp-s-5); background-color: var(--rp-surface); border: 1px solid var(--rp-rule-strong); border-radius: var(--rp-r-2); }
+  .rp-lp-gate__id { font-family: var(--rp-font-num); font-size: var(--rp-t-data); font-weight: 700; color: var(--rp-ink-3); letter-spacing: 0.04em; }
+  .rp-lp-gate__locked {
+    padding: var(--rp-s-3) var(--rp-s-4);
+    background-color: var(--rp-sunken);
+    border-inline-start: 3px solid var(--rp-rule-strong);
+    font-size: var(--rp-t-data); color: var(--rp-ink-2);
+  }
+  .rp-lp-gate__locked s { color: var(--rp-ink-3); text-decoration-thickness: 1px; }
+  .rp-lp-gate__now { font-size: var(--rp-t-data); line-height: var(--rp-lh-prose); color: var(--rp-ink); }
+
+  .rp-lp-foot { padding-block: var(--rp-s-9) var(--rp-s-10); border-block-start: 2px solid var(--rp-rule-ink); }
+  .rp-lp-refs { display: grid; gap: var(--rp-s-2); font-size: var(--rp-t-micro); line-height: 1.5; }
+  .rp-lp-refs li { color: var(--rp-ink-2); overflow-wrap: anywhere; }
+  .rp-lp-refs a { color: var(--rp-pin); }
+
+  .rp-lp-toggle {
+    display: inline-flex; align-items: center; gap: var(--rp-s-2);
+    min-block-size: var(--rp-target-abs); padding: var(--rp-s-2) var(--rp-s-3);
+    font-size: var(--rp-t-data); font-weight: 600; color: var(--rp-ink-2);
+    background-color: var(--rp-surface);
+    border: 1px solid var(--rp-rule-strong); border-radius: var(--rp-r-2);
+    cursor: pointer;
+  }
+  .rp-lp-toggle:hover { color: var(--rp-ink); background-color: var(--rp-sunken); }
+  .rp-lp-mark { flex: none; color: currentColor; }
+}
+
+/* -------------------------------------------------------- UTILITIES ----- */
+@layer rp.utilities {
+  .rp-stack { display: grid; gap: var(--rp-s-4); }
+  .rp-stack--tight { gap: var(--rp-s-2); }
+  .rp-stack--loose { gap: var(--rp-s-6); }
+  .rp-stack--section { gap: var(--rp-s-8); }
+  .rp-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--rp-s-3); }
+  .rp-row--between { justify-content: space-between; }
+  .rp-measure { max-inline-size: var(--rp-measure); }
+  .rp-narrow { max-inline-size: var(--rp-measure-narrow); }
+  .rp-prose { max-inline-size: var(--rp-measure); line-height: var(--rp-lh-prose); }
+  .rp-prose > * + * { margin-block-start: var(--rp-s-4); }
+  .rp-t-micro { font-size: var(--rp-t-micro); }
+  .rp-t-data { font-size: var(--rp-t-data); }
+  .rp-t-lead { font-size: var(--rp-t-lead); }
+  .rp-ink-2 { color: var(--rp-ink-2); }
+  .rp-ink-3 { color: var(--rp-ink-3); }
+  .rp-rule-top { border-block-start: 1px solid var(--rp-rule); padding-block-start: var(--rp-s-4); }
+  .rp-rule-top--ink { border-block-start: 2px solid var(--rp-rule-ink); }
+  .rp-sr-only {
+    position: absolute; inline-size: 1px; block-size: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+  }
+  /* Components in this file set display explicitly, which would otherwise beat
+     the UA's [hidden] rule. hidden must always win. */
+  [hidden] { display: none !important; }
+}
+
+/* --------------------------------------------------------- ADAPTIVE ----- */
+@layer rp.adaptive {
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    html { scroll-behavior: auto; }
+  }
+
+  @media (forced-colors: active) {
+    .rp-header, .rp-tablewrap, .rp-price, .rp-alert, .rp-disclose, .rp-sheet,
+    .rp-lp-card, .rp-lp-gate, .rp-lp-figcell, .rp-lp-pre {
+      background-color: Canvas; color: CanvasText; border-color: CanvasText;
+    }
+    .rp-btn { border: 1px solid ButtonText; background-color: ButtonFace; color: ButtonText; }
+    .rp-btn--primary { background-color: Highlight; color: HighlightText; border-color: Highlight; }
+    .rp-table thead th { background-color: Canvas; color: CanvasText; border-block-end-color: CanvasText; }
+    /* Border STYLE separates the three statuses, and solid / dashed / double
+       all survive forced-colors intact. That is why R3 was built on it. */
+    .rp-status { background-color: Canvas; color: CanvasText; border-color: CanvasText; }
+    .rp-sheet__mark { display: none; }
+    .rp-sheet__band, .rp-signature--withheld { border-color: CanvasText; background-color: Canvas; color: CanvasText; }
+    .rp-lp-switch__opt input:checked + .rp-lp-switch__face { background-color: Highlight; color: HighlightText; border-color: Highlight; }
+    :focus-visible { outline: 3px solid Highlight; outline-offset: 2px; }
+  }
+
+  /* Container queries carry the sheet's proportional scale. Where they are
+     missing the paper is pinned to its baseline width instead — degraded,
+     not broken, and the downloaded PDF is the artifact regardless. */
+  @supports not (container-type: inline-size) {
+    .rp-lp-paper { inline-size: 70rem; }
+    .rp-sheet { padding: 0.35in; }
+    .rp-w347__name { font-size: 21px; }
+    .rp-w347__lab { font-size: 8px; }
+    .rp-w347__val { font-size: 11px; }
+    .rp-w347__grid th { font-size: 7.5px; }
+    .rp-w347__grid td { font-size: 9.5px; }
+    .rp-sheet .rp-prov { font-size: 10px; }
+    .rp-sheet__mark span { font-size: 58px; }
+  }
+
+  @media print {
+    @page { size: letter portrait; margin: 0.6in; }
+    @page rp-wh347 { size: letter landscape; margin: 0.35in; }
+    /* Paper has one theme. These are the only colours outside the token system. */
+    :root, :root[data-theme="dark"] {
+      --rp-ground: #FFFFFF; --rp-surface: #FFFFFF; --rp-sunken: #F3F1EB; --rp-field: #FFFFFF;
+      --rp-ink: #14120E; --rp-ink-2: #403A30; --rp-ink-3: #5C5648;
+      --rp-rule: #C4BEAF; --rp-rule-strong: #6B6455; --rp-rule-ink: #14120E;
+      --rp-pin: #12508F; --rp-ok: #0F6B37; --rp-dated: #8A5200; --rp-draft: #A61B10;
+      --rp-ok-tint: #E2EFE5; --rp-dated-tint: #FAEDD6; --rp-draft-tint: #FBE6E2;
+      --rp-mark: #A61B10; --rp-mark-alpha: var(--rp-mark-alpha-print);
+    }
+    body { background: #FFFFFF; color: var(--rp-ink); font-size: 10.5pt; line-height: 1.4; }
+    .rp-header, .rp-skip, .rp-btn, .rp-btn-row, .rp-lp-switch, .rp-lp-toggle,
+    nav, [role="navigation"] { display: none !important; }
+    .rp-shell { max-inline-size: none; padding-inline: 0; }
+    .rp-lp-scroll, .rp-lp-paper { overflow: visible; min-inline-size: 0; inline-size: 100%; }
+    .rp-sheet { page: rp-wh347; break-after: page; overflow: visible; border: 0; }
+    .rp-lp-section { break-inside: auto; padding-block: 18pt; }
+    .rp-lp-card, .rp-alert, .rp-price, .rp-lp-gate { break-inside: avoid; }
+    h2, h3 { break-after: avoid; orphans: 3; widows: 3; }
+    p, li { orphans: 3; widows: 3; }
+  }
+}
+</style>
+</head>
+<body>
+<a class="rp-skip" href="#main">Skip to content</a>
+
+<header class="rp-header">
+  <a class="rp-wordmark" href="#top" aria-label="Ratepin — home">
+    <svg class="rp-lp-mark" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M3 17h18M9 4v13" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="square"/>
+    </svg>
+    <span>Ratepin<span class="rp-wordmark__rule" aria-hidden="true"></span></span>
+  </a>
+
+  <nav class="rp-lp-nav rp-lp-navhide" aria-label="Sections">
+    <a href="#artifact">The artifact</a>
+    <a href="#how">How it works</a>
+    <a href="#free">Free tools</a>
+    <a href="#price">Price</a>
+    <a href="#boundaries">What it does not do</a>
+    <a href="#corpus">Corpus status</a>
+  </nav>
+
+  <div class="rp-lp-spacer"></div>
+  <button type="button" class="rp-lp-toggle" id="theme-toggle" aria-live="polite">
+    <span aria-hidden="true">◐</span><span id="theme-label">Theme: system</span>
+  </button>
+</header>
+
+<main id="main">
+<div id="top"></div>
+
+<!-- ======================================================= L0 + L1 + L2 == -->
+<section class="rp-lp-hero" aria-labelledby="hero-h">
+  <div class="rp-shell">
+    <p class="rp-lp-eyebrow">Certified-payroll rate-of-record engine for federally funded construction</p>
+    <h1 id="hero-h">Friday's certified payroll, with every rate traced to the wage determination it came from.</h1>
+    <p class="rp-lp-hero__sub">
+      Upload the week's payroll CSV. Ratepin returns the WH-347 and, in California, the eCPR XML —
+      with the determination number, the modification number and the publication date printed on the
+      artifact itself. Deterministic arithmetic. No model touches a number.
+    </p>
+
+    <div class="rp-btn-row" style="margin-block-start: var(--rp-s-7)">
+      <a class="rp-btn rp-btn--primary" href="#free">Make a WH-347 now — no account</a>
+      <a class="rp-btn" href="#artifact">Look at the artifact first</a>
+      <a class="rp-btn rp-btn--quiet" href="#price">$0 · $49 · $99 · $249 · $599</a>
+    </div>
+
+    <p class="rp-boundary">
+      <strong>Ratepin computes and formats. You certify and file. This is not legal advice.</strong>
+      The statement of compliance is signed by the contractor under
+      <a href="https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-A/section-5.5">29 CFR 5.5(a)(3)(ii)</a>,
+      with falsification reachable under 18 U.S.C. 1001 and 31 U.S.C. 3729. That signature is yours,
+      never ours, and nothing on this page changes that.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================= THE HERO == -->
+<section class="rp-lp-section" id="artifact" aria-labelledby="artifact-h">
+  <div class="rp-shell">
+    <div class="rp-lp-head">
+      <p class="rp-lp-eyebrow">The thing you are buying</p>
+      <h2 id="artifact-h">This is the whole product. Read the bottom five lines.</h2>
+      <p class="rp-lp-lead">
+        Everything else on this page is commentary on the footer of this document. Switch its state
+        to see exactly what changes when Ratepin is less sure — and, more importantly, what does not.
+      </p>
+    </div>
+
+    <div class="rp-lp-artifact" id="artifact-root" data-state="certifiable">
+
+      <fieldset class="rp-lp-switch" style="margin-block-end: var(--rp-s-6)">
+        <legend class="rp-lp-switch__legend">Artifact status — the three the engine can produce, and there is no fourth</legend>
+        <div class="rp-lp-switch__set" role="radiogroup" aria-label="Artifact status">
+          <label class="rp-lp-switch__opt">
+            <input type="radio" name="artifact-state" value="certifiable" checked>
+            <span class="rp-lp-switch__face"><span aria-hidden="true">●</span> Certifiable</span>
+          </label>
+          <label class="rp-lp-switch__opt">
+            <input type="radio" name="artifact-state" value="dated">
+            <span class="rp-lp-switch__face"><span aria-hidden="true">◐</span> Certifiable (dated)</span>
+          </label>
+          <label class="rp-lp-switch__opt">
+            <input type="radio" name="artifact-state" value="draft">
+            <span class="rp-lp-switch__face"><span aria-hidden="true">✕</span> Draft — not certifiable</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="rp-row" style="margin-block-end: var(--rp-s-5); gap: var(--rp-s-4)">
+        <span class="rp-status rp-status--certifiable rp-status--lg" data-when="certifiable">
+          <span class="rp-status__glyph" aria-hidden="true">●</span> CERTIFIABLE
+        </span>
+        <span class="rp-status rp-status--dated rp-status--lg" data-when="dated">
+          <span class="rp-status__glyph" aria-hidden="true">◐</span> CERTIFIABLE (DATED)
+        </span>
+        <span class="rp-status rp-status--draft rp-status--lg" data-when="draft">
+          <span class="rp-status__glyph" aria-hidden="true">✕</span> DRAFT — NOT CERTIFIABLE
+        </span>
+        <p class="rp-t-data rp-ink-2" style="max-inline-size: 46ch; margin: 0">
+          <span data-when="certifiable">Four lines resolved. Signature block rendered. This filing is billable.</span>
+          <span data-when="dated">The rate did not move. Our knowledge of successor modifications aged. Signature block still rendered.</span>
+          <span data-when="draft">One line will not resolve. Signature block withheld — structurally absent, not greyed. This filing is never billed.</span>
+        </p>
+      </div>
+
+      <div class="rp-lp-scroll">
+      <div class="rp-lp-paper">
+      <article class="rp-sheet" aria-label="WH-347 certified payroll, sample artifact">
+
+        <div class="rp-sheet__mark" aria-hidden="true" data-when="draft">
+          <span>DRAFT — NOT CERTIFIABLE</span>
+          <span>DRAFT — NOT CERTIFIABLE</span>
+          <span>DRAFT — NOT CERTIFIABLE</span>
+        </div>
+
+        <div class="rp-sheet__body">
+
+          <div class="rp-sheet__band" data-when="draft">
+            <span>DRAFT — NOT CERTIFIABLE · 1 UNRESOLVED LINE</span>
+            <span class="rp-sheet__band-note">Payroll title <b>LOW VOLTAGE TECH</b> (entry 4) is not mapped to a classification on TN20260151. Signature block withheld.</span>
+          </div>
+
+          <div class="rp-w347__title">
+            <div>
+              <span class="rp-w347__name">PAYROLL</span>
+              <p class="rp-w347__use">Form WH-347 · For Contractor's Optional Use · Rev. January 2025</p>
+            </div>
+            <span class="rp-w347__omb">OMB No. 1235-0008 · Expires 01/31/2028 · Page 1 of 2</span>
+          </div>
+
+          <div class="rp-w347__head">
+            <div class="rp-w347__cell">
+              <span class="rp-w347__lab">Name of contractor <b>☐</b> or subcontractor <b>☑</b></span>
+              <span class="rp-w347__val">MERIDIAN ELECTRIC LLC</span>
+              <span class="rp-w347__lab" style="margin-block-start:0.45cqi">Address</span>
+              <span class="rp-w347__val">418 N MAIN ST · SHELBYVILLE TN 37160</span>
+            </div>
+            <div class="rp-w347__cell">
+              <span class="rp-w347__lab">Project and location</span>
+              <span class="rp-w347__val">CENTRAL ELEM — ELECTRICAL UPGRADE</span>
+              <span class="rp-w347__val rp-w347__val--id" style="font-weight:400">BEDFORD COUNTY, TENNESSEE</span>
+              <span class="rp-w347__lab" style="margin-block-start:0.45cqi">Project or contract no.</span>
+              <span class="rp-w347__val rp-w347__val--id">FA-2026-0148</span>
+            </div>
+            <div class="rp-w347__cell">
+              <span class="rp-w347__lab">Payroll no.</span>
+              <span class="rp-w347__val rp-w347__val--id">6</span>
+              <span class="rp-w347__lab" style="margin-block-start:0.45cqi">For week ending</span>
+              <span class="rp-w347__val rp-w347__val--id">2026-08-07</span>
+            </div>
+            <div class="rp-w347__cell rp-w347__cell--wd">
+              <span class="rp-w347__lab">Wage determination no.</span>
+              <span class="rp-w347__val rp-w347__val--id">TN20260151</span>
+              <span class="rp-w347__lab" style="margin-block-start:0.45cqi">Modification · published</span>
+              <span class="rp-w347__val rp-w347__val--id">1 · 2026-05-18</span>
+            </div>
+          </div>
+
+          <table class="rp-w347__grid">
+            <caption class="rp-sr-only">Sample WH-347 payroll grid for week ending 7 August 2026, four workers.</caption>
+            <thead>
+              <tr>
+                <th rowspan="2" scope="col">1A<br>No.</th>
+                <th rowspan="2" scope="col" class="rp-w347__hl">1B–1D<br>Worker name</th>
+                <th rowspan="2" scope="col">1E<br>ID no.</th>
+                <th rowspan="2" scope="col">2<br>(J)/(RA)</th>
+                <th rowspan="2" scope="col" class="rp-w347__hl">3<br>Labor classification</th>
+                <th rowspan="2" scope="col">&nbsp;</th>
+                <th colspan="7" scope="colgroup">4 — Hours worked each day</th>
+                <th rowspan="2" scope="col">5<br>Total<br>hrs</th>
+                <th rowspan="2" scope="col">6A<br>Rate<br>paid</th>
+                <th rowspan="2" scope="col">6B<br>Fringe<br>credit</th>
+                <th rowspan="2" scope="col">6C<br>Cash in<br>lieu</th>
+                <th rowspan="2" scope="col">7A<br>Gross<br>this proj.</th>
+                <th rowspan="2" scope="col">7B<br>Gross<br>all work</th>
+                <th colspan="4" scope="colgroup">8 — Deductions, all work</th>
+                <th rowspan="2" scope="col">9<br>Net<br>paid</th>
+              </tr>
+              <tr>
+                <th scope="col">Sa<br>8/1</th><th scope="col">Su<br>8/2</th><th scope="col">Mo<br>8/3</th>
+                <th scope="col">Tu<br>8/4</th><th scope="col">We<br>8/5</th><th scope="col">Th<br>8/6</th>
+                <th scope="col">Fr<br>8/7</th>
+                <th scope="col">FICA</th><th scope="col">Fed.<br>tax</th><th scope="col">Other</th><th scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Worker 1 — 40 straight -->
+              <tr data-worker="1">
+                <td rowspan="2" class="rp-w347__c">1</td>
+                <td rowspan="2">DELGADO, ANTONIO R</td>
+                <td rowspan="2" class="rp-w347__c">4417</td>
+                <td rowspan="2" class="rp-w347__c">(J)</td>
+                <td rowspan="2" class="rp-w347__cls">ELECTRICIAN<br><span class="rp-w347__tag">SUTN2017-004</span></td>
+                <td class="rp-w347__c">S</td>
+                <td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">8</td>
+                <td class="rp-w347__n">8</td><td class="rp-w347__n">8</td><td class="rp-w347__n">8</td><td class="rp-w347__n">8</td>
+                <td class="rp-w347__n">40</td>
+                <td class="rp-w347__n rp-w347__traced">22.00</td>
+                <td rowspan="2" class="rp-w347__n">6.10</td>
+                <td rowspan="2" class="rp-w347__n">5.67</td>
+                <td rowspan="2" class="rp-w347__n">1,106.80</td>
+                <td rowspan="2" class="rp-w347__n">1,106.80</td>
+                <td rowspan="2" class="rp-w347__n">84.67</td>
+                <td rowspan="2" class="rp-w347__n">96.00</td>
+                <td rowspan="2" class="rp-w347__n">0.00</td>
+                <td rowspan="2" class="rp-w347__n">180.67</td>
+                <td rowspan="2" class="rp-w347__n">926.13</td>
+              </tr>
+              <tr data-line="ot">
+                <td class="rp-w347__c">O</td>
+                <td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">—</td>
+                <td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">—</td>
+                <td class="rp-w347__n">0</td>
+                <td class="rp-w347__n">33.00</td>
+              </tr>
+
+              <!-- Worker 2 — 46 hours, 6 over CWHSSA's weekly 40 -->
+              <tr data-worker="2">
+                <td rowspan="2" class="rp-w347__c">2</td>
+                <td rowspan="2">OKAFOR, RUTH N</td>
+                <td rowspan="2" class="rp-w347__c">8102</td>
+                <td rowspan="2" class="rp-w347__c">(J)</td>
+                <td rowspan="2" class="rp-w347__cls">ELECTRICIAN<br><span class="rp-w347__tag">SUTN2017-004</span></td>
+                <td class="rp-w347__c">S</td>
+                <td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">10</td>
+                <td class="rp-w347__n">10</td><td class="rp-w347__n">10</td><td class="rp-w347__n">10</td><td class="rp-w347__n">—</td>
+                <td class="rp-w347__n">40</td>
+                <td class="rp-w347__n">22.00</td>
+                <td rowspan="2" class="rp-w347__n">6.10</td>
+                <td rowspan="2" class="rp-w347__n">5.67</td>
+                <td rowspan="2" class="rp-w347__n">1,338.82</td>
+                <td rowspan="2" class="rp-w347__n">1,338.82</td>
+                <td rowspan="2" class="rp-w347__n">102.42</td>
+                <td rowspan="2" class="rp-w347__n">121.00</td>
+                <td rowspan="2" class="rp-w347__n">0.00</td>
+                <td rowspan="2" class="rp-w347__n">223.42</td>
+                <td rowspan="2" class="rp-w347__n">1,115.40</td>
+              </tr>
+              <tr data-line="ot">
+                <td class="rp-w347__c">O</td>
+                <td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">—</td>
+                <td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">6</td>
+                <td class="rp-w347__n">6</td>
+                <td class="rp-w347__n">33.00</td>
+              </tr>
+
+              <!-- Worker 3 — the laborer at $13.00, below EO 13658's floor -->
+              <tr data-worker="3">
+                <td rowspan="2" class="rp-w347__c">3</td>
+                <td rowspan="2">BRYSON, TERRELL J</td>
+                <td rowspan="2" class="rp-w347__c">2290</td>
+                <td rowspan="2" class="rp-w347__c">(J)</td>
+                <td rowspan="2" class="rp-w347__cls">LABORER: COMMON OR GENERAL<br><span class="rp-w347__tag">SUTN2017-004</span></td>
+                <td class="rp-w347__c">S</td>
+                <td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">8</td>
+                <td class="rp-w347__n">8</td><td class="rp-w347__n">8</td><td class="rp-w347__n">8</td><td class="rp-w347__n">4</td>
+                <td class="rp-w347__n">36</td>
+                <td class="rp-w347__n">13.00</td>
+                <td rowspan="2" class="rp-w347__n">0.00</td>
+                <td rowspan="2" class="rp-w347__n">3.99</td>
+                <td rowspan="2" class="rp-w347__n">611.64</td>
+                <td rowspan="2" class="rp-w347__n">611.64</td>
+                <td rowspan="2" class="rp-w347__n">46.79</td>
+                <td rowspan="2" class="rp-w347__n">31.00</td>
+                <td rowspan="2" class="rp-w347__n">0.00</td>
+                <td rowspan="2" class="rp-w347__n">77.79</td>
+                <td rowspan="2" class="rp-w347__n">533.85</td>
+              </tr>
+              <tr data-line="ot">
+                <td class="rp-w347__c">O</td>
+                <td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">—</td>
+                <td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">—</td>
+                <td class="rp-w347__n">0</td>
+                <td class="rp-w347__n">19.50</td>
+              </tr>
+
+              <!-- Worker 4 — resolved in two states, blocked in the third -->
+              <tr data-worker="4" data-when="certifiable dated">
+                <td rowspan="2" class="rp-w347__c">4</td>
+                <td rowspan="2">RIVERA, MARISOL</td>
+                <td rowspan="2" class="rp-w347__c">6035</td>
+                <td rowspan="2" class="rp-w347__c">(J)</td>
+                <td rowspan="2" class="rp-w347__cls">ELECTRICIAN<br><span class="rp-w347__tag">SUTN2017-004 · from memory</span></td>
+                <td class="rp-w347__c">S</td>
+                <td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">8</td>
+                <td class="rp-w347__n">8</td><td class="rp-w347__n">8</td><td class="rp-w347__n">8</td><td class="rp-w347__n">8</td>
+                <td class="rp-w347__n">40</td>
+                <td class="rp-w347__n">22.00</td>
+                <td rowspan="2" class="rp-w347__n">6.10</td>
+                <td rowspan="2" class="rp-w347__n">5.67</td>
+                <td rowspan="2" class="rp-w347__n">1,106.80</td>
+                <td rowspan="2" class="rp-w347__n">1,106.80</td>
+                <td rowspan="2" class="rp-w347__n">84.67</td>
+                <td rowspan="2" class="rp-w347__n">88.00</td>
+                <td rowspan="2" class="rp-w347__n">0.00</td>
+                <td rowspan="2" class="rp-w347__n">172.67</td>
+                <td rowspan="2" class="rp-w347__n">934.13</td>
+              </tr>
+              <tr data-line="ot" data-when="certifiable dated">
+                <td class="rp-w347__c">O</td>
+                <td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">—</td>
+                <td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">—</td>
+                <td class="rp-w347__n">0</td>
+                <td class="rp-w347__n">33.00</td>
+              </tr>
+
+              <tr data-worker="4" data-blocked="true" data-when="draft">
+                <td rowspan="2" class="rp-w347__c">4</td>
+                <td rowspan="2">RIVERA, MARISOL</td>
+                <td rowspan="2" class="rp-w347__c">6035</td>
+                <td rowspan="2" class="rp-w347__c">—</td>
+                <td rowspan="2" class="rp-w347__cls">
+                  <span class="rp-w347__raw">LOW VOLTAGE TECH</span><br>
+                  <span class="rp-w347__tag">unmapped payroll title · line blocked</span>
+                </td>
+                <td class="rp-w347__c">S</td>
+                <td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">8</td>
+                <td class="rp-w347__n">8</td><td class="rp-w347__n">8</td><td class="rp-w347__n">8</td><td class="rp-w347__n">8</td>
+                <td class="rp-w347__n">40</td>
+                <td class="rp-w347__n rp-w347__void">BLOCKED</td>
+                <td rowspan="2" class="rp-w347__n rp-w347__void">—</td>
+                <td rowspan="2" class="rp-w347__n rp-w347__void">—</td>
+                <td rowspan="2" class="rp-w347__n rp-w347__void">—</td>
+                <td rowspan="2" class="rp-w347__n rp-w347__void">—</td>
+                <td rowspan="2" class="rp-w347__n rp-w347__void">—</td>
+                <td rowspan="2" class="rp-w347__n rp-w347__void">—</td>
+                <td rowspan="2" class="rp-w347__n rp-w347__void">—</td>
+                <td rowspan="2" class="rp-w347__n rp-w347__void">—</td>
+                <td rowspan="2" class="rp-w347__n rp-w347__void">—</td>
+              </tr>
+              <tr data-line="ot" data-blocked="true" data-when="draft">
+                <td class="rp-w347__c">O</td>
+                <td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">—</td>
+                <td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">—</td><td class="rp-w347__n">—</td>
+                <td class="rp-w347__n">0</td>
+                <td class="rp-w347__n rp-w347__void">—</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="rp-w347__foot">
+            <span>6B is a customer-asserted plan credit. Ratepin neither computed nor verified annualization under 29 CFR 5.25(c).</span>
+            <span>Overtime premium computed weekly over 40 hours per 29 CFR 5.5(b)(1); state daily overtime passes through from the CSV.</span>
+          </div>
+
+          <div class="rp-signature" data-when="certifiable dated">
+            <div class="rp-w347__sigrow">
+              <div>
+                <div class="rp-signature__line"></div>
+                <p class="rp-signature__caption">Signature — contractor or authorised agent · date</p>
+              </div>
+              <p class="rp-w347__certs">
+                Statement of compliance on page 2, boxes <strong>1, 2, 3 and 6</strong> applicable;
+                box <strong>5</strong> applicable (fringe credit claimed). Certification made under
+                <strong>29 CFR 5.5(a)(3)(ii)(C)</strong>; falsification reachable under 18 U.S.C. 1001 and 31 U.S.C. 3729.
+              </p>
+            </div>
+          </div>
+
+          <div class="rp-signature rp-signature--withheld" data-when="draft">
+            <p class="rp-signature__withheld-title">SIGNATURE BLOCK WITHHELD</p>
+            <p class="rp-signature__withheld-why">
+              There is no signature line on this document. Entry 4's payroll title <b>LOW VOLTAGE TECH</b>
+              does not map to a classification on TN20260151, so Ratepin cannot support the third
+              certification of 29 CFR 5.5(a)(3)(ii)(C) — that each worker was paid the rate
+              specified in the applicable wage determination. Resolve the line in the classification
+              picker and the block is rendered.
+            </p>
+          </div>
+
+          <div class="rp-prov" data-when="certifiable" data-freshness="current">
+            <p class="rp-prov__claim">Rates of record: WD TN20260151, Modification 1, published 2026-05-18.</p>
+            <p class="rp-prov__freshness">No newer modification existed as of 2026-08-07 02:07 ET.</p>
+            <p class="rp-prov__build">Corpus snapshot 4b91e30c · engine 1.0.0 · generated 2026-08-07 16:41 CT</p>
+            <p class="rp-prov__boundary">Ratepin computes and formats. The contractor certifies and files.</p>
+            <p class="rp-prov__url">ratepin.com/v/7c3a-91d4</p>
+          </div>
+
+          <div class="rp-prov" data-when="dated" data-freshness="dated">
+            <p class="rp-prov__claim">Rates of record: WD TN20260151, Modification 1, published 2026-05-18.</p>
+            <p class="rp-prov__freshness">Newer-modification check unavailable since 2026-08-05 02:07 ET. This filing reads Modification 1 as pinned at award.</p>
+            <p class="rp-prov__build">Corpus snapshot 4b91e30c · engine 1.0.0 · generated 2026-08-07 16:41 CT</p>
+            <p class="rp-prov__boundary">Ratepin computes and formats. The contractor certifies and files.</p>
+            <p class="rp-prov__url">ratepin.com/v/7c3a-91d4</p>
+          </div>
+
+          <div class="rp-prov" data-when="draft" data-freshness="current">
+            <p class="rp-prov__claim">Rates of record: WD TN20260151, Modification 1, published 2026-05-18.</p>
+            <p class="rp-prov__freshness">No newer modification existed as of 2026-08-07 02:07 ET.</p>
+            <p class="rp-prov__blocked">1 unresolved line — entry 4, payroll title LOW VOLTAGE TECH. Signature block withheld.</p>
+            <p class="rp-prov__build">Corpus snapshot 4b91e30c · engine 1.0.0 · generated 2026-08-07 16:41 CT</p>
+            <p class="rp-prov__boundary">Ratepin computes and formats. The contractor certifies and files.</p>
+            <p class="rp-prov__url">ratepin.com/v/7c3a-91d4</p>
+          </div>
+
+        </div>
+      </article>
+      </div>
+      </div>
+
+      <p class="rp-legal" style="margin-block-start: var(--rp-s-4)">
+        Sample artifact. <strong>The contractor, project, addresses and worker names are fictitious.</strong>
+        The wage determination number, modification number, publication date, classification names and
+        hourly rates are real: read from
+        <a href="https://sam.gov/api/prod/wdol/v1/wd/TN20260151/1"><code>sam.gov/api/prod/wdol/v1/wd/TN20260151/1</code></a>
+        on 2026-08-13 and reproduced without alteration. Form WH-347 is a U.S. Department of Labor form
+        (OMB 1235-0008). Ratepin is not affiliated with, endorsed by, or acting on behalf of any government agency.
+      </p>
+    </div>
+  </div>
+</section>
+<!-- ================================================================ TRACE == -->
+<section class="rp-lp-section" aria-labelledby="trace-h">
+  <div class="rp-shell">
+    <div class="rp-lp-head">
+      <p class="rp-lp-eyebrow">The differentiator, in one row</p>
+      <h2 id="trace-h">Where the $22.00 came from</h2>
+      <p class="rp-lp-lead">
+        Every other tool in this category will print $22.00 on the form correctly. The question this
+        product answers is the next one — the one a general contractor's compliance desk asks in March
+        about a filing from August.
+      </p>
+    </div>
+
+    <div class="rp-lp-trace">
+      <figure class="rp-lp-figcell" style="margin:0">
+        <figcaption class="rp-lp-cap"><strong>On the form</strong> · column 6A, entry 1</figcaption>
+        <span class="rp-lp-figcell__v">22.00</span>
+        <span class="rp-lp-cap">ELECTRICIAN · 40 straight hours</span>
+      </figure>
+
+      <div class="rp-lp-trace__arrow" aria-hidden="true">→</div>
+
+      <figure style="margin:0; display:grid; gap:var(--rp-s-2)">
+        <figcaption class="rp-lp-cap"><strong>In the determination</strong> · verbatim, byte for byte</figcaption>
+<pre class="rp-lp-pre"> SUTN2017-004 04/16/2021
+                              Rates      Fringes
+<mark>ELECTRICIAN..................$ 22.00     11.77</mark></pre>
+        <span class="rp-lp-cap">
+          Group <code>SUTN2017-004</code> — the <code>SU</code> prefix means a survey rate, not a
+          collective bargaining agreement. Fringe obligation $11.77, discharged here as $6.10 in plan
+          contributions plus $5.67 cash in lieu, per 29 CFR 5.31(b).
+        </span>
+      </figure>
+
+      <div class="rp-lp-trace__arrow" aria-hidden="true">→</div>
+
+      <figure style="margin:0; display:grid; gap:var(--rp-s-2)">
+        <figcaption class="rp-lp-cap"><strong>Read from</strong> · and kept</figcaption>
+        <dl class="rp-lp-kv" style="border:1px solid var(--rp-rule-strong); border-radius:var(--rp-r-1); padding-inline:var(--rp-s-4); background-color:var(--rp-surface)">
+          <div><dt>Determination</dt><dd>TN20260151</dd></div>
+          <div><dt>Modification</dt><dd>1</dd></div>
+          <div><dt>Published</dt><dd>2026-05-18</dd></div>
+          <div><dt>Counties</dt><dd>BEDFORD · COFFEE</dd></div>
+          <div><dt>Construction type</dt><dd>BUILDING</dd></div>
+          <div><dt>Snapshot</dt><dd>4b91e30c</dd></div>
+        </dl>
+        <span class="rp-lp-cap">
+          Ratepin keeps a dated copy of every modification it has seen, so a superseded modification is
+          still readable here after SAM overwrites the live document.
+        </span>
+      </figure>
+    </div>
+
+    <div class="rp-lp-grid rp-lp-grid--2" style="margin-block-start: var(--rp-s-8)">
+      <div class="rp-lp-card rp-lp-card--ruled">
+        <p class="rp-lp-card__t">The form itself now asks for this</p>
+        <p class="rp-lp-card__b">
+          The January 2025 revision of the WH-347 added a <strong>Wage Determination No.</strong> field to
+          the header, alongside new columns 1A–1E, the (J)/(RA) marker, <strong>6B total fringe benefit
+          credit</strong> and <strong>6C payment in lieu of fringe benefits</strong>. The header field is
+          one box. Being able to defend what goes in it, every week, across every county you run, is the
+          product.
+        </p>
+      </div>
+      <div class="rp-lp-card">
+        <p class="rp-lp-card__t">What we are not claiming</p>
+        <p class="rp-lp-card__b">
+          Not that this archive is unobtainable — superseded modifications are fetchable from SAM's own
+          endpoint and at least one vendor resells the series. What Ratepin sells is assembly, latency and
+          the crosswalk your own corrections build: the determination pinned at award, the diff since,
+          and the memory of which of your payroll titles is which classification.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================== HOW == -->
+<section class="rp-lp-section" id="how" aria-labelledby="how-h">
+  <div class="rp-shell">
+    <div class="rp-lp-head">
+      <p class="rp-lp-eyebrow">Three steps, one session</p>
+      <h2 id="how-h">CSV in. Artifact out. Nobody in between.</h2>
+    </div>
+
+    <div class="rp-lp-grid rp-lp-grid--3">
+      <div class="rp-lp-card rp-lp-card--ruled">
+        <span class="rp-lp-card__k">STEP 1</span>
+        <p class="rp-lp-card__t">Upload the week's payroll CSV</p>
+        <p class="rp-lp-card__b">
+          Whatever your payroll system exports. You map your columns once and Ratepin remembers the
+          mapping. Project setup is five fields — county, construction type, wage determination number
+          (or find-it-for-me), funding source, week ending.
+        </p>
+        <p class="rp-lp-card__b rp-ink-3">
+          Ratepin does not run your payroll, compute your taxes or print your cheques. It reads the file
+          yours produces.
+        </p>
+      </div>
+
+      <div class="rp-lp-card rp-lp-card--ruled">
+        <span class="rp-lp-card__k">STEP 2</span>
+        <p class="rp-lp-card__t">Ratepin reads the pinned determination and does the arithmetic</p>
+        <p class="rp-lp-card__b">
+          Rates come from the modification pinned to the project at award, read from Ratepin's own mirror —
+          <strong>never from a live call to SAM</strong>. Gross, fringe credit, cash in lieu, CWHSSA
+          overtime over 40 hours, deductions and net are deterministic code under property tests.
+        </p>
+        <p class="rp-lp-card__b rp-ink-3">
+          The model does exactly two things and neither is arithmetic: it orders candidate classifications
+          for an unmapped payroll title, and it drafts exception narrative into a fixed template.
+        </p>
+      </div>
+
+      <div class="rp-lp-card rp-lp-card--ruled">
+        <span class="rp-lp-card__k">STEP 3</span>
+        <p class="rp-lp-card__t">Download the WH-347, and in California the eCPR XML</p>
+        <p class="rp-lp-card__b">
+          Both carry the provenance footer. The California file validates against the published eCPR
+          schema, pinned by content hash <code>2ea52e97…</code>, not by its version attribute —
+          <strong>generated, not acceptance-tested.</strong>
+        </p>
+        <p class="rp-lp-card__b rp-ink-3">
+          You sign it. You file it. Ratepin never holds a portal credential and never submits anything on
+          your behalf.
+        </p>
+      </div>
+    </div>
+
+    <div class="rp-alert rp-alert--notice" style="margin-block-start: var(--rp-s-7)">
+      <span class="rp-alert__glyph" aria-hidden="true">§</span>
+      <p class="rp-alert__title">The federal rule and the California schema disagree, and both are obeyed</p>
+      <div class="rp-alert__body">
+        <p>
+          29 CFR 5.5(a)(3)(ii)(B) says full Social Security numbers <em>“must not be included on weekly
+          transmittals”</em> and that an individually identifying number — <em>“e.g., the last four
+          digits”</em> — is enough. California's eCPR schema declares <code>ssn</code> as
+          <code>[0-9]{9}</code> and required. Same worker, same week, two artifacts with opposite rules.
+          Ratepin stores the number encrypted, prints the last four on the WH-347, and decrypts the nine
+          digits only into the California XML.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ================================================================== U1-U4 = -->
+<section class="rp-lp-section" aria-labelledby="diff-h">
+  <div class="rp-shell">
+    <div class="rp-lp-head">
+      <p class="rp-lp-eyebrow">Four facts, not four benefits</p>
+      <h2 id="diff-h">What is actually different here</h2>
+      <p class="rp-lp-lead">
+        Each of these is a statement about how the software behaves, checkable in the free tier before
+        an account exists. None of them is a claim about an outcome we have not measured.
+      </p>
+    </div>
+
+    <div class="rp-lp-grid rp-lp-grid--2">
+      <div class="rp-lp-card">
+        <span class="rp-lp-card__k">U1</span>
+        <p class="rp-lp-card__t">The modification number is on the artifact</p>
+        <p class="rp-lp-card__b">
+          Not in a dashboard, not in an audit log you would have to go and find. On the document that
+          travels to the general contractor, in monospace, at a size that survives a fax. It is not
+          configurable, not removable, and not subject to a white-label option at any tier — including
+          the free one.
+        </p>
+      </div>
+      <div class="rp-lp-card">
+        <span class="rp-lp-card__k">U2</span>
+        <p class="rp-lp-card__t">It withholds the signature block rather than guess</p>
+        <p class="rp-lp-card__b">
+          An unresolved line does not produce a warning you can click past. It produces a document with
+          <strong>no signature line on it</strong>. A greyed-out signature line photocopies into a
+          signable signature line; an absent one cannot be signed by accident.
+        </p>
+      </div>
+      <div class="rp-lp-card">
+        <span class="rp-lp-card__k">U3</span>
+        <p class="rp-lp-card__t">It asks which classification once</p>
+        <p class="rp-lp-card__b">
+          An unmapped payroll title gets a closed choice: candidates drawn only from that determination's
+          own classification list, each with its verbatim scope text and its rate. You pick. Ratepin
+          remembers, per account, per determination, per title — and never asks again.
+        </p>
+      </div>
+      <div class="rp-lp-card">
+        <span class="rp-lp-card__k">U4</span>
+        <p class="rp-lp-card__t">No demo, no quote, no call, ever</p>
+        <p class="rp-lp-card__b">
+          The prices are below. Upgrades, downgrades, cancellation and refunds are buttons. There is no
+          support queue, no human reviews any output at any tier, and nothing in the compliance flow
+          routes to a person. When Ratepin is unsure, it says so in the product and narrows what it claims.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== REFUSALS = -->
+<section class="rp-lp-section" aria-labelledby="refuse-h">
+  <div class="rp-shell">
+    <div class="rp-lp-head">
+      <p class="rp-lp-eyebrow">The whole error vocabulary</p>
+      <h2 id="refuse-h">Four ways this software says no</h2>
+      <p class="rp-lp-lead">
+        There is no fifth. If a state is not one of these it is a defect, not a feature — and none of the
+        four ends in “contact us”.
+      </p>
+    </div>
+
+    <div class="rp-stack rp-stack--loose">
+
+      <div class="rp-alert rp-alert--blocked">
+        <span class="rp-alert__glyph" aria-hidden="true">✕</span>
+        <p class="rp-alert__title">P-A · A line is blocked, and the choice is closed</p>
+        <div class="rp-alert__body">
+          <p>
+            <code>LOW VOLTAGE TECH</code> is not a classification on TN20260151. Ratepin will not invent
+            one and will not sweep it into the nearest neighbour. It shows the three candidates its
+            ranking put first, each with the determination's own scope text, and the line stays blocked
+            until you click. <strong>No confidence score resolves a classification.</strong>
+          </p>
+        </div>
+      </div>
+
+      <div class="rp-alert rp-alert--blocked">
+        <span class="rp-alert__glyph" aria-hidden="true">✕</span>
+        <p class="rp-alert__title">P-B · The artifact is a draft, and it looks like one</p>
+        <div class="rp-alert__body">
+          <p>
+            Any unresolved line watermarks the document <strong>DRAFT — NOT CERTIFIABLE</strong>, prints a
+            full-contrast band naming the count and the reason, and replaces the signature block. A
+            DRAFT filing is <strong>never billed and never counts against your included filings</strong>.
+            Flip the switch at the top of this page to see it.
+          </p>
+        </div>
+      </div>
+
+      <div class="rp-alert rp-alert--narrowed">
+        <span class="rp-alert__glyph" aria-hidden="true">◐</span>
+        <p class="rp-alert__title">P-C · The claim narrows, the filing does not stop</p>
+        <div class="rp-alert__body">
+          <p>
+            If SAM is unreachable at 16:00 on a Friday, your filing still generates. Generation reads the
+            pinned mirror, never a live call, so an upstream outage cannot block a filing on a project
+            whose determination is already pinned. What legitimately degrades is the freshness sentence:
+            <em>“newer-modification check unavailable since …”</em>. <strong>Staleness never produces a
+            DRAFT.</strong> Only an unresolved line does.
+          </p>
+        </div>
+      </div>
+
+      <div class="rp-alert rp-alert--declined">
+        <span class="rp-alert__glyph" aria-hidden="true">§</span>
+        <p class="rp-alert__title">P-D · The conclusion is declined, on the record, in neutral ink</p>
+        <div class="rp-alert__body">
+          <p>
+            A real example from the determination on this page. <code>LABORER: COMMON OR GENERAL</code>
+            is listed at <strong>$13.00</strong>. Executive Order 13658's floor for 11 May to 31 December
+            2026 is <strong>$13.65</strong> — but the determination's own note says the order
+            <em>“generally applies to contracts subject to the Davis-Bacon Act that were awarded on or
+            between January 1, 2015 and January 29, 2022, and that have not been renewed or extended on or
+            after January 30, 2022”</em>, and <em>“does not apply to contracts subject only to the
+            Davis-Bacon Related Acts”</em>.
+          </p>
+          <p>
+            Ratepin does not hold your award date or your coverage basis. So it prints the rule, prints
+            both figures, points at the paragraph — and <strong>declines to conclude</strong>. Same
+            treatment for FAR 22.404-6 effectiveness, which turns on a contracting-officer finding no
+            software can observe, and for annualization under 29 CFR 5.25(c), which needs private-work
+            hours a certified-payroll CSV does not contain.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="rp-legal" style="margin-block-start: var(--rp-s-6)">
+      A declined conclusion is deliberately uncoloured. It is not a warning and not an error; colouring it
+      would turn a statement of epistemic limits into an alarm.
+    </p>
+  </div>
+</section>
+<!-- ============================================================== FREE TOOLS = -->
+<section class="rp-lp-section" id="free" aria-labelledby="free-h">
+  <div class="rp-shell">
+    <div class="rp-lp-head">
+      <p class="rp-lp-eyebrow">Free, unlimited, no account, no email wall</p>
+      <h2 id="free-h">Check our arithmetic against yours before you pay us anything</h2>
+      <p class="rp-lp-lead">
+        A free WH-347 generator is table stakes — the DOL publishes a fillable form and at least three
+        vendors ship a generator. Ours is not the differentiator. <strong>The footer on it is.</strong>
+        Free artifacts carry the same provenance block as paid ones, because that block is how this
+        product travels.
+      </p>
+    </div>
+
+    <div class="rp-lp-grid rp-lp-grid--2" style="margin-block-end: var(--rp-s-8)">
+      <div class="rp-lp-card rp-lp-card--ruled">
+        <span class="rp-lp-card__k">FREE TOOL 1</span>
+        <p class="rp-lp-card__t">Unlimited WH-347 generator</p>
+        <p class="rp-lp-card__b">
+          Paste or upload a week of payroll, map the columns, download the form. Both layouts —
+          the January 2025 revision by default, the legacy layout behind a per-project flag, because the
+          widely repeated 1 October 2026 cutover is vendor-asserted and we could not find it on a DOL page.
+        </p>
+        <p class="rp-lp-card__b rp-ink-3">
+          <strong>The free tier makes zero model calls.</strong> Unmapped titles resolve from the
+          deterministic crosswalk and the determination's own classification list. It is also the exact
+          path the product falls back to if the model is unavailable.
+        </p>
+        <div class="rp-btn-row"><a class="rp-btn rp-btn--primary" href="#top">Open the generator</a></div>
+      </div>
+
+      <div class="rp-lp-card rp-lp-card--ruled">
+        <span class="rp-lp-card__k">FREE TOOL 2</span>
+        <p class="rp-lp-card__t">County × craft rate lookup</p>
+        <p class="rp-lp-card__b">
+          Every rate shown with its determination number, modification, publication date, group
+          identifier and the source URL it was read from. <strong>A rate without its determination beside
+          it is not a rate</strong>, and this product will not render one.
+        </p>
+        <p class="rp-lp-card__b rp-ink-3">
+          Free tools do not assert a pinned revision-of-record, compute a diff since award, remember your
+          classifications or emit XML. That is where the paid line begins.
+        </p>
+      </div>
+    </div>
+
+    <!-- ---------------------------------------------------- live lookup -- -->
+    <div class="rp-stack rp-stack--loose">
+      <div class="rp-field" style="max-inline-size: 34rem">
+        <label class="rp-field__label" for="county">County and construction type</label>
+        <select class="rp-select" id="county">
+          <option value="tn151" selected>Bedford / Coffee County, Tennessee — Building</option>
+          <option value="tn148">Obion County, Tennessee — Building</option>
+          <option value="ca22">Los Angeles County, California — Building, Heavy, Highway</option>
+        </select>
+      </div>
+
+      <div class="rp-tablewrap">
+        <table class="rp-table" id="lookup-table">
+          <caption class="rp-sr-only">Prevailing wage rates by classification for the selected county.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Classification</th>
+              <th scope="col">Group</th>
+              <th scope="col">Basis</th>
+              <th scope="col" class="rp-th--num">Rate</th>
+              <th scope="col" class="rp-th--num">Fringe</th>
+              <th scope="col" class="rp-th--num">Total</th>
+            </tr>
+          </thead>
+          <tbody id="lookup-body"></tbody>
+        </table>
+      </div>
+
+      <div class="rp-prov" id="lookup-prov" data-freshness="current">
+        <p class="rp-prov__claim" id="lp-claim"></p>
+        <p class="rp-prov__freshness" id="lp-fresh"></p>
+        <p class="rp-prov__build" id="lp-build"></p>
+        <p class="rp-prov__boundary">Ratepin computes and formats. The contractor certifies and files.</p>
+        <p class="rp-prov__url"><a id="lp-url" href="https://sam.gov/api/prod/wdol/v1/wd/TN20260151/1"></a></p>
+      </div>
+
+      <div class="rp-alert rp-alert--declined" id="union-note" hidden>
+        <span class="rp-alert__glyph" aria-hidden="true">§</span>
+        <p class="rp-alert__title">Some of these rates come from collective bargaining agreements</p>
+        <div class="rp-alert__body">
+          <p>
+            A group identifier that does not begin <code>SU</code>, <code>UAVG</code>, <code>SA</code> or
+            <code>SC</code> means a union rate prevailed in the survey. The determination publishes the
+            aggregate fringe figure — it is above, and it is usable — but <strong>not the schedule</strong>:
+            which plans, at what per-hour cost, with what eligibility. Ratepin shows the rate and refuses to
+            compute a fringe credit against a schedule it does not hold. If every classification you run is
+            a CBA group, Ratepin will say so at project setup rather than at 15:40 on a Friday.
+          </p>
+        </div>
+      </div>
+
+      <p class="rp-legal">
+        Rates above were read from SAM on 2026-08-13 and are reproduced without alteration, including
+        classification names exactly as the determination spells them. Where a determination's own text and
+        SAM's index metadata disagree — and on the determinations we checked, they do — the determination's
+        prose is authoritative and the disagreement is recorded rather than resolved silently.
+      </p>
+    </div>
+  </div>
+</section>
+<!-- ================================================================== PRICE = -->
+<section class="rp-lp-section" id="price" aria-labelledby="price-h">
+  <div class="rp-shell">
+    <div class="rp-lp-head">
+      <p class="rp-lp-eyebrow">These are the prices</p>
+      <h2 id="price-h">One meter: the certified filing</h2>
+      <p class="rp-lp-lead">
+        No project caps. No worker caps. No seats. No setup fee. No annual commitment required — annual
+        is billed at ten months if you want it. Overage is <strong>$2.50 per certified filing</strong>
+        beyond the included count, capped at the next tier's price with automatic upgrade at the cap, so
+        the bill can never exceed the tier above.
+      </p>
+    </div>
+
+    <div class="rp-lp-grid rp-lp-grid--5">
+
+      <div class="rp-price">
+        <span class="rp-price__tier">Free</span>
+        <p class="rp-price__amount">$0<span class="rp-price__unit">no account</span></p>
+        <p class="rp-price__who">Anyone with a WH-347 to file this week.</p>
+        <table class="rp-price__meter"><tbody>
+          <tr><th scope="row">Included filings</th><td>unlimited</td></tr>
+          <tr><th scope="row">Model calls</th><td>0</td></tr>
+        </tbody></table>
+        <ul class="rp-price__list">
+          <li class="rp-price__item">WH-347, both layouts</li>
+          <li class="rp-price__item">County × craft lookup</li>
+          <li class="rp-price__item">Provenance footer</li>
+          <li class="rp-price__item rp-price__item--not">Pinned revision-of-record</li>
+          <li class="rp-price__item rp-price__item--not">Diff since award</li>
+          <li class="rp-price__item rp-price__item--not">Classification memory</li>
+          <li class="rp-price__item rp-price__item--not">eCPR XML</li>
+        </ul>
+        <p class="rp-price__terms">No email required. No interstitial. No upsell above the fold.</p>
+      </div>
+
+      <div class="rp-price">
+        <span class="rp-price__tier">Bid Sheet</span>
+        <p class="rp-price__amount">$49<span class="rp-price__unit">once</span></p>
+        <p class="rp-price__who">Pricing a job you have not won yet.</p>
+        <table class="rp-price__meter"><tbody>
+          <tr><th scope="row">Included filings</th><td>—</td></tr>
+          <tr><th scope="row">Account needed</th><td>no</td></tr>
+        </tbody></table>
+        <ul class="rp-price__list">
+          <li class="rp-price__item">Every classification on one determination</li>
+          <li class="rp-price__item">Modification and publication date on the sheet</li>
+          <li class="rp-price__item">Buyable before an account exists</li>
+          <li class="rp-price__item rp-price__item--not">Recurring anything</li>
+        </ul>
+        <p class="rp-price__terms">A paid, pre-account proof of the rate-of-record claim. Refund is a button.</p>
+      </div>
+
+      <div class="rp-price">
+        <span class="rp-price__tier">Solo</span>
+        <p class="rp-price__amount">$99<span class="rp-price__unit">/ month</span></p>
+        <p class="rp-price__who">One crew, one or two active projects.</p>
+        <table class="rp-price__meter"><tbody>
+          <tr><th scope="row">Included filings</th><td>40</td></tr>
+          <tr><th scope="row">Then per filing</th><td>$2.50</td></tr>
+        </tbody></table>
+        <ul class="rp-price__list">
+          <li class="rp-price__item">Pinned revision-of-record</li>
+          <li class="rp-price__item">Per-classification diff since award</li>
+          <li class="rp-price__item">Classification memory</li>
+          <li class="rp-price__item">Full artifact archive</li>
+          <li class="rp-price__item rp-price__item--not">eCPR XML</li>
+          <li class="rp-price__item rp-price__item--not">Portal export bundles</li>
+        </ul>
+        <p class="rp-price__terms">Overage capped at $249. Auto-upgrades at the cap; never above it.</p>
+      </div>
+
+      <div class="rp-price rp-price--recommended">
+        <span class="rp-price__tier">Crew</span>
+        <p class="rp-price__amount">$249<span class="rp-price__unit">/ month</span></p>
+        <p class="rp-price__who">Multi-project, multi-county. This is who Ratepin is built for.</p>
+        <table class="rp-price__meter"><tbody>
+          <tr><th scope="row">Included filings</th><td>200</td></tr>
+          <tr><th scope="row">Then per filing</th><td>$2.50</td></tr>
+        </tbody></table>
+        <ul class="rp-price__list">
+          <li class="rp-price__item">Everything in Solo</li>
+          <li class="rp-price__item">California eCPR XML <em>(generated, not acceptance-tested)</em></li>
+          <li class="rp-price__item">Modification-change alerts, one-click regenerate</li>
+          <li class="rp-price__item">Portal export bundles</li>
+          <li class="rp-price__item rp-price__item--not">Multi-entity / multi-EIN</li>
+        </ul>
+        <p class="rp-price__terms">We think most readers of this page belong here. Say so or don't — the tier is one click either way.</p>
+      </div>
+
+      <div class="rp-price">
+        <span class="rp-price__tier">Multi</span>
+        <p class="rp-price__amount">$599<span class="rp-price__unit">/ month</span></p>
+        <p class="rp-price__who">Several entities, a wall of concurrent awards.</p>
+        <table class="rp-price__meter"><tbody>
+          <tr><th scope="row">Included filings</th><td>unlimited</td></tr>
+          <tr><th scope="row">Then per filing</th><td>—</td></tr>
+        </tbody></table>
+        <ul class="rp-price__list">
+          <li class="rp-price__item">Everything in Crew</li>
+          <li class="rp-price__item">Dispute-grade rate-of-record archive</li>
+          <li class="rp-price__item">Multi-entity, multi-EIN</li>
+          <li class="rp-price__item rp-price__item--not">A salesperson</li>
+        </ul>
+        <p class="rp-price__terms">There is no tier above this and no “contact us for enterprise”.</p>
+      </div>
+
+    </div>
+
+    <div class="rp-lp-grid rp-lp-grid--2" style="margin-block-start: var(--rp-s-8)">
+      <div class="rp-lp-card">
+        <p class="rp-lp-card__t">Cancelling does not take your records hostage</p>
+        <p class="rp-lp-card__b">
+          The full artifact archive exports on cancellation and stays available for 30 days. A failed
+          payment restricts the account but never closes the archive — you can always get your filings
+          out. There is no retention offer and no “are you sure” guilt screen.
+        </p>
+      </div>
+      <div class="rp-lp-card">
+        <p class="rp-lp-card__t">A DRAFT filing is never billed</p>
+        <p class="rp-lp-card__b">
+          The meter posts on certifiable artifacts only. If Ratepin could not resolve a line, it did not
+          finish the job, and charging for a document with no signature block on it would be charging for
+          our own refusal.
+        </p>
+      </div>
+    </div>
+
+    <!-- --------------------------------------------- honest comparison -- -->
+    <div class="rp-stack" style="margin-block-start: var(--rp-s-9)">
+      <h3>Where you should buy something else</h3>
+      <p class="rp-prose rp-ink-2">
+        Prices below were read from each vendor's own public pricing page on <strong>2026-08-13</strong> and
+        are quoted, not paraphrased. If your situation is in the left column, one of them is the better buy
+        and we would rather say so here than collect a month and a refund request.
+      </p>
+
+      <div class="rp-tablewrap">
+        <table class="rp-table">
+          <caption class="rp-sr-only">When a competitor is the better purchase.</caption>
+          <thead>
+            <tr>
+              <th scope="col">If this is you</th>
+              <th scope="col">Buy this instead</th>
+              <th scope="col">Their published price</th>
+              <th scope="col">Why</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>One project, and it is your first DBA job</td>
+              <td class="rp-td--id">LCPcertified</td>
+              <td class="rp-td--id">$12 / report</td>
+              <td>Twelve dollars beats any subscription for four filings. Their free tier also covers unlimited reports on a first project.</td>
+            </tr>
+            <tr>
+              <td>Ten to twenty-five active projects, and provenance is not why you are buying</td>
+              <td class="rp-td--id">LCPcertified Plus</td>
+              <td class="rp-td--id">$2,500 / yr, 25 projects</td>
+              <td>Roughly 20% below where Ratepin lands at that volume. They also already export California, Washington and Maryland XML.</td>
+            </tr>
+            <tr>
+              <td>You want the cheapest per-project meter and can type the rate yourself</td>
+              <td class="rp-td--id">CertifiedPayrollPro</td>
+              <td class="rp-td--id">$49 / 5 proj · $99 / 25 proj</td>
+              <td>$0 setup, 14-day trial, $5/$3/$1 per report. Their $99 buys 25 projects. Nothing about ours is cheaper at that shape.</td>
+            </tr>
+            <tr>
+              <td>Your general contractor mandates a portal</td>
+              <td class="rp-td--id">Keep the portal</td>
+              <td class="rp-td--id">—</td>
+              <td>Ratepin produces the file you upload to it. We feed portals; we do not replace them and do not position against them.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="rp-legal">
+        Ratepin is priced above the cheap end of this category on purpose. The reason to buy it is the
+        rate-of-record wedge — the pinned modification, the diff since award, the classification memory
+        and the footer — not the price and not a time saving we have not measured.
+      </p>
+    </div>
+  </div>
+</section>
+<!-- ============================================================= BOUNDARIES = -->
+<section class="rp-lp-section" id="boundaries" aria-labelledby="bound-h">
+  <div class="rp-shell">
+    <div class="rp-lp-head">
+      <p class="rp-lp-eyebrow">Read this before you pay, not after</p>
+      <h2 id="bound-h">What Ratepin does not do</h2>
+      <p class="rp-lp-lead">
+        Eight lines. They are here, at this size, because a buyer who has been sold to by this category
+        before is defended against enthusiasm and undefended against subtraction — and because every one
+        of them is simply true.
+      </p>
+    </div>
+
+    <ul class="rp-lp-notlist rp-measure" style="max-inline-size: 78ch">
+      <li>Ratepin does not run payroll, compute taxes or print cheques — it reads the CSV yours produces.</li>
+      <li>Ratepin does not file, submit or e-sign anything, and never holds your portal credentials.</li>
+      <li>Ratepin does not support union CBA fringe schedules. They are not in public wage determinations.</li>
+      <li>Ratepin does not cover Service Contract Act determinations.</li>
+      <li>Beyond the federal WH-347, Ratepin covers California eCPR only. NY, WA, NJ and IL are not in v1.</li>
+      <li>Ratepin does not file SF-1444 conformance requests, or opine on apprenticeship ratios.</li>
+      <li>Ratepin does not conclude whether a wage determination is effective. It shows the dates and the rule.</li>
+      <li>No human reviews any Ratepin output, at any tier. There is no support queue.</li>
+    </ul>
+
+    <div class="rp-lp-grid rp-lp-grid--2" style="margin-block-start: var(--rp-s-8)">
+      <div class="rp-lp-card">
+        <p class="rp-lp-card__t">Two more, added after we read the regulations properly</p>
+        <p class="rp-lp-card__b">
+          <strong>Annualization is out of scope.</strong> 29 CFR 5.25(c) requires fringe contributions to be
+          annualized over total hours on private and covered work; a certified-payroll CSV does not contain
+          private hours. Column 6B is a customer-asserted input, printed as given and disclaimed on the
+          artifact. <strong>Unfunded plan credits are refused</strong>, not approximated — 29 CFR 5.28 makes
+          them non-bona-fide absent WHD approval.
+        </p>
+      </div>
+      <div class="rp-lp-card">
+        <p class="rp-lp-card__t">And one thing we will never sell on</p>
+        <p class="rp-lp-card__b">
+          Fear. There is no Davis-Bacon civil money penalty, and the large per-violation figures this
+          category's marketing likes to quote are borrowed from a different statute. You will find no
+          penalty number anywhere on this site. The reason to buy this is that the general contractor does
+          not release the draw until Friday's form is right — a gate that arrives every week, on its own,
+          without anyone having to frighten you about it.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ CLAIMS = -->
+<section class="rp-lp-section" aria-labelledby="claims-h">
+  <div class="rp-shell">
+    <div class="rp-lp-head">
+      <p class="rp-lp-eyebrow">The claims policy, published</p>
+      <h2 id="claims-h">Six things we are not allowed to tell you yet</h2>
+      <p class="rp-lp-lead">
+        Every performance claim on this site is rendered from a signed measurement file, not typed into a
+        template. Until a gate's job flips its flag, the page renders the mechanism sentence — and a
+        regression automatically demotes a live claim back to it. <strong>Nobody here can promote a claim
+        by editing copy.</strong>
+      </p>
+    </div>
+
+    <div class="rp-lp-grid rp-lp-grid--3">
+
+      <div class="rp-lp-gate">
+        <span class="rp-lp-gate__id">G1 · RATE CORRECTNESS</span>
+        <p class="rp-lp-gate__locked">Words this page may not use: <s>accurate · error-free · guaranteed right · no mistakes · any percentage</s>. Unlocks when a ≥500-line golden payroll suite across ≥25 determinations in ≥8 states matches exactly on every deploy for 30 consecutive days.</p>
+        <p class="rp-lp-gate__now">What we may say today: all money arithmetic is deterministic code under property tests. No model touches it. A divergence in the golden suite blocks both the corpus promotion and the build.</p>
+      </div>
+
+      <div class="rp-lp-gate">
+        <span class="rp-lp-gate__id">G2 · FORM ACCEPTANCE</span>
+        <p class="rp-lp-gate__locked">Words this page may not use: <s>accepted · approved · agency-approved · guaranteed to pass · compliant</s>. Unlocks when ≥50 WH-347s and ≥25 California eCPR files have been confirmed accepted by the receiving party, schema hash green throughout.</p>
+        <p class="rp-lp-gate__now">What we may say today: the WH-347 is emitted to the DOL form geometry. The eCPR XML validates against the published schema, pinned by hash. <strong>Generated, not acceptance-tested.</strong></p>
+      </div>
+
+      <div class="rp-lp-gate">
+        <span class="rp-lp-gate__id">G3 · CORPUS COMPLETENESS</span>
+        <p class="rp-lp-gate__locked">Words this page may not use: <s>every determination · complete · always current · nationwide coverage</s>. Unlocks after 60 days of zero unexplained reconciliation delta.</p>
+        <p class="rp-lp-gate__now">What we may say today: the live count, the crawl timestamp and the delta, on the status page below. Numbers, with their as-of date, instead of an adjective.</p>
+      </div>
+
+      <div class="rp-lp-gate">
+        <span class="rp-lp-gate__id">G4 · TIME SAVED</span>
+        <p class="rp-lp-gate__locked">This page carries <strong>no figure of any kind</strong> about hours or money saved, and it never will unless the figure is measured in-product across ≥100 real filings. Extrapolations from DOL's published paperwork-burden estimate are barred outright — that estimate is <strong>per form, not per employee</strong>, and reading it the other way is how this category's marketing gets its numbers.</p>
+        <p class="rp-lp-gate__now">What we may say today: Ratepin reads a payroll CSV and writes the WH-347 and the eCPR XML. There is no queue and no turnaround window.</p>
+      </div>
+
+      <div class="rp-lp-gate">
+        <span class="rp-lp-gate__id">G5 · AUTONOMY</span>
+        <p class="rp-lp-gate__locked">Words this page may not use: <s>zero human minutes · fully autonomous · runs itself</s>. Unlocks when an instrumented counter holds below 2 minutes per customer per month for 90 days at ≥50 paying accounts.</p>
+        <p class="rp-lp-gate__now">What we may say today: there is no support queue. No human reviews any output, at any tier. Refunds are a button. When Ratepin cannot resolve something it says so in the product.</p>
+      </div>
+
+      <div class="rp-lp-gate">
+        <span class="rp-lp-gate__id">G6 · RISK REVERSAL</span>
+        <p class="rp-lp-gate__locked">There is a mechanism here. It may not be described, named or advertised until it has fired correctly in a chaos test with the upstream source killed in staging — so this card describes nothing.</p>
+        <p class="rp-lp-gate__now">What we may say today: nothing at all. This card is what that silence looks like, and leaving it on the page is cheaper than the alternative.</p>
+      </div>
+
+    </div>
+
+    <p class="rp-legal" style="margin-block-start: var(--rp-s-6)">
+      The standard being applied is the FTC's: an advertiser must hold a reasonable basis for express and
+      implied objective claims <em>before</em> they are disseminated, and there is no AI exemption from it.
+      Four claims that appeared in this company's own earlier pitch documents were falsified during
+      validation — one about clerical time, one about penalty exposure, one about competitors' pricing
+      structure, and one about the determination archive being impossible to reconstruct. All four are
+      permanently retired and are not reproduced here, in any form, because a retired claim printed inside
+      a correction is still a claim printed.
+    </p>
+  </div>
+</section>
+
+<!-- ================================================================ CORPUS = -->
+<section class="rp-lp-section" id="corpus" aria-labelledby="corpus-h">
+  <div class="rp-shell">
+    <div class="rp-lp-head">
+      <p class="rp-lp-eyebrow">The sceptic's landing spot</p>
+      <h2 id="corpus-h">Corpus status, live and dated</h2>
+      <p class="rp-lp-lead">
+        The only marketing asset here that gets <em>more</em> persuasive the harder you look at it. These
+        figures were read from SAM's own endpoint on 2026-08-13 and are what the public status page shows.
+      </p>
+    </div>
+
+    <div class="rp-lp-grid rp-lp-grid--3">
+      <dl class="rp-lp-kv rp-lp-card">
+        <div><dt>Active DBA determinations</dt><dd>4,236</dd></div>
+        <div><dt>Total in index, all states</dt><dd>85,426</dd></div>
+        <div><dt>Reconciliation delta</dt><dd>0.0%</dd></div>
+        <div><dt>Promotion halts above</dt><dd>0.5%</dd></div>
+      </dl>
+      <dl class="rp-lp-kv rp-lp-card">
+        <div><dt>Last successful crawl</dt><dd>2026-08-13 02:07 ET</dd></div>
+        <div><dt>Crawl schedule</dt><dd>nightly 02:00 ET</dd></div>
+        <div><dt>Ingest paths</dt><dd>2, independent</dd></div>
+        <div><dt>Liveness probes</dt><dd>13</dd></div>
+      </dl>
+      <dl class="rp-lp-kv rp-lp-card">
+        <div><dt>eCPR schema hash</dt><dd>2ea52e97…</dd></div>
+        <div><dt>Schema bytes</dt><dd>49,325</dd></div>
+        <div><dt>WH-347 layouts shipped</dt><dd>2</dd></div>
+        <div><dt>Gates cleared</dt><dd>0 of 6</dd></div>
+      </dl>
+    </div>
+
+    <div class="rp-stack rp-stack--loose" style="margin-block-start: var(--rp-s-7)">
+      <details class="rp-disclose">
+        <summary>What “two independent ingest paths” actually buys, and what it does not</summary>
+        <div class="rp-disclose__body rp-prose">
+          <p>
+            Ratepin reads the search index and, separately, each determination's own document — which
+            embeds its Modification Number and Publication Date table, the only publisher-authored
+            assertion in the pipeline. When the two disagree on a pinned field, neither is published:
+            promotion is blocked for that determination and its rate assertions narrow to the last agreed
+            snapshot.
+          </p>
+          <p>
+            This is worth stating precisely, because it is easy to oversell. The two paths share DNS, CDN
+            and authentication, so they detect <em>divergence</em>, not <em>outage</em>. Disagreement is
+            also field-scoped rather than record-scoped: on one determination we checked, the index and the
+            document disagreed about a boolean flag we never use and about county codes, while the prose
+            was consistent. Blocking the whole record over that would have blocked a live determination for
+            no reason.
+          </p>
+        </div>
+      </details>
+
+      <details class="rp-disclose">
+        <summary>Why an outage cannot stop your Friday</summary>
+        <div class="rp-disclose__body rp-prose">
+          <p>
+            A wage determination is pinned to a project at award and does not move. The nightly crawl
+            exists to detect that a <em>new modification</em> was published — not to supply the rate at
+            generation time. Generation reads the mirror. So the upstream being unreachable at 16:00 on a
+            Friday cannot block a filing on an already-pinned project.
+          </p>
+          <p>
+            What it legitimately blocks is first-time resolution for a brand-new project, and the assertion
+            that no newer modification exists. The second degrades to a dated, narrowed sentence in the
+            footer. Fail-closed is aimed at the novel rate claim, not at your filing.
+          </p>
+        </div>
+      </details>
+
+      <details class="rp-disclose">
+        <summary>What we depend on, stated as a risk rather than a feature</summary>
+        <div class="rp-disclose__body rp-prose">
+          <p>
+            The endpoints Ratepin reads are undocumented and unversioned. The index alias observed on
+            2026-08-13 was <code>db-prod-samdotgovsearch-wdol-dba_idxref_08112026</code> — an internal,
+            date-stamped name; nothing about it is a contract, and it can change without notice. The index
+            also caps a result window at 10,000 records, which makes a full historical crawl impossible in
+            one pass and forces slicing by state and year.
+          </p>
+          <p>
+            The mitigation is not avoidance — there is no alternative source — it is making the failure
+            boring. Every document is stored verbatim with its response hash, forever. A parse failure never
+            overwrites a good record. A total loss of upstream access degrades Ratepin to “cannot detect new
+            modifications since <em>date</em>”, which is a sentence in a footer, not a dead product.
+          </p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================== END == -->
+<section class="rp-lp-section rp-lp-section--tight" aria-labelledby="end-h">
+  <div class="rp-shell">
+    <div class="rp-lp-head">
+      <h2 id="end-h">The rate of record, printed on the form.</h2>
+      <p class="rp-lp-lead">
+        Make one for free and look at the bottom of it. If the footer does not change how you feel about
+        Friday, do not buy anything.
+      </p>
+    </div>
+    <div class="rp-btn-row">
+      <a class="rp-btn rp-btn--primary" href="#free">Make a WH-347 — no account</a>
+      <a class="rp-btn" href="#price">$99 Solo · $249 Crew · $599 Multi</a>
+    </div>
+    <p class="rp-boundary">
+      <strong>Ratepin computes and formats. You certify and file. This is not legal advice.</strong>
+    </p>
+  </div>
+</section>
+
+</main>
+
+<footer class="rp-lp-foot">
+  <div class="rp-shell">
+    <div class="rp-lp-grid rp-lp-grid--2" style="align-items:start">
+      <div class="rp-stack">
+        <a class="rp-wordmark" href="#top" aria-label="Ratepin — top of page">
+          <svg class="rp-lp-mark" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M3 17h18M9 4v13" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="square"/>
+          </svg>
+          <span>Ratepin<span class="rp-wordmark__rule" aria-hidden="true"></span></span>
+        </a>
+        <p class="rp-legal">
+          Certified-payroll rate-of-record engine for open-shop specialty subcontractors on Davis-Bacon
+          and Davis-Bacon Related Acts construction. Ratepin computes and formats. You certify and file.
+          This is not legal advice, and no statement on this page is a legal conclusion about your contract,
+          your classifications, your fringe plans or the effectiveness of any wage determination.
+        </p>
+        <p class="rp-legal">
+          Form WH-347 is a U.S. Department of Labor form (OMB 1235-0008, expires 01/31/2028). The
+          California eCPR schema is published by the California Department of Industrial Relations.
+          Ratepin is not affiliated with, endorsed by, or acting on behalf of the U.S. Department of Labor,
+          the California DIR, SAM.gov, or any other government agency, and displays no agency seal, flag or
+          logo for that reason. Competitor names and prices are quoted from their own public pages on the
+          date shown, for comparison, and are the property of their owners.
+        </p>
+        <p class="rp-legal">
+          There is no telephone number on this page and no contact form, because there is no support queue
+          to route you to. That is a description of how the product is built, not an oversight.
+        </p>
+      </div>
+
+      <div class="rp-stack">
+        <h3 style="font-size: var(--rp-t-lead)">Sources</h3>
+        <p class="rp-legal">Every figure, quotation, rate and hash on this page resolves to one of these. All were fetched on 2026-08-13.</p>
+        <ol class="rp-lp-refs">
+          <li><a href="https://www.dol.gov/agencies/whd/forms/wh347">dol.gov/agencies/whd/forms/wh347</a> — WH-347 columns 1A–1E, 2, 3, 4, 5, 6A, 6B, 6C, 7A, 7B, 8, 9; OMB 1235-0008; expires 01/31/2028</li>
+          <li><a href="https://www.dol.gov/sites/dolgov/files/WHD/legacy/files/wh347.pdf">dol.gov/…/wh347.pdf</a> — the form PDF; MediaBox 0 0 792 612 pt on both pages = Letter landscape</li>
+          <li><a href="https://www.reginfo.gov/public/do/PRAOMBHistory?ombControlNumber=1235-0008">reginfo.gov — OMB 1235-0008 history</a> — revision approved 01/06/2025</li>
+          <li><a href="https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-A/section-5.5">eCFR 29 CFR 5.5</a> — statement of compliance; the SSN prohibition on weekly transmittals; CWHSSA overtime over forty hours; retention</li>
+          <li><a href="https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-B/section-5.25">29 CFR 5.25</a> — annualization · <a href="https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-B/section-5.28">5.28</a> — unfunded plans</li>
+          <li><a href="https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-B/section-5.31">29 CFR 5.31</a> — discharging the wage obligation · <a href="https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-B/section-5.32">5.32</a> — overtime and the fringe exclusion</li>
+          <li><a href="https://www.ecfr.gov/current/title-29/subtitle-A/part-3/section-3.5">29 CFR 3.5</a> — permissible deductions · <a href="https://www.ecfr.gov/current/title-29/subtitle-A/part-5/subpart-A/section-5.12">5.12</a> — debarment</li>
+          <li><a href="https://sam.gov/api/prod/wdol/v1/wd/TN20260151/1">sam.gov/api/prod/wdol/v1/wd/TN20260151/1</a> — the determination on this page: Modification 1, published 2026-05-18, Bedford and Coffee Counties, Building; group SUTN2017-004; ELECTRICIAN $22.00 / $11.77; LABORER: COMMON OR GENERAL $13.00 / $3.99; the EO 13658 note quoted above</li>
+          <li><a href="https://sam.gov/api/prod/wdol/v1/wd/TN20260148/2">…/TN20260148/2</a> — Obion County · <a href="https://sam.gov/api/prod/wdol/v1/wd/CA20260022/5">…/CA20260022/5</a> — Los Angeles County, Modification 5, published 2026-08-06</li>
+          <li><a href="https://sam.gov/api/prod/sgs/v1/search/?index=dbra&amp;page=0&amp;size=1&amp;is_active=true">sam.gov DBRA index</a> — 4,236 active, 85,426 total, maxAllowedRecords 10,000, alias <code>db-prod-samdotgovsearch-wdol-dba_idxref_08112026</code></li>
+          <li><a href="https://www.acquisition.gov/far/22.404-6">FAR 22.404-6</a> — wage determination effectiveness, the conclusion Ratepin declines</li>
+          <li><a href="http://www.dir.ca.gov/dlse/CPR-Prod-Test/CPR.xsd">dir.ca.gov/dlse/CPR-Prod-Test/CPR.xsd</a> — California eCPR schema, 49,325 bytes, SHA-256 <code>2ea52e97…</code>; <code>ssn</code> is <code>[0-9]{9}</code> and required</li>
+          <li><a href="https://www.dir.ca.gov/Public-Works/Certified-Payroll-Reporting.html">dir.ca.gov — certified payroll reporting</a></li>
+          <li><a href="https://www.ecfr.gov/current/title-28/chapter-I/part-85/section-85.5">28 CFR 85.5</a> — the per-claim civil penalty range this category's marketing misattributes to Davis-Bacon belongs to the False Claims Act. Cited so you can check it; not reproduced, because we do not sell on it</li>
+          <li><a href="https://lcptracker.com/solutions/lcpcertified/">lcptracker.com/solutions/lcpcertified</a> — $12/report; $145/mo up to 5 active projects; $2,500/yr up to 25; $7,400/yr unlimited</li>
+          <li><a href="https://www.certifiedpayrollpro.com/pricing">certifiedpayrollpro.com/pricing</a> — $49 (5 projects, $5/report), $99 (25 projects, $3/report), $249 (unlimited, $1/report), $0 setup, 14-day trial</li>
+          <li><a href="https://www.ftc.gov/legal-library/browse/ftc-policy-statement-regarding-advertising-substantiation">FTC — Policy Statement Regarding Advertising Substantiation</a> — the standard §“six things we cannot tell you yet” implements</li>
+          <li><a href="https://www.w3.org/TR/WCAG22/">WCAG 2.2</a> — the accessibility floor this page is built to</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</footer>
+<script>
+(function () {
+  "use strict";
+
+  /* ---- Theme: three states, resolved in the order the design system says.
+     An explicit choice stamps data-theme and wins in both directions; the
+     default stamps nothing and lets prefers-color-scheme decide. --------- */
+  var root = document.documentElement;
+  var btn = document.getElementById("theme-toggle");
+  var label = document.getElementById("theme-label");
+  var order = ["system", "light", "dark"];
+
+  function readStored() {
+    try { return localStorage.getItem("rp-theme") || "system"; } catch (e) { return "system"; }
+  }
+  function applyTheme(mode) {
+    if (mode === "system") { root.removeAttribute("data-theme"); }
+    else { root.setAttribute("data-theme", mode); }
+    if (label) { label.textContent = "Theme: " + mode; }
+    if (btn) { btn.setAttribute("aria-label", "Theme: " + mode + ". Activate to change."); }
+    try { localStorage.setItem("rp-theme", mode); } catch (e) { /* private mode: session only */ }
+  }
+  applyTheme(readStored());
+  if (btn) {
+    btn.addEventListener("click", function () {
+      var i = order.indexOf(readStored());
+      applyTheme(order[(i + 1) % order.length]);
+    });
+  }
+
+  /* ---- Artifact status. The three the engine can produce, and no fourth.
+     Visibility is driven entirely by data-when in CSS; this only moves the
+     state attribute, so the markup for every state is always in the DOM and
+     always inspectable. --------------------------------------------------- */
+  var artifact = document.getElementById("artifact-root");
+  if (artifact) {
+    Array.prototype.forEach.call(
+      document.querySelectorAll('input[name="artifact-state"]'),
+      function (input) {
+        input.addEventListener("change", function () {
+          if (input.checked) { artifact.setAttribute("data-state", input.value); }
+        });
+      }
+    );
+  }
+
+  /* ---- County x craft lookup. Real rates, read from SAM on 2026-08-13 and
+     reproduced without alteration, classification names included. A rate is
+     never rendered without its determination. ---------------------------- */
+  var CORPUS = {
+    tn151: {
+      wd: "TN20260151", mod: "1", published: "2026-05-18",
+      where: "Bedford and Coffee Counties, Tennessee", type: "Building",
+      url: "https://sam.gov/api/prod/wdol/v1/wd/TN20260151/1",
+      rows: [
+        ["ELECTRICIAN", "SUTN2017-004", "survey", 22.00, 11.77],
+        ["PLUMBER", "SUTN2017-004", "survey", 21.81, 0.00],
+        ["IRONWORKER, STRUCTURAL", "SUTN2017-004", "survey", 19.96, 0.00],
+        ["CEMENT MASON/CONCRETE FINISHER", "SUTN2017-004", "survey", 19.00, 0.00],
+        ["CARPENTER", "SUTN2017-004", "survey", 17.50, 4.30],
+        ["LABORER: MASON TENDER - CEMENT/CONCRETE", "SUTN2017-004", "survey", 15.00, 0.00],
+        ["PAINTER (BRUSH AND ROLLER)", "SUTN2017-004", "survey", 14.07, 0.00],
+        ["LABORER: COMMON OR GENERAL", "SUTN2017-004", "survey", 13.00, 3.99],
+        ["SHEET METAL WORKER", "SHEE0005-001", "union", 37.70, 17.40],
+        ["POWER EQUIPMENT OPERATOR: CRANE", "ENGI0917-002", "union", 36.25, 13.40],
+        ["POWER EQUIPMENT OPERATOR: BULLDOZER", "ENGI0917-006", "union", 33.23, 13.40],
+        ["POWER EQUIPMENT OPERATOR (BACKHOE/TRACKHOE/EXCAVATOR)", "ENGI0917-006", "union", 33.23, 13.40]
+      ]
+    },
+    tn148: {
+      wd: "TN20260148", mod: "2", published: "2026-05-18",
+      where: "Obion County, Tennessee", type: "Building",
+      url: "https://sam.gov/api/prod/wdol/v1/wd/TN20260148/2",
+      rows: [
+        ["PLUMBER", "SUTN2017-001", "survey", 21.81, 0.00],
+        ["IRONWORKER, STRUCTURAL", "SUTN2017-001", "survey", 19.47, 0.00],
+        ["CEMENT MASON/CONCRETE FINISHER", "SUTN2017-001", "survey", 19.00, 0.00],
+        ["GLAZIER", "SUTN2017-001", "survey", 18.83, 1.11],
+        ["CARPENTER", "SUTN2017-001", "survey", 17.59, 1.81],
+        ["LABORER: MASON TENDER - CEMENT/CONCRETE", "SUTN2017-001", "survey", 15.00, 0.00],
+        ["PAINTER (BRUSH AND ROLLER)", "SUTN2017-001", "survey", 14.07, 0.00],
+        ["LABORER: COMMON OR GENERAL", "SUTN2017-001", "survey", 11.54, 0.00],
+        ["SHEET METAL WORKER", "SHEE0005-001", "union", 37.70, 17.40],
+        ["ELECTRICIAN", "ELEC1925-001", "union", 27.25, 15.72],
+        ["POWER EQUIPMENT OPERATOR: CRANE", "ENGI0917-002", "union", 36.25, 13.40],
+        ["POWER EQUIPMENT OPERATOR: BULLDOZER", "ENGI0917-006", "union", 33.23, 13.40]
+      ]
+    },
+    ca22: {
+      wd: "CA20260022", mod: "5", published: "2026-08-06",
+      where: "Los Angeles County, California", type: "Building, Heavy and Highway",
+      url: "https://sam.gov/api/prod/wdol/v1/wd/CA20260022/5",
+      note: "131 classifications on this determination. Eight shown.",
+      rows: [
+        ["BOILERMAKER", "BOIL0092-003", "union", 51.98, 42.11],
+        ["CEMENT MASON/CONCRETE FINISHER", "PLAS0500-002", "union", 47.70, 27.07],
+        ["LABORERS: HORIZONTAL DIRECTIONAL DRILLING: (1) DRILLING CREW LABORER", "LABO1184-001", "union", 47.94, 20.86],
+        ["IRONWORKER (FENCE ERECTOR)", "IRON0433-006", "union", 45.78, 26.51],
+        ["SHEET METAL WORKER (KERN & LOS ANGELES, NORTHERN PORTION)", "SHEE0105-004", "union", 45.98, null],
+        ["PLUMBER (LANDSCAPE/IRRIGATION FITTER)", "PLUM0345-001", "union", 44.75, 26.20],
+        ["PAINTERS: INCLUDING LEAD ABATEMENT: (2) ALL OTHER WORK", "PAIN0036-001", "union", 38.52, 18.64],
+        ["ASBESTOS REMOVAL WORKER/HAZARDOUS MATERIAL HANDLER", "ASBE0005-004", "union", 23.52, 13.37]
+      ]
+    }
+  };
+
+  var sel = document.getElementById("county");
+  var body = document.getElementById("lookup-body");
+  var unionNote = document.getElementById("union-note");
+
+  function money(v) {
+    if (v === null || v === undefined) { return "—"; }
+    return v.toFixed(2);
+  }
+
+  function render(key) {
+    var d = CORPUS[key];
+    if (!d || !body) { return; }
+    body.textContent = "";
+    var anyUnion = false;
+
+    d.rows.forEach(function (r) {
+      var tr = document.createElement("tr");
+      if (r[2] === "union") { anyUnion = true; }
+
+      var td1 = document.createElement("td");
+      td1.textContent = r[0];
+      tr.appendChild(td1);
+
+      var td2 = document.createElement("td");
+      td2.className = "rp-td--id";
+      td2.textContent = r[1];
+      tr.appendChild(td2);
+
+      var td3 = document.createElement("td");
+      td3.className = "rp-t-data";
+      td3.textContent = r[2] === "union" ? "CBA group" : "survey rate";
+      tr.appendChild(td3);
+
+      var td4 = document.createElement("td");
+      td4.className = "rp-td--num";
+      td4.textContent = money(r[3]);
+      tr.appendChild(td4);
+
+      var td5 = document.createElement("td");
+      td5.className = "rp-td--num";
+      td5.textContent = money(r[4]);
+      tr.appendChild(td5);
+
+      var td6 = document.createElement("td");
+      td6.className = "rp-td--num";
+      td6.textContent = (r[4] === null) ? "—" : money(r[3] + r[4]);
+      tr.appendChild(td6);
+
+      body.appendChild(tr);
+    });
+
+    document.getElementById("lp-claim").textContent =
+      "Rates of record: WD " + d.wd + ", Modification " + d.mod + ", published " + d.published + ".";
+    document.getElementById("lp-fresh").textContent =
+      d.where + " · " + d.type + " · read 2026-08-13" + (d.note ? " · " + d.note : "");
+    document.getElementById("lp-build").textContent =
+      "Corpus snapshot 4b91e30c · engine 1.0.0 · classification names reproduced verbatim";
+    var a = document.getElementById("lp-url");
+    a.href = d.url;
+    a.textContent = d.url.replace(/^https:\/\//, "");
+
+    if (unionNote) { unionNote.hidden = !anyUnion; }
+  }
+
+  if (sel) {
+    sel.addEventListener("change", function () { render(sel.value); });
+    render(sel.value);
+  }
+})();
+</script>
+</body>
+</html>
