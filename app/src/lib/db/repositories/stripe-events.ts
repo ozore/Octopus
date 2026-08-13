@@ -15,6 +15,18 @@ import { stripeEvents } from '../schema';
 import type { NewStripeEventRow, StripeEventRow } from './types';
 
 /**
+ * Read-only replay check. Used as a cheap pre-check before the fulfilment
+ * transaction opens, so an obvious Stripe retry costs one SELECT rather than a
+ * transaction; it is deliberately NOT the authoritative claim, which
+ * `recordStripeEventIfNew` takes inside that transaction so a rolled-back
+ * fulfilment releases it (see `billing/fulfillment.ts`).
+ */
+export async function getStripeEvent(db: Db, id: string): Promise<StripeEventRow | undefined> {
+  const rows = await db.select().from(stripeEvents).where(eq(stripeEvents.id, id)).limit(1);
+  return rows[0];
+}
+
+/**
  * Returns `{ isNew: true }` and persists the row on first sight; returns
  * `{ isNew: false }` on a replay without touching anything else. Uses
  * `onConflictDoNothing` rather than a caught unique-violation exception so the

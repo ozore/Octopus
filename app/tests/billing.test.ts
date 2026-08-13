@@ -26,7 +26,12 @@ import * as paymentsRepo from '../src/lib/db/repositories/payments';
 import * as shieldAccountsRepo from '../src/lib/db/repositories/shield-accounts';
 import type { StripeWebhookEvent } from '../src/lib/adapters/stripe';
 import type { Db } from '../src/lib/db';
-import { cases as casesTable, scheduledEmails as scheduledEmailsTable } from '../src/lib/db/schema';
+import {
+  cases as casesTable,
+  payments as paymentsTable,
+  scheduledEmails as scheduledEmailsTable,
+  stripeEvents as stripeEventsTable,
+} from '../src/lib/db/schema';
 import { baseCaseInput, createTestDb } from './helpers/pglite-db';
 import { makeTestAdapters } from './helpers/test-adapters';
 
@@ -326,6 +331,60 @@ describe('fulfillCheckoutSession (ADR-007: webhooks are the source of truth)', (
     // Only one receipt, not two — a double-send here is exactly what ADR-007
     // exists to prevent.
     expect(adapters.email.sent).toHaveLength(1);
+  });
+
+  /**
+   * THE RETRY THAT USED TO BE SWALLOWED.
+   *
+   * The idempotency claim was previously committed BEFORE fulfilment, in its own
+   * implicit transaction. A failure afterwards rolled the fulfilment back but not
+   * the claim, so Stripe's retry — the mechanism that exists to recover exactly
+   * this — read the row and returned `duplicate` forever. Card charged, case
+   * still `preview_ready`, no outcome sequence, and the system reporting success.
+   *
+   * The event here is for a session with no `payments` row (the real-world shape:
+   * Stripe delivering `checkout.session.completed` before our own Checkout write
+   * has committed). The first delivery must throw, and — the actual assertion —
+   * the retry must do REAL WORK rather than answer `duplicate`.
+   */
+  it('releases its idempotency claim when fulfilment fails, so the Stripe retry still fulfils (ADR-007)', async () => {
+    const caseRow = await makePreviewReadyCase();
+    const { session } = await createCheckoutForCase(db, adapters, {
+      caseId: caseRow.id,
+      tier: 'rescue',
+      successUrl: 'https://app.test/success',
+      cancelUrl: 'https://app.test/cancel',
+    });
+
+    // Delete the `payments` row to reproduce the shape that actually occurs:
+    // Stripe delivering the event against a session our own write has not (yet)
+    // made findable. The session exists at Stripe; the row does not exist here.
+    await db.delete(paymentsTable).where(eq(paymentsTable.stripeSessionId, session.id));
+
+    const event = completedSessionEvent('evt_retry', session.id);
+    await expect(fulfillCheckoutSession(db, adapters, event)).rejects.toThrow(/no payment row/i);
+
+    // Nothing was recorded as seen, because nothing was done.
+    const claimed = await db
+      .select()
+      .from(stripeEventsTable)
+      .where(eq(stripeEventsTable.id, 'evt_retry'));
+    expect(claimed).toHaveLength(0);
+
+    // The condition clears — our own Checkout write lands — Stripe retries, and
+    // the retry is a real fulfilment rather than a swallowed no-op.
+    await paymentsRepo.insertPendingPayment(db, {
+      caseId: caseRow.id,
+      stripeSessionId: session.id,
+      tier: 'rescue',
+      amountCents: TIER_AMOUNT_CENTS.rescue,
+      currency: 'usd',
+      status: 'pending',
+    });
+
+    const retry = await fulfillCheckoutSession(db, adapters, event);
+    expect(retry.status).toBe('fulfilled');
+    expect((await casesRepo.requireCase(db, caseRow.id)).status).toBe('paid');
   });
 
   it('purchasing Rescue+Human from an already-escalated case pays without re-transitioning status', async () => {

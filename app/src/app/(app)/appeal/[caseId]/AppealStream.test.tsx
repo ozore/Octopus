@@ -27,7 +27,7 @@ import {
   type PreviewPayload,
   type ProgressEvent,
 } from '@/app/_lib/progress';
-import type { CitedClause, Critique, DraftSections } from '@/lib/domain/types';
+import type { CitedClause, Critique } from '@/lib/domain/types';
 
 // ---------------------------------------------------------------------------
 // A minimal, fully-controllable EventSource. jsdom ships none, and the real
@@ -73,12 +73,6 @@ const clause: CitedClause = {
   block: { startBlockIndex: 0, endBlockIndex: 0 },
 };
 
-const sections: DraftSections = {
-  rootCause: 'Root cause text.',
-  correctiveActions: 'Corrective actions text.',
-  preventiveMeasures: 'Preventive measures text.',
-};
-
 const critique: Critique = {
   readinessScore: 64,
   criteria: [{ id: 'supplier_invoices', met: false, weight: 30, deficiency: 'No invoices cited.' }],
@@ -93,7 +87,6 @@ function makePreview(overrides: Partial<PreviewPayload> = {}): PreviewPayload {
     plainEnglish: 'You were charged under the Product Authenticity policy.',
     marketplace: 'amazon',
     clauses: [clause],
-    sections,
     critique,
     rubricLabels: { supplier_invoices: 'Supplier invoices on file' },
     syntheticCorpus: false,

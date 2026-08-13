@@ -201,8 +201,16 @@ describe('a drafted case', () => {
 
     const after = await getCase(record.id);
     expect(after?.classification?.code).toBe(preview.preview.reasonCode);
-    expect(after?.sections).toEqual(preview.preview.sections);
     expect(after?.clauses).toEqual(preview.preview.clauses);
+
+    // THE PAYWALL, ASSERTED ON THE WIRE. The drafted sections are persisted
+    // against the case but must NOT appear in the payload the browser receives
+    // before payment (ARCHITECTURE.md §1 — the paywall sits between the critique
+    // and the full document). A field no component renders is still a field the
+    // network tab shows, so this is checked on the event rather than on the DOM.
+    expect(after?.sections?.rootCause).toBeTruthy();
+    expect(preview.preview).not.toHaveProperty('sections');
+    expect(JSON.stringify(preview.preview)).not.toContain(after!.sections!.rootCause);
     expect(after?.critique?.readinessScore).toBe(preview.preview.critique.readinessScore);
 
     // Every criterion still resolves to a human label — the rubric is re-derived

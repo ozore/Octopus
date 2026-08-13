@@ -19,6 +19,17 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],
+    /**
+     * PGlite bootstraps a full in-process Postgres — WASM instantiation plus
+     * every committed migration — for EACH `beforeEach` in the data-layer
+     * suites. Under parallel workers on a loaded machine that regularly exceeds
+     * the 10s default, and the resulting failure ("Hook timed out in 10000ms")
+     * reads as a product bug when it is a fixture-cost bug. The headroom is
+     * raised rather than the isolation weakened: a shared database between tests
+     * would trade a slow suite for an order-dependent one.
+     */
+    hookTimeout: 60_000,
+    testTimeout: 30_000,
     include: ['tests/**/*.test.ts', 'tests/**/*.test.tsx', 'src/**/*.test.ts', 'src/**/*.test.tsx'],
     exclude: ['node_modules/**', '.next/**', 'e2e/**'],
     env: {

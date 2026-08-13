@@ -1,0 +1,101 @@
+# Clausewright — the blocking CI lane.
+#
+# Spec: ARCHITECTURE.md §2.1 (the CI row: "typecheck → unit → citation invariant
+# → golden-set eval → build → deploy"), I2/ADR-004 ("a render gate PLUS A CI
+# TEST"), B10 ("without evals in CI every prompt change is a coin flip"), and
+# app/README.md's "blocking CI order".
+#
+# WHY THIS FILE EXISTS AT ALL, stated because its absence was invisible: every
+# one of those documents described this pipeline as the enforcement mechanism for
+# the product's central invariant, and no workflow file was ever committed. The
+# citation invariant was enforced by a test that nothing ran. An invariant that
+# is only checked when someone remembers to check it is a convention, and
+# NAMING.md §3.3's claim — "the invariant fails the build before it fails a
+# customer" — was untrue for as long as there was no build to fail.
+#
+# TWO PROPERTIES THIS LANE MUST KEEP:
+#
+#  1. NO NETWORK, NO KEYS. Per ARCHITECTURE §2.2 factor X, per-commit evals run
+#     against RECORDED model responses; live-model evals are a nightly lane, not
+#     this one. Nothing here sets ANTHROPIC_API_KEY, STRIPE_SECRET_KEY or
+#     RESEND_API_KEY, and that is a guarantee rather than an omission — a step
+#     that needs one belongs in the nightly workflow.
+#
+#  2. THE INVARIANT STEPS RUN SEPARATELY FROM `npm test`, even though `npm test`
+#     already includes them. A green aggregate is not evidence a specific gate
+#     ran: a rename or an `include` glob edit can silently drop a file from the
+#     suite and leave every light green. Naming the two gate files as their own
+#     steps means "did the citation invariant run" is answerable from the job
+#     summary rather than from a log search.
+
+name: ci
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Twelve-Factor III: config from the environment. These are the offline shape,
+  # matching vitest.config.ts, and no secret appears anywhere in this file.
+  NODE_ENV: test
+  ADAPTER_MODE: mock
+  DATABASE_DRIVER: pglite
+
+jobs:
+  build:
+    name: typecheck → unit → invariants → corpus → build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: app
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # ARCHITECTURE §2.1: Node 22 LTS, matching the Dockerfile's node:22-slim.
+          # Dev/prod parity is a factor (X), not a preference.
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      # Factor II: the lockfile is the manifest. `ci`, never `install`, so a
+      # drifted lockfile fails here rather than resolving differently than the
+      # image will.
+      - run: npm ci
+
+      - name: typecheck
+        run: npm run typecheck
+
+      - name: unit
+        run: npm test
+
+      # --- The three steps that block a deploy on purpose -------------------
+
+      - name: citation invariant (I2 / ADR-004 / ADR-102)
+        run: npx vitest run src/lib/engine/citations.invariant.test.ts
+
+      - name: golden-set eval against recorded responses (B10)
+        run: npx vitest run src/lib/engine/evals/golden-set.test.ts
+
+      - name: corpus gates (CORPUS_DESIGN §7)
+        # Non-zero exit on any violation. Also prints the prompt_bundle_hash the
+        # release is stamped with — content-derived, so a deploy that changes no
+        # policy text keeps the warm prompt cache (ADR-003).
+        run: npm run corpus:check
+
+      # The web bundle can differ from what tsc and vitest see: a dynamic
+      # `import(specifier)` typechecks, passes under tsx, and compiles into a
+      # module that throws — which is how the corpus once became unreachable
+      # from the web tier with all three green lights on. The build is a gate,
+      # not a deploy step.
+      - name: next build
+        run: npm run build

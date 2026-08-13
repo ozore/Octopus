@@ -19,6 +19,7 @@ import * as inboundNoticesRepo from '../db/repositories/inbound-notices';
 import * as shieldAccountsRepo from '../db/repositories/shield-accounts';
 import type { InboundNotice, ShieldAccount } from '../db/repositories/types';
 import type { Db } from '../db';
+import { enqueueJob } from '../queue';
 
 export class UnknownIngestTokenError extends Error {
   constructor(public readonly address: string) {
@@ -55,19 +56,36 @@ export async function receiveInboundNotice(
   if (!account) throw new UnknownIngestTokenError(payload.to);
 
   const body = payload.text ?? '';
-  const notice = await inboundNoticesRepo.insertInboundNotice(db, {
-    shieldAccountId: account.id,
-    receivedAt: new Date(payload.receivedAt),
-    fromAddress: payload.from,
-    subject: payload.subject,
-    // Encryption-at-rest for inbound mail is the same concern as
-    // `notice_documents.raw_text_encrypted` (ARCHITECTURE.md §5.1) and is an
-    // infrastructure-level concern (KMS-backed envelope encryption) that sits
-    // outside this repository's boundary; this module stores plaintext today
-    // and the column name documents the obligation for whoever wires the
-    // encryption key.
-    rawTextEncrypted: body,
-    sha256: createHash('sha256').update(body).digest('hex'),
+
+  // PERSIST AND ENQUEUE IN ONE TRANSACTION — this is the "queue reader, not a
+  // poller" property this module's header claims, and before this fix it was
+  // only claimed. The row was inserted and nothing ever enqueued
+  // `process_inbound_notice`, so a forwarded deactivation notice landed in the
+  // table, was never classified, and the seller was never alerted — the single
+  // failure that makes D6's monitoring product not a product.
+  //
+  // One transaction, per ADR-005's stated reason for using the database as the
+  // queue: "enqueueing is transactional with the business write." A row without
+  // its job is mail we have and will never read; a job without its row is a
+  // worker that fails forever on a missing id. Neither is reachable here.
+  const notice = await db.transaction(async (tx) => {
+    const row = await inboundNoticesRepo.insertInboundNotice(tx, {
+      shieldAccountId: account.id,
+      receivedAt: new Date(payload.receivedAt),
+      fromAddress: payload.from,
+      subject: payload.subject,
+      // Encryption-at-rest for inbound mail is the same concern as
+      // `notice_documents.raw_text_encrypted` (ARCHITECTURE.md §5.1) and is an
+      // infrastructure-level concern (KMS-backed envelope encryption) that sits
+      // outside this repository's boundary; this module stores plaintext today
+      // and the column name documents the obligation for whoever wires the
+      // encryption key.
+      rawTextEncrypted: body,
+      sha256: createHash('sha256').update(body).digest('hex'),
+    });
+
+    await enqueueJob(tx, 'process_inbound_notice', { inboundNoticeId: row.id });
+    return row;
   });
 
   return { notice, account };

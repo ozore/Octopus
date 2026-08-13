@@ -35,7 +35,13 @@ export default async function AppealCasePage({
   if (!record) notFound();
 
   // A paid case belongs on the delivered document, not back at the paywall.
-  if (record.payment) redirect(`/case/${caseId}/plan`);
+  //
+  // `status === 'paid'`, not "a payment row exists". `startCheckout` writes a
+  // PENDING row before the seller reaches Stripe, so the weaker test sent a
+  // seller who merely OPENED Checkout and backed out straight to the delivered
+  // document — which, with the plan page ungated, handed over the $149 artifact
+  // for free. Only the webhook writes `paid` (ADR-007).
+  if (record.payment?.status === 'paid') redirect(`/case/${caseId}/plan`);
 
   return (
     <AppealStream

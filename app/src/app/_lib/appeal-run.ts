@@ -49,7 +49,8 @@ function terminalEvents(record: CaseRecord): ProgressEvent[] {
         plainEnglish: record.classification.plainEnglish,
         marketplace: record.marketplace,
         clauses: record.clauses,
-        sections: record.sections,
+        // No `sections` on the replay path either — a rejoin must not be a way
+        // around the paywall the live path enforces (see PreviewPayload).
         critique: record.critique,
         rubricLabels: record.rubricLabels ?? {},
         syntheticCorpus: Boolean(record.syntheticCorpus),
@@ -126,7 +127,8 @@ export function ensureRun(record: CaseRecord): Run {
           plainEnglish,
           marketplace,
           clauses: [...result.draft.clauses],
-          sections: result.draft.sections,
+          // No `sections`: the drafted document is persisted above and served
+          // only after payment. See PreviewPayload's note — this is the paywall.
           critique: result.critique,
           rubricLabels,
           syntheticCorpus,

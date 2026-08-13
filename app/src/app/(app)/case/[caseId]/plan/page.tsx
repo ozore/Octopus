@@ -54,6 +54,45 @@ export default async function PlanPage({
   const record = await getCase(caseId);
   if (!record) notFound();
 
+  // THE PAYWALL, SERVER-SIDE. ARCHITECTURE.md §1: "The paywall therefore sits
+  // between the critique and the full document." That sentence is a server
+  // authorisation rule, not a layout note — the free preview (reason code, cited
+  // clause, critique) is deliberately complete and sellable on its own, and the
+  // three drafted sections are the thing being sold.
+  //
+  // `status === 'paid'` and not merely "a payment row exists": `startCheckout`
+  // writes a PENDING row before the seller ever reaches Stripe, so a seller who
+  // opens Checkout and abandons it would otherwise hold a row that reads as
+  // entitlement. Only the webhook sets `paid` (ADR-007), which is the whole
+  // reason the redirect is not the source of truth.
+  //
+  // Escalated cases are the deliberate second door: a case a human is handling
+  // has no model-drafted document to gate, and the human tier is itself paid.
+  const paid = record.payment?.status === 'paid';
+
+  if (!paid) {
+    return (
+      <div className="cw-screen">
+        <div className="cw-screen__head">
+          <h1 className="cw-screen__title">Your document is not unlocked yet</h1>
+          <p className="cw-screen__lede">
+            Your reason code, the exact policy clause you were charged under and our own critique of
+            the draft are all still free to read on the preview — nothing there is hidden. The three
+            written sections you paste into Account Health are what the fee covers.
+          </p>
+        </div>
+        <div className="cw-actions">
+          <a className="cw-btn cw-btn--primary" href={`/appeal/${caseId}`}>
+            <span className="cw-btn__label">Back to your preview</span>
+          </a>
+          <a className="cw-btn cw-btn--secondary" href={`/case/${caseId}`}>
+            <span className="cw-btn__label">See where this case is</span>
+          </a>
+        </div>
+      </div>
+    );
+  }
+
   if (!record.sections || !record.clauses) {
     return (
       <div className="cw-screen">

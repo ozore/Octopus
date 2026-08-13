@@ -38,15 +38,32 @@ export async function fulfillCheckoutSession(
   adapters: Adapters,
   event: StripeWebhookEvent,
 ): Promise<FulfillmentResult> {
-  // Idempotency FIRST (ADR-007): if we've already recorded this event id,
-  // every side effect below has already happened (or is in flight) and must
-  // not happen again — a double-send here is what poisons L4 (ADR-008).
-  const { isNew } = await stripeEventsRepo.recordStripeEventIfNew(db, {
-    id: event.id,
-    type: event.type,
-    payload: event.data,
-  });
-  if (!isNew) return { status: 'duplicate' };
+  // Idempotency (ADR-007), as a CHEAP PRE-CHECK ONLY. The authoritative claim
+  // is taken inside the transaction below, and the difference is not a
+  // refinement — it is the bug this ordering used to have.
+  //
+  // WHAT WENT WRONG WITH "RECORD FIRST, THEN FULFIL". The event row was
+  // committed before any fulfilment work ran, in its own implicit transaction.
+  // If anything afterwards threw — the `payments` row not yet visible because
+  // Checkout creation was still committing, a Stripe API timeout on
+  // `retrieveSession`, a transient database error mid-transaction — the
+  // fulfilment rolled back but the idempotency claim did NOT, because it was
+  // never part of that transaction. Stripe then retried, as it is designed to,
+  // and every retry read the row, returned `{status:'duplicate'}` and did
+  // nothing. The customer's card was charged, the case never left
+  // `preview_ready`, no outcome sequence was scheduled, and the system reported
+  // success. A silently swallowed retry is strictly worse than a double-send,
+  // because the double-send is loud.
+  //
+  // The claim is now taken with `recordStripeEventIfNew` INSIDE the same
+  // transaction as every write it guards, so the two commit or roll back
+  // together: a failed fulfilment releases its claim and the next Stripe retry
+  // does real work. `stripe_events.id` (the primary key) is still what makes a
+  // genuine replay a no-op — under concurrent delivery of the same event, one
+  // transaction inserts and the other's `onConflictDoNothing` sees the row and
+  // returns duplicate.
+  const preCheck = await stripeEventsRepo.getStripeEvent(db, event.id);
+  if (preCheck) return { status: 'duplicate' };
 
   const sessionId = extractCheckoutSessionId(event);
   const payment = await paymentsRepo.getPaymentBySessionId(db, sessionId);
@@ -63,8 +80,20 @@ export async function fulfillCheckoutSession(
   const tier = payment.tier;
 
   let receiptTo: string | undefined;
+  let duplicate = false;
 
   await db.transaction(async (tx) => {
+    // The authoritative claim, inside the transaction it guards.
+    const { isNew } = await stripeEventsRepo.recordStripeEventIfNew(tx, {
+      id: event.id,
+      type: event.type,
+      payload: event.data,
+    });
+    if (!isNew) {
+      duplicate = true;
+      return;
+    }
+
     await paymentsRepo.markPaymentPaid(tx, sessionId, {
       paidAt,
       ...(sessionDetails.paymentIntentId ? { stripePaymentIntentId: sessionDetails.paymentIntentId } : {}),
@@ -133,6 +162,8 @@ export async function fulfillCheckoutSession(
       await scheduleOutcomeSequence(tx, payment.caseId as string, { now: paidAt });
     }
   });
+
+  if (duplicate) return { status: 'duplicate' };
 
   // Side effect on an external system — after commit, never inside the
   // transaction (a slow/failed Resend call must not hold a DB lock or roll

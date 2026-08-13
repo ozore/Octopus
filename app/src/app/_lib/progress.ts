@@ -20,7 +20,7 @@
  */
 
 import type { TimelineNodeState } from '@/components/StatusTimeline';
-import type { CitedClause, Critique, DraftSections, EscalationReason } from '@/lib/domain/types';
+import type { CitedClause, Critique, EscalationReason } from '@/lib/domain/types';
 
 export const STAGE_KEYS = ['read', 'identify', 'clause', 'draft', 'check'] as const;
 export type StageKey = (typeof STAGE_KEYS)[number];
@@ -32,7 +32,22 @@ export type PreviewPayload = {
   plainEnglish: string;
   marketplace: string;
   clauses: CitedClause[];
-  sections: DraftSections;
+  /**
+   * THE DRAFTED SECTIONS ARE DELIBERATELY ABSENT FROM THIS TYPE, and their
+   * absence is the paywall rather than a layout decision.
+   *
+   * This payload is serialised onto an SSE stream that a seller reads BEFORE
+   * paying (ARCHITECTURE.md §1: "the paywall therefore sits between the critique
+   * and the full document"). A field that no component renders is still a field
+   * the browser receives, so carrying `sections` here published the $149
+   * artifact to anyone with a devtools network tab while the screen showed a
+   * paywall. The preview is complete and sellable without it: reason code,
+   * cited clause, critique — which is exactly what §7.1's comparative
+   * assumption A4 needs visible before the paywall.
+   *
+   * The sections are persisted by the same run (`updateCase`) and served, after
+   * a `paid` payment, by `/case/{id}/plan`.
+   */
   critique: Critique;
   /** Rubric labels keyed by criterion id — the rubric owns the wording. */
   rubricLabels: Record<string, string>;

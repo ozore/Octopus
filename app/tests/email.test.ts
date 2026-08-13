@@ -145,6 +145,36 @@ describe('inbound Shield ingest (ADR-006)', () => {
     expect(notice.processedAt).toBeNull();
   });
 
+  /**
+   * ADR-006's whole durability claim is "persist, then enqueue, then 200", so
+   * the enqueue is the half that makes the persisted row mean anything. Without
+   * it a forwarded deactivation notice lands in the table, is never classified,
+   * and the seller is never alerted — D6's monitoring product observing nothing
+   * while reporting success. The row alone is not evidence; the claimable job
+   * is.
+   */
+  it('enqueues process_inbound_notice for the row it just persisted (ADR-006: a queue reader, not a poller)', async () => {
+    const account = await shieldAccountsRepo.createShieldAccount(db, {
+      marketplace: 'amazon',
+      sourceKind: 'email_forward',
+    });
+    const payload = JSON.stringify({
+      to: `shield+${account.ingestToken}@in.clausewright.test`,
+      from: 'seller-performance@amazon.com',
+      subject: 'Your Amazon selling account has been deactivated',
+      text: 'Your account has been deactivated in accordance with section 3 of the Business Solutions Agreement.',
+      receivedAt: new Date().toISOString(),
+    });
+    const signature = adapters.email.sign(payload);
+
+    const { notice } = await receiveInboundNotice(db, adapters, payload, signature);
+
+    const claimed = await claimJobs(db, { workerId: 'test', limit: 10 });
+    const job = claimed.find((j) => j.kind === 'process_inbound_notice');
+    expect(job).toBeDefined();
+    expect((job!.payload as { inboundNoticeId: string }).inboundNoticeId).toBe(notice.id);
+  });
+
   it('rejects an inbound payload with no matching Shield account', async () => {
     const payload = JSON.stringify({
       to: 'shield+doesnotexist@in.clausewright.test',

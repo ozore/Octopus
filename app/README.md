@@ -29,7 +29,11 @@ app/
 │   │   │   ├── engine-runtime.ts  #   the web tier's single call into the engine
 │   │   │   ├── appeal-run.ts      #   one narrated pipeline run per case
 │   │   │   └── run-registry.ts    #   replayable SSE runs (a reload must not re-bill)
-│   │   └── api/                   #   /api/health, /api/appeal/[caseId]/stream (SSE)
+│   │   └── api/                   #   the web process's HTTP surface
+│   │       ├── health/            #     release attribution (corpus release, model ids)
+│   │       ├── appeal/[caseId]/stream/  # SSE preview
+│   │       ├── stripe/webhook/    #     ADR-007 — the source of truth for payment
+│   │       └── inbound/email/     #     ADR-006 — Shield's ingest endpoint
 │   ├── lib/
 │   │   ├── adapters/              # every vendor SDK import in the codebase lives here
 │   │   │   ├── anthropic.{ts,live,mock}.ts   # StructuredRequest | CitedRequest, never both
@@ -149,7 +153,7 @@ Migrations are plain SQL files in version control. Generating one is a developer
 
 ```bash
 npm run typecheck                   # tsc --noEmit
-npm test                            # vitest — 342 tests across 26 files, ~60s
+npm test                            # vitest — 347 tests across 27 files, ~65s
 npm test -- tests/integration.test.ts   # just the cross-module seams
 npm run test:e2e                    # playwright — builds, starts a server, drives the journey
 ```
@@ -191,9 +195,13 @@ The mocks are faithful about the things the pipeline branches on — `stop_reaso
 
 ### The blocking CI order
 
+Committed as [`../.github/workflows/ci.yml`](../.github/workflows/ci.yml) — the workflow, not just the intention.
+
 ```
 typecheck → unit → citation invariant → golden-set eval → corpus:check → next build → docker build → migrate → deploy
 ```
+
+The first six steps are the committed workflow; image build, migrate and deploy are the release job. The invariant steps run as their own named steps even though `npm test` already includes them: a green aggregate is not evidence that a *specific* gate ran, and an `include` glob edit can drop a file from the suite while every light stays green.
 
 Three of those steps block the deploy on purpose: `citations.invariant.test.ts` (ADR-004/ADR-102), the golden-set eval (B10), and `corpus:check`. Without evals in CI, every prompt change is a coin flip — and a prompt change is the most common change this codebase will ever see. Without `corpus:check`, a corpus edit that breaks a citation chain reaches a paying seller.
 
