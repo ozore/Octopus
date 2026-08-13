@@ -174,58 +174,93 @@ export class ClaudeCliAnthropicAdapter implements AnthropicAdapter {
       req.systemPrefix,
       renderDocuments(req.documents),
       req.userText,
-      '\n\nDo not use any tools. First compose, in full, EXACTLY the document the',
+      '\n\nDo not use any tools. Compose, in full, EXACTLY the document the',
       'instructions above describe — every required section heading verbatim, all',
-      'formatting intact, nothing abridged. Then respond with ONLY a single JSON',
-      'value (no prose, no markdown fence) of this exact shape:',
-      '{"blocks":[{"text":"<the next consecutive passage of that document>",',
+      'newlines and formatting intact, nothing abridged. Then respond with ONLY a',
+      'single JSON value (no prose, no markdown fence) of this exact shape:',
+      '{"document":"<the COMPLETE document text>",',
       '"citations":[{"documentId":"<id from the DOCUMENTS list>","blockIndex":<number>,',
-      '"quote":"<EXACT verbatim substring copied from that block>"}]}]}',
-      'The "text" fields, concatenated in order, MUST reproduce the complete',
-      'document byte-for-byte — headings included; split into passages only where',
-      'a citation attaches. Every factual claim about policy MUST carry at least',
-      'one citation whose "quote" is copied character-for-character from the',
-      'referenced block — quotes are machine-verified against the source and any',
-      'mismatch voids the citation. Only these document ids are citable:',
-      req.citableDocumentIds.join(', ') + '.',
+      '"quote":"<EXACT verbatim substring copied from that source block>",',
+      '"anchor":"<EXACT substring of YOUR document that this citation supports>"}]}',
+      'Every factual claim about policy MUST have a citation. Both "quote" (against',
+      'the source block) and "anchor" (against your own document) are machine-',
+      'verified by exact string match; any mismatch voids the citation. Only these',
+      'document ids are citable: ' + req.citableDocumentIds.join(', ') + '.',
     ].join('\n');
 
     const cli = await this.invoke(req.model, prompt);
     const raw = extractJson(cli.result ?? '') as {
-      blocks?: Array<{
-        text?: string;
-        citations?: Array<{ documentId?: string; blockIndex?: number; quote?: string }>;
+      document?: string;
+      citations?: Array<{
+        documentId?: string;
+        blockIndex?: number;
+        quote?: string;
+        anchor?: string;
       }>;
     };
+    const documentText = raw.document ?? '';
 
     const docIndexById = new Map<string, { index: number; doc: ModelDocument }>();
     req.documents.forEach((doc, index) => docIndexById.set(doc.documentId, { index, doc }));
 
-    const blocks: CitedTextBlock[] = (raw.blocks ?? []).map((b) => {
-      const citations: ModelCitation[] = [];
-      for (const c of b.citations ?? []) {
-        const entry = c.documentId ? docIndexById.get(c.documentId) : undefined;
-        if (!entry || typeof c.blockIndex !== 'number' || !c.quote) continue;
-        const sourceBlock =
-          entry.doc.source.type === 'content'
-            ? entry.doc.source.blocks[c.blockIndex]
-            : c.blockIndex === 0
-              ? entry.doc.source.text
-              : undefined;
-        // The provenance check: a citation exists only if its quote is verbatim
-        // present in the exact block it names. Anything else is dropped and the
-        // downstream citation gate fails the claim closed.
-        if (!sourceBlock || !sourceBlock.includes(c.quote)) continue;
-        citations.push({
+    // Verify provenance (quote ⊆ named source block) AND anchoring (anchor ⊆
+    // the model's own document). Anything that fails either check is dropped,
+    // and the downstream citation gate fails the affected claim closed.
+    type Anchored = { citation: ModelCitation; start: number; end: number };
+    const anchored: Anchored[] = [];
+    for (const c of raw.citations ?? []) {
+      const entry = c.documentId ? docIndexById.get(c.documentId) : undefined;
+      if (!entry || typeof c.blockIndex !== 'number' || !c.quote || !c.anchor) continue;
+      const sourceBlock =
+        entry.doc.source.type === 'content'
+          ? entry.doc.source.blocks[c.blockIndex]
+          : c.blockIndex === 0
+            ? entry.doc.source.text
+            : undefined;
+      if (!sourceBlock || !sourceBlock.includes(c.quote)) continue;
+      const start = documentText.indexOf(c.anchor);
+      if (start === -1) continue;
+      anchored.push({
+        citation: {
           citedText: c.quote,
           documentIndex: entry.index,
           documentTitle: entry.doc.title,
           startBlockIndex: c.blockIndex,
           endBlockIndex: c.blockIndex,
-        });
+        },
+        start,
+        end: start + c.anchor.length,
+      });
+    }
+    anchored.sort((a, b) => a.start - b.start || a.end - b.end);
+
+    // Cut the document at anchor boundaries. Concatenating the resulting block
+    // texts reproduces `document` byte-for-byte BY CONSTRUCTION — which is the
+    // property the engine's sentinel parser depends on (blocks are join('')ed).
+    const blocks: CitedTextBlock[] = [];
+    let cursor = 0;
+    let i = 0;
+    while (i < anchored.length) {
+      const head = anchored[i]!;
+      if (head.end <= cursor) {
+        i += 1;
+        continue;
       }
-      return { text: b.text ?? '', citations };
-    });
+      const blockEnd = Math.max(head.end, cursor);
+      const citations = [head.citation];
+      let j = i + 1;
+      // Citations whose anchors overlap this cut share the block.
+      while (j < anchored.length && anchored[j]!.start < blockEnd) {
+        citations.push(anchored[j]!.citation);
+        j += 1;
+      }
+      blocks.push({ text: documentText.slice(cursor, blockEnd), citations });
+      cursor = blockEnd;
+      i = j;
+    }
+    if (cursor < documentText.length || blocks.length === 0) {
+      blocks.push({ text: documentText.slice(cursor), citations: [] });
+    }
 
     return {
       kind: 'cited',
