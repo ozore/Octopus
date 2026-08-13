@@ -169,7 +169,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON billing_account_index, email_outbox TO r
 GRANT SELECT, INSERT, UPDATE, DELETE ON plan_changes, account_deletions TO ratepin_app;
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO ratepin_app;
 
--- `plan_changes` and `account_deletions` are read by the customer's own billing and
+-- plan_changes and account_deletions are read by the customer's own billing and
 -- settings screens, so they get the second mechanism (ADR-011). The two fleet
 -- surfaces above deliberately do not; the reasoning is in this file's header.
 SELECT ratepin_enable_tenant_rls('plan_changes');
@@ -184,8 +184,8 @@ SELECT ratepin_enable_tenant_rls('account_deletions');
 -- rule cannot cover: a rule says nobody should reclassify a message as bulk after
 -- the fact or quietly drop its minutes; a trigger makes it impossible.
 --
--- What the trigger permits is exactly one thing — RAISING `minutes_charged` and
--- stamping `first_reply_at` once, which is the legitimate write when a reply is
+-- What the trigger permits is exactly one thing — RAISING minutes_charged and
+-- stamping first_reply_at once, which is the legitimate write when a reply is
 -- observed and the floor of 1 gives way to the real wall-clock cost. Everything
 -- else is refused: no DELETE at any time, no change to the address, no change to
 -- the classification or the rule that produced it, no lowering of the minutes, and
