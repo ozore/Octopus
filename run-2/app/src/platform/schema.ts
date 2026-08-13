@@ -164,6 +164,104 @@ CREATE TABLE IF NOT EXISTS account_deletions (
   report         jsonb NOT NULL DEFAULT '{}'::jsonb
 );
 
+-- ---------------------------------------------------------------------------
+-- THE WORKER'S RUN RECORD.  ARCHITECTURE §7 ("a job registry with schedules,
+-- idempotency keys, failure-closed semantics and structured run records").
+--
+-- jobs is the QUEUE — one row per unit of work, deleted-by-state as it moves.
+-- This is the LEDGER: one row per attempt, kept, so that "did the nightly ingest
+-- run last night, and what did it decide?" is a query rather than a log grep. It is
+-- also the only place a failure is recorded, because there is nowhere else for a
+-- failure to go: no pager, no inbox, no on-call rotation (I7).
+--
+-- outcome has four values and none of them is 'alerted'.
+-- ---------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS job_runs (
+  id              bigserial PRIMARY KEY,
+  job_id          bigint REFERENCES jobs (id) ON DELETE SET NULL,
+  kind            text NOT NULL,
+  idempotency_key text,
+  attempt         integer NOT NULL DEFAULT 1,
+  started_at      timestamptz NOT NULL DEFAULT now(),
+  finished_at     timestamptz,
+  outcome         text NOT NULL,
+  -- What the job decided, in the job's own vocabulary: snapshot state, rows
+  -- credited, messages drained. Never a worker name, a rate or an SSN.
+  detail          jsonb NOT NULL DEFAULT '{}'::jsonb,
+  error           text,
+  CONSTRAINT job_runs_outcome CHECK (
+    outcome IN ('ok', 'failed_closed', 'skipped_duplicate', 'lease_expired'))
+);
+CREATE INDEX IF NOT EXISTS job_runs_kind ON job_runs (kind, started_at DESC);
+
+-- ---------------------------------------------------------------------------
+-- BACKUP VERIFICATION — the measured number §5.5's deletion promise is quoted from.
+--
+-- "We do not assert a vendor number here… backup.verify (P11) records the OLDEST
+-- RESTORABLE TIMESTAMP on every run, /api/status exposes it, and the deletion
+-- screen quotes THAT measured number." A retention figure that has never been
+-- measured is a marketing claim, so the deletion screen reads this table or says
+-- that it has not been measured yet. It never guesses.
+-- ---------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS backup_verifications (
+  id                   bigserial PRIMARY KEY,
+  at                   timestamptz NOT NULL DEFAULT now(),
+  restored             boolean NOT NULL,
+  oldest_restorable_at timestamptz,
+  rows_checked         integer,
+  canary_subset_pass   boolean,
+  detail               jsonb NOT NULL DEFAULT '{}'::jsonb
+);
+
+GRANT SELECT, INSERT, UPDATE ON job_runs, backup_verifications TO ratepin_app;
+
+-- ---------------------------------------------------------------------------
+-- THE GATE COUNTERS ARE WRITTEN BY THE WORKER, WHICH IS ratepin_app.
+--
+-- The schema of record grants the application SELECT on canary_runs,
+-- corpus_reconciliation and claim_gates because at the time it was written the
+-- only reader was a screen. G1's run and G3's reconciliation are produced by the
+-- scheduled worker (§7.1), and the worker connects as ratepin_app — a NOBYPASSRLS
+-- role, asserted at boot — so without these three grants the instrumentation cannot
+-- write the numbers the gates are measured on.
+--
+-- INSERT ONLY on the two evidence tables. There is deliberately no UPDATE and no
+-- DELETE: a canary run and a nightly reconciliation are facts about a moment, and a
+-- product that can edit its own evidence has none. claim_gates gets UPDATE because
+-- it is a DERIVED cache of those facts — refreshClaimGates recomputes every column
+-- from the counters on every run, so an edit cannot invent a state the evidence does
+-- not support.
+-- ---------------------------------------------------------------------------
+
+GRANT INSERT ON canary_runs, corpus_reconciliation TO ratepin_app;
+GRANT UPDATE ON claim_gates TO ratepin_app;
+
+-- The Monday eCFR diff (§7.1 ingest.ecfr) writes the obligation changelog and the
+-- three watched constants — 5.5(b)'s $100,000 CWHSSA preamble, 5.5(b)(2)'s $33/day,
+-- and 3.5's set of lettered paragraphs. Both tables are INSERT-only for the
+-- application: an observation of what the regulation said on a date is not a row
+-- anybody gets to edit afterwards, and the engine reads them as history.
+GRANT INSERT ON obligation_changelog, regulatory_constant TO ratepin_app;
+
+-- ---------------------------------------------------------------------------
+-- THE ONE INDEX THE MONEY PATH CANNOT RUN WITHOUT.
+--
+-- src/db/schema.ts declares uniqueIndex('meter_events_filing') on meter_events
+-- (filing_id) and drizzle/0000_init.sql does not create it. The parity test compares
+-- tables and columns, not indexes, so the gap was invisible — and it is not
+-- cosmetic: meterFiling posts with ON CONFLICT (filing_id) DO NOTHING, which is a
+-- runtime error without a matching unique constraint, and the property it buys is
+-- that a retried meter job cannot bill a customer twice for one filing.
+--
+-- Created here, idempotently, rather than by editing the schema of record, which
+-- this module does not own. If the constraint later lands in the migration this
+-- statement becomes a no-op.
+-- ---------------------------------------------------------------------------
+
+CREATE UNIQUE INDEX IF NOT EXISTS meter_events_filing ON meter_events (filing_id);
+
 GRANT SELECT, INSERT, UPDATE, DELETE ON auth_magic_links, auth_sessions TO ratepin_app;
 GRANT SELECT, INSERT, UPDATE, DELETE ON billing_account_index, email_outbox TO ratepin_app;
 GRANT SELECT, INSERT, UPDATE, DELETE ON plan_changes, account_deletions TO ratepin_app;
