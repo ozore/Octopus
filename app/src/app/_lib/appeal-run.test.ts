@@ -153,6 +153,32 @@ describe('a drafted case', () => {
   });
 
   /**
+   * The marketplace stage 1 read has to land on the CASE row, not only on the
+   * classification row, because that is the field every screen reads.
+   *
+   * Regression, and the symptom was quiet rather than loud: `updateCase` wrote
+   * the marketplace onto the classification it inserted, while `assemble()`
+   * reads `CaseRecord.marketplace` off `cases`, whose column defaults to
+   * `'unknown'`. Every drafted case therefore rendered "Marketplace: unknown",
+   * and `/case/{id}/plan` degraded its last checklist line from the exact Seller
+   * Central path to the generic "your marketplace's Account Health page" —
+   * USER_JOURNEY §7.3's highest-leverage screen, losing the one instruction the
+   * seller is actually there for.
+   */
+  it('records the marketplace stage 1 read on the case itself', async () => {
+    const record = await createCase(fixtureNotice('GS-01'));
+    const run = ensureRun(record);
+    await new Promise<void>((resolve) => {
+      subscribe(run, (e) => e.type === 'done' && resolve());
+    });
+
+    // GS-01 is an Amazon notice, and the classifier refuses to draft at all when
+    // it cannot name the marketplace — so 'unknown' here can only mean the value
+    // was dropped between the engine and the row.
+    expect(await getCase(record.id).then((c) => c?.marketplace)).toBe('amazon');
+  });
+
+  /**
    * THE RELOAD, not the first render. Everything above reads the run's live
    * event stream; this reads the case back out of the database the way a seller
    * returning tomorrow does. The two must agree, and the failure mode is

@@ -119,11 +119,39 @@ export async function reclaimStaleJobs(
   return rows.length;
 }
 
-/** postgres-js returns an array; PGlite returns `{ rows }`. Normalise both. */
+/**
+ * postgres-js returns an array; PGlite returns `{ rows }`. Normalise both —
+ * AND remap each row's raw SQL (snake_case) column names to the camelCase
+ * keys the rest of the codebase (the `Job` type, `failJob`'s
+ * `job.maxAttempts` exhaustion check, `worker/index.ts`'s handler dispatch)
+ * expects.
+ *
+ * `claimJobs` bypasses Drizzle's query builder (it needs a single atomic
+ * `WITH … FOR UPDATE SKIP LOCKED … UPDATE … RETURNING`, which the builder
+ * cannot express), so `db.execute(sql\`…RETURNING j.*\`)` hands back rows keyed
+ * by the literal Postgres column names — `max_attempts`, not `maxAttempts`.
+ * Every other read path in this codebase goes through `db.select().from(jobs)`,
+ * which Drizzle remaps automatically; this is the one path that does not, so it
+ * must remap by hand or every camelCase-keyed reader downstream silently reads
+ * `undefined` instead of throwing.
+ */
 function normaliseRows<T>(result: unknown): T[] {
-  if (Array.isArray(result)) return result as T[];
+  const rows = extractRawRows(result);
+  return rows.map((row) => remapSnakeCaseKeys(row)) as T[];
+}
+
+function extractRawRows(result: unknown): Array<Record<string, unknown>> {
+  if (Array.isArray(result)) return result as Array<Record<string, unknown>>;
   if (result && typeof result === 'object' && Array.isArray((result as { rows?: unknown }).rows)) {
-    return (result as { rows: T[] }).rows;
+    return (result as { rows: Array<Record<string, unknown>> }).rows;
   }
   return [];
+}
+
+function remapSnakeCaseKeys(row: Record<string, unknown>): Record<string, unknown> {
+  const mapped: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(row)) {
+    mapped[key.replace(/_([a-z0-9])/g, (_match, c: string) => c.toUpperCase())] = value;
+  }
+  return mapped;
 }

@@ -530,7 +530,14 @@ async function applyStatus(db: Db, existing: CaseRow, patch: CasePatch): Promise
       // The engine ran classify → retrieve → draft → critique in one call, so
       // the intermediate rows are walked here rather than pretended away: the
       // machine's edges are the audit trail of what actually happened.
-      await walk(db, existing.id, ['classified', 'drafting', 'critiquing', 'preview_ready']);
+      await walk(
+        db,
+        existing.id,
+        ['classified', 'drafting', 'critiquing', 'preview_ready'],
+        // Stage 1 read the marketplace out of the notice; this is the transition
+        // that is entitled to record it (see `walk`).
+        patch.marketplace ? { classified: { marketplace: patch.marketplace } } : {},
+      );
       return;
 
     case 'paid':
@@ -562,12 +569,36 @@ async function applyStatus(db: Db, existing: CaseRow, patch: CasePatch): Promise
 }
 
 /** Walks a run of legal edges, skipping any the case has already passed. */
-async function walk(db: Db, caseId: string, path: casesRepo.CaseStatus[]): Promise<void> {
+/**
+ * `at` carries a per-status field patch — today only the marketplace, applied on
+ * the `classified` step.
+ *
+ * WHY IT IS NOT ENOUGH TO WRITE THE MARKETPLACE ON THE CLASSIFICATION ROW.
+ * `updateCase` does that already, but `assemble()` reads `CaseRecord.marketplace`
+ * off the `cases` row, and the `cases` row's column defaults to `'unknown'`. So
+ * before this, every drafted case rendered "Marketplace: unknown" no matter what
+ * stage 1 decided — and `/case/{id}/plan` then fell back to the generic "your
+ * marketplace's Account Health page" instead of naming the Seller Central path.
+ * USER_JOURNEY §7.3 calls that checklist "the highest-leverage single screen in
+ * the product", and "where it goes" is its last step, so a silently generic
+ * answer there is a real loss rather than a cosmetic one.
+ *
+ * It rides on the transition rather than a separate UPDATE because
+ * `transitionCase` already takes the row's lock and applies the patch inside
+ * that transaction — a second write would be a second chance to disagree.
+ */
+async function walk(
+  db: Db,
+  caseId: string,
+  path: casesRepo.CaseStatus[],
+  at: Partial<Record<casesRepo.CaseStatus, { marketplace?: CaseRow['marketplace'] }>> = {},
+): Promise<void> {
   for (const to of path) {
     const current = await casesRepo.requireCase(db, caseId);
     if (current.status === to) continue;
     if (!casesRepo.CASE_TRANSITIONS[current.status].includes(to)) continue;
-    await casesRepo.transitionCase(db, caseId, to);
+    const fields = at[to];
+    await casesRepo.transitionCase(db, caseId, to, fields?.marketplace ? { marketplace: fields.marketplace } : {});
   }
 }
 

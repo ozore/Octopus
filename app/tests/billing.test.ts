@@ -17,9 +17,11 @@ import {
 import { fulfillCheckoutSession } from '../src/lib/billing/fulfillment';
 import { checkAndRefundIfBreached, checkSlo, sloBreachRefund } from '../src/lib/billing/refunds';
 import { extractCheckoutSessionId, handleStripeWebhook } from '../src/lib/billing/webhook';
-import { TIER_AMOUNT_CENTS, TIER_LABELS } from '../src/lib/billing/pricing';
+import { TIER_AMOUNT_CENTS, TIER_LABELS, SHIELD_INCLUDED_DAYS } from '../src/lib/billing/pricing';
+import { activateIncludedShield, lapseShield, recordShieldRenewal } from '../src/lib/billing/shield';
 import * as casesRepo from '../src/lib/db/repositories/cases';
 import * as consentsRepo from '../src/lib/db/repositories/consents';
+import * as customersRepo from '../src/lib/db/repositories/customers';
 import * as paymentsRepo from '../src/lib/db/repositories/payments';
 import * as shieldAccountsRepo from '../src/lib/db/repositories/shield-accounts';
 import type { StripeWebhookEvent } from '../src/lib/adapters/stripe';
@@ -70,6 +72,136 @@ describe('pricing ladder (D4: deliberately above the $97 incumbent)', () => {
     expect(TIER_AMOUNT_CENTS.rescue_human).toBe(39_900);
     expect(TIER_AMOUNT_CENTS.shield_monthly).toBe(4_900);
     expect(TIER_LABELS.rescue).toBe('Rescue');
+  });
+});
+
+describe('D6 monitoring billing math: 30 free days of Shield', () => {
+  it('SHIELD_INCLUDED_DAYS is exactly 30 (D6)', () => {
+    expect(SHIELD_INCLUDED_DAYS).toBe(30);
+  });
+
+  it('activateIncludedShield sets includedUntil to exactly activatedAt + 30 days, no more, no less', async () => {
+    const caseRow = await casesRepo.createCase(db, baseCaseInput());
+    const customer = await customersRepo.findOrCreateCustomerByEmail(db, { email: 'shield-math@example.test' });
+    const activatedAt = new Date('2026-01-01T00:00:00.000Z');
+
+    const account = await activateIncludedShield(db, {
+      customerId: customer.id,
+      caseId: caseRow.id,
+      marketplace: 'amazon',
+      activatedAt,
+    });
+
+    expect(account.includedUntil).not.toBeNull();
+    const expectedMs = activatedAt.getTime() + 30 * 24 * 60 * 60 * 1000;
+    expect(account.includedUntil?.getTime()).toBe(expectedMs);
+
+    // Sanity-check the boundary in calendar terms too: Jan 1 + 30 days = Jan 31.
+    expect(account.includedUntil?.toISOString()).toBe('2026-01-31T00:00:00.000Z');
+  });
+
+  it('defaults activatedAt to "now" when not supplied, still exactly 30 days out', async () => {
+    const caseRow = await casesRepo.createCase(db, baseCaseInput());
+    const customer = await customersRepo.findOrCreateCustomerByEmail(db, { email: 'shield-now@example.test' });
+
+    const before = Date.now();
+    const account = await activateIncludedShield(db, {
+      customerId: customer.id,
+      caseId: caseRow.id,
+      marketplace: 'amazon',
+    });
+    const after = Date.now();
+
+    const includedUntilMs = account.includedUntil!.getTime();
+    const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
+    // includedUntil must land within [before, after] + exactly 30 days — an
+    // off-by-one-day error here would silently give every seller either 29 or
+    // 31 free days, which is the exact class of billing-math bug this test
+    // exists to catch.
+    expect(includedUntilMs).toBeGreaterThanOrEqual(before + thirtyDaysMs);
+    expect(includedUntilMs).toBeLessThanOrEqual(after + thirtyDaysMs);
+  });
+
+  it('activateIncludedShield is invoked automatically on a Rescue purchase via fulfillment (already covered end to end), and independently produces a fresh row per call', async () => {
+    const caseRow = await casesRepo.createCase(db, baseCaseInput());
+    const customer = await customersRepo.findOrCreateCustomerByEmail(db, { email: 'shield-fresh@example.test' });
+
+    const account = await activateIncludedShield(db, {
+      customerId: customer.id,
+      caseId: caseRow.id,
+      marketplace: 'walmart',
+      activatedAt: new Date('2026-06-01T00:00:00.000Z'),
+    });
+
+    expect(account.marketplace).toBe('walmart');
+    expect(account.cancelledAt).toBeNull();
+    expect(account.stripeSubscriptionId).toBeNull();
+  });
+
+  it('recordShieldRenewal (S15 "keep") attaches the Stripe subscription id without altering includedUntil', async () => {
+    const caseRow = await casesRepo.createCase(db, baseCaseInput());
+    const customer = await customersRepo.findOrCreateCustomerByEmail(db, { email: 'shield-renew@example.test' });
+    const account = await activateIncludedShield(db, {
+      customerId: customer.id,
+      caseId: caseRow.id,
+      marketplace: 'amazon',
+      activatedAt: new Date('2026-01-01T00:00:00.000Z'),
+    });
+
+    await recordShieldRenewal(db, account.id, 'sub_test_123');
+
+    const reloaded = await shieldAccountsRepo.getShieldAccountById(db, account.id);
+    expect(reloaded?.stripeSubscriptionId).toBe('sub_test_123');
+    // The included-until math is untouched by renewal — ADR-007's "no
+    // subscription state machine" means Stripe, not this row, now owns
+    // ongoing billing; this field just stops being consulted going forward.
+    expect(reloaded?.includedUntil?.toISOString()).toBe('2026-01-31T00:00:00.000Z');
+    expect(reloaded?.cancelledAt).toBeNull();
+  });
+
+  it('lapseShield (S17 "let lapse") records a cancellation timestamp, one click, no other side effect', async () => {
+    const caseRow = await casesRepo.createCase(db, baseCaseInput());
+    const customer = await customersRepo.findOrCreateCustomerByEmail(db, { email: 'shield-lapse@example.test' });
+    const account = await activateIncludedShield(db, {
+      customerId: customer.id,
+      caseId: caseRow.id,
+      marketplace: 'amazon',
+    });
+    expect(account.cancelledAt).toBeNull();
+
+    const before = Date.now();
+    await lapseShield(db, account.id);
+    const after = Date.now();
+
+    const reloaded = await shieldAccountsRepo.getShieldAccountById(db, account.id);
+    expect(reloaded?.cancelledAt).not.toBeNull();
+    const cancelledMs = reloaded!.cancelledAt!.getTime();
+    expect(cancelledMs).toBeGreaterThanOrEqual(before);
+    expect(cancelledMs).toBeLessThanOrEqual(after);
+    // includedUntil is not touched by cancellation — the free window, if any
+    // of it remained, is not clawed back on the spot (no punitive framing).
+    expect(reloaded?.includedUntil).not.toBeNull();
+  });
+
+  it('fulfillCheckoutSession activates Shield for exactly 30 days from the paid timestamp, not from checkout creation', async () => {
+    const caseRow = await makePreviewReadyCase();
+    const { session } = await createCheckoutForCase(db, adapters, {
+      caseId: caseRow.id,
+      tier: 'rescue',
+      successUrl: 'https://app.test/success',
+      cancelUrl: 'https://app.test/cancel',
+    });
+
+    const beforePaid = Date.now();
+    await fulfillCheckoutSession(db, adapters, completedSessionEvent('evt_shield_math', session.id));
+    const afterPaid = Date.now();
+
+    const shield = await shieldAccountsRepo.getShieldAccountForCase(db, caseRow.id);
+    expect(shield?.includedUntil).not.toBeNull();
+    const includedUntilMs = shield!.includedUntil!.getTime();
+    const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
+    expect(includedUntilMs).toBeGreaterThanOrEqual(beforePaid + thirtyDaysMs);
+    expect(includedUntilMs).toBeLessThanOrEqual(afterPaid + thirtyDaysMs);
   });
 });
 

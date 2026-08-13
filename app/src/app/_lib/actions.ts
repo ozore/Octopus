@@ -156,7 +156,20 @@ export async function recordCheckoutReturn(caseId: string, sessionId: string): P
   ).signedCompletedSession(sessionId);
   await handleStripeWebhook(db, adapters, payload, signature);
 
-  revalidatePath(`/case/${caseId}`);
+  // NO `revalidatePath` HERE, unlike every other mutation in this file, and the
+  // asymmetry is deliberate rather than an oversight.
+  //
+  // This one is not called from a form — `/case/{caseId}/plan` awaits it during
+  // its own render, because the return from Checkout is a GET the seller's
+  // browser follows, not a submission. Next.js 15 throws on a cache write
+  // performed inside a render ("used revalidatePath during render which is
+  // unsupported"), which five-hundred'd this page at the precise moment the
+  // seller had just paid.
+  //
+  // Nothing is lost by removing it: the page reads the case immediately below
+  // this call, and both `/case/{caseId}/plan` and `/case/{caseId}` declare
+  // `dynamic = 'force-dynamic'`, so neither has a cached rendering to
+  // invalidate.
 }
 
 // ---------------------------------------------------------------------------

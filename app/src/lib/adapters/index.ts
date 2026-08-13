@@ -37,7 +37,22 @@ export type Adapters = {
   noticeSource: NoticeSource;
 };
 
-let singleton: Adapters | undefined;
+/**
+ * PINNED TO `globalThis`, for the same reason `lib/db/index.ts` is: Next.js
+ * compiles the React Server Components graph and the route-handler/server-action
+ * graph separately, so a module-scoped `let` is one registry per module
+ * INSTANCE, not one per process.
+ *
+ * With live adapters that costs a duplicate SDK client and nothing else. With
+ * `ADAPTER_MODE=mock` it is a correctness bug, because the fakes hold state: the
+ * mock Stripe adapter keeps its checkout sessions in an instance `Map` and its
+ * ids in an instance counter. Observed before this fix — `startCheckout` (server
+ * action) created `cs_test_000001` in one instance, and the return leg on
+ * `/case/{id}/plan` (RSC) asked a DIFFERENT instance about it and threw
+ * `unknown session cs_test_000001`, five hundred-ing the delivered document at
+ * the exact moment the seller has just paid.
+ */
+const globalRef = globalThis as typeof globalThis & { __cwAdapters?: Adapters };
 
 export function buildAdapters(): Adapters {
   const env = getEnv();
@@ -81,13 +96,13 @@ export function buildAdapters(): Adapters {
 }
 
 export function getAdapters(): Adapters {
-  if (!singleton) singleton = buildAdapters();
-  return singleton;
+  return (globalRef.__cwAdapters ??= buildAdapters());
 }
 
 /** Test seam. */
 export function setAdapters(adapters: Adapters | undefined): void {
-  singleton = adapters;
+  if (adapters) globalRef.__cwAdapters = adapters;
+  else delete globalRef.__cwAdapters;
 }
 
 export { LiveAnthropicAdapter, MockAnthropicAdapter };

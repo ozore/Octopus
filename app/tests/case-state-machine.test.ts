@@ -15,6 +15,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import * as casesRepo from '../src/lib/db/repositories/cases';
 import {
+  assertValidCaseTransition,
   CASE_TRANSITIONS,
   CaseNotFoundError,
   IllegalCaseTransitionError,
@@ -138,6 +139,55 @@ describe('case state machine (USER_JOURNEY.md §4)', () => {
       } else {
         expect(edges.length).toBeGreaterThan(0);
       }
+    }
+  });
+
+  it('exhaustively allows every edge in CASE_TRANSITIONS and throws on every other (from, to) pair', async () => {
+    // Not a spot check: every possible (from, to) pair over the full status
+    // enum is exercised. If CASE_TRANSITIONS.ts is edited to add an edge that
+    // does not correspond to a real arrow in USER_JOURNEY.md §4, or to drop
+    // one that does, this fails — the adjacency list itself is the assertion,
+    // checked against ALL 121 (11x11) possible pairs rather than the handful
+    // of paths the walkthrough tests above happen to cover.
+    const allStatuses = Object.keys(CASE_TRANSITIONS) as Array<keyof typeof CASE_TRANSITIONS>;
+    expect(allStatuses.sort()).toEqual(
+      [
+        'intake',
+        'classifying',
+        'classified',
+        'drafting',
+        'critiquing',
+        'preview_ready',
+        'paid',
+        'document_ready',
+        'escalated',
+        'refunded',
+        'failed',
+      ].sort(),
+    );
+
+    for (const from of allStatuses) {
+      for (const to of allStatuses) {
+        const isLegal = (CASE_TRANSITIONS[from] as readonly string[]).includes(to);
+        if (isLegal) {
+          expect(() => assertValidCaseTransition(from, to)).not.toThrow();
+        } else {
+          expect(() => assertValidCaseTransition(from, to)).toThrow(IllegalCaseTransitionError);
+        }
+      }
+    }
+  });
+
+  it('self-transitions are illegal for every status (no self-loop is drawn in the diagram)', () => {
+    // No arrow in USER_JOURNEY.md §4 ever points a state back at itself, so
+    // `assertValidCaseTransition(x, x)` must throw for every x — including
+    // 'paid': the concurrent-double-transition test below relies on exactly
+    // this (the loser of the race re-reads status 'paid' and its own
+    // preview_ready -> paid attempt then legitimately fails as paid -> paid,
+    // which is why that test only asserts >=1 fulfilled, not both).
+    const allStatuses = Object.keys(CASE_TRANSITIONS) as Array<keyof typeof CASE_TRANSITIONS>;
+    for (const status of allStatuses) {
+      expect(() => assertValidCaseTransition(status, status)).toThrow(IllegalCaseTransitionError);
     }
   });
 

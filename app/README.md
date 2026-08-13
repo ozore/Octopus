@@ -104,6 +104,20 @@ npm run worker:dev                  # worker process (separate terminal)
 ADAPTER_MODE=mock DATABASE_DRIVER=pglite npm run dev
 ```
 
+> **This mode is dev-only, and the boundary is enforced in code, not by convention.**
+> `src/env.ts` fails the boot when `NODE_ENV=production` is combined with either
+> `DATABASE_DRIVER=pglite` or `ADAPTER_MODE=mock`. **Production is PostgreSQL 16 with
+> live adapters, per ADR-005 and ADR-007** — PGlite is a dev/test fallback, never a
+> deployment target, and it has no durability, no second connection and no `fly
+> postgres` behind it.
+>
+> One consequence worth knowing before you rely on it: under PGlite the database
+> **is the process's memory**, so restarting `next dev` discards every case. That is
+> also why `getDb()` and `getAdapters()` pin their handles to `globalThis` — Next
+> compiles the RSC graph and the route-handler graph separately, and a per-module
+> singleton would hand the two layers *different* empty databases (the symptom was a
+> just-created case 404-ing from its own page).
+
 `ADAPTER_MODE=mock` binds the in-repo fakes for Anthropic, Stripe, Resend and `NoticeSource`; `DATABASE_DRIVER=pglite` runs an in-process Postgres **with the committed migrations applied at first connection**, so the screens work end to end with no container and no keys. Both are **rejected in production** by `src/env.ts` — dev/prod parity (factor X) is preserved because the same schema, the same migrations and the same Drizzle queries run on both engines.
 
 What that mode actually exercises, so its limits are known rather than discovered: the real pipeline, the real corpus, the real state machine, the real billing module and the real webhook handler. What it does not have is a live model (responses are replayed from the golden set) and a live Stripe (the return from Checkout synthesises the `checkout.session.completed` event **that Stripe would send, metadata included**, and drives it through the production `handleStripeWebhook` — the same signature check and the same idempotency).
@@ -135,10 +149,25 @@ Migrations are plain SQL files in version control. Generating one is a developer
 
 ```bash
 npm run typecheck                   # tsc --noEmit
-npm test                            # vitest — 239 tests across 20 files, ~50s
+npm test                            # vitest — 342 tests across 26 files, ~60s
 npm test -- tests/integration.test.ts   # just the cross-module seams
-npm run test:e2e                    # playwright (starts a local server with mock adapters)
+npm run test:e2e                    # playwright — builds, starts a server, drives the journey
 ```
+
+### The browser lane
+
+`npm run test:e2e` builds the app and runs it as a production build, which is what CI should gate on. Two environment variables change that when you are iterating rather than gating:
+
+```bash
+E2E_DEV=1 npm run test:e2e          # drive `next dev` instead — no five-minute build per run
+PLAYWRIGHT_CHROMIUM_PATH=/path/to/chromium npm run test:e2e
+```
+
+`PLAYWRIGHT_CHROMIUM_PATH` (or a binary at `$PLAYWRIGHT_BROWSERS_PATH/chromium`) makes the suite use a Chromium the image already has, because `npx playwright install` needs network access and a writable cache that a sandboxed runner may not have. The revision can then differ from the one Playwright shipped with; these specs assert copy, roles and navigation rather than rendering minutiae, so that is a knowing trade rather than an accident.
+
+Either way the server runs with `ADAPTER_MODE=mock` and `DATABASE_DRIVER=pglite` — **no network, no keys, no container.**
+
+`e2e/journey.spec.ts` walks the whole core journey (landing → paste → narrated progress → cited preview → checkout handoff → Plan of Action and checklist → case timeline) and writes a screenshot of each step, in both themes for the landing page, to [`../phase-2-build/screenshots/`](../phase-2-build/screenshots/).
 
 What the suite covers, by layer:
 

@@ -31,6 +31,15 @@ const nextConfig = {
     NEXT_PUBLIC_CORPUS_RELEASE: process.env.CORPUS_RELEASE ?? '0',
     NEXT_PUBLIC_BUILD_SHA: process.env.BUILD_SHA ?? 'dev',
   },
+  /**
+   * DEV SERVER ONLY — Next ignores this in a production build. It suppresses the
+   * "cross origin request detected" warning raised when the browser reaches
+   * `/_next/*` on `127.0.0.1` while the dev server announced itself as
+   * `localhost`, which is exactly what the Playwright journey does (its
+   * `baseURL` is the loopback address). The two names are the same interface;
+   * the warning is about neither authentication nor exposure.
+   */
+  allowedDevOrigins: ['127.0.0.1', 'localhost'],
 };
 
 export default nextConfig;
