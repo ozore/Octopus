@@ -13,8 +13,9 @@ import { notFound } from 'next/navigation';
 
 import { getDb } from '@/db';
 
-import { setBandAction, setCaliforniaAction, setLayoutAction } from '../../../_actions/projects';
+import { setBandAction, setLayoutAction } from '../../../_actions/projects';
 import { readAs, requireSession } from '../../../_lib/auth';
+import { missingContractorFields, readContractorIdentity } from '../../../_lib/ca-identity';
 import {
   BAND_CHANGE_NOTE,
   BAND_OPTIONS,
@@ -48,12 +49,23 @@ export default async function ProjectPage({
       standing,
       pins: await pinHistory(tx, id),
       filings: await listFilings(tx, { projectId: id }),
+      /* Read only for a Californian project. Forty-nine states' project pages
+         should not pay for a query about a form they will never emit — the same
+         rule `ecprArtifact` follows before it touches the database. */
+      identity:
+        standing.project.stateCode.toUpperCase() === 'CA'
+          ? await readContractorIdentity(tx)
+          : null,
     };
   });
 
   if (view === null) notFound();
   const { standing } = view;
   const project = standing.project;
+  const caIdentifiersReady =
+    view.identity !== null &&
+    missingContractorFields(view.identity).length === 0 &&
+    project.dirProjectId !== null;
 
   return (
     <div className="rp-stack rp-stack--section">
@@ -231,40 +243,32 @@ export default async function ProjectPage({
         </div>
       </section>
 
-      <section className="rp-stack rp-measure">
-        <h2>California DIR</h2>
-        <p>{CALIFORNIA_IDENTIFIERS}</p>
-        <form action={setCaliforniaAction} className="rp-stack rp-stack--tight">
-          <input type="hidden" name="projectId" value={id} />
-          <div className="rp-field">
-            <label className="rp-field__label" htmlFor="pwcr">
-              Contractor registration number (PWCR)
-            </label>
-            <input
-              id="pwcr"
-              name="contractorPwcr"
-              className="rp-input rp-input--num"
-              defaultValue={project.contractorPwcr ?? ''}
-            />
-          </div>
-          <div className="rp-field">
-            <label className="rp-field__label" htmlFor="dir">
-              DIR Project ID
-            </label>
-            <input
-              id="dir"
-              name="dirProjectId"
-              className="rp-input rp-input--num"
-              defaultValue={project.dirProjectId ?? ''}
-            />
-          </div>
+      {/* ---------------------------------------------------------------
+          §10.1 — California, and ONLY California.
+
+          This block used to render on every project, so a Virginia subcontractor
+          was asked for a PWCR she can never have and a DIR Project ID no awarding
+          body will ever file for her. The gate is the project's own state, checked
+          here rather than inside the form, so the fields are not merely disabled —
+          they are not on the page. The 49-state case is not given a refusal either:
+          there is nothing to refuse, because nothing was offered.
+          --------------------------------------------------------------- */}
+      {project.stateCode.toUpperCase() === 'CA' ? (
+        <section className="rp-stack rp-measure">
+          <h2>California DIR</h2>
+          <p>{CALIFORNIA_IDENTIFIERS}</p>
+          <p>
+            {caIdentifiersReady
+              ? 'DIR’s required block is complete. Filings on this project offer the eCPR XML beside the WH-347, each with its own status.'
+              : 'Until those are on file the eCPR XML is blocked and says which value is missing. The WH-347 PDF is unaffected either way.'}
+          </p>
           <div className="rp-btn-row">
-            <button type="submit" className="rp-btn rp-btn--quiet">
-              Save these
-            </button>
+            <Link className="rp-btn rp-btn--quiet" href={`/app/projects/${id}/dir`}>
+              {caIdentifiersReady ? 'Review the DIR identifiers' : 'Add the DIR identifiers'}
+            </Link>
           </div>
-        </form>
-      </section>
+        </section>
+      ) : null}
 
       <section className="rp-stack rp-measure">
         <h2>Form layout</h2>

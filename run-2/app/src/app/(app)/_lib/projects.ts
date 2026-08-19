@@ -38,6 +38,7 @@ import {
   type WdNumber,
 } from '@/lib/types';
 
+import { rememberPwcr } from './ca-identity';
 import { STATE_ONLY_REFUSAL } from './copy';
 import { activeDetermination, corpusState, newerRevisionThan, promotedSnapshot } from './mirror';
 
@@ -66,8 +67,11 @@ export interface ProjectRecord {
   readonly awardDate: IsoDate | null;
   readonly contractNumber: string | null;
   readonly primeName: string | null;
+  /** The awarding body's, from their PWC-100 — the one California identifier that
+   *  genuinely is per project. The contractor block (PWCR, FEIN, licence, business
+   *  address) is per ACCOUNT and lives in `ca-identity.ts`; see
+   *  `drizzle/0001_ca_contractor_identity.sql` for the DIR rule that splits them. */
   readonly dirProjectId: string | null;
-  readonly contractorPwcr: string | null;
   readonly wh347Layout: 'wh347_rev_2025_01' | 'wh347_legacy';
   readonly workweekStartDay: number;
   /** `null` is neither yes nor no — §8.4's "default unset". */
@@ -100,7 +104,6 @@ interface ProjectDbRow {
   readonly contract_number: string | null;
   readonly prime_name: string | null;
   readonly dir_project_id: string | null;
-  readonly contractor_pwcr: string | null;
   readonly wh347_layout: 'wh347_rev_2025_01' | 'wh347_legacy';
   readonly workweek_start_day: number | string;
   readonly wd_revision_locked_at_award: boolean | null;
@@ -122,7 +125,6 @@ function toProject(row: ProjectDbRow): ProjectRecord {
     contractNumber: row.contract_number,
     primeName: row.prime_name,
     dirProjectId: row.dir_project_id,
-    contractorPwcr: row.contractor_pwcr,
     wh347Layout: row.wh347_layout,
     workweekStartDay: Number(row.workweek_start_day),
     lockedAtAward: row.wd_revision_locked_at_award,
@@ -134,7 +136,7 @@ function toProject(row: ProjectDbRow): ProjectRecord {
 const PROJECT_COLUMNS = sql`
   id, name, state_code, county_name, construction_type, funding_source,
   contract_value_band, band_asserted_at, award_date, contract_number, prime_name,
-  dir_project_id, contractor_pwcr, wh347_layout, workweek_start_day,
+  dir_project_id, wh347_layout, workweek_start_day,
   wd_revision_locked_at_award, lock_asserted_at, created_at
 `;
 
@@ -146,6 +148,26 @@ export async function listProjects(tx: Tx): Promise<readonly ProjectRecord[]> {
   return rowsOf<ProjectDbRow>(
     await tx.execute(sql`SELECT ${PROJECT_COLUMNS} FROM projects WHERE archived_at IS NULL ORDER BY created_at DESC`),
   ).map(toProject);
+}
+
+/**
+ * Does this account have any live Californian project?
+ *
+ * The worker roster asks it before it asks anybody for nine digits. An account that
+ * files only federal WH-347s is never shown a Social Security field, because the
+ * only artifact that needs one is the CA eCPR and 29 CFR 5.5(a)(3)(ii)(B) forbids
+ * the nine digits on the form it does file. Not collecting data you have no use for
+ * is the cheapest privacy control there is.
+ */
+export async function hasCaliforniaProject(tx: Tx): Promise<boolean> {
+  return (
+    rowsOf<{ n: number | string }>(
+      await tx.execute(sql`
+        SELECT count(*)::int AS n FROM projects
+         WHERE archived_at IS NULL AND upper(state_code) = 'CA'
+      `),
+    )[0]?.n ?? 0
+  ) !== 0;
 }
 
 export async function readProject(tx: Tx, projectId: string): Promise<ProjectRecord | null> {
@@ -286,15 +308,14 @@ export async function createProject(
       (id, account_id, name, state_code, county_name, county_name_norm, construction_type,
        funding_source, award_date, contract_number, contract_value_band, band_asserted_at,
        band_asserted_by, wd_revision_locked_at_award, lock_asserted_at, dir_project_id,
-       contractor_pwcr, created_at)
+       created_at)
     VALUES
       (${projectId}::uuid, ${input.accountId}::uuid, ${input.name}, ${input.stateCode.toUpperCase()},
        ${input.countyName}, ${normaliseCounty(input.countyName)}, ${input.constructionType},
        ${input.fundingSource}, ${input.awardDate ?? null}::date, ${input.contractNumber ?? null},
        ${input.contractValueBand}, ${input.now.toISOString()}::timestamptz, ${input.userId}::uuid,
        ${input.lockedAtAward ?? null}, ${input.lockedAtAward == null ? null : input.now.toISOString()}::timestamptz,
-       ${input.dirProjectId ?? null}, ${input.contractorPwcr ?? null},
-       ${input.now.toISOString()}::timestamptz)
+       ${input.dirProjectId ?? null}, ${input.now.toISOString()}::timestamptz)
   `);
 
   await tx.execute(sql`
@@ -302,6 +323,11 @@ export async function createProject(
     VALUES (${input.accountId}::uuid, ${projectId}::uuid, NULL, ${input.contractValueBand},
             ${input.userId}::uuid, ${input.now.toISOString()}::timestamptz)
   `);
+
+  // §10.1 asks for the PWCR at setup, so it is still asked here — but it is the
+  // COMPANY's registration, not the job's, so it lands on the company row and every
+  // later project inherits it. A blank leaves an existing number alone.
+  await rememberPwcr(tx, input.contractorPwcr ?? null);
 
   if (!input.wdNumber) {
     return ok({ projectId, pin: null, pinDeferred: null, unionGroups: [] });
@@ -478,6 +504,15 @@ export async function setContractLock(
   `);
 }
 
+/**
+ * The two California identifiers, each written where DIR issues it.
+ *
+ * `dirProjectId` is the awarding body's, per project, so it updates the project row.
+ * `contractorPwcr` is the company's registration under Labor Code §1725.5, so it
+ * updates the account's contractor block — the same value the DIR screen edits, and
+ * one number rather than one per job. The signature is unchanged so the callers that
+ * already collect both keep working; what changed is where each half lands.
+ */
 export async function setCaliforniaIdentifiers(
   tx: Tx,
   input: {
@@ -487,10 +522,10 @@ export async function setCaliforniaIdentifiers(
   },
 ): Promise<void> {
   await tx.execute(sql`
-    UPDATE projects
-       SET dir_project_id = ${input.dirProjectId}, contractor_pwcr = ${input.contractorPwcr}
+    UPDATE projects SET dir_project_id = ${input.dirProjectId}
      WHERE id = ${input.projectId}::uuid
   `);
+  await rememberPwcr(tx, input.contractorPwcr);
 }
 
 export async function setLayout(

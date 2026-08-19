@@ -717,22 +717,17 @@ export const projects = pgTable(
     lockAssertedAt: ts('lock_asserted_at'),
 
     /**
-     * The California transmittal's contractor block (USER_JOURNEY §10). Nullable
-     * with no default in either layer: "we can't get either for you — the first is
-     * yours, the second is theirs", and a defaulted FEIN or PWCR is a wrong one on
-     * somebody's certified payroll. Absence blocks the XML with the field named and
-     * leaves the WH-347 untouched (§10.2).
+     * The ONE California identifier that is genuinely per project (USER_JOURNEY
+     * §10.1): the DIR Project ID exists only once the AWARDING BODY files a
+     * PWC-100 for this job, so it is theirs and it is per job. Nullable with no
+     * default — a defaulted project id is somebody else's project. Absence blocks
+     * the XML with the field named and leaves the WH-347 untouched (§10.2).
+     *
+     * The contractor block that used to sit beside it — PWCR, FEIN, licence,
+     * business address — moved to `caContractorIdentity` in `0001`, because DIR
+     * issues all four to the COMPANY and not to the job. See that migration.
      */
     dirProjectId: text('dir_project_id'),
-    contractorPwcr: text('contractor_pwcr'),
-    contractorFein: text('contractor_fein'),
-    /** One of the pinned XSD's three `licenseTypeType` values; CHECKed in the DDL. */
-    caLicenseType: text('ca_license_type'),
-    caLicenseNumber: text('ca_license_number'),
-    contractorAddress: text('contractor_address'),
-    contractorCity: text('contractor_city'),
-    contractorState: char('contractor_state', { length: 2 }),
-    contractorZip: text('contractor_zip'),
     wh347Layout: wh347LayoutEnum('wh347_layout').notNull().default('wh347_rev_2025_01'),
     workweekStartDay: smallint('workweek_start_day').notNull().default(0),
 
@@ -741,6 +736,41 @@ export const projects = pgTable(
   },
   (t) => [index('projects_account').on(t.accountId, t.createdAt)],
 );
+
+/**
+ * THE CALIFORNIA CONTRACTOR BLOCK — one row per account, never one per job.
+ *
+ * `drizzle/0001_ca_contractor_identity.sql` carries the reasoning in full. The short
+ * version is DIR's own registration rule: a PWCR is issued to the CONTRACTOR under
+ * Labor Code §1725.5 and renewed annually, and the FEIN, the CSLB licence and the
+ * business address identify the same company on every job it bids. Only the DIR
+ * Project ID is per project, because only the awarding body's PWC-100 creates one —
+ * and that column stayed on `projects`.
+ *
+ * Every field is nullable and none has a default. §10.1: "we can't get either for
+ * you — the first is yours, the second is theirs." A defaulted FEIN is a wrong FEIN
+ * on a document signed under penalty of perjury, so absence blocks the XML with the
+ * field NAMED and leaves the WH-347 completely untouched.
+ */
+export const caContractorIdentity = pgTable('ca_contractor_identity', {
+  accountId: uuid('account_id')
+    .primaryKey()
+    .references(() => accounts.id, { onDelete: 'cascade' }),
+  /** `cprInfo/contractorName`. Collected, not taken from `accounts.name`: that is
+   *  whatever was typed at signup, and this goes on a certified payroll. */
+  legalName: text('legal_name'),
+  contractorPwcr: text('contractor_pwcr'),
+  contractorFein: text('contractor_fein'),
+  /** One of the pinned XSD's three `licenseTypeType` values; CHECKed in the DDL. */
+  caLicenseType: text('ca_license_type'),
+  caLicenseNumber: text('ca_license_number'),
+  contractorAddress: text('contractor_address'),
+  contractorCity: text('contractor_city'),
+  contractorState: char('contractor_state', { length: 2 }),
+  contractorZip: text('contractor_zip'),
+  assertedAt: ts('asserted_at').notNull().defaultNow(),
+  assertedBy: uuid('asserted_by').references(() => users.id),
+});
 
 export const projectBandEvents = pgTable(
   'project_band_events',
@@ -1569,6 +1599,7 @@ export const schema = {
   obligationChangelog,
   regulatoryConstant,
   projects,
+  caContractorIdentity,
   projectBandEvents,
   wdPins,
   workers,

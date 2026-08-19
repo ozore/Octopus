@@ -56,13 +56,9 @@ import {
   renderEcprXml,
   renderWh347,
   SHIPPED_XSD_SHA256,
-  ssn9,
-  type CaLicenseType,
   type EcprArtifact,
   type EcprContractor,
-  type EcprWorkerIdentity,
   type FooterLine,
-  type Ssn9,
   type Wh347Artifact,
   type Wh347WorkerIdentity,
   type XsdObservation,
@@ -105,8 +101,22 @@ import {
 import { formLayoutDigest } from '../../(free)/_lib/free-artifact';
 import { exceptionSentences } from '../../(free)/_lib/generate';
 import { loadObligations } from '../../(free)/_lib/obligations';
+import {
+  missingContractorFields,
+  readContractorIdentity,
+  NO_CONTRACTOR_IDENTITY,
+  type CaContractorIdentity,
+} from './ca-identity';
 import { appConfig } from './deps';
 import { supersededSentence } from './copy';
+/**
+ * The eCPR's worker identities come from `./ssn`, which is the ONLY module that can
+ * turn `workers.ssn_ciphertext` into nine digits. It is imported for its output, not
+ * for a decrypt function: `decipherSsn` is not exported, so nothing in this file —
+ * which also holds the WH-347's own loader and renderer — can obtain a nine-digit
+ * value from a row. See that module's header for the four mechanisms.
+ */
+import { ecprIdentities } from './ssn';
 import {
   canonicalShaOf,
   classificationsOf,
@@ -1219,156 +1229,23 @@ export type EcprOutcome =
   | { readonly kind: 'ready'; readonly label: string; readonly artifact: EcprArtifact };
 
 /**
- * The California contractor block, as stored. Every member is nullable and none has
- * a default: §10's "we can't get either for you" applies to all of them, and a
- * defaulted FEIN on a certified payroll is worse than a blocked file.
- */
-export interface EcprContractorFields {
-  readonly fein: string | null;
-  readonly licenseType: CaLicenseType | null;
-  readonly licenseNumber: string | null;
-  readonly address: string | null;
-  readonly city: string | null;
-  readonly state: string | null;
-  readonly zip: string | null;
-}
-
-export const NO_CONTRACTOR_FIELDS: EcprContractorFields = {
-  fein: null,
-  licenseType: null,
-  licenseNumber: null,
-  address: null,
-  city: null,
-  state: null,
-  zip: null,
-};
-
-/**
- * Read the contractor block off the project.
+ * The California contractor block as the emitter needs it — read from the ACCOUNT.
  *
- * RECORDED GAP, and it is the same shape as the `unfunded` gap above. The project
- * screen collects `contractorPwcr` and `dirProjectId` today; it does not yet collect
- * the FEIN, the licence or the contractor address, and no screen collects a worker's
- * nine-digit SSN or withholding-exemption count either — security M-2 records that
- * `ssn_ciphertext` has no writer, no cipher and no key. So on a live account these
- * columns are null, `ecprChip` blocks with each missing field NAMED, and the link is
- * not rendered. That is a smaller lie than the one this section replaces: a blocked
- * chip that says exactly what is missing is true, where a ready chip over a 409 was
- * not. Closing the gap is one form on the project screen and one on the worker
- * roster, plus M-2's envelope encryption — all outside this file.
+ * Build review NEW-7 is closed here and on two screens. The columns used to sit on
+ * `projects` and no form wrote them, so `ecprChip` blocked on a live account naming
+ * fields nothing could supply. They now live in `ca_contractor_identity`, one row
+ * per account, because DIR issues a PWCR, a FEIN and a CSLB licence to the COMPANY
+ * (Labor Code §1725.5) and only the awarding body's PWC-100 creates the per-project
+ * DIR Project ID. `/app/projects/[id]/dir` is the form; `_lib/ca-identity.ts` holds
+ * the field list, the reason each one is asked for, and the pinned schema's own
+ * patterns. This function is a read, and it is the only one this file performs.
  */
-export async function ecprContractorFields(
-  tx: Tx,
-  projectId: string,
-): Promise<EcprContractorFields> {
-  const row = rowsOf<{
-    contractor_fein: string | null;
-    ca_license_type: string | null;
-    ca_license_number: string | null;
-    contractor_address: string | null;
-    contractor_city: string | null;
-    contractor_state: string | null;
-    contractor_zip: string | null;
-  }>(
-    await tx.execute(sql`
-      SELECT contractor_fein, ca_license_type, ca_license_number, contractor_address,
-             contractor_city, contractor_state, contractor_zip
-        FROM projects WHERE id = ${projectId}::uuid
-    `),
-  )[0];
-  if (!row) return NO_CONTRACTOR_FIELDS;
-  const licenseType = row.ca_license_type;
-  return {
-    fein: blankToNull(row.contractor_fein),
-    // The DDL CHECKs this against the pinned schema's three enumerated values, so a
-    // value that is not one of them cannot be in the column. The narrowing is a
-    // read-side restatement of that constraint rather than a second opinion.
-    licenseType:
-      licenseType === 'CSLB' || licenseType === 'PL' || licenseType === 'OTHER'
-        ? licenseType
-        : null,
-    licenseNumber: blankToNull(row.ca_license_number),
-    address: blankToNull(row.contractor_address),
-    city: blankToNull(row.contractor_city),
-    state: blankToNull(row.contractor_state),
-    zip: blankToNull(row.contractor_zip),
-  };
-}
+export type EcprContractorFields = CaContractorIdentity;
 
-function blankToNull(value: string | null): string | null {
-  const trimmed = value?.trim() ?? '';
-  return trimmed === '' ? null : trimmed;
-}
+export const NO_CONTRACTOR_FIELDS: EcprContractorFields = NO_CONTRACTOR_IDENTITY;
 
-/**
- * The eCPR's worker identities — THE ONLY QUERY IN THE PRODUCT THAT READS
- * `workers.ssn_ciphertext`, and the only place an `Ssn9` is constructed outside the
- * artifact module's own constructor.
- *
- * `loadWeek`, which feeds the WH-347, selects `ssn_last4` and a boolean and cannot
- * hold nine digits at all: `Wh347WorkerIdentity` has no field of type `Ssn9` and
- * `identifyingNumber` rejects anything that is not exactly four digits rather than
- * truncating. The projection is therefore enforced by the type system on the federal
- * path and by this function being the only aperture on the state one.
- *
- * WHAT THIS IS NOT. `ARCHITECTURE.md` §11.3 specifies the column as the SSN under a
- * per-tenant data key wrapped by a KMS root. **That module does not exist in this
- * build** — security M-2: no writer, no cipher, no key, `key_version` a constant 1.
- * This function therefore does not pretend to decrypt anything. It reads the column
- * and accepts the value only if it is exactly nine digits; anything else — including
- * real ciphertext, on the day the envelope module lands and this function has not
- * been taught to unwrap it — yields `null`, which makes the worker `NO_SSN_ON_FILE`
- * and BLOCKS the XML with that worker named. Failing closed means the cost of
- * forgetting to update this function is a refusal, not nine bytes of ciphertext in
- * an `ssn` element on a certified payroll. It is the single point that changes when
- * §11.3 is built.
- */
-async function ecprIdentities(tx: Tx, weekId: string): Promise<readonly EcprWorkerIdentity[]> {
-  const rows = rowsOf<{
-    id: string;
-    last_name: string;
-    first_name: string;
-    middle_initial: string | null;
-    ssn_stored: string | null;
-    num_withholding_exemp: number | string | null;
-  }>(
-    await tx.execute(sql`
-      SELECT ww.id, w.last_name, w.first_name, w.middle_initial,
-             encode(w.ssn_ciphertext, 'escape') AS ssn_stored,
-             w.num_withholding_exemp
-        FROM payroll_worker_weeks ww
-        JOIN workers w ON w.id = ww.worker_id
-       WHERE ww.week_id = ${weekId}::uuid
-       ORDER BY w.last_name, w.first_name
-    `),
-  );
-
-  return rows.map((row) => ({
-    workerRef: row.id as WorkerRef,
-    lastName: row.last_name,
-    firstName: row.first_name,
-    middleInitial: row.middle_initial,
-    ssn: nineDigitsOrNull(row.ssn_stored),
-    // No column holds a worker's home address, and California's schema declares all
-    // four as minOccurs="0". Absent is absent; nothing is invented to fill an
-    // optional element.
-    address: null,
-    city: null,
-    state: null,
-    zip: null,
-    numWithholdingExemp:
-      row.num_withholding_exemp === null ? null : Number(row.num_withholding_exemp),
-    checkNumber: null,
-  }));
-}
-
-function nineDigitsOrNull(stored: string | null): Ssn9 | null {
-  if (stored === null) return null;
-  try {
-    return ssn9(stored);
-  } catch {
-    return null;
-  }
+export async function ecprContractorFields(tx: Tx): Promise<EcprContractorFields> {
+  return readContractorIdentity(tx);
 }
 
 /**
@@ -1478,20 +1355,15 @@ export function ecprChip(input: {
 
   /**
    * The contractor block DIR requires, field by field, each one named when it is
-   * absent. The list is ordered so the two the customer will recognise come first;
-   * every entry is a value only she or the awarding body holds, which is why none of
-   * them has a default anywhere in this product.
+   * absent — and named in the WORDS THE FORM USES FOR IT. `missingAs` comes off the
+   * same `CONTRACTOR_FIELDS` array the DIR screen renders its inputs and its
+   * explanations from, so the sentence that says what is missing and the label above
+   * the box that fixes it cannot drift apart. Every entry is a value only she or the
+   * awarding body holds, which is why none has a default anywhere in this product.
    */
   const missing = [
-    input.project.contractorPwcr ? null : 'your contractor registration number (PWCR)',
     input.project.dirProjectId ? null : 'the DIR Project ID from the awarding body’s PWC-100',
-    input.contractor.fein ? null : 'your federal employer identification number (FEIN)',
-    input.contractor.licenseType ? null : 'your licence type (CSLB, PL or OTHER)',
-    input.contractor.licenseNumber ? null : 'your licence number',
-    input.contractor.address ? null : 'your business street address',
-    input.contractor.city ? null : 'your business city',
-    input.contractor.state ? null : 'your business state',
-    input.contractor.zip ? null : 'your business ZIP code',
+    ...missingContractorFields(input.contractor).map((field) => field.missingAs),
   ].filter((value): value is string => value !== null);
 
   if (missing.length > 0) {
@@ -1503,8 +1375,8 @@ export function ecprChip(input: {
           : `CA eCPR XML — BLOCKED, ${String(missing.length)} identifiers are missing`,
       detail:
         `DIR needs ${missing.join('; ')}. We can’t get any of these for you — they are yours, ` +
-        `or the awarding body’s. Add them on the project and the XML becomes available. ` +
-        `The WH-347 PDF is unaffected.`,
+        `or the awarding body’s. Add them on this project’s DIR screen and the XML becomes ` +
+        `available. The WH-347 PDF is unaffected.`,
       refusal: {
         primitive: 'P-S',
         headline:
@@ -1518,8 +1390,8 @@ export function ecprChip(input: {
           `or the awarding body’s.`,
         clearedBy: {
           kind: 'link',
-          label: 'Add them on the project',
-          href: `/app/projects/${input.project.id}`,
+          label: 'Add them on this project’s DIR screen',
+          href: `/app/projects/${input.project.id}/dir`,
         },
         clearsItself: null,
         severity: 'blocked',
@@ -1547,7 +1419,11 @@ export function ecprChip(input: {
           `29 CFR 5.5(a)(3)(ii)(B) forbids nine digits on the WH-347 — so the two artifacts ` +
           `disagree about the same field and carry separate statuses. Ratepin holds no nine-digit ` +
           `number for ${names}.`,
-        clearedBy: { kind: 'link', label: 'Add the numbers on the workers page', href: '/app/workers' },
+        clearedBy: {
+          kind: 'link',
+          label: 'Add the numbers on the workers page',
+          href: '/app/workers',
+        },
         clearsItself: null,
         severity: 'blocked',
       },
@@ -1626,7 +1502,7 @@ export async function ecprArtifact(
     };
   }
 
-  const contractorFields = await ecprContractorFields(tx, project.id);
+  const contractorFields = await ecprContractorFields(tx);
   const observation = await dirXsdObservation(tx);
 
   /**
@@ -1665,10 +1541,7 @@ export async function ecprArtifact(
    * asserted with `!`: the chip decided, and this restates the decision in types so
    * a future edit that loosens the chip cannot silently emit an empty FEIN.
    */
-  const contractor: EcprContractor | null = completeContractor(await accountName(tx), {
-    pwcr: project.contractorPwcr,
-    fields: contractorFields,
-  });
+  const contractor: EcprContractor | null = completeContractor(contractorFields);
   const dirProjectId = project.dirProjectId;
   if (contractor === null || dirProjectId === null) {
     throw new Error(
@@ -1733,35 +1606,36 @@ export async function ecprArtifact(
 
 /** All-or-nothing. A partial contractor block is not a contractor block: an empty
  *  FEIN element is a file DIR rejects days later, which looks like the customer's
- *  failure rather than ours. */
-function completeContractor(
-  name: string,
-  input: { readonly pwcr: string | null; readonly fields: EcprContractorFields },
-): EcprContractor | null {
-  const { pwcr, fields } = input;
+ *  failure rather than ours. The nine members here are exactly `CONTRACTOR_FIELDS`,
+ *  and `missingContractorFields` is the same predicate said the other way round, so
+ *  the chip cannot clear on a block this function then refuses. */
+function completeContractor(identity: CaContractorIdentity): EcprContractor | null {
+  if (missingContractorFields(identity).length > 0) return null;
+  const {
+    legalName,
+    address,
+    city,
+    state,
+    zip,
+    pwcr,
+    fein,
+    licenseType,
+    licenseNumber,
+  } = identity;
   if (
+    legalName === null ||
+    address === null ||
+    city === null ||
+    state === null ||
+    zip === null ||
     pwcr === null ||
-    fields.fein === null ||
-    fields.licenseType === null ||
-    fields.licenseNumber === null ||
-    fields.address === null ||
-    fields.city === null ||
-    fields.state === null ||
-    fields.zip === null
+    fein === null ||
+    licenseType === null ||
+    licenseNumber === null
   ) {
     return null;
   }
-  return {
-    name,
-    address: fields.address,
-    city: fields.city,
-    state: fields.state,
-    zip: fields.zip,
-    pwcr,
-    fein: fields.fein,
-    licenseType: fields.licenseType,
-    licenseNumber: fields.licenseNumber,
-  };
+  return { name: legalName, address, city, state, zip, pwcr, fein, licenseType, licenseNumber };
 }
 
 /** The sentence a refusal already carries. Each primitive names its own field; there

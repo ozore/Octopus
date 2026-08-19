@@ -522,7 +522,14 @@ export async function workerRoster(tx: Tx): Promise<
     readonly firstName: string;
     readonly middleInitial: string | null;
     readonly ssnLast4: string | null;
+    /** PRESENCE, not readability, and deliberately so: this screen must not be able
+     *  to ask whether the ciphertext decrypts, because asking would mean it could
+     *  read it. The only reader is `ecprIdentities` (`_lib/ssn.ts`). */
     readonly hasEncryptedSsn: boolean;
+    /** California's `numWithholdingExemp`, deleted from the Rev. January 2025
+     *  WH-347. `null` means the account does not hold it — never 0, which would be
+     *  an assertion about someone's tax situation. */
+    readonly withholdingExemptions: number | null;
     readonly weeks: number;
   }[]
 > {
@@ -533,15 +540,18 @@ export async function workerRoster(tx: Tx): Promise<
     middle_initial: string | null;
     ssn_last4: string | null;
     has_ssn: boolean;
+    num_withholding_exemp: number | string | null;
     weeks: number | string;
   }>(
     await tx.execute(sql`
       SELECT w.id, w.last_name, w.first_name, w.middle_initial, w.ssn_last4,
              (w.ssn_ciphertext IS NOT NULL) AS has_ssn,
+             w.num_withholding_exemp,
              count(ww.id)::int AS weeks
         FROM workers w
         LEFT JOIN payroll_worker_weeks ww ON ww.worker_id = w.id
-       GROUP BY w.id, w.last_name, w.first_name, w.middle_initial, w.ssn_last4, w.ssn_ciphertext
+       GROUP BY w.id, w.last_name, w.first_name, w.middle_initial, w.ssn_last4,
+                w.ssn_ciphertext, w.num_withholding_exemp
        ORDER BY w.last_name, w.first_name
     `),
   ).map((row) => ({
@@ -551,6 +561,8 @@ export async function workerRoster(tx: Tx): Promise<
     middleInitial: row.middle_initial,
     ssnLast4: row.ssn_last4,
     hasEncryptedSsn: row.has_ssn,
+    withholdingExemptions:
+      row.num_withholding_exemp === null ? null : Number(row.num_withholding_exemp),
     weeks: Number(row.weeks),
   }));
 }

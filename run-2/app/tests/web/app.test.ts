@@ -70,6 +70,8 @@ import {
   releaseFiling,
   type EcprContractorFields,
 } from '../../src/app/(app)/_lib/filings';
+import { saveContractorIdentity } from '../../src/app/(app)/_lib/ca-identity';
+import { forgetWorkerSsn, setWithholdingExemptions, storeWorkerSsn } from '../../src/app/(app)/_lib/ssn';
 import { buildBoard } from '../../src/app/(app)/_lib/week';
 import { billingView } from '../../src/app/(app)/_lib/billing';
 import {
@@ -86,8 +88,13 @@ const greenCanary: CanaryRunner = () => Promise.resolve({ pass: true, lines: 512
  *  constant so the two assertions about it cannot drift apart. */
 const SSN_ON_FILE = '123454417';
 
-/** A complete contractor block, for the chip tests that are about a LATER gate. */
+/** A complete contractor block, for the chip tests that are about a LATER gate. It
+ *  is the ACCOUNT's block now, not the project's — DIR issues the registration, the
+ *  FEIN and the CSLB licence to the company, so `drizzle/0001` moved all four off
+ *  `projects` and left only the awarding body's project id there. */
 const CA_CONTRACTOR_ON_FILE: EcprContractorFields = {
+  legalName: 'Coastline Insulation Inc',
+  pwcr: '1000001234',
   fein: '941234567',
   licenseType: 'CSLB',
   licenseNumber: '1043928',
@@ -95,6 +102,7 @@ const CA_CONTRACTOR_ON_FILE: EcprContractorFields = {
   city: 'Rio Vista',
   state: 'CA',
   zip: '94571',
+  assertedAt: null,
 };
 
 const ACCOUNT = '77777777-7777-4777-8777-777777777777';
@@ -781,7 +789,7 @@ describe('J10 — one filing, two artifacts, two independent statuses', () => {
     expect(outside.detail).toContain('California');
 
     // In California, missing identifiers block the XML and name every one of them.
-    const californian = { ...project, stateCode: 'CA', dirProjectId: null, contractorPwcr: null };
+    const californian = { ...project, stateCode: 'CA', dirProjectId: null };
     const missing = ecprChip({
       project: californian,
       contractor: NO_CONTRACTOR_FIELDS,
@@ -803,7 +811,7 @@ describe('J10 — one filing, two artifacts, two independent statuses', () => {
     // — the federal form is unaffected, because the two artifacts disagree about
     // the same field and carry separate statuses.
     const noSsn = ecprChip({
-      project: { ...californian, dirProjectId: '123456', contractorPwcr: '1000001234' },
+      project: { ...californian, dirProjectId: '123456' },
       contractor: CA_CONTRACTOR_ON_FILE,
       workersMissingSsn: [{ workerRef: 'w1', name: 'Dee Alvarado' }],
       workerCount: 3,
@@ -830,7 +838,6 @@ describe('J10 — one filing, two artifacts, two independent statuses', () => {
         contractNumber: null,
         primeName: null,
         dirProjectId: '123456',
-        contractorPwcr: '1000001234',
         wh347Layout: 'wh347_rev_2025_01',
         workweekStartDay: 0,
         lockedAtAward: null,
@@ -870,6 +877,7 @@ describe('J10 — one filing, two artifacts, two independent statuses', () => {
 
 describe('J10 — the California XML, generated and served', () => {
   const CA_IDENTIFIERS = {
+    legalName: 'Coastline Insulation Inc',
     pwcr: '1000001234',
     dirProjectId: '900123',
     fein: '941234567',
@@ -882,14 +890,16 @@ describe('J10 — the California XML, generated and served', () => {
   } as const;
 
   /**
-   * A Californian filing: a resolved week, the DIR identifiers on the project, and
-   * nine-digit numbers plus withholding-exemption counts on the crew.
+   * A Californian filing: a resolved week, the DIR identifiers, and nine-digit
+   * numbers plus withholding-exemption counts on the crew.
    *
-   * The SSN is written straight into `workers.ssn_ciphertext`. That column is
-   * specified as envelope-encrypted (§11.3) and security M-2 records that the
-   * cipher does not exist in this build — `ecprIdentities` reads the column and
-   * accepts only nine digits, so this fixture is the shape that function actually
-   * reads today and the one place a test has to change when M-2 lands.
+   * EVERY ONE OF THOSE IS WRITTEN THROUGH THE FUNCTION A SCREEN POSTS TO. That is
+   * the correction build review NEW-7 asked for: the emitter was correct, gated and
+   * tested, and the only writer of its inputs was an `UPDATE` inside this fixture —
+   * so a green suite proved a path no customer could walk. `saveContractorIdentity`
+   * is what `/app/projects/[id]/dir` calls and `storeWorkerSsn` is what the worker
+   * roster calls, so if either form is deleted these tests fail rather than
+   * continuing to pass over a screen that no longer exists.
    */
   async function californianFiling(input: {
     readonly name: string;
@@ -899,25 +909,31 @@ describe('J10 — the California XML, generated and served', () => {
     readonly withExemptions?: boolean;
   }) {
     const projectId = await makeProject({ name: input.name, band: input.band ?? 'over_100k' });
+    // The state and the AWARDING BODY's project id are the project's own two facts;
+    // the state is set directly because no screen moves a project between states.
     await tdb.client.query(
-      `UPDATE projects SET state_code = 'CA', contractor_pwcr = $2, dir_project_id = $3,
-              contractor_fein = $4, ca_license_type = $5, ca_license_number = $6,
-              contractor_address = $7, contractor_city = $8, contractor_state = $9,
-              contractor_zip = $10
-         WHERE id = $1`,
-      [
-        projectId,
-        CA_IDENTIFIERS.pwcr,
-        CA_IDENTIFIERS.dirProjectId,
-        CA_IDENTIFIERS.fein,
-        CA_IDENTIFIERS.licenseType,
-        CA_IDENTIFIERS.licenseNumber,
-        CA_IDENTIFIERS.address,
-        CA_IDENTIFIERS.city,
-        CA_IDENTIFIERS.state,
-        CA_IDENTIFIERS.zip,
-      ],
+      `UPDATE projects SET state_code = 'CA', dir_project_id = $2 WHERE id = $1`,
+      [projectId, CA_IDENTIFIERS.dirProjectId],
     );
+
+    const identity = await asTenant(async (tx) =>
+      saveContractorIdentity(tx, {
+        userId: USER,
+        now: NOW,
+        fields: {
+          legalName: CA_IDENTIFIERS.legalName,
+          address: CA_IDENTIFIERS.address,
+          city: CA_IDENTIFIERS.city,
+          state: CA_IDENTIFIERS.state,
+          zip: CA_IDENTIFIERS.zip,
+          pwcr: CA_IDENTIFIERS.pwcr,
+          fein: CA_IDENTIFIERS.fein,
+          licenseType: CA_IDENTIFIERS.licenseType,
+          licenseNumber: CA_IDENTIFIERS.licenseNumber,
+        },
+      }),
+    );
+    if (!identity.ok) throw new Error('fixture: the contractor block was refused');
 
     const exact = await firstClassName();
     const ingested = await asTenant(async (tx) =>
@@ -941,13 +957,24 @@ describe('J10 — the California XML, generated and served', () => {
     // an account, so every test in this file shares one `workers` row — setting only
     // the present case would leave an earlier test's SSN in place and the absent case
     // would silently pass by testing nothing.
-    await tdb.client.query(
-      `UPDATE workers
-          SET ssn_ciphertext = CASE WHEN $1 THEN convert_to($2, 'UTF8') ELSE NULL END,
-              num_withholding_exemp = CASE WHEN $3 THEN 2 ELSE NULL END
-        WHERE account_id = $4`,
-      [input.withSsn !== false, SSN_ON_FILE, input.withExemptions !== false, ACCOUNT],
-    );
+    const workerIds = (
+      await tdb.client.query<{ id: string }>(`SELECT id FROM workers WHERE account_id = $1`, [
+        ACCOUNT,
+      ])
+    ).rows.map((row) => row.id);
+    await asTenant(async (tx) => {
+      for (const workerId of workerIds) {
+        if (input.withSsn === false) await forgetWorkerSsn(tx, workerId, NOW);
+        else {
+          const stored = await storeWorkerSsn(tx, { workerId, ssn: SSN_ON_FILE });
+          if (!stored.ok) throw new Error(`fixture: ${stored.reason}`);
+        }
+        await setWithholdingExemptions(tx, {
+          workerId,
+          count: input.withExemptions === false ? null : 2,
+        });
+      }
+    });
 
     const project = await asTenant(async (tx) => readProject(tx, projectId));
     const pin = await asTenant(async (tx) => currentPin(tx, projectId));
