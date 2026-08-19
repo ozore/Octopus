@@ -1,0 +1,354 @@
+{
+ "note": "A1-A6 applied as a HARD pre-ballot filter over the 80 mined ideas of runs 1-2 (screened 2026-08-19 by 4 gate agents, ideas judged as described in their entries). Four A4 rejections are carried over from run-2 live verification, overriding a run-3 as-described pass. Gate keys: A1-A6 per run-3/PLAN.md; EXCL-1 Clausewright variant; EXCL-2 Ratepin variant; AI-ARBITER = the model would be the source of a decision the customer signs.",
+ "screened": 80,
+ "rejected": 45,
+ "rejections": [
+  {
+   "pool_id": "r1-02",
+   "name": "MacGuard",
+   "pass": false,
+   "failed_gate": "A4",
+   "reason": "PBM-specific MAC price lists are distributed through payer contracts/portals rather than public machine-readable sources, so the underlying corpus this depends on is paywalled/scrape-hostile; the audit-appeal-generation half also leans on case-specific persuasive drafting with no described degraded mode.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r1-03",
+   "name": "WageBridge",
+   "pass": false,
+   "failed_gate": "EXCL-2",
+   "reason": "Core product is a federal/state prevailing-wage rate lookup engine that auto-generates WH-347 certified payroll reports \u2014 directly the certified-payroll/Davis-Bacon pattern excluded for this run.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r1-05",
+   "name": "PermitPilot",
+   "pass": false,
+   "failed_gate": "A2",
+   "reason": "The one-liner and why_simple explicitly promise 'filling out the paperwork for you' / 'help filing them' for STR permits \u2014 a done-for-you filing service, matching the explicit A2-fail pattern.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r1-06",
+   "name": "ShipCheck",
+   "pass": false,
+   "failed_gate": "AI-ARBITER",
+   "reason": "The deliverable is an LLM prediction of how a subjective human app-store reviewer will rule on ambiguous guideline compliance, not a deterministic computation over settled structured facts \u2014 an open-ended generative compliance judgment presented as the product.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r1-07",
+   "name": "WagePilot",
+   "pass": false,
+   "failed_gate": "EXCL-2",
+   "reason": "Turns timesheets into WH-347 plus state prevailing-wage certified payroll reports \u2014 squarely the excluded certified-payroll/Davis-Bacon pattern.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r1-09",
+   "name": "Tariffly",
+   "pass": false,
+   "failed_gate": "AI-ARBITER",
+   "reason": "Core promise is 'paste a description, get the right HS code' \u2014 the AI is the source of the customs classification decision the customer files and pays duty against, not deterministic code applying a known code to a rate table.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r1-10",
+   "name": "StayLegal",
+   "pass": false,
+   "failed_gate": "A2",
+   "reason": "Explicitly described as a 'done-for-you' permit filing service with 'manual concierge filing for the first cohort' \u2014 human labor on the seller side fulfilling the core value.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r1-12",
+   "name": "WageLine",
+   "pass": false,
+   "failed_gate": "EXCL-2",
+   "reason": "Finds the Davis-Bacon wage determination and craft classification for certified payroll purposes \u2014 a direct prevailing-wage/Davis-Bacon lookup pattern excluded for this run.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r1-15",
+   "name": "DutyLens",
+   "pass": false,
+   "failed_gate": "A2",
+   "reason": "The flagship wedge offer is a $1,500 'Tariff Exposure Audit... delivered in 3-5 days,' the classic non-instant human-turnaround signal, and the HS classification itself is an AI-made customs decision the customer signs.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r1-16",
+   "name": "CodeMarshal",
+   "pass": false,
+   "failed_gate": "AI-ARBITER",
+   "reason": "Core product is 'ask any fire-alarm code question, get a cited jurisdiction-specific answer' \u2014 an open-ended generative answer to an inherently ambiguous, inspector-dependent compliance question, precisely the excluded pattern.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r1-17",
+   "name": "WageLens",
+   "pass": false,
+   "failed_gate": "EXCL-2",
+   "reason": "Explicitly a Davis-Bacon wage-determination and classification lookup that auto-fills WH-347 certified payroll \u2014 the excluded certified-payroll/prevailing-wage pattern.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r1-20",
+   "name": "SpaComply",
+   "pass": false,
+   "failed_gate": "AI-ARBITER",
+   "reason": "AI generates binding medical-director/delegation agreements and standing orders in a nuanced, state-varying healthcare-law area (CPOM) with no described human review or degraded mode \u2014 the model is effectively the source of a signed legal compliance decision.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r1-21",
+   "name": "Scopewise",
+   "pass": false,
+   "failed_gate": "AI-ARBITER",
+   "reason": "Core value is 'AI chat that answers can I do X in state Y' \u2014 an open-ended generative answer to a compliance question is the product itself, not deterministic code against a structured corpus. Underlying corpus (50 states' medical/nursing board rules, CPOM ownership rules) is also scattered across board sites and statute text, a manual-curation A4 risk."
+  },
+  {
+   "pool_id": "r1-22",
+   "name": "StormClear",
+   "pass": false,
+   "failed_gate": "A2",
+   "reason": "Revenue model explicitly includes a 'rush add-on where the team preps and files the actual state registration/bond paperwork for a flat per-state fee' \u2014 a human-fulfilled filing service, not code-only fulfillment."
+  },
+  {
+   "pool_id": "r1-23",
+   "name": "SpaSentinel",
+   "pass": false,
+   "failed_gate": "AI-ARBITER",
+   "reason": "Sells an 'AI advisor' answering open-ended CPOM/scope-of-practice compliance questions, plus one-time $1,500-$5,000 human-flavored 'compliance gap-analysis/audit reports' \u2014 both the open-ended AI legal Q&A and the audit-report deliverable trip the AI-as-engine and A2 rules."
+  },
+  {
+   "pool_id": "r1-24",
+   "name": "Recoup",
+   "pass": false,
+   "failed_gate": "A2",
+   "reason": "Contingency-fee 'we get your money back from your landlord' service \u2014 actual recovery requires disputing with and being paid by a landlord (negotiation/collection), which is not something code alone fulfills; this is a service wrapped in AI, not automated fulfillment of the paid-for outcome."
+  },
+  {
+   "pool_id": "r1-25",
+   "name": "PackPilot",
+   "pass": false,
+   "failed_gate": "A2",
+   "reason": "Pitch is literally 'we tell you what you owe and file it for you,' plus a paid 'registration concierge' add-on that 'sources and manages the required local authorized representative' \u2014 done-for-you human fulfillment of the core paid outcome."
+  },
+  {
+   "pool_id": "r1-26",
+   "name": "DutyLens",
+   "pass": false,
+   "failed_gate": "AI-ARBITER",
+   "reason": "AI-assisted HTS classification makes the model the source of the tariff code \u2014 a legally consequential number the customer relies on for duty payment and CBP compliance \u2014 rather than deterministic code computing against a structured corpus."
+  },
+  {
+   "pool_id": "r1-28",
+   "name": "Solace",
+   "pass": false,
+   "failed_gate": "A4",
+   "reason": "The product's case-checklist value depends on 'state-by-state death-care regulations ... scattered across individual state health department PDFs' \u2014 exactly the manual-curation-of-scattered-PDFs pattern the gates fail, wired into the core case workflow, not just an incidental moat note."
+  },
+  {
+   "pool_id": "r1-29",
+   "name": "DutyDesk",
+   "pass": false,
+   "failed_gate": "AI-ARBITER",
+   "reason": "'AI copilot that gives small importers the correct tariff (HTS) code' \u2014 the AI is the source of a classification decision with direct financial/legal consequences (duty owed, CBP penalty exposure), not a deterministic lookup against a structured corpus."
+  },
+  {
+   "pool_id": "r1-30",
+   "name": "RateCard",
+   "pass": false,
+   "failed_gate": "A4",
+   "reason": "Benchmark corpus is built by normalizing 'Reddit r/sysadmin and r/CIO renewal-cost threads' and 'LinkedIn we just renewed X for $Y posts' \u2014 informal, unverifiable, scattered social data that requires ongoing manual judgment/curation to be trustworthy, not a self-refreshing machine-readable source."
+  },
+  {
+   "pool_id": "r1-31",
+   "name": "StateSwitch",
+   "pass": false,
+   "failed_gate": "A4",
+   "reason": "Corpus is explicitly 'scattered across individual state board PDFs, one-off press releases' with no central aggregation \u2014 the manual-curation-of-scattered-PDFs failure pattern, despite the product itself disclaiming filing services."
+  },
+  {
+   "pool_id": "r1-32",
+   "name": "PartMatch",
+   "pass": false,
+   "failed_gate": "A4",
+   "reason": "Moat and build plan both rest on 'scraping scattered manufacturer catalogs and spec PDFs' with no common format across verticals \u2014 a manually-curated scattered-PDF corpus, not a self-refreshing machine-readable source with staleness detection."
+  },
+  {
+   "pool_id": "r1-33",
+   "name": "SiteSignal",
+   "pass": false,
+   "failed_gate": "A2",
+   "reason": "Self-described in the one-liner as 'a done-for-you outbound service instead of a raw lead spreadsheet' \u2014 the paid deliverable is the outbound execution/booked appointment itself, the exact 'done-for-you' pattern the rules flag as an automatic A2 fail regardless of automation used underneath."
+  },
+  {
+   "pool_id": "r1-36",
+   "name": "Reinstate",
+   "pass": false,
+   "failed_gate": "EXCL-1",
+   "reason": "Amazon/Walmart marketplace account-suspension appeal and Plan-of-Action drafting \u2014 a direct Clausewright-variant exclusion for this run."
+  },
+  {
+   "pool_id": "r1-37",
+   "name": "RefIQ",
+   "pass": false,
+   "failed_gate": "AI-ARBITER",
+   "reason": "Core job stated verbatim: 'ask a compliance question about refrigerants/equipment/code, get a plain-English cited answer' \u2014 the textbook open-ended generative compliance answer the AI-as-engine rule prohibits as the product."
+  },
+  {
+   "pool_id": "r1-38",
+   "name": "Renewly",
+   "pass": false,
+   "failed_gate": "A4",
+   "reason": "Underlying licensing/CE data source is NASCLA's static, infrequently-updated print/PDF guidebooks (28 separate state guidebooks) \u2014 a manually-curated scattered-document corpus, not a self-refreshing machine-readable feed; also carries an AI Q&A compliance-answer feature."
+  },
+  {
+   "pool_id": "r1-39",
+   "name": "ClearHS",
+   "pass": false,
+   "failed_gate": "AI-ARBITER",
+   "reason": "'Paste a product description or photo ... returns the correct HTS code' \u2014 AI is the source of the classification decision underlying the duty rate the customer relies on, the same HTS-classification-as-AI-arbiter pattern as DutyLens/DutyDesk."
+  },
+  {
+   "pool_id": "r1-40",
+   "name": "FreeTime",
+   "pass": false,
+   "failed_gate": "A4",
+   "reason": "Moat explicitly built from 'each ocean carrier's individually-published D&D tariff and free-time terms (dozens of scattered PDFs/webpages with no common format)' \u2014 a manually-curated scattered-PDF corpus rather than a self-refreshing machine-readable source."
+  },
+  {
+   "pool_id": "r1-41",
+   "name": "BookPulse",
+   "pass": false,
+   "failed_gate": "A4",
+   "reason": "The detection moat is 'chart-of-accounts patterns and common miscategorization signatures' built from QuickBooks Community forum threads, IRS Schedule C mappings, and industry COA templates \u2014 scattered human-written sources with no described cron/API refresh or staleness detection, i.e. manual curation to stay correct.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r1-42",
+   "name": "NexusPilot",
+   "pass": false,
+   "failed_gate": "A4",
+   "reason": "The entry's own moat description admits sellers today 'piece together' the 50-state nexus threshold table 'from state DOR websites and blog posts' \u2014 no API, no cron, no staleness mechanism described, so the core dataset needs manual curation to stay correct.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r1-43",
+   "name": "TariffPilot",
+   "pass": false,
+   "failed_gate": "AI-ARBITER",
+   "reason": "The product's core deliverable is an LLM 'classification engine' that outputs the exact HS/HTS code and duty rate a customer relies on to pay tariffs and avoid penalties \u2014 the model is the source of the classification decision itself, not deterministic code computing against a structured corpus with AI only assisting presentation.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r1-44",
+   "name": "LicenseStack",
+   "pass": false,
+   "failed_gate": "A2",
+   "reason": "Explicitly sells a '$300-$1,500 per state... \"we file it for you\" service' as a productized upsell alongside the subscription \u2014 a literal done-for-you human service, which is the disqualifying phrase the gate names directly.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r1-45",
+   "name": "ScopeIQ",
+   "pass": false,
+   "failed_gate": "AI-ARBITER",
+   "reason": "Core value is described as 'ask which state and which procedures, get back a structured, sourced compliance answer' \u2014 an open-ended generative AI answer to a medical scope-of-practice/supervision compliance question, with no deterministic structured-corpus computation described underneath.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r1-46",
+   "name": "PermitPilot",
+   "pass": false,
+   "failed_gate": "A4",
+   "reason": "Depends on 'a structured, continuously scraped and normalized database of thousands of city/county STR ordinances, permit workflows, and renewal deadlines' pulled from planning-department PDFs across thousands of jurisdictions, with no cron cadence or staleness detection described \u2014 the classic scattered-PDF manual-curation corpus the gate flags.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r1-47",
+   "name": "StationGrant",
+   "pass": false,
+   "failed_gate": "A4",
+   "reason": "Its own moat description says the winning-narrative knowledge is 'scattered across FEMA PDFs, past award data, and consultants' heads' \u2014 explicitly non-machine-readable domain knowledge requiring manual curation, with no refresh cron or staleness mechanism described.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r2-01",
+   "name": "ModWatch",
+   "pass": false,
+   "failed_gate": "EXCL-2",
+   "reason": "Core product is 'cron-fed alerts and bid-priced rate cards for federal and state prevailing-wage determinations' built on Davis-Bacon/SCA wage determinations and certified-payroll pain points \u2014 a direct match to the Ratepin exclusion (prevailing-wage / Davis-Bacon rate lookup or monitoring).",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r2-21",
+   "name": "Bacondesk",
+   "pass": false,
+   "failed_gate": "EXCL-2",
+   "reason": "Core product is WH-347 generation plus state e-CPR XML pre-checked against Davis-Bacon wage determinations \u2014 squarely certified payroll / prevailing-wage lookup, the explicitly excluded Ratepin category.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r2-24",
+   "name": "Adviserbook",
+   "pass": false,
+   "failed_gate": "AI-ARBITER",
+   "reason": "The paid deliverable is a RAG-generated written annual compliance review and redlined brochure \u2014 an open-ended generative answer to 'is this RIA compliant,' not deterministic code computing against a structured corpus with AI only in presentation.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r2-27",
+   "name": "WageLens",
+   "pass": false,
+   "failed_gate": "EXCL-2",
+   "reason": "Core product is Davis-Bacon prevailing-wage rate lookup by county/craft plus WH-347 generation \u2014 directly the excluded Ratepin category.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r2-32",
+   "name": "UnderwaterRx",
+   "pass": false,
+   "failed_gate": "EXCL-1",
+   "reason": "Detects underpaid claims and then generates a downloadable appeal document for the pharmacist to file \u2014 an explicit reframe of a prior 'we write your appeals' service into self-serve appeal/plan-of-action drafting, the excluded Clausewright category.",
+   "strength_if_pass": ""
+  },
+  {
+   "pool_id": "r2-23",
+   "name": "Tierline",
+   "pass": false,
+   "failed_gate": "A4",
+   "reason": "Run-2 verification: the paid deliverable rests on a hand-authored 50-state EPCRA Tier II matrix; EPA itself confirms no consolidated machine-readable source exists. Content-hash crawling detects THAT a page changed, not the new fee/field/format rule. Run-3 screener passed it as described; the run-2 finding is live-verified and prevails.",
+   "strength_if_pass": "",
+   "carried_over_from": "run-2/phase-1-ideation/VOTE_RESULTS.md"
+  },
+  {
+   "pool_id": "r2-25",
+   "name": "Trustline",
+   "pass": false,
+   "failed_gate": "A4",
+   "reason": "Run-2 verification: the moat is a 50-state trust/escrow rules matrix with quarterly full re-verification \u2014 recurring human work on prose sources. What survives autonomously is a reconciliation feature incumbents already bundle. Run-3 screener passed it as described; the run-2 finding prevails.",
+   "strength_if_pass": "",
+   "carried_over_from": "run-2/phase-1-ideation/VOTE_RESULTS.md"
+  },
+  {
+   "pool_id": "r2-30",
+   "name": "NexusPilot",
+   "pass": false,
+   "failed_gate": "A4",
+   "reason": "Run-2 verification (self-admitted in the entry): threshold table extracted from human-readable state DOR pages with no authoritative machine-readable feed for all 46 jurisdictions; the product asserts a dated legal obligation. Shopify ships a free built-in nexus tracker. Run-2 finding prevails.",
+   "strength_if_pass": "",
+   "carried_over_from": "run-2/phase-1-ideation/VOTE_RESULTS.md"
+  },
+  {
+   "pool_id": "r2-19",
+   "name": "Tariffgrid",
+   "pass": false,
+   "failed_gate": "A4",
+   "reason": "Run-2 verification: OpenEI URDB freshness is a third party\u2019s human curation programme (Illinois State University), plus standing PUC-docket prose extraction for eligibility clauses; the paid output is a switch recommendation the customer may be unable to execute. Run-2 finding prevails.",
+   "strength_if_pass": "",
+   "carried_over_from": "run-2/phase-1-ideation/VOTE_RESULTS.md"
+  }
+ ]
+}
