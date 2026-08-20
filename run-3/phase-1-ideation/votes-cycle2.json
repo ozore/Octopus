@@ -1,0 +1,182 @@
+{
+ "tally": {
+  "C2": 72,
+  "C8": 34,
+  "C5": 28,
+  "C1": 58,
+  "C4": 47,
+  "C3": 46,
+  "C7": 12,
+  "C6": 39
+ },
+ "votes": [
+  {
+   "lens": "pmf-evidence",
+   "ranking": [
+    "C2",
+    "C8",
+    "C5",
+    "C1",
+    "C4",
+    "C3",
+    "C7",
+    "C6"
+   ],
+   "rationale": "C2 is the only card where money for this exact job is both named and observed: Effluent Labs publishes $1,500/$3,500/$5,500+ per month for DMR prep and NetDMR submission, and a municipal procurement PDF records an actual completed transaction — Operator10 at $14,165 plus $1,970/yr — against a 92,846-permit universe that AllMax's own \"2,000 customers\" barely touches. The regulator itself documents the worse substitute (Oregon DEQ teaching hand-calculation; the FAQ conceding the status quo is Excel). That is Mom Test, Ellis and pull in one card. C8 is second on vendor multiplicity rather than price: NYRETS, RLTY Service (which enumerates the 29-column addendum and Local Law 157 by name), Brooklyn CPA and cert firms all sell this precise artifact by hand, and the unbundled buyer count is computed (31,585), but every fee is withheld and roughly half the top AV band is already absorbed free by cert counsel. C5 has the only self-serve published prices ($499/$999 Kendrick, $9,999/yr Shipping Solutions) but they are for the adjacent USMCA artifact, and its buyer population is entirely unsized (Census 302, DataWeb gated) — proof of price without proof of population. C1 has the ballot's hardest money-in-motion numbers ($51,615 CMP, 519 letters, Turquoise $40M) but those are penalties and capital, not customer payments, and Craneware's free offering shadows it. C4 rests on one quote-only Forvis Mazars line plus ERP localisation spend — vendor behaviour, not buyer payment, and the bundling it proves cuts against it. C3 and C7 are consultant-category inferences with tiny/unsized filer pools. C6 I distrust most: its headline is a PRA burden estimate ($56.6M, $27,193/respondent), and FTC's own PRA prices label drafting at four minutes."
+  },
+  {
+   "lens": "speed-to-revenue",
+   "ranking": [
+    "C1",
+    "C2",
+    "C4",
+    "C5",
+    "C3",
+    "C6",
+    "C8",
+    "C7"
+   ],
+   "rationale": "Judging only build-time-to-charged-card and calendar-time-to-next filing event. C1 wins on its wedge, not its full product: the $499 validator report needs only a URL paste plus CMS's own CC0 npm validator (2.6.0, published 2026-08-18) — zero ingestion, no portal acceptance gate, and demand is live today via 519 warning letters on 90-day clocks. Its 835 WASM parser is heavy but sits behind the first dollar. C2 has the ballot's best cadence (monthly, always ~30 days out) and its lowest onboarding (one permit number → full limit set from ECHO, verified live on minors), but I discount it for the card's own admission that a generated NetDMR import has never been submitted — an untested external gate. C4 is continuously in-season (register shows filings every month; 27.2% already late, though the card concedes that figure is an upper bound), and buyers are enumerable by name with dated period ends — fast acquisition — but the exclusion/receipt-date settings pass is real friction. C5 has the smallest build (CFR prints the declaration verbatim) and per-shipment cadence, but its buyer population is entirely unsized (Census 302, DataWeb token-gated) and cbp.gov 403 means \"no free generator\" is inferred, so I distrust that kill_check. C3 waits until ~Nov 14 and needs a per-customer chart-of-accounts mapping — borderline concierge — with a new Form Version possibly landing mid-build. C6's calendar is fine but the spec is the heaviest here (65 classes, 35 appendices, vector artwork) and FTC prices the label half at four minutes/model. C8 and C7 fail my lens outright and say so themselves: \"six months of dead air\" to June 2027, and a May 2027 deadline whose RY2026 template is not even published."
+  },
+  {
+   "lens": "simplicity",
+   "ranking": [
+    "C4",
+    "C2",
+    "C7",
+    "C3",
+    "C5",
+    "C1",
+    "C8",
+    "C6"
+   ],
+   "rationale": "Simplicity = smallest whole machine. C4 wins: one jurisdiction, one regulator, one 52-field spec, ONE AP ledger CSV in, and — uniquely — no output-format conformance at all, because the publish service has no upload route (\"you must publish your report online\"), so the deliverable is a page of numbers plus a workbook. Arithmetic is day-counting and banding. Construction retention and the directors' block are deferrable without losing the 80%. C2 is a near-tie and beats C4 on onboarding (one field, permit number; ECHO returns ParameterCode/LimitValueNmbr/StatisticalBaseCode/DMRDueDate, so the per-customer spec self-delivers) with computation that is literally an arithmetic mean per 122.41(l)(4)(iii). It drops to 2nd on two input streams, high lab-EDD format variety, and the card's own admission that CA/OH/NC/PA run separate eDMR import formats with no state list obtainable — a latent many-specs problem. C7: one template, one payroll export, counts/median/mean — genuinely small, docked for the unpublished RY2026 23-SOC crosswalk and a two-sided many-to-many consolidation. C3 adds XSD conformance, FC/TA/ST/PI/TD components, three live form versions, a chart-of-accounts mapping and daily ADTL snapshots. C5 carries six prescribed templates across three subheading families plus live HTS/chapter-99 base mapping. C1 looks clean on spec (CMS ships the schema and a CC0 validator) but the v1 hides a WASM X12 835 parser, three heterogeneous inputs and quarterly RVU/GPCI fee-schedule translation. C8 needs 47 columns, two dissimilar inputs, three artifacts, and still leaves the RPIE body hand-keyed — not whole. C6 is worst: 65+ classes × templates × 35 appendices plus vector label rendering — that is many specs wearing one name. Distrusted claims: C2's \"one API covers the tail\" (state formats unmeasured); C8's non-fetch of §11-208.1."
+  },
+  {
+   "lens": "ai-buildability",
+   "ranking": [
+    "C1",
+    "C2",
+    "C6",
+    "C4",
+    "C8",
+    "C3",
+    "C7",
+    "C5"
+   ],
+   "rationale": "Judged only on determinism and where judgment hides. C1 leads: the spec is a fetched JSON Schema (13,217 bytes), the arithmetic is spec-defined (order statistics with CMS's own \"next highest observed value\" tie rule), and CMS ships a CC0 validator (2.6.0, 2026-08-18) so an external oracle adjudicates output — the strongest engine-never-arbiter posture on the ballot; the only derivation surface is %-of-fee-schedule → dollars, which reduces to customer-declared locality/schedule times a published RVU. C2 is nearly as clean and simpler to build: one permit number returns the entire per-outfall spec as structured JSON (StatisticalBaseCode, LimitValueNmbr, due dates), and 122.41(l)(4)(iii) names the method (\"arithmetic mean\"). It drops one place only for the admitted residual prose — BDL/NODI conventions living in the permit PDF, plus the unproven claim that ICIS base codes reproduce every value type, and no validator oracle (a NetDMR import has never been accepted end-to-end). C6 has CFR-prescribed arithmetic including the ambiguous case (305.12(c) dictates the out-of-range sentence), but the class→template→appendix→rounding map across 65+ classes is a large encoding surface. C4 is honest arithmetic over one AP ledger, penalized for reg 6 exclusion classification and the receipt-date substitution the guidance says must not be the posting date. C8 is mostly transcription into a fixed 30-column spec — safe, but the RPIE body is still hand-keyed and the spec lives in PDFs. C3 falls for permissible-investment categorization (legal characterization the customer signs) and possibly uncomputable ADTL. C7 hinges on job-title→SOC classification — the crosswalk is its own stated moat, i.e. judgment is the product — against an unpublished RY2026 template. C5 is last: eligibility is ruling-driven and the signed declaration carries customer free-text the code never derived. Distrusted claims: every \"no incumbent price\" and C5's inferred \"CBP ships no tool\" (cbp.gov 403)."
+  },
+  {
+   "lens": "willingness-to-pay",
+   "ranking": [
+    "C2",
+    "C5",
+    "C1",
+    "C3",
+    "C6",
+    "C8",
+    "C4",
+    "C7"
+   ],
+   "rationale": "My lens rewards a fetched reference price plus a budget forced on a recurring clock. Only C2 and C5 have real anchors. C2 wins: Effluent Labs' published $1,500–$5,500/mo and a municipal procurement PDF showing Operator10 at $14,165 + $1,970/yr are hard, fetched prices in the exact segment — and Effluent Labs' own stated buyer (\"small utilities without adequate staffing\") proves these buyers already pay four figures monthly. Monthly DMR cadence forces the budget 12x/yr; the $89 hypothesis has enormous headroom, not a ceiling problem. C5 has the biggest per-event stake ($37.5k on one repair entry) with CBP as the gatekeeper that denies the reduced base, and Kendrick's live self-serve $499/$999/mo sets a comparable above its own ask; docked because the saving is elective (no filing deadline, no fine), free blank declarations from Livingston/Deringer make the artifact feel free, and the 301 action's predecessor already died 2026-07-24 — fragile budget. C1 has the ballot's best enforcement liveness — an actual $51,615 CMP imposed 3 June 2026, 519 dated letters, per-day penalties — but zero price anchor and Craneware's free tier sitting adjacent. C3's license revocation plus automatic $1,000/report is existential and its fintech buyer already spends $10k–$100k/yr, but the penalty isn't shown imposed and TAM is 555–1,200. C6 anchors only to DOE's PRA burden figure — regulators' cost estimates are not prices — and FTC's own four-minutes-per-label estimate undercuts half the offer. C8's published per-property penalty band is concrete, but cert attorneys absorb the work free across half the premium band. I distrust C4 most: criminal liability with 27.2% publicly filing late and no prosecution cited is a maximum never applied, and Sage/D365 already ship the count statistics free. C7 is last — the penalized party isn't the buyer."
+  },
+  {
+   "lens": "moat",
+   "ranking": [
+    "C1",
+    "C6",
+    "C3",
+    "C4",
+    "C2",
+    "C8",
+    "C7",
+    "C5"
+   ],
+   "rationale": "Moat lens only: what a 2027 entrant cannot buy or read. C1 wins on churn velocity that is measured, not asserted — @cmsgov/hpt-validator shipped 2.2.0→2.6.0 across Feb/Apr/Apr/Jun/Aug 2026, schema v2.0→v3.0, RVU26A/B/C/D quarterly — plus two compounders a latecomer cannot backfill: a content-hashed per-hospital generation ledger (hospitals overwrite MRFs in place, so nobody else holds what was public on a date CMS asks about) and the unpublished percentage-of-fee-schedule→dollar translation table maintained against quarterly RVU/OPPS/GPCI. C6 is close second: the class→template→appendix map spanning 65+ classes, 35 appendices and two CFR titles is the densest private format object on the ballot, and DOE publishes only current templates while eCFR keeps no per-appendix changelog, so a dated archive is strictly first-mover; the 2027 range revision with its 90-day clock is a legislated regeneration event. C3 third: three concurrent Form Versions with a new one in flight post-2026-07-20, quarterly (4x/yr) archive accumulation with defined amendment-merge rules, heterogeneous PSP/ledger/custody ingest mappings, and Alessa's enumerated report list showing no incumbent owns the data plane. C4 fourth — real four-SI churn and reg-9-backed lineage, but the corpus is one public CSV GET and Microsoft already funds the half-artifact across four release trains: a copycat with distribution, the worst kind. Distrusted claims: C2 calls one-call ECHO onboarding a moat — a copycat gets the identical public endpoint; its only compounder is the lab-EDD library, and 122.41(l)(4)(iii) has no churn. C1's \"not a HIPAA business associate\" is a replicable WASM choice, not structure. C5 self-declares a thin moat and its chapter-99 mapping rests on litigable tariff policy (Section 122 precedent). C7's crosswalk is a one-time SOC reset, killable by one CRD portal release."
+  },
+  {
+   "lens": "distribution",
+   "ranking": [
+    "C2",
+    "C1",
+    "C4",
+    "C8",
+    "C6",
+    "C3",
+    "C7",
+    "C5"
+   ],
+   "rationale": "Distribution-only. C2 wins on every channel the lens names at once: 92,846 effective NPDES permits enumerated live from ECHO's REST API with names, states, parameters and per-permit DMRDueDate; onboarding is literally one field (permit number → full limit set, verified for minors IA0067156 etc.), which is a free checker wedge and 92k programmatic SEO pages in the same object; and ECHO publishes the enforcement events themselves (D80/D90 failure-to-report, $75.7M penalties, weekly-refresh bulk files), so the late-filer list is machine-readable with no FOIA. $89/mo clears procurement. C1 is second: the buyer's artifact is public by law and gradable with CMS's own CC0 validator (2.6.0, two days old) — the purest free-validator wedge on the ballot — over a 5,419-row CMS roster, plus a real 90-day warning-letter clock and a $51,615 CMP for press pull. Docked because the 519-letter list came via AP, not a fetchable CMS feed, and hospital CFOs are the least card-swipeable buyer here. C4 third: one 102MB GET yields 10,235 named companies with their own published figures and computable period-end+30 deadlines, and PPN 018's 45-day threshold makes a benchmark page consequential; but the 27.2%-late trigger is their own admitted upper bound and no agency enforcement event exists. C8 has the best raw list (31,585 unbundled BBLs) and an honest free penalty-exposure checker, but one filing season a year throttles compounding. C6 rides public CCMS records plus twelve dated category deadlines and the 2027 range reset, though its hottest trigger (Amazon ASIN blocks) is login-walled hearsay. C3's 555–1,200 filers were never rostered from NMLS Consumer Access. C7 has no entity list and is Feb–May only. C5 is last: both buyer-sizing APIs gated, cbp.gov 403, free blank forms — no enumerable buyer at all."
+  },
+  {
+   "lens": "competition-gap",
+   "ranking": [
+    "C2",
+    "C8",
+    "C6",
+    "C3",
+    "C1",
+    "C7",
+    "C5",
+    "C4"
+   ],
+   "rationale": "C2 wins on the only thing my lens rewards: a fetched price ladder that makes the gap arithmetic. Effluent Labs at $1,500–$5,500/mo and a procurement PDF showing Operator10 at $14,165 + $1,970/yr put the $89/mo hypothesis at ~6% of the cheapest human alternative, and AllMax's own \"2,000 customers\" against 92,846 effective permits sizes the unbundled tail. The free-tool distance is quoted by the regulator itself (\"NetDMR is only set up to accept summary statistics... permittees need to perform calculations\"). C8 is second because it is the only card that counts its unserved segment from a primary field — 31,585 AV≥$750k parcels with no attorney of record out of 73,380 — with four human incumbents all price-withheld and DOF's own guide documenting one NYC.ID session per BBL. C6 substitutes the regulator's $27,193/respondent PRA figure for the missing competitor price, and FTC's free substitute is blank Illustrator artboards — far distance; but 2,083 buyers with literally zero vendors is thin. C3's emptiness is structurally argued (Alessa enumerates every report and omits MSBCR) and the miner's control checks (HMDA killed by a free CFPB generator, MCR by LendingPad) earn trust — capped by ~555 filers. C1 has the best mandate but the most crowded field: Panacea ships an MRF module, Turquoise took $40M, and Craneware gives an adjacent product away free to all US providers; \"quote-gated only\" is a real gap for CAHs but the closest adjacency of the top five. C7's structural gap (payroll cannot reach a third party's data) is elegant yet the filer population is unsized and no price exists. C5 loses on unsized buyers, a failed cbp.gov check, and free blank declarations already circulating from Livingston/Deringer. C4 last: Sage X3 and Dynamics 365 already ship maintained free localisations one release from closing the gap, plus DBT's free deadline tooling and no price anywhere. Distrusted claims: every \"no incumbent price found\" (absence of anchor recurs on six cards), C4's self-computed 27.2% late figure, and C8's \"not found\" on Yardi/MRI exports."
+  },
+  {
+   "lens": "churn-retention",
+   "ranking": [
+    "C2",
+    "C3",
+    "C5",
+    "C6",
+    "C4",
+    "C1",
+    "C8",
+    "C7"
+   ],
+   "rationale": "Ranked purely on recurrence, roster growth, spec-churn re-engagement, and self-termination. C2 wins: the DMR is monthly for most permittees, the value never self-terminates (next period starts the day you file), the portfolio tier scales with permits held by contract operators, and the 503.18 biosolids and pretreatment modules are same-buyer expansion with zero new CAC. C3 is next — two quarterly artifacts (7.01 report plus the 7.03 delegate report), Q4 adds TD components, and the expansion axis is licensed-state count (avg MT 14 states, stored-value 30), so ARR compounds with the customer's own licensing roadmap; three live Form Versions plus a new one in flight after the 2026-07-20 comment close forces re-engagement. C5 has the highest raw cadence (per shipment, weekly for depot repair) and a 5-year 10.24(d) ledger, but demand is volume-contingent and the whole dollar stake rests on a 301 action with litigation exposure — that is correlated whole-book churn, so I discount it. C6 reads annual but DOE's own PRA math is 32,243 responses over 2,083 respondents (~15/yr), staggered across 16 CFR 305.11(b)(1) Table 1 dates, with per-model roster growth and the dated 2027 range revision as a forced regeneration of every label. C4 is semiannual per entity with real group multiplication (3,762 of 6,340 filed 2+). C1 is annual with weak roster growth (hospitals don't add CCNs) — its saving grace is relentless churn (five validator releases in 2026, quarterly RVU) plus hosted-URL lock-in. C8 and C7 are seasonal and transactional; C8 at least has three dated events, C7 is one May deadline with nine dead months, an unsized filer count, and a per-year repurchase decision. Distrusted claims: every card's willingness-to-pay is unanchored (no incumbent price fetched anywhere), and C6's Amazon-enforcement and C5's CBP-tooling claims are self-flagged as unverified."
+  },
+  {
+   "lens": "market-size",
+   "ranking": [
+    "C2",
+    "C8",
+    "C4",
+    "C1",
+    "C6",
+    "C3",
+    "C5",
+    "C7"
+   ],
+   "rationale": "Counting buyers only. C2 wins by an order of magnitude: ECHO's own query returns 92,846 effective NPDES individual permits, onboarding is one field (permit number), price is $89/mo, and the cadence is monthly — no seasonal window at all. Even if state-eDMR fragmentation and non-monthly permits cut it 70% (the card honestly flags this as unproven), 25k+ buyers remains the largest pool here; AllMax's 2,000 customers worldwide confirms the tail is unbundled. C8 is second on sheer sourced volume — 31,585 unbundled AV≥$750k parcels at $199 plus 119,069 at $79, computed live from Socrata — but I discount it for conflating parcels with buyers (owners/agents hold many BBLs) and for a single June-1 window with six months of dead air. C4 is third: 6,340 distinct companies filed in 2026, every one named in a 102MB register, at £99–349/mo, but concentrated in two spikes (Jan 3,348 / Jul 3,444) and capped at ~10k lifetime filers. C1's pool is ~2,000–3,000 small/rural hospitals of 5,419 at $3,900/yr, non-seasonal via spec churn, but self-serve card purchase by a CAH CFO is the card's own unproven risk. C6 is a hard 2,083 PRA respondents with deadlines spread nearly monthly — high ACV, small count, and its own admission the self-serve slice may be \"a few hundred.\" C3 self-reports 600–1,200 serviceable filers: honest, and too few. C5 and C7 have no buyer count at all — Census returned 302 and DataWeb is gated for C5; CRD published no filer statistics for C7 — and C7 compounds that with a single Feb–May window, so it ranks last."
+  },
+  {
+   "lens": "monetization-clarity",
+   "ranking": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C6",
+    "C8",
+    "C5",
+    "C7"
+   ],
+   "rationale": "Judged only on packaging. C1 is the textbook Ramanujam ladder: $499 one-time validator/gap report (a strict artifact, warning-letter-triggered) feeding $3,900/$9,600/$19,000 annual tiers fenced on CCN count — per-facility, unlimited regenerations so no metering fight, annual prepay matching an annual artifact, $51,615 CMP as the downside anchor. C2 has the single best-evidenced pricing page on the ballot: per-permit is the value metric, and it is the only card with fetched substitute prices ($1,500/mo Effluent Labs, $14,165 Operator10) so the comparison table writes itself; the parameter caps are static fences, not meters. It loses only on the absent paid wedge and thin $89 ACV. C3's per-licensed-state banding, billed per quarter exactly as the report falls, expands automatically with the customer's own licensing roadmap and anchors arithmetically against \"$5,000–$20,000 per state\" consulting. C4 has the law's own unit (entity × reporting period) plus a £249 wedge, but £99/month against a twice-yearly artifact is a cadence mismatch inviting churn. C6's per-basic-model bands and the dated 2027 regeneration burst are clean, and DOE's own $27,193/respondent/year is a strong anchor — but the card concedes FTC prices label drafting at four minutes, so half the offer can't carry price. C8's per-BBL metric and free penalty-exposure lead magnet are elegant, yet it is one-time seasonal revenue at $79–$199 against $5,000–$100,000 penalties: money left on the table, no subscription. C5 meters packages/year and dangles \"$37.5k duty saved\" — direct contingency/success-fee temptation. C7 prices two different buyers at once with a $1,499 unlimited tier that cannibalizes its own $299 unit. Distrusted claim: every card except C2 and C5 admits no incumbent price was fetchable, so most anchors are penalty-derived, not market-derived."
+  },
+  {
+   "lens": "execution-risk",
+   "ranking": [
+    "C3",
+    "C4",
+    "C6",
+    "C1",
+    "C2",
+    "C5",
+    "C7",
+    "C8"
+   ],
+   "rationale": "Ranked purely by what breaks unattended. C3 wins: one national XSD, no PII by construction (counts/dollars/state codes only), NMLS's own Level 1/Level 2 validators as external arbiter, refusal-to-compute when ADTL snapshots are missing, and a spec-revision path that fails loud (new Form Version = new filename on a diffed page, three FVs already coexist). C4 is next — smallest maintenance surface on the ballot (one 52-column spec, one HTTP GET, four SIs), no PHI/PII, regime versions stamped in the regulator's own data; docked for reg 8/9 criminal framing and the receipt-date garbage-in that mitigation only discloses. C6 has no personal data and fully prescribed arithmetic (Appendix K1 rate, prescribed out-of-range sentence), and CCMS rejects bad templates loudly — but 65+ classes across two CFR titles is a wide unattended surface, and a wrong label figure reaches consumers with no validator between. C1 has the best safety net anywhere here (CMS's CC0 validator gates every emission) yet buys it with an X12 835 WASM parser holding PHI — exactly the browser-parsing trap — plus CEO-attested percentiles and the AMA/CPT licensing landmine. C2 fails silently, not loudly: stale ICIS limit rows after reissuance, unresolved CA/OH/NC/PA eDMR fragmentation, BDL/NODI conventions still living in permit PDFs, and a NetDMR import never actually accepted. C5's chapter-99→base mapping is hand-maintained against litigated, fast-moving proclamations with 1592 exposure, and its CBP kill check 403'd — unverified. C7 processes per-worker race+pay against an RY2026 template CRD has not published, with a judgmental title→SOC crosswalk. C8 is worst: tenant SSNs through a browser parser over six ERP shapes, spec drift detected only by hashing PDFs DOF replaces in place."
+  }
+ ]
+}
