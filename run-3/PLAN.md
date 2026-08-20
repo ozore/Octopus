@@ -90,6 +90,40 @@ ground on angles the pools do not cover.
    a reprint.
 7. **Nothing is sent.** All go-to-market stays as drafts on disk.
 
+## Thesis pivot — cycle 3 (founder directive, 2026-08-20)
+
+After cycles 1–2 (compliance monitoring, then compliance artifact generators —
+all candidates refuted or contested; see `phase-1-ideation/IDEA_DOSSIER.md`
+and `READJUDICATION.md`), the founder redirected the thesis: **stop building
+knowledge-base products; hunt ideas UNLOCKED by AI as a paradigm shift.**
+The model's work IS the product — automated document scanning, massive data
+cross-referencing, generation. The build target is either a frontier-model
+API call or a specialized model we fine-tune on an assembled dataset. The
+product form may be simple: a browser extension, a browser-resident app
+(including local WebGPU inference), or a small standalone app.
+
+This **supersedes** the "AI is engine, never arbiter" axiom for cycle 3
+onward. What survives of it: when an output carries legal or financial
+consequence, the product shows sources and uncertainty in-product and never
+sells an unverifiable assertion. Gates A1–A6 stand unchanged.
+
+New adversarial parameters (mandatory in mining AND validation):
+- **AP1 Assistant shadow** — why won't ChatGPT/Claude/Gemini at $0–20/mo do
+  this natively? Survivors: batch scale, in-workflow embedding, structured
+  outputs into systems, vertical evals.
+- **AP2 Browser shadow** — Chrome ships Gemini; agentic browsers exist. Any
+  "explain/summarize this page" extension is dead on arrival.
+- **AP3 Wrapper commoditization** — if the prompt is the product there is no
+  company. Accepted moats: assembled dataset → fine-tune + eval harness,
+  workflow depth, usage-accumulated data.
+- **AP4 Inference economics** — unit inference cost vs price; local/small
+  models (WebGPU) as a zero-marginal-cost, privacy-by-construction path.
+- **AP5 Saturation hunt** — name the 5 closest existing AI tools WITH
+  fetched prices; ~10k AI tools shipped since 2023, absence of named
+  incumbents means the miner did not look.
+- **AP6 Platform risk** — model deprecations, API pricing shifts, lab ToS.
+- **AP7 Why-now proof** — why was this impossible before ~2023?
+
 ## Phases
 
 Same four-phase pipeline, executed by workflow fleets:
