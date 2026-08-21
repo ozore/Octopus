@@ -1,0 +1,330 @@
+{
+ "note": "Cycle-3 (AI-native thesis) mining: ideas the miners killed during pre-proposal verification (2026-08-20), each with the decisive AP/A gate and fetched evidence. AP1-AP7 defined in ../PLAN.md.",
+ "rejected": [
+  {
+   "name": "Batch medical-record chronologies for personal-injury firms",
+   "killed_by": "AP5 — the flank the angle predicted (self-serve, card-swipe, no minimum volume) is already occupied on all sides.",
+   "evidence": "DigitalOwl launched a self-serve attorney product in April 2025 with 6,000 free trial pages; InPractice sells at '$.05/page, no subscription required' with 500 free pages (fetched 2026-08-20); Superinsight runs $28-54 per chronology and EvenUp $250-500 (searched 2026-08-20). Price floor is already five cents a page with a free tier above it — there is no self-serve gap left to enter."
+  },
+  {
+   "name": "SSDI / SSA certified-electronic-folder summarization for disability reps",
+   "killed_by": "AP5 — four funded or shipping products aimed at exactly this buyer.",
+   "evidence": "Superinsight ships a dedicated Social Security Disability chronology product (fetched 2026-08-20); Dodonai advertises disability chronologies from $30/mo; Eve Legal has an SSDI practice-area product for analyzing ERE files; Chronicle sells ERE monitoring to SSD firms (all searched 2026-08-20)."
+  },
+  {
+   "name": "Spec-book to submittal-register generation for subcontractors",
+   "killed_by": "AP5 — five named tools with published prices covering both the GC and sub side.",
+   "evidence": "Pype AutoSpecs (spec-book submittal log extraction), SubmittalLink at $150-250/mo, Part3 at $150-200/user/mo, BuildSync (AI compliance review inside Procore), Submittal.app aimed specifically at subcontractors (searched 2026-08-20)."
+  },
+  {
+   "name": "Oil & gas mineral-title runsheet / chain-of-title generation",
+   "killed_by": "AP5 plus AP3 — the incumbent's corpus is the moat and it is already built.",
+   "evidence": "Enverus Instant Analyst — Courthouse is trained on 350M+ courthouse documents and ingests 100-150 records per batch run; TitleTrackr is purpose-built for mineral title with instant abstract and runsheet generation; Landman.ai covers title running and mineral tract mapping (searched 2026-08-20). We cannot assemble a 350M-document courthouse corpus autonomously."
+  },
+  {
+   "name": "CRE title commitment / Schedule B exception review",
+   "killed_by": "AP5 — a funded category leader purpose-built for this exact document set.",
+   "evidence": "Orbital markets Orbital Copilot as 'the only AI assistant purpose-built for commercial real estate legal teams,' covering title review, CC&Rs, surveys and leases together with a claimed 70% time reduction; CaseMark ships a Title Commitment workflow that ingests title search reports and generates ALTA-standard Schedule A/B output (searched 2026-08-20)."
+  },
+  {
+   "name": "Franchise Disclosure Document cross-reference and analysis",
+   "killed_by": "AP5 — the public-corpus advantage (free Wisconsin DFI filings) has already been harvested by at least three products.",
+   "evidence": "FranchiseIQ (fddiq.com) markets AI-powered FDD analysis; Franchise Caliber ships an AI FDD Analyzer; Vetted Biz sells the largest FDD directory at $80/mo ($64 annual, $49 per single FDD, 10 downloads/month) (searched 2026-08-20). Wisconsin DFI's free FDD search is public to everyone, so it confers no advantage."
+  },
+  {
+   "name": "Special-education cumulative-file / IEP review for advocates and parents",
+   "killed_by": "AP5 — four products with published pricing across both the parent and advocate segments.",
+   "evidence": "My IEP Hero at $49/$99 per month for parents and $149/$249 for advocates and agencies; EveryIEP offers free IEP analysis; AdvocateIQ charges $49 per IEP document review; Highlighter is $59/advocate/month or $549/year (searched 2026-08-20)."
+  },
+  {
+   "name": "Consumer bankruptcy intake: means test and Statement of Financial Affairs from statement piles",
+   "killed_by": "AP5 — the incumbents already ingest paystubs and bank statements, despite a large and growing market.",
+   "evidence": "Glade AI is an AI operating system for bankruptcy firms with agents for income extraction from pay stubs and means-test calculation; BK Questionnaire uses OCR/AI to read pay stubs to fill the means test and Schedule I and lets clients connect a bank or upload statements; Best Case and NextChapter now ship AI-assisted petition preparation that populates schedules, SOFA and means test (searched 2026-08-20). Market was attractive — 533,949 consumer filings in CY2025, up 12% — but the job is taken."
+  },
+  {
+   "name": "Divorce / marital asset tracing from commingled statements",
+   "killed_by": "AP5 — direct incumbent overlap, including the one that would be our closest competitor anyway.",
+   "evidence": "CounselPro indexes thousands of commingled statements and check images at $499/matter and traces to Venmo, Zelle, Cash App, crypto and named payees; Thrive Financial's Asset Tracer cross-references uploads for transfer trails and risk-scored flags with citations; Valid8 Financial covers enterprise flow-of-funds (searched and fetched 2026-08-20)."
+  },
+  {
+   "name": "VA claims-file (C-file) review against the 38 CFR rating schedule",
+   "killed_by": "AP6 catastrophic platform/regulatory risk, on top of AP5.",
+   "evidence": "Trajector Holdings — approximately $279.8M gross revenue in 2025 doing precisely this work with humans — filed Chapter 11 on 23 July with $62.9M of debt maturing, revenue down ~60% year-over-year, services suspended in 23 states, citing 12 GUARD Act states prohibiting compensation to unaccredited entities, 12 SAVE Act states, and two putative class actions (searched 2026-08-20). Separately the AI niche is already crowded: VetClaims.ai at $1,250, VA Claim Commander, VeteranAi, VA Rating Assistant. A market where the largest operator is in bankruptcy because of the fee-regulation regime is not a self-serve entry."
+  },
+  {
+   "name": "Estate and trust fiduciary accounting built from raw statements",
+   "killed_by": "AP5 — the incumbent already does the AI statement-reading step and prices per file.",
+   "evidence": "Estateably offers pay-per-file pricing ($179 estate accounting, $198 trust accounting, $198 POA accounting) with 'instant PDF bank statement imports' and AI that scans financial statements to add assets automatically (searched 2026-08-20; homepage fetched 2026-08-20)."
+  },
+  {
+   "name": "DOT driver-qualification-file audit against 49 CFR 391",
+   "killed_by": "AP5 — covered by both AI entrants and entrenched compliance vendors.",
+   "evidence": "Oxmaint ships AI DQ file management that exports a chronologically organized package with every required document present or flagged; Foley and FleetCollect sell DQF compliance management as managed services (searched 2026-08-20)."
+  },
+  {
+   "name": "Condo / HOA resale document package review for buyers",
+   "killed_by": "AP1 and AP2 — a one-time consumer with a single PDF is the exact shape a $20 assistant subscription serves.",
+   "evidence": "The job is one 300-page package read once per lifetime, with no batch, no structured output flowing into a system, and no vertical eval a buyer would pay to certify; GoverningDocs already occupies the niche with a document-analysis service (searched 2026-08-20). Florida's HB 913 extension of the review window from 3 to 7 days as of July 2025 further reduces the time pressure that was the only wedge."
+  },
+  {
+   "name": "Local in-browser bank statement → CSV/QBO converter for bookkeepers",
+   "killed_by": "AP5 saturation, decisively — the exact wedge (browser-local, no upload) is already shipped free by multiple tools, and the market is bracketed above and below.",
+   "evidence": "localbankstatementconverter.com (fetched 2026-08-20) runs entirely in the browser via WebAssembly, states 'your PDF never leaves your device', and is 'completely free with no hidden costs, subscriptions, or premium features'. StatementForge ('files are parsed locally in your browser, not uploaded to StatementForge servers'), SecureBankConverter ('files never touch servers'), Digital ToolPad and localextract.app occupy the same position. Above them, DocuClipper sells the cloud version at $39/mo for 60 pages (July 2026 pricing) and MoneyThumb sells a local desktop converter at $549-599 plus $99/yr for the scanned-PDF/OCR licence. The only AI-differentiated slice left is OCR on scanned statements — a single feature sitting between a $0 local floor and a $39/mo cloud ceiling, with at least six 2026 entrants (capyparse, quickbankconvert, bankpdftool, documentric among them) already competing on it. The FTC Safeguards Rule angle (enforceable since 9 June 2023 for tax preparers) is real but does not create pricing power when free compliant tools exist."
+  },
+  {
+   "name": "In-browser video redaction (face and licence-plate blurring) for regulated footage release",
+   "killed_by": "AP5 — five free browser-local tools already ship the exact architecture I would have built, including the WebGPU/WebCodecs one.",
+   "evidence": "anonymizevideo.app does the whole job locally in the browser, using WebCodecs to decode/re-encode through the machine's media hardware and ONNX Runtime for detection with WebGPU acceleration where available. WuTools 'Blur Video Area Pro' blurs faces and plates with AI tracking, all local via WebAssembly, never uploaded. blur-face.com ('100% in your browser, no upload, no server, no account'), VideoPilot (WebCodecs, local) and blurthevideo.com are all free and already live (all surfaced 2026-08-20). The paid incumbents that remain — CaseGuard Studio at roughly $1,000+/year and Pimloc Secure Redact, which publishes no price at all — are enterprise/public-sector sales, i.e. the paying half of this market is exactly the half that fails A1 self-serve, while the self-serve half has been driven to zero."
+  },
+  {
+   "name": "Local Whisper transcription app (privacy-first, in-browser)",
+   "killed_by": "AP4/AP5 — the price floor is zero and the reference implementation is published by the model host itself.",
+   "evidence": "The official transformers.js WebGPU guide (fetched 2026-08-20) ships a working in-browser Whisper ASR example as documentation, with a free public demo — the entire product is a HuggingFace tutorial. Cloud competitors have already commoditised the paid tier (Otter ~$16.99/mo, Sonix ~$10/hr), and local desktop apps sell one-time in the $59 range. There is no assemblable dataset moat: Whisper is open weights, so the 'model IS the product' test fails — the model is somebody else's product, freely redistributable, and the wrapper is the whole of the value."
+  },
+  {
+   "name": "Generic browser-local PDF redaction tool",
+   "killed_by": "AP5 — a browser-local redaction product at $29/mo already exists, and the category has at least four priced entrants plus Adobe.",
+   "evidence": "SafeRedact (pricing page fetched 2026-08-20) states 'browser-based processing (no uploads)' and 'documents stay on your device', priced free for the first document, $12 day pass, $29/mo, $99/yr. Redactable's own pricing page (fetched 2026-08-20) shows $19/mo for 15 documents and $99/mo for 150, with AI auto-redaction and OCR included. Adobe Acrobat Pro bundles redaction at $22.99/mo annual; CaseGuard Studio sits at ~$1,000+/yr; iDox.ai is enterprise-quoted. The one genuine differentiator left — SafeRedact still transmits extracted text to a cloud AI API, so a fully-local build would be the only true zero-egress option — is a single architectural detail, not a moat, and is a week of work for the incumbent to close."
+  },
+  {
+   "name": "Browser-local eDiscovery / early case assessment for solo and small law firms",
+   "killed_by": "A3 no-human-escalation plus AP5 — the job's core is contested attorney judgment with defensibility consequences, and cheap entrants already occupy the self-serve tier.",
+   "evidence": "Logikcull sells self-service eDiscovery from roughly $250-395 per user per month and is explicitly positioned as simple enough for a solo litigator without vendor support; Everlaw runs about $2,000-5,000/mo base plus $18-35/GB (both surfaced 2026-08-20). Newer cheap entrants Litigaze ('upload to production in one browser tab', privilege logs formatted for court, Bates stamping, every case starts free) and Coreviz (deployable on the firm's own servers, Bates-stamped productions with jurisdiction-formatted privilege logs) already cover the workflow. More decisively for our gates: a responsiveness/privilege call that turns out wrong produces a discovery dispute and sanctions exposure, and the natural remedy is a conversation with a human — the one thing A3 forbids. Degrading in-product to 'we are unsure about these 4,000 documents' does not discharge the obligation, and the browser is a poor vessel for 50GB PST collections."
+  },
+  {
+   "name": "Carrier commission statement ↔ book-of-business reconciliation for insurance agencies",
+   "killed_by": "AP5 saturation — a self-serve AI incumbent already sits at the exact price point we would enter at, with four more above it. CommissionIQ: Solo Agent $79/mo, Agency Starter $199/mo, Agency Pro $349/mo, Enterprise $1,399/mo, self-serve signup with a 14-day free trial and no credit card required, claiming universal carrier coverage ('if your carrier provides a commission statement — we reconcile it'). Above it: Comulate (large brokers; auto-reconciles commissions to policies and posts to Applied Epic), Fintary (AI extraction from any carrier format, custom quote on a discovery call), Applied Recon (extracts/cleanses/matches PDF, CSV, XLS carrier statements to policies in Applied Epic), Insurstein (import statements, auto-match to policies, demo-led), and Commission Wizard (upload AMS export + statements, results in under 30 seconds, self-serve 14-day free trial). This was my strongest early candidate — every incumbent I found first was sales-led, which looked like a wide-open self-serve gap. It closed in 2025–26. Entering means competing on prompt quality against a $79/mo product with a carrier corpus we don't have: the AP3 wrapper trap.",
+   "evidence": "mycommissioniq.com (fetched 2026-08-20): full tier table $79/$199/$349/$1,399/$3,999/$5,499 per month; 'self-serve signup with 14-day free trial No credit card required'; CSV upload with auto field mapping. commissionswizard.com/blog/commission-reconciliation-software-comparison (fetched 2026-08-20): Commission Wizard is self-serve, 'free for 14 days — no credit card required', 'Upload your files and see results in under 30 seconds'; also cites Applied Epic at $150/user/month. www.fintary.com (fetched 2026-08-20): 'extracts data from any carrier format, reconciles in minutes (not days)', pricing via discovery call. www.insurstein.com/workflows/commission-reconciliation (fetched 2026-08-20): 'Import carrier statements, auto-match to policies, spot missing commissions', demo-led."
+  },
+  {
+   "name": "Supplier price-list ↔ Amazon ASIN matching for wholesale sellers (the 'no barcode' wedge)",
+   "killed_by": "AP5 + AP3 — the specific wedge I intended to build on (title/description matching when UPC/EAN is missing or wrong) is already a shipped, advertised feature of all three market leaders, at prices below what we could charge. Seller Assistant matches on 'UPC/EAN/GTIN + title matching' from $13.33/mo; Scan Unlimited on 'UPC/EAN/title' from $70/mo; Analyzer.Tools on 'UPC/EAN/GTIN/title matching' from $49/mo. With title matching commoditized, the only remaining differentiator is match quality — against incumbents who already hold the confirmed-pair datasets that constitute the moat — plus an SP-API/Keepa data dependency we would not control (AP6). The adjacent liquidation-manifest variant is equally covered: Liquidata AI, Pallet Analyzer Pro, and Loadest AI, the last explicitly offering 'AI-powered OCR for damaged PDFs, handwritten notes, and bulk inventory lists'.",
+   "evidence": "sellerassistant.app/blog/best-amazon-price-list-analyzers-in-2026 (fetched 2026-08-20): head-to-head table — Seller Assistant 'From $13.33/mo', 'UPC/EAN/GTIN + title matching'; Scan Unlimited 'From $70/mo', 'UPC/EAN/title'; Analyzer.Tools 'From $49/mo', 'UPC/EAN/GTIN/title matching'. sellerassistant.app/pricing (fetched 2026-08-20): Pro $29.99/mo, Business $79.99/mo, Business Plus $189.99/mo, Agency from $399.99/mo, +$29.99/mo for an extra 50,000 UPC/EAN scans, 14-day free trial. scanunlimited.com/pricing (fetched 2026-08-20): free tier 1 upload/mo at 10,000 products; Unlimited $60/mo annual at 100,000 products/upload. Liquidation variant: loadestai.com/liquidator, palletanalyzerpro.com, liquidata.ai (retrieved 2026-08-20)."
+  },
+  {
+   "name": "AI bid leveling — matching subcontractor and supplier quote line items to a common scope for contractors",
+   "killed_by": "AP4/AP5 — the closest incumbent is free, which destroys the pricing hypothesis before it exists. BidLevel.ai (by ProcurePro) offers AI bid levelling with 'no cost, no contract, no strings attached', and ConstructionBids.ai offers self-serve plans with 'no enterprise contract required, no sales call to see pricing'. Add MeltPlan's Melt Bid (bid leveling, missing-scope detection, side-by-side comparison, Excel workflows) plus Procore/Buildertrend bundling. A free, funded incumbent in a market already price-anchored at zero fails AP4 on the revenue side no matter how cheap inference gets.",
+   "evidence": "bidlevel.ai (retrieved 2026-08-20) — 'Free AI Bid Levelling Software for Construction', no cost / no contract / no strings attached. constructionbids.ai (retrieved 2026-08-20) — self-serve plans, no enterprise contract, no sales call to see pricing. costtoconstruct.com/blog/best-ai-bid-leveling-software-2026 and buildr.com/blog/ai-bid-leveling (retrieved 2026-08-20) — MeltPlan Melt Bid and BidLevel.ai named as the AI-first tools; 'AI turns subcontractor quotes into apples-for-apples comparisons in minutes'."
+  },
+  {
+   "name": "HTS/HS tariff code classification — cross-referencing product catalogs against the tariff schedule and CBP rulings",
+   "killed_by": "AP5 — five named AI incumbents already publish accuracy figures above what a new entrant could credibly claim on day one, and the assemblable-dataset moat (CBP CROSS rulings, HTSUS) is equally public to all of them. GingerControl claims 96% accuracy at the 6-digit level on production traffic with parallel batch processing of PDF/JPG/XLSX/text and CSV/SKU bulk upload; Gaia Dynamics claims 92%; TradeInsight AI claims 90%+; Descartes CustomsInfo and SAIL GTX complete the top five. The de-minimis-repeal why-now is real and dated but was equally visible to everyone, and the category converted in under a year. The output also carries direct legal and financial consequence (misclassification penalties), so the A3 bar is high while differentiation is near zero.",
+   "evidence": "gingercontrol.com/blog/best-automated-hts-classification-tools and /automated-hts-code-classification-tools (retrieved 2026-08-20): names GingerControl, Descartes CustomsInfo, Gaia Dynamics, SAIL GTX, TradeInsight AI as the top tools; '96% accuracy at the 6-digit level on production traffic'; bulk CSV/SKU upload; '~30 seconds per SKU versus up to 15 minutes manually'. gaiadynamics.ai/product/classification (retrieved 2026-08-20): 92% claimed accuracy."
+  },
+  {
+   "name": "AI trademark clearance / likelihood-of-confusion screening against the USPTO register",
+   "killed_by": "AP5 plus a regulatory bar. The dataset moat I liked most in this entire angle — USPTO 2(d) refusals and TTAB decisions as tens of thousands of free gold labels for 'confusingly similar: yes/no' — is already being worked by funded legal-AI platforms: CaseMark searches USPTO TESS, state registries, common law and international databases with multi-factor likelihood-of-confusion analysis; DocJuris screens the register plus commercial usage and domains with a DuPont-factor risk rating in a citation-backed report; Corsearch and Harvey both ship trademark clearance. Worse, the self-serve buyer I wanted (founders, Amazon Brand Registry sellers) is the one segment we cannot serve cleanly: selling a clearance conclusion to a non-lawyer edges into unauthorized practice of law, and the attorney-facing version is taken.",
+   "evidence": "casemark.com/workflows/trademark-clearance and /trademark-clearance-search-report (retrieved 2026-08-20): USPTO TESS + state + common law + international search with multi-factor likelihood-of-confusion analysis. docjuris.com/solution/trademark-clearance (retrieved 2026-08-20): DuPont-factor risk rating, citation-backed report delivered in hours. corsearch.com/trademark-solutions/trademark-clearance and harvey.ai/blog/ai-trademark-search (retrieved 2026-08-20). apslaw.com, 'AI and Trademark Prosecution: Why Identifying Risk Is No Longer the Advantage', 2026-04-22 (retrieved 2026-08-20) — the category's own practitioners describe risk identification as commoditized."
+  },
+  {
+   "name": "Music royalty statement ↔ catalog matching for indie labels and publishers",
+   "killed_by": "A1 / buyer economics rather than saturation — the matching problem is real (DSP statements with inconsistent title/artist strings, missing ISRC/ISWC) but the buyer will not fund it. Roster is free up to 15 artists and starts at $9/month; Eddy runs a 15-day free trial; Curve and Revelator hold the professional tier with existing DSP ingestion pipelines. A market whose self-serve price point is $9/mo cannot support a fine-tune plus eval harness, and the labels large enough to pay already have the ingestion layer solved.",
+   "evidence": "blog.nexatunes.com/best-music-royalty-accounting-software-indie-labels and rosterroyalties.com (retrieved 2026-08-20): Roster free to 15 artists, paid plans from $9/month. eddy.app (retrieved 2026-08-20): 15-day free trial, positioned for indie labels. revelator.com/blog/music-royalty-accounting-for-indie-labels (retrieved 2026-08-20): describes ISRC matching and metadata normalization as already handled at the platform layer; labelgrid.com guide (retrieved 2026-08-20) same."
+  },
+  {
+   "name": "General CRM / e-commerce catalog product matching and dedupe (the horizontal 'fuzzy match two lists' tool)",
+   "killed_by": "AP3 wrapper commoditization — with no vertical pair-type, the prompt IS the product. The e-commerce side alone is a wall of shipped tools with published accuracy claims: Price Intelligence Guru (99.2% match accuracy, 5M+ products matched daily), Pricefy (EAN/GTIN/UPC plus AI/ML visual comparison when barcodes are missing, 95%+ match rate), Intelligence Node, DataWeave, MerchantOps (raw manufacturer data to channel-ready the same day, self-serve and managed tiers), B2Sell, HootCore (free entry tier). A horizontal matcher has no assemblable dataset any of them lack, no eval harness anyone would trust over their published numbers, and no accumulating usage data — it is a UI over embeddings.",
+   "evidence": "priceintelguru.com/product-matching (retrieved 2026-08-20): 99.2% accuracy, 5M+ products matched daily, automated SKU mapping and variant normalization. pricefy.io/features/products-automatch (retrieved 2026-08-20): matches by EAN/GTIN/UPC or AI/ML visual comparison when barcodes are missing, 95%+ match rate. merchantops.ai and hootcore.io/blog/ecommerce-product-data-enrichment-services-guide-2026 (retrieved 2026-08-20): self-serve plus managed tiers, subscription pricing by SKU tier with a free entry tier. intelligencenode.com/solutions/by-need/product-matching and dataweave.com/blog/ai-powered-product-matching (retrieved 2026-08-20)."
+  },
+  {
+   "name": "Home inspection: narrate walkthrough → inspection report",
+   "killed_by": "AP5 — five named incumbents with fetched pricing, the vertical is fully colonized",
+   "evidence": "InspectorData $79/mo flat with voice-to-text + AI photo analysis; Spectora $109/mo AI Comment Assist; SwiftReporter $99/mo with voice-to-text Smart Glossaries; DictaFlow $7/mo or $69/yr standalone dictation; Wispr Flow $12–15/mo system-level dictation that already works inside any inspection app. Fetched via search 2026-08-20. No pricing headroom and no unmet job."
+  },
+  {
+   "name": "Arborist / tree risk assessment: voice → TRAQ-style report",
+   "killed_by": "AP5 — at least four dedicated AI voice products already shipping into a ~30k-practitioner vertical",
+   "evidence": "ReportWalk (voice notes + photos → structured arborist report, free first report, blog.reportwalk.com fetched 2026-08-20); Serv AI 'turns your voice into professional arborist reports' with TPZ calculations; Arbee 'AI co-pilot for tree assessments'; Tree Guard 360 cross-references ISA TRAQ and ANSI A300. Fetched via search 2026-08-20."
+  },
+  {
+   "name": "Restoration / roofing: voice walkthrough → Xactimate scope",
+   "killed_by": "AP5 — five direct incumbents, one already emitting native .esx",
+   "evidence": "V2E (v2e.app) record walkthrough in EN/PT/ES → itemized estimate; Voice to Scope (voicetoscope.com) speak → Xactimate estimate; Scope it (scopeitapp.com) walk-and-talk → structured mitigation/repair scope; Handoff AI Site Walkthrough → full project scope; Restoration360 generates a native .esx that opens in Xactimate. Fetched via search 2026-08-20. This was the single most obvious 'empty vertical' and it is the most crowded."
+  },
+  {
+   "name": "UK EICR / BS 7671 electrical certificates from dictation",
+   "killed_by": "AP5 — the exact differentiated feature I would have built (spoken defect → correct observation code) is already shipping",
+   "evidence": "Elec-Mate: 'Type or dictate a defect in plain English and the AI returns the correct observation code. The test results are spoken in.' Plus iCertifi ('UK's most comprehensive AI-powered electrical certification platform'), Tradecert (AI EICR observation wording), SpeedCert (AI-powered BS7671 certs, free tier). Fetched via search 2026-08-20."
+  },
+  {
+   "name": "Fire protection: NFPA 25 sprinkler / NFPA 80 fire door voice inspection reports",
+   "killed_by": "AP5 — voice memo capture and AI report generation already standard across the ITM software category",
+   "evidence": "Essential (withessential.com) offers technician voice memos and auto-generates NFPA 25 reports; Inspectly360 ships Voice AI in English/Hindi/Marathi; ZenFire has voice-to-text; Guspora markets narrating 147 fire doors door-by-door with deficiencies flagged and a compliance summary generated. Fetched via search 2026-08-20."
+  },
+  {
+   "name": "Insurance field adjuster: voice → claim report",
+   "killed_by": "AP5 — dedicated product plus a priced adjacent suite already in market",
+   "evidence": "FieldScribe AI (fieldnotesai.com, fetched 2026-08-20): 'AI for Insurance Surveyors & Loss Adjusters', voice notes with GPS + timestamps → citation-backed report, 3–4 hours down to ~15 minutes; demo-gated, no published price. Claim Titan: $82.50/user/mo annual, $99/mo monthly, 15+ AI tools for independent adjusters. Fetched via search 2026-08-20."
+  },
+  {
+   "name": "PI / insurance-defense surveillance: in-vehicle audio → court-ready chronological surveillance report",
+   "killed_by": "AP5 — PIwitness is the exact product, already self-serve, and BLS puts the whole occupation at 43,600",
+   "evidence": "PIwitness (piwitness.com, fetched 2026-08-20): captures field notes, voice memos, GPS, timestamps and photos during surveillance, generates structured court-ready investigative reports, every entry timestamped + GPS-tagged + cryptographically hashed, free trial with no demo gate. Case-management incumbents CROSStrax fetched at $35/$65/$105/$195/$295 per month. BLS: 43,600 private detectives and investigators, median $52,370 (2024, fetched today) — thin TAM and a price-sensitive buyer even before the direct competitor."
+  },
+  {
+   "name": "Dealership warranty claims: technician voice → OEM 3C's narrative",
+   "killed_by": "AP3 — at day zero the prompt is the product, and a $25/seat incumbent already occupies the price point",
+   "evidence": "WarrantyWriter (warrantywriter.com, structured Offer data fetched via curl 2026-08-20): $25 per technician per month, web app, 3 C's in → OEM-ready narrative in ~30 seconds. The only real moat would be a claim-outcome-labeled corpus (approved/denied/adjusted), which requires DMS integration and therefore breaks A1 self-serve on day one; OEM warranty policy manuals sit behind dealer portals, so A4 self-maintaining reference data fails too. Heavy-duty (Karmak, Procede Excede DTNA Warranty Claim Tool) handles submission, not narrative authoring — a real gap, but not one we can defend from a standing start."
+  },
+  {
+   "name": "Workplace / HR investigation interviews → investigation report",
+   "killed_by": "A1 + TAM — the self-serve segment is ~900 people and the rest is enterprise, sales-led procurement",
+   "evidence": "Association of Workplace Investigators serves 'over 900 members internationally', dues $245/yr (awi.org, via search 2026-08-20). Incumbents are demo-gated enterprise: hracuity.com/pricing returns HTTP 404 on fetch (2026-08-20) — no published pricing at all; Case IQ and NAVEX One likewise quote-based. A self-serve product cannot reach the enterprise buyer and the independent-investigator pool is too small to carry a company."
+  },
+  {
+   "name": "Multilingual construction daily reports: Spanish/Portuguese voice → English daily log",
+   "killed_by": "AP5 — the multilingual angle I thought was the wedge is already the incumbents' headline feature",
+   "evidence": "SendStatus: speak in Spanish, Portuguese or 12 other languages, output professional English reports. Speakwise: foremen narrate end-of-shift hands-free via AirPods → structured report. Construction Daily Log App: multilingual voice-to-text, offline with sync. Fetched via search 2026-08-20."
+  },
+  {
+   "name": "Immigration client interview → USCIS forms + sworn declaration",
+   "killed_by": "AP5 + AP6 — form automation is taken and the regulatory surface is the least stable of any vertical examined",
+   "evidence": "Docketwise $79–$129 per user per month auto-populating USCIS forms from a single intake; Filevine ImmigrationAI extracts from any document in any language; Imagility offers AI intake, OCR/NLP evidence extraction and automated petition drafting. Fetched via search 2026-08-20. Remaining gap is audio→declaration specifically, but a sworn declaration is the highest-consequence output in this angle and US immigration policy volatility in 2026 makes the form/eligibility corpus a moving target we cannot certify."
+  },
+  {
+   "name": "AI property inventory / check-in / check-out reports for UK landlords and inventory clerks",
+   "killed_by": "AP5 — the exact product already ships self-serve with per-report pricing, and there are at least five entrants.",
+   "evidence": "thepropertyai.co.uk (fetched 2026-08-20): photograph rooms on a smartphone, AI generates inventory reports claiming 95%+ item/condition/damage accuracy; Starter £49/mo (~50 analyses), Professional £129/mo, Pay-As-You-Go £5 per inspection, 14-day trial, no credit card, 'start in under 5 minutes'; it already produces timestamped check-in/check-out 'before and after' evidence packs for deposit disputes. Also live: iListingAI (ilisting.ai, fetched 2026-08-20 — demo-led), Peach Report AI, Vorby, DomuSpect (search results, 2026-08-20), on top of InventoryBase's incumbent platform at £35-£349/mo with 20p per extra property (inventorybase.co.uk/pricing, fetched 2026-08-20). The paid human deliverable is real — InventoryFlex charges £110-£160 per inventory, £120-£170 per check-in, £100-£150 per check-out plus £10/extra room (inventoryflex.co.uk/pricing, fetched 2026-08-20) — but the AI flank is taken at £5."
+  },
+  {
+   "name": "Vehicle condition reports / lease-return and rental damage dispute evidence packs (arming the party being charged)",
+   "killed_by": "AP5 + AP4 — the vision layer is a $1-2 commodity and the consumer counterparty app already exists, including one built by the incumbent that sells the scanners.",
+   "evidence": "Inspektlabs states automated inspection cost 'goes down to $1-2/inspection' on per-inspection pricing (inspektlabs.com, search result 2026-08-20). Proofr is a shipped consumer app doing exactly the counterparty job — geotagged, timestamped scans, AI flagging damage, exportable reports — at $2.89/week, $9.90/month or $89.90/year, alongside CarProof ('Dispute-Free Rentals', Apple App Store) (Fox News, foxnews.com/tech/new-ai-apps-help-rental-drivers-avoid-fake-damage-fees, search result 2026-08-20). Ravin AI, which supplies rental-company scanners, has itself published 'Giving Customers More Power in AI Scans for Rental Car Damage' and offers renters a self-scan app producing 'the same AI-powered report the rental company uses' (ravin.ai, search result 2026-08-20) — the incumbent has already occupied the adversarial flank. The demand signal was genuine and strong (Hertz/UVeye auto-charging, a House Oversight subcommittee investigation and a 27 Aug 2025 Blumenthal letter, blumenthal.senate.gov/imo/media/doc/2025-08-27_hertz_letter_ai.pdf; BVRLA-standard end-of-lease charges averaging £314-£326 with 45-72% of returns incurring them) — but demand without an empty flank is not an opening."
+  },
+  {
+   "name": "AI narrative and defect write-ups for home inspection reports (US home inspectors)",
+   "killed_by": "AP5 — the category's dominant platform already sells AI per published inspection, and challengers are stacked behind it.",
+   "evidence": "Spectora is $109/mo ($1,099/yr) base with 'Spectora Advanced' — the tier that unlocks its AI-assisted features — billed at $3-4 for every published inspection, plus $828/yr per additional inspector (inspectordata.com/blog/spectora-pricing-2026.html and poolverify.io, search results 2026-08-20). Competing AI-report entrants already ranking against it include FieldScribe and InspectorData. The underlying money is real (Spectora's 2026 industry report puts the average inspection quote at $569, up from $457) but the report-writing layer is already priced at $3-4 and bundled with scheduling, agreements and payments — a standalone writer has nothing left to sell."
+  },
+  {
+   "name": "AI cataloguing (titles / descriptions / condition prose) for auction houses",
+   "killed_by": "AP3 + AP5 — the prompt is the product and it has already commoditised to 6-15 cents per lot across five vendors.",
+   "evidence": "Gavelist $0.15/lot pay-as-you-go and ~$0.08/lot at scale ($79/mo for ~1,000 lots); AuctionWriter free 50 lots then $99/mo per 1,000 (~$0.10/lot) up to $1,689/mo per 31,000; Estimint free 200 listings then $29/300, $89/1,500 (~$0.06/lot), $149/3,500, $249/5,000; plus Circuit Auction AI and a 2026 Bidsquare Cloud release (gavelist.com/blog/best-ai-auction-cataloging-software-2026, auctionwriter.com/pricing, estimint.com/pricing, all fetched 2026-08-20). Note this is the rejection that produced 'Realised' — the same fetch that killed the prose layer named the unsolved layer: the category's own buyer's guide admits estimate 'quality varies widely' and advises testing tools 'on items where you already know the answer'."
+  },
+  {
+   "name": "AI food and drink label compliance checking from pack artwork (UK/EU Reg 1169/2011)",
+   "killed_by": "AP5 — a UK/EU-specific incumbent already exists plus at least four adjacent platforms, and a $29 self-serve check is already on sale.",
+   "evidence": "ArtworkIQ (artworkiq.co.uk) markets AI artwork compliance for UK & EU food brands checking against Reg 1169/2011, the 14 allergens and health claims (site returned HTTP 403 to fetch on 2026-08-20; description from search result same day). Artwork Flow's ComplyAI covers font specification and copy-regulation rules with a free AI smart-proofing upload; ManageArtworks' ComplAI verifies 'fonts, claims, and layouts against global regulations'; Sieve/Taama covers ingredient permissibility, claims and artwork proofing; LabelGuard sells a single FIC compliance check for $29 (foodlabelallergencheck.com/eu) (all search results, 2026-08-20). The human comparator is real ($249/label for an FDA review) but the AI wedge is occupied on both sides of the Atlantic."
+  },
+  {
+   "name": "Bar and restaurant liquor inventory counted from shelf photos",
+   "killed_by": "AP5 — the category leader already ships phone-photo computer-vision counting as its core feature.",
+   "evidence": "WISK 'uses artificial intelligence and computer vision to automate inventory counting... by taking photos of shelves with your phone, and the AI identifies products and calculates quantities automatically', at $99-$299/mo depending on source and plan (wisk.ai/price and restaurantinventorymanagementsoftware.com, search results 2026-08-20); Partender runs $199/mo annual or $299/mo monthly (appdemo.partender.com/pricing.html, search result 2026-08-20). Vision-hard fill-level estimation across hundreds of bottles is a genuinely good AI task — it is simply already someone's shipped product."
+  },
+  {
+   "name": "AI construction site safety inspection reports from site photos (SME contractors)",
+   "killed_by": "AP5 — a $29.99/mo self-serve phone product already does photo-to-hazard-report, under the incumbent inspection platform.",
+   "evidence": "Site Safety AI: 'reads the scene and finds the hazards — fall risks, missing PPE, blocked exits' in ~2 seconds, unlimited scans and PDF reports, $9.99/week or $29.99/month, 3-day free trial, App Store self-serve (sitesafetyai.com, fetched 2026-08-20). Above it, SafetyCulture (ex-iAuditor) sits at $24/seat/month Premium with photo-based reporting and an AI form builder (search result, 2026-08-20). Nothing left for a third entrant to sell."
+  },
+  {
+   "name": "Freight / cargo damage claim packs from warehouse photos (LTL OS&D)",
+   "killed_by": "AP5 — an autonomous AI agent already runs the entire claim, not just the evidence pack.",
+   "evidence": "Freehand ships 'AI Teams that run cargo loss and damage claims end to end, detecting OS&D, assembling evidence, filing with the carrier, and tracking to settlement autonomously', listed alongside iNymbus, TranSolutions, Cass, nVision Global, Descartes and CargoWise (freehand.ai/articles/best-freight-claims-management-software, search result 2026-08-20). The pain is documented and large (20-35% carrier denial rates, mostly for missing documentation and incomplete damage descriptions) but the narrow photos-to-evidence-pack slice is a subset of a product that already exists."
+  },
+  {
+   "name": "Share-of-shelf / planogram audits from store photos for small CPG brands",
+   "killed_by": "AP5 — enterprise incumbents plus an existing lightweight self-serve entrant occupy both ends.",
+   "evidence": "Trax runs computer vision over rep-submitted photos for planogram compliance, out-of-stocks and share-of-shelf; Neurolabs trains on synthetic shelf imagery; Vispera produces compliance scores that improve with accumulated training data; and Extractify is explicitly positioned as the lightweight option 'for teams that want to test photo-based share of shelf tracking quickly... without committing to a full retail execution platform' (traxretail.com, neurolabs.ai, getextractify.com/blog/top-share-of-shelf-tools, search results 2026-08-20). The self-serve flank a new entrant would aim at is the one Extractify already holds, in a retail-audit software market of only ~$293M (2025)."
+  },
+  {
+   "name": "AI video walkthrough to moving-survey inventory and estimate (small independent movers)",
+   "killed_by": "AP5 + AP1 — the category owner is established and the generic photo-to-inventory layer beneath it is now commodity.",
+   "evidence": "Yembo sells AI-powered virtual moving surveys producing a colour-coded, numbered Visual Inventory from a customer video walkthrough, with estimates generated automatically from the surveyed inventory and the mover's own tariffs, already deployed through national van lines including Bekins (yembo.ai/moving, yembo.ai/moving/visual-inventory, bekins.com, search results 2026-08-20; pricing not published, i.e. enterprise-sold). The SMB flank that would remain is 'photos to an itemised list', which the contents-inventory cohort (Scanlily, My Property Vault, Club of Things) already sells self-serve — leaving a new entrant squeezed between an entrenched enterprise brand and free-tier generic tooling."
+  },
+  {
+   "name": "Google Shopping feed AI optimiser (titles, attributes, disapproval repair)",
+   "killed_by": "AP2 + AP6 + AP5 — the platform ships it free and the tool layer already bundles 'AI' at $64/mo",
+   "evidence": "Google Merchant Center Help (fetched 2026-08-20) states 'Product Studio is a suite of free, AI-powered tools' available to all Merchant Center users (excl. RU/FR), covering image generation, background removal, upscaling and video, with a Product Studio Text API published for developers. Meanwhile the feed-tool layer has already commoditised the paid slot: DataFeedWatch's pricing page (fetched 2026-08-20) lists 'Free DataFeedWatch AI Included' on every tier with Shop from $64/mo, Merchant $84, Agency $239; GoDataFeed's plan builder (fetched 2026-08-20) recommends Plus at $99/month with $5 per additional 1,000 SKUs. Nothing left to sell but a thinner wrapper on a free platform feature."
+  },
+  {
+   "name": "Marketplace listing generation/optimisation tied to the seller's feed (Amazon, eBay)",
+   "killed_by": "AP2/AP6 platform shadow — the marketplace generates listings itself, free, at the exact point of work",
+   "evidence": "About Amazon (fetched 2026-08-20) documents three native Seller Central generative-AI features: 'Enhance My Listing' (auto-generates titles, attributes, descriptions and missing details for existing listings), AI-powered listing creation from a short description/image/URL, and bulk listing creation from a sparse spreadsheet — integrated into Seller Central with no separate price, and Amazon reports sellers accept the generated content with minimal edits ~90% of the time. A third-party generator competes against the marketplace's own free tool inside the marketplace's own console."
+  },
+  {
+   "name": "ACES/PIES fitment + product data generator for US auto-parts brands",
+   "killed_by": "AP6 licensing/platform risk + A1/A6 friction — the reference databases are paid, per-customer, and the standards body claims ownership of derived data",
+   "evidence": "Auto Care Association subscriptions page (fetched 2026-08-20): you must subscribe to a VCdb package to create or receive ACES XML — Level 1 (under $1M revenue) is $3,150 member / $4,410 non-member per year, PIES/PAdb $1,050/$1,470, with a $2,500 'Entry Level Package'; all 12-month terms. PDM Automotive's account of the licensing changes (fetched 2026-08-20) reports ACA 'assumes that this data becomes derivative work of its reference tables and claims ownership over the content — including factual details such as fitment', that solution providers must verify each customer holds an individual subscription, and that PDM received termination-threat correspondence in January 2025. A self-serve product cannot gate every signup on a $2,500–$3,150/yr third-party licence check, and building on a reference set whose owner claims the outputs is not a moat, it is a hostage."
+  },
+  {
+   "name": "GDSN / retailer new-item-setup automation for small CPG brands",
+   "killed_by": "AP5 saturation (AI-native incumbents already there) + AP3 (the workflow is gated by a data pool we do not own)",
+   "evidence": "ChargeUp (fetched 2026-08-20) already automates new item setup across 'Whole Foods, Kroger, Sprouts, Albertsons, UNFI, KeHE, and more' plus syndication platforms 1WorldSync, Syndigo and IX1. Anglera (fetched 2026-08-20) sells AI attribute-schema completion SKU-by-SKU with provenance pushed into the customer's existing PIM. The publishing rail itself is owned: GS1 US Data Hub Create/Manage is bundled into GS1 membership (fetched 2026-08-20), and item publication still requires a certified GDSN data pool subscription, so our product would be a thin layer between a membership and a duopoly pool — no defensible surface, and the closest AI-native competitors are already funded and selling."
+  },
+  {
+   "name": "Brand-glossary-locked localisation of product catalogues / feeds at scale",
+   "killed_by": "AP2/AP5 — the commerce platform gives free AI translation at the point of work and the translation-tooling layer is fully occupied",
+   "evidence": "Shopify's own Translate & Adapt app (fetched 2026-08-20) is published by Shopify, free to install, auto-translates 2 languages with Google Translate and allows unlimited manual translations, with 1,396 reviews at 4.5 stars — the default merchant path costs nothing. Above it, catalogue-scale localisation is already bundled by the very tools we would compete with: Rastro AI advertises multi-language translation across 50+ languages inside its catalog-ops platform (fetched 2026-08-20) and Sales Layer markets AI Translations inside its AI Suite (fetched 2026-08-20). Glossary lock and per-channel length caps are features of those products, not a company."
+  },
+  {
+   "name": "Feed-native product description generation for Shopify/Woo merchants (SEO-grade PDP copy)",
+   "killed_by": "AP3 — the prompt is the product, and the output has no external verifier",
+   "evidence": "Plytix (fetched 2026-08-20) sells AI text edits at 1 credit each with 500 free credits per month on every plan and extra credits at '$10 per 1,000', i.e. generated product copy is already priced as a commodity add-on inside a $0–$499/mo PIM; DataFeedWatch bundles 'Free DataFeedWatch AI' from $64/mo (fetched 2026-08-20). Unlike an ETIM/BMEcat file or a GTFS feed, marketing copy has no validator that can say pass/fail, so no eval harness can be built and no guarantee can be sold — which is exactly the shape this angle was told to reject."
+  },
+  {
+   "name": "Self-serve vendor security questionnaire extension (the flank below Conveyor)",
+   "killed_by": "AP5 — the flank is already occupied at exactly the price and product shape I would have entered at.",
+   "evidence": "ResponseHub (responsehub.ai/pricing, fetched 2026-08-20): Starter $149/mo, Business $399/mo, Enterprise $799/mo, '7-day free trial with full Business features. No credit card, no sales call', and a 'Chrome extension & export' included on ALL plans to 'Answer questionnaires inside any web portal'. Above it, Conveyor (conveyor.com/pricing, fetched 2026-08-20) has a $0 free tier plus $9,600/yr Business with browser extensions for customer portals and supported portals including OneTrust, Whistic and Coupa; its Chrome Web Store listing (fetched 2026-08-20) shows 1,000 users, updated 2026-08-20. Also in the band: 1up.ai from $250/mo and AutoRFP.ai publishing from $899/mo; Wolfia and Skypher are demo-gated above. A self-serve extension at $99–199/mo would be entering a lane that already has a funded occupant with a published price, a free trial, and no sales call. Nothing structural is left to differentiate on."
+  },
+  {
+   "name": "Government small-business certification filler (8(a) / WOSB / HUBZone / GSA / SAM.gov)",
+   "killed_by": "AP5 plus a broken repeat-purchase shape — an identical AI product already exists with published pricing.",
+   "evidence": "GovCert (govcert.ai, fetched 2026-08-20) does precisely this: 'automates 8(a), GSA MAS, OASIS+, WOSB, HUBZone, and MBE certification applications — from document collection to submission', with document upload, eligibility scoring, AI-drafted narratives and form completion. Published prices: GSA MAS $3,500 (standard $5,000), 8(a) $3,500 (standard $5,000), plus maintenance at $49/$99/$199 per month. Independently, 8(a) certification is a once-per-company event (consultant packages seen at ~$1,600), so the buyer never repeats the core purchase — CAC has to be recovered from a single transaction, which breaks the self-serve acquisition math the gates depend on."
+  },
+  {
+   "name": "Consumer immigration form filler (DS-160 / USCIS) extension",
+   "killed_by": "AP5 plus A3 — saturated including a free open-source clone, and the output carries legal consequence with unauthorized-practice-of-law exposure.",
+   "evidence": "yourUSA.ai launched an AI form-filling assistant covering USCIS forms and the DS-160 (globenewswire press release dated 2026-02-12, fetched 2026-08-20). A free open-source Chrome extension, auto-ds160-filler (github.com/meYQY/auto-ds160-filler, fetched 2026-08-20), already parses natural-language input into the DS-160 schema with GPT-5.1 and injects it into the official CEAC form. Attorney-side tooling already autofills the same form (Prima.Law's extension; Mitratech INSZoom). On top of a free clone and a funded launch, the purchase is one-shot per applicant (State Department estimates ~90 minutes to complete a DS-160 once), and an incorrect immigration filing carries consequences we cannot make good on in-product — A3's 'narrow the claim or refund' does not repair a visa denial."
+  },
+  {
+   "name": "Prior-authorization portal filler for small practices",
+   "killed_by": "AP5 — the price floor is $0 because the incumbents at the accessible end are funded by someone other than the practice.",
+   "evidence": "CoverMyMeds is free for providers and pharmacies and Tandem is free for providers and patients (softwarefinder.com / healthaidaily.com roundups, fetched 2026-08-20), while everything above them is $500–$2,500/mo entry-level or $5–15 per PA transaction, with CharmHealth at $200/provider/mo and Juno Health from $249/mo. A paid extension has to squeeze between a free incumbent below and platform pricing above, while carrying PHI handling, a BAA requirement (Anthropic's BAA covers the API only in HIPAA-ready configuration; Pro/Team/Console are explicitly out of scope), and clinical consequence if a medical-necessity answer is wrong. The economics and the risk load both point the wrong way."
+  },
+  {
+   "name": "EcoVadis / ESG supplier questionnaire filler",
+   "killed_by": "AP1 plus A3 — no batch scale, and the deliverable is an unverifiable assertion.",
+   "evidence": "EcoVadis-specific AI answering is already sold by at least three vendors: EA Global (eaglobal.ai, claims full submissions in 90 minutes, ~2 minutes per question), Footprint Intelligence's 'EcoVadis Agent' offering 'ready-to-use, verified answers', and Wequity, all fetched 2026-08-20 — alongside a consultancy layer (Anthesis, Nexio Projects, Growlity). The structural killer is cadence, not competition: EcoVadis is one assessment per supplier per year across 175,000+ rated companies, so a given buyer fills the questionnaire once annually — the opposite of the batch scale AP1 requires, leaving a generalist chat subscription entirely adequate. And an AI-drafted sustainability claim submitted to a rating agency is precisely the class of unverifiable assertion the founder directive forbids selling: greenwashing exposure sits with the supplier and cannot be degraded away in-product."
+  },
+  {
+   "name": "VMS candidate-submission filler for staffing agencies",
+   "killed_by": "AP5 / AP6 — the platform owners on both sides ship this natively.",
+   "evidence": "Bullhorn sells VMS Automation and VMS Sync, which parse job orders from SAP Fieldglass, Beeline and VNDLY into Bullhorn and let recruiters 'submit candidates to the VMS without leaving Bullhorn' with real-time submission status (bullhorn.com/uk/products/vms-automation, fetched 2026-08-20) — inside the ATS agencies already pay for. On the other side, Beeline's own Recruiter Workspace ships 'pre-built AI assistants' for submission verification, candidate comparison and pitches that work across ATS and VMS with no setup (bsn.beeline.com/recruiter-workspace, fetched 2026-08-20). An independent extension would sit between two platforms that each own the rails, in a workflow governed by MSP supplier agreements that constrain automated portal access — a squeeze with no defensible ground."
+  },
+  {
+   "name": "Kurrent/Sütterlin HTR — fine-tuned historical-German handwriting transcription for genealogists (the angle's flagship candidate)",
+   "killed_by": "AP5 saturation in its hardest form: a free first-party incumbent at planetary scale plus two funded specialists, all shipped before us",
+   "evidence": "This was the founder's own lead example and it is dead on arrival. (1) FamilySearch ships AI full-text search over handwritten records FREE, with ~2 billion record images searchable as of January 2026, and its 2026 roadmap explicitly ADDS German, French, Dutch, Italian and Chinese to the existing English/Spanish/Portuguese — the exact scripts this idea depended on (https://www.familysearch.org/en/blog/what-to-expect-from-familysearch-in-2026, surfaced 2026-08-20). (2) MyHeritage launched Scribe AI on 2026-03-04, which transcribes handwritten documents, extracts genealogical details from multi-page documents AND translates the output into the user's language, free for a limited number of images with extended use bundled into an existing subscription (https://www.businesswire.com/news/home/20260304679582/en/MyHeritage-Launches-Scribe-AI-to-Transcribe-Interpret-and-Reveal-New-Insights-from-Historical-Documents-and-Photos, fetched 2026-08-20). (3) Transkribus, the specialist, already sells exactly the fine-tuned-model product: Scholar €19.99/mo or €99/yr for 900 credits, Team €69/mo, on-demand 250 credits for €59.50 (€0.238/credit, 1 credit = 1 handwritten page), with custom AI model training in every tier including Free (https://www.transkribus.org/pricing, fetched 2026-08-20). The evidence that frontier generalists genuinely fail here is real — Germanology Unlocked documents ChatGPT inventing an entire fictional smallpox death record from an 1833 marriage certificate and rendering 'Schwest. des Kindes' as 'Pastor N. Rinds' (https://germanologyunlocked.com/why-you-should-not-be-using-chatgpt-to-decipher-the-old-german-script/, fetched 2026-08-20) — but that gap is being closed by three parties with better data than we can assemble, one of whom gives it away."
+  },
+  {
+   "name": "AI deed plotter — handwritten/scanned metes-and-bounds legal descriptions to verified closed polygon and shapefile",
+   "killed_by": "AP5 saturation; four named AI competitors, and the most mature already ships the exact 'verifier as moat' mechanism I intended to build",
+   "evidence": "I pursued this because closure error gives a machine-checkable eval and county parcel GIS gives free synthetic labels. Both true; both already built. Deed Reader Pro processes deeds in under 30 seconds, calculates closure error, generates a Closure Report explicitly recommended for surveyors to verify legal descriptions before client submission, handles curves via 12 different calculation methods (chord/tangent/radial bearing, chord/arc/delta), colour-codes calls against the highlighted source image for verification, and exports to AutoCAD, Civil3D, IntelliCAD, DXF and ArcGIS, on a free 30-day trial with no credit card (https://www.deedreaderpro.com/, fetched 2026-08-20). Three further AI entrants occupy the same lane — deedplotter.ai (https://deedplotter.ai/pricing/), Acres DeedAI (https://get.acres.com/deedai) and deedprosoftware.com — alongside long-standing non-AI tools from Greenbrier Graphics and Sandy Knoll. My entire differentiation, geometric closure verification, is an incumbent's shipped feature list."
+  },
+  {
+   "name": "Chess scoresheet to PGN — fine-tuned handwriting recogniser with engine-legality-constrained decoding",
+   "killed_by": "AP5 saturation: five live competitors, one an explicit Claude API wrapper — the market cleared before I arrived",
+   "evidence": "The verifier idea is elegant (constrain decoding to legal moves; an illegal ply localises the model's own uncertainty exactly) and already commoditised. Five products are live as of 2026-08-20: Notamate (https://www.notamate.com/), ScanChess, which markets itself as trained on messy real-world scoresheets rather than printed text (https://scanchess.com/solutions/photo-to-pgn/), Chess Scanner (https://www.chessscanner.com/), ChessScan — which states outright that its handwriting recognition is powered by Claude AI, i.e. the prompt is the product (https://chessscan.app/ plus iOS listing https://apps.apple.com/pt/app/chessscan/id6757365097) — and XChess.AI (https://www.xchess.ai/). Five entrants chasing a hobby market of a few hundred thousand tournament players is a market that will be free within a year."
+  },
+  {
+   "name": "US-English air traffic control ASR — fine-tuned Whisper for ATC phraseology",
+   "killed_by": "AP3 moat failure: the fine-tune I would sell already exists as a free download; compounded by no self-serve buyer (A1/A6)",
+   "evidence": "The domain failure is real and measurable — WhisperATC, the state-of-the-art open ATC model fine-tuned on the European ATCO2 and ATCOSIM corpora, reaches 3.88% WER on ATCOSIM (speaker split) and 13.5% on ATCO2 but degrades to 30.3% on American ATC transmissions (https://pure.tudelft.nl/ws/portalfiles/portal/218298256/ICRAT2024_paper_83.pdf and https://research.tudelft.nl/en/publications/whisper-atc-open-models-for-air-traffic-control-automatic-speech-/, surfaced 2026-08-20). But the asset is public: jacktol/whisper-medium.en-fine-tuned-for-ATC-faster-whisper and jacktol/atc-dataset are free downloads on Hugging Face (https://huggingface.co/jacktol/whisper-medium.en-fine-tuned-for-ATC-faster-whisper, https://huggingface.co/datasets/jacktol/atc-dataset), and NASA publishes openly on the data requirements (https://ntrs.nasa.gov/api/citations/20240014494/). When the moat is a fine-tune and the fine-tune is already a free download, there is no moat. Separately I could identify no buyer who pays self-serve: the users are airlines, ANSPs and research labs, all procurement-gated."
+  },
+  {
+   "name": "Optical music recognition — scan to MusicXML, including handwritten scores",
+   "killed_by": "AP5 saturation, with the incumbent publicly stating it has already built the exact labelled dataset that was to be my moat",
+   "evidence": "Soundslice Plus is $5/month or $50/year for 100 scanned pages, and states its scanning is powered by AI algorithms trained on real-world scores with thousands of scores hand-labeled over several years of work (https://www.soundslice.com/sheet-music-scanner/, surfaced 2026-08-20) — a competitor announcing my AP3 moat as their sunk cost. PlayScore 2 Professional is $6.99/month or $59.99/year with MusicXML and MIDI export into Sibelius, MuseScore and Dorico (https://www.playscore.co/), Klangio ships Scan2Notes (https://klang.io/scan2notes/), and ScanScore and Audiveris cover the remainder. Consumer price points of $5-7/month across four established players leave no room for a new fine-tune to earn back its training cost."
+  },
+  {
+   "name": "EU multilingual safety-data-sheet and hazard-label translation with verbatim CLP phrase enforcement",
+   "killed_by": "AP5 saturation plus AP3, and an unverifiable A4 glossary; the classification half is a rules database — the banned knowledge-base shape",
+   "evidence": "The legal trigger is airtight and I confirmed it verbatim from primary source: REACH Article 31(5) reads 'The safety data sheet shall be supplied in an official language of the Member State(s) where the substance or mixture is placed on the market, unless the Member State(s) concerned provide otherwise' (https://eur-lex.europa.eu/eli/reg/2006/1907/2025-01-01, fetched 2026-08-20, HTTP 200, 5.07MB consolidated text). The trigger is not the problem; the incumbent is. SDS Manager already sells SDS authoring self-serve at $199 per SDS pay-as-you-go or $1,499/year Standard, with multi-language translations under version control and GHS-compliant authoring in 40+ languages (https://sdsmanager.com/pricing/, fetched 2026-08-20), atop an enterprise field of Chemwatch, Lisam and Sphera. Two further failures killed it independently: I could not extract the CLP Annex III hazard-statement phrase tables programmatically from EUR-Lex — the consolidated document view returns only a ~13KB shell with no annex text across EN/PL/DE and a separate 255KB ELI view that contains no H-codes (four fetch attempts, 2026-08-20, HTTP 200 each) — so the self-maintaining glossary the entire eval harness depends on is unproven (A4); and mixture classification under CLP is a deterministic rules-over-component-data computation, exactly the 'knowledge base with AI presentation' shape the founder ruled out after two cycles."
+  },
+  {
+   "name": "Environmental lab-report PDF to state-validator-clean electronic data deliverable (California GeoTracker EDF)",
+   "killed_by": "A4 failure: both the reference data and the paired training corpus sit behind a bot wall, so neither the fine-tune nor the self-maintaining valid-value tables can be assembled unattended",
+   "evidence": "On paper this was the best corpus story I found in the whole session — a state regulator publishing both submitted structured records and the source lab-report PDFs would be a free, large, perfectly-aligned training set, with the state's own validator as an unimpeachable eval harness. In practice the source is Cloudflare-interstitialed against automated clients: https://geotracker.waterboards.ca.gov/data_download_by_county, https://geotracker.waterboards.ca.gov/electronic_submittal and https://geotracker.waterboards.ca.gov/esi/ each returned HTTP 403 with a Cloudflare 'Just a moment...' challenge page (5,667 / 5,637 / 5,568 bytes respectively) to both WebFetch and a browser-UA curl, tested 2026-08-20. A product whose training corpus and whose A4 reference tables must be re-pulled on a schedule cannot be founded on a source that blocks unattended access — and routing around a regulator's bot wall to harvest their data is not a foundation to build a company on."
+  }
+ ]
+}
