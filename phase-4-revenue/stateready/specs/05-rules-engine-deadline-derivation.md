@@ -83,10 +83,11 @@ the iteration's edit scope — see `REVIEW_RESPONSE.md` M13): add `expiry_overri
 array on `licence_types[]` in `ontology/schema.state_trade_record.json` (which is
 `additionalProperties: false`, so a wave-2 record cannot carry the field until this lands), and extend
 gate **G8** in `kb-scripts/validate.py` to assert that every override's `date` is a real date inside
-its `cycle_year` and that the licence type's `expiry_rule` token is one the engine implements. Until
-both land, an override is unrepresentable and this rule is dormant — the engine implements it, the
-data cannot yet express it. **This is the first schema change wave 2 should make**; it is also the
-best worked example the rule-change alert (J8) will ever get.
+its `cycle_year` and that the licence type's `expiry_rule` token is one the engine implements. Both
+landed in round 2 of the review (`REVIEW_RESPONSE.md` M13): the field exists, G8 checks nine
+assertion sites, a Florida override validates and six malformed shapes fail. The rule is live as soon
+as a record carries an override; it is also the best worked example the rule-change alert (J8) will
+ever get.
 
 ### CE rules implemented at launch
 

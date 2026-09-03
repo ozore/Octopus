@@ -169,3 +169,39 @@ from a signature.** The re-review is prepended to `REVIEW.md`.
   the only place the arithmetic is shown.
 - **N1 is the one that will be forgotten**: the excerpt store is code without data, and the tempting
   fix (`--write-baseline`) is an unreviewed bulk-accept of 35 live pages. Insist on `--fill-excerpts`.
+
+---
+
+## Round 3 — signed (2026-09-03)
+
+**0 blocking · 0 major · 1 minor. Signed for wave 2 and for launch.** All eight round-2 items closed;
+the one residual (N6) is a stale paragraph body in `specs/05` whose own heading already says the work
+is done — a fix-on-sight, not a gate.
+
+### What the last round taught me
+
+- **Verify a data backfill against version control, not against its own report.** N1's claim was
+  "35 filled, nothing else touched". I diffed `kb-data/_sources.json` against `git HEAD`: two keys
+  added, 35 sources, **every `content_sha256` identical**. That is a thirty-second check and it is the
+  only one that could distinguish a safe backfill from a silent bulk re-baseline.
+- **A reviewer's own proposed fix can be wrong, and the author is allowed to say so.** On R1 I offered
+  "exempt the marketing route provided the compression contains no term the full text does not". The
+  author refused and showed why: that condition **permits** dropping the 90-day window and the fee cap,
+  which makes the page promise *more* than the contract — the same direction of error as R1 itself.
+  They put the guarantee on the page whole instead. **Take the better answer and say in writing that
+  it is better**; the point of the round is the outcome, not the recommendation.
+- **Count the deck again after every copy edit.** §8 grew by 52 words and three other sections were cut
+  to pay for it. Re-counting section by section (439, every section matching) is the only way to know
+  the arithmetic survived, and the deck is the only place that arithmetic is shown.
+- **A heading-only patch leaves the body lying.** The two stale references were fixed by prepending
+  "done in round 2" to a heading; `specs/08`'s worked, because the whole sentence changed, and
+  `specs/05`'s did not, because the paragraph still says in bold that the field is unrepresentable.
+  When something is corrected by annotation, read the paragraph it annotates.
+
+### Where the signature stops
+
+On the wave-1 documents only. The build gets its own wave-2 review, and these remain open and are not
+findings against the documents: **P1** Pro, **P5** Stripe, **P10** postal address (build-breaking by
+design), **P11** name + USPTO, **P12** offer validation, **Q15** counsel (automatic-renewal disclosure,
+"guarantee" as a UDAP hook, the roster disclaimer), and the **S10** register spike, which gates the
+deferred $149 audit and every "we build the roster" claim.

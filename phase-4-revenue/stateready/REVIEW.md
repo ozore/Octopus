@@ -1,6 +1,111 @@
 # StateReady — wave-1b review
 
-## RE-REVIEW — 2026-09-03 (round 2, after `REVIEW_RESPONSE.md`)
+## RE-REVIEW ROUND 2 — 2026-09-03 · **SIGNED FOR WAVE 2 AND FOR LAUNCH**
+
+**Re-checked:** `REVIEW_RESPONSE.md` §6, then R1, N1, N2, M13's schema half, m6, N3, N4, N5 and the two
+stale references in `specs/05` and `specs/08`, against the files themselves. **No reviewed file was
+edited.**
+
+> ### VERDICT — **0 blocking · 0 major · 1 minor open** (was 1 · 3 · 4, and 11 · 19 · 16 at round 1).
+> ### **Signed for wave 2 and for launch.**
+>
+> All eight items close. The one open item is a stale paragraph body whose own heading already carries
+> the correction — a fix-on-sight, not a gate.
+
+### Verified by running it, not by reading it
+
+| check | result |
+|---|---|
+| `validate.py` | **exit 0** — 9 records, 0 failures, 3 warnings (the same correct G7 Florida three), with G8 now nine assertion sites wide |
+| `test_accept_drift.py` | **17/17** |
+| `test_fill_excerpts.py` | **14/14**, including the load-bearing one — *"DRIFTED source: entry is byte-identical to before"* |
+| `refresh_sources.py --fill-excerpts`, audited against git HEAD | **35 of 35** sources now carry `normalised_head`/`normalised_tail`; **no key other than those two changed on any source**, and **every `content_sha256` is identical to the committed baseline**. The backfill is exactly what N1 asked for and nothing else |
+| `identity/contrast.py` · `../scripts/identity-distinctness.py` | **both exit 0** after the samples regeneration |
+| `samples.html` integrity | 0 undefined classes, 0 external references |
+| Landing copy deck, re-counted mechanically | **439 of 450**, and **every section matches its claimed figure** — 68 / 37 / 93 / 20 / 66 / 51 / 9 / 86 / 9. The verbatim guarantee block is **63 words**, as claimed |
+| Entry Pack Guarantee parity | **byte-identical in all four documents** — `OFFER.md` §5.1, `specs/08`, `specs/12`, `LANDING_SPEC.md` (§8 table and §13 deck) |
+| `expiry_overrides` | present in `ontology/schema.state_trade_record.json` on `licence_types[]`; G8 grew from one assertion to nine, covering the cycle-year bound, one-per-cycle, two verifiers, evidence length, future dates and the host allowlist |
+
+### The eight items
+
+**R1 — closed, and closed better than I proposed.** I offered to exempt the marketing route on
+conditions. The iteration refused, and was right to: my condition — *"no term the full text does not
+use"* — would have licensed the very compression that caused R1, because *"Entry Pack contradicted by
+the board's own page? We rewrite it and refund you"* adds nothing while **dropping the 90-day window
+and the fee cap**, and so reads as a *larger* promise than the one we wrote, on the only page a
+stranger reads before paying. The Entry Pack Guarantee is now carried **whole, 63 words**, on the
+landing page; only the Accuracy Guarantee (exposure: one month's credit) is compressed, under four
+conditions AC8c tests mechanically — quantities compared on the stem, escalation words enumerated, a
+link required in the same strip. The rule lives once in `OFFER.md` §5.1 as a surface × form table and
+the other two documents point at it, which is the structural fix for how the three drifted apart.
+It cost +52 words, paid for with three cuts of prose that restated what the page already shows.
+
+**N1 — closed and run.** `--fill-excerpts` writes excerpts **only where the re-fetched hash equals the
+stored one**, leaves a drifted or unreachable source byte-for-byte alone, names it, points at
+`accept_drift.py`, and exits non-zero if it refused anything so CI cannot pass on a half-filled store.
+I audited the committed diff against git rather than trusting the report: two keys added, 35 sources,
+zero hashes moved.
+
+**N2 — closed and widened by two.** The rule is now written into the document — *a feature may appear
+in Contains only if it has a Must or a Should with a number* — and eight entries came out with the
+reason each failed. The iteration then found two more of the same class that my finding missed (§3's
+stack item 5 and §4's Platform bonus) and struck those too. Every surviving feature carries its id.
+Platform's row is thinner and true, which is the right trade at $599.
+
+**M13 — closed.** The field is representable and gate G8 now does for an override what G1/G3/G4/G5 do
+for a `SourcedValue` — the correct instinct, since an override is the one thing that can move a
+deadline without a value wrapper. `kb-data/` is untouched; wave 2 can write the Florida 2 September
+override on day one.
+
+**m6 — closed.** Regenerated from `build-samples.py`, which reproduced the committed file byte-for-byte
+first, so the diff is exactly the fix: all-caps status words, and the hollow tile carries
+`"AK — not in your footprint"` — the exact accessible name `specs/07` prints, with no status word and
+no duplication. The `WORD` dict deliberately has no hollow entry, so the fifth-status mistake cannot
+be remade one tile at a time.
+
+**N3, N4, N5 — closed.** `IDENTITY.md` §7.1 says `--sr-ground`; the only surviving `--sr-paper` strings
+in any document are the sentences recording the rename. `specs/04`'s Requirements panel is in B2's
+wording with **AC8 behind it** — an unpublished field is a rendered row reading *"the board does not
+publish this"*, never a blank and never a hidden one. `specs/12` AC8 asserts exactly two canonical
+wordings, and the `§5.1.3` citation class is killed at its source by §5.1's own numbering note.
+
+**The two stale references — one closed, one half-closed.** `specs/08` §Guarantee now cites
+`OFFER.md` §5.1 (Entry Pack Guarantee row): correct.
+
+### Still open
+
+| id | severity | one line | what is missing |
+|---|---|---|---|
+| **N6** | minor | `specs/05` §"Schema and gate work this requires" — the **heading** now says the work is done and points at the evidence, but the **body is unchanged** and still reads *"Until both land, an override is unrepresentable and this rule is dormant"* and *"**This is the first schema change wave 2 should make**"*, in bold. A wave-2 developer who reads past the parenthetical concludes the field cannot be used | Two sentences: the body becomes past tense, or the paragraph is replaced by the one-line "done, see `ontology/schema.state_trade_record.json` and G8" the response itself proposed. Nothing depends on it — `validate.py` accepts an override today, proved in a temp tree — so it is a fix-on-sight, not a gate |
+
+### Signature
+
+> **Signed for wave 2 and for launch.** — wave-1b Reviewer, 2026-09-03, round 2 of 3.
+
+The signature is on **these documents**: `PERSONA.md`, `IDENTITY.md`, `design-system.css`,
+`identity/samples.html`, `UX.md`, `BACKLOG.md`, `specs/01`–`specs/14`, `KNOWLEDGE_BASE.md`,
+`ontology/`, `kb-data/`, `kb-scripts/`, `THRESHOLDS.md`, `OFFER.md`, `LANDING_SPEC.md`. Three rounds
+took 11 blocking findings to zero, and the two places the authors overrode me — **B6** (medium
+confidence carried by note-everywhere and fail-closed rather than a blanket flag) and **B9** (a cron
+designed to be correct on one invocation a day rather than a prerequisite purchase order) — were
+argued better than I argued mine and are the right calls.
+
+**What the signature is not.** It does not clear the build, which gets its own wave-2 review, and it
+does not close the gates that were never findings against these documents: **P1** Vercel Pro,
+**P5** Stripe products, **P10** postal address and support email (`specs/12` correctly fails the build
+without it), **P11** the name and the USPTO knock-out, **P12** founder validation of the offer, and
+**Q15** counsel on the terms — automatic-renewal disclosure, the word "guarantee" as a UDAP hook, and
+the roster-build disclaimer if S10 ever returns positive. The **S10 register-ingestion spike** remains
+the gate on the deferred $149 audit and on any surface saying we build the roster; until it returns a
+majority-positive verdict, `BACKLOG.md`'s permanent prohibition stands.
+
+**Start wave 2 on all seventeen Musts.** Read first, in this order: `specs/05` invariant 2, `specs/06`
+§Flow, `specs/08`'s `entryPackReady`, and `kb-scripts/accept_drift.py` with its test.
+
+---
+---
+
+## RE-REVIEW ROUND 1 — 2026-09-03 (after the first `REVIEW_RESPONSE.md`)
 
 **Reviewer:** wave-1b Reviewer (StateReady). **Re-read:** `REVIEW_RESPONSE.md`, then every file it
 claims to have changed — `PERSONA.md`, `UX.md`, `BACKLOG.md`, `specs/01`–`specs/14`,
