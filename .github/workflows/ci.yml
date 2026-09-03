@@ -99,3 +99,49 @@ jobs:
       # not a deploy step.
       - name: next build
         run: npm run build
+
+  # ---------------------------------------------------------------------------
+  # The phase-4 workspaces: packages/platform (shared) and apps/* (the three
+  # revenue apps, scaffolded from apps/_template).
+  #
+  # A SECOND JOB, NOT A SECOND STEP IN THE FIRST. `app/` is standalone by
+  # design (PLAN.md A8): its own lockfile, its own dependency graph, its own
+  # gate. Adding the workspaces to the job above would make a template change
+  # able to fail Clausewright's lane, and a Clausewright change able to fail
+  # this one. Two jobs, two lockfiles, one workflow.
+  #
+  # Same two guarantees as the job above: no network, no keys. The suite runs
+  # ADAPTER_MODE=mock and DATABASE_DRIVER=pglite (vitest.base.ts), and the only
+  # "secrets" here are the offline test values the mock adapters verify against.
+  workspaces:
+    name: workspaces — typecheck → unit → next build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      # The ROOT lockfile installs every workspace (apps/*, packages/*). It
+      # never touches app/, which is not a workspace.
+      - run: npm ci
+
+      - name: typecheck (all workspaces)
+        run: npm run typecheck
+
+      - name: unit — packages/platform
+        run: npm test --workspace packages/platform
+
+      - name: unit — apps/_template
+        run: npm test --workspace apps/_template
+
+      # The bundle can differ from what tsc and vitest see: a server-only import
+      # reached from a client component typechecks, passes vitest and fails the
+      # build. The build is a gate, not a deploy step.
+      - name: next build — apps/_template
+        run: npm run build --workspace apps/_template
