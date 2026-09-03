@@ -40,8 +40,31 @@ minute, is the product's first proof that it is not a spreadsheet.
 |---|---|
 | `/licences` | Grouped by state, then entity/technician. Columns: type, number, holder, expiry, CE status, source chip. Filters: state, trade, status, expiring within N days. |
 | `/licences/new` | The five-step form above, as one page. |
-| `/licences/:id` | Header (type, number, holder, status). Three panels: **Dates** (issue, expiry, derived-vs-entered, CE due), **Requirements** (CE hours, bond, insurance, all with citations from the KB), **Documents**. |
+| `/licences/:id` | Header (type, number, holder, status). Three panels: **Dates** (issue, expiry, derived-vs-entered, CE due), **Requirements** (see below), **Documents**. |
 | Document viewer | Inline for images and PDFs; download for anything else. |
+
+**The Requirements panel, in B2's wording (wave-1b N4).** It renders **every requirement this
+licence type's board publishes, and names every one it does not** — the same promise `specs/08` makes
+for the Entry Pack, in the same two sets, because a spec that promises more in the app than the paid
+document does is where the next refund comes from:
+
+| what the panel shows | source | rendering |
+|---|---|---|
+| CE hours, period, subject breakdown, provider rule, delivery constraint | the KB's `continuing_education` block | value + source chip (`source_url`, `last_verified`), per `specs/05` invariant 2 |
+| Renewal cycle, expiry rule, grace period, late fee | `renewal` | same |
+| Who must hold it, qualifying-individual rule, entity registration | `who_must_hold`, `business_entity` | same |
+| **Bond and insurance** | `bond`, `insurance` | **only where the board publishes them.** Where the value's `status` is `unknown`, the row still appears and reads **"the board does not publish this"** with the note recording what we read looking for it — never a blank, never an estimate, never a hidden row |
+
+**Why bond is called out.** Across the nine committed records **`bond.amount` is `unknown` 23 times
+out of 23** (`KNOWLEDGE_BASE.md` §9.1). The wave-1 wording of this row — *"Requirements (CE hours,
+bond, insurance, all with citations from the KB)"* — promised a citation this data cannot supply, and
+a developer building it would have shipped an empty panel for bond 100% of the time. **B2** removed
+that promise from the subhead, from V4 and from the demo default; this is the same promise in the
+spec a developer implements. The DISCLOSED_SET is not a gap we hide, it is a thing we say.
+
+**A field with no board answer is a rendered row, not a missing one.** That is the whole design: the
+customer who sees "the board does not publish this" learns something true and does not go looking for
+it in a competitor's product.
 
 ## Data model
 
@@ -139,6 +162,11 @@ looking at.
    alerts table.
 7. Adding 8 CE hours to a Texas ACR licence marks CE satisfied; adding 8 hours to a Florida licence
    does **not**, because Florida's 14 hours are subject-specific.
+8. **The Requirements panel names what the board does not publish** (wave-1b **N4**). Opening a Texas
+   ACR contractor licence renders a bond row reading "the board does not publish this" with the KB
+   note behind it — not a blank, not a hidden row, and not a claim of a citation. A test asserts that
+   for every DISCLOSED_SET field whose KB status is `unknown`, the panel renders the field name and
+   the not-published wording, and that no such row renders a source chip.
 
 ## Edge cases
 
@@ -184,6 +212,10 @@ here counted only one of them. This spec emits nothing named `*_deadline_*`.
 - **Integration:** the three derivation cases in acceptance criteria 1–3 against the real
   `kb-data/` records — these double as regression tests on the knowledge base itself.
 - **Integration:** changing a date reschedules exactly the right alert rows and cancels the old ones.
+- **Content:** acceptance criterion 8 over all nine committed records — every DISCLOSED_SET field with
+  status `unknown` renders as "the board does not publish this", every field with status `verified`
+  renders its chip. It reads `kb-data/` directly, so the test starts passing on more rows as the data
+  improves and never has to be rewritten.
 - **Security:** a document URL from organisation A returns 404 for a session in organisation B.
 - **E2E:** add one licence with only an issue date and see a derived deadline — the last step of the
   recorded activation journey.

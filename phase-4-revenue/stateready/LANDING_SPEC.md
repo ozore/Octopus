@@ -24,8 +24,12 @@ tokens; where this spec and the CSS disagree, the CSS wins and this spec is wron
 
 **Revised 2026-09-03 against the wave-1b review** (`REVIEW.md`; decision log in `REVIEW_RESPONSE.md`).
 Four changes to the page itself: **the CTA is the free trial** (D1), **the "we build the roster"
-microcopy is deleted** (B3), **the guarantee strip drops to two lines** (D3), and **the hero subhead
+microcopy is deleted** (B3), **the guarantee strip drops to two blocks** (D3), and **the hero subhead
 and V4 no longer promise bond and timeline data the knowledge base does not have** (B2).
+**Revised again in round 2 for the regression the reviewer called R1:** §8 now carries the **Entry Pack
+Guarantee verbatim** — the compression dropped the 90-day claim window and the cap at the pack fee from
+the page a buyer reads before paying — and the Accuracy Guarantee's line stays compressed only under the
+four conditions `specs/12` AC8c tests. The budget absorbs it: **439 of 450** (§1).
 The name "StateReady" is provisional (PLAN.md A3); the wordmark is a single component swap.
 
 ---
@@ -65,8 +69,11 @@ footer sit outside the ceiling; total page copy should still land inside Unbounc
 
 **What counts:** prose — headings, body, captions, button labels, microcopy. **What does not:** UI chrome
 (form labels, table row labels, map legends), source-chip text, `aria-label`s, and the demo's dynamic
-output. Tokens are whitespace-separated; bare `—` and `…` are not words. That rule is mechanical, so CI
-can enforce it and a copy edit cannot quietly evade it.
+output. Tokens are whitespace-separated, and a token made only of symbols — `—`, `…`, `·`, `↓` — is not
+a word, while `&` and `§7031` are. That rule is mechanical, so CI can enforce it and a copy edit cannot
+quietly evade it. It is the rule that produces every figure in the table below: the hero's eyebrow
+`HVAC · Plumbing · Electrical` is **3**, and §4's `— California Business & Professions Code §7031` is
+**5**.
 
 The figures below are **counted mechanically from the actual strings in §13**, under the rule above, not
 estimated — the count is reproduced at the bottom of this section so anyone can re-run it:
@@ -75,44 +82,65 @@ estimated — the count is reproduced at the bottom of this section so anyone ca
 |---|---|---:|---:|
 | 2 | Hero — eyebrow, H1, subhead, **CTA (1 of 3) + microcopy**, demo link | 68 | 68 |
 | 3 | The divergence exhibit — caption | 37 | 105 |
-| 4 | What happens when a credential lapses — heading, four sourced quotes, closing line | 97 | 202 |
-| 5 | The demo — heading + instruction | 31 | 233 |
-| 6 | How it works — three steps | 66 | 299 |
-| 7 | What you can check before you pay — proof block | 62 | 361 |
-| — | **CTA repeat (2 of 3), after the proof block** | **9** | 370 |
-| 8 | The guarantees strip — **two lines, not three** | 34 | 404 |
-| — | **CTA repeat (3 of 3), immediately above pricing** | **9** | **413** |
-| — | **Headroom before the ceiling** | **37** | **450** |
+| 4 | What happens when a credential lapses — heading, four sourced quotes, closing line | 93 | 198 |
+| 5 | The demo — heading + instruction | 20 | 218 |
+| 6 | How it works — three steps | 66 | 284 |
+| 7 | What you can check before you pay — proof block | 51 | 335 |
+| — | **CTA repeat (2 of 3), after the proof block** | **9** | 344 |
+| 8 | The guarantees strip — **one verbatim block, one compressed line** | 86 | 430 |
+| — | **CTA repeat (3 of 3), immediately above pricing** | **9** | **439** |
+| — | **Headroom before the ceiling** | **11** | **450** |
 | 9 | Pricing block | *outside* | |
 | 10 | FAQ, max six | *outside* | |
 | 11 | Footer | *outside* | |
 
-**The two CTA repeats are now in the table** (wave-1b **m9**). The wave-1 deck claimed **398** and the
+**The two CTA repeats are in the table** (wave-1b **m9**). The wave-1 deck claimed **398** and the
 repeats were real but uncounted, so the CI rule — which measures the DOM between `#hero` and `#pricing`
 and therefore sees all three placements — would have reported **403** against a spec that said 398. A
-copy deck the build disagrees with is a copy deck nobody trusts on the second edit. **413 now means the
+copy deck the build disagrees with is a copy deck nobody trusts on the second edit. **439 now means the
 same thing in the deck, in this table and in CI.**
 
-**How 398 became 413 on a page that promises less**, section by section:
+**Round 2 moved it from 413 to 439, and where the 26 words came from** (wave-1b **R1**). §8 now carries
+the **Entry Pack Guarantee verbatim** — 63 words of legal text that may not be shortened, because the
+compression in force dropped the 90-day claim window and the cap at the pack fee from the page a buyer
+reads *before* paying. That is **+52** on §8 alone. It was paid for out of prose that said something the
+page already showed:
+
+| cut | words | why it was the cheapest word on the page |
+|---|---|---:|
+| §5 instruction, third sentence — *"Every answer shows where it came from and when we checked."* | **−11** | The demo renders a source chip on every answer (V5), and chip text is chrome, outside the count. The sentence described a thing the reader is already looking at |
+| §7 item 3 — *"Every date shows its source and the day we checked it."* | **−11** | The **third** prose statement of the provenance claim. The subhead makes it and the chips prove it |
+| §4 closing line — *"Three states. One rule."* | **−4** | Rhythm, not argument. The four quotes carry their own attributions and the reader can count states |
+
+**Net +26, and the promises on the page went down, not up:** the only block that grew is the one that
+states the limits of what we owe.
+
+**How 398 became 439 on a page that promises less**, section by section (round-1b changes, then
+round-2 ones):
 
 | § | wave 1 | now | Δ | what moved |
 |---|---:|---:|---:|---|
 | 2 hero | 81 | 68 | **−13** | roster microcopy deleted (13 words → 5), subhead loses "bond and insurance certificate" (44 → 41), CTA shortens (5 → 4) |
 | 3 | 37 | 37 | 0 | – |
-| 4 lapse | 76 | 97 | **+21** | the fourth quote — the Texas line that stops §4 arguing entirely from two uncovered states (**M18**) — plus the reframed closing line |
-| 5 | 31 | 31 | 0 | – |
+| 4 lapse | 76 | 93 | **+17** | the fourth quote — the Texas line that stops §4 arguing entirely from two uncovered states (**M18**) — plus the reframed closing line, **less "Three states. One rule." in round 2** |
+| 5 demo | 31 | 20 | **−11** | the provenance sentence, which the demo's own source chips render anyway (round 2) |
 | 6 how it works | 68 | 66 | **−2** | step 2 stops promising the roster build |
-| 7 | 62 | 62 | 0 | – |
-| 8 guarantees | 43 | 34 | **−9** | three guarantees → two |
+| 7 proof | 62 | 51 | **−11** | the provenance sentence again — third statement of one claim (round 2) |
+| 8 guarantees | 43 | **86** | **+43** | three guarantees → two, and the Entry Pack Guarantee is now **verbatim** (63 words) rather than a 14-word compression that dropped the claim window and the cap (**R1**, round 2) |
 | CTA repeats | 0 *(uncounted)* | 18 | **+18** | two placements that were always on the page and never in the deck (**m9**) |
-| **total** | **398** | **413** | **+15** | |
+| **total** | **398** | **439** | **+41** | |
 
-**The page's prose shrank by 3 words and its promises shrank a great deal more**; the count rose because
-it is now measuring what is actually rendered rather than what the deck remembered to list.
+**The prose the page argues with shrank; what grew is a legal text.** Strip §8 and the uncounted CTA
+repeats out of both columns and the arguing copy went from **355** to **335** — twenty words shorter than
+wave 1, over four rounds of edits that each removed a promise. The 41-word rise is 43 words of guarantee
+minus the argument we stopped repeating.
 
 **Enforcement:** a build-time script counts words in the DOM between `#hero` and `#pricing` under the
-rule above and **fails CI above 450**. The 37-word headroom exists so a founder edit or an A/B variant
-has somewhere to go; it is not a licence to add a section.
+rule above and **fails CI above 450**. The **11-word** headroom is what is left after §8 took its
+verbatim guarantee; it is a founder's typo margin, not room for a section. **If a future edit needs
+room, the next two cuts are already identified** and neither is an argument: §7's *"and exactly what to
+hand an expediter if you use one"* (**9**), and §4's fourth quote with its attribution (**22**) — take
+the second only if §4 still names three states without it.
 
 ## 2. Above the fold
 
@@ -332,7 +360,7 @@ the page and the one making the largest promise. What replaces it is smaller and
 one detail that proves we have actually thought about the buyer's file — the date-format question,
 which is `UX.md` §10 gap 4's "highest-consequence silent bug in the product".
 
-### §7 — What you can check before you pay *(62 words on the page; the four items below describe what each one renders)*
+### §7 — What you can check before you pay *(51 words on the page; the four items below describe what each one renders)*
 Our proof block. **There are no testimonials, no logos and no customer counts, because we have no
 customers.** The heading says so implicitly and the block delivers four things that are real:
 
@@ -342,22 +370,51 @@ customers.** The heading says so implicitly and the block delivers four things t
 2. **Live coverage counter** — states × trades × licence types currently verified, and the date of the
    last knowledge-base refresh, read from the KB at build time. A real number, small if it is small.
 3. **Source chips everywhere** (V5) — every date on the page and in the demo carries its `.gov` URL and
-   `last_verified`.
+   `last_verified`. **The chip is the proof; it no longer has a sentence next to it.** The wave-1 deck
+   said *"Every date shows its source and the day we checked it"* here, which was the third prose
+   statement of a claim the subhead already makes and the chip already demonstrates. Deleted in round 2
+   (**R1**) to pay for the verbatim Entry Pack Guarantee in §8. Chip text is UI chrome and stays outside
+   the word budget (§1), so the proof did not shrink — only the talking about it did.
 4. **What we do not do** — *"We are not a licence expediter. We do not file for you. We tell you exactly
    what to file, and exactly what to hand an expediter if you use one."*
 
 Placed **immediately above pricing**, per CXL's rule that social proof belongs *"where doubt peaks most:
 after main value proposition, before pricing."*
 
-### §8 — Guarantees strip *(34 words)*
-**Two lines, not three**, in the founder-approved wording from `OFFER.md` §5.1 only, each a compression
-of the guarantee it names — and the full text is one click away on `/legal/refunds`, which is where the
-carve-outs and the caps live.
+### §8 — Guarantees strip *(86 words — the largest single block on the page, and deliberately so)*
 
-| line | compresses | full text |
-|---|---|---|
-| `Wrong against the source? We fix it in five business days and credit you a month.` | The Accuracy Guarantee | `OFFER.md` §5.1.1 |
-| `Entry Pack contradicted by the board's own page? We rewrite it and refund you.` | The Entry Pack Guarantee | `OFFER.md` §5.1.2 |
+**Two blocks, not three, in the founder-approved wordings from `OFFER.md` §5.1 — one carried verbatim
+and one compressed.** The rule that decides which is which (wave-1b **R1**):
+
+> **A guarantee whose liability is bounded by a claim window and a money cap is carried whole on the
+> page a stranger acts on before paying. A guarantee whose liability is one month's credit may be
+> compressed, provided the compression still states the window and the cap and links to the full text.**
+
+| block | form | words | full text |
+|---|---|---:|---|
+| **The Accuracy Guarantee** — `Wrong against the source? Fixed in five business days, plus a month's credit — one credit a month.` + the linked words `Full terms` → `/legal/refunds` | **compressed** | 17 + 2 | `OFFER.md` §5.1 item 1 |
+| **The Entry Pack Guarantee** — `If a page published by the state's own licensing board contradicts a value your State Entry Pack shows as verified, tell us within 90 days of your purchase and we rewrite the pack and refund what you paid for it. We adjudicate against the board's published page, not against a conversation. Our liability is limited to the fee you paid for that pack.` | **verbatim, byte-identical** | 63 | `OFFER.md` §5.1 item 2 |
+
+Plus the heading `Two things we guarantee` (4 words). **86 words**, of which 63 are a legal text we may
+not shorten.
+
+**Why the Entry Pack Guarantee is now printed whole.** The wave-1b iteration compressed it to *"Entry
+Pack contradicted by the board's own page? We rewrite it and refund you."* — fourteen words that read
+as a **larger** promise than the real one, because they drop the **90-day claim window** and the **cap
+at the fee paid**. Those are the two facts that bound our liability on a $750–1,500 purchase, and the
+landing page is the surface where a stranger decides to make it. A compression that removes the limits
+and keeps the promise is the wrong direction of error, and it is what the reviewer caught as **R1**.
+It cost **+52 words on §8**, paid for with **26 words of cuts** elsewhere, for a net **413 → 439 of
+450** (§1 lists all three cuts). The page is better for it: the only long block on it is the one that
+is legally load-bearing.
+
+**Why the Accuracy Guarantee may still be compressed.** Its exposure is one month's credit, capped at
+one credit per customer per month, and both of those facts are *in* the compression. The four
+conditions it must satisfy are tested, not trusted (`specs/12` AC8c): the window **five business days**
+and the cap **one credit** appear as substrings; the block carries a link to `/legal/refunds`; the
+compression **adds no quantity and no escalation word** (a verb may be shortened — *"we correct it
+within five business days"* → *"Fixed in five business days"* — a number may not be moved, added or
+dropped); and the word "guarantee" never appears in a strip without that link.
 
 **The third line is gone.** *"Your roster loaded and verified in 30 days, or you don't pay"* was the
 Rollout Guarantee, which is **withdrawn** with the roster build it guaranteed (**D3**, D1).
@@ -371,10 +428,12 @@ Rollout Guarantee, which is **withdrawn** with the roster build it guaranteed (*
   (**B4**). `specs/12` AC8 fails the build if its text appears on any rendered surface.
 - **The reinstatement-fee guarantee**, in any form, ever (`OFFER.md` §5.4, `BACKLOG.md` NEVER).
 
-**And the rule behind the compression:** a guarantee line on this page must be a **shortening** of the
-canonical wording, never a **strengthening** of it. "We fix it in five business days" is shorter than
-§5.1.1; "we make sure your data is right" would be a different, larger promise. `specs/12` AC8 asserts
-the strip's lines against the canonical texts.
+**And the rule behind any compression that survives:** a guarantee line on this page must be a
+**shortening** of the canonical wording, never a **strengthening** of it. "Fixed in five business days"
+is shorter than §5.1 item 1; "we make sure your data is right" would be a different, larger promise;
+and "we rewrite it and refund you" *without* the window and the cap was a larger promise too, which is
+why it is no longer on the page. `specs/12` AC8 asserts every block on this route against the canonical
+texts — verbatim where verbatim is required, and by rule where it is not.
 
 ## 4. Visuals — five briefs
 
@@ -829,7 +888,7 @@ difference immediately.
 
 ## 13. Final copy deck — every word above the pricing block
 
-This is the page, verbatim. **413 words**, against a 450 ceiling, **including the CTA's three
+This is the page, verbatim. **439 words**, against a 450 ceiling, **including the CTA's three
 placements**, which is the number CI will measure. Anything not on this list is UI chrome, a source
 chip, or demo output, and is excluded from the count by the rule in §1. Build from this; do not
 paraphrase it.
@@ -845,38 +904,37 @@ paraphrase it.
 **§3 Divergence caption — 37 words**
 > `Same state. Same regulator. Two trades. Texas asks an HVAC contractor for 8 hours of continuing education before the licence expires, and an electrician for 4 — on different topics. Now multiply by every state you work in.`
 
-**§4 What happens when a credential lapses — 97 words**
+**§4 What happens when a credential lapses — 93 words**
 - Heading: `What happens when a credential lapses`
 - `"You cannot actively contract with an expired, inactive, or suspended license."` — California CSLB
 - `"You may not engage in air conditioning and refrigeration contracting if your license has expired."` — Texas TDLR
 - `"Licensee's license and insurance information must be active and current."` — NYC Department of Buildings
 - `"…may [not] bring or maintain any action … for the collection of compensation … where a license is required."` — California Business & Professions Code §7031
-- Closing line: `Three states. One rule. A lapse is not a fine — it is the right to work, and the right to be paid for it.`
+- Closing line: `A lapse is not a fine — it is the right to work, and the right to be paid for it.`
 
-**§5 Demo — 31 words**
+**§5 Demo — 20 words**
 - Heading: `See your own state's rules before you give us anything.`
-- Instruction: `Pick a state and a trade. No email, no account. Every answer shows where it came from and when we checked.`
+- Instruction: `Pick a state and a trade. No email, no account.` *(the answer's own source chip says where it came from and when we checked — chrome, not prose)*
 
 **§6 How it works — 66 words**
 1. `You name your states and trades.` / `Two minutes. Pick them off the map.`
 2. `You drop in the spreadsheet you already keep.` / `It reads a messy file — merged headers, four date formats — and asks which format you meant instead of guessing.`
 3. `Nothing lapses quietly.` / `Alerts at 90, 60, 30 and 7 days, routed to whoever actually files. One PDF when a GC asks you to prove it.`
 
-**§7 Proof block — 62 words**
+**§7 Proof block — 51 words**
 - Heading: `What you can check before you pay`
 - `A sample State Entry Pack page, redacted.` *(opens the inline preview / PDF)*
 - `States and trades verified today, refreshed [date].` *(both values rendered from the knowledge base)*
-- `Every date shows its source and the day we checked it.`
 - `We are not a licence expediter. We do not file for you. We tell you exactly what to file, and exactly what to hand an expediter if you use one.`
 
 *(Then the CTA repeats — **placement 2 of 3, 9 words** — `Start your free trial` + `14 days. No credit card.`)*
 
-**§8 Guarantees strip — 34 words**
+**§8 Guarantees strip — 86 words** *(17 + 2 compressed, 63 verbatim, 4 heading)*
 - Heading: `Two things we guarantee`
-- `Wrong against the source? We fix it in five business days and credit you a month.`
-- `Entry Pack contradicted by the board's own page? We rewrite it and refund you.`
+- Accuracy Guarantee, **compressed**: `Wrong against the source? Fixed in five business days, plus a month's credit — one credit a month.` + the linked words `Full terms` → `/legal/refunds`
+- Entry Pack Guarantee, **verbatim — do not shorten a single word of this block**: `If a page published by the state's own licensing board contradicts a value your State Entry Pack shows as verified, tell us within 90 days of your purchase and we rewrite the pack and refund what you paid for it. We adjudicate against the board's published page, not against a conversation. Our liability is limited to the fee you paid for that pack.`
 
-**Then the CTA repeats a third time — placement 3 of 3, 9 words — and the pricing block begins. Total: 413.**
+**Then the CTA repeats a third time — placement 3 of 3, 9 words — and the pricing block begins. Total: 439.**
 
 ### What changed from the wave-1 deck, and what it cost
 
@@ -886,7 +944,8 @@ paraphrase it.
 | 2 | subhead sold `bond and insurance certificate` | licence and CE only | **B2**. 23 of 23 bond amounts are `unknown`; the demo underneath would have contradicted the subhead on load |
 | 4 | 3 quotes, 76 words, California and New York only | 4 quotes, 89 words, **Texas added** | **M18**. Neither CA nor NY is covered at launch; the reader who tested the argument in the demo met a refusal |
 | 6 | step 2 was `We build the roster…` (33 words) | `You drop in the spreadsheet you already keep…` | **B3**. Also the longest sentence on the page and the largest promise on it |
-| 8 | three guarantees, 43 words | **two**, 34 words | **D3**. The Rollout Guarantee is withdrawn with the roster build it guaranteed |
+| 8 | three guarantees, 43 words | **two**, 86 words — one verbatim, one compressed | **D3** removed the Rollout Guarantee with the roster build it guaranteed. **Round 2 (R1)** then printed the Entry Pack Guarantee whole: the 14-word compression read as a *larger* promise than the real one, because it dropped the 90-day window and the cap |
+| 4, 5, 7 | 169 | 164 | **Round 2.** Three prose statements of one provenance claim, cut to two; §4 loses a four-word rhythm line. Paid for §8 |
 | — | the repeated CTA was not counted | **all three placements counted** | **m9**. The deck said 398 and CI would have measured 403 |
 
 **Net: the page got shorter and it promises less.** Every deletion was a promise we could not keep with
@@ -905,8 +964,14 @@ the knowledge base we have; every addition is a sentence a URL can settle.
   or a step card to V4, count it: `python3 kb-scripts/validate.py` prints verified/unknown per record,
   and `KNOWLEDGE_BASE.md` §9.1 holds the field-level table. Bond, insurance minimums and processing
   times are the ones that are mostly `unknown` today.
-- **Guarantee lines are compressions of `OFFER.md` §5.1, never restatements of them.** Shorter is fine;
-  stronger is a different promise and `specs/12` AC8 will fail the build.
+- **The Entry Pack Guarantee block is verbatim. Do not edit it at all** — not a word, not the
+  punctuation. It is 63 words of `OFFER.md` §5.1 item 2 and `specs/12` AC8b asserts byte equality
+  against this route. If it must change, it changes in `OFFER.md` first and everywhere at once.
+- **The Accuracy Guarantee's line is the only compression on the page**, and it may only ever get
+  *shorter*, never stronger. It must keep `five business days`, keep `one credit`, keep its link to
+  `/legal/refunds`, and add no quantity and no escalation word (`specs/12` AC8c — shortening a verb
+  is allowed, moving a number is not). A compression that drops a window or a cap is how **R1**
+  happened: it reads as a bigger promise than the one we wrote.
 - **Re-run the count after any edit**, and update both §1's table and §13's per-section figures in the
   same commit. The number appears in three places on purpose; if they disagree, the deck is wrong and
   CI is right.

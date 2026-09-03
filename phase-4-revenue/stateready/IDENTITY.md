@@ -662,7 +662,7 @@ grid, revert to a simplified geographic outline and solve the small-state proble
 - Fixed 40×40px tiles at desktop, 28×28 at ≤640px; 4px gutter; 6px corner radius.
 - Fill = status. Edge = `-edge` token at 1.5px. Label = state abbreviation in ink at 12px/600.
 - A count badge (technicians or licences at risk) sits bottom-right when > 0.
-- **States you do not operate in are drawn**, in `--sr-paper` with a 1px dashed `--sr-line-strong`
+- **States you do not operate in are drawn**, in `--sr-ground` with a 1px dashed `--sr-line-strong`
   edge and ink-3 label. Expansion is therefore *visible as an absence*, which is how J7 gets a home
   on the dashboard instead of a menu item.
 - Selection is a 2px `--sr-ink` outline plus a 2px offset — never a colour change, because colour is

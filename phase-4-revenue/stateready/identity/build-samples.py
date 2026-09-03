@@ -52,25 +52,40 @@ STATUS = {
     "MO": ("ready", 0, "2 licences current"),
     "KS": ("ready", 0, "1 licence current"),
     "IN": ("ready", 0, "2 licences current"),
-    "CA": ("none", 0, "Not operating. Expansion report available"),
-    "NM": ("none", 0, "Not operating. Expansion report available"),
+    "CA": ("none", 0, "Expansion report available"),
+    "NM": ("none", 0, "Expansion report available"),
 }
 GLYPH = {"ready": "✓", "risk": "◑", "lapsed": "✕", "none": "", "unknown": "—"}
-WORD = {"ready": "Ready", "risk": "At risk", "lapsed": "Lapsed",
-        "none": "Not operating", "unknown": "Not tracked"}
+
+# The four status names, in caps, exactly as IDENTITY.md §6.1 and §7.2 write them and as
+# specs/07 requires them: "in caps, everywhere in the product, the emails, the PDF and the marketing
+# page". There is deliberately NO entry for "none": a jurisdiction outside the footprint is a
+# rendering, not a fifth status, and specs/07 says the hollow tile "carries no status word because it
+# has no status". Its accessible name is the one specs/07 prints — "Ohio — not in your footprint".
+# (wave-1b review, finding m6: this file rendered "At risk" / "Not tracked" in sentence case, and
+# said "Not operating. Not operating" on 83 tiles.)
+WORD = {"ready": "READY", "risk": "AT RISK", "lapsed": "LAPSED", "unknown": "NOT TRACKED"}
+NO_FOOTPRINT = "not in your footprint"
+
+
+def tile_label(ab: str, st: str, note: str) -> str:
+    """The tile's accessible name. A hollow tile gets no status word, and nothing is said twice."""
+    if st == "none":
+        return f"{ab} — {NO_FOOTPRINT}" + (f". {note}" if note else "")
+    return f"{ab} — {WORD[st]}." + (f" {note}" if note else "")
 
 
 def tiles() -> str:
     out = []
     for ab, r, c in GRID:
-        st, badge, note = STATUS.get(ab, ("none", 0, "Not operating"))
+        st, badge, note = STATUS.get(ab, ("none", 0, ""))
         g = GLYPH[st]
         b = f'<span class="sr-tile__badge" aria-hidden="true">{badge}</span>' if badge else ""
         glyph = f'<span class="sr-tile__glyph" aria-hidden="true">{g}</span>' if g else ""
         out.append(
             f'      <li style="grid-row:{r};grid-column:{c}">'
             f'<button type="button" class="sr-tile" data-status="{st}" '
-            f'aria-label="{ab} — {WORD[st]}. {note}">'
+            f'aria-label="{tile_label(ab, st, note)}">'
             f'<span aria-hidden="true">{ab}</span>{glyph}{b}</button></li>'
         )
     return "\n".join(out)
@@ -209,11 +224,11 @@ fails — 70 pairs across both themes, 0 failures at the time of writing.</p>
 {tiles()}
           </ul>
           <div class="sr-map__legend">
-            <span class="sr-map__legend-item"><span class="sr-dot" data-status="ready"></span> Ready</span>
-            <span class="sr-map__legend-item"><span class="sr-dot" data-status="risk"></span> At risk</span>
-            <span class="sr-map__legend-item"><span class="sr-dot" data-status="lapsed"></span> Lapsed</span>
-            <span class="sr-map__legend-item"><span class="sr-dot"></span> Not tracked</span>
-            <span class="sr-map__legend-item"><span class="sr-swatch" style="inline-size:.75rem;block-size:.75rem;border-style:dashed;background:var(--sr-ground)"></span> Not operating — expansion report available</span>
+            <span class="sr-map__legend-item"><span class="sr-dot" data-status="ready"></span> READY</span>
+            <span class="sr-map__legend-item"><span class="sr-dot" data-status="risk"></span> AT RISK</span>
+            <span class="sr-map__legend-item"><span class="sr-dot" data-status="lapsed"></span> LAPSED</span>
+            <span class="sr-map__legend-item"><span class="sr-dot"></span> NOT TRACKED</span>
+            <span class="sr-map__legend-item"><span class="sr-swatch" style="inline-size:.75rem;block-size:.75rem;border-style:dashed;background:var(--sr-ground)"></span> not in your footprint — expansion report available <span class="sr-meta">(a rendering, not a status: it carries no status word)</span></span>
           </div>
         </div>
         <p class="sr-meta sr-mt-6">Every jurisdiction gets the same tile, because your exposure has
@@ -264,19 +279,19 @@ fails — 70 pairs across both themes, 0 failures at the time of writing.</p>
               <th scope="col">State</th><th scope="col">Number</th><th scope="col">Expires</th><th scope="col">Days</th>
             </tr></thead>
             <tbody>
-              <tr><td><span class="sr-dot" data-status="lapsed"></span> Lapsed</td>
+              <tr><td><span class="sr-dot" data-status="lapsed"></span> LAPSED</td>
                   <td>Tech 04 (sample)</td><td>ACR contractor</td><td>TX</td>
                   <td class="sr-num">TACLA0000000C</td><td class="sr-num">22 Aug 2026</td><td class="sr-num">−12</td></tr>
-              <tr><td><span class="sr-dot" data-status="risk"></span> At risk</td>
+              <tr><td><span class="sr-dot" data-status="risk"></span> AT RISK</td>
                   <td>Tech 11 (sample)</td><td>Journeyman HVAC</td><td>OH</td>
                   <td class="sr-num">OH-J-000000</td><td class="sr-num">14 Sep 2026</td><td class="sr-num">11</td></tr>
-              <tr><td><span class="sr-dot" data-status="risk"></span> At risk</td>
+              <tr><td><span class="sr-dot" data-status="risk"></span> AT RISK</td>
                   <td>Tech 19 (sample)</td><td>Journeyman HVAC</td><td>OH</td>
                   <td class="sr-num">OH-J-000001</td><td class="sr-num">14 Sep 2026</td><td class="sr-num">11</td></tr>
-              <tr><td><span class="sr-dot" data-status="risk"></span> At risk</td>
+              <tr><td><span class="sr-dot" data-status="risk"></span> AT RISK</td>
                   <td>Tech 02 (sample)</td><td>Electrical CE cycle</td><td>NJ</td>
                   <td class="sr-num">—</td><td class="sr-num">29 Sep 2026</td><td class="sr-num">26</td></tr>
-              <tr><td><span class="sr-dot" data-status="ready"></span> Ready</td>
+              <tr><td><span class="sr-dot" data-status="ready"></span> READY</td>
                   <td>Tech 07 (sample)</td><td>Master electrician</td><td>OK</td>
                   <td class="sr-num">OK-ME-00000</td><td class="sr-num">16 Dec 2026</td><td class="sr-num">104</td></tr>
             </tbody>
@@ -293,7 +308,7 @@ fails — 70 pairs across both themes, 0 failures at the time of writing.</p>
               <h3 class="sr-card__title">Journeyman HVAC · Ohio</h3>
               <p class="sr-meta sr-mb-0">Tech 11 (sample) · Northline Mechanical Group</p>
             </div>
-            <span class="sr-chip" data-status="risk"><span class="sr-chip__glyph" aria-hidden="true">◑</span> At risk</span>
+            <span class="sr-chip" data-status="risk"><span class="sr-chip__glyph" aria-hidden="true">◑</span> AT RISK</span>
           </div>
           <dl class="sr-dl">
             <dt>Licence number</dt><dd class="sr-mono">OH-J-000000</dd>
@@ -377,17 +392,17 @@ fails — 70 pairs across both themes, 0 failures at the time of writing.</p>
   <p>Colour, glyph, hatch and word ship together. Print this page: the hatches appear and the four
   statuses stay separable in black and white.</p>
   <div class="demo">
-    <span class="sr-chip" data-status="ready"><span class="sr-chip__glyph" aria-hidden="true">✓</span> Ready</span>
-    <span class="sr-chip" data-status="risk"><span class="sr-chip__glyph" aria-hidden="true">◑</span> At risk</span>
-    <span class="sr-chip" data-status="lapsed"><span class="sr-chip__glyph" aria-hidden="true">✕</span> Lapsed</span>
-    <span class="sr-chip"><span class="sr-chip__glyph" aria-hidden="true">—</span> Not tracked</span>
+    <span class="sr-chip" data-status="ready"><span class="sr-chip__glyph" aria-hidden="true">✓</span> READY</span>
+    <span class="sr-chip" data-status="risk"><span class="sr-chip__glyph" aria-hidden="true">◑</span> AT RISK</span>
+    <span class="sr-chip" data-status="lapsed"><span class="sr-chip__glyph" aria-hidden="true">✕</span> LAPSED</span>
+    <span class="sr-chip"><span class="sr-chip__glyph" aria-hidden="true">—</span> NOT TRACKED</span>
   </div>
   <p class="sr-mt-6">Where a chip is too heavy — inside a table cell or a sentence — the status word
   stands alone in <code>.sr-status-text</code>, always next to a dot:
-    <span class="sr-nowrap"><span class="sr-dot" data-status="lapsed"></span> <span class="sr-status-text" data-status="lapsed">Lapsed</span></span>,
-    <span class="sr-nowrap"><span class="sr-dot" data-status="risk"></span> <span class="sr-status-text" data-status="risk">At risk</span></span>,
-    <span class="sr-nowrap"><span class="sr-dot" data-status="ready"></span> <span class="sr-status-text" data-status="ready">Ready</span></span>,
-    <span class="sr-nowrap"><span class="sr-dot"></span> <span class="sr-status-text">Not tracked</span></span>.
+    <span class="sr-nowrap"><span class="sr-dot" data-status="lapsed"></span> <span class="sr-status-text" data-status="lapsed">LAPSED</span></span>,
+    <span class="sr-nowrap"><span class="sr-dot" data-status="risk"></span> <span class="sr-status-text" data-status="risk">AT RISK</span></span>,
+    <span class="sr-nowrap"><span class="sr-dot" data-status="ready"></span> <span class="sr-status-text" data-status="ready">READY</span></span>,
+    <span class="sr-nowrap"><span class="sr-dot"></span> <span class="sr-status-text">NOT TRACKED</span></span>.
   </p>
 </section>
 
@@ -527,7 +542,7 @@ fails — 70 pairs across both themes, 0 failures at the time of writing.</p>
     <div class="sr-sheet" style="position:static;inline-size:100%;box-shadow:none;border:0;border-radius:var(--sr-radius-md)">
       <div class="sr-card__head">
         <div><p class="sr-eyebrow sr-mb-0">State</p><h3 class="sr-card__title">Texas · HVAC</h3></div>
-        <span class="sr-chip" data-status="lapsed"><span class="sr-chip__glyph" aria-hidden="true">✕</span> Lapsed</span>
+        <span class="sr-chip" data-status="lapsed"><span class="sr-chip__glyph" aria-hidden="true">✕</span> LAPSED</span>
       </div>
       <dl class="sr-dl">
         <dt>Licensed here</dt><dd>4 technicians · 1 company licence</dd>

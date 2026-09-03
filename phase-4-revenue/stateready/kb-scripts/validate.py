@@ -187,12 +187,52 @@ def gates(rid: str, rec: dict) -> list[tuple[str, str, str]]:
             out.append(("G7", "warn", "no reciprocity entries and no reciprocity_statement value: the "
                                       "product must render 'not established', never 'none'"))
 
-    # G8  every expiry_rule is a token the deadline engine implements
+    # G8  every expiry_rule is a token the deadline engine implements — and every board-announced
+    #     override of that rule is a real date, inside the cycle year it claims, on a page two passes
+    #     read (wave-1b M13; specs/05 "Board-announced date rolls"). An override is the one thing in
+    #     the record that can move a deadline WITHOUT a SourcedValue wrapper, so the checks G1/G3/G4
+    #     do for values are done here for overrides.
     known_rules = ("anniversary", "fixed_date:", "fixed_date_parity:")
+    today = dt.date.today()
     for lt in rec["licence_types"]:
         rule = lt["renewal"]["expiry_rule"]["value"]
-        if rule is not None and not str(rule).startswith(known_rules):
+        rule_known = rule is not None and str(rule).startswith(known_rules)
+        if rule is not None and not rule_known:
             out.append(("G8", "fail", f"{lt['licence_type_id']}: unknown expiry_rule {rule!r}"))
+
+        overrides = lt.get("expiry_overrides") or []
+        if overrides and not rule_known:
+            out.append(("G8", "fail", f"{lt['licence_type_id']}: expiry_overrides on a licence type "
+                                      f"whose expiry_rule {rule!r} the engine does not implement — an "
+                                      f"override may only correct a rule we can derive"))
+        seen_years: set = set()
+        for i, ov in enumerate(overrides):
+            jp = f"{lt['licence_type_id']}.expiry_overrides[{i}]"
+            year = ov.get("cycle_year")
+            try:
+                day = dt.date.fromisoformat(str(ov.get("date")))
+            except ValueError:
+                out.append(("G8", "fail", f"{jp}: date {ov.get('date')!r} is not a real date"))
+                day = None
+            if day is not None and day.year != year:
+                out.append(("G8", "fail", f"{jp}: date {day} is not inside cycle_year {year} — an "
+                                          f"override never applies outside its own cycle"))
+            if year in seen_years:
+                out.append(("G8", "fail", f"{jp}: a second override for cycle_year {year}; the engine "
+                                          f"takes exactly one per cycle"))
+            seen_years.add(year)
+            if len(set(ov.get("verified_by") or [])) < 2:
+                out.append(("G8", "fail", f"{jp}: fewer than two distinct verifiers"))
+            ev = ov.get("evidence") or ""
+            if len(ev.split()) > 25:
+                out.append(("G8", "fail", f"{jp}: evidence is {len(ev.split())} words, limit is 25"))
+            lv = ov.get("last_verified")
+            if lv and DATE_RE.match(str(lv)) and dt.date.fromisoformat(lv) > today:
+                out.append(("G8", "fail", f"{jp}: last_verified {lv} is in the future"))
+            host = re.sub(r"^https?://([^/]+).*$", r"\1", str(ov.get("source_url", ""))).lower()
+            if host not in json.loads((ONTOLOGY / "official-hosts.json").read_text())["hosts"]:
+                out.append(("G8", "fail", f"{jp}: source host {host} is not on the "
+                                          f"ontology/official-hosts.json allowlist"))
 
     # G9  a record with any low-confidence or unverified value must not claim the standard disclaimer
     weak = [jp for jp, v in svs if v["value"] is not None

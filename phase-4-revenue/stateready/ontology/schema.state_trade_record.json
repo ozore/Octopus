@@ -97,6 +97,26 @@
               "late_fee": { "$ref": "sourced_value.json" }
             }
           },
+          "expiry_overrides": {
+            "type": "array",
+            "description": "Board-announced exceptions to this licence type's own expiry_rule, one per cycle year (specs/05, wave-1b M13). A token is a rule; a board sometimes announces an exception to its own rule for one cycle — Florida's construction board extended the 31 August 2027 registered-contractor deadline to 2 September because the 31st fell on a Sunday. An override for the derived cycle year WINS over the token, carries its own citation, and the derived deadline is rendered with the override's source rather than the token's. It never invents a date, never applies outside its cycle_year, and is verified by the same two passes as everything else. Gate G8 in kb-scripts/validate.py asserts date-inside-cycle_year, one override per year, two distinct verifiers, and that the licence type's expiry_rule is a token the engine implements.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["cycle_year", "date", "source_url", "evidence", "last_verified", "verified_by"],
+              "properties": {
+                "cycle_year": { "type": "integer", "minimum": 2020, "description": "The cycle the override replaces. The engine applies it only when the token-derived date falls in this year." },
+                "date": { "type": "string", "format": "date", "description": "The expiry date the board announced. Must fall inside cycle_year (G8)." },
+                "source_url": { "type": "string", "format": "uri", "description": "The board page that announced it. Same allowlist as every other source." },
+                "evidence": { "type": "string", "description": "The board's own sentence, verbatim, 25 words or fewer (same copyright rule as G4)." },
+                "last_verified": { "type": "string", "format": "date" },
+                "verified_by": { "type": "array", "minItems": 2, "items": { "type": "string" }, "description": "Two distinct agent ids, as for any verified value." },
+                "confidence": { "enum": ["high", "medium", "low"] },
+                "note": { "type": "string" }
+              }
+            }
+          },
+
           "continuing_education": {
             "type": "object",
             "additionalProperties": false,

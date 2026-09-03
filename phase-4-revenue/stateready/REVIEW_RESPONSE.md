@@ -170,3 +170,85 @@ and **not shipped**. Publishing it is a founder decision that should follow coun
 *Written against `PIPELINE.md` stage 6. `REVIEW.md` was not edited; neither were `IDENTITY.md`,
 `design-system.css`, `identity/samples.html`, `identity/contrast.py`, or any value in `kb-data/`.
 No commits, no pushes.*
+
+---
+---
+
+# Round 2 — closing the re-review
+
+**Author:** Iteration agent (StateReady), phase-4 fleet, closing author for wave 1b. **Date:** 2026-09-03.
+**Answers:** the **Re-review** section at the top of `REVIEW.md` — **1 blocking · 3 major · 4 minor open**
+(R1, N1, N2, M13's schema half, m6, N3, N4, N5).
+**`REVIEW.md` was not edited.** Neither was `design-system.css`, nor any value in `kb-data/` — the only
+write into `kb-data/` this round is the excerpt backfill in `_sources.json`, which is what N1 asked for
+and which touches two keys per source and nothing else (proved below).
+
+> ## Outcome — **all eight closed.**
+>
+> | id | severity | closed how |
+> |---|---|---|
+> | **R1** | blocking (regression) | Entry Pack Guarantee **verbatim on the landing page**, Accuracy Guarantee compressed under three tested conditions; all three documents rewritten to say the same thing |
+> | **N1** | major | `refresh_sources.py --fill-excerpts`, a 14-assertion test, and **35 of 35 sources now carry a "before"** |
+> | **N2** | major | Eight unbacked features out of `OFFER.md` §7's Contains column, plus the two of the same class in §3 and §4 |
+> | **M13** | major (half) | `expiry_overrides` in the ontology, **G8 extended**; `validate.py` exit 0 |
+> | **m6** | minor | `identity/samples.html` regenerated from its generator; the contradiction with `specs/07` is gone |
+> | **N3** | minor | one token |
+> | **N4** | minor | `specs/04`'s Requirements panel in B2's wording, with an acceptance criterion behind it |
+> | **N5** | minor | AC8's count, and the `§5.1.3` citation class killed at its source |
+>
+> **Evidence, re-run after the last edit:** `validate.py` **exit 0** (9 records, 0 failures, the same
+> 3 G7 warnings) · `test_accept_drift.py` **17/17** · `test_fill_excerpts.py` **14/14** ·
+> `identity/contrast.py` **exit 0** (4.89:1 text, 3.15:1 non-text) · `../scripts/identity-distinctness.py`
+> **exit 0** · landing copy deck **439 words** of 450, counted mechanically under §1's own rule.
+>
+> **Two paragraphs are now stale in files this round was not allowed to edit** (§6.3). Neither is a
+> promise to a customer; both are one-line corrections for the agent who owns the file.
+
+---
+
+## 6.1 The eight items, one row each
+
+| id | status | files · sections changed | the decision taken |
+|---|---|---|---|
+| **R1** | **fixed** | `OFFER.md` §5.1 (regime table + numbering note) · `specs/12` refund policy + **AC8 rewritten as a–d** + test plan · `LANDING_SPEC.md` header, §1 (budget), §7 item 3, **§8 rewritten**, §13 deck, §13.1 rules | **The landing page carries the Entry Pack Guarantee verbatim — all 63 words — and compresses only the Accuracy Guarantee.** The reviewer offered the opposite fix (exempt the marketing route on conditions) and the exposure argument in the finding is the reason for not taking it: the compression *"Entry Pack contradicted by the board's own page? We rewrite it and refund you"* drops the **90-day claim window** and the **cap at the fee paid**, so it reads as a **larger** promise than the one we wrote, on the only page a stranger reads before paying. A compression that removes the limits and keeps the promise is the wrong direction of error. The Accuracy Guarantee, whose liability is one month's credit, stays compressed under four conditions that AC8c **tests**: it contains `five business days` and `one credit`; it links to `/legal/refunds`; it adds no quantity and no escalation word (a verb may be shortened, a number may not move); and it never says "guarantee" in a strip with no link. **The loose version of that third condition — "no word the full text does not use" — fails against its own approved copy**, which is the same class of error as R1 itself, so AC8c states it mechanically. **The rule is now stated once, in `OFFER.md` §5.1, as a table of surface × form**, and the other two documents point at it rather than restating it — which is how the three drifted apart in the first place. |
+| **R1 (budget)** | **paid for** | `LANDING_SPEC.md` §1 | The verbatim block costs **+52 words**. Three cuts pay for it, all of them prose that repeated something the page already showed: §5's *"Every answer shows where it came from and when we checked"* (**−11**, the demo renders a source chip on every answer), §7's *"Every date shows its source and the day we checked it"* (**−11**, the third statement of one claim), §4's *"Three states. One rule."* (**−4**, rhythm). **413 → 439 of 450**, headroom 37 → **11**, and §1 names the next two cuts so the next editor does not have to invent one. Strip §8 and the CTA repeats out of both columns and the page's *arguing* copy went **355 → 335**. |
+| **N1** | **fixed, and run** | `kb-scripts/refresh_sources.py` (new `--fill-excerpts`, `--dry-run`, `--from-dir`) · **new `kb-scripts/test_fill_excerpts.py`** (14 assertions) · `kb-data/_sources.json` (excerpts only) | `--fill-excerpts` re-fetches, and **writes `normalised_head`/`normalised_tail` only where the re-fetched `content_sha256` equals the stored one**. A source that has moved is named in the report, told to go through `accept_drift.py`, and **left byte-for-byte alone**; an unreachable one likewise, because "we could not read it" is not "it is unchanged"; and the mode exits non-zero if it refused anything, so CI cannot pass on a half-filled store. **Run once against all 35 sources: 35 filled, 0 drifted, 0 unreachable** — every launch source still matches the hash it was authored against. A key-by-key diff of the committed baseline confirms **no key other than the two excerpts changed on any source**, and no record was touched. The test's load-bearing assertion is the refusal: a drifted source's entry must be *identical* afterwards, not merely un-excerpted. |
+| **N2** | **fixed, and widened by two** | `OFFER.md` §7 (four rows rewritten + the rule + a removal table) · §3 stack item 5 · §4 bonus table | **The rule is written into the document: a feature may appear in the Contains column only if it has a Must or a Should with a number.** The eight came out — *rule-change watch*, *subcontractor credential tracking*, *audit log* and *acquisition intake checklist* have no backlog item at all; *bond & insurance certificate tracking* (**L5**), *multi-entity / per-brand separation* (**L6**) and *webhooks* (**L4**) are LATER; and the free row's *bond/insurance minimums* is the claim **B2** removed everywhere else. What is left carries its id (**M6**, **M7**, **M8**, **M14**+**M5**, **M16**), and the one Should is labelled *planned* with it (CE-provider directory, **S11**). **Two more of the same class were in the document and not in the finding:** §3's stack item 5 sold the rule-change watch as a core component, and §4 sold the acquisition intake checklist as a Platform-tier bonus. Both are struck with the reason, in the idiom §3 already uses for the deferred roster build. Platform's row is thinner and true, which matters most at $599, where the buyer is the one person in this market who will check. |
+| **M13** *(schema half)* | **fixed** | `ontology/schema.state_trade_record.json` (`expiry_overrides` on `licence_types[]`) · `kb-scripts/validate.py` **G8** | The field is now representable: an array of `{cycle_year, date, source_url, evidence, last_verified, verified_by}` with optional `confidence`/`note`, `additionalProperties: false`, `verified_by` `minItems: 2`. **G8 grew from one assertion to six**, because an override is the one thing in a record that can move a deadline *without* a `SourcedValue` wrapper, so the checks G1/G3/G4/G5 do for values are done here for overrides: the date is a real date **inside its `cycle_year`**, one override per cycle, two distinct verifiers, evidence ≤ 25 words, `last_verified` not in the future, and the source host on the `official-hosts.json` allowlist — plus a refusal to attach an override to a licence type whose `expiry_rule` the engine does not implement. Verified in a throw-away tree: the Florida 2 September 2027 override from `specs/05` validates (exit 0), and `date` outside the cycle year, an impossible date, a duplicate cycle, one verifier, an off-allowlist host and an unknown property each fail. `kb-data/` is unchanged — **no record carries an override yet**, and wave 2 can now write one. |
+| **m6** | **fixed** | `identity/build-samples.py` (the `WORD` dict, a new `tile_label()`, the legend, the table, the chips, the status-text spans) · `identity/samples.html` **regenerated** · `specs/07` (the paragraph that recorded the contradiction) | The generator reproduced the committed file byte-for-byte before the change, so the diff is exactly the fix: **the four status words are the all-caps names** (`READY / AT RISK / LAPSED / NOT TRACKED`) in the legend, the table, the chips and the inline status text; and **the hollow tile carries no status word**, with the accessible name `specs/07` prints — *"CA — not in your footprint"* — instead of *"CA — Not operating. Not operating"*. `WORD` deliberately **has no entry for the hollow case**, so the fifth-status mistake cannot be made again one tile at a time. No token, no colour, no CSS: `contrast.py` and the distinctness gate both still exit 0. |
+| **N3** | **fixed** | `IDENTITY.md` §7.1 | `--sr-paper` → `--sr-ground`. It was the last undeclared token cited anywhere; the only surviving occurrences in the three documents are the four sentences that *record* the rename. |
+| **N4** | **fixed** | `specs/04` §Screens + a new Requirements-panel section + **AC8** + test plan | The panel is specified in **B2's wording**: it renders every requirement the board publishes, each with its chip, and **names every one it does not** — *"the board does not publish this"*, with the note recording what we read looking for it. Bond and insurance are called out explicitly, because `bond.amount` is `unknown` **23 times out of 23** in the committed records, and the wave-1 wording promised a citation the data cannot supply. **AC8 makes it testable** over the committed `kb-data/`: every DISCLOSED_SET field with status `unknown` renders the field name and the not-published wording, and no such row renders a source chip. A field with no board answer is a **rendered row, not a missing one**. |
+| **N5** | **fixed** | `specs/12` refund policy + AC8 · `OFFER.md` §5.1 | AC8 no longer says "three wordings" and then asserts two: it asserts **exactly two canonical wordings site-wide** (AC8a, AC8d), and the withdrawn third fails on sight. The `OFFER.md` **§5.1.3** citation is replaced by **§5.1 item 2** — and the class is killed at its source: §5.1 now states its own numbering (*§5.1.1 = item 1, §5.1.2 = item 2, there is no §5.1.3 — that was the Rollout Guarantee's wave-1 slot*), so the remaining citation in `specs/08` resolves to a sentence that explains it rather than to nothing. |
+
+## 6.2 Evidence, re-run at the end of round 2
+
+| check | result |
+|---|---|
+| `python3 kb-scripts/validate.py` | **exit 0** — 9 records, **0 failures**, 3 warnings (the same three correct G7 Florida warnings), with G8 now six assertions wide |
+| `python3 kb-scripts/test_accept_drift.py` | **17/17 assertions pass** — unchanged by this round, re-run after the `refresh_sources.py` edit because the test copies that file into its tree |
+| `python3 kb-scripts/test_fill_excerpts.py` | **14/14 assertions pass** — including *"DRIFTED source: entry is byte-identical to before"* and *"no key other than the two excerpts changed on any source"* |
+| `python3 kb-scripts/refresh_sources.py --fill-excerpts` | **exit 0** — filled 35, refused 0, unreachable 0. `kb-data/_sources.json` now carries a "before" for **35 of 35** sources |
+| `python3 identity/contrast.py` | **exit 0** — 70 pairs, smallest text margin 4.89:1, smallest non-text 3.15:1, 0 failures |
+| `python3 ../scripts/identity-distinctness.py` | **exit 0** — 3 apps, 3 ground pairs, 3 typeface pairs |
+| Landing word budget, re-counted mechanically | **439** of 450 — 68 / 37 / 93 / 20 / 66 / 51 / 9 / 86 / 9, and §1's table, §13's per-section figures and the deck's own strings all say the same number |
+| `expiry_overrides`, tested rather than trusted | The `specs/05` Florida override validates in a temp tree (exit 0); six malformed shapes each fail with a named G8 message. `kb-data/` untouched |
+
+## 6.3 Two paragraphs this round could not reach
+
+Both are inside this iteration's stated edit scope for *other* people's files, and both are now factually
+behind the code. Neither is customer-facing.
+
+1. **`specs/05`, "Schema and gate work this requires, and which this iteration did not do".** It says
+   `expiry_overrides` is unrepresentable and names the patch. **The patch has landed** (M13 above), so
+   that paragraph should become a one-line "done, see `ontology/schema.state_trade_record.json` and G8".
+   `specs/05` was not in this round's edit list; the ontology field's own `description` names `specs/05`,
+   so the link is discoverable from the schema side.
+2. **`specs/08` §Guarantee** still cites `OFFER.md` **§5.1.3** and asserts byte equality "in `OFFER.md`
+   §5.1.3, `specs/12`, the purchase screen…". The citation now resolves to §5.1's numbering note, which
+   explains that the slot is the withdrawn Rollout Guarantee, so nobody is misled — but the tidy fix is
+   two characters, and `specs/08` was not in scope either.
+
+*Round 2 of 3. `REVIEW.md`, `design-system.css` and every value in `kb-data/` are unedited; no commits,
+no pushes. The closing note above §6 describes round 1 — round 2 did edit `IDENTITY.md` (one token) and
+`identity/samples.html` (content only, regenerated from its generator), both explicitly delegated to this
+round by the re-review.*

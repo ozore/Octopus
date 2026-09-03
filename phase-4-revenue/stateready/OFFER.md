@@ -177,7 +177,7 @@ Internally the two products are **the State Entry Pack** (one-off) and **StateRe
 | 2 | **The cited requirement library** — per state × trade: licence classes, who must hold them, renewal cycle, CE hours and topics, fees, bond and insurance **wherever the board publishes them, and an explicit "the board does not publish this" wherever it does not** — each with its `source_url` and `last_verified` | *"How do I know your dates are right?"* | High (it is the moat) | Very high |
 | 3 | **The deadline calendar and alert ladder** — 90 / 60 / 30 / 7 days, routed per licence holder and per category | *"I find out when the renewal is rejected"* | Low | High |
 | 4 | **Bid-and-audit export** — one PDF proving current credential status for a GC, a municipality or a vendor portal | *"Prequal wants a compliance packet and I rebuild it by hand"* | Low | High |
-| 5 | **Rule-change watch** — when a board changes a cycle, an hour count or a fee, the affected customers are told, with the diff and the source | *"CE requirements change and the spreadsheet doesn't know"* | Medium | High |
+| 5 | ~~**Rule-change watch**~~ — **not at launch (wave-1b N2)**, because it has no Must, no Should and no backlog id. What ships is the half we do have: `specs/14`'s drift queue detects that a source page moved and **tells the founder**, ordered by how many customers depend on it, and a correction reaches the customer through the record and the Accuracy Guarantee (§5.1). Telling the customer automatically, with the diff, is the unbuilt half and it may not be sold until it is scheduled | *"CE requirements change and the spreadsheet doesn't know"* | Medium | High |
 | 6 | **State Entry Pack** — the expansion playbook (§6) | *"We just bought a company in a state nobody here knows"* | Medium | Very high |
 
 **Deliberately trimmed** (Ramanujam's *killers* — features whose presence destroys willingness to pay or
@@ -199,11 +199,11 @@ Stacked, low marginal cost, each solving a real obstacle (Hormozi's trim-and-sta
 
 | Bonus | Attached to | Why it is worth having |
 |---|---|---|
-| **Your first State Entry Pack included** | Annual plans only | The single largest lever on annual conversion: it converts an annual commitment into a purchase the buyer already budgets for. Worth $1,500 at list. |
-| **The CE-provider directory for your states and trades** | All paid plans | Knowing 8 hours are due is half an answer; knowing which board-approved providers deliver them, in the mandated topics, is the other half. Built once from board-approved-provider lists. |
-| **The qualifier map** | All paid plans | Which licence in which state is held in which individual's name, and what breaks if that person resigns. Every multi-state contractor has this exposure and almost none of them have it written down. |
-| **Renewal-week brief** | All paid plans | The Monday email: what is due in the next 30 days, in which state, by whom, with the form and the fee. The artefact Dana forwards to her boss — which is how the product sells itself internally. |
-| **Acquisition intake checklist** | Platform tier | For Marcus: what to ask for in diligence so the licence position is known before the close, not after. |
+| **Your first State Entry Pack included** (**M8**, billed by **M9**) | Annual plans only | The single largest lever on annual conversion: it converts an annual commitment into a purchase the buyer already budgets for. Worth $1,500 at list. |
+| **The CE-provider directory for your states and trades** — **planned, `BACKLOG.md` S11; not at launch** | All paid plans **once S11 ships**, and on no customer-facing surface before then | Knowing 8 hours are due is half an answer; knowing which board-approved providers deliver them, in the mandated topics, is the other half. Built once from board-approved-provider lists. The KB already carries `approved_provider_rule`, which is why this is a Should and not a wish — but a bonus nobody receives is not a bonus (wave-1b **N2**, and S11's own trigger). |
+| **The qualifier map** (**M16**) | All paid plans | Which licence in which state is held in which individual's name, and what breaks if that person resigns. Every multi-state contractor has this exposure and almost none of them have it written down. |
+| **Renewal-week brief** (**M6**, `UX.md` E14) | All paid plans, on by default; off during the trial | The Monday email: what is due in the next 30 days, in which state, by whom, with the form and the fee. The artefact Dana forwards to her boss — which is how the product sells itself internally. |
+| ~~**Acquisition intake checklist**~~ | ~~Platform tier~~ | **Withdrawn from the stack (wave-1b N2).** It has no Must, no Should and no backlog id, and it was being sold at the tier whose buyer is most likely to ask for it by name in month one. The nearest real item is **S5** (acquisition mode: batch-import an acquired company's licences and diff against the parent), which is a different deliverable; it returns to this table the day something with a number covers it. |
 
 ---
 
@@ -217,9 +217,31 @@ principle behind the whole section, and the test every candidate has to pass:
 
 ### 5.1 Shipping at launch — exactly two, in exactly these words
 
-Both are quoted verbatim in `specs/08`, `specs/12` `/legal/refunds`, the purchase screen and
-`LANDING_SPEC.md` §8. **A paraphrase is a different guarantee**; a content test asserts byte equality
-across every surface (`specs/12` AC8).
+**Where each wording is carried, and in what form** (the wave-1b **R1** decision; the test is
+`specs/12` AC8):
+
+| surface | the Entry Pack Guarantee | the Accuracy Guarantee |
+|---|---|---|
+| `/legal/refunds` (`specs/12`), the purchase screen (`specs/09`), the pack's first page (`specs/08`) | **verbatim** | **verbatim** |
+| the marketing route (`LANDING_SPEC.md` §8) | **verbatim.** It is 63 words, it is the promise a stranger acts on *before* paying, and it is the one that carries a **claim window** and a **cap** | **compressed**, under the four conditions `specs/12` AC8c tests: the compression carries the **five-business-day** correction and the **one-credit-a-month** cap, it **links to `/legal/refunds`**, it adds no quantity and no escalation word, and it never says "guarantee" in a strip with no link |
+
+**A paraphrase is a different guarantee.** Where a wording is carried verbatim, a content test asserts
+byte equality; where it is compressed, the same test asserts the liability-bearing terms, the link and
+the absence of any new term (`specs/12` AC8).
+
+*Numbering, because other documents cite it:* **§5.1.1 is item 1 (the Accuracy Guarantee)** and
+**§5.1.2 is item 2 (the Entry Pack Guarantee)**. **There is no §5.1.3** — that was the wave-1 slot of
+the Rollout Guarantee, which §5.2 withdraws; a citation to it is a citation to the wave-1 draft
+(`specs/08` §Guarantee still carries one, out of this iteration's edit scope).
+
+*Fixed in round 2 (**R1**).* This document, `specs/12` and `LANDING_SPEC.md` §8 disagreed about which
+of those two regimes the landing page was under — this section said "verbatim everywhere", the landing
+spec said "each a compression", and the specified CI test would have failed against the specified copy.
+It was not a cosmetic disagreement: the two compressions in force dropped the **90-day claim window**
+and the **cap at the pack fee** from the only page a buyer reads *before* paying, which is exactly the
+exposure **B5** was raised about. The Entry Pack Guarantee therefore goes on the page whole; the
+Accuracy Guarantee, whose liability is one month's credit, is compressed with its own SLA, its own cap
+and a link. `LANDING_SPEC.md` §1 pays for those 63 words out of the word budget: 439 of 450.
 
 **1. The Accuracy Guarantee** *(subscription; conditional; adjudicated against a page)*
 
@@ -392,13 +414,34 @@ for and already pays an expediter for, funds the tier increase.
 
 | Rung | Price | Limits | Contains | Role |
 |---|---|---|---|---|
-| **State Rulebook** | **Free.** No card, no login | 1 state × 1 trade per lookup | Licence classes, renewal cycle, CE hours and topics, bond/insurance minimums — each with its source and last-checked date | Lead magnet, demo, and the proof that our data is real |
+| **State Rulebook** | **Free.** No card, no login | 1 state × 1 trade per lookup | **M15.** Licence classes, renewal cycle, CE hours and topics — each with its source and last-checked date, and **the board's published requirements it does not publish named as not published** | Lead magnet, demo, and the proof that our data is real |
 | **14-day free trial** | **Free. No card** | full product, 1 state | Everything on Single State, for 14 days, with alerts live. **First 100 signups** (D1) | The way in. It ends read-only, never deleted |
 | ~~First State Audit~~ | ~~$149 one-time~~ | – | **DEFERRED to iteration 2 (D1)** — it owes a roster build only a human can currently produce. Returns if the spike in §8 passes | not offered at launch |
-| **Single State** | **$149/mo** · $1,490/yr | 1 state, up to 25 technicians. **Stated lower bound: ~10 licensed people.** Below that we say a spreadsheet works | Calendar, 90/60/30/7 alerts, bid-and-audit export, requirement library, CE-provider directory, qualifier map, renewal-week brief | The shop that has one state and one problem |
-| **Multi-State** | **$349/mo** · $3,490/yr | up to 5 states, up to 75 technicians | + rule-change watch, bond & insurance certificate tracking, per-state filtering, **first State Entry Pack included on annual** | **The core buyer.** Dana |
-| **Platform** | **$599/mo** · $5,990/yr | up to 15 states, up to 250 technicians | + multi-entity / per-brand separation, subcontractor credential tracking, audit log, webhooks, acquisition intake checklist, **two State Entry Packs included on annual** | Roll-ups and franchise operators. Marcus |
+| **Single State** | **$149/mo** · $1,490/yr | 1 state, up to 25 technicians. **Stated lower bound: ~10 licensed people.** Below that we say a spreadsheet works | Renewal calendar (**M7**), 90/60/30/7 alerts (**M6**), bid-and-audit PDF export (**M7**), the cited requirement library (**M14** + **M5**), qualifier map (**M16**), renewal-week brief (**M6**). *Planned, not shipped:* CE-provider directory (**S11**) | The shop that has one state and one problem |
+| **Multi-State** | **$349/mo** · $3,490/yr | up to 5 states, up to 75 technicians | + per-state filtering and the multi-state board view (**M7**), which only earn their keep above one state, and **the first State Entry Pack included on annual** (**M8**) | **The core buyer.** Dana |
+| **Platform** | **$599/mo** · $5,990/yr | up to 15 states, up to 250 technicians | + several legal entities on one account (**M2**), per-entity filtering and export (**M7**), **two State Entry Packs included on annual** (**M8**) | Roll-ups and franchise operators. Marcus |
 | **Enterprise** | **Contact us** — *"a quote within two business days, or we tell you we cannot help"* | over 15 states, or unlimited | + API, SSO/SAML, per-brand branding, named contact | Apex / Sila / Service Logic scale. **No Stripe price at launch** — we have no basis for one and a made-up number rots the whole card. But it is a **published row with a route behind it**, not a silence: the 16th state hits `POST /enterprise-enquiry` (`specs/09`), which writes the enquiry, emails the founder with the state and technician counts pre-filled, and confirms the two-day promise to the customer |
+
+**The rule this column obeys, from round 2 of the review (N2): a feature may appear in "Contains" only
+if it has a Must or a Should with a number.** Anything else is a thing we would be selling before anyone
+had agreed to build it, and `/pricing` will be built from this table. Eight entries failed the rule and
+came out:
+
+| removed from | what | why it failed |
+|---|---|---|
+| State Rulebook (free) | *bond/insurance minimums* | **B2**: 23 of 23 bond amounts in the committed records are `unknown`. The free lookup would contradict itself on load. What it shows instead is the same DISCLOSED_SET language as `specs/08` — what the board publishes, and what it does not, named |
+| Multi-State | *rule-change watch* | No Must, no Should, no backlog id anywhere. `M14`'s drift queue tells **us** a page moved (`specs/14` notifies the founder); telling the **customer**, with the diff, is unbuilt and unscheduled |
+| Multi-State | *bond & insurance certificate tracking* | **BACKLOG L5 = LATER**, and the KB has no bond data to hang it on |
+| Platform | *multi-entity / per-brand separation* | **L6 = LATER.** `M2` gives one account several legal entities; the roll-up **hierarchy UI** for 107 brands is a different product and is what L6 defers. The row now claims only the part `M2` ships |
+| Platform | *webhooks* | **L4 = LATER**, explicitly waiting on a customer who names their system |
+| Platform | *subcontractor credential tracking* | Nothing. Not a Must, not a Should, not a LATER |
+| Platform | *audit log* | Nothing. It appears in `offer/RESEARCH.md`'s competitor rate-card table as a **competitor's** tier feature, which is how it got into ours |
+| Platform | *acquisition intake checklist* | Nothing. The nearest real item is **S5** (acquisition mode — batch import and diff against the parent), which is a different deliverable and is a Should, not a Must |
+
+**Where they went, not what happened to them:** each is still in `BACKLOG.md` at its real position, and
+three of the four LATER items are there with the reason they are late. The tiers are thinner and true
+rather than thicker and aspirational — which matters most at $599, where the buyer is the one person in
+the market who will check.
 
 Annual = ten months' price, i.e. two months free. This matches the convention already published in the
 category and is simple to explain.

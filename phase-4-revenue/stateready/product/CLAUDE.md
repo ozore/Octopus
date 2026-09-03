@@ -237,3 +237,54 @@ which silently disables the branch instead of failing loudly. I hit it writing t
 `not: {type: "null"}` and only caught it because I tested that the new branch actually fires on a
 deliberately broken record. **Whenever you touch a schema, prove the new constraint rejects something**;
 "validate.py still exits 0" is not evidence that a rule exists.
+
+---
+
+## Round 2 after the re-review (2026-09-03) — closing wave 1b
+
+**Scope:** the eight items the re-review left open — **R1** (blocking regression), **N1**, **N2**,
+**M13**'s schema half, **m6**, **N3**, **N4**, **N5**. All eight closed; the round is written up, one
+row per item, in `REVIEW_RESPONSE.md` §6. `REVIEW.md`, `design-system.css` and every value in
+`kb-data/` are unedited.
+
+### What changed, by file
+
+| file | what |
+|---|---|
+| `OFFER.md` | §5.1 gained a **surface × form table** (verbatim vs compressed) and its own numbering note (§5.1.1/§5.1.2, **no §5.1.3**); §7's Contains column rewritten to the rule *"a Must or a Should with a number, or it is deleted"* plus a removal table; §3 item 5 and §4's acquisition-checklist bonus struck for the same reason |
+| `LANDING_SPEC.md` | §8 rewritten (Entry Pack Guarantee **verbatim**, Accuracy Guarantee compressed with window + cap + link); §1 budget **413 → 439** of 450 with the three cuts that paid for it; §7 item 3, §13 deck, §13.1 rules |
+| `specs/12` | refund-policy surfaces; **AC8 rewritten as a–d** (set equality, verbatim list, compression rule, count = two); test plan |
+| `specs/04` | Requirements panel in B2's wording + **AC8** + a content test over the committed records |
+| `specs/07` | the paragraph recording m6 now records the fix |
+| `ontology/` | `expiry_overrides` on `licence_types[]` |
+| `kb-scripts/` | `refresh_sources.py --fill-excerpts` (+ `--dry-run`, `--from-dir`); **new** `test_fill_excerpts.py`; `validate.py` G8 grew to six assertions |
+| `kb-data/_sources.json` | excerpts for **35 of 35** sources — two keys per source, nothing else |
+| `IDENTITY.md` · `identity/` | §7.1 `--sr-paper` → `--sr-ground`; `build-samples.py` status vocabulary; `samples.html` regenerated |
+
+### Things worth knowing before you touch these files again
+
+1. **The landing page's word budget is now nearly spent: 439 of 450, headroom 11.** 63 of those words
+   are a legal text that may not be shortened. Before adding a sentence, read `LANDING_SPEC.md` §1 —
+   it names the next two cuts, and the counting rule that produces the number is written out there
+   (whitespace tokens; a token of only `—`, `…`, `·`, `↓` is not a word; `&` is).
+2. **Guarantee wording lives in one place and is copied nowhere.** `OFFER.md` §5.1 states which
+   surface carries which form; `specs/12` AC8 is the test; every other document points at them. R1
+   happened because three files each restated the rule in their own words and two of them were right.
+   If you need to change a guarantee, change §5.1 and let AC8 fail the build everywhere else.
+3. **`--fill-excerpts` is safe by construction, and that is the whole design.** It writes exactly two
+   keys, only on a source whose re-fetched hash is identical, and it refuses — loudly, non-zero, byte
+   for byte untouched — on anything that moved. Never reach for `--write-baseline` to "just fill the
+   excerpts": that is the bulk unreviewed publish `accept_drift.py` exists to prevent. The 35 sources
+   all still matched their authored hashes on 2026-09-03, which is worth re-checking in a month.
+4. **Take the previous section's trap seriously — I hit its cousin.** After adding `expiry_overrides`
+   I did not trust "validate.py still exits 0": I built a temp tree, wrote the real Florida override
+   (it passes), then six malformed ones (each fails with a named G8 message). **A gate you have not
+   watched fail is not a gate.** G8 now also refuses an override on a licence type whose `expiry_rule`
+   the engine cannot derive, which is the failure a wave-2 developer is most likely to create.
+5. **`identity/samples.html` is generated. Never hand-edit it.** `python3 identity/build-samples.py`
+   reproduced the committed file byte-for-byte before m6's fix, which is why the fix is a clean diff.
+   The status vocabulary lives in one dict, and that dict deliberately has **no entry** for the hollow
+   "not in your footprint" tile — it is a rendering, not a fifth status.
+6. **Two paragraphs are stale in files this round could not edit** (`REVIEW_RESPONSE.md` §6.3):
+   `specs/05`'s "the schema work this iteration did not do" (it is now done) and `specs/08`'s
+   `§5.1.3` citation. Whoever owns those files: one line each.

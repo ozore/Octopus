@@ -189,7 +189,7 @@ Prices are hypotheses (H6 in `THRESHOLDS.md`) and are not live until the founder
 
 ## Guarantee — one wording, adjudicated against a published page
 
-**This exact text, and no paraphrase of it, in `OFFER.md` §5.1.3, `specs/12` `/legal/refunds`, the
+**This exact text, and no paraphrase of it, in `OFFER.md` §5.1 (Entry Pack Guarantee row), `specs/12` `/legal/refunds`, the
 purchase screen, the pack's own first page and `LANDING_SPEC.md` §8:**
 
 > **The Entry Pack Guarantee.** If a page published by the state's own licensing board contradicts a

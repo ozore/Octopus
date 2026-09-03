@@ -78,7 +78,7 @@ date?" trace: *"Florida's rule puts this on 31 August 2027; the board has publis
 2 September 2027."* An override never invents a date, never applies outside its `cycle_year`, and is a
 `SourcedValue`-shaped object so it goes through the same two-pass verification as everything else.
 
-**Schema and gate work this requires, and which this iteration did not do** (`ontology/` was outside
+**Schema and gate work this requires (done in round 2 of the review: `expiry_overrides` is in the ontology with gate G8, see REVIEW_RESPONSE.md M13; the paragraph is kept as the record of what was required)** (`ontology/` was outside
 the iteration's edit scope — see `REVIEW_RESPONSE.md` M13): add `expiry_overrides` as an optional
 array on `licence_types[]` in `ontology/schema.state_trade_record.json` (which is
 `additionalProperties: false`, so a wave-2 record cannot carry the field until this lands), and extend

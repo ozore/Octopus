@@ -40,9 +40,12 @@ Four bands, top to bottom, in decreasing urgency:
    Plus one rendering that is **not a fifth status**: a jurisdiction the organisation does **not
    operate in** is drawn **hollow with a 1px dashed `--sr-line-strong` edge** and an ink-3 label, with
    the accessible name *"Ohio — not in your footprint"*. It carries no status word because it has no
-   status; it exists so that expansion is visible as an absence. `identity/samples.html` currently
-   renders these with an accessible name of *"Not operating"*, duplicated — that is **m6**, an
-   identity-side fix (`REVIEW_RESPONSE.md` B8).
+   status; it exists so that expansion is visible as an absence. **`identity/samples.html` now agrees**
+   (round 2, **m6**): its hollow tiles carry the accessible name *"CA — not in your footprint"* with no
+   status word and nothing said twice, its four status words are the all-caps names below, and its map
+   legend labels the hollow swatch as a rendering rather than a fifth status. The file is generated —
+   `python3 identity/build-samples.py` — so the vocabulary lives in one dict (`WORD`, which has no
+   entry for the hollow case by design) and cannot drift back one tile at a time.
 
    **AT RISK is 90 days, not 60.** The map and the first alert gate must never disagree. A screen that
    is still green on the morning we email *"expires in 90 days"* destroys the only thing this product

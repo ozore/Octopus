@@ -70,7 +70,8 @@ top of every expansion playbook and in every alert email; and beside any value f
   a month; a full refund of the current month if you cancel within 7 days of the first charge and
   have not generated a playbook.
 - **State Entry Pack — the Entry Pack Guarantee, in the one wording used everywhere** (`OFFER.md`
-  §5.1.3, `specs/08`, the purchase screen, the pack's first page, `LANDING_SPEC.md` §8):
+  §5.1 item 2, `specs/08`, the purchase screen, the pack's first page, and — **verbatim, not
+  compressed** — the marketing route, `LANDING_SPEC.md` §8):
 
   > If a page published by the state's own licensing board contradicts a value your State Entry Pack
   > shows as verified, tell us within **90 days** of your purchase and we rewrite the pack and refund
@@ -78,10 +79,13 @@ top of every expansion playbook and in every alert email; and beside any value f
   > Our liability is limited to the fee you paid for that pack.
 
   **Refund within 3 business days of the claim being upheld; the record corrected and republished
-  within 5 business days**, with the correction dated. Five, not one — `OFFER.md` §5.1.1's one
-  business day was a single-founder SLA with no cover behind it (wave-1b **m13**).
+  within 5 business days**, with the correction dated. Five, not one — the wave-1 wording of
+  `OFFER.md` §5.1 item 1 promised one business day, which was a single-founder SLA with no cover
+  behind it (wave-1b **m13**).
 
-- **The Accuracy Guarantee** (subscriptions), same wording as `OFFER.md` §5.1.1:
+- **The Accuracy Guarantee** (subscriptions), same wording as `OFFER.md` §5.1 item 1 — verbatim here,
+  on the purchase screen and in the app; **compressed on the marketing route only**, under the four
+  conditions in AC8c:
 
   > Every date, hour and fee in your account shows the state board page it came from and the day we
   > last checked it. Find one that disagrees with that source on the day you check it, tell us, and we
@@ -131,10 +135,40 @@ they accept" is answerable years later without a separate CMS.
 7. **The disclaimer contains no cadence claim.** A content test greps `/legal/disclaimer` for
    "daily", "every month", "monthly" and fails on a match; the same words are required on
    `/help/methodology`, where they are labelled as targets and sit beside the live figures.
-8. **The three guarantee wordings on the site are byte-identical to the ones in this spec.** A content
-   test extracts every block quoted as a guarantee from the marketing route, the app and the legal
-   pages and asserts set equality with the two in force. The Alert Guarantee text appearing anywhere
-   in the rendered site fails the test.
+8. **Every guarantee block on the site is asserted, not trusted — verbatim where it is verbatim, and
+   by rule where it is compressed** (wave-1b **R1**, **N5**). One content test extracts every block
+   rendered as a guarantee from the marketing route, the app and the legal pages, normalises
+   whitespace, and asserts all four of:
+
+   a. **Only the two in force are present.** Set equality against the two wordings above: a third
+      guarantee block fails, and the Alert Guarantee's text (`OFFER.md` §5.3) appearing anywhere in
+      the rendered site fails.
+   b. **Verbatim, byte-identical to this spec:** both wordings on `/legal/refunds`, on the purchase
+      screen, in the app and on the pack's first page — **and the Entry Pack Guarantee on the
+      marketing route** (`LANDING_SPEC.md` §8), which carries it whole because it is the promise a
+      stranger acts on before paying and the one that bounds our liability in time and money.
+   c. **Compressed blocks** — at launch there is exactly one, the Accuracy Guarantee's line in
+      `LANDING_SPEC.md` §8 — must satisfy four conditions, all mechanical:
+      * **(i) the liability-bearing terms are present as substrings.** For the Accuracy Guarantee:
+        the window `five business days` and the cap `one credit`. For any future compression of the
+        **Entry Pack** Guarantee: `90 days` and `the fee you paid`. There is none at launch, because
+        §8 carries that one verbatim.
+      * **(ii) the block links to `/legal/refunds`.** The link is inside the same strip as the line
+        it qualifies, not in the footer.
+      * **(iii) the compression adds no quantity and no escalation.** Every **number, unit and time
+        period** in the compression must appear in the canonical text, compared on the stem so that
+        `month's` matches `month` (the launch line's quantities are `five`, `business days`, `one`,
+        `month` — all four are in §5.1 item 1), and none of the escalation words — `all`, `any`, `always`, `never`, `full`,
+        `unlimited`, `immediately`, `guaranteed`, `free` — may appear unless the canonical text uses
+        it too. **A verb may be shortened** (canonical *"we correct it within five business days"* →
+        page *"Fixed in five business days"*); a quantity may not be added, moved or dropped. This is
+        the rule stated precisely, because the loose version — "no word the full text does not use" —
+        fails against its own approved copy, and a test that fails against the copy it governs is how
+        **R1** happened.
+      * **(iv) the word "guarantee" never appears in a strip that has no link.** A guarantee named
+        without its terms one click away is the UDAP hook.
+   d. **The count is two.** The test asserts exactly two distinct canonical wordings site-wide; the
+      wave-1 third (the Rollout Guarantee, `OFFER.md` §5.2) is withdrawn and fails on sight.
 
 ## Edge cases
 
@@ -154,6 +188,11 @@ prospects check coverage before they sign up**), `terms_accepted` (version), `re
 ## Test plan
 
 - **Content test:** the schema/privacy parity check above.
+- **Content test (AC8):** every guarantee block on every rendered route, checked against the two
+  canonical wordings — byte equality where AC8b requires it (including the marketing route's Entry Pack
+  block), and window + cap + link + no-new-terms where AC8c allows a compression. It is one test over
+  all routes, not a per-page assertion, because the failure mode it exists to catch is two surfaces
+  drifting apart (wave-1b **R1**).
 - **Build test:** missing postal address env fails the build.
 - **Integration:** acceptance rows written at signup with correct hashes.
 - **Snapshot:** the coverage table generated from the committed `kb-data/` — 9 covered, the rest
