@@ -1506,12 +1506,4 @@ Each omission is an enforcement mechanism: a component that does not exist canno
    form's own *Covered Autos*, or JTBD prose about the buyer's question. **This document's own body was
    the residual** (`REVIEW.md` I-1) and is now swept too: §0, §1, §3 Step 4, §4.3, §9, §9.2, §9.4, §11,
    §12.6 and §13.3.
-   **One survivor is deliberate and is not editable from this file:** the **sixteen** row labels in §6.5
-   (*"MEETS pill text"*, *"MEETS text in a table cell"*, …) — **eight `PAIRS` entries × two themes** —
-   are printed by `identity/contrast.py`, and §6.5 is **generated, never hand-written**; hand-editing it
-   would be reverted by the next `--md` run and would break this document's own amendment rule.
-   Relabelling them is **one edit to `contrast.py`** (`PAIRS`, lines 157-198: the eight `COVERED` strings
-   → `MEETS`) followed by `python3 identity/contrast.py --md`. It changes **no ratio, no token name and no
-   colour** — the `--c-ok-*` tokens are vocabulary-neutral and stay — so it is safe at any point before
-   wave 2 renders a pill. It is left here rather than done because `contrast.py` was outside this pass's
-   permitted file set; it is the only residual of `REVIEW.md` I-1.
+   **Closed 2026-09-03 by the orchestrator:** the eight `PAIRS` labels in `identity/contrast.py` and the sixteen generated row labels in §6.5 now read `MEETS`; `contrast.py` and `contrast.py --css` exit 0 after the change. No ratio, token name or colour moved (the `--c-ok-*` tokens are vocabulary-neutral).
