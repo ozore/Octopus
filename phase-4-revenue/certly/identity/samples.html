@@ -228,7 +228,7 @@
           </svg>
           <strong style="color:var(--c-ink-strong)">Drop an ACORD 25, or paste a screenshot</strong>
           <span class="c-drop__hint">PDF, JPG or PNG. Nobody on the vendor&rsquo;s side needs an account.</span>
-          <span class="c-drop__mail">northgate@in.certly.app</span>
+          <span class="c-drop__mail">northgate@{INBOUND_DOMAIN} &middot; SH-1, post-MVP</span>
         </div>
         <p class="c-note" style="margin-top:var(--c-space-4)">
           Agents can also just reply to our email with the PDF attached. We never charge a vendor or an
@@ -265,10 +265,13 @@
         <p class="g-kicker">Reminder composer</p>
         <p style="font-size:var(--c-text-sm);color:var(--c-ink-muted);margin-bottom:var(--c-space-2)">To: the agent on the certificate &middot; cc: the vendor</p>
         <div class="c-remind__schedule">
+          <button class="c-remind__offset" type="button" aria-pressed="true">&minus;60d</button>
           <button class="c-remind__offset" type="button" aria-pressed="true">&minus;30d</button>
           <button class="c-remind__offset" type="button" aria-pressed="true">&minus;14d</button>
-          <button class="c-remind__offset" type="button" aria-pressed="true">&minus;3d</button>
-          <button class="c-remind__offset" type="button" aria-pressed="false">+1d</button>
+          <button class="c-remind__offset" type="button" aria-pressed="true">&minus;7d</button>
+          <button class="c-remind__offset" type="button" aria-pressed="true">&minus;1d</button>
+          <button class="c-remind__offset" type="button" aria-pressed="true">+1d</button>
+          <button class="c-remind__offset" type="button" aria-pressed="true">then weekly to +28d</button>
         </div>
         <div class="c-remind__preview" style="margin-top:var(--c-space-3)">
           Hello &mdash; we handle insurance requirements for Ridgeline Property Management. Northgate
@@ -276,14 +279,14 @@
           Could you send an updated ACORD 25 naming Ridgeline Property Management LLC as certificate holder
           and additional insured? Reply with the PDF attached, or use this link &mdash; no account needed.
         </div>
-        <p class="c-remind__stop">This schedule sends <strong>3 emails</strong>. It stops as soon as a current certificate arrives.</p>
+        <p class="c-remind__stop">This is message <strong>1 of 10</strong> about this certificate. They stop as soon as a current certificate arrives.</p>
       </div>
 
       <div class="c-card">
         <p class="g-kicker">Empty state &amp; toast</p>
         <div class="c-empty">
           <p class="c-empty__title">No vendors yet</p>
-          <p style="margin-bottom:var(--c-space-4)">Add your first vendor, or forward a certificate to <span class="c-num">in@certly.app</span> and we will create one from it.</p>
+          <p style="margin-bottom:var(--c-space-4)">Add your first vendor, or drop an ACORD 25 here and we will create one from it.</p>
           <button class="c-btn c-btn--primary" type="button">Add a vendor</button>
         </div>
         <div class="c-toast" style="margin-top:var(--c-space-4)">
@@ -487,8 +490,12 @@
           </table>
         </div>
         <p class="c-note">
-          Certly reports what a certificate says against the requirement you set. It is not insurance advice
-          and it does not verify the underlying policy.
+          <strong>Certly reads documents. It does not verify coverage.</strong>
+          A certificate of insurance is issued as a matter of information only and confers no rights on the
+          certificate holder. Certly extracts what a document says and compares it to the requirements you
+          entered. It does not confirm that a policy is in force, that an endorsement exists, or that coverage
+          would respond to a claim. Only the insurer can confirm coverage, and only your own counsel or broker
+          can tell you whether your requirements are the right ones.
         </p>
       </div>
 
@@ -727,9 +734,12 @@
         </div>
 
         <p class="c-report__disclaimer">
-          Certly reports what a certificate says against the requirement set by Ridgeline Property Management
-          LLC. It is not insurance advice, it does not verify the underlying policy, and a certificate of
-          insurance confers no rights on the certificate holder by itself.
+          <strong>Certly reads documents. It does not verify coverage.</strong>
+          A certificate of insurance is issued as a matter of information only and confers no rights on the
+          certificate holder. Certly extracts what a document says and compares it to the requirements you
+          entered. It does not confirm that a policy is in force, that an endorsement exists, or that coverage
+          would respond to a claim. Only the insurer can confirm coverage, and only your own counsel or broker
+          can tell you whether your requirements are the right ones.
         </p>
       </div>
     </div>

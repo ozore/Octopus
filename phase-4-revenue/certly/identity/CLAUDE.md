@@ -160,3 +160,49 @@ Full reasoning in `IDENTITY.md §1`. Summarised here so the next agent does not 
 - Keep `identity/contrast.py` in the repo: every colour pair in IDENTITY.md is computed by it, and a
   reviewer will re-run it. Do not hand-edit a ratio.
 - `samples.html` must stay framework-free and load nothing but Google Fonts. It is the reviewer's proof.
+
+## Round 2 — closing the re-review (2026-09-03, closing author)
+
+`REVIEW.md` §R3/§R4 left eleven items open, all in `IDENTITY.md` plus one paragraph of `samples.html`,
+plus one regression in `specs/03` §15. All twelve are closed; the full record is
+`REVIEW_RESPONSE.md` → **Round 2**. What the next agent needs from it:
+
+- **The identity document lagged its own rulings, not the reviewer's.** §4.2 and the Arbitration table
+  had already said "Covered" was retired and that there were seven states; §1, §3, §4.3, §9, §11, §12.6
+  and §13.3 had not been swept. **Lesson worth keeping: when a decision lands in a document's own
+  summary table, grep the body for the old word the same hour.** A ruling recorded but not applied reads
+  to a builder exactly like a ruling that was never made.
+- **One residual is declared, not hidden.** §6.5's sixteen `COVERED …` row labels are *generated* by
+  `identity/contrast.py` (eight `PAIRS` entries, lines 157-198, × two themes). §6.5 must never be
+  hand-edited — the next `--md` reverts it and it breaks the document's own amendment rule. The fix is
+  one edit to `contrast.py` plus `--md`; it moves no ratio, no token and no colour. It is written into
+  `IDENTITY.md` §17 item 8 so it cannot be lost.
+- **`expired` is a word, not an eighth state.** `specs/05` §2.1 had left this to the Brand Director.
+  §6.4 now rules: `expired` renders in the `gap` ramp with its **own word**, borrowing gap's glyph,
+  pattern and hue. Adding it to `contrast.py`'s `STATUS_MARKS` would **fail** the suite — duplicate glyph
+  and duplicate pattern — and that failure is the argument for the word-variant reading, not against it.
+  `specs/05` needed no edit as a result.
+- **There is exactly one disclaimer text in this repo and it is `KNOWLEDGE_BASE.md` §F.1.** `IDENTITY.md`
+  §4.4 rule 4 is now a pointer. `samples.html` had **two** near-duplicates, not the one the review
+  flagged — the `c-note` **and** the `c-report__disclaimer` in the gap-report sample. Both render §F.1
+  verbatim now. If you write a disclaimer anywhere, you are wrong: point at §F and let
+  `disclaimers.ts` render it. `specs/13` §12 greps for near-duplicates and fails the build.
+- **No highlight boxes exist and none can.** The extractor returns `page` + `source_text` and no
+  geometry. §12.2, §11, §12.4, §4.3 and P6 now all say so. The quotation beside the field is *better*
+  provenance than a box, because the quote gate is a check code performs (`specs/03` §7) rather than a
+  rectangle a model asserted. Do not reintroduce a box to make an animation possible.
+- **`samples.html` still loads nothing but Google Fonts** (2 `preconnect` + 1 stylesheet) and the
+  relative `../design-system.css`, and it is now the *only* file in the repo allowed to reference a font
+  CDN — §7.1 names it as the documented exception to `LANDING_SPEC.md` §10's zero-third-party budget.
+  Everything shipped self-hosts through `next/font`. Both faces are SIL OFL, so that is licensed.
+- **Literal domains are gone from `samples.html` too** (`{INBOUND_DOMAIN}`), and forward-by-email is
+  marked `SH-1`/post-MVP everywhere it appeared, including the empty state's copy.
+- **Scripts to re-run after any edit here, all three, all must exit 0:**
+  `python3 identity/contrast.py`, `python3 identity/contrast.py --css`,
+  `python3 ../scripts/identity-distinctness.py`. They passed before this pass and after it (166 pairs;
+  every token present in `design-system.css`; 3 apps / 3 ground pairs / 3 typeface pairs).
+
+**Constraint honoured:** this pass edited only `IDENTITY.md`, `identity/samples.html`,
+`specs/03-coi-extraction.md`, `REVIEW_RESPONSE.md` and this file. **No token, colour or typeface was
+changed — the arbitration is final.** `design-system.css`, `identity/contrast.py` and `REVIEW.md` were
+read, never written. Nothing was committed or pushed.

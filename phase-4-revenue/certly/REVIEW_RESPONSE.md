@@ -168,3 +168,88 @@ cannot edit that file. Numbering follows `REVIEW.md` §5.
 4. **`LANDING_SPEC.md` §14.2** — run the script; it should print 413.
 5. **`KNOWLEDGE_BASE.md` §A.2 and `kb-samples/MANIFEST.md` C16** — a manifest row without a file is a
    deliberate exception to the manifest's own rule 4, gated by `kb:check`. Worth a second opinion.
+
+---
+
+# Round 2 — closing the re-review (`REVIEW.md` §R3, §R4)
+
+**Author:** wave-1b closing author (PIPELINE stage 6, second iteration). **Date:** 2026-09-03.
+**Input:** `REVIEW.md` §R3 (eleven items, I-1…I-11), §R4 (one regression, R-1) and §R6.
+**Verdict being answered:** *BLOCKING 0 · MAJOR 3 · MINOR 8 open — all eleven in `IDENTITY.md` plus one
+paragraph of `identity/samples.html`.*
+
+**Files edited, and only these:** `IDENTITY.md`, `identity/samples.html`, `specs/03-coi-extraction.md`,
+`REVIEW_RESPONSE.md`, `identity/CLAUDE.md`. **No token, colour or typeface was changed** — the Brand
+Director's arbitration is final and was treated as read-only. `design-system.css`, `identity/contrast.py`
+and `REVIEW.md` were not touched. Nothing was committed or pushed.
+
+## Result
+
+| | major | minor | regression |
+|---|---|---|---|
+| **Closed** | 3 | 8 | 1 |
+| **Open** | 0 | 0 | 0 |
+
+**One residual, declared rather than hidden:** the sixteen `COVERED …` row labels in `IDENTITY.md` §6.5
+are *generated* by `identity/contrast.py`, which was outside this pass's permitted file set. Details and
+the exact one-line fix are in **I-1** below and are written into `IDENTITY.md` §17 item 8 so they cannot
+be lost.
+
+## The eleven items
+
+| id | closed by | what changed |
+|---|---|---|
+| **I-1** (major) | `IDENTITY.md` §0, §1, §3 Step 4, §4.3, §9, §9.2, §9.4, §11, §12.6, §13.3 | **"Covered" retired from the body.** §9.4's hard rule now reads *"a low-confidence field can never contribute to a **Meets requirements** status"*. §12.6's sort order is now the `specs/05` §3 roll-up precedence and `specs/06` A3's default — **Expired · Gap · Expiring (ascending) · Claimed, not evidenced · Needs review · No certificate · Meets requirements** — and says in the same sentence that "Covered" is not a sort key, a counter or a word. §3 Step 4's owned word is **Meets requirements**, with a new paragraph saying *why* the owned word is deliberately not the buyer's word (UA2's quote is kept verbatim; it is their speech, not our claim). §4.3's approved hero copy is now *"Know which vendors meet your requirements — today, and on the day it matters."* §1 Direction C now names **all seven** states and says *"Seven states, because the comparison engine emits seven (§6.4)"*, and its colour-independence paragraph no longer says "the three hues" (two of the seven carry no hue at all). §0's *"if it is green it is covered"* → *"it meets the requirement"*. §11's *"Gap to Covered"* → *"Gap to Meets requirements"*. §13.3's *"Green is covered in both"* → *"Green means meets requirements in both"*. Every surviving occurrence of the word in the file is now a negation, a quoted correction, the form's own *Covered Autos*, or JTBD prose about the buyer's question — the same class of survivor the reviewer accepted product-side in §R1. |
+| **I-1 residual** | *not closed — declared* | §6.5's sixteen `COVERED …` row labels (eight `PAIRS` entries × two themes) are printed by `identity/contrast.py` lines 157-198. §6.5 is generated and **must not be hand-edited** — the next `--md` run would revert it, and hand-typing a generated table breaks `IDENTITY.md`'s own amendment rule. `contrast.py` was outside this pass's permitted file set, so the fix is written into §17 item 8 instead: change the eight `COVERED` strings to `MEETS` and re-run `--md`. It moves **no ratio, no token and no colour** (`--c-ok-*` is vocabulary-neutral) and it cannot fail the suite. |
+| **I-2** (major) | `IDENTITY.md` §4.4 rule 4, §12.11; `identity/samples.html` L489-492 **and** the gap-report footer | **The second disclaimer text is gone; there is now exactly one.** §4.4 rule 4 is a **pointer** — *"the primary disclaimer, `KNOWLEDGE_BASE.md` §F.1, rendered verbatim from `src/lib/kb/disclaimers.ts`. This document does not restate it"* — and names the two `specs/13` §12 tests it now passes, including the near-duplicate grep. §12.11's gap-report footer points at §F.1 too. In `samples.html` the `c-note` **renders KB §F.1 verbatim**. **A second near-duplicate the review had not flagged was found in the same file** — `c-report__disclaimer`, *"…It is not insurance advice, it does not verify the underlying policy…"* — and was replaced with the §F.1 string as well; it is surface 7 in KB §F.4 and it would have failed the same grep. `grep -n "insurance advice\|does not verify the underlying"` over `IDENTITY.md` and `samples.html`: **0 hits**. |
+| **I-3** (major) | `IDENTITY.md` §12.2 (rewritten), §11, §12.4, §4.3, P6 | **The highlight boxes are gone; the `UX.md` §3.2 contract is in their place.** §12.2 now states that the extractor returns `page` + `source_text` and **no geometry**, quotes `specs/03` §3, refuses to add coordinates to the schema (§3 Step 9), and specifies: click/focus a field → **scroll the document pane to that field's `page`, nothing drawn on the page**; the evidence is **in the panel** as the `source_text` quotation in `--c-font-num` with the page number and the **quote-gate result in words** (the three sentences from `UX.md` §3.2); the roving-tabindex list is the **field list**, not boxes. §11's motion bullet now animates **the panel row**, not a box, and says *"nothing animates on the document, because there is nothing drawn on the document to animate"*; the reduced-motion bullet follows. §12.4's *"Every value links to its highlight"* → page number + quotation + scroll-to-page. §4.3's low-confidence example says *"Check it against the quotation beside it"*. **P6** is restated the same way and its review test still passes, which is the point. |
+| **I-4** (minor) | `IDENTITY.md` §12.1; `identity/samples.html` | `vendor-name@in.certly.app` → **`vendor-name@{INBOUND_DOMAIN}`**, with the reason written in so it survives: `certly.app` is somebody else's parked placeholder (§2.1 `[F4]`) and `PLAN.md` D3 ships no custom domain. The two literal domains left in `samples.html` (`northgate@in.certly.app`, `in@certly.app`) went with it; `grep certly.app` over `samples.html` is now **0 hits**. |
+| **I-5** (minor) | `IDENTITY.md` §7.1 | **`next/font`, self-hosted at build time, zero third-party requests** — `LANDING_SPEC.md` §10's CI-enforced budget, stated as a rule that binds **every shipped surface** (app, landing page, email). Both faces are SIL OFL, so self-hosting is licensed; the `@font-face` rules are inlined in the critical CSS, `display: swap`, `latin` subset, same weights. **The documented exception is named and bounded:** `identity/samples.html` is a framework-free proof page with no build step and is not a shipped surface, so it keeps the Google Fonts stylesheet and is *the only file in the repo permitted to reference a font CDN* — which its own footer already says. Fallback stacks unchanged. |
+| **I-6** (minor) | `IDENTITY.md` §4.3 | *"$99 a month up to **50 tracked vendors**. $199 to 150. **$299 to 400**."*, with a line naming the source of both corrections: the unit is `specs/10` §2 / `OFFER.md` §8.1 (B-10) and the ceiling is `OFFER.md` §12.1's `vendor_limit=400`. Quoted from the Stripe metadata, not from memory. |
+| **I-7** (minor) | `IDENTITY.md` §12.10; `identity/samples.html` | The composer no longer draws its own ladder. It is `specs/07` §2's, quoted: **T−60, T−30, T−14, T−7, T−1, T+1 (lapsed), then weekly to T+28, then stop and flag** — ten rungs, each a toggle. The **"This is message {n} of {total}"** sentence `specs/07` §6 requires is now specified, along with the caps (`specs/07` §9: **6 per recipient per expiry, 10 per expiry**) and the requirement that `{total}` be shown *before* anything is scheduled — which is what actually answers Procore's 74 days. `samples.html`'s composer was showing the retired −30/−14/−3/+1 offsets and *"sends 3 emails"*; it now shows the canonical rungs and *"This is message 1 of 10 about this certificate."* |
+| **I-8** (minor) | `IDENTITY.md` §9.2 | The coverage-bar `aria-label` is now `UX.md` §4.2 / `specs/06`'s sentence verbatim — *"General liability: a policy is shown from 1 January to 12 September 2026, then **no certificate on record**."* — with the rule spelled out next to it: **"no certificate on record", never "no coverage on record"** — the bar states what *we* have, not what the vendor has. |
+| **I-9** (minor) | `IDENTITY.md` §12.1 | **Forward-by-email is `SH-1`, not MVP**, so at launch the drop zone shows **no** forward-to address; the MVP paths are named (drag-drop, picker, paste, CSV import, the `specs/08` no-login link), and the env-placeholder form is given for when SH-1 ships. `samples.html`'s empty state no longer promises forwarding either. |
+| **I-10** (minor) | `IDENTITY.md` §17.5 | Struck through and marked **RESOLVED 2026-09-03 (MJ-12, OQ-3), and the answer is no**, in `PERSONA.md` §9.4's own words, citing `BACKLOG.md` N12 + `OFFER.md` §9, with the consequence for this document stated: §4.3's pricing block and the empty state are designed against a card-required 14-day trial plus the Free Gap Report, not against a free tier. |
+| **I-11** (minor) | `IDENTITY.md` §17.7 | Recorded rather than left looking missed. `specs/05` §2.1's mapping is written out: `undetermined` is the **requirement-level data state**, "Needs review" is the **display state** in §6.4, and the identity keeps its word *because the mapping says to*. Nothing changes in `contrast.py`'s `STATUS_MARKS` or `samples.html`. The drift rule is added: a **document** in `needs_review` (`specs/03` §8) and a **requirement** that is `undetermined` (`specs/05` §2) are different facts wearing the same pill, and any screen that can show both says which it means. |
+| **§17 item 8** | `IDENTITY.md` §17 | Rewritten from *"retired in the identity files only"* to **CLOSED**, recording that the product sweep was verified by the reviewer's own `grep` and that this document's body was the residual — plus the one declared exception above. |
+| **R-1** (regression) | `specs/03` §15 | Header fixed to **"21 fixtures: 17 real documents (G1–G17) + 4 synthetic (G18–G21)"**, quoting the two files it forbids from disagreeing (both already correct) and naming the off-by-one it had absorbed: **sixteen real fixtures live in `kb-samples/certificates/`, the seventeenth (G16/E1) in `kb-samples/endorsements/`**. The closing line *"The five synthetic fixtures…"* → **four**, with a sentence stating that `D` sums over G1–G17 only, so the count is arithmetic and not a caption. The table itself (21 rows) was already right and was not touched. |
+
+## One decision that needed making: the `expired` row in §6.4
+
+`REVIEW.md` B-03 was closed in §R2, but `specs/05` §2.1 still carries *"One open item for the Brand
+Director… the seven status states have no row for `expired`"*, and it offers two ways out. **The ruling
+taken, and written into `IDENTITY.md` §6.4: no eighth state.**
+
+- An **expired** certificate and a **short limit** are the same severity to the person who has to act,
+  and §6.1 allows no further hue. `expired` therefore renders in the **`gap` ramp with its own word** —
+  exactly the behaviour `specs/05` §2.1's mapping cell already specifies, **so that spec needs no edit**,
+  which matters because it was outside this pass's permitted files.
+- §6.4 now carries an explicit `expired` row showing it borrowing `gap`'s glyph, pattern and hue and
+  owning **the word** — the signal that separates a *lapse* from a *shortfall*, and the one that survives
+  a photocopier. §12.6 sorts it **above** `gap`, per `specs/06` A3.
+- **`contrast.py` is unaffected and still certifies seven states**: `expired` declares no new token, no
+  new glyph and no new pattern, so there is nothing new to certify — and `"Expired" ≠ "Gap"`, which is
+  what the word-uniqueness hard-fail exists to protect. Adding it to `STATUS_MARKS` would have *failed*
+  the suite (duplicate glyph and pattern), which is itself the argument for the word-variant reading.
+
+## Checks re-run after the edits
+
+| check | result |
+|---|---|
+| `python3 phase-4-revenue/certly/identity/contrast.py` | **exit 0** — *"All 166 declared pairs pass: 62 contrast + 21 greyscale, × 2 themes"*, *"glyph, fill pattern and word are distinct for all 7 statuses"* (both themes) |
+| `python3 phase-4-revenue/certly/identity/contrast.py --css` | **exit 0** — *"every palette token and light value is present in design-system.css"* |
+| `python3 phase-4-revenue/scripts/identity-distinctness.py` | **exit 0** — *"All checks pass: 3 apps, 3 ground pairs, 3 typeface pairs"* |
+| `grep -ni covered IDENTITY.md`, survivors classified | every one is a negation, a quoted correction, *Covered Autos*, JTBD prose, or the §6.5 generated labels declared above |
+| `grep -n "insurance advice\|does not verify the underlying"` over `IDENTITY.md` + `samples.html` | **0 hits** — one disclaimer text, and it lives in KB §F |
+| `grep -n "certly\.app"` over `samples.html` | **0 hits** |
+| `samples.html` external resources | **3, all Google Fonts** (2 `preconnect` + 1 stylesheet) and the relative `../design-system.css`. Nothing else. Tag balance re-checked; the page still parses clean. |
+| `specs/03` §15 table row count | **21** (G1–G21), matching the corrected header, `KNOWLEDGE_BASE.md` §D.5 and `THRESHOLDS.md` §4.1 |
+
+## What a re-reviewer should check first
+
+1. **`IDENTITY.md` §6.4's `expired` row** — the one item above that required a decision rather than a
+   copy edit, and the one place a reviewer may reasonably prefer the other branch (`specs/05` §2.1 says
+   an eighth row would cost nothing but that mapping cell). The counter-argument is written next to it.
+2. **`IDENTITY.md` §12.2 against `UX.md` §3.2** — the two must now say the same thing in the same order.
+3. **`IDENTITY.md` §17 item 8** — the declared `contrast.py` residual. It is the only piece of I-1 not
+   done, and it is one line in a file this pass was not allowed to edit.

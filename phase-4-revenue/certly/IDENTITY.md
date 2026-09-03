@@ -57,7 +57,8 @@ reads the certificate. **The identity's job is to look like the thing that reads
 Two consequences run through everything below, and they are the two rules a reviewer should test against:
 
 1. **Colour means status and nothing else.** There is no decorative hue anywhere in this system. If
-   something is green it is covered; if it is amber it is expiring; if it is red there is a gap. A brand
+   something is green it meets the requirement; if it is amber it is expiring; if it is red there is a
+   gap. A brand
    colour splashed on a header would make every screen look like a status it is not.
 2. **A status is never asserted without a date and a source.** Every status carries an "as of", and every
    extracted field can be traced to the place on the document it came from. A product that says "covered"
@@ -112,9 +113,11 @@ costume.
 *The buyer thinks: I can see who is fine and who is not, without reading anything.*
 
 Coverage is treated as a **state over time**, not a document in a folder. A calm paper ground and a single
-dark ink carry the whole interface; the only chroma on screen is the three-state semantic system —
-**Covered / Expiring / Gap** — plus a fourth honest state, **Needs review**. The signature device is the
-**coverage bar**: a horizontal band per party showing each policy's period against today and against the
+dark ink carry the whole interface; the only chroma on screen is the semantic status system — **Meets
+requirements / Expiring / Claimed, not evidenced / Gap**, plus slate for **Needs review** — beside two
+states that carry no chroma at all, **Not checked** and **No certificate**. **Seven states, because the
+comparison engine emits seven** (§6.4); the first draft of this direction carried four. The signature
+device is the **coverage bar**: a horizontal band per party showing each policy's period against today and against the
 requirement window, so a gap is literally a hole you can see. Numbers are set in a monospace with tabular
 figures because the buyer compares limits and dates all day.
 
@@ -131,8 +134,9 @@ figures because the buyer compares limits and dates all day.
 
 **The risk it carries, and the mitigation.** Green/amber/red is a traffic light, and a traffic light is a
 cliché that also fails colour-blind users. Mitigation, enforced in §6.4 and proved by `contrast.py`: each
-status owns a **word**, a **glyph** and a **fill pattern** in addition to a hue, and the three hues are
-near-isoluminant by construction, so **colour is provably not the carrier**. It is the accelerator.
+status owns a **word**, a **glyph** and a **fill pattern** in addition to a hue, two of the seven states
+carry no hue at all, and the chromatic fills are near-isoluminant by construction, so **colour is provably
+not the carrier**. It is the accelerator.
 
 **What we take from the losers.** From B: the seriousness of the artefact — the certificate is shown, not
 summarised away, and the export is a document not a screenshot. From A: nothing visual, but its instinct
@@ -274,9 +278,15 @@ the page and the five-minute start*. Against **E** we sell *we will never charge
 
 | theme | from | the value in their words | the word we own |
 |---|---|---|---|
-| **VT1 — You can see the answer.** | Direction C, UA2 | *"I can tell you who's covered without opening anything."* | **Covered** |
+| **VT1 — You can see the answer.** | Direction C, UA2 | *"I can tell you who's covered without opening anything."* | **Meets requirements** |
 | **VT2 — It reads, it does not remind.** | UA2, UA3 | *"It knows the limit is $500k when the subcontract says $1M. A reminder never knew that."* | **Reads** |
 | **VT3 — Nothing is hidden — not the price, not the uncertainty, not your vendors' wallets.** | UA1, UA2, UA4 | *"I know what it costs, I know what it isn't sure about, and my vendors aren't billed."* | **Plain** |
+
+**The owned word is not the buyer's word, on purpose.** UA2 says *covered* and VT1 is written in their
+voice — but the thing Certly can defend saying is *this certificate meets the requirement you wrote*.
+**"Covered" is retired as a status word** (§4.2, `REVIEW.md` §2.1, `KNOWLEDGE_BASE.md` §F.5): it survives
+in a buyer's quoted speech, in the form's own *Covered Autos*, and in the form-derived noun *coverage* —
+never as Certly's claim about a policy.
 
 **Hormozi/Dunford tension, resolved the same way Clausewright resolved it and for the same reason:** lead
 with the outcome to earn attention, differentiate immediately after to earn the premium. The outcome
@@ -390,7 +400,7 @@ Sourced from `PERSONA.md §2.5` and `§3.5`.
 ### 4.3 Do and don't
 
 **Hero.**
-- ✅ *"Know which vendors are covered — today, and on the day it matters."*
+- ✅ *"Know which vendors meet your requirements — today, and on the day it matters."*
 - ✅ *"Every certificate read, every gap named, every renewal chased. $99/month, no demo."*
 - ❌ *"AI-powered insurance compliance for the modern enterprise."* — the fourth identical claim on the
   search page `[A4]`, and "enterprise" is the wrong buyer `[A11]`.
@@ -405,7 +415,7 @@ Sourced from `PERSONA.md §2.5` and `§3.5`.
 
 **Low confidence.**
 - ✅ *"We read the general aggregate as $2,000,000 but we are not confident — the figure sits on a fold in
-  the scan. Check it against the highlighted box."*
+  the scan. Check it against the quotation beside it."*
 - ❌ *"Extraction failed."* — it did not fail; it produced a value with a confidence.
 - ❌ Silently hiding the field. **The worst option in the system.** A hidden uncertain field is how a
   product tells a customer something is fine when it does not know.
@@ -419,7 +429,10 @@ Sourced from `PERSONA.md §2.5` and `§3.5`.
   category's documented sin `[C1][C2][A7]` and our answer is to have none.
 
 **Price.**
-- ✅ *"$99 a month up to 50 certificates. $199 to 150. $299 to 500. Cancel from the settings page."*
+- ✅ *"$99 a month up to 50 tracked vendors. $199 to 150. $299 to 400. Cancel from the settings page."*
+  The unit is **tracked vendors**, not certificates (`OFFER.md` §8.1, `specs/10` §2, `REVIEW.md` B-10),
+  and the top tier is **400** (`OFFER.md` §12.1 `vendor_limit=400`). Both numbers are quoted from the
+  Stripe metadata, not from memory.
 - ❌ *"Contact us for pricing."* — this is the sentence the entire positioning is built against
   `[A2][A3][A4][A5]`.
 
@@ -437,8 +450,15 @@ TrustLayer, Jones, Certificial and CertFocus do not publish a price"* is checkab
 1. Every status is accompanied by a date.
 2. Every extracted value is one interaction away from the place on the document it came from.
 3. Every low-confidence value says so in words, not only in colour.
-4. Every gap report and every export carries: *"Certly reports what a certificate says against the
-   requirement you set. It is not insurance advice and it does not verify the underlying policy."*
+4. Every gap report, every export and every screen that renders a status carries **the primary
+   disclaimer — `KNOWLEDGE_BASE.md` §F.1 — rendered verbatim** from `src/lib/kb/disclaimers.ts`.
+   **This document does not restate it, and neither does any other.** KB §F.1/§F.2/§F.3 are the only
+   place a Certly disclaimer text is written down (`REVIEW.md` B-12); §F.4 lists the eleven surfaces and
+   says which text each one carries; and `specs/13` §12 runs two tests — the string appears verbatim on
+   all eleven surfaces, **and a near-duplicate string anywhere else in the repo fails the build**. An
+   earlier draft of this rule carried a *second*, shorter text of its own, which `identity/samples.html`
+   then rendered; that is precisely the near-duplicate the test now catches, and it is why this rule is a
+   pointer rather than a paragraph.
 5. No exclamation marks in product copy. None. They are for good news, and this product's good news is
    silence.
 
@@ -501,7 +521,8 @@ first.
 
 **Source.** `PERSONA.md §2.9` trust signal 2: this buyer has read a thousand ACORD 25s.
 **Consequence.** The certificate is rendered, not iconified. The extraction panel is side-by-side by
-default on desktop; the highlight on the page is part of the reading, not a hover extra.
+default on desktop, and the `source_text` quotation beside each field is part of the reading, not a hover
+extra (§12.2). **Nothing is drawn on the document** — the extractor returns no geometry.
 **Test.** Can a user check our reading of "general aggregate" against the form without leaving the screen?
 
 ### P7 — Quiet by default, loud only for a gap
@@ -618,6 +639,22 @@ system**, and the design is built accordingly. Every status carries four indepen
 | `not_checked` | "Not checked" | **em dash, no container** | **open, hairline edge** | none — achromatic |
 | `no_certificate` | "No certificate" | **empty document outline** | **open, single diagonal rule** | none — achromatic |
 
+**`expired` — the eighth word, not an eighth state.** `specs/05` §2.1 recorded this as the one open
+item left for the Brand Director, and the ruling is **no eighth row**: an expired certificate and a short
+limit are the same severity to the person who has to act, and §6.1 allows no further hue. `expired`
+therefore renders in the **`gap` ramp with its own word**, exactly as `specs/05` §2.1's mapping cell
+already says — so that spec needs no change:
+
+| state | word | glyph | fill pattern | hue |
+|---|---|---|---|---|
+| `expired` *(vendor level only, `specs/06` §3)* | **"Expired"** | slash inside a **hollow disc** — `gap`'s glyph | **open, dashed edge** — `gap`'s pattern | crimson 345° — `gap`'s ramp |
+
+It borrows `gap`'s three non-word signals and owns **the word**, which is the signal that distinguishes a
+*lapse* from a *shortfall* and the one that survives a photocopier. `contrast.py` certifies the **seven**
+states above and is unaffected: `expired` declares no new token, no new glyph and no new pattern, so there
+is nothing new to certify, and "Expired" ≠ "Gap", which is what the word-uniqueness rule exists to
+protect. On the party table it sorts **above** `gap` (§12.6, `specs/06` A3).
+
 **Three deliberate decisions in that table.**
 
 1. **`asserted_only` shares the Expiring hue.** A ticked `ADDL INSD` box with no endorsement page
@@ -678,39 +715,39 @@ verbatim; `REVIEW.md` B-15 exists because it once was not.**
 | `--c-line-strong` `#718094` | `--c-paper` `#E8EEF6` | **3.44:1** | 3.0 (UI) | PASS | input border on the ground |
 | `--c-line-strong` `#718094` | `--c-sunken` `#DEE7F1` | **3.22:1** | 3.0 (UI) | PASS | the upload drop-zone border on its well |
 | `--c-ink-disabled` `#828E9E` | `--c-surface` `#FFFFFF` | **3.32:1** | 3.0 (UI) | PASS | disabled control ink (1.4.11-exempt; held anyway) |
-| `--c-ok-fg` `#0C5F4A` | `--c-ok-bg` `#DCEDE8` | **6.29:1** | 4.5 (AA) | PASS | COVERED pill text |
+| `--c-ok-fg` `#0C5F4A` | `--c-ok-bg` `#DCEDE8` | **6.29:1** | 4.5 (AA) | PASS | MEETS pill text |
 | `--c-warn-fg` `#6B5507` | `--c-warn-bg` `#F2EBCE` | **5.99:1** | 4.5 (AA) | PASS | EXPIRING pill text |
 | `--c-gap-fg` `#A01739` | `--c-gap-bg` `#F8E1E7` | **6.32:1** | 4.5 (AA) | PASS | GAP pill text |
 | `--c-rev-fg` `#3D4F66` | `--c-rev-bg` `#E3E9F1` | **6.85:1** | 4.5 (AA) | PASS | NEEDS REVIEW pill text |
 | `--c-ast-fg` `#4F3D06` | `--c-ast-bg` `#EDE3C0` | **8.16:1** | 4.5 (AA) | PASS | CLAIMED, NOT EVIDENCED pill text |
 | `--c-nc-fg` `#495A73` | `--c-surface` `#FFFFFF` | **7.01:1** | 4.5 (AA) | PASS | NOT CHECKED / NO CERTIFICATE pill text on a card |
 | `--c-nc-fg` `#495A73` | `--c-paper` `#E8EEF6` | **6.01:1** | 4.5 (AA) | PASS | NOT CHECKED / NO CERTIFICATE pill text on the ground |
-| `--c-ok-fg` `#0C5F4A` | `--c-surface` `#FFFFFF` | **7.63:1** | 4.5 (AA) | PASS | COVERED text in a table cell |
+| `--c-ok-fg` `#0C5F4A` | `--c-surface` `#FFFFFF` | **7.63:1** | 4.5 (AA) | PASS | MEETS text in a table cell |
 | `--c-warn-fg` `#6B5507` | `--c-surface` `#FFFFFF` | **7.17:1** | 4.5 (AA) | PASS | EXPIRING text in a table cell |
 | `--c-gap-fg` `#A01739` | `--c-surface` `#FFFFFF` | **7.84:1** | 4.5 (AA) | PASS | GAP text in a table cell |
-| `--c-ok-fg` `#0C5F4A` | `--c-paper` `#E8EEF6` | **6.53:1** | 4.5 (AA) | PASS | COVERED text on the ground |
+| `--c-ok-fg` `#0C5F4A` | `--c-paper` `#E8EEF6` | **6.53:1** | 4.5 (AA) | PASS | MEETS text on the ground |
 | `--c-warn-fg` `#6B5507` | `--c-paper` `#E8EEF6` | **6.14:1** | 4.5 (AA) | PASS | EXPIRING text on the ground |
 | `--c-gap-fg` `#A01739` | `--c-paper` `#E8EEF6` | **6.72:1** | 4.5 (AA) | PASS | GAP text on the ground |
 | `--c-ast-fg` `#4F3D06` | `--c-surface` `#FFFFFF` | **10.48:1** | 4.5 (AA) | PASS | CLAIMED, NOT EVIDENCED text in a table cell |
 | `--c-ast-fg` `#4F3D06` | `--c-paper` `#E8EEF6` | **8.98:1** | 4.5 (AA) | PASS | CLAIMED, NOT EVIDENCED text on the ground |
-| `--c-ok-solid` `#0F6E55` | `--c-surface` `#FFFFFF` | **6.20:1** | 3.0 (UI) | PASS | COVERED dot / coverage-bar segment on a card |
+| `--c-ok-solid` `#0F6E55` | `--c-surface` `#FFFFFF` | **6.20:1** | 3.0 (UI) | PASS | MEETS dot / coverage-bar segment on a card |
 | `--c-warn-solid` `#7A6209` | `--c-surface` `#FFFFFF` | **5.86:1** | 3.0 (UI) | PASS | EXPIRING dot / coverage-bar segment on a card |
 | `--c-gap-solid` `#B01A40` | `--c-surface` `#FFFFFF` | **6.84:1** | 3.0 (UI) | PASS | GAP dot / coverage-bar segment on a card |
-| `--c-ok-solid` `#0F6E55` | `--c-paper` `#E8EEF6` | **5.32:1** | 3.0 (UI) | PASS | COVERED segment on the ground |
+| `--c-ok-solid` `#0F6E55` | `--c-paper` `#E8EEF6` | **5.32:1** | 3.0 (UI) | PASS | MEETS segment on the ground |
 | `--c-warn-solid` `#7A6209` | `--c-paper` `#E8EEF6` | **5.02:1** | 3.0 (UI) | PASS | EXPIRING segment on the ground |
 | `--c-gap-solid` `#B01A40` | `--c-paper` `#E8EEF6` | **5.86:1** | 3.0 (UI) | PASS | GAP segment on the ground |
-| `--c-on-solid` `#FFFFFF` | `--c-ok-solid` `#0F6E55` | **6.20:1** | 4.5 (AA) | PASS | text on a solid COVERED fill |
+| `--c-on-solid` `#FFFFFF` | `--c-ok-solid` `#0F6E55` | **6.20:1** | 4.5 (AA) | PASS | text on a solid MEETS fill |
 | `--c-on-solid` `#FFFFFF` | `--c-gap-solid` `#B01A40` | **6.84:1** | 4.5 (AA) | PASS | text on a solid GAP fill |
 | `--c-ast-solid` `#5E4907` | `--c-surface` `#FFFFFF` | **8.63:1** | 3.0 (UI) | PASS | CLAIMED half-disc / bar segment on a card |
 | `--c-ast-solid` `#5E4907` | `--c-paper` `#E8EEF6` | **7.39:1** | 3.0 (UI) | PASS | CLAIMED half-disc / bar segment on the ground |
 | `--c-on-solid` `#FFFFFF` | `--c-ast-solid` `#5E4907` | **8.63:1** | 4.5 (AA) | PASS | text on a solid CLAIMED fill |
 | `--c-nc-line` `#718094` | `--c-surface` `#FFFFFF` | **4.02:1** | 3.0 (UI) | PASS | NOT CHECKED hairline edge on a card |
 | `--c-nc-line` `#718094` | `--c-paper` `#E8EEF6` | **3.44:1** | 3.0 (UI) | PASS | NO CERTIFICATE dashed edge on the ground |
-| `--c-ok-bg` `#DCEDE8` | `--c-surface` `#FFFFFF` | **1.21:1** | 1.1 (HOUSE) | PASS | COVERED tint against the card |
+| `--c-ok-bg` `#DCEDE8` | `--c-surface` `#FFFFFF` | **1.21:1** | 1.1 (HOUSE) | PASS | MEETS tint against the card |
 | `--c-warn-bg` `#F2EBCE` | `--c-surface` `#FFFFFF` | **1.19:1** | 1.1 (HOUSE) | PASS | EXPIRING tint against the card |
 | `--c-gap-bg` `#F8E1E7` | `--c-surface` `#FFFFFF` | **1.24:1** | 1.1 (HOUSE) | PASS | GAP tint against the card |
 | `--c-rev-bg` `#E3E9F1` | `--c-surface` `#FFFFFF` | **1.22:1** | 1.1 (HOUSE) | PASS | NEEDS REVIEW tint against the card |
-| `--c-ok-line` `#7FBBAB` | `--c-surface` `#FFFFFF` | **2.18:1** | 1.1 (HOUSE) | PASS | COVERED pill hairline against the card |
+| `--c-ok-line` `#7FBBAB` | `--c-surface` `#FFFFFF` | **2.18:1** | 1.1 (HOUSE) | PASS | MEETS pill hairline against the card |
 | `--c-warn-line` `#C6B370` | `--c-surface` `#FFFFFF` | **2.08:1** | 1.1 (HOUSE) | PASS | EXPIRING pill hairline against the card |
 | `--c-gap-line` `#DFA0B2` | `--c-surface` `#FFFFFF` | **2.14:1** | 1.1 (HOUSE) | PASS | GAP pill hairline against the card |
 | `--c-rev-line` `#A6B5C7` | `--c-surface` `#FFFFFF` | **2.08:1** | 1.1 (HOUSE) | PASS | NEEDS REVIEW pill hairline against the card |
@@ -745,39 +782,39 @@ verbatim; `REVIEW.md` B-15 exists because it once was not.**
 | `--c-line-strong` `#5E7090` | `--c-paper` `#0B1220` | **3.74:1** | 3.0 (UI) | PASS | input border on the ground |
 | `--c-line-strong` `#5E7090` | `--c-sunken` `#0F1725` | **3.58:1** | 3.0 (UI) | PASS | the upload drop-zone border on its well |
 | `--c-ink-disabled` `#67748A` | `--c-surface` `#141D2C` | **3.57:1** | 3.0 (UI) | PASS | disabled control ink (1.4.11-exempt; held anyway) |
-| `--c-ok-fg` `#5FD3B0` | `--c-ok-bg` `#0F3A30` | **6.85:1** | 4.5 (AA) | PASS | COVERED pill text |
+| `--c-ok-fg` `#5FD3B0` | `--c-ok-bg` `#0F3A30` | **6.85:1** | 4.5 (AA) | PASS | MEETS pill text |
 | `--c-warn-fg` `#E5C267` | `--c-warn-bg` `#332B10` | **8.19:1** | 4.5 (AA) | PASS | EXPIRING pill text |
 | `--c-gap-fg` `#FF97AE` | `--c-gap-bg` `#40202A` | **7.05:1** | 4.5 (AA) | PASS | GAP pill text |
 | `--c-rev-fg` `#AEBACB` | `--c-rev-bg` `#243044` | **6.75:1** | 4.5 (AA) | PASS | NEEDS REVIEW pill text |
 | `--c-ast-fg` `#CBA855` | `--c-ast-bg` `#322813` | **6.40:1** | 4.5 (AA) | PASS | CLAIMED, NOT EVIDENCED pill text |
 | `--c-nc-fg` `#A7B3C4` | `--c-surface` `#141D2C` | **7.96:1** | 4.5 (AA) | PASS | NOT CHECKED / NO CERTIFICATE pill text on a card |
 | `--c-nc-fg` `#A7B3C4` | `--c-paper` `#0B1220` | **8.81:1** | 4.5 (AA) | PASS | NOT CHECKED / NO CERTIFICATE pill text on the ground |
-| `--c-ok-fg` `#5FD3B0` | `--c-surface` `#141D2C` | **9.20:1** | 4.5 (AA) | PASS | COVERED text in a table cell |
+| `--c-ok-fg` `#5FD3B0` | `--c-surface` `#141D2C` | **9.20:1** | 4.5 (AA) | PASS | MEETS text in a table cell |
 | `--c-warn-fg` `#E5C267` | `--c-surface` `#141D2C` | **9.85:1** | 4.5 (AA) | PASS | EXPIRING text in a table cell |
 | `--c-gap-fg` `#FF97AE` | `--c-surface` `#141D2C` | **8.28:1** | 4.5 (AA) | PASS | GAP text in a table cell |
-| `--c-ok-fg` `#5FD3B0` | `--c-paper` `#0B1220` | **10.19:1** | 4.5 (AA) | PASS | COVERED text on the ground |
+| `--c-ok-fg` `#5FD3B0` | `--c-paper` `#0B1220` | **10.19:1** | 4.5 (AA) | PASS | MEETS text on the ground |
 | `--c-warn-fg` `#E5C267` | `--c-paper` `#0B1220` | **10.91:1** | 4.5 (AA) | PASS | EXPIRING text on the ground |
 | `--c-gap-fg` `#FF97AE` | `--c-paper` `#0B1220` | **9.17:1** | 4.5 (AA) | PASS | GAP text on the ground |
 | `--c-ast-fg` `#CBA855` | `--c-surface` `#141D2C` | **7.46:1** | 4.5 (AA) | PASS | CLAIMED, NOT EVIDENCED text in a table cell |
 | `--c-ast-fg` `#CBA855` | `--c-paper` `#0B1220` | **8.26:1** | 4.5 (AA) | PASS | CLAIMED, NOT EVIDENCED text on the ground |
-| `--c-ok-solid` `#5FD3B0` | `--c-surface` `#141D2C` | **9.20:1** | 3.0 (UI) | PASS | COVERED dot / coverage-bar segment on a card |
+| `--c-ok-solid` `#5FD3B0` | `--c-surface` `#141D2C` | **9.20:1** | 3.0 (UI) | PASS | MEETS dot / coverage-bar segment on a card |
 | `--c-warn-solid` `#E5C267` | `--c-surface` `#141D2C` | **9.85:1** | 3.0 (UI) | PASS | EXPIRING dot / coverage-bar segment on a card |
 | `--c-gap-solid` `#FF97AE` | `--c-surface` `#141D2C` | **8.28:1** | 3.0 (UI) | PASS | GAP dot / coverage-bar segment on a card |
-| `--c-ok-solid` `#5FD3B0` | `--c-paper` `#0B1220` | **10.19:1** | 3.0 (UI) | PASS | COVERED segment on the ground |
+| `--c-ok-solid` `#5FD3B0` | `--c-paper` `#0B1220` | **10.19:1** | 3.0 (UI) | PASS | MEETS segment on the ground |
 | `--c-warn-solid` `#E5C267` | `--c-paper` `#0B1220` | **10.91:1** | 3.0 (UI) | PASS | EXPIRING segment on the ground |
 | `--c-gap-solid` `#FF97AE` | `--c-paper` `#0B1220` | **9.17:1** | 3.0 (UI) | PASS | GAP segment on the ground |
-| `--c-on-solid` `#0B1220` | `--c-ok-solid` `#5FD3B0` | **10.19:1** | 4.5 (AA) | PASS | text on a solid COVERED fill |
+| `--c-on-solid` `#0B1220` | `--c-ok-solid` `#5FD3B0` | **10.19:1** | 4.5 (AA) | PASS | text on a solid MEETS fill |
 | `--c-on-solid` `#0B1220` | `--c-gap-solid` `#FF97AE` | **9.17:1** | 4.5 (AA) | PASS | text on a solid GAP fill |
 | `--c-ast-solid` `#CBA855` | `--c-surface` `#141D2C` | **7.46:1** | 3.0 (UI) | PASS | CLAIMED half-disc / bar segment on a card |
 | `--c-ast-solid` `#CBA855` | `--c-paper` `#0B1220` | **8.26:1** | 3.0 (UI) | PASS | CLAIMED half-disc / bar segment on the ground |
 | `--c-on-solid` `#0B1220` | `--c-ast-solid` `#CBA855` | **8.26:1** | 4.5 (AA) | PASS | text on a solid CLAIMED fill |
 | `--c-nc-line` `#5E7090` | `--c-surface` `#141D2C` | **3.37:1** | 3.0 (UI) | PASS | NOT CHECKED hairline edge on a card |
 | `--c-nc-line` `#5E7090` | `--c-paper` `#0B1220` | **3.74:1** | 3.0 (UI) | PASS | NO CERTIFICATE dashed edge on the ground |
-| `--c-ok-bg` `#0F3A30` | `--c-surface` `#141D2C` | **1.34:1** | 1.1 (HOUSE) | PASS | COVERED tint against the card |
+| `--c-ok-bg` `#0F3A30` | `--c-surface` `#141D2C` | **1.34:1** | 1.1 (HOUSE) | PASS | MEETS tint against the card |
 | `--c-warn-bg` `#332B10` | `--c-surface` `#141D2C` | **1.20:1** | 1.1 (HOUSE) | PASS | EXPIRING tint against the card |
 | `--c-gap-bg` `#40202A` | `--c-surface` `#141D2C` | **1.17:1** | 1.1 (HOUSE) | PASS | GAP tint against the card |
 | `--c-rev-bg` `#243044` | `--c-surface` `#141D2C` | **1.27:1** | 1.1 (HOUSE) | PASS | NEEDS REVIEW tint against the card |
-| `--c-ok-line` `#2A6B5B` | `--c-surface` `#141D2C` | **2.69:1** | 1.1 (HOUSE) | PASS | COVERED pill hairline against the card |
+| `--c-ok-line` `#2A6B5B` | `--c-surface` `#141D2C` | **2.69:1** | 1.1 (HOUSE) | PASS | MEETS pill hairline against the card |
 | `--c-warn-line` `#665521` | `--c-surface` `#141D2C` | **2.32:1** | 1.1 (HOUSE) | PASS | EXPIRING pill hairline against the card |
 | `--c-gap-line` `#78323F` | `--c-surface` `#141D2C` | **1.87:1** | 1.1 (HOUSE) | PASS | GAP pill hairline against the card |
 | `--c-rev-line` `#3A4759` | `--c-surface` `#141D2C` | **1.79:1** | 1.1 (HOUSE) | PASS | NEEDS REVIEW pill hairline against the card |
@@ -865,7 +902,8 @@ verbatim; `REVIEW.md` B-15 exists because it once was not.**
 
 ### 7.1 Families
 
-Two families, from Google Fonts, self-describing about what they are for, and **allocated to Certly
+Two families from the Google Fonts library (both SIL Open Font License, so they can be **served from our
+own origin** — see *Loading* below), self-describing about what they are for, and **allocated to Certly
 exclusively by `../IDENTITY_ARBITRATION.md §3.1`** — no sibling app may use either. Note that this is a
 deliberate divergence from Clausewright, which loads **no** web fonts at all: Clausewright optimises for a
 panicking seller on mobile data at 2am, while Certly is a desk tool opened for a working session, so the
@@ -903,9 +941,21 @@ table hack — and it is the designed superfamily partner of Source Sans 3, so a
 it are cut from the same skeleton. That coherence is worth more here than IBM Plex Mono's slab detailing,
 which now belongs to WageLens's rendering of the WH-347.
 
-**Loading.** Exactly one stylesheet link, `fonts.googleapis.com`, weights `400;500;600;700` for Source
-Sans 3 and `400;500;600` for Source Code Pro, `display=swap`. Every declaration carries the full fallback
-stack so a blocked CDN degrades to a system sans and a system mono, not to Times.
+**Loading — `next/font`, self-hosted at build time, zero third-party requests.** `LANDING_SPEC.md` §10
+sets a **CI-enforced budget of 0 third-party requests on first view and no CDN fonts**, and it rules for
+`next/font` (`REVIEW.md` MJ-05). So **no shipped surface links `fonts.googleapis.com`** — not the app, not
+the landing page, not an email. Both faces are fetched at build time by `next/font/google`, emitted as
+self-hosted `woff2` from our own origin with the `@font-face` rules inlined in the critical CSS,
+`display: swap`, subset to `latin`, weights `400;500;600;700` for Source Sans 3 and `400;500;600` for
+Source Code Pro. Self-hosting is also the privacy-safer default: no visitor IP reaches a font CDN.
+
+**The one documented exception is `identity/samples.html`**, which is a framework-free proof page opened
+from disk by a reviewer and **is not a shipped surface**. It keeps the `fonts.googleapis.com` stylesheet
+(plus the two `preconnect` hints) because it has no build step to self-host through, and it is the only
+file in the repo permitted to reference a font CDN. Its footer says so on the page.
+
+Every declaration still carries the full fallback stack, so a face that fails to load degrades to a system
+sans and a system mono, not to Times.
 
 **Numerals.** `font-variant-numeric: tabular-nums lining-nums` on every figure, including inside the UI
 font, so a count that changes does not shift the layout.
@@ -989,8 +1039,8 @@ Clausewright's material language, and a translucent panel over a dense table is 
 
 ## 9. Iconography and infographic language
 
-This is where the identity is actually made. Everything here exists to make **covered / expiring / gap**
-felt before it is read.
+This is where the identity is actually made. Everything here exists to make **meets requirements /
+expiring / gap** felt before it is read.
 
 ### 9.1 Icon style
 
@@ -1029,7 +1079,9 @@ A horizontal band, 8px tall (12px on a vendor detail page), representing a windo
   `--c-sunken` track, with a dashed `--c-gap-line` outline. The hole reads as a hole. A solid red block is
   used only in the aggregate portfolio bar (§9.3) where the unit is a count, not a timeline.
 - The bar carries `role="img"` and an `aria-label` that states the same thing in words:
-  *"General liability: covered 1 Jan 2026 to 12 Sep 2026, then no coverage on record."*
+  *"General liability: a policy is shown from 1 January to 12 September 2026, then no certificate on
+  record."* — **"no certificate on record", never "no coverage on record"**: the bar states what we have,
+  not what the vendor has. Same sentence in `UX.md` §4.2 and `specs/06` §3. (`REVIEW.md` MN-02.)
 
 **Why this and not a donut.** The buyer's question is temporal and the failures are temporal `[E4][E6]`.
 A donut of "78% compliant" answers a question nobody in this ICP asks; it is the shape of a report to a
@@ -1059,8 +1111,8 @@ Confidence is the fourth meaning in a system that has spent its colour budget, s
 | medium | ▮▮▯ | "check this" | 2px left border in `--c-line-strong`, value in `--c-ink` |
 | low | ▮▯▯ | "we're not sure" | the field renders in the **Needs review** treatment and the record cannot go green until a human confirms it |
 
-**The hard rule:** a low-confidence field can never contribute to a **Covered** status. The record sits in
-**Needs review** until confirmed. This is the design expression of `PLAN.md §6`'s extraction risk, and it
+**The hard rule:** a low-confidence field can never contribute to a **Meets requirements** status. The
+record sits in **Needs review** until confirmed. This is the design expression of `PLAN.md §6`'s extraction risk, and it
 is the difference between a product that is wrong and a product that is honest.
 
 ### 9.5 Infographic and diagram style (landing page, docs, emails)
@@ -1103,15 +1155,18 @@ working, and to show where something came from.
 | `--c-motion-slow` | 320ms `cubic-bezier(.2,0,.38,.9)` | sheet and dialog entry |
 
 **Rules.**
-- **A status never animates its colour.** When a vendor goes from Gap to Covered, the row changes on the
-  next render. An animated transition to green invites the eye to enjoy it, and this is not a game.
-- **The extraction is the one place motion earns its keep:** as each field resolves, its highlight box
-  appears on the document with a 120ms fade, in reading order. That motion *is* the explanation.
+- **A status never animates its colour.** When a vendor goes from Gap to Meets requirements, the row
+  changes on the next render. An animated transition to green invites the eye to enjoy it, and this is not a game.
+- **The extraction is the one place motion earns its keep:** as each field resolves, **its row in the
+  review panel** fades in over 120ms, in reading order, carrying the value, the page number and the
+  `source_text` quotation. That motion *is* the explanation. **Nothing animates on the document**, because
+  there is nothing drawn on the document to animate — the extractor returns `page` and `source_text` and
+  **no geometry** (§12.2, `UX.md` §3.2, `specs/03` §3).
 - **No skeleton shimmer.** A shimmer is a lie about progress. Loading states use a static `--c-sunken`
   block plus a determinate progress bar where a real percentage exists, and plain text where it does not.
 - **No confetti, no toast animation with a bounce, no number count-up.**
 - `@media (prefers-reduced-motion: reduce)` sets every duration to 1ms and disables the extraction
-  reveal — the highlights simply appear. Nothing in the product depends on motion to be understood.
+  reveal — the fields simply appear. Nothing in the product depends on motion to be understood.
 
 ---
 
@@ -1124,14 +1179,40 @@ The wave-2 build target. Every component is implemented in `design-system.css` a
 Dashed `--c-line-strong` border on `--c-sunken`, 2px on drag-over in `--c-focus`. Accepts drag-drop, a
 file picker, **and a paste** (agents paste screenshots). States: idle / drag-over / uploading (determinate)
 / reading (indeterminate, with the page count) / done / rejected. The rejected state names the reason in
-words (§4.3). It always shows the forward-to address (`vendor-name@in.certly.app`) beside it, because
-forwarding is the path most vendors' agents will use.
+words (§4.3).
+
+**Forward-by-email is `SH-1`, not MVP** (`BACKLOG.md` SH-1, `UX.md` §1.2, `OFFER.md` §4 P2,
+`REVIEW.md` MN-10), so **at launch the drop zone shows no forward-to address**. The MVP paths are
+drag-drop, the file picker, paste, CSV import and the no-login vendor upload link (`specs/08`). When SH-1
+ships, the address renders as **`vendor-name@{INBOUND_DOMAIN}`** — an **env value, never a literal**:
+`certly.app` is somebody else's parked placeholder (§2.1 `[F4]`, `REVIEW.md` B-11) and `PLAN.md` D3 ships
+no custom domain at launch, so the launch host is the project's `*.vercel.app` URL.
 
 ### 12.2 Document preview — `.c-doc`
-The certificate rendered as a page on `--c-surface` inside a `--c-sunken` viewport, with page controls,
-zoom, and **highlight boxes** keyed to extracted fields. A highlight is a 2px `--c-focus` outline at 40%
-opacity; the *active* highlight is solid and carries a 3px left tab. Hovering a field in the review panel
-raises its box; clicking scrolls to it. Keyboard: the boxes are a roving-tabindex list.
+The certificate rendered as a page on `--c-surface` inside a `--c-sunken` viewport, with page controls and
+zoom — and **no highlight boxes**. An earlier draft of this section specified boxes keyed to extracted
+fields; **the extractor does not return coordinates.** `specs/03` §3 says so in as many words — *"clicking
+a field scrolls the document to its `page` and highlights nothing — we do not claim bounding boxes we did
+not extract"* — and `specs/schema/coi.v1.schema.json` `StringField` carries `value`, `raw`, `page`,
+`source_text`, `confidence` and no geometry. **We do not add coordinates to the schema to make an
+animation possible**: a model-reported rectangle is exactly the unverifiable claim §3 Step 9 forbids, and
+it would be inventing provenance to decorate the one screen whose whole purpose is provenance.
+
+The contract is `UX.md` §3.2, and it is this:
+
+- **Clicking or focusing a field in the review panel scrolls the document pane to that field's `page`.**
+  Nothing is drawn on the page.
+- **The evidence lives in the panel**: the field's `source_text` span rendered as a **quotation** beside
+  the value in `--c-font-num`, the page number, and **the quote-gate result in words** — *"found on
+  page 1"*, *"we could not find this text on the page we read it from"*, or *"this page has no text layer,
+  so we could not check"*.
+- Keyboard: the **field list** is the roving-tabindex list (`j`/`k` or arrows to move, `Enter` to confirm,
+  `e` to edit, `Esc` to leave); the page controls are separately focusable.
+
+The quotation is a **better** provenance than a box, not a lesser one: the quote gate is a check that code
+performs (`specs/03` §7), where a rectangle is something a model asserted. **P6**'s review test — *can a
+user check our reading of general aggregate against the form without leaving the screen?* — still passes:
+the quotation and the page number are on screen, and the document is one scroll away in the other pane.
 
 ### 12.3 As-of stamp — `.c-asof`
 `--c-text-xs`, `--c-ink-muted`, `--c-font-num` for the date, preceded by a 1px rule. Renders as
@@ -1145,7 +1226,9 @@ own confidence, not coerce it into a string. A tick misread is the failure mode 
 consequence in this product.
 Per-field actions: **confirm**, **edit**, **not on this document**. The panel header carries the overall
 confidence and a single primary action (**Accept reading**). A field in the low band renders in the Needs
-review treatment and blocks a green status (§9.4). Every value links to its highlight (§12.2).
+review treatment and blocks a green status (§9.4). Every value carries its page number and its
+`source_text` quotation and scrolls the document pane to that page — **it does not highlight anything on
+the document** (§12.2).
 
 ### 12.5 Requirement template editor — `.c-req`
 The most important screen in the product (`PERSONA.md §4.1`, complaint 2). Three regions:
@@ -1161,8 +1244,10 @@ The most important screen in the product (`PERSONA.md §4.1`, complaint 2). Thre
 
 ### 12.6 Party table — `.c-table` + `.c-row-status`
 Columns: status (pill + coverage bar) · party · type · requirement applied · next expiry
-(`--c-font-num`) · last document · action. Sort defaults to *soonest problem first*: Gap, then Expiring
-ascending by days, then Needs review, then Covered. Row states: default · hover · selected · muted (a
+(`--c-font-num`) · last document · action. Sort defaults to *soonest problem first*, which is the
+`specs/05` §3 roll-up precedence and `specs/06` A3's default: **Expired · Gap · Expiring** (ascending by
+days) **· Claimed, not evidenced · Needs review · No certificate · Meets requirements**. "Covered" is not
+a sort key, a counter or a word here (`REVIEW.md` §2.1). Row states: default · hover · selected · muted (a
 party marked inactive). Bulk selection enables one action only: **Chase selected**.
 
 ### 12.7 Status pill — `.c-pill`
@@ -1185,16 +1270,28 @@ today as a full-height rule, and a month grid in `--c-line`. Sticky first column
 scroll inside its own container. Filter chips above it for status, type and property/project.
 
 ### 12.10 Reminder composer — `.c-remind`
-Recipient (defaults to **the agent on the certificate**, with the vendor cc'd — §4.2), schedule (a set of
-offsets: −30, −14, −3, +1 days, editable), the message with merge fields shown inline as chips, and a
-live preview of the email in the recipient's frame. A visible **stop condition**: *"Stops as soon as a
-current certificate arrives."* The composer states how many emails this schedule will send in total —
-directly answering the Procore behaviour of daily mail for up to 74 days `[D1]`.
+Recipient (defaults to **the agent on the certificate**, with the vendor cc'd — §4.2), the schedule, the
+message with merge fields shown inline as chips, and a live preview of the email in the recipient's frame.
+
+**The ladder is canonical and is not redrawn per screen.** It is `specs/07` §2's, quoted identically in
+`KNOWLEDGE_BASE.md` §B.5: **T−60, T−30, T−14, T−7, T−1, T+1 (lapsed), then weekly to T+28, then stop and
+flag** — ten rungs. An earlier draft of this section specified *−30, −14, −3, +1* and was the only
+document in the folder that did (`REVIEW.md` §2.8, I-7). Each rung is a toggle the user can switch off;
+the rungs themselves are not editable free text.
+
+Every message carries the sentence `specs/07` §6 requires — *"This is message {n} of {total} about this
+certificate. They stop as soon as a current certificate arrives."* — and **the composer shows the same
+`{total}` before anything is scheduled**, computed from the remaining rungs for this expiry. A visible
+**stop condition** sits under it: *"Stops as soon as a current certificate arrives."* The caps are shown
+too — **6 messages per recipient per expiry, 10 per expiry in total** (`specs/07` §9). That total is the
+direct answer to the Procore behaviour of daily mail for up to 74 days `[D1]`: the number is on screen
+before the user agrees to it.
 
 ### 12.11 Gap report — `.c-report`
 A printable document, not a screen: portfolio header, as-of stamp, the portfolio strip, then one block per
 party with the requirement, what was found, and what is missing, in plain sentences. Fixed to a print
-stylesheet at A4/Letter with the disclaimer (§4.4 rule 4) in the footer of every page.
+stylesheet at A4/Letter with the primary disclaimer (`KNOWLEDGE_BASE.md` §F.1, per §4.4 rule 4) in the
+footer of every page, rendered verbatim from `disclaimers.ts` and never re-typed.
 
 ### 12.12 Supporting components
 `.c-btn` (primary = `--c-action`, the interaction hue, white label at 9.29:1; secondary = `--c-line-strong` outline; quiet = text) · `.c-field` (label
@@ -1216,8 +1313,8 @@ anywhere in the codebase — that is a review failure with no exceptions.
    `@media (prefers-color-scheme: dark)` guarded as `:root:not([data-theme="light"])`, and redefined again
    under `:root[data-theme="dark"]`, so a user's explicit choice wins in both directions.
 2. Dark values are **authored, not inverted** (§6.3), and every dark pair is certified by the same script.
-3. **Status meaning does not change between themes.** Green is covered in both. The hues shift in
-   lightness; they never swap roles.
+3. **Status meaning does not change between themes.** Green means *meets requirements* in both. The hues
+   shift in lightness; they never swap roles.
 4. `--c-paper` in dark is `#0B1220`, not black, to avoid halation around a bright status pill.
 5. Shadows are near-useless on dark; separation moves to `--c-line` plus a 1px top highlight.
 6. **The printed and PDF outputs are always light.** A gap report goes to a board packet or an auditor;
@@ -1382,13 +1479,39 @@ Each omission is an enforcement mechanism: a component that does not exist canno
    `../scripts/identity-distinctness.py`, which parses all three stylesheets and fails on a shared family
    or a ground collision. Do not change a font token or the ground without re-running it.
 4. **Trademark clearance is not done** `[F15][F16]`. No money on a mark until it is.
-5. **Whether the founder wants a free tier** changes the pricing block on the landing page and possibly
-   the shape of the empty state. `PERSONA.md §7.4`.
+5. ~~**Whether the founder wants a free tier.**~~ **RESOLVED 2026-09-03 (`REVIEW.md` MJ-12, OQ-3), and
+   the answer is no.** `BACKLOG.md` N12 and `OFFER.md` §9 decided it after this file was written:
+   **no permanent free tier**, and a one-off **Free Gap Report** (M15) instead. `PERSONA.md` §9.4 carries
+   the same ruling in the same words. The reasoning, kept here so it is not re-litigated: every document
+   costs a real model call, free users upload the messiest documents, and a free tier that fixes
+   conversion by removing revenue has not fixed anything. The consequence for *this* document is that the
+   pricing block (§4.3) and the empty state are designed against a **card-required 14-day trial plus the
+   free report**, not against a free tier. If activation→paid fails at $99 the pre-committed fix is
+   **price** (`THRESHOLDS.md` §3's $49 test).
 6. **Dark mode may be unnecessary.** It is built because it is cheap at token level, but if wave-3
    analytics show near-zero dark usage among these buyers, it should be frozen rather than maintained.
-7. **The requirement-level rename `needs_review` → `undetermined`** (`REVIEW.md §2.2`, MN-04) is a
-   product decision and is **not** applied here: the identity still calls the state "Needs review". If the
-   rename is upheld it is one word in `contrast.py`'s `STATUS_MARKS` and one in `samples.html`.
-8. **"Covered" is retired in the identity files only.** The same ruling (`REVIEW.md §2.1`) still has to
-   reach `PERSONA.md §2.5`/`§2.9`, `UX.md §2`/`§3.1`, `specs/05`, `specs/06`, `specs/12` and
-   `LANDING_SPEC.md`. Somebody must own that sweep or the dashboard counters and the report will drift.
+7. **The requirement-level rename `needs_review` → `undetermined`** (`REVIEW.md §2.2`, MN-04) is
+   **applied, and it renames nothing in this document** — recorded here so a reader does not think it was
+   missed. `specs/05` §2.1 settles it: the two words live at **two different layers**. `undetermined` is
+   the *requirement-level data state* the comparison engine emits (`met` · `gap` · `asserted_only` ·
+   `not_checked` · `undetermined`); **Needs review** is the *display* state in §6.4, and `specs/05` §2.1
+   maps `undetermined` onto it. The identity keeps "Needs review" **because the mapping says to**, not
+   because the rename was overlooked, so nothing changes in `contrast.py`'s `STATUS_MARKS` or in
+   `samples.html`. The rule that must not drift: a **document** in `needs_review` (`specs/03` §8) and a
+   **requirement** that is `undetermined` (`specs/05` §2) are two different facts wearing the same pill,
+   and any screen that can show both says which one it means.
+8. **"Covered" is retired everywhere — CLOSED, 2026-09-03.** The product sweep landed and the reviewer
+   verified it by `grep` rather than by claim (`REVIEW.md` §R1): in `PERSONA.md`, `UX.md`, `specs/05`,
+   `specs/06`, `specs/12` and `LANDING_SPEC.md` every survivor is a negation, a quoted correction, the
+   form's own *Covered Autos*, or JTBD prose about the buyer's question. **This document's own body was
+   the residual** (`REVIEW.md` I-1) and is now swept too: §0, §1, §3 Step 4, §4.3, §9, §9.2, §9.4, §11,
+   §12.6 and §13.3.
+   **One survivor is deliberate and is not editable from this file:** the **sixteen** row labels in §6.5
+   (*"MEETS pill text"*, *"MEETS text in a table cell"*, …) — **eight `PAIRS` entries × two themes** —
+   are printed by `identity/contrast.py`, and §6.5 is **generated, never hand-written**; hand-editing it
+   would be reverted by the next `--md` run and would break this document's own amendment rule.
+   Relabelling them is **one edit to `contrast.py`** (`PAIRS`, lines 157-198: the eight `COVERED` strings
+   → `MEETS`) followed by `python3 identity/contrast.py --md`. It changes **no ratio, no token name and no
+   colour** — the `--c-ok-*` tokens are vocabulary-neutral and stay — so it is safe at any point before
+   wave 2 renders a pill. It is left here rather than done because `contrast.py` was outside this pass's
+   permitted file set; it is the only residual of `REVIEW.md` I-1.

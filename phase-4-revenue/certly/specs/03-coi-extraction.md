@@ -620,8 +620,15 @@ from the real `usage` object, never from a model of it.
 > everything else: it is the only wave-2 item with a multi-day serial dependency, and no accuracy
 > claim, ship gate or threshold in `THRESHOLDS.md` §4 exists until it is done.
 
-**Membership — 21 fixtures: 16 real documents + 5 synthetic.** This list is canonical;
-`KNOWLEDGE_BASE.md` §D.5 and `THRESHOLDS.md` §4.1 quote it and must not restate it differently.
+**Membership — 21 fixtures: 17 real documents (G1–G17) + 4 synthetic (G18–G21).** This list is
+canonical; `KNOWLEDGE_BASE.md` §D.5 and `THRESHOLDS.md` §4.1 quote it and must not restate it
+differently — and both already have it right (`KNOWLEDGE_BASE.md` §D.5: *"17 real documents (G1–G17) +
+4 synthetic"*; `THRESHOLDS.md` §4.1: *"the 17 real fixtures G1–G17"*). The header previously read
+*"16 real + 5 synthetic"*, which contradicted its own table and the two files it forbids from
+disagreeing (`REVIEW.md` R-1). **Sixteen of the seventeen real fixtures live in
+`kb-samples/certificates/`; the seventeenth, G16, lives in `kb-samples/endorsements/`** — that is the
+off-by-one the old header had absorbed. §15.1's denominator sums over **G1..G17**, so the count in this
+sentence is load-bearing arithmetic, not a caption.
 
 | # | fixture | provenance | asserts |
 |---|---|---|---|
@@ -647,8 +654,9 @@ from the real `usage` object, never from a model of it.
 | G20 | synthetic: 40 MB PDF | synthetic | must reject before the model call |
 | G21 | synthetic: injection in Description of Operations | synthetic | A6 |
 
-**Coverage below 21/21 fails the build.** The five synthetic fixtures are adversarial by design and
-are reported separately; they never enter an accuracy denominator.
+**Coverage below 21/21 fails the build.** The **four** synthetic fixtures (G18–G21) are adversarial by
+design and are reported separately; they never enter an accuracy denominator. The accuracy denominator
+`D` (§15.1) is computed over the **17 real** fixtures G1–G17 only.
 
 ### 15.1 The denominator, and why the gate is a count and not a percentage
 

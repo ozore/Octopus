@@ -154,7 +154,7 @@ PAIRS = [
     ("line-strong",  "sunken",   "UI",    "the upload drop-zone border on its well"),
     ("ink-disabled", "surface",  "UI",    "disabled control ink (1.4.11-exempt; held anyway)"),
     # -- status text on its own tint ---------------------------------------
-    ("ok-fg",        "ok-bg",    "AA",    "COVERED pill text"),
+    ("ok-fg",        "ok-bg",    "AA",    "MEETS pill text"),
     ("warn-fg",      "warn-bg",  "AA",    "EXPIRING pill text"),
     ("gap-fg",       "gap-bg",   "AA",    "GAP pill text"),
     ("rev-fg",       "rev-bg",   "AA",    "NEEDS REVIEW pill text"),
@@ -162,10 +162,10 @@ PAIRS = [
     ("nc-fg",        "surface",  "AA",    "NOT CHECKED / NO CERTIFICATE pill text on a card"),
     ("nc-fg",        "paper",    "AA",    "NOT CHECKED / NO CERTIFICATE pill text on the ground"),
     # -- status text on surfaces (table cells) -----------------------------
-    ("ok-fg",        "surface",  "AA",    "COVERED text in a table cell"),
+    ("ok-fg",        "surface",  "AA",    "MEETS text in a table cell"),
     ("warn-fg",      "surface",  "AA",    "EXPIRING text in a table cell"),
     ("gap-fg",       "surface",  "AA",    "GAP text in a table cell"),
-    ("ok-fg",        "paper",    "AA",    "COVERED text on the ground"),
+    ("ok-fg",        "paper",    "AA",    "MEETS text on the ground"),
     ("warn-fg",      "paper",    "AA",    "EXPIRING text on the ground"),
     ("gap-fg",       "paper",    "AA",    "GAP text on the ground"),
     ("ast-fg",       "surface",  "AA",    "CLAIMED, NOT EVIDENCED text in a table cell"),
@@ -174,13 +174,13 @@ PAIRS = [
     #    Each segment is separated from its neighbour by a 1px separator in
     #    --c-surface, so the pair that matters is segment-vs-surface, never
     #    segment-vs-segment. See IDENTITY.md 6.3 "the separator rule".
-    ("ok-solid",     "surface",  "UI",    "COVERED dot / coverage-bar segment on a card"),
+    ("ok-solid",     "surface",  "UI",    "MEETS dot / coverage-bar segment on a card"),
     ("warn-solid",   "surface",  "UI",    "EXPIRING dot / coverage-bar segment on a card"),
     ("gap-solid",    "surface",  "UI",    "GAP dot / coverage-bar segment on a card"),
-    ("ok-solid",     "paper",    "UI",    "COVERED segment on the ground"),
+    ("ok-solid",     "paper",    "UI",    "MEETS segment on the ground"),
     ("warn-solid",   "paper",    "UI",    "EXPIRING segment on the ground"),
     ("gap-solid",    "paper",    "UI",    "GAP segment on the ground"),
-    ("on-solid",     "ok-solid", "AA",    "text on a solid COVERED fill"),
+    ("on-solid",     "ok-solid", "AA",    "text on a solid MEETS fill"),
     ("on-solid",     "gap-solid","AA",    "text on a solid GAP fill"),
     ("ast-solid",    "surface",  "UI",    "CLAIMED half-disc / bar segment on a card"),
     ("ast-solid",    "paper",    "UI",    "CLAIMED half-disc / bar segment on the ground"),
@@ -191,11 +191,11 @@ PAIRS = [
     #    The status is carried by text + glyph at >= 4.5:1; the tint and the
     #    hairline are reinforcement. HOUSE 1.5:1 keeps the chip a visible
     #    object without forcing a hard border that would shout on a long table.
-    ("ok-bg",        "surface",  "HOUSE", "COVERED tint against the card"),
+    ("ok-bg",        "surface",  "HOUSE", "MEETS tint against the card"),
     ("warn-bg",      "surface",  "HOUSE", "EXPIRING tint against the card"),
     ("gap-bg",       "surface",  "HOUSE", "GAP tint against the card"),
     ("rev-bg",       "surface",  "HOUSE", "NEEDS REVIEW tint against the card"),
-    ("ok-line",      "surface",  "HOUSE", "COVERED pill hairline against the card"),
+    ("ok-line",      "surface",  "HOUSE", "MEETS pill hairline against the card"),
     ("warn-line",    "surface",  "HOUSE", "EXPIRING pill hairline against the card"),
     ("gap-line",     "surface",  "HOUSE", "GAP pill hairline against the card"),
     ("rev-line",     "surface",  "HOUSE", "NEEDS REVIEW pill hairline against the card"),
