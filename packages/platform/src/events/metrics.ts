@@ -8,7 +8,7 @@
  * "activated" means for WageLens, so the event name is passed in.
  */
 
-import { and, desc, eq, gte, inArray, lt, sql } from 'drizzle-orm';
+import { and, desc, eq, gte, inArray, lt, lte, sql } from 'drizzle-orm';
 
 import type { Db } from '../db';
 import { events, organisations, subscriptions, type SubscriptionStatus } from '../db/schema';
@@ -51,6 +51,10 @@ export type PlatformMetrics = {
 
 const LIVE: SubscriptionStatus[] = ['active', 'past_due'];
 
+/**
+ * Rolling windows ending now. The end bound is inclusive (`ts <= to`): an event
+ * recorded in the same millisecond as the range end counts.
+ */
 export function defaultRanges(now = new Date()): MetricsRange[] {
   const day = 24 * 3600 * 1000;
   return [
@@ -80,7 +84,7 @@ export async function computeMetrics(db: Db, options: MetricsOptions): Promise<P
   const [activationRow] = await db
     .select({ value: sql<number>`count(distinct ${events.orgId})::int` })
     .from(events)
-    .where(and(eq(events.name, activationEvent), gte(events.ts, from), lt(events.ts, to)));
+    .where(and(eq(events.name, activationEvent), gte(events.ts, from), lte(events.ts, to)));
 
   const [conversionRow] = await db
     .select({ value: sql<number>`count(distinct ${events.orgId})::int` })
@@ -89,7 +93,7 @@ export async function computeMetrics(db: Db, options: MetricsOptions): Promise<P
       and(
         eq(events.name, PLATFORM_EVENTS.subscriptionActivated),
         gte(events.ts, from),
-        lt(events.ts, to),
+        lte(events.ts, to),
       ),
     );
 
@@ -154,7 +158,7 @@ export async function computeMetrics(db: Db, options: MetricsOptions): Promise<P
   const topEvents = await db
     .select({ name: events.name, count: sql<number>`count(*)::int` })
     .from(events)
-    .where(and(gte(events.ts, from), lt(events.ts, to)))
+    .where(and(gte(events.ts, from), lte(events.ts, to)))
     .groupBy(events.name)
     .orderBy(desc(sql`count(*)`))
     .limit(15);

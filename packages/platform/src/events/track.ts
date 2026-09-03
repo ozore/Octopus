@@ -7,7 +7,7 @@
  * one thing an analytics call must never do is take down the path it measures.
  */
 
-import { and, eq, gte, lt, sql } from 'drizzle-orm';
+import { and, eq, gte, lte, sql } from 'drizzle-orm';
 
 import type { Db } from '../db';
 import { events } from '../db/schema';
@@ -43,7 +43,11 @@ export async function track(db: Db, input: TrackInput): Promise<void> {
       orgId: input.orgId ?? null,
       userId: input.userId ?? null,
       props: (input.props ?? {}) as Record<string, unknown>,
-      ...(input.ts ? { ts: input.ts } : {}),
+      // One clock for both sides of every range comparison: the JS clock. The
+      // database default (now()) can sit a few milliseconds ahead of Date.now()
+      // on PGlite, which made an event recorded "now" fall outside a range
+      // ending "now" (seen once in CI).
+      ts: input.ts ?? new Date(),
     });
   } catch (error) {
     // Never break the path being measured.
@@ -55,7 +59,7 @@ export async function countEvents(
   db: Db,
   input: { name: string; from: Date; to: Date; distinctOrgs?: boolean },
 ): Promise<number> {
-  const where = and(eq(events.name, input.name), gte(events.ts, input.from), lt(events.ts, input.to));
+  const where = and(eq(events.name, input.name), gte(events.ts, input.from), lte(events.ts, input.to));
   const [row] = await db
     .select({
       value: input.distinctOrgs
