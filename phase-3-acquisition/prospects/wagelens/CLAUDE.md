@@ -53,8 +53,8 @@ Written while working, not at the end. Date: 2026-09-03.
 | `data.nj.gov` `tfhb-8beb` (NJSAVI, `commodity_type like '%Construction%'`) | Socrata | 596 |
 | `illinois-edp.data.socrata.com` `gd6a-xm49` (IDOL certified transcript of payroll) | Socrata | 585 |
 | `data.texas.gov` `de7b-7dna` (TxDOT bid tabs, `federal_project_number is not null`) | Socrata | 381 |
-| `sam.gov/api/prod/sgs/v1/search/?index=opp&notice_type=a&naics=…` | **needs `Accept: application/hal+json`** or it 406s | 2,355 awardees |
-| `napex.us` `/wp-admin/admin-ajax.php?action=SearchAccelerator` (`formState=<state>`) | one POST per state | ~350 APEX Accelerators |
+| `sam.gov/api/prod/sgs/v1/search/?index=opp&notice_type=a&naics=…` | **needs `Accept: application/hal+json`** or it 406s | 1,256 awardees at 1 page per NAICS (2 pages gives 2,355, but page 2 adds mostly duplicates of the USAspending set) |
+| `napex.us` `/wp-admin/admin-ajax.php?action=SearchAccelerator` (`formState=<state>`) | one POST per state | 266 distinct APEX Accelerators |
 
 Parsing tricks worth reusing:
 - **Socrata is the highest-yield channel for this ICP.** Find datasets with
@@ -95,7 +95,23 @@ Parsing tricks worth reusing:
    segment first, then fill the remainder globally by award count. Cap and sort
    order are both still honoured. **This is the one rule I interpreted.**
 3. Did not decompress gzip in the partner fetcher, so several live sites looked
-   like empty 200s and were wrongly rejected (Elation Systems among them).
+   like empty 200s and were wrongly rejected (Elation Systems among them). Some
+   of these servers gzip regardless of `Accept-Encoding` and `urllib` will not
+   undo it for you.
+4. First version of `title_case()` kept any all-caps word of three letters or
+   fewer, which turned "GREEN BAY" into "Green BAY" and "ST. LOUIS" into
+   "ST. Louis" across thousands of rows. Now only a fixed acronym set
+   (LLC, LLP, USA, HVAC, DC, …) is preserved.
+5. Deduplicated on normalised-name + website + **state** at first, reasoning that
+   two same-named firms in Washington and New York are different organisations.
+   The brief's own validator asserts uniqueness on `name` + `website` *exactly*,
+   so that failed. The merge now applies both keys and drops on either; 658 rows
+   were lost to the exact key. Some of those were probably distinct firms. If a
+   future brief relaxes the validator, put the state back in the key.
+6. Left the SAM.gov awardee rows carrying the **awarding office's** city/state in
+   `location`. That is not the firm's address, and worse, it defeated
+   deduplication against the USAspending rows for the same company. `location` is
+   now empty on those rows and the awarding office lives in `notes`.
 4. Spent ~20 minutes on the California DIR ServiceNow portal before accepting it
    was closed. The brief's two-attempt rule exists for a reason.
 
@@ -132,5 +148,16 @@ Parsing tricks worth reusing:
 4. `contact_route` is empty on ~95% of rows and that is the honest state of the
    world: none of these registers publish a generic business mailbox. Enriching
    it means opening each firm's own site, which is a separate, slower pass.
-5. Do not re-add the candidates in `scripts/unverified_candidates.csv` without
-   checking them; several are domains that belong to a different organisation.
+5. Do not re-add rejected partner candidates without re-checking them.
+   `scripts/unverified_candidates.csv` holds the current run's rejects; the ones
+   removed from the candidate list entirely are named in `sources.md` §12 —
+   notably `asacolorado.org` (wrong organisation), `mossadams.com`,
+   `marcumllp.com` and `somersetcpas.com` (all now redirect elsewhere), and the
+   guessed chapter domains `agctxbuild.com`, `abcesc.org`, `abcohiovalley.org`,
+   `iectexasgulfcoast.org`, `psneca.org` (none resolve).
+6. The three intermediate CSVs (`scripts/api_rows.csv`, `secondary_rows.csv`,
+   `partner_rows.csv`) are deliberately **not** committed: together they are
+   ~7 MB that duplicates `prospects.csv`. `scripts/build_prospects.py` runs the
+   matching puller for any input it does not find, so one command rebuilds
+   everything. HTTP responses are cached under `/tmp/wagelens_*`, outside the
+   repository, so a warm re-run is fast and makes no new requests.

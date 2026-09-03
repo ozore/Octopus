@@ -21,13 +21,17 @@ enforces the exact column order the brief validator checks.
 import csv
 import os
 import re
+import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from usaspending_pull import COLS, looks_like_person  # noqa: E402
 
-SOURCES = ["partner_rows.csv", "api_rows.csv", "secondary_rows.csv"]
+# input file -> the puller that regenerates it if it is not on disk
+SOURCES = [("partner_rows.csv", "partners_channels.py"),
+           ("api_rows.csv", "usaspending_pull.py"),
+           ("secondary_rows.csv", "secondary_pull.py")]
 FREE_MAIL = re.compile(r"@(gmail|yahoo|hotmail|outlook|icloud|proton|aol)\.", re.I)
 
 
@@ -56,11 +60,15 @@ def main():
     outdir = os.path.join(root, "phase-3-acquisition", "prospects", "wagelens")
     rows, seen, exact = [], set(), set()
     dropped = {"dup": 0, "dup_exact": 0, "person": 0, "mailbox": 0, "nosrc": 0}
-    for fn in SOURCES:
+    for fn, puller in SOURCES:
         path = os.path.join(outdir, "scripts", fn)
         if not os.path.exists(path):
-            sys.stderr.write("missing %s - run the puller first\n" % fn)
-            continue
+            print("%s not on disk - running %s to regenerate it" % (fn, puller))
+            rc = subprocess.call([sys.executable,
+                                  os.path.join(outdir, "scripts", puller)], cwd=root)
+            if rc != 0 or not os.path.exists(path):
+                sys.stderr.write("could not regenerate %s (exit %s)\n" % (fn, rc))
+                continue
         n0 = len(rows)
         with open(path, encoding="utf-8") as fh:
             for r in csv.DictReader(fh):
