@@ -1,0 +1,282 @@
+{
+  "app": "wagelens",
+  "workbook": "customers",
+  "date": "2026-09-08",
+  "counts": {
+    "drafts": 20,
+    "mailbox": 20,
+    "form": 0,
+    "blocking": 20,
+    "warnings": 0,
+    "failed": 0
+  },
+  "blocking_reasons": [
+    "from_address_missing",
+    "postal_address_missing",
+    "unsubscribe_url_missing"
+  ],
+  "failures": [],
+  "drafts": [
+    {
+      "org_id": "144-engineering-const-llc-616303",
+      "name": "144 Engineering & Const LLC",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@bvrpartners.com",
+      "subject": "How 144 Engineering & Const LLC handles certified payroll",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "2goforward-llc-1e7e61",
+      "name": "2Goforward LLC",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "admin@2goforward.org",
+      "subject": "How 2Goforward LLC handles certified payroll",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "4-u-services-inc-d1aeb8",
+      "name": "4 U Services, Inc.",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "contact@stellarservices.com",
+      "subject": "How 4 U Services, Inc. handles certified payroll",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "a-b-imports-llc-3d30e5",
+      "name": "A & B Imports LLC",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "contact@tasteoftruffles.com",
+      "subject": "How A & B Imports LLC handles certified payroll",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "a-t-iron-works-inc-3d3ca3",
+      "name": "A & T IRON WORKS INC",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@atironworks.com",
+      "subject": "How A & T IRON WORKS INC handles certified payroll",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "a-takton-concrete-corporation-42b6b3",
+      "name": "A Takton Concrete Corporation",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@a-takton.com",
+      "subject": "How A Takton Concrete Corporation handles certified payroll",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "abdullatif-consulting-llc-320844",
+      "name": "Abdullatif Consulting LLC",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@abdullatifconsulting.com",
+      "subject": "How Abdullatif Consulting LLC handles certified payroll",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "accm-nh-corp-20f872",
+      "name": "Accm & Nh Corp.",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "office@accmcorp.com",
+      "subject": "How Accm & Nh Corp. handles certified payroll",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "adroit-project-consultants-llc-86f51e",
+      "name": "Adroit Project Consultants, LLC",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@adroitprojectconsultants.com",
+      "subject": "How Adroit Project Consultants, LLC handles certified payroll",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "advanced-filtration-company-of-new-jerse-d04bb2",
+      "name": "Advanced Filtration Company Of New Jersey, Inc.",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "sales@advancedfiltration.com",
+      "subject": "How Advanced Filtration Company Of New Jersey, Inc. handles certified payroll",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "advanced-roofing-sheet-metal-company-inc-2c04a2",
+      "name": "Advanced Roofing & Sheet Metal Company, Inc.",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@advancedroofingnj.com",
+      "subject": "How Advanced Roofing & Sheet Metal Company, Inc. handles certified payroll",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "aeroshine-llc-098161",
+      "name": "Aeroshine LLC",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@aero-shine.com",
+      "subject": "How Aeroshine LLC handles certified payroll",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "afa-trucking-llc-a20968",
+      "name": "Afa Trucking LLC",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "admin@afatrucking.com",
+      "subject": "How Afa Trucking LLC handles certified payroll",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "afc-sunshine-transport-services-llc-b199bc",
+      "name": "Afc Sunshine Transport Services LLC",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@afctransportservices.com",
+      "subject": "How Afc Sunshine Transport Services LLC handles certified payroll",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "affordable-fire-protection-inc-ebfcac",
+      "name": "Affordable Fire Protection, Inc.",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "admin@afpi.us",
+      "subject": "How Affordable Fire Protection, Inc. handles certified payroll",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "ahb-supply-llc-b492b6",
+      "name": "Ahb Supply LLC",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "admin@ahbsupplyco.com",
+      "subject": "How Ahb Supply LLC handles certified payroll",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "aircare-heating-cooling-corporation-c78b20",
+      "name": "Aircare Heating & Cooling Corporation",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@aircareheatingcooling.com",
+      "subject": "How Aircare Heating & Cooling Corporation handles certified payroll",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "aladdin-heating-cooling-of-new-jersey-in-12ad8e",
+      "name": "Aladdin Heating & Cooling Of New Jersey Inc",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@aladdinhvacinc.com",
+      "subject": "How Aladdin Heating & Cooling Of New Jersey Inc handles certified payroll",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "alfa-kitchen-bath-llc-a99826",
+      "name": "Alfa Kitchen & Bath LLC",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@alfakb.com",
+      "subject": "How Alfa Kitchen & Bath LLC handles certified payroll",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "all-genz-medimatch-recruit-llc-b8a894",
+      "name": "All-Genz Medimatch Recruit LLC",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@all-genz.net",
+      "subject": "How All-Genz Medimatch Recruit LLC handles certified payroll",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    }
+  ],
+  "generated_at": "2026-09-03T20:21:56Z"
+}

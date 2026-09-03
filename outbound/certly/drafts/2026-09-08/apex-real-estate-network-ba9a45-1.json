@@ -1,0 +1,41 @@
+{
+  "app": "certly",
+  "date": "2026-09-08",
+  "org_id": "apex-real-estate-network-ba9a45",
+  "name": "Apex Real Estate Network",
+  "segment": "residential property management",
+  "sequence": "plain-intro",
+  "step": 1,
+  "step_file": "01-initial.md",
+  "route_type": "mailbox",
+  "to": "contact@apexaz.com",
+  "form_url": "",
+  "from_name": "[SENDER NAME PLACEHOLDER - set OUTBOUND_FROM_NAME]",
+  "from_address": "[SENDER ADDRESS PLACEHOLDER - set OUTBOUND_FROM_ADDRESS]",
+  "reply_to": "[SENDER ADDRESS PLACEHOLDER - set OUTBOUND_FROM_ADDRESS]",
+  "subject": "How Apex Real Estate Network chases certificates of insurance",
+  "text": "Hello,\n\nI have you down as a residential property management in Tucson, Arizona,\nwhich is why this is going to you rather than to a list.\n\nI am building Certly: it reads an ACORD 25 certificate of insurance,\npulls out the limits, the dates and the endorsements, and tells you what\nis missing or expiring before somebody walks on site without cover.\n\nBeing straight with you: Certly is new, it has no track record I can\npoint at, and I am not going to invent one.\n\nWhat would help me is fifteen minutes on how you handle it today: who\nchases the renewals, what you do when a certificate arrives short, and\nwhat you would refuse to change. If that is not worth your time, a no\ncloses it and I will not chase.\n\n--\nCertly, a TheVillage company\nTheVillage - [PHYSICAL ADDRESS PLACEHOLDER - set OUTBOUND_POSTAL_ADDRESS]\n\nYou are getting this one-off business email at an address published on your\norganisation's own website. Reply STOP and I will delete your details and not\ncontact you again, through this or any other channel.\nUnsubscribe: [UNSUBSCRIBE URL PLACEHOLDER - set OUTBOUND_UNSUBSCRIBE_URL]\n",
+  "html": "<!doctype html>\n<html lang=\"en\">\n<head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"></head>\n<body style=\"margin:0;padding:0;background:#ffffff;\">\n<div style=\"max-width:600px;margin:0 auto;padding:20px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#1a1a1a;\">\n<p style=\"margin:0 0 14px 0;\">Hello,</p>\n<p style=\"margin:0 0 14px 0;\">I have you down as a residential property management in Tucson, Arizona, which is why this is going to you rather than to a list.</p>\n<p style=\"margin:0 0 14px 0;\">I am building Certly: it reads an ACORD 25 certificate of insurance, pulls out the limits, the dates and the endorsements, and tells you what is missing or expiring before somebody walks on site without cover.</p>\n<p style=\"margin:0 0 14px 0;\">Being straight with you: Certly is new, it has no track record I can point at, and I am not going to invent one.</p>\n<p style=\"margin:0 0 14px 0;\">What would help me is fifteen minutes on how you handle it today: who chases the renewals, what you do when a certificate arrives short, and what you would refuse to change. If that is not worth your time, a no closes it and I will not chase.</p>\n<hr style=\"border:none;border-top:1px solid #dddddd;margin:22px 0 12px 0;\">\n<div style=\"font-size:12px;line-height:1.5;color:#666666;\"><p style=\"margin:0 0 14px 0;\">--<br>Certly, a TheVillage company<br>TheVillage - [PHYSICAL ADDRESS PLACEHOLDER - set OUTBOUND_POSTAL_ADDRESS]</p>\n<p style=\"margin:0 0 14px 0;\">You are getting this one-off business email at an address published on your<br>organisation&#x27;s own website. Reply STOP and I will delete your details and not<br>contact you again, through this or any other channel.<br>Unsubscribe: [UNSUBSCRIBE URL PLACEHOLDER - set OUTBOUND_UNSUBSCRIBE_URL]</p></div>\n</div>\n</body>\n</html>\n",
+  "postal_address": "[PHYSICAL ADDRESS PLACEHOLDER - set OUTBOUND_POSTAL_ADDRESS]",
+  "unsubscribe_url": "[UNSUBSCRIBE URL PLACEHOLDER - set OUTBOUND_UNSUBSCRIBE_URL]",
+  "send_at_local": "2026-09-08 09:00",
+  "send_at_utc": "2026-09-08 16:00Z",
+  "timezone": "MT",
+  "personalisation": {
+    "location": "Tucson, Arizona",
+    "city": "Tucson",
+    "state": "Arizona",
+    "segment": "residential property management",
+    "source_list": "the Expertise.com property management listings",
+    "opening": "I have you down as a residential property management in Tucson, Arizona"
+  },
+  "generated_at": "2026-09-03T20:21:56Z",
+  "checks": {
+    "blocking": [
+      "from_address_missing",
+      "postal_address_missing",
+      "unsubscribe_url_missing"
+    ],
+    "warnings": []
+  }
+}

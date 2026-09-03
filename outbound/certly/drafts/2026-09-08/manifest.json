@@ -1,0 +1,282 @@
+{
+  "app": "certly",
+  "workbook": "customers",
+  "date": "2026-09-08",
+  "counts": {
+    "drafts": 20,
+    "mailbox": 7,
+    "form": 13,
+    "blocking": 20,
+    "warnings": 5,
+    "failed": 0
+  },
+  "blocking_reasons": [
+    "from_address_missing",
+    "postal_address_missing",
+    "unsubscribe_url_missing"
+  ],
+  "failures": [],
+  "drafts": [
+    {
+      "org_id": "1st-choice-realty-group-llc-d827b3",
+      "name": "1st Choice Realty Group, LLC",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "webmaster@1stchoicerealtygroupllc.com",
+      "subject": "How 1st Choice Realty Group, LLC chases certificates of insurance",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "apex-real-estate-network-ba9a45",
+      "name": "Apex Real Estate Network",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "contact@apexaz.com",
+      "subject": "How Apex Real Estate Network chases certificates of insurance",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "kay-group-properties-2d6bd2",
+      "name": "Kay Group Properties",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "contact@kaygroupproperties.com",
+      "subject": "How Kay Group Properties chases certificates of insurance",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "marshall-construction-company-ltd-532d4a",
+      "name": "Marshall Construction Company, Ltd.",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "bids@marshallconstruction.net",
+      "subject": "How Marshall Construction Company, Ltd. chases certificates of insurance",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "paradigm-construction-2e2bb4",
+      "name": "Paradigm Construction",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@pcc-tx.com",
+      "subject": "How Paradigm Construction chases certificates of insurance",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "prime-contractors-inc-4a17a1",
+      "name": "Prime Contractors, Inc.",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "estimating@primecontractorsinc.com",
+      "subject": "How Prime Contractors, Inc. chases certificates of insurance",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "swalling-general-contractors-llc-8965ce",
+      "name": "Swalling General Contractors LLC",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "contact@sgcak.com",
+      "subject": "How Swalling General Contractors LLC chases certificates of insurance",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "180-self-storage-f4f9bc",
+      "name": "180 Self-Storage",
+      "step": 1,
+      "route_type": "form",
+      "to": "https://www.180selfstorage.com/",
+      "subject": "How 180 Self-Storage chases certificates of insurance",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "33rd-company-inc-819b68",
+      "name": "33rd Company, Inc.",
+      "step": 1,
+      "route_type": "form",
+      "to": "https://www.33rdcompany.com/",
+      "subject": "How 33rd Company, Inc. chases certificates of insurance",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "360-community-management-20dbb5",
+      "name": "360 Community Management",
+      "step": 1,
+      "route_type": "form",
+      "to": "https://www.360hoa.com",
+      "subject": "How 360 Community Management chases certificates of insurance",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "360-properties-llc-576de9",
+      "name": "360 Properties, LLC",
+      "step": 1,
+      "route_type": "form",
+      "to": "https://www.cedarparkpropertymanagement.com/contact",
+      "subject": "How 360 Properties, LLC chases certificates of insurance",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "4-degrees-bb84e0",
+      "name": "4 Degrees",
+      "step": 1,
+      "route_type": "form",
+      "to": "https://4degrees.com/contact/",
+      "subject": "How 4 Degrees chases certificates of insurance",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "5150-community-management-65f332",
+      "name": "5150 Community Management",
+      "step": 1,
+      "route_type": "form",
+      "to": "https://5150communitymanagement.com/",
+      "subject": "How 5150 Community Management chases certificates of insurance",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "901-real-estate-services-540ae9",
+      "name": "901 Real Estate Services",
+      "step": 1,
+      "route_type": "form",
+      "to": "https://901res.com/contact-us/",
+      "subject": "How 901 Real Estate Services chases certificates of insurance",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "a-association-accounting-aa1c21",
+      "name": "A+ Association Accounting",
+      "step": 1,
+      "route_type": "form",
+      "to": "https://www.hoaliving.com/aplus-hoa-management/",
+      "subject": "How A+ Association Accounting chases certificates of insurance",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "a-r-k-hoa-management-llc-d64cc4",
+      "name": "A.R.K. HOA Management, LLC",
+      "step": 1,
+      "route_type": "form",
+      "to": "https://www.ark-management.com",
+      "subject": "How A.R.K. HOA Management, LLC chases certificates of insurance",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "aaaa-self-storage-management-76ea12",
+      "name": "AAAA Self Storage Management",
+      "step": 1,
+      "route_type": "form",
+      "to": "https://packedplanet.com/full-service-management/",
+      "subject": "How AAAA Self Storage Management chases certificates of insurance",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "aberdeen-management-development-1371bc",
+      "name": "Aberdeen Management & Development",
+      "step": 1,
+      "route_type": "form",
+      "to": "http://www.aberdeenmgmt.com/home.html",
+      "subject": "How Aberdeen Management & Development chases certificates of insurance",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "ability-realty-ec4f41",
+      "name": "Ability Realty",
+      "step": 1,
+      "route_type": "form",
+      "to": "https://tucsonrealestatebroker.com/contact-us/",
+      "subject": "How Ability Realty chases certificates of insurance",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "accent-realtors-5fe486",
+      "name": "Accent Realtors",
+      "step": 1,
+      "route_type": "form",
+      "to": "https://www.accentrealtors.com/contact",
+      "subject": "How Accent Realtors chases certificates of insurance",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    }
+  ],
+  "generated_at": "2026-09-03T20:21:56Z"
+}
