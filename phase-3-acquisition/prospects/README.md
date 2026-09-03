@@ -17,6 +17,44 @@ One directory per app (Certly has two, one per buyer). Each holds:
 
 `staylegal/` also carries `cities.csv`, a map of US jurisdictions with a short-term-rental permit regime.
 
+## Counts (2026-09-03, all nine lists validated with zero problems)
+
+| list | rows | end-customer | partner | channel | excluded | verified |
+|---|---:|---:|---:|---:|---:|---:|
+| wagelens | 10,749 | 10,295 | 391 | 42 | 21 | 10,539 |
+| dutylens | 2,318 | 1,826 | 438 | 30 | 24 | 1,430 |
+| clausewright | 1,259 | 0 (by rule) | 914 | 321 | 24 | 728 |
+| certly-pm | 1,100 | 977 | 70 | 37 | 16 | 363 |
+| staylegal | 1,037 | 769 | 118 | 128 | 22 | 472 |
+| stateready | 874 | 641 | 162 | 58 | 13 | 155 |
+| recoup | 820 | 700 | 78 | 22 | 20 | 497 |
+| scopeiq | 816 | 635 | 120 | 50 | 11 | 768 |
+| certly-gc | 780 | 601 | 134 | 24 | 21 | 657 |
+| **total** | **19,753** | **16,444** | **2,425** | **712** | **172** | **15,609** |
+
+Plus `staylegal/cities.csv`: 328 US jurisdictions with a short-term-rental permit regime (49 states, 290 with an official ordinance URL, 123 with the fee stated by the source, 118 with a named enforcement vendor).
+
+100 organisations appear in more than one list (table in `INDEX.md`): construction associations, construction CPAs and insurance brokers sit across Certly, WageLens and StateReady; they are the natural first partner conversations because one relationship serves several products.
+
+### Largest gaps, by list (details in each README)
+
+- **clausewright**: Amazon Ads partner directory and Service Provider Network are closed to automation; YouTube creators skipped entirely because every entry is an individual.
+- **dutylens**: every free bill-of-lading directory is blocked or gated, so importers come from CPSC recall records and trade-show exhibitor lists instead; most Amazon aggregator portfolio pages are dead (a market finding).
+- **wagelens**: California DIR public-works registration (the single biggest register) refused every data path; most trade-association chapter directories render client-side.
+- **certly-pm**: CAI national and IREM chapter directories blocked; `narpm.org` is reachable but its chapter list renders client-side.
+- **certly-gc**: CSLB full licence file is a paid download (not ordered); Arizona ROC and ENR regional lists blocked or paywalled.
+- **scopeiq**: RealSelf, Zocdoc and the AmSpa member directory are closed; single-location med spas come from Yellow Pages by metro, so treat them as leads.
+- **staylegal**: VRMA member directory blocked (403 on every path); all six franchise location directories 404.
+- **stateready**: Apex Service Partners (about 107 brands) and Service Experts sit behind Cloudflare; PHCC chapter layer behind an interstitial.
+- **recoup**: CSP Top 202 convenience-store list is subscriber-gated; several fitness, childcare and dental rankings return 403.
+
+### Decisions the founder has to take before outreach
+
+- Harbor Compliance and CSC (stateready) sell multi-state licence tracking and are marked excluded; CSC keeps a partner row for its expediting arm only.
+- Avalara MyLodgeTax (staylegal) is marked excluded because its registration service overlaps the core job; the partner reading is on the row.
+- AmSpa (scopeiq) is both the incumbent and the best channel; recorded as partner and channel, with both readings in notes.
+- Braumiller (dutylens) appears as partner (law firm) and excluded (consulting arm); each row says why.
+
 ## Row types
 
 - **end-customer**: matches the app's ideal customer profile and could buy directly.
