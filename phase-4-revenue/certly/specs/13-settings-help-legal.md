@@ -19,9 +19,9 @@ profile field.
 | section | route | fields |
 |---|---|---|
 | Organisation | `/settings/org` | name, timezone, **certificate-holder entity block** (+ alternate accepted holder strings), logo (used on the M8 upload page and M12 reports) |
-| Team | `/settings/team` | members, roles (owner/editor/viewer), invite by email (magic link), remove |
+| Team | `/settings/team` | members, roles (owner/editor/viewer), invite by email (magic link), remove, and **seats used / seats included** against the plan's `seats` metadata. **This is Must, not `SH-7`** — the pricing cards sell 3/10/25 seats, so a seat limit that nothing enforces is a sold feature that does not exist (REVIEW.md MJ-03). What `SH-7` genuinely defers is *role granularity* and a seat-management UI beyond invite/remove/change-role |
 | Reminders | `/settings/reminders` | ladder, sending name, reply-to, weekly digest day *(detail in M7)* |
-| Notifications | `/settings/notifications` | per-user: weekly digest, review-queue alerts, bounce alerts |
+| Notifications | `/settings/notifications` | per-user: weekly digest, review-queue alerts, bounce alerts. **Two messages are transactional and have no switch**: the trial-ending T−3/T−1 emails (`specs/10` §3.1) and the customer-facing **expiry warning** (`UX.md` §4.1 C4), because the Lapse Watch guarantee is conditioned on our having warned (REVIEW.md MJ-19). The screen says so where the toggles would otherwise be |
 | Billing | `/settings/billing` | *(M10)* |
 | Activity | `/settings/activity` | *(M9)* |
 | Data | `/settings/data` | export everything (ZIP: CSVs + original documents), delete organisation |
@@ -51,17 +51,18 @@ such certificate to review forever, and the customer concludes the product is br
 9. How renewal reminders work, and how to stop them
 10. Sending your vendors an upload link
 11. Exporting a gap report for an owner or auditor
-12. Plans, limits and how "tracked certificates" is counted
+12. Plans, limits and how **tracked vendors** are counted — quoting `specs/10` §2.1's meter sentence
+    verbatim (REVIEW.md B-10)
 
 ## 4. Legal
 
 | page | route | content |
 |---|---|---|
-| Terms | `/legal/terms` | "TheVillage" as the contracting entity, "Certly, a TheVillage company" (PLAN §D1); **an explicit no-insurance-advice clause**; limitation of liability; acceptable use |
+| Terms | `/legal/terms` | "TheVillage" as the contracting entity, "{PRODUCT_NAME}, a TheVillage company" (PLAN §D1); **an explicit no-insurance-advice clause**; limitation of liability; acceptable use; **the standing commitment "We never charge your vendors"**, in those words (REVIEW.md §2.9) |
 | Privacy | `/legal/privacy` | what is collected, why, retention, sub-processors, deletion route, contact |
 | Sub-processors | `/legal/subprocessors` | Vercel (hosting), Neon (database), Anthropic (extraction), Stripe (payments), Resend (email) — each with purpose and data category. A dated table, not prose |
 | DPA (lite) | `/legal/dpa` | downloadable; customer is controller, TheVillage processor |
-| Disclaimers | `/legal/disclaimers` | the three texts from KB §F, canonical, linked from every surface that renders them |
+| Disclaimers | `/legal/disclaimers` | the three texts from KB §F, **canonical**, linked from every surface that renders them. `src/lib/kb/disclaimers.ts` is generated from KB §F.1/§F.2/§F.3 and is the **only** place a disclaimer text is written down; no other document may restate one (REVIEW.md B-12) |
 
 ## 5. Data model
 
@@ -104,7 +105,17 @@ banner shows the date, and I can cancel until then.
 **A6** Given I export org data, Then the ZIP contains vendors, requirements, certificates, comparisons
 and audit events as CSVs, plus every original uploaded document, and M9 records `data.exported`.
 **A7** Given `/legal/subprocessors`, Then all five sub-processors are listed with purpose, data
-category and a "last updated" date.
+category and a "last updated" date. **Vercel's entry covers Blob document storage as well as hosting**
+(REVIEW.md §3); adding a sixth row is a decision, not a config change, which is part of why S3 was not
+chosen at launch.
+**A11** Given `/legal/terms`, Then it contains the sentence "We never charge your vendors" as a
+standing commitment, in the same words used in the hero, in FAQ 4 and in every vendor-facing email
+footer (REVIEW.md §2.9). A promise made in three customer-facing places and absent from the terms is
+how a commitment quietly becomes a marketing line.
+**A12** Given `/settings/team` on Standard, Then it shows seats used against 10, and the 11th
+invitation is refused server-side with the plan named (MJ-03).
+**A13** Given the eleven disclaimer surfaces in KB §F, Then a test renders each and asserts the
+required string is present **verbatim** from `disclaimers.ts` (MJ-06, B-12).
 **A8** Given `/help`, Then all 12 articles are present and searchable, and article 3 explains the
 additional-insured distinction with the ACORD 25 wording quoted.
 **A9** Given the contact form, Then the sender gets an auto-response naming the expected response time,
@@ -145,6 +156,10 @@ re-evaluation trigger.
 Integration (PGlite): invitation single-use and expiry; last-owner protection; deletion scheduling and
 cancellation; export ZIP contents.
 Content: a test asserts all 12 help articles exist, are non-empty, and that every disclaimer string in
-`src/lib/kb/disclaimers.ts` appears verbatim on its five required surfaces (KB §F.3) — the disclaimers
-are load-bearing and must not be able to silently disappear in a refactor.
+`src/lib/kb/disclaimers.ts` appears verbatim on **each of its eleven required surfaces** (KB §F) — the
+disclaimers are load-bearing and must not be able to silently disappear in a refactor. A second test
+asserts the **only** definition of each disclaimer text in the repo is `disclaimers.ts` (a grep for a
+near-duplicate string fails the build — REVIEW.md B-12), and a third asserts no redacted corpus name
+from `evals/redacted-names.json` appears in any help article or marketing string (`specs/03` §15.3,
+MJ-20).
 e2e: invite → accept → role change → viewer refused an upload; request deletion → banner → cancel.

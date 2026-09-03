@@ -10,16 +10,26 @@
 **Activation is the number that decides this business** (`THRESHOLDS.md` §1). Leaving the core loop to
 be discovered is how a good product dies at 12% activation.
 
-## 2. Definition of activated
+## 2. Definition of activated — **canonical, one definition, one event name**
 
 > **`activated` = the org has completed one comparison against a real certificate.**
 
 Precisely: an org where at least one `comparisons` row exists whose `certificateId` refers to a
-document the org uploaded (not a sample), with `status != 'needs_review'`. Emitted **once per org**,
-with `minutes_from_signup`.
+document **the org uploaded** (not a sample), whose extraction is out of `needs_review`. Emitted
+**once per org, by the comparison job, never by the UI**, with `minutes_from_signup`.
 
-This definition is chosen because it is the first moment the customer has seen the thing they came for:
-a verdict on a real document of theirs. Signing up is not activation. Adding vendors is not activation.
+This definition is chosen because it is the first moment the customer has seen the thing they came
+for: a verdict on a real document of theirs. Signing up is not activation. Adding vendors is not
+activation.
+
+**This section is the single definition of activation in the whole folder (REVIEW.md B-05, §2.3).**
+Three others existed and are retired here:
+
+| retired | where it was | why it loses |
+|---|---|---|
+| *"certificate processed **and** template saved **and** one gap surfaced **and** one chase sent"* | `OFFER.md` §9, `LANDING_SPEC.md` §11 | one of its four conditions — that a gap must **exist** — is not under our control and is the very thing `THRESHOLDS.md` §6 sets out to measure (`activated.gaps_found`). A customer with a clean portfolio would count as a failed activation: a self-inflicted STOP. It survives, renamed, as the **trial health checklist** (`OFFER.md` §9) — a good day-7 instrument that is not the activation metric |
+| `first_status_rendered` | `UX.md` §1.2, §2.2 S19, §7 | a UI event. Activation is a fact about the data, not about which screens someone visited (§5) |
+| `trial_start` → `activated` → `paid` | `LANDING_SPEC.md` §11 | a fourth set of names for events the specs already name. Corrected to the registry in [`specs/00-event-vocabulary.md`](00-event-vocabulary.md) |
 
 ## 3. Flow
 
@@ -113,7 +123,14 @@ emitted **after** review completes — never before.
 intact.
 **A8** Given an org that never uploads a certificate, Then `activated` is never emitted **and the org is
 not counted as activated in admin metrics** — no partial credit.
-**A9** Given step 6, Then the §F.1 disclaimer is present, adjacent to the finding.
+**A8b** Given an org whose first certificate produces **zero gaps**, Then `activated` is still emitted
+— a clean portfolio is an activation, not a failure (§2).
+**A8c** Given a trialing org on Standard, Then it may import 150 vendors during step 4 and no
+25-vendor cap exists anywhere in the code (MJ-09).
+**A9** Given step 6, Then the §F.1 disclaimer is present **verbatim**, adjacent to the finding
+(one of the eleven surfaces in KB §F).
+**A10** Given step 6 offers Checkout, Then the CTA reads "Start 14-day trial" with
+"Card required. No charge until {date}. Cancel in one click." adjacent (`specs/10` §3.1).
 
 ## 9. Edge cases
 
@@ -124,7 +141,7 @@ not counted as activated in admin metrics** — no partial credit.
 | First certificate is unreadable/rejected | step 6 shows the rejection plainly and offers another; **do not** dead-end the funnel |
 | Second user joins an already-activated org | no onboarding; straight to the dashboard |
 | Customer pastes 500+ vendors | import the first 500, offer the CSV importer for the rest |
-| Trial cap (25 vendors) hit during step 4 | import up to the cap, show the paywall in context (M10 §A9) |
+| Free-onboarding allowance (25 vendors, 3 documents) hit during step 4 | import up to the allowance, show the paywall in context with the count named (`specs/10` §8.1 / §A13). **There is no 25-vendor cap on a paying or trialing org** — the trial runs at the chosen tier's 50/150/400 (REVIEW.md MJ-09) |
 
 ## 10. Errors
 

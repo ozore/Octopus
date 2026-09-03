@@ -75,7 +75,7 @@ export const documents = pgTable('documents', {
   orgId:       uuid('org_id').notNull().references(() => organisations.id),
   vendorId:    uuid('vendor_id').references(() => vendors.id),      // null until matched (SH-1)
   kind:        text('kind').notNull(),                              // 'coi' | 'endorsement' | 'other'
-  storageKey:  text('storage_key').notNull(),
+  storageKey:  text('storage_key').notNull(),                        // DocumentStore key, never a URL (REVIEW.md §3)
   mime:        text('mime').notNull(),
   bytes:       integer('bytes').notNull(),
   pageCount:   integer('page_count'),
@@ -87,11 +87,16 @@ export const documents = pgTable('documents', {
   uploadedAt:  timestamp('uploaded_at', { withTimezone: true }).notNull().defaultNow(),
 }, t => ({ orgSha: uniqueIndex('documents_org_sha').on(t.orgId, t.sha256) }));   // dedupe per org
 
-// extractions — one model run over one document
+// extractions — one model run over one document.
+// documentId and orgId are NULLABLE so that the anonymous Free Gap Report (M15) can reuse this
+// table and therefore the one eval pipeline. Exactly one of documentId / gapReportDocumentId is
+// set, enforced by a CHECK constraint; orgId is null on, and only on, the gap-report path
+// (REVIEW.md B-08).
 export const extractions = pgTable('extractions', {
   id:            uuid('id').primaryKey().defaultRandom(),
-  documentId:    uuid('document_id').notNull().references(() => documents.id),
-  orgId:         uuid('org_id').notNull().references(() => organisations.id),
+  documentId:    uuid('document_id').references(() => documents.id),               // null on the M15 path
+  gapReportDocumentId: uuid('gap_report_document_id').references(() => gapReportDocuments.id), // null on the org path
+  orgId:         uuid('org_id').references(() => organisations.id),                // null on the M15 path
   status:        text('status').notNull(),      // 'pending'|'running'|'needs_review'|'ready'|'rejected'|'failed'
   model:         text('model').notNull(),       // stamped, never inferred (ADR-101 discipline)
   schemaVersion: text('schema_version').notNull(),
@@ -104,7 +109,12 @@ export const extractions = pgTable('extractions', {
   durationMs:    integer('duration_ms'),
   failureReason: text('failure_reason'),
   createdAt:     timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-});
+}, t => ({
+  // exactly one owner, always
+  oneOwner: check('extractions_one_owner', sql`
+    (document_id IS NOT NULL AND org_id IS NOT NULL AND gap_report_document_id IS NULL)
+ OR (document_id IS NULL     AND org_id IS NULL     AND gap_report_document_id IS NOT NULL)`),
+}));
 
 // field_corrections — every human edit. The audit trail AND the eval pipeline.
 export const fieldCorrections = pgTable('field_corrections', {
@@ -127,7 +137,8 @@ export const certificates = pgTable('certificates', {
   vendorId:         uuid('vendor_id').notNull().references(() => vendors.id),
   documentId:       uuid('document_id').notNull().references(() => documents.id),
   extractionId:     uuid('extraction_id').notNull().references(() => extractions.id),
-  formEdition:      text('form_edition'),          // '2010/05'|'2014/01'|'2016/03'|'unknown'
+  formEdition:      text('form_edition'),          // '2010/05'|'2014/01'|'2016/03'|'2025/12'|'unknown'
+                                                  // 2025/12 is the CURRENT edition (KB §A.2, REVIEW.md B-01)
   certificateDate:  date('certificate_date'),
   insuredName:      text('insured_name'),
   certificateHolder:text('certificate_holder'),
@@ -154,7 +165,10 @@ export const coverages = pgTable('coverages', {
 export const coverageLimits = pgTable('coverage_limits', {
   id: uuid('id').primaryKey().defaultRandom(),
   coverageId: uuid('coverage_id').notNull().references(() => coverages.id),
-  label: text('label').notNull(),                  // closed set, KB §A.3
+  label: text('label').notNull(),                  // closed set, KB §A.3 — collapses to 'other' when unlisted
+  labelRaw: text('label_raw').notNull(),           // the printed label, ALWAYS kept (REVIEW.md MJ-18).
+                                                   // Without it a Professional-Liability or Cyber row in an
+                                                   // OTHER: block loses the only string M5 §3 can match on.
   amount: bigint('amount', { mode: 'number' }),    // null when the box is not a number
   raw: text('raw').notNull(),                      // ALWAYS the printed characters
 });
@@ -213,6 +227,10 @@ uploads never do — a customer watching a spinner is not a batch job.
 
 ## 6. The JSON Schema
 
+> **This section is an abridged, NON-NORMATIVE reading copy. The committed file
+> [`specs/schema/coi.v1.schema.json`](schema/coi.v1.schema.json) is the schema.** Where the two
+> disagree, the committed file wins and this section is the bug (REVIEW.md MJ-15).
+
 `schema_version: "coi.v1"`. Structured outputs require `additionalProperties: false` and every property
 in `required`; optionality is expressed as a nullable `value`, never as an absent key.
 
@@ -241,15 +259,18 @@ Top level:
 ```jsonc
 {
   "type": "object", "additionalProperties": false,
-  "required": ["document_kind","form_edition","certificate_date","producer","insured",
-               "insurers","coverages","description_of_operations","certificate_holder",
-               "authorized_representative_present","acord_101_attached","notes"],
+  "required": ["schema_version","document_kind","form_edition","certificate_date","producer","insured",
+               "insurers","coverages","description_of_operations","endorsement_forms_mentioned",
+               "certificate_holder","authorized_representative_present","acord_101_attached","notes"],
   "properties": {
+
+    "schema_version": { "type": "string", "const": "coi.v1" },
 
     "document_kind": { "type": "string",
       "enum": ["acord_25","acord_27_or_28","endorsement","other","unreadable"] },
 
-    "form_edition": { "type": "string", "enum": ["2010/05","2014/01","2016/03","unknown"] },
+    "form_edition": { "type": "string",
+      "enum": ["2010/05","2014/01","2016/03","2025/12","unknown"] },   // 2025/12 is CURRENT — KB §A.2
 
     "certificate_date": { "$ref": "#/$defs/DateField" },
 
@@ -297,8 +318,10 @@ Top level:
           "wc_officer_excluded":   { "$ref": "#/$defs/StringField" },  // 'Y'|'N'|'N/A'|null
           "limits": { "type": "array", "maxItems": 12,
             "items": { "type": "object", "additionalProperties": false,
-              "required": ["label","amount"],
+              "required": ["label","label_raw","amount"],
               "properties": {
+                "label_raw": { "$ref": "#/$defs/StringField",
+                               "description": "the printed limit label, e.g. 'PROFESSIONAL LIAB. EACH CLAIM'" },
                 "label":  { "type": "string", "enum": [
                    "each_occurrence","damage_to_rented_premises","med_exp","personal_and_adv_injury",
                    "general_aggregate","products_comp_op_agg","combined_single_limit",
@@ -402,9 +425,34 @@ noise and then becomes ignored, which is strictly worse than no review at all.
 
 ## 9. Server actions / API
 
+**Storage decision (REVIEW.md §3, closing `product/CLAUDE.md` OQ-6): Vercel Blob, behind a
+`DocumentStore` interface in `packages/platform`, with browser-direct uploads.**
+
+```ts
+// packages/platform/src/storage/document-store.ts — the ONLY storage contract in the codebase
+interface DocumentStore {
+  put(key: string, bytes: Uint8Array, mime: string): Promise<void>;
+  signedUrl(key: string, ttlSeconds: number): Promise<string>;
+  get(key: string): Promise<Uint8Array>;
+  delete(key: string): Promise<void>;
+}
+// VercelBlobStore at launch. An S3Store is written only when total storage passes ~500 GB or
+// egress becomes a visible line. Nothing above this interface knows which is in use.
+// Neon never holds document bytes — only `documents.storageKey`.
+```
+
+**Why the upload is not a multipart POST.** A Vercel Function caps the *request body* far below our
+20 MB validation limit (4.5 MB at the time of writing), so every phone photo from an agent
+(`specs/08`) and every multi-file gap-report session (`specs/15`) would fail at the platform, not at
+our validator (REVIEW.md MJ-17). All three upload paths therefore use the **client-upload flow**: the
+browser asks a route handler for a short-lived upload token, PUTs the bytes straight to Blob, and the
+server receives only the blob reference. **Wave 2 re-verifies the current platform body limit at build
+time and records the measured number here with its date.**
+
 | surface | signature | notes |
 |---|---|---|
-| `POST /api/upload` (route handler) | `(orgId, vendorId?, file) → { documentId }` | multipart; validates mime ∈ {pdf, jpeg, png, heic}, bytes ≤ 20 MB, pages ≤ 25; computes sha256; **returns the existing document on a per-org sha collision** rather than re-billing a model call |
+| `POST /api/upload/token` (route handler) | `(orgId, vendorId?, {filename, mime, bytes}) → { uploadUrl, token, key }` | entitlement-checked, org-scoped, rate-limited; validates mime ∈ {pdf, jpeg, png, heic} and `bytes ≤ 20 MB` **before** issuing a token; the token is single-use, scoped to one key, and expires in 60 seconds |
+| `POST /api/upload/complete` (route handler) | `(key, sha256) → { documentId }` | the browser reports the blob reference after the PUT; the server re-reads the object's size and content type from Blob (never trusting the client), computes/verifies sha256, counts pages, writes `documents`, enqueues extraction; **returns the existing document on a per-org sha collision** rather than re-billing a model call. An orphaned blob with no `documents` row is swept by a daily job. |
 | `extractDocument` (job handler) | `({ documentId }) → void` | steps 1–7 of §2; idempotent on `documentId` |
 | `getExtraction` (server action) | `(extractionId) → ExtractionView` | org-scoped; strips nothing — the review UI needs `raw`, `page`, `source_text`, `gate` |
 | `correctField` (server action) | `(extractionId, path, value) → ExtractionView` | writes `field_corrections`, writes an `audit_events` row, recomputes `doc_confidence`, **does not** re-run the model |
@@ -421,7 +469,7 @@ adapter** (the `app/` composition-root rule).
 | rule | on failure |
 |---|---|
 | mime ∈ {`application/pdf`, `image/jpeg`, `image/png`, `image/heic`} | 415, named message |
-| bytes ≤ 20 MB | 413 |
+| bytes ≤ 20 MB | token refused with 413 before the PUT, and re-checked from the stored object's own size at `complete` |
 | pages ≤ 25 | 422, "this looks like a package — upload the certificate page" |
 | PDF is not encrypted/password-protected | 422, named message (the API rejects these) |
 | sha256 unique per org | returns the existing document, emits `coi_duplicate_detected` |
@@ -495,7 +543,13 @@ billed**.
 
 **A10 — the disclaimer**
 Given any certificate detail screen in any state,
-Then the §F.1 and §F.3 disclaimers are present in the DOM.
+Then the §F.1 and §F.3 disclaimers are present in the DOM, **verbatim** from
+`src/lib/kb/disclaimers.ts` (KB §F.1/§F.3 are the only place a disclaimer text is written —
+REVIEW.md B-12), and the screen is one of the eleven surfaces enumerated in KB §F.
+
+**A11 — the edition**
+Given `wisdot-insurance-cert-example-acord25-2016-03.pdf`, Then `form_edition = "2016/03"`; given the
+blank **ACORD 25 (2025/12)** fixture (G17), Then `form_edition = "2025/12"` and **not** `"unknown"`.
 
 ---
 
@@ -505,7 +559,7 @@ Then the §F.1 and §F.3 disclaimers are present in the DOM.
 |---|---|
 | Certificate page is page 7 of a 16-page package (C8, C9) | extract from whichever page carries the ACORD 25; `page` values are **absolute** in the uploaded file |
 | Two ACORD 25s in one upload | extract the **first**, set `notes`, and offer "this file contains more than one certificate — split it?" |
-| Reviewer annotations printed on the form (C7) | annotations are not certificate data; if they land in a field, the quote gate passes (they *are* on the page) but the value will be wrong — this is a **known limitation**, covered by golden-set fixture G8 and by review |
+| Reviewer annotations printed on the form (C7) | annotations are not certificate data; if they land in a field, the quote gate passes (they *are* on the page) but the value will be wrong — this is a **known limitation**, covered by golden-set fixture G3 and by review |
 | Rotated / upside-down page | auto-rotate before the call (`pdf` page `/Rotate`, EXIF for images) |
 | Coverage row with no limits at all | keep the row, empty `limits`; M5 treats missing limits as `gap`, not `met` |
 | `OTHER:` row (Professional, Cyber, Pollution — C6) | `type: 'other'` with `type_label_raw` preserved; M5 matches on the label only if the template names it |
@@ -558,42 +612,96 @@ from the real `usage` object, never from a model of it.
 - date parsing: `04/22/16`, `04/22/2016`, `4/22/16`, `2016-04-22`; a two-digit year ≥ 70 is 19xx
 - rejection: ACORD 27 fixture, 0-byte file, 40 MB file, encrypted PDF
 
-**Golden-set eval (blocking in CI, recorded responses)** — 20 fixtures, `src/lib/extract/evals/`:
+**Golden-set eval (blocking in CI, recorded responses)** — `src/lib/extract/evals/`.
 
-| # | fixture (from `kb-samples/certificates/`) | asserts |
-|---|---|---|
-| G1 | `wisdot-insurance-cert-example-acord25-2016-03.pdf` | current edition, single insurer, full field sweep |
-| G2 | `OSFL-coi-sample.pdf` | 2014/01; `Excluded`; `$100,000 SIR` |
-| G3 | `durham-county-sample-coi-consultant-contractor.pdf` | 2010/05 layout |
-| G4 | `Sample-COI-Vendors-08-03-2020.pdf` | scan; gate `skipped`; 6 coverage rows incl. two `other` |
-| G5 | `story-county-ia-coi.pdf` | multi-insurer; blanket wording; `CG2001`/`CG2404`/`RSCG0303`; conditional |
-| G6 | `temecula-ca-sample-insurance-certificate.pdf` | `CG 20 37 04 13`; `WC 99 04 10` variant |
-| G7 | `los-alamitos-ca-coi-sample.pdf` | cert + 5 endorsement pages; `context: attached_endorsement_page` |
-| G8 | `durham-county-sample-coi-consultant-contractor.pdf` (annotated) | reviewer annotations are not read as field values |
-| G9 | `riverside-ca-risk-management-sample-coi.pdf` | `CG 20 01` + `CG 24 04` + `WC 00 03 13` bundle |
-| G10 | `nyc-dycd-insurance-sample-package25.pdf` | certificate on page *n* of 17; absolute page numbers |
-| G11 | `nyc-dycd-fy2023-proof-of-insurance-sample-package.pdf` | near-duplicate detection |
-| G12 | `essex-county-ny-fairgrounds-sample-cert.pdf` | tenant/venue-shaped requirements; blanket AI |
-| G13 | `tn-suppliers-certificate-of-insurance.pdf` | certificate embedded in a job aid |
-| G14 | `mcgough-subcontractor-sample-coi-exhibit-b.pdf` | 2010/05 inside a GC exhibit |
-| G15 | `idaho-iceworld-coi-sample.pdf` | embedded in guidance text |
-| G16 | `certificates_how_to_read_and_review_with_acord_forms.pdf` | embedded, 2016/03 |
-| G17 | synthetic: ACORD 27 | **must reject** |
-| G18 | synthetic: 0-byte file | must reject |
-| G19 | synthetic: 40 MB PDF | must reject before the model call |
-| G20 | synthetic: injection in Description of Operations | A6 |
+> **The golden set does not exist yet, and nothing in M4 can be measured until it does.**
+> Hand-labelling the expected values is a **wave-2 task with a named owner and about two days of
+> work**, and it is a **gate, not a chore** (REVIEW.md MJ-01). Start it on day one, in parallel with
+> everything else: it is the only wave-2 item with a multi-day serial dependency, and no accuracy
+> claim, ship gate or threshold in `THRESHOLDS.md` §4 exists until it is done.
 
-Every fixture carries `provenance: real | synthetic`; the four synthetic ones are adversarial by
-design and are reported separately. **Coverage below 20/20 fails the build.**
+**Membership — 21 fixtures: 16 real documents + 5 synthetic.** This list is canonical;
+`KNOWLEDGE_BASE.md` §D.5 and `THRESHOLDS.md` §4.1 quote it and must not restate it differently.
+
+| # | fixture | provenance | asserts |
+|---|---|---|---|
+| G1 | `wisdot-insurance-cert-example-acord25-2016-03.pdf` (C1) | real | 2016/03, single insurer, full field sweep |
+| G2 | `OSFL-coi-sample.pdf` (C5) | real | 2014/01; `Excluded`; `$100,000 SIR` |
+| G3 | `durham-county-sample-coi-consultant-contractor.pdf` (C7) | real | 2010/05 layout **and** that reviewer annotations printed on the form are not read as field values. **G3 and the former G8 were the same file**; they are now one fixture with both assertions and **one** denominator (REVIEW.md MJ-01) |
+| G4 | `Sample-COI-Vendors-08-03-2020.pdf` (C6) | real | scan; gate `skipped`; 6 coverage rows incl. two `other` with `label_raw` preserved |
+| G5 | `story-county-ia-coi.pdf` (C2) | real | multi-insurer; blanket wording; `CG2001`/`CG2404`/`RSCG0303`; conditional |
+| G6 | `temecula-ca-sample-insurance-certificate.pdf` (C3) | real | `CG 20 37 04 13`; `WC 99 04 10` variant |
+| G7 | `los-alamitos-ca-coi-sample.pdf` (C10) | real | cert + 5 endorsement pages; `context: attached_endorsement_page` |
+| G8 | `riverside-ca-risk-management-sample-coi.pdf` (C11) | real | `CG 20 01` + `CG 24 04` + `WC 00 03 13` bundle |
+| G9 | `nyc-dycd-insurance-sample-package25.pdf` (C8) | real | certificate on page *n* of 17; absolute page numbers |
+| G10 | `nyc-dycd-fy2023-proof-of-insurance-sample-package.pdf` (C9) | real | near-duplicate detection |
+| G11 | `essex-county-ny-fairgrounds-sample-cert.pdf` (C12) | real | tenant/venue-shaped requirements; blanket AI |
+| G12 | `tn-suppliers-certificate-of-insurance.pdf` (C13) | real | certificate embedded in a job aid |
+| G13 | `mcgough-subcontractor-sample-coi-exhibit-b.pdf` (C15) | real | 2010/05 inside a GC exhibit |
+| G14 | `idaho-iceworld-coi-sample.pdf` (C14) | real | embedded in guidance text |
+| G15 | `certificates_how_to_read_and_review_with_acord_forms.pdf` (C4) | real | embedded, 2016/03 |
+| G16 | `nevada-risk-cert-and-endorsement-samples.pdf` (E1) | real | `STATUTORY` in a WC limit box; an endorsement page next to a certificate. **Lives in `kb-samples/endorsements/`, not `certificates/`** — stated here because `KNOWLEDGE_BASE.md` §D.5 previously counted it without saying so |
+| **G17** | `acord25-2025-12-blank.pdf` (C16, **the current edition**) | real, blank | `form_edition = "2025/12"`. A blank form, so it asserts **structure, not values**: the box inventory, the new head paragraph, and that the current edition never falls through to `unknown` (REVIEW.md B-01) |
+| G18 | synthetic: ACORD 27 | synthetic | **must reject** |
+| G19 | synthetic: 0-byte file | synthetic | must reject |
+| G20 | synthetic: 40 MB PDF | synthetic | must reject before the model call |
+| G21 | synthetic: injection in Description of Operations | synthetic | A6 |
+
+**Coverage below 21/21 fails the build.** The five synthetic fixtures are adversarial by design and
+are reported separately; they never enter an accuracy denominator.
+
+### 15.1 The denominator, and why the gate is a count and not a percentage
+
+`THRESHOLDS.md` §4.1's earlier arithmetic — *"16 fixtures × 6 critical fields ≈ 96 critical values"* —
+was an estimate presented as a fact, and it is wrong in both directions (REVIEW.md MJ-02): four
+fixtures are guidance PDFs with one embedded certificate, several certificates have no `ADDL INSD` or
+`SUBR WVD` tick at all, G17 is blank, and G3 covers one document rather than two.
+
+**The rule: a critical value exists in the denominator only if it is printed on the document.** The
+denominator is therefore **computed from the expected-value files, not estimated**, published here by
+the wave-2 owner on the day the labelling finishes, and the gate is expressed as
+**"at most N wrong out of D"** — the same discipline `BACKLOG.md` N10 applies outwards.
+
+```
+D = Σ over G1..G17 of the critical fields actually printed on that document
+    (policy_exp, each_occurrence, general_aggregate, insured.name, addl_insd, subr_wvd)
+N_ship  = floor(D × 0.03)      # ≥97% exact
+N_block = floor(D × 0.05)      # <95% blocks the deploy
+```
+
+`D`, `N_ship` and `N_block` are written into this section and into `THRESHOLDS.md` §4.1 by the golden-set
+owner, with the date. **Until D is published, the ship gate in `THRESHOLDS.md` §4.1 is unrunnable and
+M4 cannot be declared done.**
+
+### 15.2 Expected-value files
+
+One per real fixture at `src/lib/extract/evals/expected/<id>.json`, validating against
+`coi.v1.schema.json`. Each file carries `labelled_by` (agent or person id), `labelled_on` (a date) and
+`reviewed_by` (a second, different id) — the same two-pass discipline `PLAN.md` §A10 requires of every
+regulatory value. A fixture with no expected file is a build failure, not a gap.
+
+### 15.3 The no-real-people rule, enforced by a test rather than a note
+
+`kb-samples/MANIFEST.md` §Licence 3 asserts that no producer contact name, signatory or insured
+principal in the corpus is a real private individual. That assurance is now **also a test**
+(REVIEW.md MJ-20):
+
+- every `producer.contact_name` value in every expected-value file is listed in
+  `evals/redacted-names.json`, and a test asserts that **none of those strings appears** in eval
+  output, in any prompt, in any UI string, in any help article or in any marketing copy in the repo;
+- `KNOWLEDGE_BASE.md` §A.3 already marks the field "never surfaced in prose" — this is what makes it
+  mechanical rather than hoped for;
+- the anonymous Free Gap Report path never stores the field at all (`specs/15` §5, REVIEW.md B-07).
 
 **Gates that block the deploy:**
-1. **critical-field exactness ≥ 97%** over G1–G16 — `policy_exp`, `each_occurrence`,
-   `general_aggregate`, `insured.name`, `addl_insd`, `subr_wvd`
-2. **all-field accuracy ≥ 92%**
+1. **critical-field exactness: at most `N_ship` wrong out of `D`** over G1–G17 — `policy_exp`,
+   `each_occurrence`, `general_aggregate`, `insured.name`, `addl_insd`, `subr_wvd`
+2. **all-field accuracy ≥ 92%**, reported per field with its own denominator
 3. **no regression** on any previously-correct critical field
 4. quote-gate invariant test passes
-5. rejection tests G17–G19 pass
-6. injection test G20 passes
+5. rejection tests G18–G20 pass
+6. injection test G21 passes
+7. the redacted-names test in §15.3 passes
 
 Results are reported as a **per-field table**, never a single average (a single number hides that
 `policy_exp` is the field the whole product turns on).

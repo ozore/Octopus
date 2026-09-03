@@ -48,7 +48,9 @@ vendors {
   contactEmail: citext,               // A BUSINESS MAILBOX THE CUSTOMER ENTERED. See §6.
   contactLabel: text,                 // e.g. "office", "accounts" — never a person's name
   externalRef: text,                  // their own vendor id, carried through exports
-  status: text,                       // derived cache: 'covered'|'asserted_only'|'expiring'|'gap'|'expired'|'no_certificate'
+  status: text,                       // derived cache of M5's vendor state, canonical list in specs/05 §2:
+                                      // 'meets'|'asserted_only'|'expiring'|'gap'|'expired'|'no_certificate'
+                                      // ('covered' is retired — REVIEW.md B-02)
   earliestRequiredExpiry: date,       // derived cache from the active comparison
   remindersPaused: boolean default false,
   archivedAt: timestamp,
@@ -60,7 +62,8 @@ csvImports {
   id, orgId, userId, filename, bytes, rowCount,
   mapping: jsonb, createdCount, updatedCount, skippedCount,
   status: 'parsing'|'mapping'|'importing'|'done'|'failed',
-  errorsCsvKey: text, createdAt
+  errorsCsvKey: text, createdAt      // a DocumentStore key (Vercel Blob behind the interface in
+                                     // specs/03 §9, REVIEW.md §3) — never a URL, never bytes in Neon
 }
 ```
 
@@ -85,9 +88,10 @@ written by hand.
 |---|---|
 | `name` | required, 1–200 chars, trimmed |
 | `contactEmail` | optional but **strongly prompted**: without it M7 cannot chase, which is half the product. Valid shape, ≤ 254 chars |
+| tier limit | every create/import path checks `getEntitlements` (`specs/10` §8) **before** writing. An import at the cap fills to the limit and reports the remainder (`specs/10` §A10); an org with **no subscription** may create vendors up to the free-onboarding allowance in `specs/10` §8 |
 | `vendorTypeId` | must belong to the org |
 | `externalRef` | ≤ 100 chars |
-| CSV file | ≤ 5 MB, ≤ 5,000 rows, UTF-8/UTF-16/Latin-1 sniffed, BOM stripped, `,`/`;`/tab sniffed |
+| CSV file | ≤ 5 MB, ≤ 5,000 rows, UTF-8/UTF-16/Latin-1 sniffed, BOM stripped, `,`/`;`/tab sniffed. A 5 MB CSV is under the platform request-body limit, so this one path may stay a normal POST; the **error CSV** comes back as a signed `DocumentStore` URL, not as a response body |
 | CSV row | a row missing `name` is **skipped with a reason**, never silently dropped and never allowed to abort the import |
 
 **Personal-data rule, binding.** `contactEmail` is a mailbox the customer types in. Certly never
@@ -110,7 +114,8 @@ existing vendor (never duplicates), and the result counts it under `updated`.
 **A6** Given I archive a vendor, Then it disappears from the dashboard, its certificates and audit
 history remain, and its scheduled reminders are cancelled.
 **A7** Given a vendor with no `contactEmail`, When I view it, Then a persistent prompt explains that
-Certly cannot chase renewals for this vendor until a mailbox is added.
+Certly cannot chase renewals for this vendor until a mailbox is added, and the §F.1 disclaimer is
+present on the vendor detail screen (one of the eleven surfaces in KB §F — REVIEW.md MJ-06).
 **A8** Given 5,001 rows, Then the import is refused before parsing with a clear message.
 
 ## 8. Edge cases

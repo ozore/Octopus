@@ -13,7 +13,7 @@ lies to a customer**, plus the policy that keeps them right:
 | **C** | Endorsement-form glossary — what each form actually proves | `src/lib/kb/endorsements.json` | "additional insured: yes" is asserted from a checkbox that proves nothing |
 | **D** | Extraction prompt design + eval plan | `src/lib/extract/prompt.ts`, `src/lib/extract/evals/` | every prompt change is a coin flip |
 | **E** | Refresh policy | `kb:check` in CI + a quarterly review routine | the KB rots and nobody notices |
-| **F** | Disclaimers | `src/lib/kb/disclaimers.ts`, rendered on 5 named surfaces | we are read as giving coverage advice |
+| **F** | Disclaimers | `src/lib/kb/disclaimers.ts`, rendered on **11** named surfaces | we are read as giving coverage advice |
 
 **Standing rule (PIPELINE):** every value in §B and §C carries `source_url`, `last_verified`,
 `verified_by` and `confidence`. A limit or a form meaning without a fetched URL and a date does not ship.
@@ -51,15 +51,33 @@ checkbox alone is selling false comfort, and saying so out loud is the sharpest 
 |---|---|---|---|
 | 2010/05 | `ACORD 25 (2010/05)` `© 1988-2010` | C6, C7, C15 | WC box reads `WC STATU-TORY LIMITS`; auto rows `ALL OWNED AUTOS` / `HIRED AUTOS` / `NON-OWNED AUTOS`; `IMPORTANT` says "the policy(ies) **must be endorsed**"; no `OTHER:` row under auto |
 | 2014/01 | `ACORD 25 (2014/01)` `© 1988-2014` | C5, C8, C9 | WC box becomes `PER STATUTE / OTH-ER`; `OTHER:` row added; auto rows unchanged from 2010/05 |
-| **2016/03 (current)** | `ACORD 25 (2016/03)` `© 1988-2015` | C1, C2, C3, C4 | Auto rows become `OWNED AUTOS ONLY` / `SCHEDULED AUTOS` / `HIRED AUTOS ONLY` / `NON-OWNED AUTOS ONLY`; `IMPORTANT` gains "**must have ADDITIONAL INSURED provisions or** be endorsed" |
+| 2016/03 *(still in wide circulation)* | `ACORD 25 (2016/03)` `© 1988-2015` | C1, C2, C3, C4 | Auto rows become `OWNED AUTOS ONLY` / `SCHEDULED AUTOS` / `HIRED AUTOS ONLY` / `NON-OWNED AUTOS ONLY`; `IMPORTANT` gains "**must have ADDITIONAL INSURED provisions or** be endorsed" |
+| **2025/12 (CURRENT)** | `ACORD 25 (2025/12)` `© 1988-2025` | **C16** (blank, from NY DFS) | The head gains a paragraph absent from every earlier edition: *"THIS CERTIFICATE OF INSURANCE DOES NOT CONSTITUTE A CONTRACT BETWEEN THE ISSUING INSURER(S), AUTHORIZED REPRESENTATIVE OR PRODUCER, AND THE CERTIFICATE HOLDER."* The `LIMITS SHOWN MAY HAVE BEEN REDUCED BY PAID CLAIMS` footnote and the cancellation wording carry over |
 
-`ACORD 25 (2016/03)` is the current edition as of 2026-09-03 — verified against a state DOT's own
-2016/03 example (C1, `wisconsindot.gov`, fetched 2026-09-03) and corroborated by
-[Vertikal RMS' 2026 ACORD 25/27 guide](https://www.vertikalrms.com/article/acord-25-27-forms-complete-insurance-certificate-guide/)
-(fetched 2026-09-03) — *"the current ACORD 25 and 27 forms date to 2016."*
-`confidence: high`. **Older editions remain in daily circulation** — three of fifteen corpus documents
-are 2010/05 — so the extractor must handle all three, and `form_edition` is an extracted field, not an
-assumption.
+**Corrected 2026-09-03 in the wave-1b iteration (REVIEW.md B-01).** This section previously stated
+that `ACORD 25 (2016/03)` was current, with `confidence: high`. **It is not.**
+`ACORD 25 (2025/12)` exists and is the current edition:
+
+- the blank form is published by **New York's Department of Financial Services** at
+  `https://www.dfs.ny.gov/apps-and-licensing/insurance-companies/certificates-approved/acord-25-2025-12-liability`
+  and its footer reads `ACORD 25 (2025/12)  © 1988-2025 ACORD CORPORATION`;
+- it was fetched by the identity fleet (text committed at `identity/research/acord25-form-text.txt`,
+  source `[E7]` in `identity/research/sources.md`) and **re-fetched independently by the wave-1b
+  reviewer** — two agents, which is what `PLAN.md` §A10's double-verification requires;
+- it is quoted in `PERSONA.md` §2.5, `IDENTITY.md` §3 Step 9 and `UX.md` §3.1b, so the rest of the
+  folder had already moved and only this section had not.
+
+`confidence: high`, `verified_by: [identity-agent, wave-1b-reviewer]`, `last_verified: 2026-09-03`.
+
+**The consequence that made this blocking:** `form_edition` is an enum, and the enum had no value for
+2025/12, so **today's newest certificates would have extracted as `"unknown"`** while this section
+says the edition *"drives §A.2 layout handling"*. `"2025/12"` is now in the enum in
+`specs/schema/coi.v1.schema.json`, in `specs/03` §6 and in the `certificates.formEdition` comment, and
+the blank is golden-set fixture **G17** (a blank tests structure, not values).
+
+**All four editions remain in daily circulation** — three of the fifteen filled corpus documents are
+2010/05 and four are 2016/03 — so the extractor must handle all of them, and `form_edition` is an
+extracted field, never an assumption.
 
 > **Licence.** The ACORD name, logo and form layout are ACORD's. Certly **reads** ACORD forms and
 > **never renders** one. See `kb-samples/MANIFEST.md` §Licence. Producing an ACORD form is a licensing
@@ -106,8 +124,11 @@ means the comparison engine cannot run without it.
 `bodily_injury_per_accident`, `property_damage`, `umbrella_each_occurrence`, `umbrella_aggregate`,
 `ded_retention`, `el_each_accident`, `el_disease_ea_employee`, `el_disease_policy_limit`, `other`.
 
-`limits[].raw` **preserves the printed characters** and `amount` is `null` when the box is not a plain
-number. This is not defensive coding — the corpus contains `X $100,000 SIR` and the word `Excluded`
+`limits[].label_raw` **preserves the printed label** and `limits[].raw` **preserves the printed
+characters** of the value; `amount` is `null` when the box is not a plain number. `label` is a closed
+enum and collapses anything unlisted to `other`, so without `label_raw` a Professional-Liability or
+Cyber row in an `OTHER:` block (C6 has both) loses the only string `specs/05` §3 can match on
+(REVIEW.md MJ-18). This is not defensive coding — the corpus contains `X $100,000 SIR` and the word `Excluded`
 in limit boxes (C5), and `STATUTORY` in WC (E1). A field that types those as `0` produces a
 confident, wrong gap.
 
@@ -300,8 +321,19 @@ The engine is **deterministic. No model call.** Per requirement it emits exactly
 
 `asserted_only` exists because of the sentence in §A.1, and because C2 — a real issued certificate —
 is exactly that case: `Y` in both columns, forms named only in the free-text box, no endorsement pages.
-Collapsing it into `met` is the industry's standard lie. Collapsing it into `gap` would make the product
-scream at 60% of real certificates and be uninstallable. The third state is the product.
+Collapsing it into `met` is the industry's standard lie. Collapsing it into `gap` would make the
+product flag a large share of perfectly ordinary certificates and be uninstallable. The third state is
+the product.
+
+> **A number was removed here (REVIEW.md MJ-07).** An earlier draft said this would "make the product
+> scream at **60%** of real certificates", and `OFFER.md` §2.2 repeated it. **No source supports 60%**,
+> `offer/RESEARCH.md` §8 does not list it as a gap, and `BACKLOG.md` N10 bans exactly this shape of
+> number. The honest replacement is the number we will actually have: **the share of golden-set
+> certificates carrying `Y` in a tick column with no attached endorsement page**, published from the
+> expected-value files with its denominator and date once the golden set is labelled (`specs/03`
+> §15.1), and thereafter measured live as `asserted_only_detected` on real customer documents
+> (`THRESHOLDS.md` §6). Until one of those exists, no share is stated anywhere, in any document, on
+> any page or in any email.
 
 Six more deterministic checks the engine runs beyond limits:
 
@@ -477,21 +509,36 @@ Tracked as `H-EX-2`.
 
 ### D.5 The golden set and the evals
 
-**Golden set = 20 documents at launch**, drawn from `kb-samples/certificates/`, each with a
-hand-written expected-values JSON at `src/lib/extract/evals/expected/<id>.json`. Composition is
-derived, not convenient:
+**Golden set = 21 fixtures at launch: 17 real documents (G1–G17) + 4 synthetic adversarial ones
+(G18–G21).** The membership list lives in **one place — `specs/03` §15** — and is not restated here
+(REVIEW.md MJ-01). This section explains only *why* the set is composed as it is.
 
-| slice | n | why |
+> **Corrected 2026-09-03.** The earlier version of this section said "20 documents drawn from
+> `kb-samples/certificates/`" and its composition table double-counted C2, C5, C6 and C7 and silently
+> included **E1**, which lives in `kb-samples/endorsements/`. `specs/03` §15 also listed the same
+> Durham County file twice (as G3 and G8), so 16 slots covered 15 documents. All three counts —
+> here, in `specs/03` §15 and in `THRESHOLDS.md` §4.1 — now agree, and each document appears **once**
+> with **one** denominator.
+
+**Why these documents.** Each slice below names a failure the extractor would otherwise ship with:
+
+| slice | the failure it prevents | fixtures |
 |---|---|---|
-| one per ACORD 25 edition, fully filled | 3 | C1 (2016/03), C5 (2014/01), C7 (2010/05) — the layout matrix |
-| the scanned/OCR-corrupt document | 1 | C6 — asserts the image path works when the text layer does not |
-| endorsement-page bundles | 3 | C10, C11, C8 — asserts `met` vs `asserted_only` is decided by attached pages |
-| free-text/blanket endorsement wording | 2 | C2, C12 — §C.5 |
-| multi-insurer certificates | 2 | C2, C6 — the `INSR LTR` → insurer join |
-| non-numeric limit boxes | 2 | C5 (`SIR`, `Excluded`), E1 (`STATUTORY`) |
-| certificate embedded in a package | 2 | C9, C13 — page-location correctness |
-| annotated / overlaid certificate | 1 | C7 — annotations must not be read as data |
-| **adversarial** | 4 | a 0-byte file; a 40 MB PDF; an ACORD 27 (must be *rejected*, not parsed); a certificate whose Description of Operations contains an instruction addressed to the reader (prompt injection) |
+| one fixture per ACORD 25 edition | reading a 2010/05 auto row as a 2016/03 one | G1 (2016/03), G2 (2014/01), G3 (2010/05), **G17 (2025/12, blank)** |
+| the scanned / OCR-corrupt document | trusting the text layer over the page image | G4 (C6) |
+| endorsement-page bundles | deciding `met` from a checkbox instead of an attached form page | G7, G8, G9 |
+| free-text / blanket endorsement wording | missing the form numbers that only appear in Description of Operations | G5, G11 |
+| multi-insurer certificates | breaking the `INSR LTR` → insurer join | G4, G5 |
+| non-numeric limit boxes | typing `Excluded` / `STATUTORY` / `$100,000 SIR` as `0` | G2, G16 |
+| certificate embedded in a package | reporting a page number relative to the certificate instead of the file | G9, G10, G12 |
+| annotated / overlaid certificate | reading a reviewer's pen marks as certificate data | G3 |
+| **adversarial** | parsing an ACORD 27, a 0-byte file or a 40 MB PDF; following an instruction hidden in Description of Operations | G18–G21 |
+
+**Every real fixture carries a hand-written expected-values JSON** at
+`src/lib/extract/evals/expected/<id>.json`, with `labelled_by`, `labelled_on` and a second
+`reviewed_by`. **None of them exists yet.** Hand-labelling 17 documents × ~40 fields is a two-day
+wave-2 task with a named owner, and it is the gate that everything in §D.5 and `THRESHOLDS.md` §4.1
+depends on (`specs/03` §15).
 
 **Per commit, blocking, against recorded responses** (free, deterministic, no network — the vitest
 config pins `ADAPTER_MODE=mock`, exactly as `app/`):
@@ -511,8 +558,11 @@ config pins `ADAPTER_MODE=mock`, exactly as `app/`):
 **Nightly, live models:** Opus 5 vs Sonnet 5 on the same set (the standing promotion test);
 cache-hit assertion; p50/p95 latency; measured cost per document from real `usage` objects.
 
-**The ship gate: ≥ 97% exact on critical fields, ≥ 92% on all fields, across the golden set.**
-See `THRESHOLDS.md` §4 for the reasoning and for what happens when it is missed.
+**The ship gate: at most `N_ship` wrong critical values out of a denominator `D` computed from the
+expected-value files, and ≥ 92% on all fields, across the golden set.** `D` and `N_ship` are published
+in `specs/03` §15.1 by the golden-set owner on the day labelling finishes; a percentage of an
+estimated denominator is not a gate (REVIEW.md MJ-02). See `THRESHOLDS.md` §4 for the reasoning and
+for what happens when it is missed.
 
 ### D.6 Prompt register
 
@@ -534,7 +584,7 @@ each earning its place from a real corpus document:
 
 | asset | cadence | trigger | owner | gate |
 |---|---|---|---|---|
-| **§A form structure** | on ACORD revision only | ACORD publishes a new ACORD 25 edition | founder + agent | a new edition adds a fixture and an `form_edition` enum value before any parsing change |
+| **§A form structure** | on ACORD revision only | ACORD publishes a new ACORD 25 edition | founder + agent | a new edition adds a fixture and a `form_edition` enum value **before** any parsing change. **This row was breached and is re-opened**: ACORD 25 (2025/12) had already been published and fetched by a sibling agent while §A.2 still named 2016/03 as current and the enum had no value for it (REVIEW.md B-01). The gate is now a **check, not a habit** — `kb:check` fails if any `form_edition` value quoted in §A.2 is missing from `specs/schema/coi.v1.schema.json`, and the quarterly routine re-opens the ACORD/NY-DFS certificate page and diffs the footer stamp |
 | **§B templates** | **quarterly review** (Jan/Apr/Jul/Oct), plus on any customer-reported mismatch | scheduled routine | agent, founder signs | every row re-fetches its `source_url`; a 404/403 flips `confidence` down one step and raises a task; **no row silently keeps a stale date** |
 | **§C endorsements** | on ISO/NCCI form revision | a new edition of any glossary form | agent | new edition = new row, old row retained (editions are different contracts, §C.1) |
 | **§D evals** | **every commit** on recorded responses; **nightly** on live models | CI | CI | golden-set accuracy below §D.5's gate fails the build |
@@ -553,7 +603,23 @@ visible. A customer can then decide how much to trust it, which is the correct d
 ## §F — Disclaimers
 
 Certly reads documents and compares them to rules the customer set. It does not underwrite, advise, or
-guarantee coverage. Three texts, five surfaces, no exceptions.
+guarantee coverage. **Three texts, eleven surfaces, no exceptions.**
+
+> **§F.1, §F.2 and §F.3 below are the only place a Certly disclaimer is written down** (REVIEW.md
+> B-12). `src/lib/kb/disclaimers.ts` is generated from them; every surface renders the string from
+> that module **verbatim**; and no other document — `IDENTITY.md`, `UX.md`, `OFFER.md`,
+> `LANDING_SPEC.md`, a spec, a help article or an email template — may restate, paraphrase or
+> shorten one. Any document that needs to talk about a disclaimer **points at this section**.
+> `specs/13` §12 enforces both halves: the string appears verbatim on all eleven surfaces, and a
+> near-duplicate string anywhere else in the repo fails the build.
+>
+> This was a real conflict, not a hypothetical: `IDENTITY.md` §4.4 rule 4 mandated a **different**
+> text — *"Certly reports what a certificate says against the requirement you set. It is not insurance
+> advice and it does not verify the underlying policy."* — which `identity/samples.html` then
+> rendered, while `specs/13` §12 asserted a verbatim match that only one of the two could pass. §F
+> wins because it carries the liability analysis and is already threaded through
+> `LANDING_SPEC.md` §13, `specs/12` §3.2 and `specs/15` §4. **`IDENTITY.md` §4.4 must become a pointer
+> to `disclaimers.ts` rather than a text** — that edit belongs to the Brand Director.
 
 ### F.1 Primary — on every certificate result, every gap report, every export
 
@@ -577,12 +643,46 @@ guarantee coverage. Three texts, five surfaces, no exceptions.
 > This value was read from the uploaded document by an automated system and may be wrong. Fields below
 > our confidence threshold are marked for review. You are responsible for the values you accept.
 
-**The five surfaces** (each an acceptance criterion in its spec, and an e2e assertion): the certificate
-detail screen; the vendor status dashboard; every PDF/CSV export; the requirement-template editor; the
-email a vendor or agent receives.
+### F.4 The eleven surfaces
 
-**Copy invariants — binding on all model-authored and human-authored text.** Certly never says
-*"verified"*, *"compliant"* or *"covered"* as a bare assertion about a policy. It says
-*"meets your requirement"*, *"asserted, not evidenced"*, or *"gap"*. It never states or implies that a
-vendor is insured — only what a document says. It publishes no accuracy percentage externally without
-its denominator and its measurement date.
+`PLAN.md` §A10 requires a disclaimer on **every screen that renders a status**. The first list named
+five and missed six screens that do exactly that (REVIEW.md MJ-06). The full list, each one an
+acceptance criterion in its spec and an e2e assertion:
+
+| # | surface | text | acceptance criterion |
+|---|---|---|---|
+| 1 | Certificate detail / review screen | §F.1 + §F.3 | `specs/03` A10 |
+| 2 | Vendor status dashboard | §F.1 | `specs/06` A9 |
+| 3 | **Vendor / party detail** | §F.1 | `specs/04` A7 |
+| 4 | **Expiry timeline** | §F.1 | `specs/06` A9 (same screen family) |
+| 5 | **Global search result row** rendering a pill | §F.1, in the results panel footer | `specs/06` A9 |
+| 6 | **Mobile card list** | §F.1 | `specs/06` A9 |
+| 7 | Every PDF and CSV export | §F.1, on the cover / as a header row | `specs/12` A4 |
+| 8 | **The shared report link `/r/[token]`** | §F.1 | `specs/12` A12 |
+| 9 | Requirement-template picker and editor | §F.2 | `specs/02` A8 |
+| 10 | The email a vendor or agent receives, and the no-login upload page | §F.1 | `specs/07` A9, `specs/08` A9 |
+| 11 | **The Free Gap Report — on-screen view and PDF** | §F.1 page 1 + §F.2 next to the requirements | `specs/15` A4 |
+
+The onboarding finding screen (`specs/11` A9) renders §F.1 adjacent to the finding as part of
+surface 2's family; it is listed there rather than counted twice.
+
+### F.5 Copy invariants — binding on all model-authored and human-authored text
+
+1. Certly never says *"verified"*, *"compliant"* or *"covered"* as a bare assertion about a policy.
+2. **The green status word is "Meets requirements"; the engine value is `meets`** (REVIEW.md §2.1,
+   B-02). "Covered" is **retired as a status word** — it appears in no pill, no counter, no export
+   column, no email, no report, no landing page and no engine enum. `PERSONA.md` §2.5 had chosen it
+   deliberately over "compliant", and `PERSONA.md` O-A6 says in the same file that *"a wrong 'covered'
+   is the failure that ends the company"*; where a document argues against itself, the lower-liability
+   reading wins.
+3. The five requirement states are said as: **Meets requirements · Gap · Claimed, not evidenced ·
+   Not checked · Undetermined** (`specs/05` §2). The six vendor states are `specs/06` §3's.
+4. The noun **coverage** in its descriptive, form-derived sense is **not** banned — the coverage bar,
+   the coverage grid, a coverage line, `coverage_present`. Those name parts of the ACORD 25 and are
+   not assertions about a party.
+5. **"Current" is the buyer's own word and is available about a *document*** — *"this certificate is
+   current as of 3 Sep 2026"* is a statement about a date on a piece of paper, always checkable, and
+   never a statement about coverage (`PERSONA.md` §2.5).
+6. Certly never states or implies that a vendor is insured — only what a document says.
+7. It publishes no accuracy percentage, and no share of any population, without its denominator and
+   its measurement date (`BACKLOG.md` N10; see the note in §B.4).

@@ -27,14 +27,29 @@ Cohorted by signup week, with **n** shown next to every rate, always:
 | metric | definition | threshold |
 |---|---|---|
 | Signups | `org_created` | — |
-| **Activation** | orgs with `activated` ÷ signups | §1 |
+| **Activation** | orgs with `activated` ÷ signups — `activated` as defined in `specs/11` §2 and nowhere else | §1 |
 | Time to activate | median `activated.minutes_from_signup` | §1 |
-| **Activation → paid** | `checkout_completed` ÷ `activated` | §3 |
+| **Activation → paid** | **`trial_converted` ÷ `activated`** | §3 |
+| Card-on-file rate *(diagnostic, never the threshold)* | `checkout_completed` ÷ `activated` | — |
+| Trial cancel rate | `trial_cancelled` ÷ `checkout_completed` | — |
 | **Month-2 retention** | orgs whose dashboard was opened in ≥ 2 distinct weeks of month 2 ÷ orgs that paid in month 1 | §2 |
 | MRR / ARPA / logo churn / revenue churn | from `subscriptions` | §3 |
 
+> **Why `trial_converted` and not `checkout_completed` (REVIEW.md B-14).** With a **card-required**
+> trial, `checkout_completed` means *a card is on file*, not *money changed hands*.
+> `THRESHOLDS.md` §3 is explicit — *"measuring the card would flatter us into shipping a broken
+> business"* — and this panel previously rendered exactly that flattering number.
+> `checkout_completed` stays on the page as a **diagnostic** next to it: the gap between the two is
+> the trial cancel rate, which is a real signal, and `H-OF-1` in `THRESHOLDS.md` §7 is retired by
+> that gap. The threshold is the second number.
+
 Plus the **onboarding step funnel** (`onboarding_step_completed` / `_abandoned` by step) — the
 diagnostic that turns a failed activation threshold into a specific fix.
+
+**Every event name on this page is taken from [`specs/00-event-vocabulary.md`](00-event-vocabulary.md)
+and none is invented here.** The `events:check` rule in that file fails the build if a name used in
+`THRESHOLDS.md`, `BACKLOG.md`, `LANDING_SPEC.md`, `UX.md` or a spec does not resolve to a registry
+row.
 
 ### 3.2 Extraction quality — the panel that is actually ours
 
@@ -42,7 +57,7 @@ diagnostic that turns a failed activation threshold into a specific fix.
 |---|---|---|
 | **Field correction rate**, per field | `field_corrections` ÷ extracted documents | live accuracy on **real** documents, not the golden set |
 | **Confident-wrong rate** | corrections on fields that were ≥ τ **and** gate-passed ÷ documents promoted without review | the number τ is tuned against (`H-EX-2`); target **≤ 2%** |
-| Review rate | `needs_review` ÷ extracted | the cost of τ |
+| Review rate | `needs_review` ÷ extracted | the cost of τ. Shown **split by surface**: in-product (a human clears it) vs Free Gap Report (nobody does — those documents are named in the report instead, `specs/15` §4, REVIEW.md B-09) |
 | Review latency | median `extraction_succeeded` → `review_completed` | a queue nobody clears is a broken product |
 | Gate-failure rate | `extraction_succeeded.gate_failures > 0` ÷ documents | provenance health |
 | Rejection rate, by reason | `document_rejected` | |
@@ -54,8 +69,13 @@ diagnostic that turns a failed activation threshold into a specific fix.
 ### 3.3 Unit economics
 
 Model cost per document (from real `usage`, not a model of it), cost per activated org, cost per
-paying org per month, gross margin at each plan, and the **Vercel/Neon/Resend fixed floor**. Feeds
-`THRESHOLDS.md` §5.
+paying org per month, gross margin at each plan, and the **Vercel/Neon/Blob/Resend fixed floor**.
+Feeds `THRESHOLDS.md` §5.
+
+**The Free Gap Report panel is separate and is a spend control, not a metric.**
+`gap_report_ready.cost_cents` summed per day, against the daily cap (`specs/15` §11), with the cap's
+state (armed / tripped) shown. This surface spends inference on anonymous traffic and it is the one
+place cost can stop something.
 
 ### 3.4 Operations
 
@@ -100,6 +120,9 @@ confident_wrong).
 shows `policy_exp: 4% (4/100)` on its own row.
 **A4** Given a document promoted without review whose `each_occurrence` is later corrected, Then it
 counts in **confident-wrong**.
+**A4b** Given 100 activated orgs of which 40 completed Checkout and 22 reached `invoice.paid`, Then
+"Activation → paid" reads **22% (22/100)** and the card-on-file diagnostic reads 40% (40/100) —
+the threshold cell is the first one (B-14).
 **A5** Given a non-allowlisted user hits `/admin`, Then 404 (not 403).
 **A6** Given any admin page, Then no vendor name, insured name or certificate value is present in the
 DOM or in any response.
@@ -130,7 +153,9 @@ pollute the product funnel it measures).
 ## 11. Test plan
 
 Unit: every metric definition against a synthetic event fixture with known answers, including the
-n < 30 suppression and the empty-vs-zero distinction.
+n < 30 suppression and the empty-vs-zero distinction; a test asserts the activation→paid numerator is
+`trial_converted` and that `checkout_completed` is never used as a numerator for a `THRESHOLDS.md`
+band (B-14).
 Integration (PGlite): materialised-view refresh; a cohort spanning a month boundary; the confident-wrong
 join.
 Security: a non-allowlisted session gets 404; a snapshot test asserts no customer-content field name

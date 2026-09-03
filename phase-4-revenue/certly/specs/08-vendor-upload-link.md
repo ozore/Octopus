@@ -2,6 +2,10 @@
 
 **Backlog item:** M8 (Must). **Effort:** M. **Depends on:** M2, M4.
 
+> **NAME PENDING — `IDENTITY.md` §2.3**; every agent-facing string renders `{PRODUCT_NAME}`.
+> **No literal domain appears in this spec.** The link origin is `{APP_ORIGIN}`, an env value
+> (REVIEW.md B-11).
+
 ## 1. Story
 
 > As the insurance agent for one of my client's vendors, I click the link in the email, see on one page
@@ -14,8 +18,12 @@ also the cheapest 80% of "forward by email" (`SH-1`).
 ## 2. Flow
 
 ```
-reminder email (M7) → https://certly.app/u/<token>
+reminder email (M7) → {APP_ORIGIN}/u/<token>          # APP_ORIGIN is an env value, never a literal
    → validate token: exists · not expired · vendor not archived
+     (at launch {APP_ORIGIN} is the project's `*.vercel.app` URL — PLAN §D3 ships no custom domain.
+      `certly.app` is NOT ours: IDENTITY.md §2.1 records it returning HTTP 200 with someone else's
+      parked "Create Next App" placeholder. An agent-facing link is the one URL in this product a
+      stranger must trust on sight, so it may only ever be built from env.)
    → page: {Customer org} needs a current certificate for {Vendor}
             • what expired / what is required (plain language)
             • drop zone (PDF, JPEG, PNG, HEIC)
@@ -59,8 +67,9 @@ and the fact that the page exposes nothing but a vendor name, a requirement summ
 
 | surface | signature | notes |
 |---|---|---|
-| `GET /u/[token]` | → page | no session; rate-limited by IP; token compared by hash |
-| `POST /u/[token]/upload` | `(file) → { status }` | same validation as M4 §10; `documents.source = 'link'`, `uploadedBy = null` |
+| `GET /u/[token]` | → page | no session; rate-limited by IP; token compared by hash (constant time) |
+| `POST /u/[token]/upload-token` | `({filename, mime, bytes}) → { uploadUrl, key }` | issues a short-lived, single-use, key-scoped Vercel Blob client-upload token. **The browser PUTs the file straight to Blob**; it never passes through a route handler, because a Vercel Function's request body caps far below our 20 MB rule and an agent photographing a certificate on a phone is exactly the case that breaks (`specs/03` §9, REVIEW.md MJ-17) |
+| `POST /u/[token]/complete` | `(key, sha256) → { status }` | server re-reads size and content type from the object itself, applies M4 §10 validation, writes the document with `source = 'link'`, `uploadedBy = null`, enqueues extraction |
 | `createUploadLink` | `(vendorId, purpose) → { url }` | server-side only; the raw token is returned once and never stored |
 | `revokeUploadLink` | `(linkId) → void` | |
 
@@ -71,8 +80,15 @@ and the fact that the page exposes nothing but a vendor name, a requirement summ
 - file rules identical to M4 (mime, ≤ 20 MB, ≤ 25 pages, not encrypted)
 - the page renders **only**: customer org name, vendor name, the requirement summary, and what expired.
   **Never** other vendors, other documents, the customer's user names, prices, or any org data
-- an expired or revoked token renders a page with the customer's org name and a "ask {Org} for a new
-  link" instruction — never a bare 404, which reads as broken and generates a support email
+- **expired / revoked vs invalid — resolved (REVIEW.md MJ-14).** An **expired or revoked** token was
+  a real link a real agent holds, so its page names the customer's org and says "ask {Org} for a new
+  link" — never a bare 404, which reads as broken and generates a support email. An **invalid** token
+  (never issued, malformed, or belonging to nothing) gets a **generic** page naming nobody.
+  The enumeration defence is therefore: constant-time comparison, IP rate limiting, and **identical
+  responses — status, body length and timing bucket — for an invalid token and a token that never
+  existed**. §11's earlier requirement that expired and invalid be identical is withdrawn: it
+  contradicted the UX requirement two sections above it and bought nothing, since an attacker learns
+  the same fact from a valid link they already hold
 - uploads through a link are **always** attributed to the vendor on the link; a link cannot be
   repointed
 
@@ -87,13 +103,17 @@ failures in plain language ("General liability aggregate is $1,000,000; {Org} re
 offers another upload.
 **A4** Given an expired token, Then the page explains and names the org; no upload box.
 **A5** Given a revoked token, Then the same, with revocation wording.
+**A5b** Given a token that was never issued, Then a generic page naming no org, byte-identical to the
+page for a malformed token (MJ-14).
 **A6** Given the vendor was archived, Then the page says the request is no longer active.
 **A7** Given the same token is opened by three different people, Then all three can upload, and
 `useCount` is 3.
 **A8** Given 40 GETs from one IP in an hour, Then further requests are rate-limited without revealing
 whether the token is valid.
-**A9** Given a link page in any state, Then the §F.1 disclaimer is present and no other org data is in
-the DOM or in any API response the page makes.
+**A9** Given a link page in any state, Then the §F.1 disclaimer is present **verbatim** (one of the
+eleven surfaces in KB §F) and no other org data is in the DOM or in any API response the page makes.
+**A10** Given any rendered link, Then its origin comes from `{APP_ORIGIN}`; a test greps the built
+output for a hardcoded domain and fails on one (REVIEW.md B-11).
 
 ## 8. Edge cases
 
@@ -128,7 +148,9 @@ Unit: token generation/hash/constant-time compare; expiry and revocation precede
 data projection contains no field outside the allowlist (an explicit test over the serialised props).
 Integration (PGlite): upload through a link creates a document with `source='link'` and `uploadedBy`
 null; name mismatch routes to `needs_review`.
-Security: cross-org token cannot address another org's vendor; enumeration attempt is rate-limited and
-returns identical responses for invalid and expired tokens at the HTTP level.
+Security: cross-org token cannot address another org's vendor; the upload token is single-use,
+key-scoped and cannot be replayed against a different key; enumeration attempts are rate-limited and
+return **identical responses for an invalid token and one that never existed** — expired and revoked
+tokens deliberately differ, and name the org (§6, MJ-14).
 e2e: reminder email → click → upload → confirmation → the certificate appears on the customer's vendor
 page with source "vendor link".

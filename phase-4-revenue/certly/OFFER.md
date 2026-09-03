@@ -14,10 +14,33 @@ be answered on the page, not avoided → §8.3 and `LANDING_SPEC.md` §6) and §
 charge your vendors" in those words → §4 P11 and the hero trust line). **One contradiction between
 `PERSONA.md` §2.5 and `KNOWLEDGE_BASE.md` §F is unresolved and referred to the wave-1b reviewer** —
 see `LANDING_SPEC.md` §14.
-**Binding on this document:** the copy invariants in `KNOWLEDGE_BASE.md` §F — Certly never says
+**Binding on this document:** the copy invariants in `KNOWLEDGE_BASE.md` §F.5 — Certly never says
 *verified*, *compliant* or *covered* as a bare assertion about a policy; it says *meets your
-requirement*, *asserted, not evidenced*, or *gap*; and it publishes no accuracy percentage without its
-denominator and measurement date.
+requirement*, *asserted, not evidenced*, or *gap*; and it publishes no accuracy percentage, and no
+share of any population, without its denominator and measurement date.
+
+> **NAME PENDING — `IDENTITY.md` §2.3 (REVIEW.md MJ-13).** `IDENTITY.md` recommends renaming to
+> **Coverfile**: two live companies already trade as Certly, `certly.app` is somebody else's parked
+> placeholder, and the `.co` is running gambling spam. **The code slug stays `certly`** (`PLAN.md` A3,
+> the phase-3 prospect lists, the Vercel project names). **Every customer-facing occurrence below —
+> hero copy, the outbound email signature, the Stripe product names and price nicknames, agent-facing
+> footers — renders `{PRODUCT_NAME}` from one constant.** §12.1's Stripe product names are the one
+> place this must be settled **before** the founder creates the objects: renaming after Stripe objects
+> exist is cheap, renaming after invoices exist is not. Trademark clearance stays a founder task
+> (`PREREQUISITES.md` P11).
+
+> **Revised 2026-09-03 after the wave-1b review.** The status vocabulary (B-02), the tier metric's name
+> (B-10), the trial CTA and its disclosure (B-06), the activation definition (B-05), the Lapse Watch's
+> two holes (MJ-19), an unsourced 60% (MJ-07), the hardcoded forwarding domain (B-11) and the
+> inference-cost figure (OQ-8) all changed. Each edit is marked in place; the record is
+> `REVIEW_RESPONSE.md`.
+
+**The status vocabulary this document uses, settled (REVIEW.md §2.1, B-02).** The green state is
+**"Meets requirements"** (pill `MEETS`, engine value `meets`). The five requirement states are
+**Meets requirements · Gap · Claimed, not evidenced · Not checked · Needs review**; the six vendor
+states are `expired` · `gap` · `expiring` · `asserted_only` · `meets` · `no_certificate`
+(`specs/05` §2, `specs/06` §3). **"Covered" is not a status word.** The buyer's own word **"current"**
+survives, about a *document*: *"this certificate is current as of 3 September 2026."*
 
 ---
 
@@ -76,7 +99,7 @@ Six substitutes, ranked by how much likelihood they buy per unit of cost:
 |---|---|---|
 | 1 | **A working demo on the page, no login.** Three sample certificates; pick one; watch the fields lift off the PDF and land against a requirement set; see one real gap. | Nothing persuades like the machine doing the thing. It also converts our weakest term into our strongest, because the visitor supplies the scepticism and the product answers it. |
 | 2 | **The ACORD form's own words.** "A statement on this certificate does not confer rights to the certificate holder in lieu of such endorsement(s)." | We are not asserting the problem exists; ACORD is. Unfalsifiable claims are the category's disease and this is the antidote. |
-| 3 | **The third state, named and defended.** `asserted_only` — the certificate claims additional-insured status but no endorsement page is attached. Per `KNOWLEDGE_BASE.md` §B.4, collapsing it into "met" is "the industry's standard lie". | A product that says "I don't know yet" about 60% of real certificates is far more credible than one that says "compliant ✓" about all of them. |
+| 3 | **The third state, named and defended.** `asserted_only` — the certificate claims additional-insured status but no endorsement page is attached. Per `KNOWLEDGE_BASE.md` §B.4, collapsing it into "met" is "the industry's standard lie". | A product that says **"claimed, not evidenced"** where the evidence is genuinely missing is far more credible than one that says "compliant ✓" about everything. *(An earlier draft said "about **60%** of real certificates". **No source supports that number** and `BACKLOG.md` N10 bans exactly this shape of claim, so it is removed — REVIEW.md MJ-07. The share will be published from the golden set with its denominator and date once labelling is done (`specs/03` §15.1), and measured live thereafter as `asserted_only_detected`. Until then no share is stated anywhere.)* |
 | 4 | **Published method instead of published accuracy.** Confidence score per field, an explicit `needs_review` state, the golden set and its size, and a public methodology page. The accuracy number ships the day it is measured, with its denominator. | Every rival publishes an unaudited percentage. Publishing the *measurement design* is the only differentiating move left. |
 | 5 | **A real, redacted artefact.** One downloadable gap report generated from a public sample certificate, with the real form numbers on it. | The buyer can inspect the deliverable before paying — which no demo-gated incumbent permits. |
 | 6 | **The guarantee** (§6). | Hormozi's risk reversal, scoped to the only promise we control. |
@@ -101,7 +124,7 @@ The three things the buyer must actually do, and what each costs:
 
 | Step | Effort today | Effort with Certly | How we cut it further |
 |---|---|---|---|
-| Get the certificates into one place | They are in email | Forward them, or drop a folder, or CSV-import a spreadsheet | A per-account forwarding address (`yourfirm@in.certly.app`) so the vendor's agent can be told to send there directly, forever |
+| Get the certificates into one place | They are in email | Forward them, or drop a folder, or CSV-import a spreadsheet | A per-account forwarding address (`yourfirm@{INBOUND_DOMAIN}`) so the vendor's agent can be told to send there directly, forever — `SH-1`, after launch |
 | Say what you require | Nobody has written it down | Pick a template, edit three numbers | The requirement-template library (bonus B1) with per-property and per-vendor-class overrides |
 | Chase the agent | The part they hate and skip | Automatic, on a ladder | T−60/−30/−14/−7/−1 then weekly, capped and consolidated per vendor (`KNOWLEDGE_BASE.md` §B.5) |
 
@@ -143,8 +166,8 @@ a solution, then trim and stack.
 
 | # | Obstacle, in the buyer's words | Solution | Cost to us | Value to them | Verdict |
 |---|---|---|---|---|---|
-| P1 | "I don't even know how bad it is" | **Free Gap Report** — up to 25 certificates, dated, no card, no login | ~$0.02/cert inference + one import | Very high | **Front end** |
-| P2 | "My certificates are in six years of email" | Per-account forwarding address + drop-folder + CSV import | Low, build once | High | **Core** |
+| P1 | "I don't even know how bad it is" | **Free Gap Report** — up to 25 certificates, dated, no card, no login | **$0.10–0.20 per document** → **$2.50–5.00 per full report** (`THRESHOLDS.md` §5; the earlier ~$0.02 was a 5–10× underestimate with no arithmetic behind it — REVIEW.md OQ-8), plus one import. The **daily spend cap in `specs/15` §11 is a launch requirement, not a nice-to-have** | Very high | **Front end, behind a founder legal gate** (`specs/15`) |
+| P2 | "My certificates are in six years of email" | Per-account forwarding address (`yourfirm@{INBOUND_DOMAIN}`, an **env value** — we do not own `certly.app`, REVIEW.md B-11) + drop-folder + CSV import. *Forward-by-email is `SH-1`, not MVP; at launch this is drop-folder + CSV* | Low, build once | High | **Core** |
 | P3 | "I don't know what limits I should be requiring" | **Requirement-template library** (`KNOWLEDGE_BASE.md` §B), each template dated and sourced, editable, with the §F.2 disclaimer | One-time writing, already largely done | Very high | **Bonus B1** |
 | P4 | "The certificate says additional insured — is that enough?" | The three-state engine and the endorsement-page check (§B.4, §C) | Core engineering | Very high | **Core — this is the product** |
 | P5 | "Chasing agents is the job I keep not doing" | Reminder ladder to the vendor **and the producer on the certificate**, consolidated, capped, pausable | Low | Very high | **Core** |
@@ -182,7 +205,7 @@ at all.
 | **B2** | **Renewal Calendar** | 12-month .ics + CSV of every expiry in the portfolio, refreshed on every change | Half a day, once | It is the artefact the buyer forwards to their boss; it makes the subscription visible to the person who approves it | All paid |
 | **B3** | **Agent Chase Pack** | Four email templates that get an endorsement page out of a producer, naming the exact ISO forms — CG 20 10 (ongoing operations), **CG 20 37 04 13** (completed operations, [full form](https://www.iiat.org/uploads/files/general/InfoCentral/Commercial-GL/cg2037.pdf)), CG 24 04 (waiver), WC waiver — plus the escalation and the "we are holding your invoice" version | Writing only | High. This is the exact task they avoid, and asking for the wrong thing is why they get sent another certificate instead of an endorsement | All paid; first two free with the Gap Report |
 | **B4** | **Migration** | We map their spreadsheet columns and stand up the first 50 vendor records | Support time, front-loaded and falling | Removes the switching cost, which is the #1 reason a spreadsheet user does not move | Standard and Portfolio |
-| **B5** | **The Free Gap Report itself** | Up to 25 certificates, dated, delivered as a PDF they can keep whether or not they buy | ~$0.50 of inference per report | Very high — it is the only way to learn the answer without hiring someone | Front end |
+| **B5** | **The Free Gap Report itself** | Up to 25 certificates, dated, delivered as a PDF they can keep whether or not they buy | **$2.50–5.00 of inference per full report** at `THRESHOLDS.md` §5's measured-from-list-pricing figure of $0.10–0.20 per document — **not the ~$0.50 an earlier draft assumed** (REVIEW.md OQ-8). Halved again by the Batch API. Bounded by the rate limits and the **daily spend cap** in `specs/15` §11, which is a launch requirement | Very high — it is the only way to learn the answer without hiring someone | Front end |
 
 **Trim-and-stack check.** Every bonus above is low-cost and high-value *and* pulls in the same
 direction as the core promise. Nothing here is a filler bundled to pad a tier. Two ideas were cut for
@@ -197,15 +220,28 @@ us toward advice we are not licensed to give).
 
 > ## The Lapse Watch
 > **If a certificate we are tracking expires and we did not warn you before it expired, that month is
-> free.** No form, no argument — tell us, and we credit it.
+> free.** No form, no argument — tell us, and we credit it. **On an annual plan the remedy is a credit
+> of one month of your plan — one twelfth of what you paid.**
 >
 > This is a promise about *our* warning, not about your vendor's insurance. It applies to every
-> certificate where you gave us a readable expiry date and did not turn reminders off. It does not
-> apply to a certificate we flagged for review because we could not read its dates, to a vendor added
-> after their certificate had already expired, or to email we sent that your server rejected — in all
-> three cases you will find the warning in your dashboard, dated.
+> certificate where you gave us a readable expiry date. **The expiry warning cannot be switched off**,
+> so nothing you do in settings can cost you this guarantee. It does not apply to a certificate we
+> flagged for review because we could not read its dates, to a vendor added after their certificate
+> had already expired, or to email we sent that your server rejected — in all three cases you will
+> find the warning in your dashboard, dated.
 >
 > Stacked with it: **cancel any time, and 30 days money back, no questions asked.**
+
+**Two holes closed 2026-09-03 (REVIEW.md MJ-19).** (a) *"that month is free"* was undefined for an
+**annual** subscriber, and six of the eight Stripe prices are annual — the remedy is now stated as a
+one-month credit, i.e. 1/12 of the annual price, capped exactly as the monthly remedy is.
+(b) "Warned" is defined in §6.2 L3 as *"surfaced in the dashboard, dated, **and sent to the account
+email**"*, but the customer-facing expiry email (`UX.md` §4.1 C4) was opt-out — so a customer who
+turned off notifications could still satisfy the carve-out's only stated condition, and we would owe a
+credit for a warning they had disabled. **The expiry warning is now non-optional** (`specs/13` §2,
+`UX.md` §4.1 C4): everything else stays opt-out, the guarantee stays simple, and it is defensible
+product behaviour rather than a lawyerly exclusion. The old clause *"did not turn reminders off"* —
+which referred to **vendor** reminders — is deleted from the promise.
 
 Hormozi's checklist demands two things and this meets both: conditional guarantees should be "better
 than money back" and you should "always match the guarantee terms with the activation points in your
@@ -221,7 +257,7 @@ conditional and unconditional guarantee and put them together".
 |---|---|---|---|
 | **L1** | **Scope creep from "warn" to "coverage".** A customer reads "Lapse Watch" as "Certly guarantees my vendors are insured", is denied at tender, and comes back angry. | **High — the one that matters** | The guarantee text names itself as a promise about the warning in its second sentence. The §F.1 disclaimer sits on every result, export and email. The words *verified*, *compliant* and *covered* are banned outright (`KNOWLEDGE_BASE.md` §F). |
 | **L2** | **Adverse selection on unreadable certificates.** A customer uploads 200 scanned faxes we cannot parse, then claims the guarantee on every one. | Medium | The carve-out: certificates flagged `needs_review` because the expiry date could not be read are excluded, and the flag is visible at upload time, not discovered later. This is Akerlof's lemons problem applied to a guarantee; the fix is screening *before* the promise attaches, not arguing after. |
-| **L3** | **Email deliverability we do not control.** Their mail server quarantines our warning. | Medium | "Warned" is defined as *surfaced in the dashboard, dated, and sent to the account email*. The dashboard is the record of truth. Bounces are shown in-app. |
+| **L3** | **Email deliverability we do not control.** Their mail server quarantines our warning. | Medium | "Warned" is defined as *surfaced in the dashboard, dated, **and** sent to the account email* — and the expiry email is **non-optional**, so the condition cannot be silently removed by a settings change (MJ-19). The dashboard is the record of truth. Bounces are shown in-app. |
 | **L4** | **Unbounded refund exposure.** | Low, but must be capped | The remedy is capped at **one month's subscription fee**, stated in the text ("that month is free"), never a multiple, never consequential loss. |
 | **L5** | **The Free Gap Report reads as an opinion.** A prospect treats "3 gaps found" as advice and cancels a vendor's contract on it. | Medium | The report carries §F.1 verbatim on page 1, states its own scope ("read from the documents you supplied"), and uses the three states rather than pass/fail. It never says a vendor "is not insured". |
 | **L6** | **Requirement templates read as legal advice.** | Medium | §F.2 on the picker and on every template. Every template dated and sourced to a real published exhibit. Never presented as "what you should require". |
@@ -276,13 +312,28 @@ this category do not.
 
 ## 8. The price ladder
 
-### 8.1 The metric
+### 8.1 The metric — **tracked vendors** (renamed 2026-09-03, REVIEW.md B-10)
 
-**Active certificates tracked.** One current certificate per vendor, tenant or subcontractor.
-**Renewals, re-uploads, corrected certificates and endorsement pages of an existing vendor never
-count again.** Archived vendors do not count.
+> **A tracked vendor is one non-archived vendor in your account. Certly tracks one current
+> certificate per tracked vendor: renewals, re-uploads, corrections and endorsement pages never count
+> again, and archived vendors count zero. A vendor who has not sent anything yet still occupies a
+> slot — finding those is the point.**
 
-Why this definition and not a raw document count: the product exists to *cause renewals*, and a
+That sentence is canonical, lives in `specs/10` §2.1, and is reproduced **verbatim** here, in
+`LANDING_SPEC.md` §6, in `specs/13`'s help article 12 and on `/settings/billing`. It is never
+paraphrased.
+
+**Why the name changed.** This section used to call the unit *"active certificates tracked — one
+current certificate per vendor"* while `specs/10` metered *"one non-archived vendor"*. Those are two
+different meters: under the spec's, a vendor who has **never sent a certificate** consumes a paid
+slot. That is not a bug — `specs/06` §3 calls exactly those vendors *"the most valuable finding for a
+new customer"*, and a manager who imports 80 vendors to find out which are uncovered is buying that
+finding — but calling it a *certificate* count made the bill unpredictable and made us look as though
+we were charging for a document that does not exist. **The meter stands; the word changes**, and it
+changes now, before the founder creates any Stripe object: `cert_limit` → `vendor_limit`,
+**Certificate Pack → Vendor Pack**, "active certificates" → "tracked vendors".
+
+Why a per-vendor meter and not a raw document count: the product exists to *cause renewals*, and a
 per-document meter charges the customer every time it succeeds — a misaligned value metric, which
 Price Intelligently models as the direct cause of high churn and low expansion
 ([*The Anatomy of SaaS Pricing Strategy*, ch. 5](https://hub.paddle.com/hubfs/Price-Intelligently-SaaS-Pricing-Strategy.pdf)).
@@ -292,14 +343,19 @@ It is also the only definition legible to a buyer who has already shopped the ca
 
 ### 8.2 The ladder
 
-| Tier | Price | Active certificates | Card? | Who it is for |
+| Tier | Price | Tracked vendors | Card? | Who it is for |
 |---|---|---|---|---|
-| **Free Gap Report** | $0, one-off | up to 25, report only | No | Anyone. The HVCO. No account, no login, no storage of their file beyond the report. |
-| **Starter** | **$99/mo** or **$990/yr** | **50** | Yes | 50–200 units, or 5–15 associations. ~25–45 recurring vendors plus a few tenants. |
-| **Standard** ← default | **$199/mo** or **$1,990/yr** | **150** | Yes | The modal `certly-pm` firm: 200–500 units or 15–45 associations. Adds migration and per-property requirement sets. |
-| **Portfolio** | **$299/mo** or **$2,990/yr** | **400** | Yes | Multi-market managers, self-storage and MH operators, small GCs with 60–150 subs. |
-| **Certificate Pack** | **+$39/mo** per 50 | add-on, stackable | Yes | Published overage, so nobody has to call us to grow. |
-| Above ~700 | published: "email us, it is $0.55 per certificate per month" | — | — | **Still not a demo.** The one promise we never break. |
+| **Free Gap Report** | $0, one-off | up to **25 documents**, report only | No | Anyone. The HVCO. No account, no login; source files deleted at render, everything else purged at 7 days, and no producer contact details stored at all (`specs/15` §6). |
+| **Starter** | **$99/mo** or **$990/yr** | **50** | **Yes — card required** | 50–200 units, or 5–15 associations. ~25–45 recurring vendors plus a few tenants. |
+| **Standard** ← default | **$199/mo** or **$1,990/yr** | **150** | **Yes — card required** | The modal `certly-pm` firm: 200–500 units or 15–45 associations. Adds migration and per-property requirement sets. |
+| **Portfolio** | **$299/mo** or **$2,990/yr** | **400** | **Yes — card required** | Multi-market managers, self-storage and MH operators, small GCs with 60–150 subs. |
+| **Vendor Pack** | **+$39/mo** per 50 | add-on, stackable | Yes | Published overage, so nobody has to call us to grow. |
+| Above ~700 | published: "email us, it is $0.55 per tracked vendor per month" | — | — | **Still not a demo.** The one promise we never break. |
+
+**Every CTA on these tiers reads "Start 14-day trial", never "Start free"**, with
+*"Card required. No charge until {date}. Cancel in one click."* rendered **next to the button in body
+text** (REVIEW.md B-06; `specs/10` §3.1). The only genuinely free thing we offer is the Free Gap
+Report, and it keeps the word "free" because it is true.
 
 Annual = ten months for twelve (**17% off**), matching the category convention
 ([COI Tracker](https://coitracker.co/pricing) advertises "~17% discount").
@@ -332,9 +388,9 @@ Full-Service **$17.80/vendor/year with a $10,000 annual minimum**
 
 | Portfolio | bcs Self-Service | Certly | Verdict |
 |---|---|---|---|
-| 50 certificates | $47.50/mo | $99/mo | We are **2.1× more expensive**. Deliberate. Do not discount; sell the third state. |
-| 150 certificates | $142.50/mo | $199/mo | 1.4× more expensive. |
-| 400 certificates | $380/mo | $299/mo | **We are cheaper**, and by enough to say so. |
+| 50 vendors | $47.50/mo | $99/mo | We are **2.1× more expensive**. Deliberate. Do not discount; sell the third state. |
+| 150 vendors | $142.50/mo | $199/mo | 1.4× more expensive. |
+| 400 vendors | $380/mo | $299/mo | **We are cheaper**, and by enough to say so. |
 | Managed service | $833/mo floor (the $10k minimum) | n/a | The floor that makes the whole self-serve wedge exist. |
 
 Note also that bcs's *paid* CTAs are still "custom quote" despite the published rate. Our
@@ -349,7 +405,7 @@ ten minutes; with them you can be booked in for Thursday.*
 
 ### 8.4 The tier the founder should consider, and why it is not in the launch ladder
 
-A **Solo tier at $49/mo for 20 certificates** would blunt COI Tracker directly and open the bottom
+A **Solo tier at $49/mo for 20 tracked vendors** would blunt COI Tracker directly and open the bottom
 of the `certly-pm` file (Home Suite Home at 55 properties; Allenorth at 7 associations). Against it:
 Hormozi ("be more expensive than everyone else… by enough that it causes consumer to pause") and
 Ramanujam's minivation warning; Poyar's finding that early-stage companies concentrate on flat fees
@@ -369,19 +425,39 @@ produced a "26% improvement at creating premium trials"
 
 | Path | What it is | Card | Length | Why |
 |---|---|---|---|---|
-| **Primary — Free Gap Report** | Up to 25 certificates, dated PDF, no login, no account | No | One-off | The HVCO. It produces the finding that closes the sale, and it is not a crippled account — so it does not compete with the free tiers at COI Tracker, TrackMyVendor and bcs on a dimension where we would lose. |
-| **Secondary — 14-day trial** | Full Starter or Standard, all features, cancel in the portal | **Yes** | **14 days** | Card-required trials convert at **30%, "more than 5x ones that don't require one"**; **14 days is the most common length (62%)**; category median free-to-paid is **8%**. Same source. |
+| **Primary — Free Gap Report** | Up to 25 certificates, dated PDF, no login, no account | No | One-off | The HVCO. It produces the finding that closes the sale, and it is not a crippled account — so it does not compete with the free tiers at COI Tracker, TrackMyVendor and bcs on a dimension where we would lose. **Ships behind a founder legal gate** (`specs/15`); until that lands, the samples-only demo carries the hero. |
+| **Secondary — 14-day trial** | Full Starter, Standard or Portfolio, all features, that tier's tracked-vendor limit, cancel in the portal | **Yes — and we say so before we ask for it** | **14 days** | Card-required trials convert at **30%, "more than 5x ones that don't require one"**; **14 days is the most common length (62%)**; category median free-to-paid is **8%**. Same source. |
 
 **Trial mechanics.** Stripe Checkout with `trial_period_days = 14`, card collected, cancel-anytime in
-the Billing Portal, one reminder email at T−3 and one at T−1 (Stripe's own trial-ending webhook), and
+the Billing Portal, reminder emails at T−3 and T−1 (Stripe's own trial-ending webhook), and
 **no charge without a warning**. The trial is on the *tier the customer picked*, not a special trial
-plan — fewer moving parts, and the customer experiences the product they will pay for.
+plan — fewer moving parts, and the customer experiences the product they will pay for. There is **no
+25-vendor trial cap**; 25 is the Free Gap Report's document cap (REVIEW.md MJ-09).
 
-**What the trial must achieve in 14 days** (instrumented in `LANDING_SPEC.md` §11 and handed to
-`THRESHOLDS.md`): certificate #1 processed within 24 hours; a requirement template saved; at least
-one `gap` or `asserted_only` surfaced; at least one chase email sent. An account that has not hit all
-four by day 7 gets a single human-written nudge from the founder's mailbox — the only human in the
-loop, and at the edge, per PLAN.md A6.
+**Disclosure is part of the offer, not part of the legal page (REVIEW.md B-06).** A card-required
+trial that renews automatically is a negative-option subscription. Every CTA reads
+**"Start 14-day trial"**; *"Card required. No charge until {date}. Cancel in one click."* renders
+adjacent to it in body text with a real date; the disclosure string shown is **recorded** against the
+Checkout session; and the T−3 and T−1 warnings are **transactional and cannot be switched off**.
+Full implementation in `specs/10` §3.1. Calling this "Start free" would have been the exact pattern
+the FTC's negative-option rule and ROSCA are aimed at, for no conversion gain we can point to.
+
+### 9.1 The trial health checklist — *not* the activation metric
+
+**What a healthy trial looks like by day 7** (the instrument for the nudge below): certificate #1
+processed within 24 hours; a requirement template saved; at least one `gap` or `asserted_only`
+surfaced; at least one chase email sent. An account that has not hit all four by day 7 gets a single
+human-written nudge from the founder's mailbox — the only human in the loop, and at the edge, per
+`PLAN.md` A6.
+
+> **These four conditions used to be called "activation" here, and they are not** (REVIEW.md B-05,
+> §2.3). **Activation is `specs/11` §2 and nothing else**: one `comparisons` row against a certificate
+> the org uploaded, out of `needs_review`, emitted once per org by the comparison job. One of the four
+> conditions above — *a gap must exist* — **is not under our control**, and it is precisely what
+> `THRESHOLDS.md` §6 sets out to measure (`activated.gaps_found`). Defining activation to require a
+> gap would make a customer with a **clean portfolio** count as a failed activation: a self-inflicted
+> STOP on the one metric that can stop the business. They are a good day-7 checklist; they are not the
+> number.
 
 ---
 
@@ -400,7 +476,7 @@ with a claim we cannot show.
 | 6 | "I need a demo / I need to talk to someone." | You can. But you don't have to, and you can see the price and the product first. | Hero + pricing | Published prices; working demo |
 | 7 | "What about my tenants, not just vendors?" | Same engine — a tenant certificate is a certificate, and there is a commercial-tenant requirement template. | FAQ | Template library |
 | 8 | "Does it read anything besides ACORD 25?" | Not at launch. ACORD 25 only, and we say so rather than let you find out. | FAQ | PLAN.md A11 |
-| 9 | "Is my vendors' data safe?" | Your documents are yours, stored in your account, deleted when you delete them, and never used to train anyone's model. | Footer + FAQ | Written policy, not a claim |
+| 9 | "Is my vendors' data safe?" | Your documents are yours, stored in your account, deleted when you delete them, and never used to train anyone's model. | Footer + FAQ | Written policy, not a claim — `/legal/privacy` and `/legal/subprocessors` (`specs/13` §4), plus the Free Gap Report's own 7-day purge |
 | 10 | "What if I stop paying?" | Export everything — certificates, gap history, the calendar — in one click, any time, including after you cancel. | FAQ | The export exists |
 
 Two objections we deliberately do **not** rebut, because rebutting them costs credibility:
@@ -474,38 +550,46 @@ here.
 
 ### 12.1 Products
 
+> **Settle the product name before creating these** (MJ-13). The names below are written with
+> `{PRODUCT_NAME}` = the launch name; `IDENTITY.md` §2.3 recommends **Coverfile**. Renaming after these
+> objects exist is cheap; after invoices exist it is not.
+
 | Product name | Statement descriptor | Description | Metadata |
 |---|---|---|---|
-| `Certly Starter` | `CERTLY` | COI tracking and gap detection for up to 50 active certificates | `app=certly`, `tier=starter`, `cert_limit=50`, `seats=3` |
-| `Certly Standard` | `CERTLY` | Up to 150 active certificates, per-property requirement sets, migration | `app=certly`, `tier=standard`, `cert_limit=150`, `seats=10` |
-| `Certly Portfolio` | `CERTLY` | Up to 400 active certificates, unlimited properties, priority support | `app=certly`, `tier=portfolio`, `cert_limit=400`, `seats=25` |
-| `Certly Certificate Pack` | `CERTLY` | +50 active certificates, stackable add-on | `app=certly`, `tier=addon`, `cert_increment=50` |
+| `{PRODUCT_NAME} Starter` | `CERTLY` | COI tracking and gap detection for up to 50 tracked vendors | `app=certly`, `tier=starter`, `vendor_limit=50`, `seats=3` |
+| `{PRODUCT_NAME} Standard` | `CERTLY` | Up to 150 tracked vendors, per-property requirement sets, migration | `app=certly`, `tier=standard`, `vendor_limit=150`, `seats=10` |
+| `{PRODUCT_NAME} Portfolio` | `CERTLY` | Up to 400 tracked vendors, unlimited properties, priority support | `app=certly`, `tier=portfolio`, `vendor_limit=400`, `seats=25` |
+| `{PRODUCT_NAME} Vendor Pack` | `CERTLY` | +50 tracked vendors, stackable add-on | `app=certly`, `tier=addon`, `vendor_increment=50` |
+
+*(`app=certly` and the statement descriptor `CERTLY` stay: the slug is internal and the descriptor is
+capped at 22 characters and set once. Only the customer-visible product **names** carry
+`{PRODUCT_NAME}`.)*
 
 ### 12.2 Prices
 
 | # | Product | Nickname | Price | Currency | Interval | Trial days | Billing scheme | Metadata | Env var |
 |---|---|---|---|---|---|---|---|---|---|
-| 1 | Certly Starter | `starter-monthly` | **$99.00** | usd | month | **14** | licensed, qty 1 | `app=certly, tier=starter, cert_limit=50, seats=3, plan_rank=1` | `STRIPE_PRICE_CERTLY_STARTER_MONTHLY` |
-| 2 | Certly Starter | `starter-annual` | **$990.00** | usd | year | **14** | licensed, qty 1 | `app=certly, tier=starter, cert_limit=50, seats=3, plan_rank=1, discount=17pct` | `STRIPE_PRICE_CERTLY_STARTER_ANNUAL` |
-| 3 | Certly Standard | `standard-monthly` | **$199.00** | usd | month | **14** | licensed, qty 1 | `app=certly, tier=standard, cert_limit=150, seats=10, plan_rank=2, default=true` | `STRIPE_PRICE_CERTLY_STANDARD_MONTHLY` |
-| 4 | Certly Standard | `standard-annual` | **$1,990.00** | usd | year | **14** | licensed, qty 1 | `app=certly, tier=standard, cert_limit=150, seats=10, plan_rank=2, discount=17pct` | `STRIPE_PRICE_CERTLY_STANDARD_ANNUAL` |
-| 5 | Certly Portfolio | `portfolio-monthly` | **$299.00** | usd | month | **14** | licensed, qty 1 | `app=certly, tier=portfolio, cert_limit=400, seats=25, plan_rank=3` | `STRIPE_PRICE_CERTLY_PORTFOLIO_MONTHLY` |
-| 6 | Certly Portfolio | `portfolio-annual` | **$2,990.00** | usd | year | **14** | licensed, qty 1 | `app=certly, tier=portfolio, cert_limit=400, seats=25, plan_rank=3, discount=17pct` | `STRIPE_PRICE_CERTLY_PORTFOLIO_ANNUAL` |
-| 7 | Certly Certificate Pack | `pack50-monthly` | **$39.00** | usd | month | 0 | licensed, **quantity adjustable 1–10** | `app=certly, tier=addon, cert_increment=50` | `STRIPE_PRICE_CERTLY_PACK50_MONTHLY` |
-| 8 | Certly Certificate Pack | `pack50-annual` | **$390.00** | usd | year | 0 | licensed, quantity adjustable 1–10 | `app=certly, tier=addon, cert_increment=50, discount=17pct` | `STRIPE_PRICE_CERTLY_PACK50_ANNUAL` |
+| 1 | {PRODUCT_NAME} Starter | `starter-monthly` | **$99.00** | usd | month | **14** | licensed, qty 1 | `app=certly, tier=starter, vendor_limit=50, seats=3, plan_rank=1` | `STRIPE_PRICE_CERTLY_STARTER_MONTHLY` |
+| 2 | {PRODUCT_NAME} Starter | `starter-annual` | **$990.00** | usd | year | **14** | licensed, qty 1 | `app=certly, tier=starter, vendor_limit=50, seats=3, plan_rank=1, discount=17pct` | `STRIPE_PRICE_CERTLY_STARTER_ANNUAL` |
+| 3 | {PRODUCT_NAME} Standard | `standard-monthly` | **$199.00** | usd | month | **14** | licensed, qty 1 | `app=certly, tier=standard, vendor_limit=150, seats=10, plan_rank=2, default=true` | `STRIPE_PRICE_CERTLY_STANDARD_MONTHLY` |
+| 4 | {PRODUCT_NAME} Standard | `standard-annual` | **$1,990.00** | usd | year | **14** | licensed, qty 1 | `app=certly, tier=standard, vendor_limit=150, seats=10, plan_rank=2, discount=17pct` | `STRIPE_PRICE_CERTLY_STANDARD_ANNUAL` |
+| 5 | {PRODUCT_NAME} Portfolio | `portfolio-monthly` | **$299.00** | usd | month | **14** | licensed, qty 1 | `app=certly, tier=portfolio, vendor_limit=400, seats=25, plan_rank=3` | `STRIPE_PRICE_CERTLY_PORTFOLIO_MONTHLY` |
+| 6 | {PRODUCT_NAME} Portfolio | `portfolio-annual` | **$2,990.00** | usd | year | **14** | licensed, qty 1 | `app=certly, tier=portfolio, vendor_limit=400, seats=25, plan_rank=3, discount=17pct` | `STRIPE_PRICE_CERTLY_PORTFOLIO_ANNUAL` |
+| 7 | {PRODUCT_NAME} Vendor Pack | `pack50-monthly` | **$39.00** | usd | month | 0 | licensed, **quantity adjustable 1–10** | `app=certly, tier=addon, vendor_increment=50` | `STRIPE_PRICE_CERTLY_PACK50_MONTHLY` |
+| 8 | {PRODUCT_NAME} Vendor Pack | `pack50-annual` | **$390.00** | usd | year | 0 | licensed, quantity adjustable 1–10 | `app=certly, tier=addon, vendor_increment=50, discount=17pct` | `STRIPE_PRICE_CERTLY_PACK50_ANNUAL` |
 
 ### 12.3 Settings that go with them
 
 | Setting | Value | Why |
 |---|---|---|
-| Checkout mode | `subscription`, card required, `trial_period_days=14` on prices 1–6 | Poyar: card-required trials convert ~5× better |
+| Checkout mode | `subscription`, card required, `trial_period_days=14` on prices 1–6 | Poyar: card-required trials convert ~5× better. **The disclosure in `specs/10` §3.1 goes in the Checkout line-item description as well as next to the CTA** |
 | Billing Portal | On: cancel, switch plan, update card, adjust Pack quantity, download invoices | "Cancel any time" must be true in one click, not an email |
 | Proration | On, for tier switches and Pack quantity | Upgrades must be frictionless; the meter is the growth path |
 | Tax | Stripe Tax on, US only at launch | A2 |
 | Trial-end reminders | Stripe's `customer.subscription.trial_will_end` → our email at T−3 and T−1 | "No charge without a warning" |
 | Refunds | Manual, 30-day, no questions (§6) | Guarantee |
-| Free Gap Report | **No Stripe object at all** | It is not a plan. No card, no account, nothing to cancel. |
-| Above ~700 certificates | Published rate $0.55/cert/mo, invoiced | Keeps the "never a demo" promise without building metered billing at launch |
+| Free Gap Report | **No Stripe object at all** | It is not a plan. No card, no account, nothing to cancel, nothing kept past 7 days. |
+| Above ~700 tracked vendors | Published rate $0.55/tracked vendor/mo, invoiced | Keeps the "never a demo" promise without building metered billing at launch |
 
 **Not created at launch, deliberately:** any Solo/$49 price (§8.4), any usage-metered price, any
 coupon. Coupons before the first 100 customers destroy the price anchor and teach the market to wait.
@@ -548,17 +632,19 @@ evidence without a customer.
 The offer is now limited by exactly one term, and that term is limited by exactly one thing we cannot
 buy: elapsed time with real customers.
 
-### 13.3 Open questions for the founder
+### 13.3 Open questions for the founder — **each with the default that ships if nothing is said**
 
-1. **The guarantee (§6.1 vs 6.3).** Recommended text creates a capped, controllable liability.
-   Founder must own it.
-2. **The no-login demo's upload variant (§`LANDING_SPEC.md` §8).** Samples-only is safe today.
-   Accepting a stranger's real certificate needs a legal read, not an engineering one.
-3. **Solo $49 tier (§8.4).** Recommended: no. Needs a pre-committed threshold in `THRESHOLDS.md`.
-4. **Naming.** "Certly" is flagged in PLAN.md A3 as used elsewhere; the outbound email and every
-   price nickname carry the name. A rename after Stripe objects exist is cheap; after invoices exist
-   it is not.
-5. **Which beachhead gets the landing page first** — `certly-pm` (1,101 rows, 977 end-customers) or
-   `certly-gc` (780 rows). This document assumes PM. The GC variant needs a different hero example
-   (CG 20 37 and the completed-operations gap) and a different requirement template, but not a
-   different offer.
+Consolidated after the wave-1b review (REVIEW.md §5). **The default is what ships**, so silence
+produces something defensible rather than a stall. The full de-duplicated list of fifteen founder
+questions, across every document, is in `REVIEW_RESPONSE.md` §"Founder can override"; the orchestrator
+copies it into `PREREQUISITES.md`.
+
+| # | question | default that ships | founder overrides by |
+|---|---|---|---|
+| **Q1** | **The guarantee** — §6.1 as written, or §6.3's safer fallback? | **§6.1 as written**, with MJ-19's two fixes applied (annual remedy defined; the expiry warning made non-optional). Exposure is capped at one month, the carve-outs are screened *before* the promise attaches, and it is the only risk reversal we control | striking it before launch |
+| **Q2** | **The Free Gap Report** — is the founder willing to hold strangers' third-party documents at all? | **Yes, under `offer/RESEARCH.md` §7's conditions as reconciled in `specs/15` §6.1** — no producer personal data ever stored, source files deleted at render, everything purged at 7 days, terms next to the drop zone — **and only after a legal read. This is a launch gate, not a preference** (REVIEW.md B-07). Until it lands the page runs the samples-only demo as its single hero CTA and the Gap Report sits behind a waitlist line | the legal read; or by taking the strict one-file/5 MB/24-hour fallback in `specs/15` §6.1 |
+| **Q3** | **Solo $49 tier** (§8.4) | **No at launch.** The test is pre-committed: `THRESHOLDS.md` §3 Round 1 puts $49 against $99 on a fresh cohort of ≥ 100 **if and only if** activation and retention are strong and only conversion fails. Do not discount before the data | running the test early |
+| **Q4** | **The name.** Two live companies trade as Certly; `certly.app` is somebody else's | **Decide before the Stripe products are created** (§12.1). Recommendation: rename the customer-facing name to **Coverfile**, keep the slug `certly`. Run a real USPTO class 9/42 search first — no agent could (Justia 403, no public USPTO JSON endpoint) — and spend nothing on a mark or a domain until it is done | naming it |
+| **Q5** | **Which beachhead gets the landing page** — PM or GC? | **PM/HOA**, which `PERSONA.md` §1/§7.1 and this document reached independently. GC is the **outbound** programme (the premium audit is dated and dollar-denominated) with a `/for-general-contractors` variant per `PERSONA.md` §7.2 | asking for the GC hero |
+| **Q6** | **"We never charge your vendors" as a permanent commitment** | **Yes, permanently, and it goes in `/legal/terms`** (REVIEW.md §2.9, `specs/13` §A11). It is promised in the hero, in FAQ 4 and in every vendor email; leaving it out of the terms is how a promise quietly becomes a marketing line | striking the clause before launch |
+| **Q7** | **Inference cost** — $0.02 or $0.10–0.20 per document? | **Plan on $0.10–0.20** (`THRESHOLDS.md` §5 shows its arithmetic from list pricing; the $0.02 showed none). Consequence accepted now: a 25-document free report costs **$2.50–5.00**, so `specs/15` §11's daily spend cap is a launch requirement. Even at $0.20 a document, gross margin at $99 stays above 95% | nothing — `extraction_succeeded.cost_cents` settles it in week one |

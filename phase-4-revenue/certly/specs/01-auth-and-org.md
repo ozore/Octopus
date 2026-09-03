@@ -10,7 +10,10 @@
 ## 2. Flow
 
 ```
-/  →  "Start free" → email field → POST createMagicLink
+/  →  "Start 14-day trial" → email field → POST createMagicLink
+        (adjacent, in body text: "Card required. No charge until {date}. Cancel in one click."
+         — specs/10 §3.1, REVIEW.md B-06. The other entry point is "Get a free Gap Report",
+         which is the one genuinely free path and keeps the word "free".)
                                      ├─ known email  → email: "Sign in to Certly"
                                      └─ new email    → email: "Finish setting up Certly"
    ← inbox → GET /auth/callback?token=… → consume (single use, 15 min)
@@ -26,7 +29,7 @@ before they have seen the product.
 
 | screen | route | states |
 |---|---|---|
-| Sign in / start | `/signin` | idle · sending · sent ("check your inbox — the link works once and lasts 15 minutes") · rate-limited |
+| Sign in / start | `/signin` | idle · sending · sent ("check your inbox — the link works once and lasts 15 minutes") · rate-limited. The primary button is **"Start 14-day trial"** for a new email and "Sign in" for a returning one; the trial disclosure renders adjacent to the button, never behind a link |
 | Callback | `/auth/callback` | consuming · expired · already-used · invalid · success (redirect) |
 | Org switcher | header | single org (hidden) · multiple orgs (menu) |
 
@@ -78,6 +81,8 @@ known-email case (no enumeration).
 can switch.
 **A6** Given a session cookie for org A, When I request a resource belonging to org B, Then I get 404
 (**not** 403 — a 403 confirms the resource exists).
+**A7** Given `/signin` in any state, Then the string "Start free" appears nowhere, and the trial
+disclosure from `specs/10` §3.1 is in the DOM adjacent to the primary button (REVIEW.md B-06).
 
 ## 8. Edge cases
 

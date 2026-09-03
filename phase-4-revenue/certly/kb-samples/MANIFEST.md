@@ -18,26 +18,61 @@ URL in its row on that date (`curl -L`, Chrome UA). Nothing here was generated, 
 1. **Public documents only.** Every file is published on a `.gov`, `.edu` or company website with no
    login, no paywall and no click-through agreement. None was scraped from behind an authentication wall.
 2. **ACORD's marks.** The ACORD 25 form layout and the ACORD name and logo are ACORD's property; the
-   forms below carry `© 1988–2015 ACORD CORPORATION. All rights reserved.` We store these third-party
-   publications **as fetched, unmodified, as test fixtures**, and we do not redistribute them, publish
-   them, or reproduce the blank form in Certly's own UI. **We never render an ACORD-branded form.**
+   forms below carry `© 1988–2015 ACORD CORPORATION. All rights reserved.` (and `© 1988-2025` on
+   C16). We store these third-party publications **as fetched, unmodified, as test fixtures**, and we
+   do not redistribute them, publish them, or reproduce the blank form in Certly's own UI.
+   **We never render an ACORD-branded form**, and we never trace one.
    Certly's outputs are our own tables and PDFs. Any future need to *produce* an ACORD form is a
    licensing question for the founder, not an engineering one — logged as OQ-5.
+
+   **2a. This corpus is private, and the marketing site may not draw on it (REVIEW.md B-13).**
+   `LANDING_SPEC.md` had planned to put three of these documents on the public page as demo samples
+   and to render V4 as *"SVG traced from the form's rules and boxes"* of a real ACORD 25 — both
+   against this policy and against `BACKLOG.md` N11 — and the demo chips relabelled real
+   institutions' documents ("Story County IA" as *"Landscaper"*), which misdescribes a named third
+   party's publication. **The rule, stated so it cannot be read two ways:**
+
+   | may appear on a public {PRODUCT_NAME} surface | may not |
+   |---|---|
+   | a **Certly-authored fixture** — a certificate-shaped sample document we produced ourselves, in our own layout, with fictional vendors, insurers, policy numbers and dates | any file from this corpus, whole, cropped, redacted or thumbnailed |
+   | a short, **attributed verbatim quotation** of a printed notice on the form ("A statement on this certificate does not confer rights…" — *printed on every ACORD 25*) | a traced, redrawn or re-typeset reproduction of the ACORD 25 layout |
+   | a document whose rights-holder has **given us written permission**, on file, naming {PRODUCT_NAME}, the document and the use — **that is what "authorised" means here, and nothing weaker qualifies**: not "it is on a .gov site", not "no login was needed", not "it says sample on it", not an absence of a copyright notice | anything sourced by inference about permission |
+
+   Publicly reachable is a fact about a URL. Permission is a fact about a rights-holder. The corpus
+   is the first and not the second, which is exactly why it is a private fixture set.
 3. **No private individuals.** Every filled certificate below names organisations only, with three
    documented exceptions, all of which are fine and are named here rather than hidden:
    - `certificates/wisdot-...pdf` — signed `Joseph A. Sample`, a WisDOT-authored placeholder.
    - `certificates/nyc-dycd-...package.pdf` — `Jane Doe`, an NYC-authored placeholder.
    - `certificates/certificates_how_to_read...pdf` — `© Elizabeth Carmichael 2017`, the training
      document's **author byline**, not a policyholder. Retained as attribution.
-   No producer contact name, no signatory, and no insured principal in this corpus is a real
-   private individual. **A real person's name must never be reproduced in Certly prose, prompts, UI
-   copy, marketing or eval output** — a fixture may only *reference* the file and page.
+
+   **The blanket assurance that used to follow this list has been withdrawn (REVIEW.md MJ-20).** It
+   read *"No producer contact name, no signatory, and no insured principal in this corpus is a real
+   private individual"* — but **C2 is described two sections below as "a genuinely issued
+   certificate, not a sample"**, and on a genuinely issued certificate the `CONTACT NAME`, the
+   producer's direct e-mail and the authorised-representative signature are ordinarily a named
+   person. The reviewer could not confirm or refute it from the text layer in two attempts (the
+   filled values sit in form XObjects). **C11 and C12 are unstamped and may also be issued rather
+   than sample documents.**
+
+   | | |
+   |---|---|
+   | **Status of C2, C11, C12** | `UNVERIFIED — must be checked by eye before any assurance is restated` |
+   | **Owner** | the wave-2 golden-set labeller, at the moment of labelling — the pages are open anyway |
+   | **If a real individual is found** | the row is annotated here, the name goes into `evals/redacted-names.json`, and the fixture stays (it is a public document and a valuable layout) — what changes is that the name is mechanically blocked from every output |
+
+   **The rule that matters is now enforced by tests rather than by this note:**
+   `specs/03` §15.3 asserts that no `producer.contact_name` value from any fixture appears in eval
+   output, prompts, UI copy, help articles or marketing; `specs/15` §5.1 drops the producer's contact
+   name, phone, fax and e-mail entirely on the anonymous Free Gap Report path; and
+   `KNOWLEDGE_BASE.md` §A.3 already marks the field *"never surfaced in prose"*.
 4. **Adding a file.** Add the row here first (URL, fetch date, why it is here, personal-data note), then
    the file. A file without a manifest row fails `kb:check`.
 
 ---
 
-## `certificates/` — 15 files, 99 pages, 11 distinct ACORD 25 layouts
+## `certificates/` — 15 committed files (99 pages, 11 distinct ACORD 25 layouts) + C16 to fetch
 
 `rev` is the ACORD 25 revision stamped in the form footer. `layer` is what an extractor gets from the
 PDF text layer: **form** = a real AcroForm/vector PDF whose text extracts but in *visual-block order,
@@ -61,11 +96,28 @@ page inside a larger guidance document.
 | C13 | `tn-suppliers-certificate-of-insurance.pdf` | https://www.tn.gov/content/dam/tn/generalservices/documents/cpo/job-aids/suppliers/Suppliers_Certificate_of_Insurance.pdf | (unstamped) | 9 | embedded | A state procurement **job aid** with a box-by-box acceptance checklist ("header / coverages / footer"). Second independent source for the field inventory; names `CG 00 01` as the required GL form. |
 | C14 | `idaho-iceworld-coi-sample.pdf` | https://www.idahoiceworld.com/media/1070/certificate_of_insurance_sample.pdf | (unstamped) | 5 | embedded | Municipal facility "Quick Tips — Understanding the ACORD Certificate of Insurance". Short, plain-English gloss on each box; source for review-UI tooltips. |
 | C15 | `mcgough-subcontractor-sample-coi-exhibit-b.pdf` | https://www.mcgough.com/wp-content/uploads/2024/05/Subcontractor_Sample_COIExhibit-B_4.12.24.pdf | 2010/05 | 8 | embedded | A GC's own **sample-COI-as-instruction**: the certificate a subcontractor must return, with the required values pre-typed. This is exactly the artefact Certly's "required certificate" feature would replace. |
+| **C16** | `acord25-2025-12-blank.pdf` — **NOT YET COMMITTED, see below** | https://www.dfs.ny.gov/apps-and-licensing/insurance-companies/certificates-approved/acord-25-2025-12-liability | **2025/12** | 1 | form (blank) | **The current edition of the form the entire product reads** (`KNOWLEDGE_BASE.md` §A.2, REVIEW.md B-01). Published by New York's Department of Financial Services; footer `ACORD 25 (2025/12) © 1988-2025 ACORD CORPORATION`. Fetched 2026-09-03 by the identity fleet (text at `identity/research/acord25-form-text.txt`, source `[E7]`) and re-fetched independently by the wave-1b reviewer (HTTP 200, `%PDF`). **Blank**, so it carries no policy data and no person's name at all — the cleanest fixture in the corpus. Golden-set fixture **G17**: it tests structure, not values. |
 
-**Layout coverage achieved:** ACORD 25 revisions **2010/05, 2014/01, 2016/03** (2016/03 is the current
-edition — see `KNOWLEDGE_BASE.md` §A.2); vector form PDFs, an OCR'd scan, and certificates embedded in
-larger packages; single-insurer and four-insurer certificates; checkbox-driven and
-Description-of-Operations-driven endorsement evidence; `$`-value, `Excluded`, `SIR` and blank limit boxes.
+**C16 is a row without a file, deliberately, and this is the one exception to rule 4.** The manifest
+row is written first because the edition is load-bearing *now* — the enum, `KNOWLEDGE_BASE.md` §A.2
+and `specs/03` §15 all depend on it, and two agents have opened the source. The bytes are fetched by
+the first wave-2 agent to touch M4, with:
+
+```bash
+curl -L -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36" \
+  -o phase-4-revenue/certly/kb-samples/certificates/acord25-2025-12-blank.pdf \
+  "https://www.dfs.ny.gov/apps-and-licensing/insurance-companies/certificates-approved/acord-25-2025-12-liability"
+# then: verify the footer reads "ACORD 25 (2025/12)" and update this row's page count
+```
+
+`kb:check` treats C16 as **pending** until the file exists and **fails the golden-set eval** (which
+requires 21/21) until then — so it cannot be quietly forgotten.
+
+**Layout coverage achieved:** ACORD 25 revisions **2010/05, 2014/01, 2016/03** in filled form, plus
+the current **2025/12** blank (C16) — see `KNOWLEDGE_BASE.md` §A.2; vector form PDFs, an OCR'd scan,
+and certificates embedded in larger packages; single-insurer and four-insurer certificates;
+checkbox-driven and Description-of-Operations-driven endorsement evidence; `$`-value, `Excluded`,
+`SIR` and blank limit boxes.
 
 **Known gap, stated rather than hidden.** None of these files can be attributed to a *named* agency
 management system (Applied Epic, Vertafore AMS360, HawkSoft, EZLynx). AMS vendors do not publish
@@ -117,4 +169,4 @@ fetch dates are in `KNOWLEDGE_BASE.md` §B.1 and §B.3.
 | `hartfordct.gov` COI requirements | HTTP 403. Covered by C12/C13. |
 | `docutrax.com/drc/coi/25-fig.pdf` (annotated 2016/03 figure) | Returned an HTML error page, not a PDF. Field inventory taken from C1/C4/C13 instead. |
 | `davis-stirling.com` contractor-insurance page (California HOA law) | Cloudflare 403 to both WebFetch and curl. **This is a real gap** for the California HOA template: `KNOWLEDGE_BASE.md` §B.1 marks the CA-specific HOA row `UNVERIFIED` rather than guessing. |
-| ACORD's own blank ACORD 25 | Not obtained. ACORD distributes forms to licensees; the public copies that exist are re-hosts of uncertain provenance. C1 (a state DOT's own 2016/03 example) is used as the layout reference instead, which is a *better* fixture anyway because it is filled. |
+| ACORD's own blank ACORD 25 | Not obtained **from ACORD**. ACORD distributes forms to licensees. **Superseded 2026-09-03:** a blank **2025/12** is published by a state regulator (NY DFS) and is now C16 — a first-party government publication, not a re-host of uncertain provenance. C1 (a state DOT's own filled 2016/03 example) remains the layout reference for *values*, because it is filled. |

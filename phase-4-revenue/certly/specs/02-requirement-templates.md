@@ -100,8 +100,14 @@ tracking it entirely.
 - `minAmount` ∈ [1, 1,000,000,000]; entered as digits, rendered with separators; **`0` is rejected** —
   a zero minimum means "do not check", which is what deleting the row is for
 - a set must have ≥ 1 requirement before it can be assigned
-- `acceptsForms` entries normalise to `^[A-Z]{2}\s?\d{2}\s?\d{2}(\s?\d{2}\s?\d{2})?$`; free text rejected
-  with an explanation and a link to the glossary
+- `acceptsForms` entries are of two kinds and **both are valid**:
+  - an **ISO/NCCI-shaped** number, normalised to `^[A-Z]{2}\s?\d{2}\s?\d{2}(\s?\d{2}\s?\d{2})?$`
+    (`CG2001` ≡ `CG 20 01`; `CG 24 04 05 09` keeps its edition);
+  - a **carrier proprietary form**, free text, `^[A-Z0-9][A-Z0-9 .\-]{2,29}$`, stored as typed and
+    displayed with a visible **"unrecognised form"** marker plus the tooltip "we will match this
+    string exactly; we cannot tell you what it covers".
+  Rejecting free text outright would reject `RSCG0303`, a real carrier additional-insured form that
+  `KNOWLEDGE_BASE.md` §C.5 and `specs/05` §4 explicitly require the engine to handle (REVIEW.md MN-09)
 - exactly one `isOrgDefault` per org (partial unique index)
 - endorsement rows for `waiver_of_subrogation_wc` are only valid alongside a `workers_compensation`
   coverage row — the editor adds it automatically and says so
@@ -125,7 +131,10 @@ panel states "may be met by general liability and umbrella/excess combined".
 added automatically with an explanation.
 **A7** Given `pm.snow` (marked `UNVERIFIED` in KB §B.1), When I preview it, Then the row is labelled
 "our suggestion — not from a published source. Check your contract."
-**A8** Given any template or editor screen, Then the §F.2 disclaimer is rendered adjacent to the limits.
+**A8** Given any template or editor screen, Then the §F.2 disclaimer is rendered **verbatim** and
+adjacent to the limits (one of the eleven surfaces in KB §F).
+**A10** Given I type `RSCG0303` into `acceptsForms`, Then it is accepted, stored as typed, and shown
+with the "unrecognised form" marker rather than rejected (MN-09).
 **A9** Given I edit a requirement, Then `version` increments and existing comparisons keep the version
 they were run against (M5 stores it).
 

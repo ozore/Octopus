@@ -33,8 +33,8 @@
     },
     "form_edition": {
       "type": "string",
-      "description": "The ACORD 25 revision stamped in the form footer.",
-      "enum": ["2010/05", "2014/01", "2016/03", "unknown"]
+      "description": "The ACORD 25 revision stamped in the form footer. 2025/12 is the current edition (KNOWLEDGE_BASE.md A.2); 2010/05, 2014/01 and 2016/03 remain in wide circulation.",
+      "enum": ["2010/05", "2014/01", "2016/03", "2025/12", "unknown"]
     },
     "certificate_date": { "$ref": "#/$defs/DateField" },
     "producer": {
@@ -139,8 +139,12 @@
             "items": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["label", "amount"],
+              "required": ["label", "label_raw", "amount"],
               "properties": {
+                "label_raw": {
+                  "$ref": "#/$defs/StringField",
+                  "description": "The limit label exactly as printed in the LIMITS column, e.g. 'PROFESSIONAL LIAB. EACH CLAIM' or 'CYBER AGGREGATE' on an OTHER: row. Required because 'label' is a closed enum and collapses every unlisted label to 'other' (REVIEW.md MJ-18)."
+                },
                 "label": {
                   "type": "string",
                   "enum": [

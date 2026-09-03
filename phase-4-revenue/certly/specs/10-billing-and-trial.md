@@ -1,4 +1,4 @@
-# Spec M10 — Billing: tiers by certificates tracked, with a trial
+# Spec M10 — Billing: tiers by tracked vendors, with a card-required trial
 
 **Backlog item:** M10 (Must). **Effort:** M. **Depends on:** M1; `packages/platform` billing
 (Stripe Checkout + Portal + webhook-as-truth, PLAN §D2).
@@ -19,14 +19,14 @@ Self-serve is not a feature here, it is the market thesis (`BACKLOG.md` §0).
 
 ## 2. The ladder (from `OFFER.md` §8.2)
 
-| plan | price | active certificates | seats | card |
+| plan | price | tracked vendors | seats | card |
 |---|---|---:|---|---|
-| **Free Gap Report** | $0, one-off | 25, report only, no account | — | no |
+| **Free Gap Report** | $0, one-off | 25 documents, report only, no account | — | no |
 | **Starter** | **$99/mo** · **$990/yr** | **50** | 3 | yes |
 | **Standard** *(default)* | **$199/mo** · **$1,990/yr** | **150** | 10 | yes |
 | **Portfolio** | **$299/mo** · **$2,990/yr** | **400** | 25 | yes |
-| **Certificate Pack** | **+$39/mo** · **+$390/yr** per 50 | stackable add-on, quantity 1–10 | — | yes |
-| above ~700 | published rate **$0.55/certificate/month**, invoiced — **never a demo** | — | — | — |
+| **Vendor Pack** | **+$39/mo** · **+$390/yr** per 50 | stackable add-on, quantity 1–10 | — | yes |
+| above ~700 | published rate **$0.55/tracked vendor/month**, invoiced — **never a demo** | — | — | — |
 
 Annual = ten months for twelve (17%). All USD; Stripe Tax on, US only at launch.
 
@@ -34,26 +34,76 @@ The **Free Gap Report** is a separate surface with no Stripe object at all — s
 front end, and it is explicitly *not* a free tier: there is no account, nothing stored beyond the
 report, and nothing to cancel (`BACKLOG.md` N12).
 
-**What "active certificate" means, stated plainly because a fuzzy meter is a support-ticket factory:
-one non-archived vendor = one active certificate.** A vendor with three certificates on file counts
-once; an archived vendor counts zero. This is the meter the customer can see and predict on the
-dashboard. Counting certificate *documents* would punish uploading renewals — the behaviour we want —
-so it is rejected on purpose. The **Certificate Pack** is the published growth path so nobody has to
-contact us to add fifty vendors.
+### 2.1 The meter — one sentence, identical everywhere
+
+> **A tracked vendor is one non-archived vendor in your account. Certly tracks one current
+> certificate per tracked vendor: renewals, re-uploads, corrections and endorsement pages never count
+> again, and archived vendors count zero. A vendor who has not sent anything yet still occupies a
+> slot — finding those is the point.**
+
+That sentence is the canonical definition. It is reproduced **verbatim** in `OFFER.md` §8.1, in the
+`LANDING_SPEC.md` §6 pricing block, in `specs/13`'s help article 12 and on `/settings/billing`, and
+nowhere is it paraphrased.
+
+**The unit is named "tracked vendors", not "active certificates" (REVIEW.md B-10, §2.5).** The two
+names described two different meters: `OFFER.md` metered *one current certificate per vendor* while
+this spec metered *one non-archived vendor*, and under the second a vendor who has never sent a
+certificate consumes a paid slot. That is not a bug — a customer who imports 80 vendors to find out
+which are uncovered is buying exactly that finding (`specs/06` §3 calls it "the most valuable finding
+for a new customer") — but calling it a *certificate* count made the bill unpredictable and made us
+look as though we were charging for a document that does not exist. So the meter stands and the word
+changes, **before the founder creates any Stripe object**: `cert_limit` → `vendor_limit`,
+`Certificate Pack` → **Vendor Pack**, "active certificates" → "tracked vendors".
+
+Counting certificate *documents* is still rejected on purpose: it would punish uploading renewals,
+the behaviour the product exists to cause. The **Vendor Pack** is the published growth path so nobody
+has to contact us to add fifty vendors.
 
 Price ids come from env (`STRIPE_PRICE_CERTLY_STARTER_MONTHLY`, … per `OFFER.md` §12.2). **No price is
-hardcoded**; the founder creates the products (PLAN §D2).
+hardcoded**; the founder creates the products (PLAN §D2). Every customer-facing occurrence of the
+product name renders `{PRODUCT_NAME}` from one constant — the name is **pending**
+(`IDENTITY.md` §2.3, REVIEW.md MJ-13) and the Stripe product names carry it, so it must be settled
+before the products are created.
 
 ## 3. The trial (from `OFFER.md` §9)
 
 **14 days, card required**, via Stripe Checkout with `trial_period_days = 14` on the six subscription
 prices. The trial runs on the tier the customer picked, with every feature on and that tier's
-certificate limit — not a special trial plan with special limits. Cancel in one click in the Billing
-Portal.
+**tracked-vendor** limit — not a special trial plan with special limits. **There is no 25-vendor
+trial cap**; 25 is the Free Gap Report's document cap and nothing else (REVIEW.md MJ-09). Cancel in
+one click in the Billing Portal.
 
-Two emails, both driven by Stripe's `customer.subscription.trial_will_end`: **T−3 and T−1**, each
-containing the org's own numbers ("you're tracking 34 vendors and we've found 6 gaps"). **No charge
-without a warning** — that promise is implemented here, not just written on the pricing page.
+### 3.1 Disclosure, consent and the pre-charge reminder — the part that is not optional
+
+The trial is a **card-required negative-option subscription**: the card is charged automatically on
+day 14 unless the customer cancels. Presenting that as "Start free" without the terms next to the
+button is precisely the pattern the FTC's negative-option rule and ROSCA are aimed at
+(REVIEW.md B-06). Three requirements, implemented here rather than written on the pricing page:
+
+1. **Clear and conspicuous disclosure before the card is asked for.** Every CTA that begins this flow
+   reads **"Start 14-day trial"** — never "Start free" — and renders, *adjacent to the button in body
+   text, not behind a link*: **"Card required. No charge until {date}. Cancel in one click."**
+   `{date}` is the real computed date, not "in 14 days". The same sentences go into the Checkout
+   session's own line-item description so they are on the payment page too.
+2. **Express informed consent, recorded.** On `checkout.session.completed` we write a `trialConsents`
+   row — org, user, the exact disclosure string that was rendered, the price id, the computed
+   first-charge date and amount, the timestamp — plus an M9 audit event `billing.trial_started`. If a
+   charge is disputed, the record of what the customer was shown exists, dated.
+3. **A pre-charge reminder that cannot be switched off.** Stripe's
+   `customer.subscription.trial_will_end` drives the **T−3 and T−1** emails, each carrying the org's
+   own numbers ("you're tracking 34 vendors and we've found 6 gaps"), the first-charge date, the
+   amount and a one-click cancel link. Both are **transactional and exempt from every notification
+   preference** in `specs/13` §2 — "no charge without a warning" is a promise the product keeps, not
+   a setting a customer can turn off by accident.
+
+```ts
+trialConsents {
+  id, orgId, userId, stripeCheckoutSessionId,
+  disclosureText: text,        // the exact string rendered next to the CTA, stored verbatim
+  priceId, firstChargeAt: timestamp, amountCents: integer,
+  shownAt: timestamp, acceptedAt: timestamp, userAgent
+}
+```
 
 Stacked on top: **30 days, money back, no questions** (`OFFER.md` §6), executed as a manual refund by
 the founder. There is no automated-refund code path, and there deliberately is not one at launch.
@@ -87,10 +137,10 @@ us money and sends mail on a customer's behalf that they are not paying for.
 
 | screen | route | notes |
 |---|---|---|
-| Pricing | `/pricing` (marketing) | four cards, every price visible, no "contact us" for the three tiers; the $0.55 rate published for the tail |
-| Plan & billing | `/settings/billing` | plan, usage meter (34/50), Pack quantity, next invoice, "manage billing" → Portal |
-| Paywall | modal | names the cap, the current count, and the **two** ways out: next tier, or a Certificate Pack |
-| Trial banner | app shell | days remaining, from day 7; "no charge until {date}" |
+| Pricing | `/pricing` (marketing) | four cards, every price visible, no "contact us" for the three tiers; the $0.55 rate published for the tail; every CTA is **"Start 14-day trial"** with the §3.1 disclosure adjacent |
+| Plan & billing | `/settings/billing` | plan, usage meter (34/50 tracked vendors), Pack quantity, next invoice, the §2.1 meter sentence verbatim, "manage billing" → Portal |
+| Paywall | modal | names the cap, the current count, and the **two** ways out: next tier, or a Vendor Pack |
+| Trial banner | app shell | shown from **day 1**, stating the first-charge **date**, not a countdown: "Trial — no charge until 17 September 2026. Cancel any time." From day 7 the days remaining are added. The date form is canonical and `UX.md` §2.1 S6 follows it (REVIEW.md MN-07) |
 
 ## 7. Data model (Drizzle-ready)
 
@@ -102,9 +152,9 @@ subscriptions {
   plan,             // 'starter'|'standard'|'portfolio'
   interval,         // 'month'|'year'
   status,           // Stripe's: 'trialing'|'active'|'past_due'|'canceled'|'unpaid'|'incomplete'
-  packQuantity: integer default 0,          // Certificate Packs
-  baseCertLimit: integer,                   // from the price metadata: 50 | 150 | 400
-  certLimit: integer,                       // baseCertLimit + packQuantity * 50  (stored, not derived
+  packQuantity: integer default 0,          // Vendor Packs
+  baseVendorLimit: integer,                 // from the price metadata `vendor_limit`: 50 | 150 | 400
+  vendorLimit: integer,                     // baseVendorLimit + packQuantity * 50  (stored, not derived
                                             // at read time, so a limit is auditable after a price change)
   seatLimit: integer,
   trialEndsAt, currentPeriodEnd, cancelAtPeriodEnd, createdAt, updatedAt
@@ -112,8 +162,8 @@ subscriptions {
 stripeEvents { id, stripeEventId unique, type, payload jsonb, processedAt }   // idempotency
 ```
 
-`certLimit` and `seatLimit` are read from the **price metadata** (`cert_limit`, `seats`,
-`cert_increment` — `OFFER.md` §12.1/12.2) on every subscription webhook, never hardcoded in the app.
+`vendorLimit` and `seatLimit` are read from the **price metadata** (`vendor_limit`, `seats`,
+`vendor_increment` — `OFFER.md` §12.1/12.2) on every subscription webhook, never hardcoded in the app.
 Changing a plan's capacity is then a Stripe metadata edit plus a webhook replay, not a deploy.
 
 ## 8. Server actions / routes
@@ -123,12 +173,37 @@ Changing a plan's capacity is then a Stripe metadata edit plus a webhook replay,
 | `createCheckoutSession` | `(plan, interval, packQty?) → { url }` | owner only; `client_reference_id = orgId`, `metadata.orgId`; `trial_period_days` comes from the price, not the request |
 | `createPortalSession` | `() → { url }` | plan switch, Pack quantity, cancel, invoices |
 | `POST /api/stripe/webhook` | signature-verified, idempotent on `stripeEventId` | handles `checkout.session.completed`, `customer.subscription.created/updated/deleted`, `customer.subscription.trial_will_end`, `invoice.paid`, `invoice.payment_failed` |
-| `getEntitlements` | `(orgId) → { plan, status, certUsed, certLimit, seatsUsed, seatLimit, readOnly, trialEndsAt }` | one cached read; every write path checks it |
+| `getEntitlements` | `(orgId) → { plan, status, vendorsUsed, vendorLimit, seatsUsed, seatLimit, readOnly, trialEndsAt }` | one cached read; every write path checks it |
+
+### 8.1 The entitlement matrix, including the org that has no subscription row
+
+`specs/01` lands a brand-new org on `/onboarding` and `specs/11` never mentions billing, so an org
+exists with **no `subscriptions` row at all** — and §9's "every write path checks entitlements" would
+otherwise fail closed and block onboarding entirely (REVIEW.md MJ-10).
+
+**Ruling: onboarding is free and un-gated up to and including the first comparison.** That first
+comparison *is* activation (`specs/11` §2), it is what the trial is for, and Checkout is offered at
+the finding screen (`specs/11` step 6) where the customer has just seen a real gap.
+
+| `status` | plan | writes | reads | reminders | limits |
+|---|---|---|---|---|---|
+| **`no_subscription`** *(no row)* | `none` | allowed up to the **free-onboarding allowance**: 25 vendors, 3 documents, unlimited comparisons | full | **off** — nothing is sent on the customer's behalf before a card exists | 25 vendors / 3 documents |
+| `trialing` | chosen tier | full | full | on | the tier's `vendorLimit` |
+| `active` | chosen tier | full | full | on | the tier's `vendorLimit` |
+| `past_due` (inside 7-day grace) | chosen tier | full | full | on | unchanged |
+| `past_due` (after grace) · `unpaid` · `canceled` past `currentPeriodEnd` | last tier | **read-only** | full, exports included | off | — |
+| `incomplete` | — | treated as `no_subscription` | full | off | 25 / 3 |
+
+The allowance is deliberately generous enough to reach activation and deliberately too small to run a
+portfolio on: 3 documents is one certificate plus two retries. Hitting either edge shows the paywall
+with the count named.
 
 ## 9. Validation
 
 - **every** write path (create vendor, CSV import, upload, send reminder) checks entitlements
-  server-side. A UI-only cap is not a cap
+  server-side, including for an org in `no_subscription`, which resolves to the §8.1 allowance rather
+  than to a denial. A UI-only cap is not a cap; a fail-closed default that blocks onboarding is not a
+  cap either, it is a broken funnel
 - CSV import at the cap imports **up to** the limit and reports the remainder — a 200-row import that
   fails at row 51 is a lost customer
 - downgrade below current usage is allowed: the org goes over-limit and is blocked from adding **new**
@@ -140,10 +215,10 @@ Changing a plan's capacity is then a Stripe metadata edit plus a webhook replay,
 ## 10. Acceptance criteria
 
 **A1** Given a new signup, When they choose Standard, Then Checkout is created with the Standard
-monthly price, the card is collected, the subscription is `trialing`, `certLimit` is 150 from the price
-metadata, and the banner reads "no charge until {date}".
-**A2** Given a trialing org at 150 certificates, When they add a 151st, Then the paywall offers both
-Portfolio at $299 and a Certificate Pack at +$39/50, with the current count named.
+monthly price, the card is collected, the subscription is `trialing`, `vendorLimit` is 150 from the
+price metadata, and the banner reads "no charge until {date}" with a real date.
+**A2** Given a trialing org at 150 tracked vendors, When they add a 151st, Then the paywall offers
+both Portfolio at $299 and a Vendor Pack at +$39/50, with the current count named.
 **A3** Given `customer.subscription.trial_will_end`, Then our T−3 email is sent, and a second at T−1,
 each carrying the org's vendor count and gap count.
 **A4** Given the customer does nothing, Then at T−0 the card is charged, `invoice.paid` sets `active`,
@@ -160,8 +235,20 @@ the org is over-limit, and only new vendors are blocked.
 **A10** Given a CSV import of 200 rows with 30 slots left, Then 30 import, 170 are reported as
 over-limit with one-click upgrade **and** one-click add-a-Pack, and nothing silently disappears.
 **A11** Given a viewer-role user, Then Checkout and Portal actions are refused server-side.
-**A12** Given a customer adds 2 Certificate Packs in the Portal, Then the webhook sets
-`packQuantity = 2` and `certLimit = baseCertLimit + 100`.
+**A12** Given a customer adds 2 Vendor Packs in the Portal, Then the webhook sets
+`packQuantity = 2` and `vendorLimit = baseVendorLimit + 100`.
+**A13** Given a brand-new org with **no `subscriptions` row**, Then onboarding, the first 25 vendors,
+3 documents and every comparison succeed; reminders are off; and the 4th document shows the paywall
+naming the count (§8.1, REVIEW.md MJ-10).
+**A14** Given any surface that starts a trial — the pricing cards, `/signin`, the paywall, the
+onboarding finding screen — Then the CTA reads "Start 14-day trial" and the string
+"Card required. No charge until {date}. Cancel in one click." is in the DOM **adjacent to the
+button**, not behind a link, with `{date}` rendered as a real date (§3.1, REVIEW.md B-06).
+**A15** Given Checkout completes, Then a `trialConsents` row stores the exact disclosure string that
+was rendered, the first-charge date and the amount, and an M9 `billing.trial_started` event is
+written in the same transaction.
+**A16** Given a user has turned every notification preference off, Then the T−3 and T−1 trial-ending
+emails are still sent (§3.1.3).
 
 ## 11. Edge cases
 
@@ -170,7 +257,7 @@ over-limit with one-click upgrade **and** one-click add-a-Pack, and nothing sile
 | Checkout completed for an org deleted meanwhile | webhook logs and raises a refund-by-hand alert; never auto-refund from code |
 | Two Checkouts started, both completed | the second webhook detects an existing subscription, cancels the duplicate at Stripe, alerts admin |
 | Card fails at the end of the trial | §A7 — grace, not immediate lockout |
-| Customer above ~700 certificates | the published $0.55/certificate/month rate, invoiced manually. **Still not a demo** (`OFFER.md` §8.2) — this is the promise we never break |
+| Customer above ~700 tracked vendors | the published $0.55/tracked-vendor/month rate, invoiced manually. **Still not a demo** (`OFFER.md` §8.2) — this is the promise we never break |
 | Refund requested inside 30 days | manual, no questions, recorded in the audit trail (M9 `billing.subscription_changed`) |
 | Trial extended by support | `trialEndsAt` editable in admin, audited |
 | Currency other than USD | out of scope at launch |
@@ -188,20 +275,23 @@ Entitlement check failure → fail **closed** for writes, **open** for reads.
 `checkout_completed{plan,interval,mrr_cents}` *(this is the trial start — the card is on file)*,
 `checkout_abandoned`, `trial_will_end_email_sent{days_left}`,
 `trial_converted{plan,mrr_cents}` *(the first `invoice.paid`)*, `trial_cancelled{day,reason}`,
-`paywall_viewed{trigger,cert_used,cert_limit}`, `pack_added{qty}`, `plan_changed{from,to}`,
+`paywall_viewed{trigger,vendors_used,vendor_limit}`, `pack_added{qty}`, `plan_changed{from,to}`,
 `subscription_past_due`, `subscription_cancelled{reason,tenure_days}`, `refund_issued{days_in}`,
 `read_only_view`.
 
 **The two numbers `THRESHOLDS.md` §3 reads are `checkout_completed` (a card on file) and
 `trial_converted` (money).** With a card-required trial these are different events and the threshold is
 measured on the second, not the first — a card-required trial that nobody lets convert is not a
-conversion.
+conversion. `specs/14` §3.1 renders **`trial_converted ÷ activated`** and nothing else
+(REVIEW.md B-14). Every event name above is registered in
+[`specs/00-event-vocabulary.md`](00-event-vocabulary.md), which is the single source.
 
 ## 14. Test plan
 
-Unit: entitlement computation across every plan × status, including `past_due` inside and outside
-grace, `trialing` at the cap, and Pack arithmetic; the active-certificate meter (archived excluded,
-multiple certificates per vendor counted once).
+Unit: entitlement computation across **every plan × status including `no_subscription`** (§8.1 —
+one case per row of the matrix), `past_due` inside and outside grace, `trialing` at the cap, and Pack
+arithmetic; the tracked-vendor meter (archived excluded, multiple certificates per vendor counted
+once, a vendor with no certificate counted once).
 Integration (PGlite + mock Stripe): webhook idempotency; redirect-without-webhook does **not**
 provision; webhook-without-redirect does; trial→active on `invoice.paid`; downgrade below usage blocks
 only new writes; the partial CSV import path.

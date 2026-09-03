@@ -145,7 +145,7 @@ Three, in ascending order of how badly they end.
 **The design consequence, and it is the whole product:** the buyer's dread is not "I don't have the
 document". It is **"I have a document and I don't know whether it is the right one any more."** Certly's
 job is to convert a folder of PDFs into a *current, dated statement of standing*. That is why the
-identity in `IDENTITY.md` makes *covered / expiring / gap* the loudest thing on every screen and puts
+identity in `IDENTITY.md` makes *meets requirements / expiring / gap* the loudest thing on every screen and puts
 **"as of"** on every status.
 
 ### 2.4 The stack, and precisely where it fails them
@@ -181,8 +181,8 @@ the buyer's nouns and the plain-English verbs.**
 | **cancellation** | *"SHOULD ANY OF THE ABOVE DESCRIBED POLICIES BE CANCELLED BEFORE THE EXPIRATION DATE THEREOF, NOTICE WILL BE DELIVERED IN ACCORDANCE WITH THE POLICY PROVISIONS."* `[E7]` | There is no promised notice period any more. The expiry date is the only date anyone can rely on — which is precisely why the expiry timeline is the product's signature screen. |
 | **primary and non-contributory**, **per-project aggregate** | myCOI's own feature copy: reads *"additional insureds, waivers of subrogation, primary and non-contributory clauses, per-project aggregates"* `[A4]` | The category's table stakes, in the incumbent's own words. Our requirement template must cover them. |
 | **limits / each occurrence / general aggregate** | *"insurance coverage limits, which means the maximum the insurer will pay per occurrence or in aggregate"* `[E1]` | The numbers the buyer compares. Set them in tabular figures (`IDENTITY.md §5`). |
-| **compliant / non-compliant** | *"They contact the vendors when there are non compliance issues"* (myCOI reviewer, Construction 51-200) `[B2]` | The buyer's own status word. Certly uses **Covered**, not "compliant", deliberately — see `IDENTITY.md §4.2`. |
-| **current** | *"required to keep your compliance and registration current"* `[C1]` | The best single word in the file. "Current" is what they want; "compliant" is what a vendor sells. |
+| **compliant / non-compliant** | *"They contact the vendors when there are non compliance issues"* (myCOI reviewer, Construction 51-200) `[B2]` | The buyer's own status word, and **Certly uses neither it nor "Covered"**. **Corrected 2026-09-03 (REVIEW.md B-02, §2.1):** this row originally said *"Certly uses **Covered**, not 'compliant', deliberately"*. The green state is **"Meets requirements"** (pill `MEETS`), and the engine value is `meets`. "Covered" is retired as a status word because the comparison engine has no state that means it, and because **O-A6 in this same file** says *"a wrong 'covered' is the failure that ends the company"* — where a document argues against itself, the lower-liability reading wins. The finding underneath survives: see the **current** row below. |
+| **current** | *"required to keep your compliance and registration current"* `[C1]` | The best single word in the file. "Current" is what they want; "compliant" is what a vendor sells. **This is the word that replaces "Covered" in prose**, and only about a *document*: *"this certificate is current as of 3 Sep 2026"* is a statement about a date on a piece of paper — always true or always false, never a claim about coverage (`KNOWLEDGE_BASE.md` §F.5). |
 | **deficiency / deficiency notice** | bcs's own feature list: *"Automated Deficiency Notices"* `[A1]` | The industry word for "what's wrong with this cert". Certly's gap report is its plain-English twin. |
 | **onsite vendor / offsite vendor** | `[C2]` | A real segmentation in the buyer's head: who sets foot on the property. |
 | **approved vendor** | *"All contractors will be required to maintain an 'Approved Vendor' status"* `[C1]` | The state the buyer is trying to maintain. Our green status is exactly this. |
@@ -252,7 +252,9 @@ In descending order of power, and each one is a *design* instruction:
 2. **The document, on screen, with the extraction laid over it.** They have read a thousand ACORD 25s.
    Showing the form with our reading pinned to it is worth more than any adjective. *(inferred from E1.)*
 3. **"We never charge your vendors."** `[A5][C1][C2]`
-4. **A dated statement.** "As of 3 Sep 2026, 41 of 47 vendors covered." Dates are the currency of the job.
+4. **A dated statement.** *"As of 3 September 2026, 41 of 47 vendors meet your requirements."* Dates are
+   the currency of the job. **Corrected 2026-09-03 (REVIEW.md B-02):** this line originally read
+   "41 of 47 vendors covered"; the portfolio summary line uses the canonical green word.
 5. **Naming the hard cases correctly** — additional insured vs certificate holder, endorsement vs
    certificate `[E1]`. Two sentences of correct vocabulary establish more competence than a customer logo.
 6. **A real export.** A PDF they can forward to an owner, a board or a carrier without editing it.
@@ -505,17 +507,30 @@ Written now, so the wave-1b reviewer and the wave-3 data can hold me to it.
 
 ## 9. Open questions for the founder
 
-1. **Evident is now sourced `[A10][A11]` and it changes one number:** two incumbents publish a price, not
-   one — but Evident's floor of 200 third parties puts it out of the ICP's reach, so the competitive
-   statement "bcs is the only priced option at our size" still holds. Worth the founder's eye because it
-   is the strongest evidence that the small end is unserved deliberately, not accidentally.
+1. ~~**Was Evident reached?**~~ **CLOSED 2026-09-03 (REVIEW.md MN-08).** It was reached, by the Offer &
+   Landing agent — `offer/CLAUDE.md` and `offer/RESEARCH.md` §2.1–2.2 record the 2026-09-03 fetch:
+   headline "AI-Powered Supplier Risk Management", "85% reduction in administrative burden",
+   "96% on-time", CTA "Book a Demo", **no published pricing**. The conclusion is unchanged: Evident's
+   floor of 200 third parties puts it out of the ICP's reach, so "bcs is the only priced option at our
+   size" still holds. Nothing here needs the founder.
 2. **Rent Manager, CINC Systems and Vantaca**: no evidence was found either way about ACORD-25 extraction
    or requirement matching. If the founder has access to any of the three, five minutes inside one
    settles whether HOA firms already have a partial answer.
 3. **Trademark clearance for the final name is not done and cannot be done here** — Justia is 403 and
    USPTO has no usable public JSON endpoint at the paths tried `[F15][F16]`. This needs a real search
    before money is spent on the mark.
-4. **Does the founder want the free tier at all?** It is the single biggest lever against bcs `[A1]` and
-   the single biggest risk to the $99 tier.
+4. ~~**Does the founder want the free tier at all?**~~ **RESOLVED 2026-09-03 (REVIEW.md MJ-12, OQ-3),
+   and the answer is no.** `BACKLOG.md` N12 and `OFFER.md` §9 decided it after this file was written:
+   **no permanent free tier**, and a one-off **Free Gap Report** (M15) instead. The reasoning, kept
+   here so it is not re-litigated: every document costs a real model call, free users upload the
+   messiest documents, and a free tier that fixes conversion by removing revenue has not fixed
+   anything. If activation→paid fails at $99, the pre-committed fix is **price** (`THRESHOLDS.md` §3's
+   $49 test), not a free tier that guarantees the unit economics never work.
 5. **Are we willing to say "we will never charge your vendors" as a permanent commitment?** It is a strong
    trust signal `[A5]` and it closes off a revenue model the incumbents use `[C1][C2][A7]`.
+   **Recommended default, applied while the founder decides (REVIEW.md §2.9, OQ-9): yes, permanently,
+   and it goes in `/legal/terms`** (`specs/13` §4/§A11). It is already promised in the hero, in FAQ 4
+   and in every vendor-facing email footer; a promise made in three customer-facing places and absent
+   from the terms is how a commitment quietly becomes a marketing line. A commitment that can be
+   withdrawn is not a commitment — which is exactly why it is the strongest trust signal we own. The
+   founder can override by striking the clause **before** launch, not after.
