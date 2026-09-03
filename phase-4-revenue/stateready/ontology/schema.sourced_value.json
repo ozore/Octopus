@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stateready.app/ontology/sourced_value.json",
+  "title": "SourcedValue",
+  "description": "The envelope every regulatory fact in the StateReady knowledge base travels in. A bare number never appears in kb-data/: it is always wrapped here, with the URL it came from, a verbatim evidence fragment that a drift check can search for, the date it was last opened, who verified it, and how confident we are. PLAN.md A10 and PIPELINE.md standing rule 4 are enforced by this schema, not by a convention.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["value", "status", "confidence"],
+  "properties": {
+    "value": {
+      "description": "The fact. null is a first-class, legitimate value: it means 'we did not find this at a public source'. It NEVER means zero, and it never means 'not required'. Absence of a requirement must be written as a value of 'not_found_in_sources_read' with a note listing the pages read.",
+      "type": ["number", "string", "boolean", "array", "null"]
+    },
+    "unit": {
+      "description": "USD, hours, months, years, hours_per_year, per_occurrence_usd, ... Required whenever value is a number.",
+      "type": "string"
+    },
+    "status": {
+      "enum": ["verified", "unverified", "unknown"],
+      "description": "verified = at least two verification passes agreed at the source. unverified = one pass only, or the passes disagreed; the app must render it with the UNVERIFIED badge. unknown = value is null; nothing may be rendered but the note."
+    },
+    "confidence": {
+      "enum": ["high", "medium", "low"],
+      "description": "high = the value is printed on the board's own page in the form we recorded. medium = derived from the board's own page but requiring one inference (e.g. a fee table row applying to our licence class). low = from statute or rule text rather than the board's guidance, or a value whose wording is ambiguous. Anything below high forces needs_human_check on any expansion playbook that uses it."
+    },
+    "source_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "The exact page that was fetched. Not a search result, not a homepage, not a third-party summary. Required unless status is unknown."
+    },
+    "source_title": { "type": "string" },
+    "source_kind": {
+      "enum": ["board_page", "board_pdf", "statute", "administrative_rule", "federal_statistics"],
+      "description": "board_page and board_pdf are Tier A. statute and administrative_rule are Tier B: authoritative but written for lawyers, so confidence drops to low unless the board repeats the value. Third-party guides are NOT an allowed kind; they may not appear in kb-data/ at all."
+    },
+    "evidence": {
+      "type": "string",
+      "maxLength": 240,
+      "description": "A verbatim fragment of the source, 25 words or fewer, that contains the value. Two jobs: a human reviewer can confirm the reading in one glance, and kb-scripts/verify_pass_b.py re-fetches source_url and asserts this string is still present. It is therefore also the finest-grained drift signal we have."
+    },
+    "last_verified": { "type": "string", "format": "date" },
+    "verified_by": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 0,
+      "description": "Agent ids of the verification passes that agreed. Two distinct ids are required for status 'verified'."
+    },
+    "note": {
+      "type": "string",
+      "description": "Mandatory when value is null or status is not 'verified'. Says what was read and why the value is missing. This text is what the product shows the customer in place of the number."
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "verified" } }, "required": ["status"] },
+      "then": { "required": ["source_url", "evidence", "last_verified", "verified_by"] }
+    },
+    {
+      "if": { "properties": { "value": { "type": "null" } } },
+      "then": { "required": ["note"], "properties": { "status": { "const": "unknown" } } }
+    }
+  ]
+}

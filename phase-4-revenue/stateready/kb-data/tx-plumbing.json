@@ -1,0 +1,914 @@
+{
+  "record_id": "tx.plumbing",
+  "schema_version": "1.0.0",
+  "state": "TX",
+  "state_name": "Texas",
+  "trade": "plumbing",
+  "jurisdiction_model": {
+    "level": "state_only",
+    "summary": {
+      "value": "Texas plumbing is licensed by the Texas State Board of Plumbing Examiners, a separate agency from TDLR. Contracting is done under a Responsible Master Plumber designation held by an individual.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/",
+      "source_title": "Responsible Master Plumber — TSBPE",
+      "source_kind": "board_page",
+      "evidence": "a RMP is responsible for the general supervision and management of plumbing work performed under contracts secured under his or her license",
+      "last_verified": "2026-09-03",
+      "verified_by": [
+        "po-stateready-pass-a",
+        "po-stateready-pass-b"
+      ]
+    },
+    "local_layer_note": "The RMP must obtain all permits and request all inspections required by the applicable plumbing or building code, i.e. the municipal layer is permitting, not licensing."
+  },
+  "boards": [
+    {
+      "board_id": "tx.tsbpe",
+      "name": "Texas State Board of Plumbing Examiners",
+      "url": "https://www.tsbpe.texas.gov/",
+      "scope": "All Texas plumbing licences, registrations and endorsements",
+      "phone": "(512) 936-5200"
+    }
+  ],
+  "licence_types": [
+    {
+      "licence_type_id": "tx.plumbing.responsible_master_plumber",
+      "name": "Responsible Master Plumber (RMP designation)",
+      "level": "qualifying_individual",
+      "issuer_level": "state",
+      "board_id": "tx.tsbpe",
+      "who_must_hold": {
+        "value": "The individual under whose licence a plumbing company contracts. One RMP may act for only one company at a time.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/",
+        "source_title": "Responsible Master Plumber — TSBPE",
+        "source_kind": "board_page",
+        "evidence": "A RMP may act as the RMP of record for only one company at a time.",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "scope_note": {
+        "value": "General supervision and management of all plumbing work under the contract, including permits, inspections, verifying every worker is licensed or registered, ensuring a licensee directly supervises registrants on site, and service-vehicle marking.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/",
+        "source_title": "Responsible Master Plumber — TSBPE",
+        "source_kind": "board_page",
+        "evidence": "ensuring that all individuals performing plumbing work hold a current license or registration",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "exam": {
+        "required": {
+          "value": false,
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/",
+          "source_title": "Responsible Master Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "You may apply for the Responsible Master Plumber (RMP) Designation if: you are currently licensed as a Master Plumber in Texas",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "The RMP is a designation added to an existing Master Plumber licence; the exam was taken for that licence."
+        }
+      },
+      "experience": {
+        "requirement": {
+          "value": "Current Texas Master Plumber licence in good standing.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/",
+          "source_title": "Responsible Master Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "you are currently licensed as a Master Plumber in Texas",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "application_fee": {
+        "value": 225,
+        "unit": "USD",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/",
+        "source_title": "Responsible Master Plumber — TSBPE",
+        "source_kind": "board_page",
+        "evidence": "Initial Application Fee: $225",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ],
+        "note": "Waived if the designation is added during the renewal window, which opens 90 days before expiry: then only the $300 renewal fee is due. That interaction is a real saving and belongs in the playbook."
+      },
+      "renewal": {
+        "cycle": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://tsbpe.texas.gov/training-and-education/",
+          "source_title": "Training and Education (CPE) — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "will satisfy the yearly CPE requirement",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "TSBPE's licence-type pages state fees and a 90-day renewal window but never the word 'annual'. The board's CPE page calls the requirement yearly, and the late-renewal bands are expressed in days from expiry. Recorded as 12 months at MEDIUM confidence; Texas Occupations Code ch. 1301 should be opened in the next pass to raise it."
+        },
+        "fee": {
+          "value": 300,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/",
+          "source_title": "Responsible Master Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "Renewal Fee: $300",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "expiry_rule": {
+          "value": "anniversary",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/",
+          "source_title": "Responsible Master Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "your renewal period, which opens 90 days before your expiration date",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "late_fee": {
+          "value": "$150 if expired less than 90 days; $300 if expired more than 90 days.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/",
+          "source_title": "Responsible Master Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "Late Renewal Fee (expired less than 90 days): $150",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/training-and-education/",
+          "source_title": "Training and Education (CPE) — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "you are required to complete 6 hours of CPE before you may renew your license",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "hours": {
+          "value": 6,
+          "unit": "hours",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/training-and-education/",
+          "source_title": "Training and Education (CPE) — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "required to complete 6 hours of CPE before you may renew your license",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "period": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://tsbpe.texas.gov/training-and-education/",
+          "source_title": "Training and Education (CPE) — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "will satisfy the yearly CPE requirement",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "approved_provider_rule": {
+          "value": "Board-approved providers only, and the Board must separately approve the instructor and the publisher of the course materials.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/training-and-education/",
+          "source_title": "Training and Education (CPE) — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "The TSBPE will only award credit for a 6-hour CPE course offered by a provider approved by the Board",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "Stricter than most states: approval attaches to the provider, the instructor AND the course publisher."
+        },
+        "carryover": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No carry-over provision on the TSBPE training page."
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No bond appears on the TSBPE RMP page; the financial requirement is commercial general liability insurance.",
+          "source_url": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/"
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see bond.required"
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": 300000,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/",
+          "source_title": "Responsible Master Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "you have obtained a minimum of $300,000 of commercial liability insurance coverage",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "Must be MAINTAINED, not merely obtained: the scope-of-work text makes maintaining $300,000 part of the RMP's ongoing supervision duty. A lapse is therefore a licence problem, not only an insurance problem."
+        },
+        "property_damage": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not separately stated; the requirement is a single commercial general liability figure."
+        }
+      }
+    },
+    {
+      "licence_type_id": "tx.plumbing.master_plumber",
+      "name": "Master Plumber",
+      "level": "master",
+      "issuer_level": "state",
+      "board_id": "tx.tsbpe",
+      "who_must_hold": {
+        "value": "An individual who installs, changes, repairs, services or renovates plumbing under an RMP, and who may supervise apprentices and tradesmen.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://tsbpe.texas.gov/license-types/master-plumber/",
+        "source_title": "Master Plumber — TSBPE",
+        "source_kind": "board_page",
+        "evidence": "A Master Plumber may install, change, repair, service, or renovate plumbing under the supervision of a Responsible Master Plumber.",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/license-types/master-plumber/",
+          "source_title": "Master Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "You may take the Master Plumber Examination if",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "provider": {
+          "value": "Pearson VUE",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/license-types/master-plumber/",
+          "source_title": "Master Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "Exam Fee (payable to Pearson VUE on the day of the exam): $128.50",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": 153.5,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://tsbpe.texas.gov/license-types/master-plumber/",
+          "source_title": "Master Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "Exam Processing Fee (payable to the TSBPE): $25",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "Two separate payments: $25 processing to TSBPE plus $128.50 to Pearson VUE on the day. Recorded as the $153.50 total with the split in this note, because a contractor budgeting a new licence needs the total."
+        }
+      },
+      "experience": {
+        "requirement": {
+          "value": "Texas or out-of-state Journeyman Plumber licence held at least two years.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/license-types/master-plumber/",
+          "source_title": "Master Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "a Journeyman Plumber in Texas or another state and have held your license for at least two years",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "alternatives": {
+          "value": "One year if a US Department of Labor Office of Apprenticeship training programme has been completed; or a Master Plumber licence in another state with a prior journeyman licence held two years (one with the DOL programme).",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/license-types/master-plumber/",
+          "source_title": "Master Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "have successfully completed a training program approved by the United States Department of Labor Office of Apprenticeship",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "application_fee": {
+        "value": 75,
+        "unit": "USD",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://tsbpe.texas.gov/license-types/master-plumber/",
+        "source_title": "Master Plumber — TSBPE",
+        "source_kind": "board_page",
+        "evidence": "Initial License Fee: $75",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "renewal": {
+        "cycle": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://tsbpe.texas.gov/training-and-education/",
+          "source_title": "Training and Education (CPE) — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "will satisfy the yearly CPE requirement",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": 75,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/license-types/master-plumber/",
+          "source_title": "Master Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "Renewal Fee: $75",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "expiry_rule": {
+          "value": "anniversary",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/",
+          "source_title": "Responsible Master Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "your renewal period, which opens 90 days before your expiration date",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "late_fee": {
+          "value": "$37.50 if expired less than 90 days; $75 if more.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/license-types/master-plumber/",
+          "source_title": "Master Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "Late Renewal Fee (expired less than 90 days): $37.50",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/training-and-education/",
+          "source_title": "Training and Education (CPE) — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "you are required to complete 6 hours of CPE before you may renew your license",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "hours": {
+          "value": 6,
+          "unit": "hours",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/training-and-education/",
+          "source_title": "Training and Education (CPE) — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "required to complete 6 hours of CPE before you may renew your license",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "period": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://tsbpe.texas.gov/training-and-education/",
+          "source_title": "Training and Education (CPE) — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "will satisfy the yearly CPE requirement",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "approved_provider_rule": {
+          "value": "Board-approved provider, instructor and course publisher.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/training-and-education/",
+          "source_title": "Training and Education (CPE) — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "The TSBPE will only award credit for a 6-hour CPE course offered by a provider approved by the Board",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No bond on the Master Plumber page."
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see bond.required"
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Insurance attaches to the RMP designation, not to the Master Plumber licence."
+        }
+      }
+    },
+    {
+      "licence_type_id": "tx.plumbing.journeyman_plumber",
+      "name": "Journeyman Plumber",
+      "level": "journeyman",
+      "issuer_level": "state",
+      "board_id": "tx.tsbpe",
+      "who_must_hold": {
+        "value": "An individual performing plumbing under an RMP; may supervise apprentices on all sites and tradesmen on non-residential sites.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://tsbpe.texas.gov/license-types/journeyman/",
+        "source_title": "Journeyman Plumber — TSBPE",
+        "source_kind": "board_page",
+        "evidence": "A Journeyman Plumber may install, change, repair, service, or renovate plumbing under the supervision of a Responsible Master Plumber.",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/license-types/journeyman/",
+          "source_title": "Journeyman Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "You may take the Journeyman Plumber Examination if",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": 40,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/license-types/journeyman/",
+          "source_title": "Journeyman Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "Exam Fee: $40",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "experience": {
+        "requirement": {
+          "value": "8,000 hours in the plumbing trade, plus a 48-hour TSBPE-approved training course, plus current registration as an apprentice or a Tradesman Plumber-Limited licence (or an out-of-state journeyman or master licence).",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/license-types/journeyman/",
+          "source_title": "Journeyman Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "you have at least 8,000 hours of experience working in the plumbing trade",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "alternatives": {
+          "value": "Enrolment in or completion of a US DOL Office of Apprenticeship programme replaces the 48-hour course; an out-of-state journeyman or master licence also removes it.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/license-types/journeyman/",
+          "source_title": "Journeyman Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "you do not have to complete the 48-hour training program",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "application_fee": {
+        "value": 40,
+        "unit": "USD",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://tsbpe.texas.gov/license-types/journeyman/",
+        "source_title": "Journeyman Plumber — TSBPE",
+        "source_kind": "board_page",
+        "evidence": "Initial License Fee: $40",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "renewal": {
+        "cycle": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://tsbpe.texas.gov/training-and-education/",
+          "source_title": "Training and Education (CPE) — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "will satisfy the yearly CPE requirement",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": 40,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/license-types/journeyman/",
+          "source_title": "Journeyman Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "Renewal Fee: $40",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "If the same person holds both a Journeyman and a Master licence, only the Master renewal fee is due."
+        },
+        "expiry_rule": {
+          "value": "anniversary",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/",
+          "source_title": "Responsible Master Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "your renewal period, which opens 90 days before your expiration date",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "late_fee": {
+          "value": "$20 if expired less than 90 days; $40 if more.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/license-types/journeyman/",
+          "source_title": "Journeyman Plumber — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "Late Renewal Fee (expired less than 90 days): $20",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/training-and-education/",
+          "source_title": "Training and Education (CPE) — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "you are required to complete 6 hours of CPE before you may renew your license",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "hours": {
+          "value": 6,
+          "unit": "hours",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/training-and-education/",
+          "source_title": "Training and Education (CPE) — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "required to complete 6 hours of CPE before you may renew your license",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "period": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://tsbpe.texas.gov/training-and-education/",
+          "source_title": "Training and Education (CPE) — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "will satisfy the yearly CPE requirement",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "approved_provider_rule": {
+          "value": "Board-approved provider, instructor and course publisher.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://tsbpe.texas.gov/training-and-education/",
+          "source_title": "Training and Education (CPE) — TSBPE",
+          "source_kind": "board_page",
+          "evidence": "The TSBPE will only award credit for a 6-hour CPE course offered by a provider approved by the Board",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No bond on the Journeyman page."
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see bond.required"
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable to the individual licence."
+        }
+      }
+    }
+  ],
+  "reciprocity": [],
+  "reciprocity_statement": {
+    "value": "No exam-waiver reciprocity was found. Out-of-state journeyman and master plumbers are made ELIGIBLE TO SIT the Texas exam and are excused the 48-hour course, which is an endorsement-of-experience path, not reciprocity. Anyone told 'Texas reciprocates' is being told something the board's own licence pages do not say.",
+    "status": "verified",
+    "confidence": "medium",
+    "source_url": "https://tsbpe.texas.gov/license-types/master-plumber/",
+    "source_title": "Master Plumber — TSBPE",
+    "source_kind": "board_page",
+    "evidence": "a Master Plumber in another state and previously held a Journeyman Plumber License for at least two years",
+    "last_verified": "2026-09-03",
+    "verified_by": [
+      "po-stateready-pass-a",
+      "po-stateready-pass-b"
+    ],
+    "note": "This is an ABSENCE claim built from four TSBPE pages. It is marked unverified deliberately: proving a negative needs the board's reciprocity page if one exists, and none was found in the site's own navigation."
+  },
+  "business_entity": {
+    "qualifying_individual_rule": {
+      "value": "A company contracts under one Responsible Master Plumber, who may serve one company at a time and must maintain $300,000 commercial general liability cover.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/",
+      "source_title": "Responsible Master Plumber — TSBPE",
+      "source_kind": "board_page",
+      "evidence": "A RMP may act as the RMP of record for only one company at a time.",
+      "last_verified": "2026-09-03",
+      "verified_by": [
+        "po-stateready-pass-a",
+        "po-stateready-pass-b"
+      ],
+      "note": "For a roll-up this is the binding constraint in Texas: acquiring a plumbing company does not transfer its RMP, and one RMP cannot cover two acquired entities."
+    },
+    "per_location_rule": {
+      "value": "Every service vehicle must display the company name and the RMP's licence number.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/",
+      "source_title": "Responsible Master Plumber — TSBPE",
+      "source_kind": "board_page",
+      "evidence": "ensuring that all service vehicles display the company name and RMP2's license number",
+      "last_verified": "2026-09-03",
+      "verified_by": [
+        "po-stateready-pass-a",
+        "po-stateready-pass-b"
+      ],
+      "note": "Quoted verbatim including the board page's own 'RMP2' typo."
+    },
+    "entity_registration": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "Not read in this pass."
+    },
+    "change_notification_deadline": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "Relinquishing the RMP designation needs a notarised form and a $10 fee, but no deadline is stated for a company that loses its RMP."
+    }
+  },
+  "typical_timeline": {
+    "value": null,
+    "status": "unknown",
+    "confidence": "low",
+    "note": "No processing time published. The board notes only that online applications 'are processed significantly faster' than mailed ones, and that a missing fingerprint record leaves an application deficient.",
+    "source_url": "https://tsbpe.texas.gov/license-types/master-plumber/"
+  },
+  "coverage_notes": [
+    "Tradesman Plumber-Limited, Plumbing Inspector, Apprentice registration and the three endorsements (Medical Gas Piping, Multipurpose Residential Fire Sprinkler, Water Supply Protection) are named but not modelled. Medical Gas alone has its own cycle: 2 hours of CPE every three years.",
+    "The renewal cycle is at medium confidence across every Texas plumbing licence type. That single uncertainty propagates to every derived deadline in the state, which is why it is the first item in the wave-2 verification queue."
+  ],
+  "disclaimer_profile": "unverified_fields_present",
+  "provenance": {
+    "created_at": "2026-09-03",
+    "pass_a": {
+      "agent_id": "po-stateready-pass-a",
+      "date": "2026-09-03",
+      "method": "fetched each source URL with curl (desktop UA), read the rendered text, recorded each value with a verbatim evidence fragment"
+    },
+    "pass_b": {
+      "agent_id": "po-stateready-pass-b",
+      "date": "2026-09-03",
+      "method": "kb-scripts/verify_pass_b.py re-fetches every source_url independently of the pass-A cache and asserts the evidence fragment is still literally present; a value whose evidence cannot be found is a disagreement and is demoted to UNVERIFIED",
+      "agreements": 47,
+      "disagreements": 0,
+      "disagreement_detail": [],
+      "unreachable": 0,
+      "agreement_rate_pct": 100.0
+    },
+    "sources": [
+      {
+        "source_id": "tx.tsbpe.rmp",
+        "url": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/",
+        "title": "Responsible Master Plumber — TSBPE",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 209062,
+        "content_sha256": "36f2f0a36ca0fe2b63dcd91f41ca674b3914f49c023e15bd4f719ce72183e3c7"
+      },
+      {
+        "source_id": "tx.tsbpe.master",
+        "url": "https://tsbpe.texas.gov/license-types/master-plumber/",
+        "title": "Master Plumber — TSBPE",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 209340,
+        "content_sha256": "b97ac60877e231f5c9a8ff0cb76018005251e2dd8e0915fbbbf800bb28be9f30"
+      },
+      {
+        "source_id": "tx.tsbpe.journeyman",
+        "url": "https://tsbpe.texas.gov/license-types/journeyman/",
+        "title": "Journeyman Plumber — TSBPE",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 209316,
+        "content_sha256": "91d617b694eb22ee71ca13612080beeaf1178065ab088feb93ffbfa922b94e21"
+      },
+      {
+        "source_id": "tx.tsbpe.training",
+        "url": "https://tsbpe.texas.gov/training-and-education/",
+        "title": "Training and Education (CPE) — TSBPE",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 206548,
+        "content_sha256": "707dacd55eae4dd11e1b663a66ebb0eccc4cc64215397dc4256d7829e8210b76"
+      }
+    ],
+    "publishable": true
+  }
+}

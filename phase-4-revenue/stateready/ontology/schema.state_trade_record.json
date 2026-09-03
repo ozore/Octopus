@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stateready.app/ontology/state_trade_record.json",
+  "title": "StateTradeRecord",
+  "description": "One record = one (state, trade) pair. It is the unit the rules engine loads, the unit the expansion playbook renders, and the unit the drift cron re-verifies. Launch scope (PLAN.md A11) is 3 trades x 15 states = 45 records.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["record_id", "state", "state_name", "trade", "schema_version", "jurisdiction_model", "boards", "licence_types", "reciprocity", "business_entity", "typical_timeline", "provenance"],
+  "properties": {
+    "record_id": { "type": "string", "pattern": "^[a-z]{2}\\.(hvac|plumbing|electrical)$", "description": "Grammar: <state_code_lower>.<trade>. Append-only, never renamed; see ontology/id-grammar.md." },
+    "schema_version": { "type": "string", "const": "1.0.0" },
+    "state": { "type": "string", "pattern": "^[A-Z]{2}$" },
+    "state_name": { "type": "string" },
+    "trade": { "enum": ["hvac", "plumbing", "electrical"] },
+
+    "jurisdiction_model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level", "summary"],
+      "description": "The single most important field in the record and the one every competitor gets wrong. It answers: is there a state licence at all, or does the contractor need a city or county licence in every jurisdiction they pull a permit in?",
+      "properties": {
+        "level": { "enum": ["state_only", "state_and_local", "local_only", "state_optional_local_required", "none"] },
+        "summary": { "$ref": "sourced_value.json" },
+        "local_layer_note": { "type": "string", "description": "Free text describing what the local layer adds. Never a list of specific municipalities unless each is separately sourced." }
+      }
+    },
+
+    "boards": {
+      "type": "array",
+      "minItems": 1,
+      "description": "More than one where the state splits the trade across agencies (NC splits electrical from plumbing/heating; Texas splits plumbing from everything else).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["board_id", "name", "url", "scope"],
+        "properties": {
+          "board_id": { "type": "string", "pattern": "^[a-z0-9_.-]+$" },
+          "name": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "scope": { "type": "string" },
+          "licence_search_url": { "type": "string", "format": "uri" },
+          "phone": { "type": "string", "description": "Organisation switchboard only. Never a named individual (phase-3 standing rule)." }
+        }
+      }
+    },
+
+    "licence_types": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["licence_type_id", "name", "level", "issuer_level", "board_id", "who_must_hold", "renewal", "continuing_education", "bond", "insurance"],
+        "properties": {
+          "licence_type_id": { "type": "string", "pattern": "^[a-z]{2}\\.(hvac|plumbing|electrical)\\.[a-z0-9_-]+$" },
+          "name": { "type": "string" },
+          "level": {
+            "enum": ["contractor", "master", "journeyman", "tradesman", "apprentice", "technician", "registration", "specialty", "qualifying_individual"],
+            "description": "The normalised rung. This is what makes 45 states comparable: a Texas 'Responsible Master Plumber' and a Florida 'Certified Plumbing Contractor' both map to a rung, so the roster UI and the alert engine do not need per-state code."
+          },
+          "issuer_level": { "enum": ["state", "local", "state_or_local"] },
+          "board_id": { "type": "string" },
+          "who_must_hold": { "$ref": "sourced_value.json" },
+          "scope_note": { "$ref": "sourced_value.json" },
+          "exam": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "required": { "$ref": "sourced_value.json" },
+              "name": { "$ref": "sourced_value.json" },
+              "provider": { "$ref": "sourced_value.json" },
+              "fee": { "$ref": "sourced_value.json" },
+              "note": { "type": "string" }
+            }
+          },
+          "experience": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "requirement": { "$ref": "sourced_value.json" },
+              "alternatives": { "$ref": "sourced_value.json" }
+            }
+          },
+          "application_fee": { "$ref": "sourced_value.json" },
+          "renewal": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["cycle", "fee", "expiry_rule"],
+            "properties": {
+              "cycle": { "$ref": "sourced_value.json", "description": "value in months, unit 'months'." },
+              "fee": { "$ref": "sourced_value.json" },
+              "expiry_rule": {
+                "$ref": "sourced_value.json",
+                "description": "How the expiry DATE is computed, not the date itself. Three shapes appear in the launch scope and the rules engine must handle all three: 'anniversary' (TX: one year from issue), 'fixed_date' (NC: 31 December every year), 'fixed_date_parity' (FL: 31 August of even years for certified, odd for registered). The value string is one of those tokens plus its parameters."
+              },
+              "grace_period": { "$ref": "sourced_value.json" },
+              "late_fee": { "$ref": "sourced_value.json" }
+            }
+          },
+          "continuing_education": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["required", "hours", "period", "approved_provider_rule"],
+            "properties": {
+              "required": { "$ref": "sourced_value.json" },
+              "hours": { "$ref": "sourced_value.json" },
+              "period": { "$ref": "sourced_value.json", "description": "The window the hours must fall inside, in months, and whether it is tied to the licence term or to a calendar." },
+              "subject_breakdown": { "$ref": "sourced_value.json", "description": "array of {hours, subject} where the state mandates specific subjects. Florida's 14 hours are six separate mandates; a customer who takes 14 general hours still fails." },
+              "approved_provider_rule": { "$ref": "sourced_value.json" },
+              "carryover": { "$ref": "sourced_value.json" },
+              "delivery_constraint": { "$ref": "sourced_value.json", "description": "e.g. NC electrical: at least half the hours must be in-person classroom." }
+            }
+          },
+          "bond": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["required", "amount"],
+            "properties": {
+              "required": { "$ref": "sourced_value.json" },
+              "amount": { "$ref": "sourced_value.json" },
+              "alternative": { "$ref": "sourced_value.json" }
+            }
+          },
+          "insurance": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["general_liability"],
+            "properties": {
+              "general_liability": { "$ref": "sourced_value.json" },
+              "property_damage": { "$ref": "sourced_value.json" },
+              "aggregate": { "$ref": "sourced_value.json" },
+              "workers_compensation": { "$ref": "sourced_value.json" },
+              "financial_responsibility": { "$ref": "sourced_value.json", "description": "Florida's credit-score gate lives here; it is not insurance, but it is the same class of pre-condition and the buyer meets it in the same breath." }
+            }
+          }
+        }
+      }
+    },
+
+    "reciprocity": {
+      "type": "array",
+      "description": "Empty array is a meaningful, publishable answer ('this board has no reciprocity agreements') ONLY when reciprocity_statement below carries a source that says so. An empty array with no statement fails the validator.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["with_state", "direction", "grants", "conditions"],
+        "properties": {
+          "with_state": { "type": "string", "pattern": "^[A-Z]{2}$" },
+          "direction": { "enum": ["inbound", "outbound", "mutual"], "description": "inbound = a holder of the other state's licence can obtain this state's licence. Direction is asymmetric far more often than contractors expect and is where the expansion playbook earns its fee." },
+          "grants": { "$ref": "sourced_value.json" },
+          "requires_from": { "type": "string", "description": "The other state's licence that must be held." },
+          "conditions": { "$ref": "sourced_value.json" },
+          "waives_exam": { "$ref": "sourced_value.json" }
+        }
+      }
+    },
+    "reciprocity_statement": { "$ref": "sourced_value.json" },
+
+    "business_entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["qualifying_individual_rule"],
+      "properties": {
+        "qualifying_individual_rule": { "$ref": "sourced_value.json", "description": "Who the company must employ for the company to hold a licence, and whether that person may qualify more than one company. This is the field that turns a roll-up's acquisition into a licensing emergency." },
+        "entity_registration": { "$ref": "sourced_value.json" },
+        "per_location_rule": { "$ref": "sourced_value.json" },
+        "change_notification_deadline": { "$ref": "sourced_value.json", "description": "How long the company has to name a replacement when the qualifier leaves. Texas electrical: 30 business days. This is an alertable deadline and belongs in the same engine as renewals." }
+      }
+    },
+
+    "typical_timeline": { "$ref": "sourced_value.json" },
+
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["created_at", "pass_a", "pass_b", "sources"],
+      "properties": {
+        "created_at": { "type": "string", "format": "date" },
+        "pass_a": { "type": "object", "additionalProperties": false, "required": ["agent_id", "date"], "properties": { "agent_id": { "type": "string" }, "date": { "type": "string", "format": "date" }, "method": { "type": "string" } } },
+        "pass_b": { "type": "object", "additionalProperties": false, "required": ["agent_id", "date"], "properties": { "agent_id": { "type": "string" }, "date": { "type": "string", "format": "date" }, "method": { "type": "string" }, "agreements": { "type": "integer" }, "disagreements": { "type": "integer" }, "unreachable": { "type": "integer" }, "agreement_rate_pct": { "type": "number" }, "disagreement_detail": { "type": "array", "items": { "type": "string" } } } },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["source_id", "url", "kind", "fetched_at", "content_sha256"],
+            "properties": {
+              "source_id": { "type": "string" },
+              "url": { "type": "string", "format": "uri" },
+              "title": { "type": "string" },
+              "kind": { "enum": ["board_page", "board_pdf", "statute", "administrative_rule", "federal_statistics"] },
+              "fetched_at": { "type": "string", "format": "date" },
+              "content_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+              "http_status": { "type": "integer" },
+              "bytes": { "type": "integer" }
+            }
+          }
+        },
+        "publishable": { "type": "boolean", "description": "The gate. False until pass_a and pass_b agree on every value whose status is 'verified'. The app loads only publishable records; the rest are visible to admin only." }
+      }
+    },
+
+    "coverage_notes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "What this record deliberately does NOT cover yet, in the buyer's words. Rendered verbatim at the foot of any playbook built from the record. A gap the customer can see is a gap that does not become a refund."
+    },
+
+    "disclaimer_profile": { "enum": ["standard", "local_layer_warning", "unverified_fields_present"] }
+  }
+}
