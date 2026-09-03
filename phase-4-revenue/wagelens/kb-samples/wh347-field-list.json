@@ -1,0 +1,123 @@
+{
+  "_meta": {
+    "form": "WH-347",
+    "title": "Davis-Bacon and Related Acts Weekly Certified Payroll Form",
+    "revision": "Rev. January 2025",
+    "omb_control_number": "1235-0008",
+    "omb_expires": "2028-01-31",
+    "public_burden_minutes": 55,
+    "source_url": "https://www.dol.gov/sites/dolgov/files/WHD/legacy/files/wh347.pdf",
+    "alias_url": "https://www.dol.gov/whd/forms/wh347.pdf",
+    "instructions_url": "https://www.dol.gov/agencies/whd/forms/wh347instr",
+    "downloaded_at": "2026-09-03",
+    "bytes": 304738,
+    "sha256": "fa28f033a8250dc3c209fe9c8e7f5cfcde70f8f0cb11a6ab2486eaebdd5db557",
+    "pages": 2,
+    "acroform_present": true,
+    "acroform_field_count": 0,
+    "widget_annotations": 1,
+    "widget_annotation_kind": "/Link (URI to wh347instr) - not a form widget",
+    "FINDING": "The official DOL WH-347 (Rev. Jan 2025) is a FLAT PDF. Its /AcroForm dictionary exists but /Fields is an empty array and no page carries a /Widget annotation. pypdf get_fields() returns 0 fields. There is nothing to fill programmatically. Consequence for WageLens: WH-347 output MUST be a generated PDF (own layout, byte-identical field labels and column numbering), not a filled official PDF. See KNOWLEDGE_BASE.md KB-6.",
+    "verification_command": "python3 -c \"from pypdf import PdfReader; r=PdfReader('wh347.pdf'); print(len(r.get_fields() or {}))\"",
+    "field_inventory_source": "printed field labels and column numbering read from the extracted text layer of the real PDF, both pages"
+  },
+  "page_1": {
+    "label": "Weekly certified payroll (the payroll grid)",
+    "header_fields": [
+      {"id": "hdr.final_payroll_flag", "label": "SUBMISSION OF FINAL DBRA CERTIFIED PAYROLL FORM", "type": "checkbox"},
+      {"id": "hdr.role_prime", "label": "PRIME CONTRACTOR", "type": "checkbox", "note": "mutually exclusive with hdr.role_sub"},
+      {"id": "hdr.role_sub", "label": "SUBCONTRACTOR", "type": "checkbox", "note": "mutually exclusive with hdr.role_prime"},
+      {"id": "hdr.project_name", "label": "PROJECT NAME", "type": "text"},
+      {"id": "hdr.project_or_contract_no", "label": "PROJECT NO. or CONTRACT NO.", "type": "text"},
+      {"id": "hdr.certified_payroll_no", "label": "CERTIFIED PAYROLL NO.", "type": "integer", "note": "sequential per project per filer, starts at 1"},
+      {"id": "hdr.business_name", "label": "PRIME CONTRACTOR'S/SUBCONTRACTOR'S BUSINESS NAME", "type": "text"},
+      {"id": "hdr.project_location", "label": "PROJECT LOCATION", "type": "text"},
+      {"id": "hdr.wage_determination_no", "label": "WAGE DETERMINATION NO.", "type": "text", "note": "e.g. TX20260253 - the field WageLens exists to fill correctly"},
+      {"id": "hdr.week_ending_date", "label": "WEEK ENDING DATE", "type": "date"},
+      {"id": "hdr.business_address", "label": "PRIME CONTRACTOR'S/SUBCONTRACTOR'S BUSINESS ADDRESS", "type": "text"}
+    ],
+    "worker_row_columns": [
+      {"col": "1A", "id": "row.worker_entry_no", "label": "WORKER ENTRY NO.", "type": "integer"},
+      {"col": "1B", "id": "row.worker_last_name", "label": "WORKER LAST NAME", "type": "text"},
+      {"col": "1C", "id": "row.worker_first_name", "label": "WORKER FIRST NAME", "type": "text"},
+      {"col": "1D", "id": "row.worker_middle_initial", "label": "WORKER MIDDLE INITIAL", "type": "text"},
+      {"col": "1E", "id": "row.worker_identifying_no", "label": "WORKER IDENTIFYING NO.", "type": "text", "rule": "LAST FOUR DIGITS of the SSN only. 29 CFR 5.5(a)(3)(ii)(B) forbids full SSN and home address on the weekly transmittal."},
+      {"col": "2", "id": "row.worker_status", "label": "(J) JOURNEYWORKER / (RA) REGISTERED APPRENTICE", "type": "enum", "values": ["J", "RA"], "note": "RA requires a matching row in the page-2 apprenticeship block"},
+      {"col": "3", "id": "row.labor_classification", "label": "LABOR CLASSIFICATION", "type": "text", "rule": "must match a classification listed on the named wage determination, or an approved SF-1444 conformance"},
+      {"col": "4", "id": "row.hours_worked_each_day", "label": "DAYS OF WORK WEEK (top) / DATES (bottom); HOURS WORKED EACH DAY", "type": "grid", "shape": "7 day columns x 2 rows (ST, OT)", "cells": 14, "plus": "7 date sub-headers"},
+      {"col": "5", "id": "row.total_hours_week", "label": "TOTAL HOURS WORKED FOR WEEK", "type": "decimal", "shape": "2 cells (ST, OT)"},
+      {"col": "6A", "id": "row.hourly_wage_rate", "label": "HOURLY WAGE RATE PAID FOR ST AND OT", "type": "money", "shape": "2 cells (ST, OT)"},
+      {"col": "6B", "id": "row.total_fringe_benefit_credit", "label": "TOTAL FRINGE BENEFIT CREDIT", "type": "money", "note": "if non-zero, the page-2 HOURLY CREDIT FOR FRINGE BENEFITS block must be completed for this worker"},
+      {"col": "6C", "id": "row.payment_in_lieu_of_fringes", "label": "PAYMENT IN LIEU OF FRINGE BENEFITS", "type": "money"},
+      {"col": "7A", "id": "row.gross_amt_earned_project", "label": "GROSS AMT EARNED (this project)", "type": "money"},
+      {"col": "7B", "id": "row.gross_amt_earned_all_work", "label": "GROSS AMT EARNED FOR ALL WORK", "type": "money"},
+      {"col": "8a", "id": "row.deduction_tax_withholdings", "label": "DEDUCTIONS FOR ALL WORK - TAX WITHHOLDINGS", "type": "money"},
+      {"col": "8b", "id": "row.deduction_fica", "label": "DEDUCTIONS FOR ALL WORK - FICA", "type": "money"},
+      {"col": "8c", "id": "row.deduction_other", "label": "DEDUCTIONS FOR ALL WORK - OTHER (MUST SPECIFY, SEE INSTRUCTIONS)", "type": "money+text"},
+      {"col": "8d", "id": "row.deduction_total", "label": "DEDUCTIONS FOR ALL WORK - TOTAL DEDUCTIONS", "type": "money", "rule": "= 8a + 8b + 8c"},
+      {"col": "9", "id": "row.net_pay_all_work", "label": "NET PAY TO WORKER FOR ALL WORK", "type": "money", "rule": "= 7B - 8d"}
+    ],
+    "printed_worker_rows": 8,
+    "footer_text_blocks": [
+      "Copeland Act / 29 CFR 5.5(a)(3)(ii) obligation statement",
+      "Public Burden Statement (55 minutes)"
+    ]
+  },
+  "page_2": {
+    "label": "Statement of Compliance",
+    "header_fields": [
+      {"id": "soc.project_name", "label": "PROJECT NAME", "type": "text"},
+      {"id": "soc.project_or_contract_no", "label": "PROJECT NO. or CONTRACT NO.", "type": "text"},
+      {"id": "soc.payroll_no", "label": "PAYROLL NO.", "type": "integer"},
+      {"id": "soc.business_name", "label": "PRIME CONTRACTOR'S/SUBCONTRACTOR'S BUSINESS NAME", "type": "text"},
+      {"id": "soc.project_location", "label": "PROJECT LOCATION", "type": "text"},
+      {"id": "soc.week_ending_date", "label": "WEEK ENDING DATE", "type": "date"},
+      {"id": "soc.certifying_official_name_title", "label": "CERTIFYING OFFICIAL's NAME AND TITLE", "type": "text"}
+    ],
+    "apprenticeship_block": {
+      "printed_rows": 3,
+      "columns": [
+        {"id": "appr.program_name", "label": "APPRENTICESHIP PROGRAM NAME", "type": "text"},
+        {"id": "appr.registrar", "label": "OA / SAA", "type": "checkbox_pair"},
+        {"id": "appr.registered_classification", "label": "REGISTERED NAME OF LABOR CLASSIFICATION", "type": "text"}
+      ]
+    },
+    "fringe_credit_block": {
+      "printed_worker_rows": 8,
+      "plan_columns_per_row": 6,
+      "per_plan_fields": [
+        {"id": "fb.name", "label": "FB NAME", "type": "text"},
+        {"id": "fb.type", "label": "FB TYPE", "type": "text"},
+        {"id": "fb.plan_no", "label": "PLAN NO.", "type": "text"},
+        {"id": "fb.funded_flag", "label": "Funded / Unfunded", "type": "checkbox_pair"},
+        {"id": "fb.hourly_credit", "label": "Hourly Credit $", "type": "money"}
+      ],
+      "row_total": {"id": "fb.total_hourly_credit", "label": "TOTAL HOURLY CREDIT", "type": "money", "rule": "must equal column 6B for that worker"},
+      "trigger": "required whenever column (6B) is non-zero for a worker"
+    },
+    "closing_fields": [
+      {"id": "soc.additional_remarks", "label": "ADDITIONAL REMARKS", "type": "text"},
+      {"id": "soc.signature", "label": "SIGNATURE OF CERTIFYING OFFICIAL", "type": "signature"},
+      {"id": "soc.date", "label": "DATE", "type": "date"},
+      {"id": "soc.telephone", "label": "TELEPHONE NUMBER", "type": "phone", "mask": "( _ _ _ ) _ _ _ - _ _ _ _"},
+      {"id": "soc.email", "label": "EMAIL ADDRESS", "type": "email"}
+    ]
+  },
+  "counts": {
+    "page1_header_fields": 11,
+    "page1_worker_row_columns": 19,
+    "page1_hours_grid_cells_per_worker": 14,
+    "page1_printed_worker_rows": 8,
+    "page2_header_fields": 7,
+    "page2_apprenticeship_columns": 3,
+    "page2_apprenticeship_printed_rows": 3,
+    "page2_fringe_plan_fields": 5,
+    "page2_fringe_plan_columns": 6,
+    "page2_fringe_printed_worker_rows": 8,
+    "page2_closing_fields": 5,
+    "distinct_named_fields_total": 50,
+    "distinct_named_fields_breakdown": "11 (p1 header) + 19 (p1 worker columns) + 7 (p2 header) + 3 (p2 apprenticeship) + 5 (p2 fringe-plan) + 5 (p2 closing) = 50",
+    "populated_cells_for_one_worker_one_week": 45,
+    "populated_cells_note": "1A-3 (7) + hours grid (14) + col 5 (2) + col 6A (2) + 6B,6C,7A,7B (4) + col 8 (4) + col 9 (1) = 34 on page 1, plus up to 11 page-2 fringe cells when 6B is non-zero"
+  }
+}

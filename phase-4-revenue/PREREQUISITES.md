@@ -11,7 +11,7 @@ Status legend: `todo` (founder), `given`, `n/a`, `later`.
 | P5 | Stripe: test-mode secret key + webhook secret per project, then products and prices from the list we hand over | billing | later | list produced at the end of wave 2 |
 | P6 | Resend account, TheVillage domain verified (SPF, DKIM, DMARC), `RESEND_API_KEY` | magic links, receipts, lifecycle emails | todo | DNS access on the TheVillage domain required |
 | P7 | Anthropic API key with a spending cap, `ANTHROPIC_API_KEY` | Certly extraction, StateReady playbooks, WageLens classification assistant | todo | |
-| P8 | api.data.gov / SAM.gov API key (free, personal account) | WageLens wage-determination ingestion | todo | https://open.gsa.gov/api/wage-determination-api/ |
+| P8 | ~~api.data.gov / SAM.gov API key~~ | WageLens wage-determination ingestion | n/a | Corrected 2026-09-03: the documented API page returns 404; SAM.gov's own front-end endpoints (`sam.gov/api/prod/sgs/v1/search/?index=dbra`, `sam.gov/api/prod/wdol/v1/wd/{ref}/{rev}`) work with no key. See `wagelens/KNOWLEDGE_BASE.md` §6. |
 | P9 | A sending mailbox on the TheVillage domain for outbound (e.g. `wagelens@` or `hello@`), warmed up 2 to 3 weeks, connected to this session's Gmail connector if Gmail | outbound drafts and sends | todo | separate from the product's transactional domain if possible |
 | P10 | Physical postal address and support email for TheVillage | legal pages, CAN-SPAM footer | todo | |
 | P11 | Final names for the three apps after the naming pass | branding | later | recommendation in each `IDENTITY.md` |
