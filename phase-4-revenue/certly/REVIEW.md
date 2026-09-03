@@ -2,7 +2,46 @@
 
 ---
 
-# RE-REVIEW — 2026-09-03 (round 2)
+# RE-REVIEW ROUND 2 — 2026-09-03 (final)
+
+**Input:** `REVIEW_RESPONSE.md` §"Round 2", and the current state of `IDENTITY.md`,
+`identity/samples.html`, `identity/contrast.py` and `specs/03`. I re-checked I-1…I-11 and R-1 against
+the files and by running the scripts, not against the response. I edited nothing.
+
+## Verdict
+
+> ## ✅ SIGNED FOR WAVE 2 — `IDENTITY.md` and `identity/samples.html` included.
+>
+> **BLOCKING 0 · MAJOR 0 · MINOR 0 open. The whole Certly wave-1 deliverable set is signed.**
+> All eleven items and the one regression are closed; nothing is carried forward and nothing is
+> conditional.
+
+## What I verified
+
+| item | result |
+|---|---|
+| **I-1** (B-02 residual) | Closed, **including the residual the response declared open** — the orchestrator relabelled `contrast.py`'s `PAIRS` (0 `COVERED`, 8 × `MEETS`) and §6.5 was regenerated, not hand-typed: I ran `--md` and diffed it against the file — **all 166 ratio rows and all 42 greyscale rows appear verbatim**. §9.4's hard rule, §12.6's sort order (now `specs/06` A3's precedence), §3 Step 4's owned word, §4.3's hero copy, §1 (now seven states), §0, §11 and §13.3 are all corrected. Every surviving "covered" in the file is a negation, a quoted correction, *Covered Autos*, JTBD prose, or the Arbitration record — the same class I accepted product-side. |
+| **I-2** (B-12 residual) | Closed. `grep "insurance advice\|does not verify the underlying"` over `IDENTITY.md` + `samples.html`: **0 hits**. KB §F.1 renders **verbatim twice** in `samples.html` (I string-matched it against §F.1 itself). §4.4 rule 4 is now a pointer. The author found and fixed **a second near-duplicate I had missed** — the `c-report__disclaimer` footer — which would have failed the same `specs/13 §12` grep. |
+| **I-3** (B-04 residual) | Closed. No "highlight" anywhere in `IDENTITY.md` §12.2/§11/§12.4 or `samples.html`. §12.2 now states the extractor returns no geometry, quotes `specs/03 §3`, **refuses to add coordinates to the schema**, and reproduces `UX.md §3.2`'s contract in the same order. The two documents now say the same thing. |
+| **I-4 · I-9** | Closed. `grep certly.app` over `samples.html`: **0 hits**. The drop zone shows no forward-to address at launch (SH-1), with `{INBOUND_DOMAIN}` specified for when it ships. |
+| **I-5 · I-6 · I-7 · I-8 · I-10 · I-11** | All closed and checked in place: `next/font` self-hosted with `samples.html` named as the single bounded exception; *"$99 up to **50 tracked vendors** … $299 to **400**"*; the canonical ten-rung ladder in §12.10 **and** in `samples.html`'s composer, with *"This is message 1 of 10"*; *"no certificate on record, never no coverage on record"*; §17.5 resolved; §17.7's two-layer `undetermined`/"Needs review" mapping recorded. |
+| **R-1** (regression) | Closed. `specs/03 §15` header now reads *"21 fixtures: **17 real** documents (G1–G17) + **4 synthetic** (G18–G21)"*, the closing line says **four**, `D` is stated to sum over G1–G17 only, and the table is 21 rows. It now agrees with `KNOWLEDGE_BASE.md §D.5` and `THRESHOLDS.md §4.1`. |
+| `contrast.py` · `--css` · `--md` · `scripts/identity-distinctness.py` | **All exit 0.** 166 pairs, *"glyph, fill pattern and word are distinct for all 7 statuses"*; every declared token present in `design-system.css`; 3 apps / 3 ground pairs / 3 typeface pairs distinct. |
+
+## On the one decision that was made rather than copied
+
+The author added an **`expired`** row to §6.4 borrowing `gap`'s glyph, pattern and hue and owning **the
+word "Expired"**, rather than an eighth state. **I agree, and the reasoning is better than the
+alternative I left open:** adding `expired` to `STATUS_MARKS` would have *failed* `contrast.py`'s
+duplicate-glyph and duplicate-pattern checks, and the word is the signal that separates a lapse from a
+shortfall — the one that survives a photocopier, which is what §6.4 exists to guarantee. `specs/05
+§2.1`'s mapping cell needed no edit, and §12.6 sorts `expired` above `gap` per `specs/06` A3.
+
+**Nothing is outstanding. The reviewer's file is closed.**
+
+---
+
+# RE-REVIEW — 2026-09-03 (round 1)
 
 **Input:** `REVIEW_RESPONSE.md` (iteration author), `../IDENTITY_ARBITRATION.md` (Brand Director),
 and the current state of every reviewed file. **Method: I re-checked all 15 blocking and all 20 major

@@ -5,6 +5,28 @@
 **Deliverables:** `REVIEW.md`, this file. **Nothing else was written and nothing reviewed was edited**
 (PIPELINE standing rule: reviewers never edit).
 
+## FINAL — signed 2026-09-03
+
+**Round 3 (re-review round 2): BLOCKING 0 · MAJOR 0 · MINOR 0. The whole Certly wave-1 set is signed,
+`IDENTITY.md` and `identity/samples.html` included.** All eleven I-items and the R-1 regression closed.
+The note is at the top of `REVIEW.md`; nothing is carried forward.
+
+Two things worth keeping from this last pass:
+
+1. **Verify a "generated" table by regenerating it.** The response declared the `contrast.py` label
+   relabel as an open residual, but the orchestrator had done it since; rather than trust either
+   account I ran `contrast.py --md` and diffed its output against `IDENTITY.md` §6.5 — **all 166 ratio
+   rows and 42 greyscale rows matched verbatim**, which proves the table was regenerated and not
+   hand-typed. That is the only way to check a document's own "no ratio is typed by hand" rule.
+2. **A good author finds the thing you missed.** I-2 named one near-duplicate disclaimer in
+   `samples.html`; the author found a second (`c-report__disclaimer`) that would have failed the same
+   `specs/13 §12` grep. When a fix is "one string", still ask for the grep over the whole file.
+
+I also accepted a decision that went against the branch I had left open: `expired` renders in `gap`'s
+ramp owning only **the word**, not as an eighth state — because adding it to `STATUS_MARKS` would have
+*failed* `contrast.py`'s duplicate-glyph check, and the word is what survives a photocopier. When the
+enforcement script contradicts the reviewer's suggestion, the script is the better argument.
+
 ## Round 2 (re-review, 2026-09-03) — outcome
 
 **BLOCKING 15 → 0 · MAJOR 20 → 3 · MINOR 12 → 8.** **Signed for wave 2 on everything except
