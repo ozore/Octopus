@@ -13,7 +13,7 @@ anything is sent through the founder's own mailbox.
 
 ```
 outbound/
-├── engine/                 python3, standard library only, 128 unit tests
+├── engine/                 python3, standard library only, 149 unit tests
 ├── wagelens/  certly/  stateready/
 │   ├── config.json         caps, gaps, send window, env-var names
 │   ├── workbook.csv        end-customer organisations
@@ -54,6 +54,29 @@ python3 -m outbound.engine.cli wagelens report
 
 `seed` is safe to re-run any time: it refreshes names, routes and facts from the phase-3
 lists and **keeps** every stage, date and thread reference already in the workbook.
+
+### Where the routes come from
+
+`seed` reads two files per prospect directory:
+
+| file | written by | precedence |
+|---|---|---|
+| `phase-3-acquisition/prospects/<dir>/prospects.csv` | phase 3, read only | always wins |
+| `phase-3-acquisition/prospects/<dir>/routes-enrichment.csv` | the phase-4 route-enrichment pass (`prospects/scripts/enrich/`) | fills gaps only |
+
+The enrichment file holds one row per organisation whose route was *looked for*, failures
+included with the reason. It is applied under two rules and no others:
+
+1. an organisation with **no route** takes the enriched route;
+2. an organisation with a **contact page and no mailbox** is upgraded to a generic mailbox
+   **on the same registrable domain** — a form is a manual paste for you, a mailbox is not.
+   The original contact page is written into the row's `notes`, not discarded.
+
+Everything else is untouched: an existing mailbox is never replaced, a contact page is
+never swapped for another contact page, a website recorded in phase 3 is never overwritten,
+and a mailbox on a different domain is refused. Every enriched mailbox passes the same
+`classify_route()` allowlist as everything else, so a personal-looking address in that file
+is dropped rather than trusted. If the file is absent, `seed` behaves exactly as before.
 
 ### The commands in full
 
@@ -276,6 +299,6 @@ volume, follow-ups included, not just new organisations.
 python3 -m unittest discover -s outbound/engine -p 'test_*.py'
 ```
 
-128 tests, standard library only, no network. Every test runs against a throwaway
+149 tests, standard library only, no network. Every test runs against a throwaway
 repository built in `/tmp`, so no test can read or write a real workbook, and one test
 asserts the phase-3 prospect files are byte-identical after a seed.

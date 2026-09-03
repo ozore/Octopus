@@ -1,6 +1,6 @@
 # StateReady outbound report
 
-**Generated:** 2026-09-03 20:21 UTC - `python3 -m outbound.engine.cli stateready report`
+**Generated:** 2026-09-03 23:26 UTC - `python3 -m outbound.engine.cli stateready report`
 **Status:** drafts-first. Nothing in this report was sent by an agent.
 
 ## 1. What the lists can support
@@ -8,25 +8,26 @@
 | | rows |
 |---|---:|
 | end-customer rows in the phase-3 list(s) | 641 |
-| with a generic business mailbox | 12 |
-| with a contact page only | 53 |
+| with a generic business mailbox | 81 |
+| with a contact page only | 263 |
 | route dropped: not a recognisable generic mailbox | 0 |
-| no contact route recorded at all | 576 |
-| **usable in the workbook** | **65** |
+| no contact route recorded at all | 297 |
+| of the usable routes, found by the phase-4 enrichment pass | 279 |
+| **usable in the workbook** | **344** |
 | partner rows | 162 |
 | partner rows with a usable route | 72 |
 | excluded rows (seed the suppression list) | 13 |
 
-> At 20 new organisations a day, the usable pool of 65 lasts about 3 sending days before it needs extending.
+> At 20 new organisations a day, the usable pool of 344 lasts about 17 sending days before it needs extending.
 
 ## 2. Workbook
 
-- customers: **65** rows (12 mailbox, 53 contact page)
+- customers: **344** rows (81 mailbox, 263 contact page)
 - partners: **72** rows (14 mailbox, 58 contact page)
 
 | stage | rows |
 |---|---:|
-| new | 65 |
+| new | 344 |
 
 ## 3. Sent
 

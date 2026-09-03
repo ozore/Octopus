@@ -264,6 +264,125 @@ def _read_prospects(directory: str) -> list[dict]:
         return list(csv.DictReader(handle))
 
 
+# --------------------------------------------------------------------------
+# route enrichment (phase-3 `<dir>/routes-enrichment.csv`)
+# --------------------------------------------------------------------------
+
+#: Written by `phase-3-acquisition/prospects/scripts/enrich/`, which opens each
+#: organisation's own site and records the route it actually found. Optional:
+#: when the file is absent the seed behaves exactly as before.
+ENRICHMENT_FILE = "routes-enrichment.csv"
+
+
+def _enrichment_key(name: str, location: str = "") -> tuple:
+    return ((name or "").strip().lower(), (location or "").strip().lower())
+
+
+def read_enrichment(directory: str) -> dict:
+    """`(name, location) -> record`, plus a name-only key for unique names.
+
+    A row with an empty `contact_route` (an attempt that failed) is kept: it
+    still carries the website when one was confirmed, and the notes explain why
+    no route was found.
+    """
+    path = cfg_mod.prospects_root() / directory / ENRICHMENT_FILE
+    if not path.exists():
+        return {}
+    with open(path, newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+    by_key: dict = {}
+    name_counts: dict = {}
+    for row in rows:
+        name = (row.get("name") or "").strip()
+        if not name:
+            continue
+        record = {
+            "website": (row.get("website") or "").strip(),
+            "contact_route": (row.get("contact_route") or "").strip(),
+            "route_type": (row.get("route_type") or "").strip(),
+            "evidence_url": (row.get("evidence_url") or "").strip(),
+            "checked_on": (row.get("checked_on") or "").strip(),
+        }
+        by_key[_enrichment_key(name, row.get("location", ""))] = record
+        name_counts[name.strip().lower()] = name_counts.get(name.strip().lower(), 0) + 1
+    for row in rows:
+        name = (row.get("name") or "").strip()
+        if not name or name_counts.get(name.lower(), 0) != 1:
+            continue
+        by_key[_enrichment_key(name, "")] = by_key[
+            _enrichment_key(name, row.get("location", ""))]
+    return by_key
+
+
+def enrichment_for(enrichment: dict, prospect: dict) -> dict:
+    if not enrichment:
+        return {}
+    name, location = prospect.get("name", ""), prospect.get("location", "")
+    return (enrichment.get(_enrichment_key(name, location))
+            or enrichment.get(_enrichment_key(name, ""))
+            or {})
+
+
+def apply_enrichment(prospect: dict, record: dict, route_type: str, route: str,
+                     note: str) -> tuple[dict, str, str, str, set]:
+    """Merge one enrichment record into one prospect row, non-destructively.
+
+    The phase-3 list wins wherever it holds a value. Two exceptions, both
+    narrow and both deliberate:
+
+    * **empty route** — the enrichment supplies the route. This is the whole
+      point of the pass: 10,215 WageLens rows have no route at all.
+    * **contact page upgraded to a generic mailbox on the same domain** — a
+      form is a manual paste for the founder and a mailbox is not, and finding
+      a mailbox behind an existing contact page is exactly what the enrichment
+      brief asked for on the Certly lists. The upgrade requires the mailbox to
+      sit on the **same registrable domain** as the contact page (or the
+      recorded website), so it can never point at a different organisation, and
+      the original contact page is kept in `notes`.
+
+    The website is only ever filled when phase 3 recorded none. `prospect` is
+    never mutated — the phase-3 CSVs are read only and a test asserts they are
+    byte-identical after a seed.
+    """
+    applied: set = set()
+    if not record:
+        return prospect, route_type, route, note, applied
+
+    if route_type == "form" and record.get("contact_route"):
+        new_type, new_route, _ = classify_route(record["contact_route"])
+        same_site = domain_of(new_route) and domain_of(new_route) in (
+            domain_of(route), domain_of(prospect.get("website", "")))
+        if new_type == "mailbox" and same_site:
+            checked = record.get("checked_on") or "phase-4 enrichment"
+            evidence = record.get("evidence_url") or route
+            note = (f"mailbox from routes-enrichment.csv ({checked}), found on "
+                    f"{evidence}; phase-3 contact page was {route}")
+            route_type, route = new_type, new_route
+            applied.add("route_upgraded")
+
+    if route_type == "none" and record.get("contact_route"):
+        new_type, new_route, new_note = classify_route(record["contact_route"])
+        if new_type != "none":
+            route_type, route = new_type, new_route
+            checked = record.get("checked_on") or "phase-4 enrichment"
+            evidence = record.get("evidence_url") or record.get("website") or ""
+            note = f"route from routes-enrichment.csv ({checked})"
+            if evidence:
+                note += f", verified at {evidence}"
+            applied.add("route")
+        else:
+            # the enrichment offered something we refuse (personal-looking
+            # mailbox, unrecognised format): keep the original outcome.
+            note = note or new_note
+
+    if not (prospect.get("website") or "").strip() and record.get("website"):
+        prospect = dict(prospect)
+        prospect["website"] = record["website"]
+        applied.add("website")
+
+    return prospect, route_type, route, note, applied
+
+
 def _workbook_row(app: str, prospect: dict, route_type: str, route: str,
                   note: str) -> dict:
     facts = extract_facts(prospect)
@@ -344,14 +463,26 @@ def seed_from_prospects(app: str, config: dict | None = None) -> dict:
         "customers_dropped_no_route": 0, "customers_dropped_personal": 0,
         "partners_mailbox": 0, "partners_form": 0, "partners_dropped": 0,
         "suppression_rows": 0,
+        "enrichment_rows": 0, "customers_route_from_enrichment": 0,
+        "customers_route_upgraded_from_enrichment": 0,
+        "customers_website_from_enrichment": 0,
+        "partners_route_from_enrichment": 0,
+        "partners_route_upgraded_from_enrichment": 0,
     }
     customers, partners, suppressed = [], [], []
 
     for directory in config["prospect_dirs"]:
+        enrichment = read_enrichment(directory)
+        # one record object is shared by its (name, location) and name-only
+        # keys, so identity counts the file's rows rather than its keys
+        counts["enrichment_rows"] += len({id(v) for v in enrichment.values()})
         for prospect in _read_prospects(directory):
             counts["prospect_rows"] += 1
             kind = (prospect.get("prospect_type") or "").strip()
             route_type, route, note = classify_route(prospect.get("contact_route", ""))
+            prospect, route_type, route, note, applied = apply_enrichment(
+                prospect, enrichment_for(enrichment, prospect),
+                route_type, route, note)
             if kind == "excluded":
                 counts["excluded"] += 1
                 for value in (prospect.get("website", ""), prospect.get("contact_route", "")):
@@ -381,11 +512,17 @@ def seed_from_prospects(app: str, config: dict | None = None) -> dict:
                     counts["partners_dropped"] += 1
                     continue
                 counts["partners_mailbox" if route_type == "mailbox" else "partners_form"] += 1
+                if "route" in applied:
+                    counts["partners_route_from_enrichment"] += 1
+                if "route_upgraded" in applied:
+                    counts["partners_route_upgraded_from_enrichment"] += 1
                 partners.append(_workbook_row(app, prospect, route_type, route, note))
                 continue
             if kind != "end-customer":
                 continue
             counts["end_customer"] += 1
+            if "website" in applied:
+                counts["customers_website_from_enrichment"] += 1
             if route_type == "none":
                 if note.startswith("route dropped: not a recognisable"):
                     counts["customers_dropped_personal"] += 1
@@ -393,6 +530,10 @@ def seed_from_prospects(app: str, config: dict | None = None) -> dict:
                     counts["customers_dropped_no_route"] += 1
                 continue
             counts["customers_mailbox" if route_type == "mailbox" else "customers_form"] += 1
+            if "route" in applied:
+                counts["customers_route_from_enrichment"] += 1
+            if "route_upgraded" in applied:
+                counts["customers_route_upgraded_from_enrichment"] += 1
             customers.append(_workbook_row(app, prospect, route_type, route, note))
 
     customer_path = cfg_mod.workbook_path(app, "customers")

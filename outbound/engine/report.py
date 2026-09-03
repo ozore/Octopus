@@ -31,19 +31,23 @@ def coverage(app: str, config: dict) -> dict:
     """What the phase-3 lists can actually support for this app."""
     out = {"end_customer": 0, "mailbox": 0, "form": 0, "no_route": 0,
            "personal_route_dropped": 0, "partner": 0, "partner_usable": 0,
-           "excluded": 0, "per_dir": {}}
+           "excluded": 0, "from_enrichment": 0, "per_dir": {}}
     for directory in config["prospect_dirs"]:
         path = cfg_mod.prospects_root() / directory / "prospects.csv"
         if not path.exists():
             continue
+        enrichment = wb.read_enrichment(directory)
         per = {"end_customer": 0, "mailbox": 0, "form": 0, "no_route": 0,
-               "personal_route_dropped": 0}
+               "personal_route_dropped": 0, "from_enrichment": 0}
         with open(path, newline="", encoding="utf-8") as handle:
             for row in csv.DictReader(handle):
                 kind = (row.get("prospect_type") or "").strip()
+                route_type, route, note = wb.classify_route(row.get("contact_route", ""))
+                row, route_type, route, note, applied = wb.apply_enrichment(
+                    row, wb.enrichment_for(enrichment, row), route_type, route, note)
                 if kind == "partner":
                     out["partner"] += 1
-                    if wb.classify_route(row.get("contact_route", ""))[0] != "none":
+                    if route_type != "none":
                         out["partner_usable"] += 1
                     continue
                 if kind == "excluded":
@@ -52,7 +56,8 @@ def coverage(app: str, config: dict) -> dict:
                 if kind != "end-customer":
                     continue
                 per["end_customer"] += 1
-                route_type, _, note = wb.classify_route(row.get("contact_route", ""))
+                if "route" in applied:
+                    per["from_enrichment"] += 1
                 if route_type == "mailbox":
                     per["mailbox"] += 1
                 elif route_type == "form":
@@ -149,6 +154,8 @@ def render(data: dict) -> str:
         f"| with a contact page only | {cover['form']:,} |",
         f"| route dropped: not a recognisable generic mailbox | {cover['personal_route_dropped']:,} |",
         f"| no contact route recorded at all | {cover['no_route']:,} |",
+        f"| of the usable routes, found by the phase-4 enrichment pass | "
+        f"{cover.get('from_enrichment', 0):,} |",
         f"| **usable in the workbook** | **{reachable:,}** |",
         f"| partner rows | {cover['partner']:,} |",
         f"| partner rows with a usable route | {cover['partner_usable']:,} |",

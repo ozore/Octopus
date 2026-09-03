@@ -1,0 +1,7 @@
+# `token-df.json` is a derived cache: token document-frequency over every
+# prospects.csv in this tree. It is rebuilt automatically on the next run and
+# would only go stale in the repository.
+state/token-df.json
+
+# The attempt logs (`state/*.jsonl`) are NOT ignored on purpose: they are what
+# makes every pass resumable, and `routes-enrichment.csv` is derived from them.

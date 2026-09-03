@@ -1,6 +1,6 @@
 # Certly outbound report
 
-**Generated:** 2026-09-03 20:21 UTC - `python3 -m outbound.engine.cli certly report`
+**Generated:** 2026-09-03 23:26 UTC - `python3 -m outbound.engine.cli certly report`
 **Status:** drafts-first. Nothing in this report was sent by an agent.
 
 ## 1. What the lists can support
@@ -8,11 +8,12 @@
 | | rows |
 |---|---:|
 | end-customer rows in the phase-3 list(s) | 1,578 |
-| with a generic business mailbox | 7 |
-| with a contact page only | 514 |
+| with a generic business mailbox | 290 |
+| with a contact page only | 534 |
 | route dropped: not a recognisable generic mailbox | 0 |
-| no contact route recorded at all | 1,057 |
-| **usable in the workbook** | **521** |
+| no contact route recorded at all | 754 |
+| of the usable routes, found by the phase-4 enrichment pass | 303 |
+| **usable in the workbook** | **824** |
 | partner rows | 204 |
 | partner rows with a usable route | 115 |
 | excluded rows (seed the suppression list) | 37 |
@@ -21,19 +22,19 @@ Per source list:
 
 | list | end-customer | mailbox | contact page | no route |
 |---|---:|---:|---:|---:|
-| certly-gc | 601 | 4 | 76 | 521 |
-| certly-pm | 977 | 3 | 438 | 536 |
+| certly-gc | 601 | 90 | 122 | 389 |
+| certly-pm | 977 | 200 | 412 | 365 |
 
-> At 20 new organisations a day, the usable pool of 521 lasts about 26 sending days before it needs extending.
+> At 20 new organisations a day, the usable pool of 824 lasts about 41 sending days before it needs extending.
 
 ## 2. Workbook
 
-- customers: **521** rows (7 mailbox, 514 contact page)
+- customers: **824** rows (290 mailbox, 534 contact page)
 - partners: **115** rows (3 mailbox, 112 contact page)
 
 | stage | rows |
 |---|---:|
-| new | 521 |
+| new | 824 |
 
 ## 3. Sent
 
