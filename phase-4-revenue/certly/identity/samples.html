@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Certly — design system samples</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../design-system.css">
+<style>
+  /* Page furniture for this gallery only. Nothing here belongs in the product. */
+  .g-wrap   { max-width: 1400px; margin: 0 auto; padding: var(--c-space-6) var(--c-space-5) var(--c-space-9); }
+  .g-head   { display: flex; align-items: center; justify-content: space-between; gap: var(--c-space-4);
+              padding-bottom: var(--c-space-4); border-bottom: 1px solid var(--c-line); margin-bottom: var(--c-space-6); flex-wrap: wrap; }
+  .g-sec    { margin: var(--c-space-9) 0 0; }
+  .g-sec > h2 { border-bottom: 1px solid var(--c-line); padding-bottom: var(--c-space-2); }
+  .g-kicker { font: 500 var(--c-text-2xs)/1 var(--c-font-ui); letter-spacing: .08em; text-transform: uppercase;
+              color: var(--c-ink-muted); margin-bottom: var(--c-space-2); }
+  .g-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: var(--c-space-3); }
+  .g-sw     { border: 1px solid var(--c-line); border-radius: var(--c-radius-sm); overflow: hidden; background: var(--c-surface); }
+  .g-sw__chip { height: 56px; }
+  .g-sw__meta { padding: var(--c-space-2) var(--c-space-3); font-size: var(--c-text-xs); color: var(--c-ink-muted); }
+  .g-sw__name { display: block; font-family: var(--c-font-num); color: var(--c-ink); font-size: var(--c-text-xs); }
+  .g-cols   { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--c-space-5); align-items: start; }
+  .g-space  { display: flex; align-items: flex-end; gap: var(--c-space-3); flex-wrap: wrap; }
+  .g-space i { display: block; background: var(--c-ink-muted); }
+  .g-grey   { filter: grayscale(1); }
+  .g-panel  { background: var(--c-surface); border: 1px solid var(--c-line); border-radius: var(--c-radius-md); padding: var(--c-space-5); }
+</style>
+</head>
+<body>
+<div class="g-wrap">
+
+  <header class="g-head">
+    <div>
+      <a class="c-wordmark" href="#">certly</a>
+      <p style="margin:var(--c-space-2) 0 0;color:var(--c-ink-muted);font-size:var(--c-text-sm);max-width:60ch">
+        Design system samples. Implements <code>IDENTITY.md</code> v1. Every colour value comes from
+        <code>design-system.css</code>; every contrast ratio quoted here is produced by
+        <code>identity/contrast.py</code>.
+      </p>
+    </div>
+    <div class="c-row">
+      <span class="c-asof">shown <time datetime="2026-09-03">3 Sep 2026</time></span>
+      <button class="c-btn c-btn--secondary c-btn--sm" id="themeBtn" type="button" aria-pressed="false">Dark</button>
+    </div>
+  </header>
+
+  <!-- ==================================================================== -->
+  <section class="g-sec" id="colour">
+    <h2>1 &middot; Colour</h2>
+    <p style="color:var(--c-ink-muted)">
+      One ink, one paper, one interaction blue, four status hues. There is no brand colour: chroma is
+      reserved entirely for state. Interaction blue sits at hue 215.5&deg;, far from covered (147.0&deg;),
+      expiring (35.5&deg;) and gap (4.7&deg;).
+    </p>
+
+    <p class="g-kicker">Ground, ink and interaction</p>
+    <div class="g-swatches">
+      <div class="g-sw"><div class="g-sw__chip" style="background:var(--c-paper)"></div><div class="g-sw__meta"><span class="g-sw__name">--c-paper</span>application ground</div></div>
+      <div class="g-sw"><div class="g-sw__chip" style="background:var(--c-surface)"></div><div class="g-sw__meta"><span class="g-sw__name">--c-surface</span>cards, tables</div></div>
+      <div class="g-sw"><div class="g-sw__chip" style="background:var(--c-sunken)"></div><div class="g-sw__meta"><span class="g-sw__name">--c-sunken</span>wells, viewports</div></div>
+      <div class="g-sw"><div class="g-sw__chip" style="background:var(--c-line-strong)"></div><div class="g-sw__meta"><span class="g-sw__name">--c-line-strong</span>control borders &middot; 3.72:1 on white</div></div>
+      <div class="g-sw"><div class="g-sw__chip" style="background:var(--c-ink)"></div><div class="g-sw__meta"><span class="g-sw__name">--c-ink</span>body &amp; primary button &middot; 17.45:1</div></div>
+      <div class="g-sw"><div class="g-sw__chip" style="background:var(--c-ink-muted)"></div><div class="g-sw__meta"><span class="g-sw__name">--c-ink-muted</span>secondary text &middot; 7.01:1</div></div>
+      <div class="g-sw"><div class="g-sw__chip" style="background:var(--c-link)"></div><div class="g-sw__meta"><span class="g-sw__name">--c-link / --c-focus</span>links, focus &middot; 9.29:1</div></div>
+    </div>
+
+    <p class="g-kicker" style="margin-top:var(--c-space-5)">Status</p>
+    <div class="g-swatches">
+      <div class="g-sw"><div class="g-sw__chip" style="background:var(--c-ok-solid)"></div><div class="g-sw__meta"><span class="g-sw__name">--c-ok-solid</span>covered &middot; 6.12:1 on white</div></div>
+      <div class="g-sw"><div class="g-sw__chip" style="background:var(--c-warn-solid)"></div><div class="g-sw__meta"><span class="g-sw__name">--c-warn-solid</span>expiring &middot; 6.26:1</div></div>
+      <div class="g-sw"><div class="g-sw__chip" style="background:var(--c-gap-solid)"></div><div class="g-sw__meta"><span class="g-sw__name">--c-gap-solid</span>gap &middot; 6.74:1</div></div>
+      <div class="g-sw"><div class="g-sw__chip" style="background:var(--c-rev-fg)"></div><div class="g-sw__meta"><span class="g-sw__name">--c-rev-fg</span>needs review &middot; 7.05:1 on its tint</div></div>
+    </div>
+  </section>
+
+  <!-- ==================================================================== -->
+  <section class="g-sec" id="status">
+    <h2>2 &middot; The four-signal status encoding</h2>
+    <p style="color:var(--c-ink-muted);max-width:var(--c-measure)">
+      All four status fills must clear 4.5:1 against the same white, which forces their luminances within
+      about 1.36:1 of each other. Colour therefore <em>cannot</em> be the carrier. Every status also owns a
+      word, a glyph and a fill pattern. The greyscale row below is the proof: it is what a gap report looks
+      like in a board packet.
+    </p>
+
+    <div class="g-cols">
+      <div class="g-panel">
+        <p class="g-kicker">In colour</p>
+        <div class="c-row" style="flex-wrap:wrap;gap:var(--c-space-3)">
+          <span class="c-pill c-pill--ok"><svg class="c-pill__glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6.25" fill="currentColor"/><path d="M4 7.2l2 2 4-4.4" fill="none" stroke="var(--c-ok-bg)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Covered</span>
+          <span class="c-pill c-pill--warn"><svg class="c-pill__glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M7 4v3.3l2.1 1.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Expiring <span class="c-pill__n">9d</span></span>
+          <span class="c-pill c-pill--gap"><svg class="c-pill__glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2.4 2"/><path d="M4.4 9.6l5.2-5.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Gap</span>
+          <span class="c-pill c-pill--rev"><svg class="c-pill__glyph" viewBox="0 0 14 14" aria-hidden="true"><rect x="1.2" y="1.2" width="11.6" height="11.6" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5.3 5.2a1.75 1.75 0 113 1.2c-.55.45-.8.8-.8 1.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="7.5" cy="10.2" r=".85" fill="currentColor"/></svg>Needs review</span>
+        </div>
+        <div style="margin-top:var(--c-space-4)">
+          <div class="c-bar" role="img" aria-label="General liability: covered 1 January to 12 September 2026, then expiring, then no coverage on record.">
+            <div class="c-bar__seg c-bar__seg--ok"   style="left:0%;   width:46%"></div>
+            <div class="c-bar__seg c-bar__seg--warn" style="left:46%;  width:16%"></div>
+            <div class="c-bar__seg c-bar__seg--gap"  style="left:62%;  width:22%"></div>
+            <div class="c-bar__seg c-bar__seg--rev"  style="left:84%;  width:16%"></div>
+            <div class="c-bar__today" style="left:52%"></div>
+          </div>
+          <div class="c-bar__axis"><span>3 Aug</span><span>today</span><span>1 Mar 2027</span></div>
+        </div>
+      </div>
+
+      <div class="g-panel g-grey">
+        <p class="g-kicker">The same thing, in greyscale</p>
+        <div class="c-row" style="flex-wrap:wrap;gap:var(--c-space-3)">
+          <span class="c-pill c-pill--ok"><svg class="c-pill__glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6.25" fill="currentColor"/><path d="M4 7.2l2 2 4-4.4" fill="none" stroke="var(--c-ok-bg)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Covered</span>
+          <span class="c-pill c-pill--warn"><svg class="c-pill__glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M7 4v3.3l2.1 1.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Expiring <span class="c-pill__n">9d</span></span>
+          <span class="c-pill c-pill--gap"><svg class="c-pill__glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2.4 2"/><path d="M4.4 9.6l5.2-5.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Gap</span>
+          <span class="c-pill c-pill--rev"><svg class="c-pill__glyph" viewBox="0 0 14 14" aria-hidden="true"><rect x="1.2" y="1.2" width="11.6" height="11.6" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5.3 5.2a1.75 1.75 0 113 1.2c-.55.45-.8.8-.8 1.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="7.5" cy="10.2" r=".85" fill="currentColor"/></svg>Needs review</span>
+        </div>
+        <div style="margin-top:var(--c-space-4)">
+          <div class="c-bar" role="img" aria-label="The same coverage bar with all colour removed.">
+            <div class="c-bar__seg c-bar__seg--ok"   style="left:0%;   width:46%"></div>
+            <div class="c-bar__seg c-bar__seg--warn" style="left:46%;  width:16%"></div>
+            <div class="c-bar__seg c-bar__seg--gap"  style="left:62%;  width:22%"></div>
+            <div class="c-bar__seg c-bar__seg--rev"  style="left:84%;  width:16%"></div>
+            <div class="c-bar__today" style="left:52%"></div>
+          </div>
+          <div class="c-bar__axis"><span>3 Aug</span><span>today</span><span>1 Mar 2027</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================================== -->
+  <section class="g-sec" id="type">
+    <h2>3 &middot; Typography</h2>
+    <div class="g-cols">
+      <div>
+        <p class="g-kicker">Public Sans &mdash; interface</p>
+        <p style="font-size:var(--c-text-3xl);line-height:var(--c-lh-tight);letter-spacing:-.02em;margin:0 0 var(--c-space-2);font-weight:600">Every vendor, current</p>
+        <p style="font-size:var(--c-text-xl);line-height:var(--c-lh-snug);margin:0 0 var(--c-space-2);font-weight:600">Card title, 22px / 600</p>
+        <p style="margin:0 0 var(--c-space-2)">Body copy at 16px on a 1.55 line height. The measure is capped at 68 characters, because this buyer reads a screen between two phone calls.</p>
+        <p style="font-size:var(--c-text-sm);color:var(--c-ink-muted);margin:0">Secondary, 14px, <code>--c-ink-muted</code>, 7.01:1 on a card.</p>
+      </div>
+      <div>
+        <p class="g-kicker">IBM Plex Mono &mdash; every figure the buyer compares</p>
+        <table class="c-table" style="background:var(--c-surface);border:1px solid var(--c-line);border-radius:var(--c-radius-md)">
+          <tbody>
+            <tr><td>General liability, each occurrence</td><td class="c-num" style="text-align:right">$1,000,000</td></tr>
+            <tr><td>General liability, general aggregate</td><td class="c-num" style="text-align:right">$2,000,000</td></tr>
+            <tr><td>Auto liability, combined single limit</td><td class="c-num" style="text-align:right">$1,000,000</td></tr>
+            <tr><td>Workers&rsquo; compensation, each accident</td><td class="c-num" style="text-align:right">$500,000</td></tr>
+            <tr><td>Policy number</td><td class="c-num" style="text-align:right">4-CA-119302-11</td></tr>
+            <tr><td>Expires</td><td class="c-num" style="text-align:right">2026-09-12</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:var(--c-text-xs);color:var(--c-ink-muted);margin-top:var(--c-space-2)">Tabular figures, so a column of limits aligns without a table hack.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================================== -->
+  <section class="g-sec" id="space">
+    <h2>4 &middot; Space, radius, elevation</h2>
+    <p class="g-kicker">4px grid</p>
+    <div class="g-space">
+      <i style="width:4px;height:4px"></i><i style="width:8px;height:8px"></i><i style="width:12px;height:12px"></i>
+      <i style="width:16px;height:16px"></i><i style="width:24px;height:24px"></i><i style="width:32px;height:32px"></i>
+      <i style="width:48px;height:48px"></i><i style="width:64px;height:64px"></i><i style="width:96px;height:96px"></i>
+    </div>
+    <div class="g-cols" style="margin-top:var(--c-space-5)">
+      <div class="c-card"><strong>Card</strong> &mdash; <code>--c-shadow-1</code>, 8px radius. A sheet of paper resting on the desk.</div>
+      <div class="c-sheet"><strong>Sheet</strong> &mdash; <code>--c-shadow-2</code>, 12px radius. Something that has taken modal precedence.</div>
+    </div>
+  </section>
+
+  <!-- ==================================================================== -->
+  <section class="g-sec" id="components">
+    <h2>5 &middot; Components</h2>
+
+    <div class="g-cols">
+      <div class="c-card">
+        <p class="g-kicker">Buttons &amp; fields</p>
+        <div class="c-row" style="flex-wrap:wrap;margin-bottom:var(--c-space-4)">
+          <button class="c-btn c-btn--primary" type="button">Accept reading</button>
+          <button class="c-btn c-btn--secondary" type="button">Chase agent</button>
+          <button class="c-btn c-btn--quiet" type="button">Not on this document</button>
+          <button class="c-btn c-btn--primary" type="button" disabled>Disabled</button>
+        </div>
+        <label class="c-field">
+          <span class="c-field__label">General liability &mdash; general aggregate</span>
+          <span class="c-field__hint">The requirement your lease imposes on this vendor type.</span>
+          <input class="c-input c-input--num" type="text" value="$2,000,000">
+        </label>
+        <label class="c-field" style="margin-bottom:0">
+          <span class="c-field__label">Certificate holder</span>
+          <input class="c-input" type="text" aria-invalid="true" value="Ridgeline Property Mgmt">
+          <span class="c-field__error">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="flex:none;margin-top:1px"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.6v4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="8" cy="11.3" r=".9" fill="currentColor"/></svg>
+            The certificate reads &ldquo;Ridgeline Property Management LLC&rdquo;. Names must match exactly or a claim can be contested.
+          </span>
+        </label>
+      </div>
+
+      <div class="c-card">
+        <p class="g-kicker">Upload &amp; forwarding</p>
+        <div class="c-drop">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 3v5h5"/><path d="M14 3H6a1 1 0 00-1 1v16a1 1 0 001 1h12a1 1 0 001-1V8z"/><path d="M12 17v-5"/><path d="M9.5 14.5L12 12l2.5 2.5"/>
+          </svg>
+          <strong style="color:var(--c-ink-strong)">Drop an ACORD 25, or paste a screenshot</strong>
+          <span class="c-drop__hint">PDF, JPG or PNG. Nobody on the vendor&rsquo;s side needs an account.</span>
+          <span class="c-drop__mail">northgate@in.certly.app</span>
+        </div>
+        <p class="c-note" style="margin-top:var(--c-space-4)">
+          Agents can also just reply to our email with the PDF attached. We never charge a vendor or an
+          agent to send us a certificate.
+        </p>
+      </div>
+
+      <div class="c-card">
+        <p class="g-kicker">Confidence &mdash; deliberately achromatic</p>
+        <div class="c-review">
+          <div class="c-review__row">
+            <span class="c-review__label">Each occurrence</span>
+            <span class="c-review__value">$1,000,000</span>
+            <span class="c-conf"><span class="c-conf__meter"><i class="c-conf__seg" data-on="true"></i><i class="c-conf__seg" data-on="true"></i><i class="c-conf__seg" data-on="true"></i></span>read clearly</span>
+          </div>
+          <div class="c-review__row" data-confidence="medium">
+            <span class="c-review__label">General aggregate</span>
+            <span class="c-review__value">$2,000,000</span>
+            <span class="c-conf"><span class="c-conf__meter"><i class="c-conf__seg" data-on="true"></i><i class="c-conf__seg" data-on="true"></i><i class="c-conf__seg"></i></span>check this</span>
+          </div>
+          <div class="c-review__row" data-confidence="low">
+            <span class="c-review__label">Waiver of subrogation</span>
+            <span class="c-review__value">not found</span>
+            <span class="c-conf"><span class="c-conf__meter"><i class="c-conf__seg" data-on="true"></i><i class="c-conf__seg"></i><i class="c-conf__seg"></i></span>we&rsquo;re not sure</span>
+          </div>
+        </div>
+        <p class="c-note" style="margin-top:var(--c-space-3)">
+          A low-confidence field can never contribute to a <strong>Covered</strong> status. The record sits
+          in <strong>Needs review</strong> until a person confirms it.
+        </p>
+      </div>
+
+      <div class="c-card">
+        <p class="g-kicker">Reminder composer</p>
+        <p style="font-size:var(--c-text-sm);color:var(--c-ink-muted);margin-bottom:var(--c-space-2)">To: the agent on the certificate &middot; cc: the vendor</p>
+        <div class="c-remind__schedule">
+          <button class="c-remind__offset" type="button" aria-pressed="true">&minus;30d</button>
+          <button class="c-remind__offset" type="button" aria-pressed="true">&minus;14d</button>
+          <button class="c-remind__offset" type="button" aria-pressed="true">&minus;3d</button>
+          <button class="c-remind__offset" type="button" aria-pressed="false">+1d</button>
+        </div>
+        <div class="c-remind__preview" style="margin-top:var(--c-space-3)">
+          Hello &mdash; we handle insurance requirements for Ridgeline Property Management. Northgate
+          Landscaping&rsquo;s general liability certificate expires on <span class="c-num">12 Sep 2026</span>.
+          Could you send an updated ACORD 25 naming Ridgeline Property Management LLC as certificate holder
+          and additional insured? Reply with the PDF attached, or use this link &mdash; no account needed.
+        </div>
+        <p class="c-remind__stop">This schedule sends <strong>3 emails</strong>. It stops as soon as a current certificate arrives.</p>
+      </div>
+
+      <div class="c-card">
+        <p class="g-kicker">Empty state &amp; toast</p>
+        <div class="c-empty">
+          <p class="c-empty__title">No vendors yet</p>
+          <p style="margin-bottom:var(--c-space-4)">Add your first vendor, or forward a certificate to <span class="c-num">in@certly.app</span> and we will create one from it.</p>
+          <button class="c-btn c-btn--primary" type="button">Add a vendor</button>
+        </div>
+        <div class="c-toast" style="margin-top:var(--c-space-4)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" style="flex:none;margin-top:2px"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg>
+          <span><strong>Sierra Mechanical</strong> &mdash; certificate received from the agent. Now <strong>Covered</strong> to <span class="c-num">30 Jun 2027</span>.</span>
+        </div>
+      </div>
+
+      <div class="c-card">
+        <p class="g-kicker">Requirement template &mdash; clause to rows</p>
+        <div class="c-req__paste" style="font-size:var(--c-text-base)">
+          Contractor shall maintain commercial general liability insurance with limits of not less than
+          <span class="c-req__mark">$1,000,000 each occurrence</span> and
+          <span class="c-req__mark">$2,000,000 general aggregate</span>, and shall name Owner as
+          <span class="c-req__mark">additional insured</span> on a primary and non-contributory basis.
+        </div>
+        <div class="c-req__rows" style="margin-top:var(--c-space-3)">
+          <div class="c-req__row">
+            <span>General liability</span>
+            <span class="c-num">$1,000,000</span>
+            <span class="c-table__meta">each occurrence</span>
+            <span><span class="c-chip">additional insured</span> <span class="c-chip">primary &amp; non-contributory</span></span>
+          </div>
+          <div class="c-req__row">
+            <span>General liability</span>
+            <span class="c-num">$2,000,000</span>
+            <span class="c-table__meta">general aggregate</span>
+            <span><span class="c-chip">from the clause</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================================== -->
+  <!-- THE SAMPLE SCREEN                                                     -->
+  <!-- ==================================================================== -->
+  <section class="g-sec" id="screen">
+    <h2>6 &middot; Sample screen &mdash; vendor coverage dashboard</h2>
+    <p style="color:var(--c-ink-muted);max-width:var(--c-measure)">
+      Ridgeline Property Management, 214 units across 9 properties. Sorted the way the product always sorts:
+      soonest problem first. The right-hand panel is the extraction review for the certificate that arrived
+      this morning. All names and numbers are fictional.
+    </p>
+
+    <div class="c-split" style="margin-top:var(--c-space-5)">
+
+      <!-- LEFT: the dashboard ------------------------------------------- -->
+      <div class="c-stack">
+        <div class="c-card">
+          <div class="c-card__head">
+            <h3 class="c-card__title">Portfolio</h3>
+            <span class="c-asof">as of <time datetime="2026-09-03T09:41">3 Sep 2026, 09:41</time></span>
+          </div>
+          <div class="c-strip" role="img" aria-label="Of 47 vendors: 31 covered, 6 expiring within 30 days, 7 with a coverage gap, 3 needing review.">
+            <div class="c-strip__seg c-strip__seg--ok"   style="flex:31">31</div>
+            <div class="c-strip__seg c-strip__seg--warn" style="flex:6">6</div>
+            <div class="c-strip__seg c-strip__seg--gap"  style="flex:7">7</div>
+            <div class="c-strip__seg c-strip__seg--rev"  style="flex:3">3</div>
+          </div>
+          <div class="c-legend">
+            <span class="c-legend__item"><i class="c-dot c-dot--ok"></i> 31 covered</span>
+            <span class="c-legend__item"><i class="c-dot c-dot--warn"></i> 6 expiring in 30 days</span>
+            <span class="c-legend__item"><i class="c-dot c-dot--gap"></i> 7 gaps</span>
+            <span class="c-legend__item"><i class="c-dot c-dot--rev"></i> 3 need review</span>
+          </div>
+        </div>
+
+        <div class="c-row c-row--between" style="flex-wrap:wrap">
+          <div class="c-row" style="flex-wrap:wrap">
+            <span class="c-chip">All properties</span>
+            <span class="c-chip">Vendors</span>
+            <span class="c-chip">Requirement: Standard vendor 1M/2M</span>
+          </div>
+          <div class="c-row">
+            <button class="c-btn c-btn--secondary c-btn--sm" type="button">Export gap report</button>
+            <button class="c-btn c-btn--primary c-btn--sm" type="button">Chase 13 selected</button>
+          </div>
+        </div>
+
+        <div class="c-table-wrap">
+          <table class="c-table">
+            <caption class="c-visually-hidden">Vendors by coverage status, soonest problem first</caption>
+            <thead>
+              <tr>
+                <th scope="col">Status</th>
+                <th scope="col">Vendor</th>
+                <th scope="col">Coverage (3 Aug &ndash; 1 Mar)</th>
+                <th scope="col">Next expiry</th>
+                <th scope="col">Last document</th>
+                <th scope="col"><span class="c-visually-hidden">Action</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="c-pill c-pill--gap"><svg class="c-pill__glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2.4 2"/><path d="M4.4 9.6l5.2-5.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Gap</span></td>
+                <td>
+                  <span class="c-table__party">Harbour Roofing Co.</span>
+                  <div class="c-table__meta">Aggregate is $1,000,000. Requirement is $2,000,000.</div>
+                </td>
+                <td style="min-width:220px">
+                  <div class="c-bar c-bar--sm" role="img" aria-label="General liability aggregate below requirement since 14 August 2026.">
+                    <div class="c-bar__seg c-bar__seg--ok"  style="left:0%;width:22%"></div>
+                    <div class="c-bar__seg c-bar__seg--gap" style="left:22%;width:78%"></div>
+                    <div class="c-bar__today" style="left:52%"></div>
+                  </div>
+                </td>
+                <td class="c-num">2027-02-01</td>
+                <td class="c-table__meta">14 Aug 2026</td>
+                <td><button class="c-btn c-btn--secondary c-btn--sm" type="button">Chase agent</button></td>
+              </tr>
+
+              <tr>
+                <td><span class="c-pill c-pill--gap"><svg class="c-pill__glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2.4 2"/><path d="M4.4 9.6l5.2-5.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Gap</span></td>
+                <td>
+                  <span class="c-table__party">Delta Pool Service</span>
+                  <div class="c-table__meta">No additional insured endorsement on record.</div>
+                </td>
+                <td>
+                  <div class="c-bar c-bar--sm" role="img" aria-label="Policy current but the additional insured endorsement is missing.">
+                    <div class="c-bar__seg c-bar__seg--gap" style="left:0%;width:100%"></div>
+                    <div class="c-bar__today" style="left:52%"></div>
+                  </div>
+                </td>
+                <td class="c-num">2027-05-30</td>
+                <td class="c-table__meta">2 Jul 2026</td>
+                <td><button class="c-btn c-btn--secondary c-btn--sm" type="button">Chase agent</button></td>
+              </tr>
+
+              <tr>
+                <td><span class="c-pill c-pill--warn"><svg class="c-pill__glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M7 4v3.3l2.1 1.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Expiring <span class="c-pill__n">9d</span></span></td>
+                <td>
+                  <span class="c-table__party">Northgate Landscaping</span>
+                  <div class="c-table__meta">General liability &middot; agent asked 21 Aug, no reply.</div>
+                </td>
+                <td>
+                  <div class="c-bar c-bar--sm" role="img" aria-label="Covered until 12 September 2026, then nothing on record.">
+                    <div class="c-bar__seg c-bar__seg--ok"   style="left:0%;width:46%"></div>
+                    <div class="c-bar__seg c-bar__seg--warn" style="left:46%;width:14%"></div>
+                    <div class="c-bar__seg c-bar__seg--gap"  style="left:60%;width:40%"></div>
+                    <div class="c-bar__today" style="left:52%"></div>
+                  </div>
+                </td>
+                <td class="c-num">2026-09-12</td>
+                <td class="c-table__meta">3 Sep 2026</td>
+                <td><button class="c-btn c-btn--secondary c-btn--sm" type="button">Chase agent</button></td>
+              </tr>
+
+              <tr aria-selected="true">
+                <td><span class="c-pill c-pill--rev"><svg class="c-pill__glyph" viewBox="0 0 14 14" aria-hidden="true"><rect x="1.2" y="1.2" width="11.6" height="11.6" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5.3 5.2a1.75 1.75 0 113 1.2c-.55.45-.8.8-.8 1.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="7.5" cy="10.2" r=".85" fill="currentColor"/></svg>Needs review</span></td>
+                <td>
+                  <span class="c-table__party">Sierra Mechanical</span>
+                  <div class="c-table__meta">New certificate arrived 09:38. Two fields to confirm. &rarr;</div>
+                </td>
+                <td>
+                  <div class="c-bar c-bar--sm" role="img" aria-label="A new certificate is being reviewed; coverage not yet confirmed.">
+                    <div class="c-bar__seg c-bar__seg--ok"  style="left:0%;width:46%"></div>
+                    <div class="c-bar__seg c-bar__seg--rev" style="left:46%;width:54%"></div>
+                    <div class="c-bar__today" style="left:52%"></div>
+                  </div>
+                </td>
+                <td class="c-num">2027-06-30</td>
+                <td class="c-table__meta">3 Sep 2026</td>
+                <td><button class="c-btn c-btn--primary c-btn--sm" type="button">Review</button></td>
+              </tr>
+
+              <tr>
+                <td><span class="c-pill c-pill--ok"><svg class="c-pill__glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6.25" fill="currentColor"/><path d="M4 7.2l2 2 4-4.4" fill="none" stroke="var(--c-ok-bg)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Covered</span></td>
+                <td>
+                  <span class="c-table__party">Bluewater Plumbing</span>
+                  <div class="c-table__meta">1M / 2M &middot; additional insured &middot; waiver of subrogation</div>
+                </td>
+                <td>
+                  <div class="c-bar c-bar--sm" role="img" aria-label="Covered for the whole window shown.">
+                    <div class="c-bar__seg c-bar__seg--ok" style="left:0%;width:100%"></div>
+                    <div class="c-bar__today" style="left:52%"></div>
+                  </div>
+                </td>
+                <td class="c-num">2027-04-18</td>
+                <td class="c-table__meta">19 Apr 2026</td>
+                <td><button class="c-btn c-btn--quiet c-btn--sm" type="button">Open</button></td>
+              </tr>
+
+              <tr>
+                <td><span class="c-pill c-pill--ok"><svg class="c-pill__glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6.25" fill="currentColor"/><path d="M4 7.2l2 2 4-4.4" fill="none" stroke="var(--c-ok-bg)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Covered</span></td>
+                <td>
+                  <span class="c-table__party">Cardinal Elevator Inspection</span>
+                  <div class="c-table__meta">2M / 4M &middot; additional insured</div>
+                </td>
+                <td>
+                  <div class="c-bar c-bar--sm" role="img" aria-label="Covered for the whole window shown.">
+                    <div class="c-bar__seg c-bar__seg--ok" style="left:0%;width:100%"></div>
+                    <div class="c-bar__today" style="left:52%"></div>
+                  </div>
+                </td>
+                <td class="c-num">2027-11-01</td>
+                <td class="c-table__meta">2 Nov 2025</td>
+                <td><button class="c-btn c-btn--quiet c-btn--sm" type="button">Open</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="c-note">
+          Certly reports what a certificate says against the requirement you set. It is not insurance advice
+          and it does not verify the underlying policy.
+        </p>
+      </div>
+
+      <!-- RIGHT: extraction review -------------------------------------- -->
+      <aside class="c-card" aria-label="Extraction review for Sierra Mechanical">
+        <div class="c-card__head">
+          <h3 class="c-card__title">Sierra Mechanical</h3>
+          <span class="c-pill c-pill--rev"><svg class="c-pill__glyph" viewBox="0 0 14 14" aria-hidden="true"><rect x="1.2" y="1.2" width="11.6" height="11.6" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5.3 5.2a1.75 1.75 0 113 1.2c-.55.45-.8.8-.8 1.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="7.5" cy="10.2" r=".85" fill="currentColor"/></svg>Needs review</span>
+        </div>
+        <p class="c-table__meta" style="margin:0 0 var(--c-space-3)">
+          ACORD 25 received 3 Sep 2026, 09:38, from the agent of record. Checked against
+          <strong>Standard vendor 1M/2M</strong>.
+        </p>
+
+        <!-- Document, with our reading pinned to it -->
+        <div class="c-doc" style="max-height:300px">
+          <div class="c-doc__page" style="min-height:250px">
+            <div style="font-weight:600;letter-spacing:.04em;font-size:var(--c-text-2xs);text-transform:uppercase;border-bottom:1px solid var(--c-line);padding-bottom:4px;margin-bottom:6px">
+              Certificate of Liability Insurance
+            </div>
+            <p style="font-size:9px;line-height:1.4;color:var(--c-ink-muted);margin:0 0 8px;max-width:none">
+              THIS CERTIFICATE IS ISSUED AS A MATTER OF INFORMATION ONLY AND CONFERS NO RIGHTS UPON THE
+              CERTIFICATE HOLDER. IMPORTANT: If the certificate holder is an ADDITIONAL INSURED, the
+              policy(ies) must have ADDITIONAL INSURED provisions or be endorsed.
+            </p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font-size:var(--c-text-2xs);line-height:1.5;margin-bottom:8px">
+              <div><span style="color:var(--c-ink-muted)">PRODUCER</span><br>Cascade Risk Partners</div>
+              <div><span style="color:var(--c-ink-muted)">INSURED</span><br>Sierra Mechanical LLC</div>
+            </div>
+            <table style="width:100%;border-collapse:collapse;font-size:9px;line-height:1.4">
+              <thead>
+                <tr style="color:var(--c-ink-muted);text-align:left">
+                  <th style="font-weight:500;padding:2px 4px 2px 0">TYPE OF INSURANCE</th>
+                  <th style="font-weight:500;padding:2px 4px">ADDL<br>INSD</th>
+                  <th style="font-weight:500;padding:2px 4px">SUBR<br>WVD</th>
+                  <th style="font-weight:500;padding:2px 4px">POLICY NUMBER</th>
+                  <th style="font-weight:500;padding:2px 4px">EFF</th>
+                  <th style="font-weight:500;padding:2px 4px">EXP</th>
+                  <th style="font-weight:500;padding:2px 0 2px 4px">LIMITS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-top:1px solid var(--c-line)">
+                  <td style="padding:3px 4px 3px 0">COMMERCIAL GENERAL LIABILITY</td>
+                  <td style="padding:3px 4px;text-align:center;position:relative">Y<span class="c-doc__hl" style="inset:0 0 0 0" data-active="false"></span></td>
+                  <td style="padding:3px 4px;text-align:center;position:relative">&nbsp;<span class="c-doc__hl" style="inset:0 0 0 0" data-active="true"></span></td>
+                  <td class="c-num" style="padding:3px 4px;font-size:9px">GL-8841203</td>
+                  <td class="c-num" style="padding:3px 4px;font-size:9px">07/01/26</td>
+                  <td class="c-num" style="padding:3px 4px;font-size:9px">06/30/27</td>
+                  <td class="c-num" style="padding:3px 0 3px 4px;font-size:9px;position:relative">
+                    EACH OCC $1,000,000<br>GEN AGG $2,000,000
+                    <span class="c-doc__hl" style="inset:12px 0 0 -2px" data-active="false"></span>
+                  </td>
+                </tr>
+                <tr style="border-top:1px solid var(--c-line)">
+                  <td style="padding:3px 4px 3px 0">AUTOMOBILE LIABILITY</td>
+                  <td style="padding:3px 4px;text-align:center">Y</td>
+                  <td style="padding:3px 4px;text-align:center">&nbsp;</td>
+                  <td class="c-num" style="padding:3px 4px;font-size:9px">CA-119302-11</td>
+                  <td class="c-num" style="padding:3px 4px;font-size:9px">07/01/26</td>
+                  <td class="c-num" style="padding:3px 4px;font-size:9px">06/30/27</td>
+                  <td class="c-num" style="padding:3px 0 3px 4px;font-size:9px">CSL $1,000,000</td>
+                </tr>
+              </tbody>
+            </table>
+            <div style="font-size:9px;line-height:1.4;margin-top:8px;position:relative">
+              <span style="color:var(--c-ink-muted)">DESCRIPTION OF OPERATIONS / LOCATIONS / VEHICLES</span><br>
+              Ridgeline Property Management LLC is named as additional insured per written contract.
+              <span class="c-doc__hl" style="inset:12px 0 -2px -4px" data-active="false"></span>
+            </div>
+            <p style="font-size:8px;color:var(--c-ink-muted);margin:8px 0 0;max-width:none">
+              *LIMITS SHOWN MAY HAVE BEEN REDUCED BY PAID CLAIMS. &nbsp;&nbsp; ACORD 25 (2025/12)
+            </p>
+          </div>
+        </div>
+
+        <div class="c-review" style="margin-top:var(--c-space-4)">
+          <div class="c-review__row">
+            <span class="c-review__label">Each occurrence &middot; required $1,000,000</span>
+            <span class="c-review__value">$1,000,000 <span class="c-dot c-dot--ok" style="vertical-align:middle"></span></span>
+            <span class="c-conf"><span class="c-conf__meter"><i class="c-conf__seg" data-on="true"></i><i class="c-conf__seg" data-on="true"></i><i class="c-conf__seg" data-on="true"></i></span>read clearly</span>
+          </div>
+          <div class="c-review__row" data-confidence="medium">
+            <span class="c-review__label">General aggregate &middot; required $2,000,000</span>
+            <span class="c-review__value">$2,000,000</span>
+            <span class="c-conf"><span class="c-conf__meter"><i class="c-conf__seg" data-on="true"></i><i class="c-conf__seg" data-on="true"></i><i class="c-conf__seg"></i></span>check this</span>
+          </div>
+          <div class="c-review__row">
+            <span class="c-review__label">Additional insured &middot; required</span>
+            <span class="c-review__value">named in description</span>
+            <span class="c-conf"><span class="c-conf__meter"><i class="c-conf__seg" data-on="true"></i><i class="c-conf__seg" data-on="true"></i><i class="c-conf__seg" data-on="true"></i></span>read clearly</span>
+          </div>
+          <div class="c-review__row" data-confidence="low">
+            <span class="c-review__label">Waiver of subrogation &middot; <span class="c-num" style="font-size:.9em">SUBR WVD</span> checkbox, general liability</span>
+            <span class="c-review__value">cannot tell</span>
+            <span class="c-conf"><span class="c-conf__meter"><i class="c-conf__seg" data-on="true"></i><i class="c-conf__seg"></i><i class="c-conf__seg"></i></span>we&rsquo;re not sure</span>
+          </div>
+        </div>
+
+        <p class="c-note" style="margin-top:var(--c-space-4)">
+          The <span class="c-num" style="font-size:.9em">SUBR WVD</span> box on the general liability line
+          is a tick, and we cannot read this one. It stays <strong>cannot tell</strong> &mdash; it will not
+          quietly become a yes. And the form itself says a statement on a certificate
+          &ldquo;does not confer rights to the certificate holder in lieu of such endorsement(s)&rdquo;, so
+          if you need the waiver proved, we will ask the agent for the endorsement.
+        </p>
+
+        <div class="c-row" style="margin-top:var(--c-space-4)">
+          <button class="c-btn c-btn--primary" type="button">Accept reading</button>
+          <button class="c-btn c-btn--secondary" type="button">Ask the agent for the endorsement</button>
+        </div>
+        <span class="c-asof" style="margin-top:var(--c-space-3)">read <time datetime="2026-09-03T09:38">3 Sep 2026, 09:38</time></span>
+      </aside>
+    </div>
+  </section>
+
+
+  <!-- ==================================================================== -->
+  <section class="g-sec" id="timeline">
+    <h2>7 &middot; Expiry timeline</h2>
+    <p style="color:var(--c-ink-muted);max-width:var(--c-measure)">
+      The portfolio-level form of the coverage bar: one row per party against a shared axis, with today as
+      a full-height rule. Where a donut of &ldquo;78% compliant&rdquo; answers a question nobody in this
+      ICP asks, this answers the one they do ask &mdash; who breaks first, and when.
+    </p>
+
+    <div class="c-timeline" style="margin-top:var(--c-space-4)">
+      <div class="c-timeline__head">
+        <span class="c-table__meta">Vendor</span>
+        <div class="c-timeline__months"><span>Aug 26</span><span>Oct</span><span>Dec</span><span>Feb 27</span><span>Apr</span><span>Jun 27</span></div>
+      </div>
+      <div class="c-timeline__grid">
+        <div class="c-timeline__row">
+          <span class="c-timeline__party">Harbour Roofing Co.</span>
+          <div class="c-timeline__track">
+            <div class="c-bar c-bar--sm" role="img" aria-label="Harbour Roofing: aggregate below requirement from 14 August 2026 onward.">
+              <div class="c-bar__seg c-bar__seg--ok"  style="left:0%;width:8%"></div>
+              <div class="c-bar__seg c-bar__seg--gap" style="left:8%;width:92%"></div>
+              <div class="c-bar__today" style="left:12%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="c-timeline__row">
+          <span class="c-timeline__party">Delta Pool Service</span>
+          <div class="c-timeline__track">
+            <div class="c-bar c-bar--sm" role="img" aria-label="Delta Pool Service: no additional insured endorsement on record for the whole period.">
+              <div class="c-bar__seg c-bar__seg--gap" style="left:0%;width:100%"></div>
+              <div class="c-bar__today" style="left:12%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="c-timeline__row">
+          <span class="c-timeline__party">Northgate Landscaping</span>
+          <div class="c-timeline__track">
+            <div class="c-bar c-bar--sm" role="img" aria-label="Northgate Landscaping: covered until 12 September 2026, then nothing on record.">
+              <div class="c-bar__seg c-bar__seg--ok"   style="left:0%;width:9%"></div>
+              <div class="c-bar__seg c-bar__seg--warn" style="left:9%;width:4%"></div>
+              <div class="c-bar__seg c-bar__seg--gap"  style="left:13%;width:87%"></div>
+              <div class="c-bar__today" style="left:12%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="c-timeline__row">
+          <span class="c-timeline__party">Sierra Mechanical</span>
+          <div class="c-timeline__track">
+            <div class="c-bar c-bar--sm" role="img" aria-label="Sierra Mechanical: new certificate under review, coverage not yet confirmed to 30 June 2027.">
+              <div class="c-bar__seg c-bar__seg--rev" style="left:0%;width:100%"></div>
+              <div class="c-bar__today" style="left:12%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="c-timeline__row">
+          <span class="c-timeline__party">Bluewater Plumbing</span>
+          <div class="c-timeline__track">
+            <div class="c-bar c-bar--sm" role="img" aria-label="Bluewater Plumbing: covered to 18 April 2027, then nothing on record.">
+              <div class="c-bar__seg c-bar__seg--ok"  style="left:0%;width:74%"></div>
+              <div class="c-bar__seg c-bar__seg--gap" style="left:74%;width:26%"></div>
+              <div class="c-bar__today" style="left:12%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="c-timeline__row">
+          <span class="c-timeline__party">Cardinal Elevator Inspection</span>
+          <div class="c-timeline__track">
+            <div class="c-bar c-bar--sm" role="img" aria-label="Cardinal Elevator Inspection: covered for the whole period shown.">
+              <div class="c-bar__seg c-bar__seg--ok" style="left:0%;width:100%"></div>
+              <div class="c-bar__today" style="left:12%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================================== -->
+  <section class="g-sec" id="report">
+    <h2>8 &middot; Gap report &mdash; the printable artefact</h2>
+    <p style="color:var(--c-ink-muted);max-width:var(--c-measure)">
+      What an owner, a board or a premium auditor receives. It is a document, not a screenshot: dated,
+      complete, and readable in greyscale on a photocopier.
+    </p>
+    <div class="c-card" style="margin-top:var(--c-space-4)">
+      <div class="c-report">
+        <div class="c-report__head">
+          <div>
+            <h3 style="margin:0">Vendor insurance &mdash; gap report</h3>
+            <div class="c-table__meta">Ridgeline Property Management LLC &middot; 9 properties &middot; 47 vendors</div>
+          </div>
+          <span class="c-asof">as of <time datetime="2026-09-03T09:41">3 Sep 2026, 09:41</time></span>
+        </div>
+
+        <div class="c-strip" role="img" aria-label="31 covered, 6 expiring, 7 gaps, 3 needing review.">
+          <div class="c-strip__seg c-strip__seg--ok"   style="flex:31">31</div>
+          <div class="c-strip__seg c-strip__seg--warn" style="flex:6">6</div>
+          <div class="c-strip__seg c-strip__seg--gap"  style="flex:7">7</div>
+          <div class="c-strip__seg c-strip__seg--rev"  style="flex:3">3</div>
+        </div>
+
+        <div class="c-report__block">
+          <h3>Harbour Roofing Co. &mdash; Gap</h3>
+          <p class="c-report__finding"><strong>Required:</strong> general liability, <span class="c-num">$2,000,000</span> general aggregate, Ridgeline Property Management LLC as additional insured.</p>
+          <p class="c-report__finding"><strong>Found:</strong> certificate dated <span class="c-num">14 Aug 2026</span>, general aggregate <span class="c-num">$1,000,000</span>, additional insured named.</p>
+          <p class="c-report__finding"><strong>Missing:</strong> <span class="c-num">$1,000,000</span> of general aggregate. Requested from the agent on <span class="c-num">21 Aug 2026</span>; no reply.</p>
+        </div>
+
+        <div class="c-report__block">
+          <h3>Northgate Landscaping &mdash; Expiring in 9 days</h3>
+          <p class="c-report__finding"><strong>Found:</strong> general liability policy <span class="c-num">4-CA-119302-11</span>, expires <span class="c-num">12 Sep 2026</span>. Limits and endorsements meet the requirement.</p>
+          <p class="c-report__finding"><strong>Action:</strong> renewal requested from the agent on <span class="c-num">3 Aug</span> and <span class="c-num">21 Aug 2026</span>. One further request is scheduled for <span class="c-num">9 Sep 2026</span>.</p>
+        </div>
+
+        <div class="c-report__block">
+          <h3>Sierra Mechanical &mdash; Needs review</h3>
+          <p class="c-report__finding"><strong>Found:</strong> certificate received <span class="c-num">3 Sep 2026</span>. General aggregate read as <span class="c-num">$2,000,000</span> with medium confidence; waiver of subrogation not found.</p>
+          <p class="c-report__finding"><strong>Action:</strong> awaiting confirmation by a person before this vendor is recorded as covered.</p>
+        </div>
+
+        <p class="c-report__disclaimer">
+          Certly reports what a certificate says against the requirement set by Ridgeline Property Management
+          LLC. It is not insurance advice, it does not verify the underlying policy, and a certificate of
+          insurance confers no rights on the certificate holder by itself.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer style="margin-top:var(--c-space-9);padding-top:var(--c-space-4);border-top:1px solid var(--c-line);color:var(--c-ink-muted);font-size:var(--c-text-xs)">
+    Certly design system samples &middot; generated 2026-09-03 &middot; no external resource is loaded except
+    the Google Fonts stylesheet &middot; every contrast ratio is produced by <code>identity/contrast.py</code>.
+    All organisations, names, policy numbers and figures on this page are fictional.
+  </footer>
+</div>
+
+<script>
+  // The only script on the page: a theme toggle so both palettes can be inspected.
+  (function () {
+    var btn = document.getElementById('themeBtn');
+    btn.addEventListener('click', function () {
+      var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+      btn.setAttribute('aria-pressed', String(!dark));
+      btn.textContent = dark ? 'Dark' : 'Light';
+    });
+  })();
+</script>
+</body>
+</html>
