@@ -111,3 +111,61 @@ Plus, written ad hoc into the scratchpad (not committed):
 - **When you disagree with a finding, say so in writing in your own document and cite the evidence.**
   Three failed rounds escalate to the orchestrator with the disagreement recorded — that is a
   legitimate outcome, and it is better than silent compliance.
+
+---
+
+## Round 2 — re-review of the iteration (2026-09-03)
+
+**Outcome: 1 blocking · 3 major · 4 minor open, down from 11 · 19 · 16. Not signed; three text edits
+from a signature.** The re-review is prepended to `REVIEW.md`.
+
+### Method that mattered the second time
+
+- **Re-run the evidence rather than reading the claims.** `validate.py` (exit 0),
+  `test_accept_drift.py` (**17/17**, counted by hand), `contrast.py` against `IDENTITY.md` §6.3
+  (now matching: 4.89 / 3.15 / 0), `../scripts/identity-distinctness.py` (exit 0), and a mechanical
+  re-count of the copy deck (**413**, every section matching its claimed number). All held.
+- **Test the tightening, do not trust it.** The iteration claimed the new `sourced_value` schema fires
+  on a demoted value. I copied the tree, demoted `tx.hvac application_fee`, stripped its `source_url`,
+  and got **3 failures where wave 1 produced none**. That is the check worth doing on any "we made the
+  schema stricter" claim.
+- **Grep for the token, then read the line.** A `--sr-paper` hit in `LANDING_SPEC.md` is a correction
+  note; the same hit in `IDENTITY.md` §7.1 is a live rendering rule that emits an undefined custom
+  property (N3). The grep is worthless without the context read.
+- **Check the seams between two good edits.** The only regression (R1) is where B5's "one wording
+  everywhere" met the landing page's 34-word guarantee strip. Each edit is right alone; they
+  contradict where they touch, and `specs/12` AC8's set-equality test fails against the copy deck.
+  **On any large iteration, diff the claims of document A against the specification in document B for
+  every pair the response says it touched together.**
+- **Map the sales claims onto the backlog, not just the prices.** In round 1 I checked prices, limits
+  and the tier metric for consistency and stopped. Round 2 mapped `OFFER.md` §7's *Contains* column
+  onto `BACKLOG.md` and found **eight features with no Must, four of them explicitly LATER** (N2).
+  That was my miss, and the iteration only caught one instance of the class (the CE-provider
+  directory). Feature lists are claims; check them the way you check numbers.
+
+### Judgement calls I made, and why
+
+- **Accepted two deliberate reversals of my own recommendations.** B6 (medium-confidence values
+  carried by a note-everywhere rule plus fail-closed-when-unexplained, rather than a blanket flag) and
+  B9 (a cron designed to be correct on one invocation a day, rather than making Vercel Pro a
+  prerequisite). Both were argued better than I argued mine, both removed the defect I actually
+  raised, and both carry a written founder lever. **A reviewer who cannot be talked out of a
+  recommendation by a better argument is not reviewing.** What I did insist on: the *contradiction*
+  had to go, and it did.
+- **Did not sign on one blocking regression.** R1 is one paragraph of edits, but the gate is
+  `PIPELINE.md`'s — no blocking finding open — and R1 is legally operative text (the compressions drop
+  the 90-day window and the liability cap from the page read before payment). I split the close-out
+  into a **wave-2 gate** (R1, N3, N4 — three text edits) and a **launch gate** (N1, N2, M13's schema
+  half, m6), and explicitly authorised the eight Musts that none of them touch, so the fleet is not
+  idle while three sentences are rewritten.
+
+### Advice to whoever runs round 3
+
+- Only six items are open and every one is scoped in the re-review with the exact change. If a third
+  round is needed, `PIPELINE.md` escalates to the orchestrator with the disagreement written down.
+- **Do not re-open B6 or B9.** They are decided, recorded, and the founder holds the lever.
+- **Re-run `test_accept_drift.py` and `validate.py` before signing anything**, and re-run the copy-deck
+  count if a single word of `LANDING_SPEC.md` §13 moves — the CI rule counts the DOM, and the deck is
+  the only place the arithmetic is shown.
+- **N1 is the one that will be forgotten**: the excerpt store is code without data, and the tempting
+  fix (`--write-baseline`) is an unreviewed bulk-accept of 35 live pages. Insist on `--fill-excerpts`.

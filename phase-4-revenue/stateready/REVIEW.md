@@ -1,4 +1,137 @@
-# StateReady — wave-1b adversarial review
+# StateReady — wave-1b review
+
+## RE-REVIEW — 2026-09-03 (round 2, after `REVIEW_RESPONSE.md`)
+
+**Reviewer:** wave-1b Reviewer (StateReady). **Re-read:** `REVIEW_RESPONSE.md`, then every file it
+claims to have changed — `PERSONA.md`, `UX.md`, `BACKLOG.md`, `specs/01`–`specs/14`,
+`KNOWLEDGE_BASE.md`, `ontology/`, `kb-scripts/` (incl. the new `accept_drift.py` and
+`test_accept_drift.py`), `THRESHOLDS.md`, `OFFER.md`, `LANDING_SPEC.md`, `README.md` — plus the
+identity outcome: `IDENTITY.md`, `design-system.css`, `identity/samples.html` and
+`../IDENTITY_ARBITRATION.md`. **No reviewed file was edited; only this section was added.**
+
+> ### VERDICT — **1 blocking · 3 major · 4 minor open** (was 11 · 19 · 16).
+> ### **NOT SIGNED — but the gate is three text edits away.**
+>
+> **All 11 wave-1 blocking findings are closed**, nine as asked and two deliberately differently
+> (B6, B9) with the reasoning written down and a founder lever attached — I accept both, and B9's
+> replacement is better engineering than my own D8. Seventeen of nineteen majors are closed; M13 is
+> half-done and declared as such. Five things I re-verified by running code rather than reading prose
+> all hold.
+>
+> **What stops the signature is one regression the iteration introduced (R1) plus two documents that
+> a wave-2 developer would build wrong from (N3, N4).** Close those three and I sign for wave 2 the
+> same day. Two further items (N1, N2) must close before launch, not before the build starts.
+
+### What I re-ran, and what it proved
+
+| check | result |
+|---|---|
+| `python3 kb-scripts/validate.py` | **exit 0** — 9 records, 0 failures, 3 warnings (the same three correct G7 Florida warnings) |
+| `python3 kb-scripts/test_accept_drift.py` | **17/17 assertions pass**, counted. Both hashes move together; a baseline-only rewrite of a **cited** source fails G10; an **uncited** one warns and deploys; `_history` is written; `--dry-run` writes nothing; **no value, status, confidence or `last_verified` is touched** |
+| m4's schema tightening — tested, not trusted | I demoted `tx.hvac licence_types[0].application_fee` to `unverified` in a temp tree and stripped its `source_url`: **3 failures** (`missing required property 'source_url'`, `missing required property 'note'`, `G3`). The wave-1 schema produced **none**. The claim is real |
+| `python3 identity/contrast.py` vs `IDENTITY.md` §6.3 | **exit 0**, and the document now matches the script exactly — 70 pairs, smallest text margin **4.89:1**, smallest non-text **3.15:1**, 0 failures. The stale table is gone |
+| `python3 ../scripts/identity-distinctness.py` | **exit 0** — 3 apps, 3 ground pairs, 3 typeface pairs, no shared family |
+| Token parity, docs vs CSS | Every hex in `design-system.css` (21 board + 21 paper tokens) now appears in `IDENTITY.md`. **One undeclared token remains cited: `--sr-paper`** (see N3) |
+| Landing word budget, re-counted mechanically | **413 words**, and **every section matches its claimed count** — 68 / 37 / 97 / 31 / 66 / 9 / 62 / 34 / 9. Ceiling 450, headroom 37 |
+| `LANDING_SPEC.md` §4's new Texas quote | *"You may not engage in air conditioning and refrigeration contracting if your license has expired."* — present in `kb-data/tx-hvac.json` (`renewal.grace_period`, verified/high) **and** on the live TDLR renewal page, which I read in round 1. Publishable |
+
+### Blocking — closed
+
+| id | closed how | verified by |
+|---|---|---|
+| **B1** | D1 applied across all eight files **plus `README.md`**, which still advertised the disagreement. `THRESHOLDS.md` §7 carries the changelog row, **no band moved**, H2b marked `NOT IN FORCE`, and the reversal order is written down (§7 before §2, before a single audit is sold). `specs/09` keeps `first_state_audit` as a dormant enum with a test that no code path writes it | read all nine files; grepped every `$149` occurrence — the only live ones are the deferral records |
+| **B2** | The promise is narrowed, not the sale blocked: *"every requirement the board publishes, and, on the first page, every requirement it does not"*. `entryPackReady` (CORE_SET blocking / DISCLOSED_SET disclosed **before Checkout**) is explicitly **not** `publishable`. Bond out of the subhead, out of V4, out of the demo default. `KNOWLEDGE_BASE.md` §9.1 is new and carries the counted table | their count (bond.amount 0/23, timeline 2/7) matches my own census independently |
+| **B3** | Deferred, **and every surface edited**: hero microcopy deleted, "How it works" step 2 is now the CSV import, `LANDING_SPEC.md` §11 bans the claim permanently, and **S10** is a real spike with seven acceptance criteria including the terms-of-use position per register | grepped: the only "we build the roster" hits are the sentences recording the deletion |
+| **B4** | Re-drafted with **exactly the five carve-outs**, capped at the lesser of twelve months' fees and fees paid, claims within 30 days, log-adjudicated — and each carve-out has an `alerts.status = suppressed` reason behind it so adjudication is a query. **Not shipped**; `specs/12` AC8 fails the build if the text renders | read §5.3 and the `specs/06` suppression reasons |
+| **B5** | One wording, adjudicated against *"a page published by the state's own licensing board"*, 90-day window, liability capped at the fee. The oral *"a board tells you"* standard is gone from both specs | grepped — zero live occurrences. **But see R1** |
+| **B6** | **Fixed differently, and I accept it.** The self-contradiction is gone: invariant 2 is now a table and AC7/AC7b agree with it. Medium-verified passes unflagged **but may never appear bare** — it renders its `note` in all four surfaces, and it still goes in the needs-human-check block of a **paid** pack. And it **fails closed**: medium with **no** note flags, which catches `tx-plumbing` [1] and [2] exactly | read invariant 2 and AC7/AC7b against `kb-data/tx-plumbing.json` |
+| **B7** | Tile grid, one all-caps vocabulary, hollow-dashed *not in your footprint* as a **rendering not a status**, **AT RISK = 90** — and it is structural: `AT_RISK_DAYS === ALERT_OFFSETS[0]` is unit-tested, AC3b runs one fixture through `specs/07` and `specs/06` together, and a lint rule forbids "amber"/"red"/"green"/"ok" as status names | read the rewritten §Screens and §Validation |
+| **B8** | **Both halves closed.** `../IDENTITY_ARBITRATION.md` exists (45 KB, with a ΔE76 measurement of the collision and a `--selftest` that replays the three pre-arbitration grounds), `IDENTITY.md` is rewritten with a supersession table and a regenerated contrast table, and `UX.md`/`LANDING_SPEC.md` carry board/paper, Barlow/Overpass and the 90 KB font budget | contrast numbers match; distinctness gate exits 0; token parity clean **except N3** |
+| **B9** | **Fixed differently, and better than my D8.** Specified to be correct on **one invocation a day** and to tighten to hourly with no code change. Three details are the actual engineering: the claim is `next_send_at <= now() + DRAIN_INTERVAL` (AC9 is the regression test — the obvious formulation silences the entire Pacific coast forever); offsets are `<=` on the largest unsent gate so a skipped run **delays** an alert and never deletes one (AC10); and a sub-daily expression on Hobby **fails the build** (AC11). I withdraw D8 | read the rewritten §Flow and AC9–AC11 |
+| **B10** | `unique(deadline_id, offset_days, recipient_user_id)`, `digests` unique per `(recipient, send_date)`, a new `alert_recipients` table carrying the scheduling state. AC5 is now a row-level assertion: two recipients → two alerts and two digests, and a bounce on one leaves the other delivered | read the data model and AC5 |
+| **B11** | `accept_drift.py` re-fetches, writes the new hash **to the baseline and to every citing record together**, appends `_history`, re-runs `validate.py` and reverts on failure. `resolveDriftItem` never writes files; the queue shows **`no_change — awaiting acceptance`** until a deploy lands. G10 is scoped to citation: failure where a value cites the page, a named warning where none does | **17/17 test assertions pass on my machine** |
+
+### Major — 17 closed, 1 split, 1 superseded by a new finding
+
+Closed and spot-verified: **M1** (S15→**M16** qualifier watch, S19→**M17** shared readiness link, both now Musts; `UX.md` §9 lists the four that stay SHOULD), **M2** (**M15** marketing route + demo, total restated **~40 dev-days**), **M3**, **M4** (`licence_deadline_derived` emitted from the derivation service; `why_this_date_opened` deleted), **M5** (band literal gone; AC3b greps the codebase for it), **M6**, **M7**, **M8** (published *"Contact us"* row with `POST /enterprise-enquiry` behind it and a two-business-day promise — the only number on the row and one we control), **M9** (5 of 20 corrected), **M10**, **M11**, **M12** (cadence out of the legal page; AC7 greps for "daily"/"monthly" and fails on a match), **M14**, **M15**, **M17**, **M18**, **M19**.
+
+- **M13 — split, half open.** The engine rule for board-announced date rolls is fully specified in
+  `specs/05` with the Florida 2 September extension as the worked example. **The
+  `ontology/schema.state_trade_record.json` field and the G8 extension are not done**, and
+  `additionalProperties: false` makes `expiry_overrides` **unrepresentable** until they are — so the
+  first wave-2 developer who adds one to a record gets a build failure. The spec names the exact patch
+  and calls it the first schema change wave 2 should make. Declared honestly; **stays open**.
+- **M16 — superseded by N1.** The code is right; the data is not there (below).
+
+### Minor
+
+Eleven fixed (m1, m2, m7, m8, m9, m11, m12, m13, m14, m15, m16), one fixed differently and well
+(**m5** — the renderer fails closed on a medium value with no note, and AC7b reads the committed
+records so the test starts passing on its own the day the two notes are written), **m3 and m10
+declined with reasons I accept** (the schema `$id` depends on founder gate P11; `offer/CLAUDE.md` is
+another agent's memory and the authoritative count now lives in `LANDING_SPEC.md` §1 with its
+working shown). **m6 stays open** and has sharpened — see below.
+
+---
+
+### Still open
+
+| id | severity | one line | what is missing |
+|---|---|---|---|
+| **R1** | **BLOCKING — regression introduced by this iteration** | Three documents now disagree about whether the landing page carries the guarantees **verbatim** or **compressed**, and the specified CI test fails against the specified copy. `OFFER.md` §5.1: *"Both are quoted verbatim in `specs/08`, `specs/12`, the purchase screen and **`LANDING_SPEC.md` §8**. A paraphrase is a different guarantee."* `specs/12`'s refund policy lists `LANDING_SPEC.md` §8 among the surfaces carrying "the one wording used everywhere", and **AC8** asserts *set equality* of every guarantee block extracted from **the marketing route**. But `LANDING_SPEC.md` §8 says the two lines are *"each a **compression** of the guarantee it names"*, and §13 specifies them: *"Wrong against the source? We fix it in five business days and credit you a month."* / *"Entry Pack contradicted by the board's own page? We rewrite it and refund you."* | Pick one and make all three agree. **Recommended:** amend `specs/12` AC8 to exempt the marketing route **on conditions** — each compression must link to `/legal/refunds`, must contain no term the full text does not, and must not use the bare word "guarantee" without the link — and amend `OFFER.md` §5.1 to say "verbatim on the legal page, the purchase screen and in the pack; compressed with a link on the marketing page". Putting the full 60-word text on the landing page is the alternative and it is worse copy. **This is not cosmetic:** the compressions drop the **90-day claim window** and the **liability cap** from the page a buyer reads *before* paying, which is the exposure B5 was raised about |
+| **N1** | **major — new** | **M16's excerpt store is implemented but empty, and the only way to fill it is unsafe.** `refresh_sources.py` and `accept_drift.py` both write `normalised_head` / `normalised_tail` (4,000 chars) — but the committed `kb-data/_sources.json` carries them for **0 of 35 sources**. So on the first drift against any source, `/admin/kb/:id` has no "before" text and the diff screen degrades — exactly when it is first needed. The obvious remedy, `refresh_sources.py --write-baseline`, **re-fetches everything and writes whatever it finds**, silently accepting any real drift that has occurred since 2026-09-03, which is the bulk unreviewed publish the whole M14 design exists to prevent | Add a `--fill-excerpts` mode that writes `normalised_head`/`normalised_tail` **only where the re-fetched `content_sha256` equals the stored one**, and **reports rather than accepts** any source that has moved. Ten lines, one test. Then run it once so the 35 sources have a "before" |
+| **N2** | **major — new (my miss in round 1)** | **`OFFER.md` §7's "Contains" column sells eight features that have no Must, four of them explicitly deferred.** Multi-State ($349/mo): *rule-change watch* (no backlog item anywhere), *bond & insurance certificate tracking* (**BACKLOG L5 = LATER**). Platform ($599/mo): *multi-entity / per-brand separation* (**L6 = LATER**), *webhooks* (**L4 = LATER**), *subcontractor credential tracking* (nothing), *audit log* (nothing), *acquisition intake checklist* (nothing). And the **free State Rulebook row still promises *"bond/insurance minimums"***, which B2 removed from the subhead, V4 and the demo. The iteration caught exactly one instance of this class — the CE-provider directory, now `BACKLOG.md` S11 — and stopped there. Not yet on a customer-facing page (`/pricing` is spec'd as limits-only and `LANDING_SPEC.md` §5 publishes price and limits only), which is why this is major and not blocking — but `OFFER.md` §7 is the obvious source for whoever builds `/pricing` | Same treatment S11 got: every feature in the Contains column carries its backlog id, or it is deleted. Four are LATER and must come out of the paid tiers. Fix the free row to match B2 |
+| **M13** | major — half open | `expiry_overrides` is specified in `specs/05` and **unrepresentable in the data**: `ontology/schema.state_trade_record.json` has `additionalProperties: false` and G8 does not know the token | The schema field and the G8 extension. Declared and scoped by the iteration; it is the first wave-2 schema change |
+| **m6** | minor — open, and sharper than it was | `identity/samples.html` still shows sentence-case status words (*"At risk"*, *"Not tracked"*) against `IDENTITY.md` §6.1's all-caps names, still duplicates its accessible names (*"AK — Not operating. Not operating"*, 83 occurrences of the phrase), and now **contradicts the spec written to govern it**: `specs/07` says a hollow tile *"carries no status word because it has no status"*, while the reference implementation puts one in twice | Regenerate `samples.html` from `build-samples.py`. Brand Director's file; correctly delegated, still not done |
+| **N3** | minor — new, residual of B8 | `IDENTITY.md` §7.1 rendering rules still say *"States you do not operate in are drawn, in **`--sr-paper`**"* — a token the arbitration deleted. It is the **only** undeclared `--sr-*` token cited anywhere in the three documents, and a build following §7.1 emits an undefined custom property | One word: `--sr-ground`. `LANDING_SPEC.md` V1 already says it correctly and explains the rename |
+| **N4** | minor — new, residual of B2 | `specs/04` `/licences/:id` still specifies a **"Requirements (CE hours, bond, insurance, all with citations from the KB)"** panel. Bond has **zero** verified amounts in all nine records, so that panel renders empty for bond 100% of the time — the same claim B2 removed from the subhead, V4 and the demo, left standing in the spec a developer will implement | Apply B2's wording: the panel shows what the board publishes and names what it does not, using the same DISCLOSED_SET language as `specs/08` |
+| **N5** | minor — new | `specs/12` AC8 opens *"The **three** guarantee wordings…"* then asserts set equality with *"the **two** in force"*; and the refund policy cites `OFFER.md` **§5.1.3** for a guarantee that is now §5.1 item 2 (the wave-1 numbering) | Two words and a cross-reference |
+
+**One observation, not a finding.** `specs/06` gives 12:00 UTC as *"07:00 ET / 06:00 CT / 05:00 MT / 04:00 PT"*. That is standard time; under daylight time it is 08:00 EDT / 05:00 PDT. The limitation is disclosed either way and the design handles it — worth a parenthesis in the help article rather than a change.
+
+### Regressions introduced by the iteration
+
+**One: R1**, above. It is the direct cost of doing B5 (one wording everywhere) and the landing-page word budget (34 words for the guarantee strip) in the same pass — each edit is right on its own and they contradict where they meet. Nothing else regressed: prices, limits, tier metric, event names, thresholds, the drift scripts and the KB all re-verified clean, and the copy deck's arithmetic is exact to the word.
+
+### Signature
+
+**Not signed yet.** The gate is `PIPELINE.md`'s: no blocking finding open.
+
+**To sign for wave 2 — three edits, all text, no code:**
+
+1. **R1** — make `OFFER.md` §5.1, `specs/12` (refund policy + AC8) and `LANDING_SPEC.md` §8 agree on verbatim-vs-compressed, with the link condition above.
+2. **N3** — `--sr-paper` → `--sr-ground` in `IDENTITY.md` §7.1.
+3. **N4** — `specs/04`'s Requirements panel adopts B2's wording.
+
+**To sign for launch — additionally:**
+
+4. **N2** — every feature in `OFFER.md` §7's Contains column carries a backlog id or is deleted; the four LATER items come out of the paid tiers; the free row loses "bond/insurance minimums".
+5. **N1** — `--fill-excerpts`, and run it once.
+6. **M13**'s schema half and **m6**'s samples regeneration, both already owned and scoped.
+
+**Wave 2 is not blocked while those are written.** Start today on **M14, M5** (pure function, golden
+tests, invariant 2 as now written), **M1, M2, M3, M11, M16, M17**, the **GA/OH/AZ/MI** knowledge-base
+tranche, and component work from `design-system.css`. **M6, M7, M9, M10, M13** are unblocked by this
+round and may follow. Only **M4** (N4), **M8/M12** (R1) and **M15** (R1) should wait on the three
+edits above — and they are the last three things sub-wave C builds anyway.
+
+**Two calls I accept without reservation**, both taken against my own recommendation and both argued
+better than I argued mine: **B6** (medium-confidence values flagged by note-everywhere and
+fail-closed, not by a blanket flag that would fire on a third of the data) and **B9** (a cron designed
+to be correct on one invocation a day instead of a prerequisite purchase order). The founder levers in
+`REVIEW_RESPONSE.md` §4 are correctly identified and correctly priced; if the founder wants the
+stricter B6 reading, take it **before** wave 2 builds M5, when it is one line rather than sixty
+golden cases.
+
+---
+
+*Round 2 of 3. If a third round is needed on the six items above, `PIPELINE.md` says it escalates to
+the orchestrator with the disagreement written down — I do not expect to need it.*
+
+---
+---
+
+## ROUND 1 — the wave-1b review as written on 2026-09-03, unchanged below
 
 **Reviewer:** wave-1b Reviewer (StateReady), phase-4 fleet. **Date:** 2026-09-03.
 **Scope reviewed in full:** `PERSONA.md`, `IDENTITY.md`, `design-system.css`, `UX.md`,
