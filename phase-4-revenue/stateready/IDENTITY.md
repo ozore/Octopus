@@ -9,6 +9,60 @@
 
 ---
 
+## Arbitration 2026-09-03
+
+`../IDENTITY_ARBITRATION.md` (Brand Director, 2026-09-03) is binding on the visual layer of all three
+phase-4 apps and takes precedence over this document where the two disagree. **This document has been
+brought into line with it.**
+
+§5.1 of this file predicted the problem and asked for exactly this: *"Action for the orchestrator:
+re-check for collision once all three `IDENTITY.md` files exist."* When they existed, all three had
+independently chosen **Public Sans + IBM Plex Mono on a warm paper ground**, and the three grounds
+measured **ΔE76 0.35 to 2.42** apart — StateReady's `#FAF8F4` and WageLens's `#FBF9F5` were, at ΔE 0.35,
+literally the same paper. Assumption A5 in `identity/CLAUDE.md` is now resolved.
+
+**What changed, and where to read the reasoning**
+
+| | was | is | why (arbitration §) |
+|---|---|---|---|
+| UI typeface | Public Sans | **Barlow** | Public Sans went to WageLens, the only app whose output artefact is a US federal form. Barlow is a low-contrast grotesk drawn from **American public and transport signage** — the right lineage for a product about crossing a state line. §3.1 |
+| signage face | — | **Barlow Condensed** | new. The condensed cut goes where signage goes: state tiles, column heads, runway lane labels, eyebrows. §3.1 |
+| mono | IBM Plex Mono | **Overpass Mono** | descends, through Overpass, from **Highway Gothic** — the US Federal Highway Administration lettering. Licence numbers and CE hours are now set in the family that already labels the road. §3.1 |
+| default theme | light, warm paper `#FAF8F4` | **the board**: a deep graphite-green `#181D1A` | this is the only app in the fleet whose hero object is **not a document** — it is a tile map and a runway, a board of states and a clock. "The status ramp *is* the palette" is at full strength as a luminous ramp on a deep ground and was muted on bone. §3.2 |
+| alternate theme | dark `#12100E` (identical to WageLens's dark canvas) | **paper**, re-toned to a cool stone `#E9ECE8` | paper keeps the job it was load-bearing for: **everything that leaves the building.** §3.2 |
+| status ramp | 145 / 33 / 0° on pale warm tints | **155 / 31 / 355°, luminous on deep fills** | the siblings' greens, ambers and reds sat within a few degrees. Minimum separation across the fleet's nine chromatic statuses is now 8.1°. §3.4 |
+| row height | 44px | **48px** — the roomiest of the three | the three apps ladder at 36 / 44 / 48px so a screenshot of one cannot be mistaken for another. §3.5 |
+| shell | fixed 240px left rail | **top bar over a full-width board** | both siblings run left rails. §3.5 |
+| shadow | three levels | **none on any resting surface**; the sheet is the only shadow | on a board a shadow does nothing; separation is a value step plus a hairline. §3.5 |
+| token name | `--sr-paper` | **`--sr-ground`** | the token is the page ground, and on the default theme that ground is not paper. |
+
+**The rule that makes the dark default work, and it is a design idea rather than a hedge:**
+
+> **The board is for the operator. Paper is for the forwarder.**
+
+`PERSONA.md §9` requires every artefact to be forwardable to someone who has never logged in. The paper
+theme is what those artefacts use — print, the bid-package PDF, the shareable readiness link, every alert
+email — and it is also what a viewer who has asked their OS for a light interface gets. Status hues are
+identical in both themes; only lightness moves, so a coordinator switching themes mid-task never
+re-learns the map.
+
+**What did not change:** the tile grid, the runway and its 90/60/30/7 gates, the provenance line, the CE
+meter, the refusal state, `forced-colors` support, print, **no blue at any weight**, no translucency, no
+`backdrop-filter`, no document hero, and every word of §2's positioning and §4's tone.
+
+**Open point for the founder.** The dark default is the largest visible change in the fleet and its
+buyer-familiarity argument is the weakest of the arbitration's (StateReady's incumbents are light, though
+ServiceTitan ships dark chrome values in its own markup). It is driven primarily by mutual distinctness,
+which is the founder's binding requirement. **If the founder wants StateReady light, it is a one-line
+token swap plus a regenerated samples file — the paper theme is already fully authored and certified.**
+Recorded in `../IDENTITY_ARBITRATION.md §9.1`.
+
+Enforced by `../scripts/identity-distinctness.py`, which parses the three `design-system.css` files and
+fails if two apps share a font family or two grounds are too close. It must exit 0 in CI alongside
+`identity/contrast.py`.
+
+---
+
 ## 0. The one idea this identity is built on
 
 > **The buyer's question is not "what is my compliance status". It is "where can I legally work
@@ -18,10 +72,11 @@
 That sentence has three hard consequences, and everything below is an implementation of them.
 
 1. **The status ramp is the palette.** There is no separate brand hue competing with green / amber /
-   red. Buttons are ink. Links are ink. Chrome is paper. The only saturated colour on any screen is
+   red. Buttons are ink. Links are ink. Chrome is the board. The only saturated colour on any screen is
    the answer to "am I ready?" This is unusual, and it is the point: in a field-service category where
    every competitor paints its chrome blue (§5), a product whose chrome is *colourless* reads as an
-   instrument rather than as a brand.
+   instrument rather than as a brand. **On a deep board that rule is at full strength**, because a
+   luminous green, amber or red is the only thing on screen with light in it.
 2. **Colour never carries meaning alone.** Every status also has a glyph and a word, because WCAG
    1.4.1 requires it and because roughly one man in twelve has a colour-vision deficiency — and this
    product's user base is overwhelmingly male trade office staff. A red/green pair as the *only*
@@ -343,20 +398,22 @@ never logged in (`PERSONA.md §9`). Every one must open with what and where, not
 
 ### 5.1 Distinct from the other phase-4 apps and from Clausewright
 
-At the time of writing, `phase-4-revenue/wagelens/` and `certly/` contain only their README and a
-memory file, so the differentiation below is stated **by category logic and enforced by a rule**,
-rather than by comparing finished palettes. **Action for the orchestrator:** re-check for collision
-once all three `IDENTITY.md` files exist, and treat the rules in the right-hand column as binding
-tie-breakers.
+**Rewritten 2026-09-03, from artefacts rather than from prediction.** The original version of this
+section was written when the sibling identities did not exist, stated the differences "by category logic",
+and asked the orchestrator to re-check once all three files existed. That check happened; it found a
+collision on every axis; `../IDENTITY_ARBITRATION.md` resolved it. The table below is now measured.
 
-| | Its subject | Its natural visual language | **StateReady's binding rule** |
+| | Its subject | What it actually ships | **How StateReady differs** |
 |---|---|---|---|
-| **WageLens** | Construction payroll, Davis-Bacon wage determinations | Money, rates, tables, columns of figures; almost certainly a fintech blue or green | **StateReady uses no blue at any weight, and its hero object is a map, never a table of figures.** |
-| **Certly** | ACORD 25 certificates of insurance | Documents, forms, extraction confidence, the paper artefact itself | **StateReady never renders a document as its hero.** Certificates appear only as an attachment row inside a licence card. |
-| **Clausewright** | Amazon suspension appeals; a cited policy clause on a glass surface | Deep blue-slate, translucent Liquid-Glass materials, recovery green accent, quoted-clause typography | **StateReady is opaque. There is no `backdrop-filter` anywhere in `design-system.css`, no glass, no blue-slate, and its ground is warm paper, not cool slate.** |
+| **WageLens** | Construction payroll, Davis-Bacon wage determinations | Public Sans + IBM Plex Mono; warm bone `#FBF9F5` (hue 40°, L\* 98.0); brick `#8A3115` as brand and primary action; 15px base, 36px grid rows, 2–10px radii; the ruled ledger and the provenance card | Different UI face, different mono, and **ΔE76 87.9 between the grounds** — WageLens is the lightest surface in the fleet, StateReady the darkest. Its hero is a **week grid**; ours is a **tile map and a time axis**. Its primary action is brick on white; ours is bone on a dark board. Its status tints are pale and warm; ours are deep. |
+| **Certly** | ACORD 25 certificates of insurance | Source Sans 3 + Source Code Pro; cool office white `#E8EEF6` (hue 214°); interaction blue `#14458C` on the primary button; 16px base, 44px rows, 4–12px radii; the coverage bar | Different UI face, different mono, **ΔE76 83.9 between the grounds**. **StateReady never renders a document as its hero** — certificates appear only as an attachment row inside a licence card. And **StateReady uses no blue at any weight**, which is precisely the hue Certly reserves for interaction. |
+| **Clausewright** | Amazon suspension appeals; a cited policy clause on a glass surface | System fonts, no web fonts; translucent Liquid-Glass materials over a blue-slate canvas (215°); recovery green accent; 17px base | **StateReady is opaque.** No `backdrop-filter` anywhere in `design-system.css`, no glass, no blue-slate. Its ground is a graphite-**green** board at 144°, 70° away from Clausewright's slate; it loads three web fonts where Clausewright loads none; and its hero is a map, not a quoted clause. |
 
 The single sentence that separates all four: **WageLens is about money, Certly is about paper,
 Clausewright is about an argument, StateReady is about geography and time.**
+
+Machine-checked by `../scripts/identity-distinctness.py`, which parses all three stylesheets and fails on
+a shared font family or a ground collision. Run it after any token change.
 
 ### 5.2 At home next to ServiceTitan, Housecall Pro, Jobber and FieldEdge
 
@@ -384,7 +441,17 @@ rows 40, 43, 44, 45).
 
 - **The blue.** Three of the four lead with blue or navy. Adopting it makes us a fourth
   indistinguishable tile in a comparison screenshot and, worse, spends the most attention-grabbing
-  colour on chrome instead of on status.
+  colour on chrome instead of on status. It is also now Certly's interaction hue, so it is doubly
+  unavailable.
+- **Their typefaces**, and note that there is no shared one to be familiar with: ServiceTitan runs Sofia
+  Pro + Nunito Sans, Housecall Pro runs Open Sans + Oswald + Plus Jakarta Sans. Barlow's signage lineage
+  belongs to the subject matter, not to the category.
+
+**One observation that supports the board, stated with its limit.** ServiceTitan's own served markup
+carries dark chrome values `#17191C` and `#22252A` at high frequency, so a dark instrument surface is not
+foreign to this buyer's stack. That is an observation about their palette and **not** a claim about their
+dispatch board, and it is not the primary argument for the board — mutual distinctness is
+(`../IDENTITY_ARBITRATION.md §3.2`).
 - **Amber and orange as brand colours** (Housecall Pro `#ffb706`, FieldEdge `#ea6211`). In StateReady,
   amber means **at risk**. A brand that is amber cannot have an amber warning.
 - **Marketing-site gradients and hero photography of smiling technicians.** They read as "we sell to
@@ -398,54 +465,72 @@ rows 40, 43, 44, 45).
 
 ### 6.1 The palette, and why it looks like this
 
-Two families and nothing else.
+Two families and nothing else, in two themes.
 
-1. **Warm paper and warm ink** — a bone-white ground (`#FAF8F4`) and a warm near-black (`#16130F`).
-   Warm, because every incumbent in §5.2 is cool-grey or navy, and because warm neutrals read as
-   *paper* rather than as *dashboard*. All chrome, all typography, all buttons, all borders and the
-   focus ring are drawn from this family.
+1. **The board and its ink** — a deep graphite-green ground (`#181D1A`, hue 144°, Lab L\* 10.2) and a
+   bone ink (`#ECF2EE`). All chrome, all typography, all buttons, all borders and the focus ring are
+   drawn from this family. It is green-cast rather than neutral-black so that it is not WageLens's warm
+   black `#12100E` and not Certly's blue-black `#0B1220`; it is graphite rather than saturated so that
+   nothing in the chrome competes with a status.
+   In the **paper** theme the same family inverts to a cool stone `#E9ECE8` and a near-black `#131714`.
 2. **The readiness ramp** — green, amber, red and a neutral "not tracked". This is the **only**
    saturated colour in the system, and it appears only inside status objects: map tiles, chips, dots,
-   the runway's gates and the CE meter's fill.
+   the runway's gates and the CE meter's fill. On the board it is **luminous on deep fills**; on paper it
+   is **dark ink on pale tints**. The hues are the same in both (155° / 31° / 355°); only lightness moves.
 
-**There is no third family. There is no brand hue.** The primary button is ink. The link is ink,
-underlined. The focus ring is ink. The logo mark is the READY green, which is a statement rather than
-a decoration: the product is named for the state it is trying to get you into.
+**There is no third family. There is no brand hue.** The primary button is ink — which on the board means
+a **bone button with a dark label**, and on paper the reverse. The link is ink, underlined. The focus ring
+is ink. The logo mark is the READY green, which is a statement rather than a decoration: the product is
+named for the state it is trying to get you into.
+
+**Why the default is the board, in one paragraph.** This is the only app in the phase-4 fleet whose hero
+object is not a document: WageLens replaces a payroll register, Certly shows a certificate, and StateReady
+shows **a board of states and a clock**. That is the one artefact in the set that is conventionally dark —
+a departure board, a dispatch board — and it is where "the status ramp is the palette" is at full
+strength. The full reasoning, including the honest limit of the buyer-familiarity argument, is
+`../IDENTITY_ARBITRATION.md §3.2`.
 
 The names are deliberate and are used in code, in copy and in support: **READY / AT RISK / LAPSED /
 NOT TRACKED**. Never "compliant", never "green/yellow/red" in prose.
 
 ### 6.2 Tokens
 
-Light theme (`:root`):
+**Board theme — the default, on bare `:root`:**
 
 | Token | Hex | Role |
 |---|---|---|
-| `--sr-paper` | `#FAF8F4` | page ground |
-| `--sr-surface` | `#FFFFFF` | cards, table body |
-| `--sr-sunken` | `#F0ECE4` | table headers, wells, code |
-| `--sr-line` | `#DCD6CB` | hairline rules (decorative) |
-| `--sr-line-strong` | `#877F72` | input borders, dividers that carry meaning |
-| `--sr-ink` | `#16130F` | primary text, primary button, focus ring |
-| `--sr-ink-2` | `#4E4840` | secondary text, column headers |
-| `--sr-ink-3` | `#6A635A` | meta, placeholder, disabled label |
-| `--sr-on-ink` | `#FAF8F4` | text on the ink button |
-| `--sr-ready` / `-fill` / `-edge` | `#1B6B3A` / `#DCEEE2` / `#3E8F5C` | READY |
-| `--sr-risk` / `-fill` / `-edge` | `#8A5300` / `#FAEACB` / `#B07A1E` | AT RISK |
-| `--sr-lapsed` / `-fill` / `-edge` | `#A31E1E` / `#F8DEDB` / `#C24A44` | LAPSED |
-| `--sr-unknown` / `-fill` / `-edge` | `#6A635A` / `#EDE9E1` / `#877F72` | NOT TRACKED |
+| `--sr-ground` | `#181D1A` | page ground. Renamed from `--sr-paper`, because on the default theme this ground is not paper |
+| `--sr-surface` | `#212724` | cards, table body |
+| `--sr-sunken` | `#0E1210` | table headers, wells, code |
+| `--sr-line` | `#333B37` | hairline rules (decorative) |
+| `--sr-line-strong` | `#7E8A84` | input borders, dividers that carry meaning |
+| `--sr-ink` | `#ECF2EE` | primary text, primary button fill, focus ring |
+| `--sr-ink-2` | `#B9C4BE` | secondary text, column headers |
+| `--sr-ink-3` | `#8D9994` | meta, placeholder, disabled label |
+| `--sr-on-ink` | `#0E1210` | text on the ink button — dark, because on the board the ink button is light |
+| `--sr-ready` / `-fill` / `-edge` | `#52D09C` / `#0F3226` / `#38976F` | READY, hue 155° |
+| `--sr-risk` / `-fill` / `-edge` | `#F0A85A` / `#37260D` / `#A0722C` | AT RISK, hue 31° |
+| `--sr-lapsed` / `-fill` / `-edge` | `#F98A93` / `#3B1A20` / `#BB4E59` | LAPSED, hue 355° |
+| `--sr-unknown` / `-fill` / `-edge` | `#8D9994` / `#232925` / `#7E8A84` | NOT TRACKED |
 
-Dark theme (`[data-theme="dark"]` and `prefers-color-scheme: dark`):
+**Paper theme — the alternate.** Applies under `prefers-color-scheme: light` and under
+`[data-theme="paper"]` / `[data-theme="light"]`; `[data-theme="board"]` / `[data-theme="dark"]` force the
+board back. **This is the theme every forwardable artefact uses**: print, the bid-package PDF, the
+shareable readiness link, every alert email.
 
 | Token | Hex | Token | Hex |
 |---|---|---|---|
-| `--sr-paper` | `#12100E` | `--sr-ink` | `#F5F1EA` |
-| `--sr-surface` | `#1C1916` | `--sr-ink-2` | `#C6BFB4` |
-| `--sr-sunken` | `#0B0A09` | `--sr-ink-3` | `#9C9489` |
-| `--sr-line` | `#332E28` | `--sr-on-ink` | `#12100E` |
-| `--sr-line-strong` | `#7A7268` | | |
-| `--sr-ready` / `-fill` / `-edge` | `#63CE8E` / `#12301F` / `#3E8F5C` | `--sr-risk` / `-fill` / `-edge` | `#E8B75F` / `#332609` / `#9A7526` |
-| `--sr-lapsed` / `-fill` / `-edge` | `#F29289` / `#361816` / `#B85248` | `--sr-unknown` / `-fill` / `-edge` | `#9C9489` / `#221F1B` / `#7A7268` |
+| `--sr-ground` | `#E9ECE8` | `--sr-ink` | `#131714` |
+| `--sr-surface` | `#FFFFFF` | `--sr-ink-2` | `#454B47` |
+| `--sr-sunken` | `#DCE0DB` | `--sr-ink-3` | `#5F6762` |
+| `--sr-line` | `#CBD1CB` | `--sr-on-ink` | `#E9ECE8` |
+| `--sr-line-strong` | `#78827C` | | |
+| `--sr-ready` / `-fill` / `-edge` | `#146A46` / `#D4EBE0` / `#348D68` | `--sr-risk` / `-fill` / `-edge` | `#8A4E08` / `#F8E7CE` / `#A9701F` |
+| `--sr-lapsed` / `-fill` / `-edge` | `#A81B2C` / `#F7DEDF` / `#BE454B` | `--sr-unknown` / `-fill` / `-edge` | `#5F6762` / `#E4E7E2` / `#78827C` |
+
+The paper ground is a **cool stone**, not the warm bone it used to be: `#FAF8F4` sat ΔE76 **0.35** from
+WageLens's canvas, which is below the just-noticeable difference. `#E9ECE8` is a different colour by any
+measure and still reads as paper.
 
 ### 6.3 Contrast certification
 
@@ -455,93 +540,94 @@ target next to each pair and **exits non-zero on any failure**, so it is a test,
 Targets: **4.5:1** for text (1.4.3 AA), **3:1** for borders, dots, tile edges and focus rings
 (1.4.11 AA). Large text is held to 4.5:1 anyway rather than taking the 3:1 allowance.
 
-**Result: 70 declared pairs (35 per theme), 0 failures. Smallest text margin 5.58:1 against 4.5:1. Smallest non-text
-margin 3.13:1 against 3:1.**
+**Result: 70 declared pairs (35 per theme), 0 failures. Smallest text margin 4.89:1 against 4.5:1.
+Smallest non-text margin 3.15:1 against 3:1.**
 
-Reproduce with `python3 identity/contrast.py` (table) or `--md` (the table below).
+Reproduce with `python3 identity/contrast.py` (table) or `--md` (the tables below). **Everything between
+here and the "Honest limits" note is script output, pasted verbatim.**
 
-**Light theme**
-
-| foreground | background | ratio | target | pass | what it is |
-|---|---|---:|---:|:--:|---|
-| `--sr-ink` `#16130F` | `--sr-paper` `#FAF8F4` | **17.46:1** | 4.5:1 | ✅ | body text on the page ground |
-| `--sr-ink` `#16130F` | `--sr-surface` `#FFFFFF` | **18.52:1** | 4.5:1 | ✅ | body text on a card |
-| `--sr-ink` `#16130F` | `--sr-sunken` `#F0ECE4` | **15.72:1** | 4.5:1 | ✅ | body text on a sunken/table-header surface |
-| `--sr-ink-2` `#4E4840` | `--sr-paper` `#FAF8F4` | **8.52:1** | 4.5:1 | ✅ | secondary text on the page ground |
-| `--sr-ink-2` `#4E4840` | `--sr-surface` `#FFFFFF` | **9.03:1** | 4.5:1 | ✅ | secondary text on a card |
-| `--sr-ink-3` `#6A635A` | `--sr-paper` `#FAF8F4` | **5.58:1** | 4.5:1 | ✅ | muted text / table meta on the page ground |
-| `--sr-ink-3` `#6A635A` | `--sr-surface` `#FFFFFF` | **5.92:1** | 4.5:1 | ✅ | muted text / placeholder on a card |
-| `--sr-on-ink` `#FAF8F4` | `--sr-ink` `#16130F` | **17.46:1** | 4.5:1 | ✅ | label on the primary (ink) button |
-| `--sr-line` `#DCD6CB` | `--sr-paper` `#FAF8F4` | **1.36:1** | — | ✅ | hairline rule (decorative, no target) |
-| `--sr-line-strong` `#877F72` | `--sr-paper` `#FAF8F4` | **3.73:1** | 3.0:1 | ✅ | input border / table divider — 1.4.11 |
-| `--sr-line-strong` `#877F72` | `--sr-surface` `#FFFFFF` | **3.96:1** | 3.0:1 | ✅ | input border on a card — 1.4.11 |
-| `--sr-ink` `#16130F` | `--sr-ready-fill` `#DCEEE2` | **15.32:1** | 4.5:1 | ✅ | text inside a READY chip / map tile |
-| `--sr-ready` `#1B6B3A` | `--sr-paper` `#FAF8F4` | **6.17:1** | 4.5:1 | ✅ | READY label text on the page ground |
-| `--sr-ready` `#1B6B3A` | `--sr-surface` `#FFFFFF` | **6.54:1** | 4.5:1 | ✅ | READY label text on a card |
-| `--sr-ready-edge` `#3E8F5C` | `--sr-paper` `#FAF8F4` | **3.74:1** | 3.0:1 | ✅ | READY dot / tile edge — 1.4.11 |
-| `--sr-ready-edge` `#3E8F5C` | `--sr-surface` `#FFFFFF` | **3.97:1** | 3.0:1 | ✅ | READY dot on a card — 1.4.11 |
-| `--sr-ink` `#16130F` | `--sr-risk-fill` `#FAEACB` | **15.60:1** | 4.5:1 | ✅ | text inside an AT RISK chip / map tile |
-| `--sr-risk` `#8A5300` | `--sr-paper` `#FAF8F4` | **5.97:1** | 4.5:1 | ✅ | AT RISK label text on the page ground |
-| `--sr-risk` `#8A5300` | `--sr-surface` `#FFFFFF` | **6.33:1** | 4.5:1 | ✅ | AT RISK label text on a card |
-| `--sr-risk-edge` `#B07A1E` | `--sr-paper` `#FAF8F4` | **3.50:1** | 3.0:1 | ✅ | AT RISK dot / tile edge — 1.4.11 |
-| `--sr-risk-edge` `#B07A1E` | `--sr-surface` `#FFFFFF` | **3.72:1** | 3.0:1 | ✅ | AT RISK dot on a card — 1.4.11 |
-| `--sr-ink` `#16130F` | `--sr-lapsed-fill` `#F8DEDB` | **14.52:1** | 4.5:1 | ✅ | text inside a LAPSED chip / map tile |
-| `--sr-lapsed` `#A31E1E` | `--sr-paper` `#FAF8F4` | **7.17:1** | 4.5:1 | ✅ | LAPSED label text on the page ground |
-| `--sr-lapsed` `#A31E1E` | `--sr-surface` `#FFFFFF` | **7.60:1** | 4.5:1 | ✅ | LAPSED label text on a card |
-| `--sr-lapsed-edge` `#C24A44` | `--sr-paper` `#FAF8F4` | **4.54:1** | 3.0:1 | ✅ | LAPSED dot / tile edge — 1.4.11 |
-| `--sr-lapsed-edge` `#C24A44` | `--sr-surface` `#FFFFFF` | **4.82:1** | 3.0:1 | ✅ | LAPSED dot on a card — 1.4.11 |
-| `--sr-ink` `#16130F` | `--sr-unknown-fill` `#EDE9E1` | **15.29:1** | 4.5:1 | ✅ | text inside a NOT TRACKED chip / map tile |
-| `--sr-unknown` `#6A635A` | `--sr-paper` `#FAF8F4` | **5.58:1** | 4.5:1 | ✅ | NOT TRACKED label text on the page ground |
-| `--sr-unknown-edge` `#877F72` | `--sr-paper` `#FAF8F4` | **3.73:1** | 3.0:1 | ✅ | NOT TRACKED tile edge — 1.4.11 |
-| `--sr-ink-2` `#4E4840` | `--sr-sunken` `#F0ECE4` | **7.67:1** | 4.5:1 | ✅ | table column headers on the sunken header row |
-| `--sr-ready-edge` `#3E8F5C` | `--sr-ready-fill` `#DCEEE2` | **3.28:1** | 3.0:1 | ✅ | READY chip border against its own fill — 1.4.11 |
-| `--sr-risk-edge` `#B07A1E` | `--sr-risk-fill` `#FAEACB` | **3.13:1** | 3.0:1 | ✅ | AT RISK chip border against its own fill — 1.4.11 |
-| `--sr-lapsed-edge` `#C24A44` | `--sr-lapsed-fill` `#F8DEDB` | **3.78:1** | 3.0:1 | ✅ | LAPSED chip border against its own fill — 1.4.11 |
-| `--sr-ink` `#16130F` | `--sr-paper` `#FAF8F4` | **17.46:1** | 3.0:1 | ✅ | focus ring (ink) against the page ground — 1.4.11 |
-| `--sr-ink` `#16130F` | `--sr-surface` `#FFFFFF` | **18.52:1** | 3.0:1 | ✅ | focus ring (ink) against a card — 1.4.11 |
-
-**Dark theme**
+**Board theme (default)**
 
 | foreground | background | ratio | target | pass | what it is |
 |---|---|---:|---:|:--:|---|
-| `--sr-ink` `#F5F1EA` | `--sr-paper` `#12100E` | **16.86:1** | 4.5:1 | ✅ | body text on the page ground |
-| `--sr-ink` `#F5F1EA` | `--sr-surface` `#1C1916` | **15.54:1** | 4.5:1 | ✅ | body text on a card |
-| `--sr-ink` `#F5F1EA` | `--sr-sunken` `#0B0A09` | **17.57:1** | 4.5:1 | ✅ | body text on a sunken/table-header surface |
-| `--sr-ink-2` `#C6BFB4` | `--sr-paper` `#12100E` | **10.41:1** | 4.5:1 | ✅ | secondary text on the page ground |
-| `--sr-ink-2` `#C6BFB4` | `--sr-surface` `#1C1916` | **9.59:1** | 4.5:1 | ✅ | secondary text on a card |
-| `--sr-ink-3` `#9C9489` | `--sr-paper` `#12100E` | **6.34:1** | 4.5:1 | ✅ | muted text / table meta on the page ground |
-| `--sr-ink-3` `#9C9489` | `--sr-surface` `#1C1916` | **5.84:1** | 4.5:1 | ✅ | muted text / placeholder on a card |
-| `--sr-on-ink` `#12100E` | `--sr-ink` `#F5F1EA` | **16.86:1** | 4.5:1 | ✅ | label on the primary (ink) button |
-| `--sr-line` `#332E28` | `--sr-paper` `#12100E` | **1.41:1** | — | ✅ | hairline rule (decorative, no target) |
-| `--sr-line-strong` `#7A7268` | `--sr-paper` `#12100E` | **4.01:1** | 3.0:1 | ✅ | input border / table divider — 1.4.11 |
-| `--sr-line-strong` `#7A7268` | `--sr-surface` `#1C1916` | **3.70:1** | 3.0:1 | ✅ | input border on a card — 1.4.11 |
-| `--sr-ink` `#F5F1EA` | `--sr-ready-fill` `#12301F` | **12.70:1** | 4.5:1 | ✅ | text inside a READY chip / map tile |
-| `--sr-ready` `#63CE8E` | `--sr-paper` `#12100E` | **9.72:1** | 4.5:1 | ✅ | READY label text on the page ground |
-| `--sr-ready` `#63CE8E` | `--sr-surface` `#1C1916` | **8.96:1** | 4.5:1 | ✅ | READY label text on a card |
-| `--sr-ready-edge` `#3E8F5C` | `--sr-paper` `#12100E` | **4.78:1** | 3.0:1 | ✅ | READY dot / tile edge — 1.4.11 |
-| `--sr-ready-edge` `#3E8F5C` | `--sr-surface` `#1C1916` | **4.41:1** | 3.0:1 | ✅ | READY dot on a card — 1.4.11 |
-| `--sr-ink` `#F5F1EA` | `--sr-risk-fill` `#332609` | **13.12:1** | 4.5:1 | ✅ | text inside an AT RISK chip / map tile |
-| `--sr-risk` `#E8B75F` | `--sr-paper` `#12100E` | **10.28:1** | 4.5:1 | ✅ | AT RISK label text on the page ground |
-| `--sr-risk` `#E8B75F` | `--sr-surface` `#1C1916` | **9.47:1** | 4.5:1 | ✅ | AT RISK label text on a card |
-| `--sr-risk-edge` `#9A7526` | `--sr-paper` `#12100E` | **4.47:1** | 3.0:1 | ✅ | AT RISK dot / tile edge — 1.4.11 |
-| `--sr-risk-edge` `#9A7526` | `--sr-surface` `#1C1916` | **4.12:1** | 3.0:1 | ✅ | AT RISK dot on a card — 1.4.11 |
-| `--sr-ink` `#F5F1EA` | `--sr-lapsed-fill` `#361816` | **14.36:1** | 4.5:1 | ✅ | text inside a LAPSED chip / map tile |
-| `--sr-lapsed` `#F29289` | `--sr-paper` `#12100E` | **8.36:1** | 4.5:1 | ✅ | LAPSED label text on the page ground |
-| `--sr-lapsed` `#F29289` | `--sr-surface` `#1C1916` | **7.71:1** | 4.5:1 | ✅ | LAPSED label text on a card |
-| `--sr-lapsed-edge` `#B85248` | `--sr-paper` `#12100E` | **3.92:1** | 3.0:1 | ✅ | LAPSED dot / tile edge — 1.4.11 |
-| `--sr-lapsed-edge` `#B85248` | `--sr-surface` `#1C1916` | **3.62:1** | 3.0:1 | ✅ | LAPSED dot on a card — 1.4.11 |
-| `--sr-ink` `#F5F1EA` | `--sr-unknown-fill` `#221F1B` | **14.57:1** | 4.5:1 | ✅ | text inside a NOT TRACKED chip / map tile |
-| `--sr-unknown` `#9C9489` | `--sr-paper` `#12100E` | **6.34:1** | 4.5:1 | ✅ | NOT TRACKED label text on the page ground |
-| `--sr-unknown-edge` `#7A7268` | `--sr-paper` `#12100E` | **4.01:1** | 3.0:1 | ✅ | NOT TRACKED tile edge — 1.4.11 |
-| `--sr-ink-2` `#C6BFB4` | `--sr-sunken` `#0B0A09` | **10.84:1** | 4.5:1 | ✅ | table column headers on the sunken header row |
-| `--sr-ready-edge` `#3E8F5C` | `--sr-ready-fill` `#12301F` | **3.60:1** | 3.0:1 | ✅ | READY chip border against its own fill — 1.4.11 |
-| `--sr-risk-edge` `#9A7526` | `--sr-risk-fill` `#332609` | **3.48:1** | 3.0:1 | ✅ | AT RISK chip border against its own fill — 1.4.11 |
-| `--sr-lapsed-edge` `#B85248` | `--sr-lapsed-fill` `#361816` | **3.34:1** | 3.0:1 | ✅ | LAPSED chip border against its own fill — 1.4.11 |
-| `--sr-ink` `#F5F1EA` | `--sr-paper` `#12100E` | **16.86:1** | 3.0:1 | ✅ | focus ring (ink) against the page ground — 1.4.11 |
-| `--sr-ink` `#F5F1EA` | `--sr-surface` `#1C1916` | **15.54:1** | 3.0:1 | ✅ | focus ring (ink) against a card — 1.4.11 |
+| `--sr-ink` `#ECF2EE` | `--sr-ground` `#181D1A` | **15.05:1** | 4.5:1 | ✅ | body text on the ground |
+| `--sr-ink` `#ECF2EE` | `--sr-surface` `#212724` | **13.40:1** | 4.5:1 | ✅ | body text on a card |
+| `--sr-ink` `#ECF2EE` | `--sr-sunken` `#0E1210` | **16.63:1** | 4.5:1 | ✅ | body text on a sunken/table-header surface |
+| `--sr-ink-2` `#B9C4BE` | `--sr-ground` `#181D1A` | **9.52:1** | 4.5:1 | ✅ | secondary text on the ground |
+| `--sr-ink-2` `#B9C4BE` | `--sr-surface` `#212724` | **8.48:1** | 4.5:1 | ✅ | secondary text on a card |
+| `--sr-ink-3` `#8D9994` | `--sr-ground` `#181D1A` | **5.79:1** | 4.5:1 | ✅ | muted text / table meta on the ground |
+| `--sr-ink-3` `#8D9994` | `--sr-surface` `#212724` | **5.16:1** | 4.5:1 | ✅ | muted text / placeholder on a card |
+| `--sr-on-ink` `#0E1210` | `--sr-ink` `#ECF2EE` | **16.63:1** | 4.5:1 | ✅ | label on the primary (ink) button |
+| `--sr-line` `#333B37` | `--sr-ground` `#181D1A` | **1.48:1** | — | ✅ | hairline rule (decorative, no target) |
+| `--sr-line-strong` `#7E8A84` | `--sr-ground` `#181D1A` | **4.76:1** | 3.0:1 | ✅ | input border / table divider — 1.4.11 |
+| `--sr-line-strong` `#7E8A84` | `--sr-surface` `#212724` | **4.24:1** | 3.0:1 | ✅ | input border on a card — 1.4.11 |
+| `--sr-ink` `#ECF2EE` | `--sr-ready-fill` `#0F3226` | **12.30:1** | 4.5:1 | ✅ | text inside a READY chip / map tile |
+| `--sr-ready` `#52D09C` | `--sr-ground` `#181D1A` | **8.83:1** | 4.5:1 | ✅ | READY label text on the ground |
+| `--sr-ready` `#52D09C` | `--sr-surface` `#212724` | **7.87:1** | 4.5:1 | ✅ | READY label text on a card |
+| `--sr-ready-edge` `#38976F` | `--sr-ground` `#181D1A` | **4.74:1** | 3.0:1 | ✅ | READY dot / tile edge — 1.4.11 |
+| `--sr-ready-edge` `#38976F` | `--sr-surface` `#212724` | **4.22:1** | 3.0:1 | ✅ | READY dot on a card — 1.4.11 |
+| `--sr-ink` `#ECF2EE` | `--sr-risk-fill` `#37260D` | **12.80:1** | 4.5:1 | ✅ | text inside an AT RISK chip / map tile |
+| `--sr-risk` `#F0A85A` | `--sr-ground` `#181D1A` | **8.50:1** | 4.5:1 | ✅ | AT RISK label text on the ground |
+| `--sr-risk` `#F0A85A` | `--sr-surface` `#212724` | **7.57:1** | 4.5:1 | ✅ | AT RISK label text on a card |
+| `--sr-risk-edge` `#A0722C` | `--sr-ground` `#181D1A` | **4.02:1** | 3.0:1 | ✅ | AT RISK dot / tile edge — 1.4.11 |
+| `--sr-risk-edge` `#A0722C` | `--sr-surface` `#212724` | **3.58:1** | 3.0:1 | ✅ | AT RISK dot on a card — 1.4.11 |
+| `--sr-ink` `#ECF2EE` | `--sr-lapsed-fill` `#3B1A20` | **13.66:1** | 4.5:1 | ✅ | text inside a LAPSED chip / map tile |
+| `--sr-lapsed` `#F98A93` | `--sr-ground` `#181D1A` | **7.39:1** | 4.5:1 | ✅ | LAPSED label text on the ground |
+| `--sr-lapsed` `#F98A93` | `--sr-surface` `#212724` | **6.58:1** | 4.5:1 | ✅ | LAPSED label text on a card |
+| `--sr-lapsed-edge` `#BB4E59` | `--sr-ground` `#181D1A` | **3.54:1** | 3.0:1 | ✅ | LAPSED dot / tile edge — 1.4.11 |
+| `--sr-lapsed-edge` `#BB4E59` | `--sr-surface` `#212724` | **3.15:1** | 3.0:1 | ✅ | LAPSED dot on a card — 1.4.11 |
+| `--sr-ink` `#ECF2EE` | `--sr-unknown-fill` `#232925` | **13.07:1** | 4.5:1 | ✅ | text inside a NOT TRACKED chip / map tile |
+| `--sr-unknown` `#8D9994` | `--sr-ground` `#181D1A` | **5.79:1** | 4.5:1 | ✅ | NOT TRACKED label text on the ground |
+| `--sr-unknown-edge` `#7E8A84` | `--sr-ground` `#181D1A` | **4.76:1** | 3.0:1 | ✅ | NOT TRACKED tile edge — 1.4.11 |
+| `--sr-ink-2` `#B9C4BE` | `--sr-sunken` `#0E1210` | **10.52:1** | 4.5:1 | ✅ | table column headers on the sunken header row |
+| `--sr-ready-edge` `#38976F` | `--sr-ready-fill` `#0F3226` | **3.87:1** | 3.0:1 | ✅ | READY chip border against its own fill — 1.4.11 |
+| `--sr-risk-edge` `#A0722C` | `--sr-risk-fill` `#37260D` | **3.42:1** | 3.0:1 | ✅ | AT RISK chip border against its own fill — 1.4.11 |
+| `--sr-lapsed-edge` `#BB4E59` | `--sr-lapsed-fill` `#3B1A20` | **3.21:1** | 3.0:1 | ✅ | LAPSED chip border against its own fill — 1.4.11 |
+| `--sr-ink` `#ECF2EE` | `--sr-ground` `#181D1A` | **15.05:1** | 3.0:1 | ✅ | focus ring (ink) against the page ground — 1.4.11 |
+| `--sr-ink` `#ECF2EE` | `--sr-surface` `#212724` | **13.40:1** | 3.0:1 | ✅ | focus ring (ink) against a card — 1.4.11 |
 
-Smallest text margin: 5.58:1 against a 4.5:1 requirement.
-Smallest non-text margin: 3.13:1 against a 3:1 requirement.
+**Paper theme (alternate)**
+
+| foreground | background | ratio | target | pass | what it is |
+|---|---|---:|---:|:--:|---|
+| `--sr-ink` `#131714` | `--sr-ground` `#E9ECE8` | **15.19:1** | 4.5:1 | ✅ | body text on the ground |
+| `--sr-ink` `#131714` | `--sr-surface` `#FFFFFF` | **18.10:1** | 4.5:1 | ✅ | body text on a card |
+| `--sr-ink` `#131714` | `--sr-sunken` `#DCE0DB` | **13.55:1** | 4.5:1 | ✅ | body text on a sunken/table-header surface |
+| `--sr-ink-2` `#454B47` | `--sr-ground` `#E9ECE8` | **7.50:1** | 4.5:1 | ✅ | secondary text on the ground |
+| `--sr-ink-2` `#454B47` | `--sr-surface` `#FFFFFF` | **8.93:1** | 4.5:1 | ✅ | secondary text on a card |
+| `--sr-ink-3` `#5F6762` | `--sr-ground` `#E9ECE8` | **4.89:1** | 4.5:1 | ✅ | muted text / table meta on the ground |
+| `--sr-ink-3` `#5F6762` | `--sr-surface` `#FFFFFF` | **5.83:1** | 4.5:1 | ✅ | muted text / placeholder on a card |
+| `--sr-on-ink` `#E9ECE8` | `--sr-ink` `#131714` | **15.19:1** | 4.5:1 | ✅ | label on the primary (ink) button |
+| `--sr-line` `#CBD1CB` | `--sr-ground` `#E9ECE8` | **1.30:1** | — | ✅ | hairline rule (decorative, no target) |
+| `--sr-line-strong` `#78827C` | `--sr-ground` `#E9ECE8` | **3.34:1** | 3.0:1 | ✅ | input border / table divider — 1.4.11 |
+| `--sr-line-strong` `#78827C` | `--sr-surface` `#FFFFFF` | **3.98:1** | 3.0:1 | ✅ | input border on a card — 1.4.11 |
+| `--sr-ink` `#131714` | `--sr-ready-fill` `#D4EBE0` | **14.44:1** | 4.5:1 | ✅ | text inside a READY chip / map tile |
+| `--sr-ready` `#146A46` | `--sr-ground` `#E9ECE8` | **5.54:1** | 4.5:1 | ✅ | READY label text on the ground |
+| `--sr-ready` `#146A46` | `--sr-surface` `#FFFFFF` | **6.60:1** | 4.5:1 | ✅ | READY label text on a card |
+| `--sr-ready-edge` `#348D68` | `--sr-ground` `#E9ECE8` | **3.42:1** | 3.0:1 | ✅ | READY dot / tile edge — 1.4.11 |
+| `--sr-ready-edge` `#348D68` | `--sr-surface` `#FFFFFF` | **4.07:1** | 3.0:1 | ✅ | READY dot on a card — 1.4.11 |
+| `--sr-ink` `#131714` | `--sr-risk-fill` `#F8E7CE` | **14.92:1** | 4.5:1 | ✅ | text inside an AT RISK chip / map tile |
+| `--sr-risk` `#8A4E08` | `--sr-ground` `#E9ECE8` | **5.55:1** | 4.5:1 | ✅ | AT RISK label text on the ground |
+| `--sr-risk` `#8A4E08` | `--sr-surface` `#FFFFFF` | **6.62:1** | 4.5:1 | ✅ | AT RISK label text on a card |
+| `--sr-risk-edge` `#A9701F` | `--sr-ground` `#E9ECE8` | **3.51:1** | 3.0:1 | ✅ | AT RISK dot / tile edge — 1.4.11 |
+| `--sr-risk-edge` `#A9701F` | `--sr-surface` `#FFFFFF` | **4.18:1** | 3.0:1 | ✅ | AT RISK dot on a card — 1.4.11 |
+| `--sr-ink` `#131714` | `--sr-lapsed-fill` `#F7DEDF` | **14.19:1** | 4.5:1 | ✅ | text inside a LAPSED chip / map tile |
+| `--sr-lapsed` `#A81B2C` | `--sr-ground` `#E9ECE8` | **6.17:1** | 4.5:1 | ✅ | LAPSED label text on the ground |
+| `--sr-lapsed` `#A81B2C` | `--sr-surface` `#FFFFFF` | **7.35:1** | 4.5:1 | ✅ | LAPSED label text on a card |
+| `--sr-lapsed-edge` `#BE454B` | `--sr-ground` `#E9ECE8` | **4.26:1** | 3.0:1 | ✅ | LAPSED dot / tile edge — 1.4.11 |
+| `--sr-lapsed-edge` `#BE454B` | `--sr-surface` `#FFFFFF` | **5.07:1** | 3.0:1 | ✅ | LAPSED dot on a card — 1.4.11 |
+| `--sr-ink` `#131714` | `--sr-unknown-fill` `#E4E7E2` | **14.50:1** | 4.5:1 | ✅ | text inside a NOT TRACKED chip / map tile |
+| `--sr-unknown` `#5F6762` | `--sr-ground` `#E9ECE8` | **4.89:1** | 4.5:1 | ✅ | NOT TRACKED label text on the ground |
+| `--sr-unknown-edge` `#78827C` | `--sr-ground` `#E9ECE8` | **3.34:1** | 3.0:1 | ✅ | NOT TRACKED tile edge — 1.4.11 |
+| `--sr-ink-2` `#454B47` | `--sr-sunken` `#DCE0DB` | **6.69:1** | 4.5:1 | ✅ | table column headers on the sunken header row |
+| `--sr-ready-edge` `#348D68` | `--sr-ready-fill` `#D4EBE0` | **3.25:1** | 3.0:1 | ✅ | READY chip border against its own fill — 1.4.11 |
+| `--sr-risk-edge` `#A9701F` | `--sr-risk-fill` `#F8E7CE` | **3.45:1** | 3.0:1 | ✅ | AT RISK chip border against its own fill — 1.4.11 |
+| `--sr-lapsed-edge` `#BE454B` | `--sr-lapsed-fill` `#F7DEDF` | **3.98:1** | 3.0:1 | ✅ | LAPSED chip border against its own fill — 1.4.11 |
+| `--sr-ink` `#131714` | `--sr-ground` `#E9ECE8` | **15.19:1** | 3.0:1 | ✅ | focus ring (ink) against the page ground — 1.4.11 |
+| `--sr-ink` `#131714` | `--sr-surface` `#FFFFFF` | **18.10:1** | 3.0:1 | ✅ | focus ring (ink) against a card — 1.4.11 |
+
+Smallest text margin: 4.89:1 against a 4.5:1 requirement.
+Smallest non-text margin: 3.15:1 against a 3:1 requirement.
 0 failure(s).
 
 **Honest limits.** WCAG offers no criterion for "is this red distinguishable from this green by a
@@ -632,19 +718,38 @@ Drawing it as *structure* rather than hiding it in notification settings is the 
 
 ### 8.1 Typefaces
 
+Three families, allocated to StateReady exclusively by `../IDENTITY_ARBITRATION.md §3.1`. No sibling app
+may use any of them, and this app may not use theirs.
+
 | Role | Family | Weights | Fallback stack |
 |---|---|---|---|
-| UI and body | **Public Sans** | 400, 500, 700 | `"Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif` |
-| Numerals, licence numbers, dates, code | **IBM Plex Mono** | 400, 500 | `"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace` |
+| UI and body | **Barlow** | 400, 500, 600, 700 | `"Barlow", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif` |
+| Signage: state tiles, column heads, runway lane labels, eyebrows | **Barlow Condensed** | 500, 600, 700 | `"Barlow Condensed", "Barlow", "Roboto Condensed", "Arial Narrow", sans-serif` |
+| Numerals, licence numbers, dates, code | **Overpass Mono** | 400, 500, 600 | `"Overpass Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace` |
 
-**Why Public Sans:** it is the typeface of the U.S. Web Design System, so it is literally the voice of
-the agencies whose rules we restate — an argument no competitor can make about Sofia Pro or Open Sans
-— and it is on Google Fonts, so it costs one request and no licence. It is also visibly *not* the
-category default: ServiceTitan runs Sofia Pro + Nunito Sans and Housecall Pro runs Open Sans (§5.2).
+**Why Barlow:** it is a low-contrast grotesk drawn from **American public and transport signage** — the
+letterforms of the road, the depot and the state line. For a product whose entire subject is *what
+happens when you cross a jurisdiction boundary*, that is the lineage the subject matter asks for, and it
+is one no competitor can claim. It is on Google Fonts, so it costs one request and no licence. And it is
+visibly *not* the category default: ServiceTitan runs Sofia Pro + Nunito Sans, Housecall Pro runs Open
+Sans + Oswald + Plus Jakarta Sans (§5.2) — there is no shared incumbent face to be familiar with.
 
-**Why a mono for numbers:** licence numbers, expiry dates and CE hour counts are compared down a
-column. `font-variant-numeric: tabular-nums` is set on every numeric surface; the mono makes
-transposition errors visible, which matters when a coordinator is typing a licence number off a card.
+**Why a second, condensed cut:** the state tiles carry two-letter abbreviations at 40px square, the runway
+carries lane labels in a 9rem gutter, and the tables carry uppercase column heads. Those are **signs**,
+not prose, and a condensed signage cut is what signs are set in. Using one width for prose and another for
+labels is also a *structural* typographic difference from both sibling apps, which each run a single UI
+face.
+
+**What was given up.** Public Sans's USWDS lineage was a real argument — *"the voice of the agencies whose
+rules we restate"* — and it now belongs to WageLens, whose output artefact is an actual US federal form
+(WH-347, OMB 1235-0008). Ours are **state** boards, not federal agencies, so the argument was always
+weaker here than it read. Acceptable, and Barlow's lineage is closer to the subject anyway.
+
+**Why a mono for numbers, and why this one:** licence numbers, expiry dates and CE hour counts are
+compared down a column. `font-variant-numeric: tabular-nums` is set on every numeric surface; the mono
+makes transposition errors visible, which matters when a coordinator is typing a licence number off a
+card. **Overpass Mono** descends, through Overpass, from **Highway Gothic** — the US Federal Highway
+Administration lettering — so the numbers are set in the family that already labels the road.
 
 **Scale** (rem, `1rem = 16px`; every value scales with the user's root size — WCAG 1.4.4):
 
@@ -666,24 +771,34 @@ prose and `88ch` for tables.
 ### 8.2 Grid and layout
 
 - **12 columns**, 24px gutter, 24px page margin (16px below 640px), content max `1280px`.
-- **The app shell** is a 240px fixed left rail plus fluid content. Below 1024px the rail collapses to
-  a top bar.
+- **The app shell is a full-width bar across the top and the board beneath it** — `grid-template-rows`,
+  not `grid-template-columns`. Both sibling apps run a fixed left rail (WageLens 216px, Certly 240px), so
+  this is the third distinct layout structure in the fleet and it is the one a *board* asks for. The
+  class is `.sr-bar`; `.sr-rail` is kept as a working alias so nothing written against the old name
+  breaks. `../IDENTITY_ARBITRATION.md §3.5`.
 - **The dashboard** is the canonical composition: `map (7 cols) | runway (5 cols)` above,
   `expiring list (12 cols)` below. On tablet it stacks map → runway → list. On phone the dashboard is
   read-only and the map degrades to a status list, per `PERSONA.md §11`.
-- **Density.** Table rows are 44px minimum (A7). A "compact" 36px mode exists behind a user setting
-  for rosters over 60 technicians and is opt-in, never the default.
+- **Density.** Table rows are **48px** (`--sr-row-h`), the roomiest of the three fleet apps — WageLens
+  runs 36px payroll-grid rows and Certly 44px, so the three ladder rather than converge. The 44px minimum
+  target (A7) still governs every interactive element via `--sr-target-min`. A "compact" 36px mode exists
+  behind a user setting for rosters over 60 technicians and is opt-in, never the default.
 
 ### 8.3 Spacing, radius, elevation
 
 - **Space scale (4px base):** `4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96`, tokens `--sr-space-1` … `-9`.
 - **Radius:** `--sr-radius-sm 6px` (tiles, chips, inputs), `--sr-radius-md 10px` (cards, buttons),
   `--sr-radius-lg 16px` (sheets). Nothing is fully round except the status dot.
-- **Elevation: three levels, all opaque.** `--sr-shadow-1` a hairline border only; `--sr-shadow-2`
-  `0 1px 2px` for cards; `--sr-shadow-3` `0 8px 24px` for popovers and sheets. **There is no
-  `backdrop-filter` and no translucency in this system** — a deliberate divergence from Clausewright,
-  and it removes an entire class of contrast indeterminacy (a translucent surface has no fixed
-  rendered colour, so its contrast ratio cannot be certified).
+- **Elevation: nothing that rests on the board casts a shadow.** `--sr-shadow-1` and `--sr-shadow-2` are
+  both `none`; a card is separated from the board by a **value step plus a hairline**, which is what
+  actually works on a dark ground — a drop shadow on a near-black surface is invisible effort.
+  `--sr-shadow-3` (`0 12px 32px`) belongs to the **sheet** and to nothing else, because the sheet is the
+  one surface that genuinely floats. That makes three distinct shadow policies across the fleet: WageLens
+  uses borders and reserves two shadows for sticky headers and modals, Certly gives cards a resting
+  shadow on paper, and StateReady has none at all below the sheet. **There is no `backdrop-filter` and no
+  translucency in this system** — a deliberate divergence from Clausewright, and it removes an entire
+  class of contrast indeterminacy (a translucent surface has no fixed rendered colour, so its contrast
+  ratio cannot be certified).
 
 ### 8.4 Imagery
 
@@ -694,8 +809,9 @@ prose and `88ch` for tables.
   methodology page, cropped screenshots **of the source board pages we cite**, each with its URL and
   the date it was captured. That last one is imagery *as evidence*, which is the only imagery this
   brand can afford.
-- **The logo** is a wordmark in Public Sans 700 with a single mark: a rounded square in
-  `--sr-ready` bearing a check — i.e. one map tile, in the state we are selling.
+- **The logo** is a wordmark in Barlow 700 with a single mark: a rounded square in `--sr-ready` bearing a
+  check in `--sr-on-ink` — i.e. one map tile, in the state we are selling. The check inverts with the
+  theme, so it is dark on the board's luminous green and light on paper's forest green.
 
 ### 8.5 Motion
 
@@ -757,28 +873,37 @@ names its non-colour redundancy. Classes are prefixed `sr-`. All are implemented
 
 ---
 
-## 10. Dark mode policy
+## 10. Theme policy — board, paper, print
 
-**Light is the default and dark is fully supported.** Three states, in this precedence:
+**The board is the default and paper is fully supported.** Three states, in this precedence:
 
-1. `data-theme="light"` or `="dark"` on `<html>` — an explicit user choice, persisted, wins always.
-2. No attribute + `prefers-color-scheme: dark` — the system preference.
-3. No attribute + no preference — light.
+1. `data-theme="board"` / `="dark"` or `data-theme="paper"` / `="light"` on `<html>` — an explicit user
+   choice, persisted, wins always and in both directions.
+2. No attribute + `prefers-color-scheme: light` — the viewer has asked their OS for a light interface, so
+   they get paper.
+3. No attribute + no preference — **the board**.
 
 **Rules.**
 
+- **The board is for the operator; paper is for the forwarder.** `PERSONA.md §9` requires every artefact
+  to be forwardable to someone who has never logged in, so **paper is what leaves the building**: print,
+  the bid-package PDF, the shareable readiness link (J5) and every alert email. The board is the surface
+  the coordinator works on.
 - Both themes are **authored independently** with their own certified contrast (§6.3), not derived by
   filter or inversion.
-- The dark ground is `#12100E`, not `#000`; the dark ink is `#F5F1EA`, not `#FFF`. Pure black/white
+- The board ground is `#181D1A`, not `#000`; the board ink is `#ECF2EE`, not `#FFF`. Pure black/white
   pairs cause halation for astigmatic and light-sensitive readers.
-- **The status ramp is re-tuned, never reused.** The light READY `#1B6B3A` would sit at roughly 1.9:1
-  on a dark ground; dark READY is `#63CE8E` at 9.72:1. Fills invert to deep tints so that ink still
-  reads on them.
-- **Status semantics never change between themes.** Green is READY in both. A user switching themes
-  mid-task must not have to re-learn the map.
-- **Print is a third theme**, not an afterthought: `@media print` forces the light palette, drops
-  shadows, expands the map hatches (§7.2) so a black-and-white bid package still distinguishes the
-  four statuses, and prints the provenance URLs in full after each rule.
+- **The status ramp is re-tuned, never reused.** Paper's READY `#146A46` would sit at roughly 2:1 on the
+  board; the board's READY is `#52D09C` at 8.83:1. Fills invert to deep tints so that ink still reads on
+  them.
+- **Status hues and semantics never change between themes.** Green is READY in both, at 155° in both. A
+  user switching themes mid-task must not have to re-learn the map.
+- **Print is the paper theme, forced**, not an afterthought: `@media print` overrides `:root` and both
+  board `data-theme` values, drops shadows, expands the map hatches (§7.2) so a black-and-white bid
+  package still distinguishes the four statuses, and prints the provenance URLs in full after each rule.
+- **Marketing shows the board.** That is a change from the original document's assumption and it is
+  deliberate: the product's first impression should be the thing that makes it different. Flagged for the
+  founder in `../IDENTITY_ARBITRATION.md §9.1`, which also records how to reverse it in one token swap.
 
 ---
 
@@ -794,7 +919,7 @@ names its non-colour redundancy. Classes are prefixed `sr-`. All are implemented
 | §11 mobile decision | Email and the read-only card are mobile-first; the dashboard is desktop-first and says so | ✅ |
 | §12 trust signals 1–6 | Provenance line, published price, stated coverage boundary, last-verified date, refusal state (§4 T2) | ✅ |
 | §7 vocabulary | Status words are READY / AT RISK / LAPSED / NOT TRACKED, not "compliant"; §4 T3 bans the softeners | ✅ |
-| §5 distinctness | No blue, no glass, no document hero, warm ground, ink CTA | ✅ — **but see §5.1: re-verify once WageLens and Certly publish their palettes** |
+| §5 distinctness | No blue, no glass, no document hero, ink CTA, and a ground 84–88 ΔE76 from both siblings | ✅ — **verified against the finished sibling palettes on 2026-09-03 and machine-checked by `../scripts/identity-distinctness.py`** |
 
 **Known gaps, stated rather than hidden.**
 
@@ -804,5 +929,11 @@ names its non-colour redundancy. Classes are prefixed `sr-`. All are implemented
 2. **No trademark clearance** (§1.1). The naming recommendation is availability-and-usage only.
 3. **The tile-map choice is a design judgment**, not a sourced one (§7.1), and carries its own
    falsification test.
-4. **Distinctness from WageLens and Certly is asserted by rule, not verified against artefacts**,
-   because those artefacts do not exist yet (§5.1).
+4. **Distinctness from WageLens and Certly was asserted by rule and is now verified against artefacts.**
+   The check found a collision on every axis — same UI face, same mono, grounds ΔE76 0.35 apart — and
+   `../IDENTITY_ARBITRATION.md` resolved it. It is now enforced by
+   `../scripts/identity-distinctness.py`, which must exit 0 in CI.
+5. **The dark default is the arbitration's weakest-evidenced decision and is flagged as such.** This
+   buyer's own tools are light; the primary driver is mutual distinctness plus the fact that this is the
+   only app in the fleet whose hero is a board rather than a document. `../IDENTITY_ARBITRATION.md §9.1`
+   records the one-token reversal if the founder disagrees.

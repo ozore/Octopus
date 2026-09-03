@@ -13,6 +13,35 @@ not a source.
 
 ---
 
+## Arbitration 2026-09-03
+
+`../IDENTITY_ARBITRATION.md` (Brand Director, 2026-09-03) is binding on the visual layer of all three
+phase-4 apps and takes precedence over this document where the two disagree. **This document has been
+brought into line with it** — `certly/REVIEW.md` B-15 required exactly that, because `design-system.css`
+is the build reference and §6 was documenting a palette the CSS no longer had.
+
+**What changed, and where to read the reasoning**
+
+| | was | is | why (arbitration §) |
+|---|---|---|---|
+| UI typeface | Public Sans | **Source Sans 3** | all three sibling apps had independently chosen Public Sans; WageLens keeps it because its output is a US federal form. Source Sans 3 is the humanist, single-storey-`g` register of the buyer's actual stack — Buildium ships Open Sans, Rent Manager Lato, CINC Inter. §3.1 |
+| mono | IBM Plex Mono | **Source Code Pro** | the designed superfamily partner of the UI face, so a limit aligns in a mono cut from the same skeleton as its label. §3.1 |
+| ground | warm `#F3F3EE` | **cool office white `#E8EEF6`** | the warm ground was borrowed from Procore — the *general contractor's* world, our **second** buyer. The recommended first buyer sits in AppFolio, Buildium, Yardi, Rent Manager or CINC, and those are cool, white and navy-chromed. §2.4, §3.2 |
+| primary button | ink `#0F1A2B` | **the interaction blue `#14458C`** | ink collided with a sibling's ink button. Blue was already this system's single declared non-status hue; it now does links, focus **and** the primary action. **No status colour appears on a control** — P2's actual rule is untouched. §3.3 |
+| status hues | 147 / 35.5 / 4.7° | **164.2 teal / 47.3 olive-gold / 344.8 crimson** | siblings' greens, ambers and reds were within a few degrees of ours. Minimum separation across the fleet's nine chromatic statuses is now 8.1°. §3.4 |
+| status states | four | **seven** | `REVIEW.md` B-03: the comparison engine emits seven and the identity carried four. §6.4, arbitration §4.2 |
+| the green state's name | "Covered" | **"Meets requirements"**, pill `MEETS` | `REVIEW.md` §2.1. Token names (`--c-ok-*`) are vocabulary-neutral and did not change; the noun *coverage* survives in its form-derived sense, so the **coverage bar** keeps its name. |
+
+**What did not change:** the coverage bar and the gap-as-a-hole, per-field confidence, the as-of stamp,
+the document being present, no `backdrop-filter`, the seven design principles, the tone rules, the
+component inventory, and every word of §3's positioning.
+
+Enforced by `../scripts/identity-distinctness.py`, which parses the three `design-system.css` files and
+fails if two apps share a font family or two grounds are too close. It must exit 0 in CI alongside
+`identity/contrast.py`.
+
+---
+
 ## 0. The one idea this identity is built on
 
 > **The buyer's job is one question asked over and over — *is this vendor covered right now?* — and every
@@ -345,14 +374,16 @@ Sourced from `PERSONA.md §2.5` and `§3.5`.
 
 | we say | not | because |
 |---|---|---|
-| **Covered** | Compliant | *Compliant* is the vendor's word for itself and the incumbent's word for its product. *Covered* is what the buyer actually needs to be. It is also the only status word that is true from the buyer's side of the transaction. |
+| **Meets requirements** (pill: `MEETS`) | Covered, Compliant | *Compliant* is the vendor's word for itself and the incumbent's word for its product. **"Covered" is retired too** (`REVIEW.md §2.1`): the engine has no state that means "covered", and a wrong "covered" is `PERSONA.md` O-A6 — *"the failure that ends the company"*. "Meets requirements" says exactly what we checked: this certificate against the requirement you wrote. |
+| **Claimed, not evidenced** | Asserted, Unverified endorsement | The `ADDL INSD` or `SUBR WVD` box is ticked and no endorsement page is attached. The form's own words are the argument: *"A statement on this certificate does not confer rights to the certificate holder in lieu of such endorsement(s)"* `[E7]`. This is the state `BACKLOG.md §0 D1` calls the one thing in the category that is both true and uncomfortable, so it gets plain words, not a euphemism. |
+| **Not checked** / **No certificate** | Unknown, Missing, N/A | Two different facts. *Not checked* means the requirement does not apply to this party or has not been run; *no certificate* means nothing has arrived. Neither is a judgement about the party, which is why neither carries chroma (§6.4). |
 | **Gap** | Non-compliant, Failed, Violation | A gap is a factual description of a hole in coverage. "Violation" makes the vendor an offender and the buyer an enforcer, which is not the relationship a 12-unit landscaper has with a 60-association manager. |
 | **Expiring** | Expiring soon, At risk, Warning | Add the number of days; do not add an adjective. |
 | **Needs review** | Error, Unknown, Failed to parse | The honest state when confidence is low. It is a first-class outcome of a working system, not a malfunction, and it must never look like one. |
 | **Vendor** (PM) / **Sub** (GC) | Third party, Supplier, Trade partner | The dialect switch from `PERSONA.md §7.3`. "Third party" is Evident's enterprise word `[A11]`. |
 | **Requirement** | Policy, Rule, Profile | *Requirement* is what the lease or subcontract imposes. "Policy" is already taken by the insurance policy and using it twice is a real ambiguity. |
 | **Certificate**, **ACORD 25**, **additional insured**, **waiver of subrogation**, **endorsement**, **certificate holder**, **each occurrence**, **general aggregate** | any paraphrase | These are terms of art `[E1][A4]`. Paraphrasing them is the fastest way to sound like an outsider. |
-| **Current** | Up to date, Valid, Active | The buyer's own word — a property manager's vendor packet says the fee is *"required to keep your compliance and registration current"* `[C1]`. |
+| **Current** | Up to date, Valid, Active | The buyer's own word — a property manager's vendor packet says the fee is *"required to keep your compliance and registration current"* `[C1]`. **Use it about a document, never about a party:** *"this certificate is current as of 3 Sep 2026"* is a statement about a date on a piece of paper and is always either true or false. `REVIEW.md §2.1.4`. |
 | **We asked their agent** | We notified the vendor | The agent issues the certificate. Naming the agent proves we know how the workflow actually runs. |
 | **As of 3 Sep 2026** | Live, Real-time, Always up to date | A certificate is a snapshot `[E1]`. Claiming real-time knowledge of a policy is a lie we would eventually be caught in. |
 
@@ -426,13 +457,19 @@ visual weight. On a vendor page, the status band sits above the fold, above the 
 **Test.** Squint at any screen until text is unreadable. The status pattern must still be legible. If the
 first thing that resolves is chrome, a logo, or a chart, the screen fails.
 
-### P2 — Colour carries status and nothing else
+### P2 — Chroma carries status; the one non-status hue carries interaction
 
-**Source.** §0 rule 1; WCAG 1.4.1.
-**Consequence.** There is no brand hue in the interface. Buttons are ink. Links are the one interaction
-blue, chosen at a hue angle far from all three status hues so it is never misread as a state.
-**Test.** `grep` the codebase for `--c-ok`, `--c-warn`, `--c-gap`. Every use must be a status. Any status
-colour on a header, a chart series, a marketing panel or a decorative accent is a review failure.
+**Source.** §0 rule 1; WCAG 1.4.1. **Amended by `../IDENTITY_ARBITRATION.md §3.3`,** which moved the
+primary button from ink to the interaction hue so that no two sibling apps ship the same ink button.
+
+**Consequence.** There is still **no brand hue** in the interface. There is exactly one non-status hue —
+the interaction blue at 215.5°, chosen at a hue angle far from every status hue — and it does exactly one
+job: **interaction**. Links, the focus ring, the selected-tab rule and the primary button. Everything
+else with chroma in it is a state.
+
+**Test.** `grep` the codebase for `--c-ok`, `--c-warn`, `--c-gap`, `--c-ast`. Every use must be a status.
+A status colour on a header, a chart series, a marketing panel, a decorative accent **or a control** is a
+review failure. And the converse: `--c-action` must never appear on something that is not interactive.
 
 ### P3 — Nothing is asserted without a date and a source
 
@@ -483,30 +520,39 @@ stop the instant the document arrives.
 
 ### 6.1 The rationale, in one paragraph
 
-The palette has **one ink, one paper, one interaction blue, and four status hues** — and that is the whole
-list. There is no brand colour, because a brand colour on a status board is a lie: the eye reads saturated
-hue as meaning, and any hue that does not mean a state steals attention from the ones that do (**P2**).
-The ink is a deep blue-black rather than a neutral black so that the interface reads as *document* rather
-than *console*; the paper is warm-neutral rather than white so that a white card sitting on it reads as a
-piece of paper on a desk. The interaction blue sits at **hue 215.5°**, far from covered (**147.0°**), expiring
-(**35.5°**) and gap (**4.7°**) — measured with `colorsys` on the exact token values — so under the common
-colour-vision deficiencies it can never be mistaken for a status. The ink is deliberately in the same hue
-family as the interaction blue (**216.4°**, 48% saturation, 11% lightness): the chrome is one cool family,
-and the only thing that breaks out of it is a state.
+The palette has **one ink, one paper, one interaction blue, and four status hues carrying seven states** —
+and that is the whole list. There is no brand colour, because a brand colour on a status board is a lie:
+the eye reads saturated hue as meaning, and any hue that does not mean a state steals attention from the
+ones that do (**P2**).
 
-**A note on the three statuses.** Green/amber/red is the buyer's existing mental model — every incumbent
-uses it and *"Approved Vendor"* status is the state the buyer is already trying to hold `[C1]`. Fighting
-it would be design vanity. What we do instead is refuse to let colour be the *carrier* (§6.4).
+The ink is a deep blue-black rather than a neutral black so that the interface reads as *document* rather
+than *console*. **The paper is a cool office white `#E8EEF6`** — hue 214°, Lab L\* 93.87 — because that is
+the ground the buyer's own stack sits on: AppFolio, Buildium and Rent Manager are all white or near-white
+with navy chrome (`../IDENTITY_ARBITRATION.md §2.4`). The earlier warm-neutral ground was borrowed from
+Procore, which is the *general contractor's* tool and therefore our second buyer's, not our first's.
+
+The interaction blue sits at **hue 215.5°**, far from meets (**164.2°**), expiring and claimed
+(**47.3°** and **45.2°**) and gap (**344.8°**) — measured with `colorsys` on the exact token values — so
+under the common colour-vision deficiencies it can never be mistaken for a status. The ink is deliberately
+in the same hue family as the interaction blue (**216.4°**, 48% saturation, 11% lightness): the chrome is
+one cool family, and the only thing that breaks out of it is a state.
+
+**A note on the three chromatic statuses.** Green/amber/red is the buyer's existing mental model — every
+incumbent uses it and *"Approved Vendor"* status is the state the buyer is already trying to hold `[C1]`.
+Fighting it would be design vanity. What we do instead is refuse to let colour be the *carrier* (§6.4).
+Our particular green, amber and red are pushed to **teal 164°, olive-gold 47° and crimson 345°** so that
+no sibling app in the fleet lands within 8° of them (`../IDENTITY_ARBITRATION.md §3.4`) — a constraint
+that costs nothing here, because the buyer reads the word and the glyph before the hue.
 
 ### 6.2 Tokens — light
 
 | token | hex | role |
 |---|---|---|
-| `--c-paper` | `#F3F3EE` | the application ground. Warm neutral, so a white card reads as paper on a desk |
+| `--c-paper` | `#E8EEF6` | the application ground. **Cool office white**, the temperature of the buyer's own stack, so a white card reads as paper on a desk |
 | `--c-surface` | `#FFFFFF` | cards, tables, panels, the document viewer's page |
-| `--c-sunken` | `#E7E7E0` | inset wells: the document viewport behind a PDF page, a code/clause block |
-| `--c-line` | `#D5D5CC` | table rules, card edges, dividers |
-| `--c-line-strong` | `#85857A` | **input and control borders** — the value is set by WCAG 1.4.11, not by taste |
+| `--c-sunken` | `#DEE7F1` | inset wells: the document viewport behind a PDF page, a code/clause block |
+| `--c-line` | `#C7D3E0` | table rules, card edges, dividers |
+| `--c-line-strong` | `#718094` | **input and control borders** — the value is set by WCAG 1.4.11, not by taste. It has to clear 3:1 against the sunken well as well as against white, which is what fixes it here |
 | `--c-ink` | `#0F1A2B` | primary text; the primary button's fill |
 | `--c-ink-strong` | `#1B2941` | headings |
 | `--c-ink-muted` | `#495A73` | secondary text, labels, table meta |
@@ -514,12 +560,16 @@ it would be design vanity. What we do instead is refuse to let colour be the *ca
 | `--c-ink-disabled` | `#828E9E` | disabled control ink |
 | `--c-link` / `--c-focus` | `#14458C` | links, focus ring, selected row edge — the only non-status hue |
 | `--c-link-hover` | `#0E3266` | link hover/active |
-| `--c-select-bg` | `#EDF2FA` | the selected table row and text selection — a tint of the interaction hue, never of a status |
-| `--c-ok-fg` / `--c-ok-bg` / `--c-ok-line` / `--c-ok-solid` | `#14603A` / `#E2EFE7` / `#8FBFA3` / `#17703F` | **Covered** |
-| `--c-warn-fg` / `--c-warn-bg` / `--c-warn-line` / `--c-warn-solid` | `#7A4A05` / `#FBEBD3` / `#DCB271` / `#8A5406` | **Expiring** |
-| `--c-gap-fg` / `--c-gap-bg` / `--c-gap-line` / `--c-gap-solid` | `#A11F14` / `#FBE5E2` / `#E3A69D` / `#B02418` | **Gap** |
-| `--c-rev-fg` / `--c-rev-bg` / `--c-rev-line` | `#3D4F66` / `#E8ECF1` / `#ADBAC9` | **Needs review** |
-| `--c-on-ink` / `--c-on-solid` | `#FFFFFF` | text on the ink button and on a solid status fill |
+| `--c-action` / `--c-action-hover` / `--c-on-action` | `#14458C` / `#0E3266` / `#FFFFFF` | **the primary button.** The same hue as the link, because the interaction hue does interaction (**P2**) |
+| `--c-select-bg` | `#DCE7FA` | the selected table row and text selection — a tint of the interaction hue, never of a status |
+| `--c-ok-fg` / `--c-ok-bg` / `--c-ok-line` / `--c-ok-solid` | `#0C5F4A` / `#DCEDE8` / `#7FBBAB` / `#0F6E55` | **Meets requirements** — teal, hue 164° |
+| `--c-warn-fg` / `--c-warn-bg` / `--c-warn-line` / `--c-warn-solid` | `#6B5507` / `#F2EBCE` / `#C6B370` / `#7A6209` | **Expiring** — olive-gold, hue 47° |
+| `--c-ast-fg` / `--c-ast-bg` / `--c-ast-line` / `--c-ast-solid` | `#4F3D06` / `#EDE3C0` / `#B7A25E` / `#5E4907` | **Claimed, not evidenced** — the Expiring hue, one step deeper (45°). No fifth hue: see §6.4 |
+| `--c-gap-fg` / `--c-gap-bg` / `--c-gap-line` / `--c-gap-solid` | `#A01739` / `#F8E1E7` / `#DFA0B2` / `#B01A40` | **Gap** — crimson, hue 345° |
+| `--c-rev-fg` / `--c-rev-bg` / `--c-rev-line` | `#3D4F66` / `#E3E9F1` / `#A6B5C7` | **Needs review** |
+| `--c-nc-fg` / `--c-nc-line` | `var(--c-ink-muted)` / `var(--c-line-strong)` | **Not checked** — achromatic on purpose |
+| `--c-none-fg` / `--c-none-line` | `var(--c-ink-muted)` / `var(--c-line-strong)`, dashed | **No certificate** — achromatic on purpose |
+| `--c-on-ink` / `--c-on-solid` | `#FFFFFF` | text on an ink fill and on a solid status fill |
 
 ### 6.3 Tokens — dark
 
@@ -535,31 +585,56 @@ inverted red goes pink. Same names, same meanings.
 | `--c-ink` / `--c-ink-strong` | `#E9ECF2` / `#F4F6F9` | never `#FFFFFF` on a dark ground |
 | `--c-ink-muted` / `--c-ink-faint` / `--c-ink-disabled` | `#A7B3C4` / `#8B98AB` / `#67748A` | |
 | `--c-link` / `--c-focus` / `--c-link-hover` | `#8FB4F5` / `#8FB4F5` / `#B3CCFA` | |
+| `--c-action` / `--c-action-hover` / `--c-on-action` | `#8FB4F5` / `#B3CCFA` / `#0B1220` | the primary button inverts its label, like every fill in dark |
 | `--c-select-bg` | `#1B2740` | selected row |
-| Covered | `#69D19B` / `#193B2C` / `#2E6247` / `#69D19B` | fg / bg / line / solid |
-| Expiring | `#EFBE72` / `#382B12` / `#6B5324` / `#EFBE72` | |
-| Gap | `#FF9E90` / `#43221C` / `#7A3229` / `#FF9E90` | |
+| Meets requirements | `#5FD3B0` / `#0F3A30` / `#2A6B5B` / `#5FD3B0` | fg / bg / line / solid |
+| Expiring | `#E5C267` / `#332B10` / `#665521` / `#E5C267` | |
+| Claimed, not evidenced | `#CBA855` / `#322813` / `#60501E` / `#CBA855` | the Expiring hue, one step deeper, exactly as in light |
+| Gap | `#FF97AE` / `#40202A` / `#78323F` / `#FF97AE` | |
 | Needs review | `#AEBACB` / `#243044` / `#3A4759` | |
+| Not checked / No certificate | `#A7B3C4` / `#5E7090` | fg / edge, achromatic, no tint |
 | `--c-on-ink` / `--c-on-solid` | `#0B1220` | on a light status fill in dark mode, ink is the *dark* value |
 
 ### 6.4 Colour-independence — the rule that makes the traffic light defensible
 
-Because all four status foregrounds must clear 4.5:1 against the *same* white, their luminances are forced
-together: the tables below show the four status fills sitting within about **1.36:1 of each other in
-greyscale**. That is not a flaw to fix; it is arithmetic. It means **colour cannot be the carrier of
-meaning in this system**, and the design is built accordingly. Every status carries four independent
-signals:
+**Seven states, because the engine emits seven.** `REVIEW.md` B-03 found the identity carrying four while
+the comparison engine emitted `met`, `gap`, `asserted_only`, `not_checked` and `needs_review` at
+requirement level and added `expiring` and `no_certificate` at vendor level. The canonical lists are
+`REVIEW.md §2.2`; the identity now covers all of them.
 
-| status | word | glyph | fill pattern | hue |
+Because the chromatic status foregrounds must clear 4.5:1 against the *same* white, their luminances are
+forced together: the tables in §6.5 show the four chromatic fills sitting within **1.47:1 of each other in
+greyscale** in light and **1.32:1** in dark.
+That is not a flaw to fix; it is arithmetic. It means **colour cannot be the carrier of meaning in this
+system**, and the design is built accordingly. Every status carries four independent signals:
+
+| state | word | glyph | fill pattern | hue |
 |---|---|---|---|---|
-| **Covered** | "Covered" | check inside a filled disc | **solid** | green |
-| **Expiring** | "Expiring in N days" | clock inside a ring | **45° hatch** | amber |
-| **Gap** | "Gap" | slash inside a hollow disc | **open, with a dashed edge** | red |
-| **Needs review** | "Needs review" | question mark in a square | **dotted** | slate |
+| `met` | **"Meets"** / "Meets requirements" | check inside a **filled disc** | **solid** | teal 164° |
+| `expiring` | "Expiring in N days" | clock inside a **ring** | **45° hatch** | olive-gold 47° |
+| `asserted_only` | **"Claimed, not evidenced"** | **half-filled disc** | **vertical hatch** | the Expiring hue, one step deeper (45°) |
+| `gap` | "Gap" | slash inside a **hollow disc** | **open, dashed edge** | crimson 345° |
+| `needs_review` | "Needs review" | question mark in a **square** | **dot grid** | slate |
+| `not_checked` | "Not checked" | **em dash, no container** | **open, hairline edge** | none — achromatic |
+| `no_certificate` | "No certificate" | **empty document outline** | **open, single diagonal rule** | none — achromatic |
 
-`contrast.py` hard-fails if the glyph, the pattern or the word is ever duplicated across two statuses.
-A greyscale print of the gap report — which is what a board packet or an audit file actually is — remains
-readable, because the pattern and the word survive the photocopier.
+**Three deliberate decisions in that table.**
+
+1. **`asserted_only` shares the Expiring hue.** A ticked `ADDL INSD` box with no endorsement page
+   attached is a *kind of caution*, not a new meaning, and §6.1 allows no fifth hue. It is separated by
+   the **half-filled disc** that `LANDING_SPEC.md §5 V1` calls the product's logo-equivalent, by a
+   **vertical** hatch — the one pattern whose rules run with gravity, so it can never be read as
+   Expiring's 45° hatch — and by its word. This is the reviewer's own proposal, adopted.
+2. **`not_checked` and `no_certificate` carry no chroma at all.** Neither is a judgement about a party:
+   one means the requirement has not been run, the other means nothing has arrived. Giving them a hue
+   would make the interface accuse somebody of something it has not checked.
+3. **`not_checked` is the only glyph with no container**, so the seven silhouettes stay separable at
+   12px: three discs, one ring, one square, one document, one bare rule.
+
+`contrast.py` hard-fails if the glyph, the pattern or the word is ever duplicated across two states, so
+the guarantee extends automatically to any state added later. A greyscale print of the gap report — which
+is what a board packet or an audit file actually is — remains readable, because the pattern and the word
+survive the photocopier.
 
 **The separator rule.** In the coverage bar, adjacent segments are separated by a 1px line in
 `--c-surface`. Each segment therefore contrasts against the *surface* (5.5:1 to 6.7:1, see the tables)
@@ -573,58 +648,76 @@ overstates the measured contrast. Levels: **AA** = 4.5 (body text), **AA-lg** = 
 **UI** = 3.0 (WCAG 1.4.11 non-text), **HOUSE** = 1.15 (an in-house perceptibility floor for tints and
 hairlines that carry no meaning on their own — declared as a house rule, not as a WCAG level).
 
-Regenerate with `python3 identity/contrast.py --md`. The script exits non-zero on any failure.
+Regenerate with `python3 identity/contrast.py --md`. The script exits non-zero on any failure — and on a
+duplicated status glyph, pattern or word. **Everything below this line is script output, pasted
+verbatim; `REVIEW.md` B-15 exists because it once was not.**
 
 **Light theme**
 
 | foreground | bg | ratio | required | verdict | what it is |
 |---|---|---:|---:|---|---|
-| `--c-ink` `#0F1A2B` | `--c-paper` `#F3F3EE` | **15.68:1** | 4.5 (AA) | PASS | body text on the app ground |
+| `--c-ink` `#0F1A2B` | `--c-paper` `#E8EEF6` | **14.95:1** | 4.5 (AA) | PASS | body text on the app ground |
 | `--c-ink` `#0F1A2B` | `--c-surface` `#FFFFFF` | **17.45:1** | 4.5 (AA) | PASS | body text on a card |
 | `--c-ink-strong` `#1B2941` | `--c-surface` `#FFFFFF` | **14.58:1** | 4.5 (AA) | PASS | headings on a card |
-| `--c-ink-muted` `#495A73` | `--c-paper` `#F3F3EE` | **6.30:1** | 4.5 (AA) | PASS | secondary text on the ground |
+| `--c-ink-muted` `#495A73` | `--c-paper` `#E8EEF6` | **6.01:1** | 4.5 (AA) | PASS | secondary text on the ground |
 | `--c-ink-muted` `#495A73` | `--c-surface` `#FFFFFF` | **7.01:1** | 4.5 (AA) | PASS | secondary text on a card |
 | `--c-ink-faint` `#6E7C91` | `--c-surface` `#FFFFFF` | **4.23:1** | 3.0 (AA-lg) | PASS | table meta / timestamps (large text only) |
 | `--c-link` `#14458C` | `--c-surface` `#FFFFFF` | **9.29:1** | 4.5 (AA) | PASS | link text on a card |
-| `--c-link` `#14458C` | `--c-paper` `#F3F3EE` | **8.34:1** | 4.5 (AA) | PASS | link text on the ground |
-| `--c-on-ink` `#FFFFFF` | `--c-ink` `#0F1A2B` | **17.45:1** | 4.5 (AA) | PASS | label on the primary button |
-| `--c-ink` `#0F1A2B` | `--c-sunken` `#E7E7E0` | **14.05:1** | 4.5 (AA) | PASS | text in a sunken well (document viewport, note) |
-| `--c-ink-muted` `#495A73` | `--c-sunken` `#E7E7E0` | **5.64:1** | 4.5 (AA) | PASS | the note block's secondary text |
-| `--c-ink` `#0F1A2B` | `--c-select-bg` `#EDF2FA` | **15.53:1** | 4.5 (AA) | PASS | text in a selected table row |
+| `--c-link` `#14458C` | `--c-paper` `#E8EEF6` | **7.96:1** | 4.5 (AA) | PASS | link text on the ground |
+| `--c-on-action` `#FFFFFF` | `--c-action` `#14458C` | **9.29:1** | 4.5 (AA) | PASS | label on the primary button |
+| `--c-on-action` `#FFFFFF` | `--c-action-hover` `#0E3266` | **12.59:1** | 4.5 (AA) | PASS | label on the primary button, hover |
+| `--c-on-ink` `#FFFFFF` | `--c-ink` `#0F1A2B` | **17.45:1** | 4.5 (AA) | PASS | label on an ink fill (report rule, badge) |
+| `--c-ink` `#0F1A2B` | `--c-sunken` `#DEE7F1` | **13.97:1** | 4.5 (AA) | PASS | text in a sunken well (document viewport, note) |
+| `--c-ink-muted` `#495A73` | `--c-sunken` `#DEE7F1` | **5.61:1** | 4.5 (AA) | PASS | the note block's secondary text |
+| `--c-ink` `#0F1A2B` | `--c-select-bg` `#DCE7FA` | **14.01:1** | 4.5 (AA) | PASS | text in a selected table row |
+| `--c-action` `#14458C` | `--c-surface` `#FFFFFF` | **9.29:1** | 3.0 (UI) | PASS | primary button edge against a card |
+| `--c-action` `#14458C` | `--c-paper` `#E8EEF6` | **7.96:1** | 3.0 (UI) | PASS | primary button edge against the ground |
 | `--c-focus` `#14458C` | `--c-surface` `#FFFFFF` | **9.29:1** | 3.0 (UI) | PASS | focus ring against a card |
-| `--c-focus` `#14458C` | `--c-paper` `#F3F3EE` | **8.34:1** | 3.0 (UI) | PASS | focus ring against the ground |
-| `--c-line-strong` `#85857A` | `--c-surface` `#FFFFFF` | **3.72:1** | 3.0 (UI) | PASS | input border on a card |
-| `--c-line-strong` `#85857A` | `--c-paper` `#F3F3EE` | **3.34:1** | 3.0 (UI) | PASS | input border on the ground |
-| `--c-line-strong` `#85857A` | `--c-sunken` `#E7E7E0` | **3.00:1** | 3.0 (UI) | PASS | the upload drop-zone border on its well |
+| `--c-focus` `#14458C` | `--c-paper` `#E8EEF6` | **7.96:1** | 3.0 (UI) | PASS | focus ring against the ground |
+| `--c-line-strong` `#718094` | `--c-surface` `#FFFFFF` | **4.02:1** | 3.0 (UI) | PASS | input border on a card |
+| `--c-line-strong` `#718094` | `--c-paper` `#E8EEF6` | **3.44:1** | 3.0 (UI) | PASS | input border on the ground |
+| `--c-line-strong` `#718094` | `--c-sunken` `#DEE7F1` | **3.22:1** | 3.0 (UI) | PASS | the upload drop-zone border on its well |
 | `--c-ink-disabled` `#828E9E` | `--c-surface` `#FFFFFF` | **3.32:1** | 3.0 (UI) | PASS | disabled control ink (1.4.11-exempt; held anyway) |
-| `--c-ok-fg` `#14603A` | `--c-ok-bg` `#E2EFE7` | **6.41:1** | 4.5 (AA) | PASS | COVERED pill text |
-| `--c-warn-fg` `#7A4A05` | `--c-warn-bg` `#FBEBD3` | **6.38:1** | 4.5 (AA) | PASS | EXPIRING pill text |
-| `--c-gap-fg` `#A11F14` | `--c-gap-bg` `#FBE5E2` | **6.39:1** | 4.5 (AA) | PASS | GAP pill text |
-| `--c-rev-fg` `#3D4F66` | `--c-rev-bg` `#E8ECF1` | **7.05:1** | 4.5 (AA) | PASS | NEEDS REVIEW pill text |
-| `--c-ok-fg` `#14603A` | `--c-surface` `#FFFFFF` | **7.59:1** | 4.5 (AA) | PASS | COVERED text in a table cell |
-| `--c-warn-fg` `#7A4A05` | `--c-surface` `#FFFFFF` | **7.47:1** | 4.5 (AA) | PASS | EXPIRING text in a table cell |
-| `--c-gap-fg` `#A11F14` | `--c-surface` `#FFFFFF` | **7.71:1** | 4.5 (AA) | PASS | GAP text in a table cell |
-| `--c-ok-fg` `#14603A` | `--c-paper` `#F3F3EE` | **6.82:1** | 4.5 (AA) | PASS | COVERED text on the ground |
-| `--c-warn-fg` `#7A4A05` | `--c-paper` `#F3F3EE` | **6.71:1** | 4.5 (AA) | PASS | EXPIRING text on the ground |
-| `--c-gap-fg` `#A11F14` | `--c-paper` `#F3F3EE` | **6.93:1** | 4.5 (AA) | PASS | GAP text on the ground |
-| `--c-ok-solid` `#17703F` | `--c-surface` `#FFFFFF` | **6.12:1** | 3.0 (UI) | PASS | COVERED dot / coverage-bar segment on a card |
-| `--c-warn-solid` `#8A5406` | `--c-surface` `#FFFFFF` | **6.26:1** | 3.0 (UI) | PASS | EXPIRING dot / coverage-bar segment on a card |
-| `--c-gap-solid` `#B02418` | `--c-surface` `#FFFFFF` | **6.74:1** | 3.0 (UI) | PASS | GAP dot / coverage-bar segment on a card |
-| `--c-ok-solid` `#17703F` | `--c-paper` `#F3F3EE` | **5.50:1** | 3.0 (UI) | PASS | COVERED segment on the ground |
-| `--c-warn-solid` `#8A5406` | `--c-paper` `#F3F3EE` | **5.62:1** | 3.0 (UI) | PASS | EXPIRING segment on the ground |
-| `--c-gap-solid` `#B02418` | `--c-paper` `#F3F3EE` | **6.06:1** | 3.0 (UI) | PASS | GAP segment on the ground |
-| `--c-on-solid` `#FFFFFF` | `--c-ok-solid` `#17703F` | **6.12:1** | 4.5 (AA) | PASS | text on a solid COVERED fill |
-| `--c-on-solid` `#FFFFFF` | `--c-gap-solid` `#B02418` | **6.74:1** | 4.5 (AA) | PASS | text on a solid GAP fill |
-| `--c-ok-bg` `#E2EFE7` | `--c-surface` `#FFFFFF` | **1.18:1** | 1.1 (HOUSE) | PASS | COVERED tint against the card |
-| `--c-warn-bg` `#FBEBD3` | `--c-surface` `#FFFFFF` | **1.17:1** | 1.1 (HOUSE) | PASS | EXPIRING tint against the card |
-| `--c-gap-bg` `#FBE5E2` | `--c-surface` `#FFFFFF` | **1.20:1** | 1.1 (HOUSE) | PASS | GAP tint against the card |
-| `--c-rev-bg` `#E8ECF1` | `--c-surface` `#FFFFFF` | **1.18:1** | 1.1 (HOUSE) | PASS | NEEDS REVIEW tint against the card |
-| `--c-ok-line` `#8FBFA3` | `--c-surface` `#FFFFFF` | **2.06:1** | 1.1 (HOUSE) | PASS | COVERED pill hairline against the card |
-| `--c-warn-line` `#DCB271` | `--c-surface` `#FFFFFF` | **1.97:1** | 1.1 (HOUSE) | PASS | EXPIRING pill hairline against the card |
-| `--c-gap-line` `#E3A69D` | `--c-surface` `#FFFFFF` | **2.05:1** | 1.1 (HOUSE) | PASS | GAP pill hairline against the card |
-| `--c-rev-line` `#ADBAC9` | `--c-surface` `#FFFFFF` | **1.97:1** | 1.1 (HOUSE) | PASS | NEEDS REVIEW pill hairline against the card |
-| `--c-line` `#D5D5CC` | `--c-surface` `#FFFFFF` | **1.47:1** | 1.1 (HOUSE) | PASS | table rule against the card |
-| `--c-line` `#D5D5CC` | `--c-paper` `#F3F3EE` | **1.32:1** | 1.1 (HOUSE) | PASS | table rule against the ground |
+| `--c-ok-fg` `#0C5F4A` | `--c-ok-bg` `#DCEDE8` | **6.29:1** | 4.5 (AA) | PASS | COVERED pill text |
+| `--c-warn-fg` `#6B5507` | `--c-warn-bg` `#F2EBCE` | **5.99:1** | 4.5 (AA) | PASS | EXPIRING pill text |
+| `--c-gap-fg` `#A01739` | `--c-gap-bg` `#F8E1E7` | **6.32:1** | 4.5 (AA) | PASS | GAP pill text |
+| `--c-rev-fg` `#3D4F66` | `--c-rev-bg` `#E3E9F1` | **6.85:1** | 4.5 (AA) | PASS | NEEDS REVIEW pill text |
+| `--c-ast-fg` `#4F3D06` | `--c-ast-bg` `#EDE3C0` | **8.16:1** | 4.5 (AA) | PASS | CLAIMED, NOT EVIDENCED pill text |
+| `--c-nc-fg` `#495A73` | `--c-surface` `#FFFFFF` | **7.01:1** | 4.5 (AA) | PASS | NOT CHECKED / NO CERTIFICATE pill text on a card |
+| `--c-nc-fg` `#495A73` | `--c-paper` `#E8EEF6` | **6.01:1** | 4.5 (AA) | PASS | NOT CHECKED / NO CERTIFICATE pill text on the ground |
+| `--c-ok-fg` `#0C5F4A` | `--c-surface` `#FFFFFF` | **7.63:1** | 4.5 (AA) | PASS | COVERED text in a table cell |
+| `--c-warn-fg` `#6B5507` | `--c-surface` `#FFFFFF` | **7.17:1** | 4.5 (AA) | PASS | EXPIRING text in a table cell |
+| `--c-gap-fg` `#A01739` | `--c-surface` `#FFFFFF` | **7.84:1** | 4.5 (AA) | PASS | GAP text in a table cell |
+| `--c-ok-fg` `#0C5F4A` | `--c-paper` `#E8EEF6` | **6.53:1** | 4.5 (AA) | PASS | COVERED text on the ground |
+| `--c-warn-fg` `#6B5507` | `--c-paper` `#E8EEF6` | **6.14:1** | 4.5 (AA) | PASS | EXPIRING text on the ground |
+| `--c-gap-fg` `#A01739` | `--c-paper` `#E8EEF6` | **6.72:1** | 4.5 (AA) | PASS | GAP text on the ground |
+| `--c-ast-fg` `#4F3D06` | `--c-surface` `#FFFFFF` | **10.48:1** | 4.5 (AA) | PASS | CLAIMED, NOT EVIDENCED text in a table cell |
+| `--c-ast-fg` `#4F3D06` | `--c-paper` `#E8EEF6` | **8.98:1** | 4.5 (AA) | PASS | CLAIMED, NOT EVIDENCED text on the ground |
+| `--c-ok-solid` `#0F6E55` | `--c-surface` `#FFFFFF` | **6.20:1** | 3.0 (UI) | PASS | COVERED dot / coverage-bar segment on a card |
+| `--c-warn-solid` `#7A6209` | `--c-surface` `#FFFFFF` | **5.86:1** | 3.0 (UI) | PASS | EXPIRING dot / coverage-bar segment on a card |
+| `--c-gap-solid` `#B01A40` | `--c-surface` `#FFFFFF` | **6.84:1** | 3.0 (UI) | PASS | GAP dot / coverage-bar segment on a card |
+| `--c-ok-solid` `#0F6E55` | `--c-paper` `#E8EEF6` | **5.32:1** | 3.0 (UI) | PASS | COVERED segment on the ground |
+| `--c-warn-solid` `#7A6209` | `--c-paper` `#E8EEF6` | **5.02:1** | 3.0 (UI) | PASS | EXPIRING segment on the ground |
+| `--c-gap-solid` `#B01A40` | `--c-paper` `#E8EEF6` | **5.86:1** | 3.0 (UI) | PASS | GAP segment on the ground |
+| `--c-on-solid` `#FFFFFF` | `--c-ok-solid` `#0F6E55` | **6.20:1** | 4.5 (AA) | PASS | text on a solid COVERED fill |
+| `--c-on-solid` `#FFFFFF` | `--c-gap-solid` `#B01A40` | **6.84:1** | 4.5 (AA) | PASS | text on a solid GAP fill |
+| `--c-ast-solid` `#5E4907` | `--c-surface` `#FFFFFF` | **8.63:1** | 3.0 (UI) | PASS | CLAIMED half-disc / bar segment on a card |
+| `--c-ast-solid` `#5E4907` | `--c-paper` `#E8EEF6` | **7.39:1** | 3.0 (UI) | PASS | CLAIMED half-disc / bar segment on the ground |
+| `--c-on-solid` `#FFFFFF` | `--c-ast-solid` `#5E4907` | **8.63:1** | 4.5 (AA) | PASS | text on a solid CLAIMED fill |
+| `--c-nc-line` `#718094` | `--c-surface` `#FFFFFF` | **4.02:1** | 3.0 (UI) | PASS | NOT CHECKED hairline edge on a card |
+| `--c-nc-line` `#718094` | `--c-paper` `#E8EEF6` | **3.44:1** | 3.0 (UI) | PASS | NO CERTIFICATE dashed edge on the ground |
+| `--c-ok-bg` `#DCEDE8` | `--c-surface` `#FFFFFF` | **1.21:1** | 1.1 (HOUSE) | PASS | COVERED tint against the card |
+| `--c-warn-bg` `#F2EBCE` | `--c-surface` `#FFFFFF` | **1.19:1** | 1.1 (HOUSE) | PASS | EXPIRING tint against the card |
+| `--c-gap-bg` `#F8E1E7` | `--c-surface` `#FFFFFF` | **1.24:1** | 1.1 (HOUSE) | PASS | GAP tint against the card |
+| `--c-rev-bg` `#E3E9F1` | `--c-surface` `#FFFFFF` | **1.22:1** | 1.1 (HOUSE) | PASS | NEEDS REVIEW tint against the card |
+| `--c-ok-line` `#7FBBAB` | `--c-surface` `#FFFFFF` | **2.18:1** | 1.1 (HOUSE) | PASS | COVERED pill hairline against the card |
+| `--c-warn-line` `#C6B370` | `--c-surface` `#FFFFFF` | **2.08:1** | 1.1 (HOUSE) | PASS | EXPIRING pill hairline against the card |
+| `--c-gap-line` `#DFA0B2` | `--c-surface` `#FFFFFF` | **2.14:1** | 1.1 (HOUSE) | PASS | GAP pill hairline against the card |
+| `--c-rev-line` `#A6B5C7` | `--c-surface` `#FFFFFF` | **2.08:1** | 1.1 (HOUSE) | PASS | NEEDS REVIEW pill hairline against the card |
+| `--c-ast-bg` `#EDE3C0` | `--c-surface` `#FFFFFF` | **1.28:1** | 1.1 (HOUSE) | PASS | CLAIMED tint against the card |
+| `--c-ast-line` `#B7A25E` | `--c-surface` `#FFFFFF` | **2.51:1** | 1.1 (HOUSE) | PASS | CLAIMED pill hairline against the card |
+| `--c-line` `#C7D3E0` | `--c-surface` `#FFFFFF` | **1.51:1** | 1.1 (HOUSE) | PASS | table rule against the card |
+| `--c-line` `#C7D3E0` | `--c-paper` `#E8EEF6` | **1.30:1** | 1.1 (HOUSE) | PASS | table rule against the ground |
 
 **Dark theme**
 
@@ -638,42 +731,58 @@ Regenerate with `python3 identity/contrast.py --md`. The script exits non-zero o
 | `--c-ink-faint` `#8B98AB` | `--c-surface` `#141D2C` | **5.77:1** | 3.0 (AA-lg) | PASS | table meta / timestamps (large text only) |
 | `--c-link` `#8FB4F5` | `--c-surface` `#141D2C` | **8.06:1** | 4.5 (AA) | PASS | link text on a card |
 | `--c-link` `#8FB4F5` | `--c-paper` `#0B1220` | **8.92:1** | 4.5 (AA) | PASS | link text on the ground |
-| `--c-on-ink` `#0B1220` | `--c-ink` `#E9ECF2` | **15.82:1** | 4.5 (AA) | PASS | label on the primary button |
+| `--c-on-action` `#0B1220` | `--c-action` `#8FB4F5` | **8.92:1** | 4.5 (AA) | PASS | label on the primary button |
+| `--c-on-action` `#0B1220` | `--c-action-hover` `#B3CCFA` | **11.53:1** | 4.5 (AA) | PASS | label on the primary button, hover |
+| `--c-on-ink` `#0B1220` | `--c-ink` `#E9ECF2` | **15.82:1** | 4.5 (AA) | PASS | label on an ink fill (report rule, badge) |
 | `--c-ink` `#E9ECF2` | `--c-sunken` `#0F1725` | **15.17:1** | 4.5 (AA) | PASS | text in a sunken well (document viewport, note) |
 | `--c-ink-muted` `#A7B3C4` | `--c-sunken` `#0F1725` | **8.45:1** | 4.5 (AA) | PASS | the note block's secondary text |
 | `--c-ink` `#E9ECF2` | `--c-select-bg` `#1B2740` | **12.57:1** | 4.5 (AA) | PASS | text in a selected table row |
+| `--c-action` `#8FB4F5` | `--c-surface` `#141D2C` | **8.06:1** | 3.0 (UI) | PASS | primary button edge against a card |
+| `--c-action` `#8FB4F5` | `--c-paper` `#0B1220` | **8.92:1** | 3.0 (UI) | PASS | primary button edge against the ground |
 | `--c-focus` `#8FB4F5` | `--c-surface` `#141D2C` | **8.06:1** | 3.0 (UI) | PASS | focus ring against a card |
 | `--c-focus` `#8FB4F5` | `--c-paper` `#0B1220` | **8.92:1** | 3.0 (UI) | PASS | focus ring against the ground |
 | `--c-line-strong` `#5E7090` | `--c-surface` `#141D2C` | **3.37:1** | 3.0 (UI) | PASS | input border on a card |
 | `--c-line-strong` `#5E7090` | `--c-paper` `#0B1220` | **3.74:1** | 3.0 (UI) | PASS | input border on the ground |
 | `--c-line-strong` `#5E7090` | `--c-sunken` `#0F1725` | **3.58:1** | 3.0 (UI) | PASS | the upload drop-zone border on its well |
 | `--c-ink-disabled` `#67748A` | `--c-surface` `#141D2C` | **3.57:1** | 3.0 (UI) | PASS | disabled control ink (1.4.11-exempt; held anyway) |
-| `--c-ok-fg` `#69D19B` | `--c-ok-bg` `#193B2C` | **6.57:1** | 4.5 (AA) | PASS | COVERED pill text |
-| `--c-warn-fg` `#EFBE72` | `--c-warn-bg` `#382B12` | **8.06:1** | 4.5 (AA) | PASS | EXPIRING pill text |
-| `--c-gap-fg` `#FF9E90` | `--c-gap-bg` `#43221C` | **7.10:1** | 4.5 (AA) | PASS | GAP pill text |
+| `--c-ok-fg` `#5FD3B0` | `--c-ok-bg` `#0F3A30` | **6.85:1** | 4.5 (AA) | PASS | COVERED pill text |
+| `--c-warn-fg` `#E5C267` | `--c-warn-bg` `#332B10` | **8.19:1** | 4.5 (AA) | PASS | EXPIRING pill text |
+| `--c-gap-fg` `#FF97AE` | `--c-gap-bg` `#40202A` | **7.05:1** | 4.5 (AA) | PASS | GAP pill text |
 | `--c-rev-fg` `#AEBACB` | `--c-rev-bg` `#243044` | **6.75:1** | 4.5 (AA) | PASS | NEEDS REVIEW pill text |
-| `--c-ok-fg` `#69D19B` | `--c-surface` `#141D2C` | **9.01:1** | 4.5 (AA) | PASS | COVERED text in a table cell |
-| `--c-warn-fg` `#EFBE72` | `--c-surface` `#141D2C` | **9.88:1** | 4.5 (AA) | PASS | EXPIRING text in a table cell |
-| `--c-gap-fg` `#FF9E90` | `--c-surface` `#141D2C` | **8.49:1** | 4.5 (AA) | PASS | GAP text in a table cell |
-| `--c-ok-fg` `#69D19B` | `--c-paper` `#0B1220` | **9.98:1** | 4.5 (AA) | PASS | COVERED text on the ground |
-| `--c-warn-fg` `#EFBE72` | `--c-paper` `#0B1220` | **10.94:1** | 4.5 (AA) | PASS | EXPIRING text on the ground |
-| `--c-gap-fg` `#FF9E90` | `--c-paper` `#0B1220` | **9.40:1** | 4.5 (AA) | PASS | GAP text on the ground |
-| `--c-ok-solid` `#69D19B` | `--c-surface` `#141D2C` | **9.01:1** | 3.0 (UI) | PASS | COVERED dot / coverage-bar segment on a card |
-| `--c-warn-solid` `#EFBE72` | `--c-surface` `#141D2C` | **9.88:1** | 3.0 (UI) | PASS | EXPIRING dot / coverage-bar segment on a card |
-| `--c-gap-solid` `#FF9E90` | `--c-surface` `#141D2C` | **8.49:1** | 3.0 (UI) | PASS | GAP dot / coverage-bar segment on a card |
-| `--c-ok-solid` `#69D19B` | `--c-paper` `#0B1220` | **9.98:1** | 3.0 (UI) | PASS | COVERED segment on the ground |
-| `--c-warn-solid` `#EFBE72` | `--c-paper` `#0B1220` | **10.94:1** | 3.0 (UI) | PASS | EXPIRING segment on the ground |
-| `--c-gap-solid` `#FF9E90` | `--c-paper` `#0B1220` | **9.40:1** | 3.0 (UI) | PASS | GAP segment on the ground |
-| `--c-on-solid` `#0B1220` | `--c-ok-solid` `#69D19B` | **9.98:1** | 4.5 (AA) | PASS | text on a solid COVERED fill |
-| `--c-on-solid` `#0B1220` | `--c-gap-solid` `#FF9E90` | **9.40:1** | 4.5 (AA) | PASS | text on a solid GAP fill |
-| `--c-ok-bg` `#193B2C` | `--c-surface` `#141D2C` | **1.37:1** | 1.1 (HOUSE) | PASS | COVERED tint against the card |
-| `--c-warn-bg` `#382B12` | `--c-surface` `#141D2C` | **1.22:1** | 1.1 (HOUSE) | PASS | EXPIRING tint against the card |
-| `--c-gap-bg` `#43221C` | `--c-surface` `#141D2C` | **1.19:1** | 1.1 (HOUSE) | PASS | GAP tint against the card |
+| `--c-ast-fg` `#CBA855` | `--c-ast-bg` `#322813` | **6.40:1** | 4.5 (AA) | PASS | CLAIMED, NOT EVIDENCED pill text |
+| `--c-nc-fg` `#A7B3C4` | `--c-surface` `#141D2C` | **7.96:1** | 4.5 (AA) | PASS | NOT CHECKED / NO CERTIFICATE pill text on a card |
+| `--c-nc-fg` `#A7B3C4` | `--c-paper` `#0B1220` | **8.81:1** | 4.5 (AA) | PASS | NOT CHECKED / NO CERTIFICATE pill text on the ground |
+| `--c-ok-fg` `#5FD3B0` | `--c-surface` `#141D2C` | **9.20:1** | 4.5 (AA) | PASS | COVERED text in a table cell |
+| `--c-warn-fg` `#E5C267` | `--c-surface` `#141D2C` | **9.85:1** | 4.5 (AA) | PASS | EXPIRING text in a table cell |
+| `--c-gap-fg` `#FF97AE` | `--c-surface` `#141D2C` | **8.28:1** | 4.5 (AA) | PASS | GAP text in a table cell |
+| `--c-ok-fg` `#5FD3B0` | `--c-paper` `#0B1220` | **10.19:1** | 4.5 (AA) | PASS | COVERED text on the ground |
+| `--c-warn-fg` `#E5C267` | `--c-paper` `#0B1220` | **10.91:1** | 4.5 (AA) | PASS | EXPIRING text on the ground |
+| `--c-gap-fg` `#FF97AE` | `--c-paper` `#0B1220` | **9.17:1** | 4.5 (AA) | PASS | GAP text on the ground |
+| `--c-ast-fg` `#CBA855` | `--c-surface` `#141D2C` | **7.46:1** | 4.5 (AA) | PASS | CLAIMED, NOT EVIDENCED text in a table cell |
+| `--c-ast-fg` `#CBA855` | `--c-paper` `#0B1220` | **8.26:1** | 4.5 (AA) | PASS | CLAIMED, NOT EVIDENCED text on the ground |
+| `--c-ok-solid` `#5FD3B0` | `--c-surface` `#141D2C` | **9.20:1** | 3.0 (UI) | PASS | COVERED dot / coverage-bar segment on a card |
+| `--c-warn-solid` `#E5C267` | `--c-surface` `#141D2C` | **9.85:1** | 3.0 (UI) | PASS | EXPIRING dot / coverage-bar segment on a card |
+| `--c-gap-solid` `#FF97AE` | `--c-surface` `#141D2C` | **8.28:1** | 3.0 (UI) | PASS | GAP dot / coverage-bar segment on a card |
+| `--c-ok-solid` `#5FD3B0` | `--c-paper` `#0B1220` | **10.19:1** | 3.0 (UI) | PASS | COVERED segment on the ground |
+| `--c-warn-solid` `#E5C267` | `--c-paper` `#0B1220` | **10.91:1** | 3.0 (UI) | PASS | EXPIRING segment on the ground |
+| `--c-gap-solid` `#FF97AE` | `--c-paper` `#0B1220` | **9.17:1** | 3.0 (UI) | PASS | GAP segment on the ground |
+| `--c-on-solid` `#0B1220` | `--c-ok-solid` `#5FD3B0` | **10.19:1** | 4.5 (AA) | PASS | text on a solid COVERED fill |
+| `--c-on-solid` `#0B1220` | `--c-gap-solid` `#FF97AE` | **9.17:1** | 4.5 (AA) | PASS | text on a solid GAP fill |
+| `--c-ast-solid` `#CBA855` | `--c-surface` `#141D2C` | **7.46:1** | 3.0 (UI) | PASS | CLAIMED half-disc / bar segment on a card |
+| `--c-ast-solid` `#CBA855` | `--c-paper` `#0B1220` | **8.26:1** | 3.0 (UI) | PASS | CLAIMED half-disc / bar segment on the ground |
+| `--c-on-solid` `#0B1220` | `--c-ast-solid` `#CBA855` | **8.26:1** | 4.5 (AA) | PASS | text on a solid CLAIMED fill |
+| `--c-nc-line` `#5E7090` | `--c-surface` `#141D2C` | **3.37:1** | 3.0 (UI) | PASS | NOT CHECKED hairline edge on a card |
+| `--c-nc-line` `#5E7090` | `--c-paper` `#0B1220` | **3.74:1** | 3.0 (UI) | PASS | NO CERTIFICATE dashed edge on the ground |
+| `--c-ok-bg` `#0F3A30` | `--c-surface` `#141D2C` | **1.34:1** | 1.1 (HOUSE) | PASS | COVERED tint against the card |
+| `--c-warn-bg` `#332B10` | `--c-surface` `#141D2C` | **1.20:1** | 1.1 (HOUSE) | PASS | EXPIRING tint against the card |
+| `--c-gap-bg` `#40202A` | `--c-surface` `#141D2C` | **1.17:1** | 1.1 (HOUSE) | PASS | GAP tint against the card |
 | `--c-rev-bg` `#243044` | `--c-surface` `#141D2C` | **1.27:1** | 1.1 (HOUSE) | PASS | NEEDS REVIEW tint against the card |
-| `--c-ok-line` `#2E6247` | `--c-surface` `#141D2C` | **2.37:1** | 1.1 (HOUSE) | PASS | COVERED pill hairline against the card |
-| `--c-warn-line` `#6B5324` | `--c-surface` `#141D2C` | **2.32:1** | 1.1 (HOUSE) | PASS | EXPIRING pill hairline against the card |
-| `--c-gap-line` `#7A3229` | `--c-surface` `#141D2C` | **1.86:1** | 1.1 (HOUSE) | PASS | GAP pill hairline against the card |
+| `--c-ok-line` `#2A6B5B` | `--c-surface` `#141D2C` | **2.69:1** | 1.1 (HOUSE) | PASS | COVERED pill hairline against the card |
+| `--c-warn-line` `#665521` | `--c-surface` `#141D2C` | **2.32:1** | 1.1 (HOUSE) | PASS | EXPIRING pill hairline against the card |
+| `--c-gap-line` `#78323F` | `--c-surface` `#141D2C` | **1.87:1** | 1.1 (HOUSE) | PASS | GAP pill hairline against the card |
 | `--c-rev-line` `#3A4759` | `--c-surface` `#141D2C` | **1.79:1** | 1.1 (HOUSE) | PASS | NEEDS REVIEW pill hairline against the card |
+| `--c-ast-bg` `#322813` | `--c-surface` `#141D2C` | **1.16:1** | 1.1 (HOUSE) | PASS | CLAIMED tint against the card |
+| `--c-ast-line` `#60501E` | `--c-surface` `#141D2C` | **2.14:1** | 1.1 (HOUSE) | PASS | CLAIMED pill hairline against the card |
 | `--c-line` `#2A3547` | `--c-surface` `#141D2C` | **1.36:1** | 1.1 (HOUSE) | PASS | table rule against the card |
 | `--c-line` `#2A3547` | `--c-paper` `#0B1220` | **1.51:1** | 1.1 (HOUSE) | PASS | table rule against the ground |
 
@@ -681,39 +790,73 @@ Regenerate with `python3 identity/contrast.py --md`. The script exits non-zero o
 
 | status | fill | relative luminance | glyph | fill pattern | word |
 |---|---|---:|---|---|---|
-| covered | `#17703F` | 0.1213 | check in a filled disc | solid | Covered |
-| expiring | `#8A5406` | 0.1176 | clock in a ring | 45-degree hatch | Expiring |
-| gap | `#B02418` | 0.1056 | slash in a hollow disc | open with a dashed edge | Gap |
-| needs-review | `#3D4F66` | 0.0754 | question in a square | dotted | Needs review |
+| meets | `#0F6E55` | 0.1191 | check in a filled disc | solid | Meets |
+| expiring | `#7A6209` | 0.1289 | clock in a ring | 45-degree hatch | Expiring |
+| asserted-only | `#5E4907` | 0.0716 | half-filled disc | vertical hatch | Claimed, not evidenced |
+| gap | `#B01A40` | 0.1034 | slash in a hollow disc | open, dashed edge | Gap |
+| needs-review | `#3D4F66` | 0.0754 | question in a square | dot grid | Needs review |
+| not-checked | `#495A73` | 0.0997 | em dash, no container | open, hairline edge | Not checked |
+| no-certificate | `#718094` | 0.2109 | empty document outline | open, single diagonal rule | No certificate |
 
 | pair | greyscale ratio | note |
 |---|---:|---|
-| covered vs expiring | 1.02:1 | near-isoluminant — colour cannot be the carrier |
-| covered vs gap | 1.10:1 | near-isoluminant — colour cannot be the carrier |
-| covered vs needs-review | 1.36:1 | near-isoluminant — colour cannot be the carrier |
-| expiring vs gap | 1.07:1 | near-isoluminant — colour cannot be the carrier |
-| expiring vs needs-review | 1.33:1 | near-isoluminant — colour cannot be the carrier |
-| gap vs needs-review | 1.24:1 | near-isoluminant — colour cannot be the carrier |
+| meets vs expiring | 1.05:1 | near-isoluminant — colour cannot be the carrier |
+| meets vs asserted-only | 1.39:1 | near-isoluminant — colour cannot be the carrier |
+| meets vs gap | 1.10:1 | near-isoluminant — colour cannot be the carrier |
+| meets vs needs-review | 1.34:1 | near-isoluminant — colour cannot be the carrier |
+| meets vs not-checked | 1.12:1 | near-isoluminant — colour cannot be the carrier |
+| meets vs no-certificate | 1.54:1 | near-isoluminant — colour cannot be the carrier |
+| expiring vs asserted-only | 1.47:1 | near-isoluminant — colour cannot be the carrier |
+| expiring vs gap | 1.16:1 | near-isoluminant — colour cannot be the carrier |
+| expiring vs needs-review | 1.42:1 | near-isoluminant — colour cannot be the carrier |
+| expiring vs not-checked | 1.19:1 | near-isoluminant — colour cannot be the carrier |
+| expiring vs no-certificate | 1.45:1 | near-isoluminant — colour cannot be the carrier |
+| asserted-only vs gap | 1.26:1 | near-isoluminant — colour cannot be the carrier |
+| asserted-only vs needs-review | 1.03:1 | near-isoluminant — colour cannot be the carrier |
+| asserted-only vs not-checked | 1.23:1 | near-isoluminant — colour cannot be the carrier |
+| asserted-only vs no-certificate | 2.14:1 | near-isoluminant — colour cannot be the carrier |
+| gap vs needs-review | 1.22:1 | near-isoluminant — colour cannot be the carrier |
+| gap vs not-checked | 1.02:1 | near-isoluminant — colour cannot be the carrier |
+| gap vs no-certificate | 1.70:1 | near-isoluminant — colour cannot be the carrier |
+| needs-review vs not-checked | 1.19:1 | near-isoluminant — colour cannot be the carrier |
+| needs-review vs no-certificate | 2.07:1 | near-isoluminant — colour cannot be the carrier |
+| not-checked vs no-certificate | 1.74:1 | near-isoluminant — colour cannot be the carrier |
 
 **Dark theme — colour-independence (WCAG 1.4.1)**
 
 | status | fill | relative luminance | glyph | fill pattern | word |
 |---|---|---:|---|---|---|
-| covered | `#69D19B` | 0.5097 | check in a filled disc | solid | Covered |
-| expiring | `#EFBE72` | 0.5639 | clock in a ring | 45-degree hatch | Expiring |
-| gap | `#FF9E90` | 0.4773 | slash in a hollow disc | open with a dashed edge | Gap |
-| needs-review | `#AEBACB` | 0.4843 | question in a square | dotted | Needs review |
+| meets | `#5FD3B0` | 0.5216 | check in a filled disc | solid | Meets |
+| expiring | `#E5C267` | 0.5622 | clock in a ring | 45-degree hatch | Expiring |
+| asserted-only | `#CBA855` | 0.4136 | half-filled disc | vertical hatch | Claimed, not evidenced |
+| gap | `#FF97AE` | 0.4645 | slash in a hollow disc | open, dashed edge | Gap |
+| needs-review | `#AEBACB` | 0.4843 | question in a square | dot grid | Needs review |
+| not-checked | `#A7B3C4` | 0.4444 | em dash, no container | open, hairline edge | Not checked |
+| no-certificate | `#5E7090` | 0.1598 | empty document outline | open, single diagonal rule | No certificate |
 
 | pair | greyscale ratio | note |
 |---|---:|---|
-| covered vs expiring | 1.09:1 | near-isoluminant — colour cannot be the carrier |
-| covered vs gap | 1.06:1 | near-isoluminant — colour cannot be the carrier |
-| covered vs needs-review | 1.04:1 | near-isoluminant — colour cannot be the carrier |
-| expiring vs gap | 1.16:1 | near-isoluminant — colour cannot be the carrier |
+| meets vs expiring | 1.07:1 | near-isoluminant — colour cannot be the carrier |
+| meets vs asserted-only | 1.23:1 | near-isoluminant — colour cannot be the carrier |
+| meets vs gap | 1.11:1 | near-isoluminant — colour cannot be the carrier |
+| meets vs needs-review | 1.06:1 | near-isoluminant — colour cannot be the carrier |
+| meets vs not-checked | 1.15:1 | near-isoluminant — colour cannot be the carrier |
+| meets vs no-certificate | 2.72:1 | near-isoluminant — colour cannot be the carrier |
+| expiring vs asserted-only | 1.32:1 | near-isoluminant — colour cannot be the carrier |
+| expiring vs gap | 1.18:1 | near-isoluminant — colour cannot be the carrier |
 | expiring vs needs-review | 1.14:1 | near-isoluminant — colour cannot be the carrier |
-| gap vs needs-review | 1.01:1 | near-isoluminant — colour cannot be the carrier |
-
-All 104 declared pairs pass: 46 contrast + 6 greyscale, x 2 themes.
+| expiring vs not-checked | 1.23:1 | near-isoluminant — colour cannot be the carrier |
+| expiring vs no-certificate | 2.91:1 | near-isoluminant — colour cannot be the carrier |
+| asserted-only vs gap | 1.10:1 | near-isoluminant — colour cannot be the carrier |
+| asserted-only vs needs-review | 1.15:1 | near-isoluminant — colour cannot be the carrier |
+| asserted-only vs not-checked | 1.06:1 | near-isoluminant — colour cannot be the carrier |
+| asserted-only vs no-certificate | 2.20:1 | near-isoluminant — colour cannot be the carrier |
+| gap vs needs-review | 1.03:1 | near-isoluminant — colour cannot be the carrier |
+| gap vs not-checked | 1.04:1 | near-isoluminant — colour cannot be the carrier |
+| gap vs no-certificate | 2.45:1 | near-isoluminant — colour cannot be the carrier |
+| needs-review vs not-checked | 1.08:1 | near-isoluminant — colour cannot be the carrier |
+| needs-review vs no-certificate | 2.54:1 | near-isoluminant — colour cannot be the carrier |
+| not-checked vs no-certificate | 2.35:1 | near-isoluminant — colour cannot be the carrier |
 
 ---
 
@@ -722,30 +865,46 @@ All 104 declared pairs pass: 46 contrast + 6 greyscale, x 2 themes.
 
 ### 7.1 Families
 
-Two families, from Google Fonts, self-describing about what they are for. Note that this is a deliberate
-divergence from Clausewright, which loads **no** web fonts at all: Clausewright optimises for a panicking
-seller on mobile data at 2am, while Certly is a desk tool opened for a working session, so the one-time
-font cost buys a typographic identity that a system stack cannot.
+Two families, from Google Fonts, self-describing about what they are for, and **allocated to Certly
+exclusively by `../IDENTITY_ARBITRATION.md §3.1`** — no sibling app may use either. Note that this is a
+deliberate divergence from Clausewright, which loads **no** web fonts at all: Clausewright optimises for a
+panicking seller on mobile data at 2am, while Certly is a desk tool opened for a working session, so the
+one-time font cost buys a typographic identity that a system stack cannot.
 
 | token | stack | used for |
 |---|---|---|
-| `--c-font-ui` | `"Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif` | all interface text, headings, buttons, labels, body |
-| `--c-font-num` | `"IBM Plex Mono", ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace` | **every figure the buyer compares**: limits, dates, policy numbers, confidence values, the coverage-bar axis |
+| `--c-font-ui` | `"Source Sans 3", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif` | all interface text, headings, buttons, labels, body |
+| `--c-font-num` | `"Source Code Pro", ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace` | **every figure the buyer compares**: limits, dates, policy numbers, confidence values, the coverage-bar axis |
 
-**Why Public Sans.** It is the **default sans-serif of the U.S. Web Design System**, shipped as the token
-`$theme-font-type-sans: 'public-sans'` for "body text and user interface typography" `[G7]`. For a product
-whose entire subject matter is American insurance paperwork, that lineage is a quiet competence signal
-rather than a fashion choice. It is also emphatically *not* Inter, which is the default of the category we
-are differentiating from. (USWDS does not state who designed the face, so no authorship claim is made
-here — only its role `[G7]`.)
+**Why Source Sans 3.** Three reasons, in the order they should be weighed.
+
+1. **It is the register of the buyer's own stack without being any single tool in it.** Read out of their
+   served markup on 2026-09-03: Buildium ships **Open Sans**, Rent Manager ships **Lato**, CINC Systems
+   ships **Inter** (`../IDENTITY_ARBITRATION.md §2.4`). Those are humanist, open-aperture, small-size UI
+   faces, and Source Sans 3 is the same family of thing — drawn by Adobe for its own interfaces, which is
+   the right lineage for a screen this buyer reads between two phone calls (`PERSONA.md §2.10`).
+2. **It separates from its sibling at a glance.** Source Sans has a **single-storey `g`** and humanist,
+   angled terminals; Public Sans is a Franklin-derived grotesque with a double-storey `g`. That is a
+   skeletal difference a reader registers without being able to name it, which is what the founder's
+   requirement actually asks for.
+3. **It is not Inter.** The previous version of this section made that point about Public Sans and it
+   still holds: Inter is the default of the category we are differentiating from, and CINC ships it.
+
+**What was given up, and why that is acceptable.** Public Sans's USWDS lineage was a real argument and it
+now belongs to WageLens, whose output artefact is an actual US federal form (WH-347, OMB 1235-0008). Ours
+is the **ACORD 25**, published by ACORD — a private standards body, not a government — so the lineage
+argument was always weaker here than it looked. See `../IDENTITY_ARBITRATION.md §2` Option B, where
+rotating the government face to Certly was considered and rejected for exactly this reason.
 
 **Why a mono for figures.** The buyer's core act is comparison: *is `$1,000,000` the same as
 `$2,000,000`?*, *is `09/12/2026` before or after `09/30/2026`?* Proportional digits make columns of
-currency and dates ragged. IBM Plex Mono is monospaced by construction, so limits align without a table
-hack, and its slab-ish detailing reads as *form field*, which is exactly the world the ACORD 25 lives in.
+currency and dates ragged. **Source Code Pro** is monospaced by construction, so limits align without a
+table hack — and it is the designed superfamily partner of Source Sans 3, so a figure and the label beside
+it are cut from the same skeleton. That coherence is worth more here than IBM Plex Mono's slab detailing,
+which now belongs to WageLens's rendering of the WH-347.
 
-**Loading.** Exactly one stylesheet link, `fonts.googleapis.com`, weights `400;500;600;700` for Public
-Sans and `400;500;600` for IBM Plex Mono, `display=swap`. Every declaration carries the full fallback
+**Loading.** Exactly one stylesheet link, `fonts.googleapis.com`, weights `400;500;600;700` for Source
+Sans 3 and `400;500;600` for Source Code Pro, `display=swap`. Every declaration carries the full fallback
 stack so a blocked CDN degrades to a system sans and a system mono, not to Times.
 
 **Numerals.** `font-variant-numeric: tabular-nums lining-nums` on every figure, including inside the UI
@@ -841,15 +1000,21 @@ The set is small on purpose: document, upload, mail, calendar, clock, check, sla
 search, filter, download, link, plus, trash, building, hard-hat, shield-off. Anything not on that list
 needs a reason.
 
-**The four status glyphs are not ordinary icons.** They are the redundant encoding required by §6.4 and
-they are drawn to be distinguishable at 12px and in monochrome:
+**The seven status glyphs are not ordinary icons.** They are the redundant encoding required by §6.4 and
+they are drawn to be distinguishable at 12px and in monochrome. Seven silhouettes: three discs, one ring,
+one square, one document, one bare rule.
 
-- **Covered** — a check inside a **filled** disc. Solid mass = the state is complete.
+- **Meets requirements** — a check inside a **filled** disc. Solid mass = the state is complete.
 - **Expiring** — a clock inside a **ring**. The only glyph with an internal hand; the hand's angle is
   fixed, never animated (a moving clock is manufactured urgency).
+- **Claimed, not evidenced** — a **half-filled** disc: the box is ticked, the endorsement is not attached,
+  and the glyph says exactly that. `LANDING_SPEC.md §5 V1` calls it the product's logo-equivalent.
 - **Gap** — a diagonal slash inside a **hollow** disc with a dashed edge. The hole is the point.
-- **Needs review** — a question mark inside a **square**. Square, so it is separable from the three
-  circular states by silhouette alone.
+- **Needs review** — a question mark inside a **square**. Square, so it is separable from the disc states
+  by silhouette alone.
+- **Not checked** — an **em dash with no container at all**, the only glyph in the set that is not
+  enclosed. Nothing has been asserted, so nothing is drawn around it.
+- **No certificate** — an **empty document outline** with a folded corner. The artefact, absent.
 
 ### 9.2 The coverage bar — the signature device
 
@@ -872,8 +1037,10 @@ board, not of a decision about a roofer.
 
 ### 9.3 The portfolio strip
 
-The one aggregate visual: a single stacked bar of counts across the portfolio, in the same four statuses,
-with the same patterns, and the count printed inside each segment in `--c-font-num`. Segments below 6% of
+The one aggregate visual: a single stacked bar of counts across the portfolio, in the same seven states
+(§6.4), with the same patterns, and the count printed inside each segment in `--c-font-num`. The two
+achromatic states carry an inset hairline instead of a fill, so an unchecked party never reads as a
+judged one. Segments below 6% of
 the width drop their inline number and take a leader line. It sits at the top of the dashboard and it is
 the only chart in the product.
 
@@ -1002,6 +1169,12 @@ party marked inactive). Bulk selection enables one action only: **Chase selected
 `--c-text-2xs` uppercase, +0.04em, the glyph, the word, and for Expiring the day count. 1px
 `--c-*-line` border, `--c-*-bg` fill, `--c-*-fg` text. Never used without a date nearby.
 
+**Seven modifiers, one per state (§6.4):** `--ok` (MEETS), `--warn` (EXPIRING), `--ast` (CLAIMED, NOT
+EVIDENCED), `--gap` (GAP), `--rev` (NEEDS REVIEW), `--nc` (NOT CHECKED) and `--none` (NO CERTIFICATE).
+The last two carry **no fill** — a hairline edge and a dashed edge respectively — because neither is a
+judgement about a party. The matching `.c-dot--*` and `.c-bar__seg--*` modifiers exist for every state,
+so a status can never be rendered outside the encoding.
+
 ### 12.8 Coverage bar — `.c-bar`
 Per §9.2. Two sizes (`--sm` 8px in a table row, default 12px on a detail page). Always
 `role="img"` with a sentence-form `aria-label`.
@@ -1024,7 +1197,7 @@ party with the requirement, what was found, and what is missing, in plain senten
 stylesheet at A4/Letter with the disclaimer (§4.4 rule 4) in the footer of every page.
 
 ### 12.12 Supporting components
-`.c-btn` (primary = ink fill; secondary = `--c-line-strong` outline; quiet = text) · `.c-field` (label
+`.c-btn` (primary = `--c-action`, the interaction hue, white label at 9.29:1; secondary = `--c-line-strong` outline; quiet = text) · `.c-field` (label
 above, 44px control, error below in `--c-gap-fg` **with an icon and words**) · `.c-card` · `.c-sheet` ·
 `.c-tabs` · `.c-empty` (always states the next action) · `.c-toast` (status changes only, never success
 noise) · `.c-note` (the disclaimer block) · `.c-kbd`.
@@ -1058,24 +1231,29 @@ anywhere in the codebase — that is a review failure with no exceptions.
 
 ### 14.1 Against the two sibling apps and Clausewright
 
+Filled in from real artefacts, not from reservations. The allocation is
+`../IDENTITY_ARBITRATION.md §6`; the machine check is `../scripts/identity-distinctness.py`.
+
 | | Clausewright | WageLens (construction payroll) | StateReady (multi-state trades) | **Certly** |
 |---|---|---|---|---|
-| material | translucency, layered glass, `backdrop-filter` | — | — | **flat paper and ink; no `backdrop-filter` anywhere** |
-| type | **no web fonts**; system UI sans + system serif for quoted policy | — | — | **Google Fonts: Public Sans + IBM Plex Mono**; no serif at all |
-| base size | 17px (a panicking reader) | — | — | 16px (a working session) |
-| colour idea | two hues carry the system: slate + recovery green, with azure reserved for citations | — | — | **no brand hue; chroma is reserved entirely for status** |
-| green | `#16704D` "recovery" | — | — | `#17703F` **"covered"** — a different value and a different meaning |
-| signature device | the citation chip | — | — | **the coverage bar** |
-| emotional register | calm intervention for someone in a crisis | — | — | quiet instrument for someone doing a job |
-| the thing shown | a quoted policy clause | — | — | a certificate, with our reading pinned to it |
+| material | translucency, layered glass, `backdrop-filter` | opaque; borders, not shadows | opaque; no shadow on any resting surface | **flat paper and ink; no `backdrop-filter` anywhere; two elevations** |
+| type | **no web fonts**; system UI sans + system serif for quoted policy | Public Sans + IBM Plex Mono | Barlow + Barlow Condensed + Overpass Mono | **Source Sans 3 + Source Code Pro**; no serif at all |
+| base size | 17px (a panicking reader) | 15px (a payroll week must fit) | 16px, with a condensed signage cut for labels | 16px (a working session) |
+| ground | blue-slate canvas `#F4F7FB` under glass | warm bone `#FBF9F5`, hue 40° | deep graphite-green board `#181D1A` | **cool office white `#E8EEF6`, hue 214°** — ΔE76 7.87 from WageLens, 83.94 from StateReady |
+| colour idea | two hues carry the system: slate + recovery green, with azure reserved for citations | one brand hue (brick), never a status; four status families | no brand hue; the readiness ramp *is* the palette | **no brand hue; chroma is status, and one non-status hue does interaction** |
+| green | `#16704D` "recovery" | `#116634` "filed", 144.7° | `#52D09C` "ready", 155.2°, luminous on a deep fill | `#0F6E55` **"meets requirements"**, 164.2° teal — a different hue, a different value and a different meaning |
+| primary action | recovery green | brick `#8A3115` | bone on a dark board | **interaction blue `#14458C`** |
+| signature device | the citation chip | the ruled ledger + the provenance card | the readiness tile grid + the runway | **the coverage bar, with the gap drawn as a hole** |
+| emotional register | calm intervention for someone in a crisis | a serious record of what was paid | a board of states and a clock | quiet instrument for someone doing a job |
+| the thing shown | a quoted policy clause | a payroll week | a map and a time axis | a certificate, with our reading pinned to it |
 
-The two empty columns are honest: **WageLens and StateReady are being designed in parallel by sibling
-agents and their identities did not exist when this was written.** The collision risk is therefore real
-and unresolved. The concrete instruction for the orchestrator is in §17, open question 3.
+What guarantees separation from Clausewright: no translucency, no serif, no citation-azure, a different
+green, web fonts instead of system fonts, and — the structural one — **Clausewright spends its colour on a
+recovery narrative, Certly spends all of it on a state machine.**
 
-What guarantees separation from Clausewright regardless: no translucency, no serif, no citation-azure, a
-different green, web fonts instead of system fonts, and — the structural one — **Clausewright spends its
-colour on a recovery narrative, Certly spends all of it on a state machine.**
+What guarantees separation from the two siblings is now measured rather than asserted: no shared font
+family, and no two grounds within the gate in `../scripts/identity-distinctness.py`. That script must exit
+0 in CI. **§17.3's collision is closed.**
 
 ### 14.2 Against the incumbents
 
@@ -1086,20 +1264,35 @@ implementations `[A1]`, and a 200-third-party floor `[A10]`.
 
 ### 14.3 Sitting next to the buyer's own tools
 
-The only first-party visual evidence obtainable in this pass was Procore's, whose served design tokens are
-public `[G5]`. Buildium and Jones expose only WordPress defaults, and AppFolio, Yardi, TrustLayer, bcs,
-Certificial, illumend and Buildertrend expose no brand tokens at all `[G6]` — so nothing below is claimed
-about their pixels.
+**This section was rewritten on 2026-09-03 after the Brand Director re-fetched the buyer's actual stack.**
+The first pass had only Procore's served tokens `[G5]`, so it reasoned from the one tool it could read —
+and Procore is the **general contractor's** tool, which makes it evidence about Buyer B, not Buyer A. The
+arbitration opened the property-management stack instead (`../IDENTITY_ARBITRATION.md §2.4`, fetched
+2026-09-03, two attempts per URL):
+
+| tool | what its served markup contains |
+|---|---|
+| **AppFolio** | deep navy `#05094F` / `#04065B`, pale blue `#D3EDFF`, action blue `#007BC7`, mint `#22D195` |
+| **Buildium** | white and `#F8F8F8` grounds, navy `#153D58` / `#143C57`, green `#73B680`, greys `#2F2F31` / `#959597`; **Open Sans** via Google Fonts |
+| **Rent Manager** | white ground, orange `#F58220`, blue `#3777BC`; **Lato** via Google Fonts |
+| **CINC Systems** | **Inter + Playfair Display** via Google Fonts |
+| **Yardi** | **HTTP 403 on two attempts — no claim made** |
+
+That is a cool, white, navy-chromed category, and it is the ground this product now sits on.
 
 **What to borrow.**
 
-- **Procore's warm neutral ground.** Its ramp is warm, not grey: `--pc-colors-gray-glass #F5F1ED`,
-  `torque-stone #ECE0D6`, `gray-light #DCCDC1` `[G5]`. Certly's `--c-paper #F3F3EE` sits in the same
-  temperature family. A cold blue-grey app opened next to Procore looks like it came from a different
-  industry.
+- **The property-management stack's ground temperature.** White and near-white with navy chrome, in three
+  of the four tools we could read. `--c-paper #E8EEF6` is that ground. **The previous version of this
+  bullet argued the opposite** — that a cold blue-grey app "looks like it came from a different industry"
+  next to Procore — and it was right about the GC and wrong about the coordinator this product is sold to
+  first (`PERSONA.md §1`). Superseded by `../IDENTITY_ARBITRATION.md §3.2`.
+- **Nobody's typeface.** Open Sans, Lato and Inter are three different faces across four tools, so there
+  is no incumbent face to be familiar with — which is what made a distinct UI face free to choose (§7.1).
 - **Procore's naming discipline.** Its tokens are named for the jobsite — `gray-rebar`, `gray-concrete`,
   `blue-tarp`, `yellow-crane` `[G5]`. The lesson is not the words; it is that **the token layer speaks the
-  customer's language**. Ours does the same in our domain: `--c-ok`, `--c-warn`, `--c-gap`, `--c-rev`.
+  customer's language**. Ours does the same in our domain: `--c-ok`, `--c-warn`, `--c-ast`, `--c-gap`,
+  `--c-rev`, `--c-nc`, `--c-none`.
 - **Buildium's commercial transparency.** Prices, tiers, a 14-day trial, no credit card, "30 seconds"
   `[D3]`. That is the *behaviour* our pricing page copies, and it is the strongest single signal in §3.
 - **Procore's "we'll never charge you for adding more users"** `[D4]`. The equivalent commitment in our
@@ -1109,8 +1302,12 @@ about their pixels.
 
 **What to avoid.**
 
-- **Procore's `#FF5200` safety orange as a brand colour** `[G5]`. In our system that hue is one step from
-  the amber that must mean *expiring*. A construction-orange header would poison the semantic layer.
+- **Procore's `#FF5200` safety orange as a brand colour** `[G5]`, and equally FieldEdge's `#EA6211` and
+  Housecall Pro's `#FFB706`, which belong to the sibling app's buyers. In our system that hue band is one
+  step from the olive-gold that must mean *expiring* and *claimed, not evidenced*. A construction-orange
+  header would poison the semantic layer.
+- **AppFolio's and Buildium's navy as a *brand* colour.** We use their temperature, not their identity:
+  our blue is a working hue with one job (interaction), not a logo colour splashed across a header.
 - **The jobsite costume in general** (Direction A, §1). Our first buyer is at a desk in a property
   management office.
 - **Enterprise risk furniture** — Evident's *"Stop reacting to risk"* with 7-Eleven, Coca-Cola and Amazon
@@ -1127,7 +1324,9 @@ about their pixels.
 
 Each omission is an enforcement mechanism: a component that does not exist cannot be misused.
 
-1. **No brand accent colour.** (**P2**)
+1. **No brand accent colour.** (**P2**) There is one non-status hue, the interaction blue, and it does
+   interaction only — links, focus, the selected-tab rule and the primary button. A component that is not
+   interactive may not use it, and no control may ever carry a status colour.
 2. **No `backdrop-filter`, no glass, no gradient fills.** A *fill* that fades from one colour to another
    is forbidden everywhere — it is decoration, and decoration in this system competes with status. The one
    permitted use of the `*-gradient()` functions is to draw the **hard-stop fill patterns** of §6.4 (the
@@ -1166,18 +1365,30 @@ Each omission is an enforcement mechanism: a component that does not exist canno
 
 ## 17. Hypotheses and open questions
 
-1. **Public Sans + IBM Plex Mono is a judgment, not a finding.** No study says a USWDS-lineage sans
-   improves trust in a compliance product. **Hypothesis**, cheap to A/B on the landing page.
+1. **Source Sans 3 + Source Code Pro is a judgment, not a finding.** No study says a humanist UI sans
+   improves trust in a compliance product. What *is* sourced is that the buyer's own stack runs faces of
+   that family — Buildium on Open Sans, Rent Manager on Lato, CINC on Inter, all read from their served
+   markup on 2026-09-03. The step from "same family of face" to "feels familiar" is **hypothesis**, and
+   cheap to A/B on the landing page.
 2. **The coverage bar is unvalidated with real users.** It is derived from the buyer's temporal failures
    `[E4][E6]` and it is the single riskiest design bet in this document. If wave-2 usability shows people
    reading the pill and ignoring the bar, the bar becomes secondary and the timeline screen carries it.
-3. **Sibling collision (blocking, for the orchestrator).** WageLens and StateReady identities were being
-   written in parallel and are unseen. Someone must diff the three palettes and the three type stacks
-   before wave 2 scaffolds anything. Certly's claim is: **Public Sans + IBM Plex Mono, no brand hue, warm
-   paper `#F3F3EE`, ink `#0F1A2B`.** If a sibling has taken any of those, Certly moves — the ink and the
-   paper are the negotiable parts; the *no-brand-hue* rule is not.
+3. **Sibling collision — CLOSED, 2026-09-03.** All three apps had independently chosen Public Sans +
+   IBM Plex Mono on a paper ground; the three grounds measured ΔE76 0.35 to 2.42 apart. This section had
+   named the negotiable parts correctly — *"the ink and the paper are the negotiable parts; the
+   no-brand-hue rule is not"* — and that is exactly what `../IDENTITY_ARBITRATION.md` moved. Certly's
+   claim is now: **Source Sans 3 + Source Code Pro, no brand hue, cool office white `#E8EEF6`, ink
+   `#0F1A2B`, interaction blue on the primary button.** It is enforced by
+   `../scripts/identity-distinctness.py`, which parses all three stylesheets and fails on a shared family
+   or a ground collision. Do not change a font token or the ground without re-running it.
 4. **Trademark clearance is not done** `[F15][F16]`. No money on a mark until it is.
 5. **Whether the founder wants a free tier** changes the pricing block on the landing page and possibly
    the shape of the empty state. `PERSONA.md §7.4`.
 6. **Dark mode may be unnecessary.** It is built because it is cheap at token level, but if wave-3
    analytics show near-zero dark usage among these buyers, it should be frozen rather than maintained.
+7. **The requirement-level rename `needs_review` → `undetermined`** (`REVIEW.md §2.2`, MN-04) is a
+   product decision and is **not** applied here: the identity still calls the state "Needs review". If the
+   rename is upheld it is one word in `contrast.py`'s `STATUS_MARKS` and one in `samples.html`.
+8. **"Covered" is retired in the identity files only.** The same ruling (`REVIEW.md §2.1`) still has to
+   reach `PERSONA.md §2.5`/`§2.9`, `UX.md §2`/`§3.1`, `specs/05`, `specs/06`, `specs/12` and
+   `LANDING_SPEC.md`. Somebody must own that sweep or the dashboard counters and the report will drift.

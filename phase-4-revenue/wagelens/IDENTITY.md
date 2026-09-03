@@ -13,6 +13,34 @@ preference is not a source.
 
 ---
 
+## Arbitration 2026-09-03
+
+`../IDENTITY_ARBITRATION.md` (Brand Director, 2026-09-03) is binding on the visual layer of all three
+phase-4 apps and takes precedence over this document where the two disagree.
+
+**WageLens is the app that does not change.** The arbitration allocated **Public Sans + IBM Plex Mono
+and the warm bone ground `#FBF9F5` to WageLens exclusively**, on the ground that this is the only app
+in the fleet whose output artefact is a US federal form (WH-347, OMB 1235-0008) — so the USWDS
+typeface is a fact about the product here and a preference everywhere else. §7.1, §6 and §8 stand
+exactly as written; `design-system.css`, `identity/contrast.py` and `identity/samples.html` were not
+edited.
+
+Two consequences worth knowing:
+
+1. **The reservation this document made in §14 was granted.** Certly moved off the warm ground to a
+   cool office white `#E8EEF6` with Source Sans 3 + Source Code Pro; StateReady moved off it to a deep
+   graphite-green board `#181D1A` with Barlow + Barlow Condensed + Overpass Mono. §14's two
+   placeholder rows are now filled in with real values. Open question §15.3 ("hue allocation across
+   the three apps") is **closed**.
+2. **WageLens is now pinned.** Its typefaces and its ground are load-bearing for two sibling
+   decisions, so any later move off Public Sans re-opens the arbitration for all three apps.
+
+Enforced by `../scripts/identity-distinctness.py`, which parses the three `design-system.css` files
+and fails if two apps share a font family or two grounds are too close. It must exit 0 in CI alongside
+`identity/contrast.py`.
+
+---
+
 ## 0. The one idea this identity is built on
 
 > **The buyer's problem is not that the form is hard. It is that they cannot tell whether they are
@@ -971,8 +999,8 @@ plain speech — and none of their colours.*
 | product | its identity | how WageLens/CraftWage differs, concretely |
 |---|---|---|
 | **Clausewright** (phase 2) | Translucent "liquid glass" material; cool blue-slate (215°) base with recovery green (158°) accent; **system fonts, no webfonts**; 17px base; 20px card radii; generous 96px section spacing; **serif for the quoted document** | **Opaque throughout** (§5 P6, no translucency anywhere); **warm** graphite (30–40°) with **brick** (18°); **Google webfonts**, Public Sans + IBM Plex Mono; **15px base**; **2–6px radii**; tighter 4px-grid spacing; **mono for the document**. There is no token, hue, typeface, radius or material shared between the two systems. |
-| **Certly** (insurance / COI, sibling app) | Not yet authored at time of writing | Our reservation: **brick 18° + warm bone ground + mono document**. Certly's domain (ACORD 25 certificates, property, insurance) naturally reaches for blues and greens; the phase-4 orchestrator should hold 18° and the warm-neutral ground for WageLens and allocate a different hue family to Certly. Flagged in §15. |
-| **StateReady** (multi-state trade licensing, sibling app) | Not yet authored | Same reservation, plus a structural difference: StateReady's core object is a **map/jurisdiction matrix**; ours is a **week grid**. If both end up warm-neutral the differentiator must be hue and form language, and ours is claimed here first with the date. |
+| **Certly** (insurance / COI, sibling app) | **Source Sans 3 + Source Code Pro**; cool office white ground `#E8EEF6` (hue 214°) on a blue-black ink `#0F1A2B`; **no brand hue** — chroma is status, and the one non-status hue (blue `#14458C`) does links, focus and the primary button; status in teal 164° / olive-gold 47° / crimson 345° on **pale cool tints**; 16px base, 44px rows, 4/8/12px radii, two elevations; signature device the **coverage bar**, where a gap is drawn as a hole | Different UI face, different mono, **opposite ground temperature** (our bone is hue 40°, theirs 214°; ΔE76 7.87). Our brick 14° primary action against their blue 215.5°. Our status tints are warm, theirs are cool, and our green sits at 144.7° against their 164.2°. We render status as a **dot-plus-word pill on a ruled ledger row**; they render it as **segments of time on a bar**. Our base is 15px to theirs 16px, our grid rows 36px to their 44px, our radii 2–10px to their 4–12px, and we put no shadow on a panel or a table at all. |
+| **StateReady** (multi-state trade licensing, sibling app) | **Barlow + Barlow Condensed + Overpass Mono**; a **deep graphite-green board** `#181D1A` as the *default* theme (paper is the alternate, and is what every forwardable artefact uses); no blue at any weight; status is a **luminous ramp on deep fills** — 155° / 31° / 355°; 16px base, 48px rows, 6/10/16px radii, no shadow on any resting surface; signature devices the **readiness tile grid** and the **runway** | Different UI face, different mono, and a ground 88 ΔE76 away — we are the lightest surface in the fleet and they are the darkest. Our primary action is brick on white; theirs is bone on a dark board. Their status tints are deep, ours are pale. Structurally: their core object is a **jurisdiction tile grid and a time axis**, ours is a **week grid**; they run a top bar over a full-width board, we run a fixed left rail. |
 
 ---
 

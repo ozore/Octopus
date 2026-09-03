@@ -23,42 +23,55 @@ import sys, math, re, os
 # 1. The palette. Keep in lockstep with design-system.css.
 # --------------------------------------------------------------------------
 LIGHT = {
-    # ground and surfaces
-    "paper":            "#F3F3EE",
+    # ground and surfaces — cool office white (IDENTITY_ARBITRATION.md 2026-09-03)
+    "paper":            "#E8EEF6",
     "surface":          "#FFFFFF",
-    "sunken":           "#E7E7E0",
-    "line":             "#D5D5CC",
-    "line-strong":      "#85857A",
+    "sunken":           "#DEE7F1",
+    "line":             "#C7D3E0",
+    "line-strong":      "#718094",
     # ink ramp (blue-ink family)
     "ink":              "#0F1A2B",
     "ink-strong":       "#1B2941",
     "ink-muted":        "#495A73",
     "ink-faint":        "#6E7C91",
     "ink-disabled":     "#828E9E",
-    # interaction
+    # interaction — the one non-status hue; it also fills the primary button
     "link":             "#14458C",
     "link-hover":       "#0E3266",
     "focus":            "#14458C",
-    "select-bg":        "#EDF2FA",
-    # status: covered
-    "ok-fg":            "#14603A",
-    "ok-bg":            "#E2EFE7",
-    "ok-line":          "#8FBFA3",
-    "ok-solid":         "#17703F",
-    # status: expiring
-    "warn-fg":          "#7A4A05",
-    "warn-bg":          "#FBEBD3",
-    "warn-line":        "#DCB271",
-    "warn-solid":       "#8A5406",
-    # status: gap
-    "gap-fg":           "#A11F14",
-    "gap-bg":           "#FBE5E2",
-    "gap-line":         "#E3A69D",
-    "gap-solid":        "#B02418",
+    "action":           "#14458C",
+    "action-hover":     "#0E3266",
+    "on-action":        "#FFFFFF",
+    "select-bg":        "#DCE7FA",
+    # status: meets requirements ("Covered" retired, REVIEW.md 2.1) — teal, 164
+    "ok-fg":            "#0C5F4A",
+    "ok-bg":            "#DCEDE8",
+    "ok-line":          "#7FBBAB",
+    "ok-solid":         "#0F6E55",
+    # status: expiring — olive-gold, hue 47
+    "warn-fg":          "#6B5507",
+    "warn-bg":          "#F2EBCE",
+    "warn-line":        "#C6B370",
+    "warn-solid":       "#7A6209",
+    # status: gap — crimson, hue 345
+    "gap-fg":           "#A01739",
+    "gap-bg":           "#F8E1E7",
+    "gap-line":         "#DFA0B2",
+    "gap-solid":        "#B01A40",
     # status: needs review / unknown
     "rev-fg":           "#3D4F66",
-    "rev-bg":           "#E8ECF1",
-    "rev-line":         "#ADBAC9",
+    "rev-bg":           "#E3E9F1",
+    "rev-line":         "#A6B5C7",
+    # status: claimed, not evidenced (asserted_only) — the expiring hue, one
+    # step deeper. No fifth hue: the half-disc, the vertical hatch and the
+    # word carry the difference. REVIEW.md B-03.
+    "ast-fg":           "#4F3D06",
+    "ast-bg":           "#EDE3C0",
+    "ast-line":         "#B7A25E",
+    "ast-solid":        "#5E4907",
+    # status: not checked / no certificate — achromatic on purpose
+    "nc-fg":            "#495A73",
+    "nc-line":          "#718094",
     # on-solid ink
     "on-ink":           "#FFFFFF",
     "on-solid":         "#FFFFFF",
@@ -78,22 +91,31 @@ DARK = {
     "link":             "#8FB4F5",
     "link-hover":       "#B3CCFA",
     "focus":            "#8FB4F5",
+    "action":           "#8FB4F5",
+    "action-hover":     "#B3CCFA",
+    "on-action":        "#0B1220",
     "select-bg":        "#1B2740",
-    "ok-fg":            "#69D19B",
-    "ok-bg":            "#193B2C",
-    "ok-line":          "#2E6247",
-    "ok-solid":         "#69D19B",
-    "warn-fg":          "#EFBE72",
-    "warn-bg":          "#382B12",
-    "warn-line":        "#6B5324",
-    "warn-solid":       "#EFBE72",
-    "gap-fg":           "#FF9E90",
-    "gap-bg":           "#43221C",
-    "gap-line":         "#7A3229",
-    "gap-solid":        "#FF9E90",
+    "ok-fg":            "#5FD3B0",
+    "ok-bg":            "#0F3A30",
+    "ok-line":          "#2A6B5B",
+    "ok-solid":         "#5FD3B0",
+    "warn-fg":          "#E5C267",
+    "warn-bg":          "#332B10",
+    "warn-line":        "#665521",
+    "warn-solid":       "#E5C267",
+    "gap-fg":           "#FF97AE",
+    "gap-bg":           "#40202A",
+    "gap-line":         "#78323F",
+    "gap-solid":        "#FF97AE",
     "rev-fg":           "#AEBACB",
     "rev-bg":           "#243044",
     "rev-line":         "#3A4759",
+    "ast-fg":           "#CBA855",
+    "ast-bg":           "#322813",
+    "ast-line":         "#60501E",
+    "ast-solid":        "#CBA855",
+    "nc-fg":            "#A7B3C4",
+    "nc-line":          "#5E7090",
     "on-ink":           "#0B1220",
     "on-solid":         "#0B1220",
 }
@@ -116,11 +138,15 @@ PAIRS = [
     ("ink-faint",    "surface",  "AA-lg", "table meta / timestamps (large text only)"),
     ("link",         "surface",  "AA",    "link text on a card"),
     ("link",         "paper",    "AA",    "link text on the ground"),
-    ("on-ink",       "ink",      "AA",    "label on the primary button"),
+    ("on-action",    "action",   "AA",    "label on the primary button"),
+    ("on-action",    "action-hover", "AA", "label on the primary button, hover"),
+    ("on-ink",       "ink",      "AA",    "label on an ink fill (report rule, badge)"),
     ("ink",          "sunken",   "AA",    "text in a sunken well (document viewport, note)"),
     ("ink-muted",    "sunken",   "AA",    "the note block's secondary text"),
     ("ink",          "select-bg","AA",    "text in a selected table row"),
     # -- non-text (WCAG 1.4.11) --------------------------------------------
+    ("action",       "surface",  "UI",    "primary button edge against a card"),
+    ("action",       "paper",    "UI",    "primary button edge against the ground"),
     ("focus",        "surface",  "UI",    "focus ring against a card"),
     ("focus",        "paper",    "UI",    "focus ring against the ground"),
     ("line-strong",  "surface",  "UI",    "input border on a card"),
@@ -132,6 +158,9 @@ PAIRS = [
     ("warn-fg",      "warn-bg",  "AA",    "EXPIRING pill text"),
     ("gap-fg",       "gap-bg",   "AA",    "GAP pill text"),
     ("rev-fg",       "rev-bg",   "AA",    "NEEDS REVIEW pill text"),
+    ("ast-fg",       "ast-bg",   "AA",    "CLAIMED, NOT EVIDENCED pill text"),
+    ("nc-fg",        "surface",  "AA",    "NOT CHECKED / NO CERTIFICATE pill text on a card"),
+    ("nc-fg",        "paper",    "AA",    "NOT CHECKED / NO CERTIFICATE pill text on the ground"),
     # -- status text on surfaces (table cells) -----------------------------
     ("ok-fg",        "surface",  "AA",    "COVERED text in a table cell"),
     ("warn-fg",      "surface",  "AA",    "EXPIRING text in a table cell"),
@@ -139,6 +168,8 @@ PAIRS = [
     ("ok-fg",        "paper",    "AA",    "COVERED text on the ground"),
     ("warn-fg",      "paper",    "AA",    "EXPIRING text on the ground"),
     ("gap-fg",       "paper",    "AA",    "GAP text on the ground"),
+    ("ast-fg",       "surface",  "AA",    "CLAIMED, NOT EVIDENCED text in a table cell"),
+    ("ast-fg",       "paper",    "AA",    "CLAIMED, NOT EVIDENCED text on the ground"),
     # -- status as meaning-bearing graphics: dot, coverage-bar segment ------
     #    Each segment is separated from its neighbour by a 1px separator in
     #    --c-surface, so the pair that matters is segment-vs-surface, never
@@ -151,6 +182,11 @@ PAIRS = [
     ("gap-solid",    "paper",    "UI",    "GAP segment on the ground"),
     ("on-solid",     "ok-solid", "AA",    "text on a solid COVERED fill"),
     ("on-solid",     "gap-solid","AA",    "text on a solid GAP fill"),
+    ("ast-solid",    "surface",  "UI",    "CLAIMED half-disc / bar segment on a card"),
+    ("ast-solid",    "paper",    "UI",    "CLAIMED half-disc / bar segment on the ground"),
+    ("on-solid",     "ast-solid","AA",    "text on a solid CLAIMED fill"),
+    ("nc-line",      "surface",  "UI",    "NOT CHECKED hairline edge on a card"),
+    ("nc-line",      "paper",    "UI",    "NO CERTIFICATE dashed edge on the ground"),
     # -- pill chrome: house minimum, not a WCAG requirement -----------------
     #    The status is carried by text + glyph at >= 4.5:1; the tint and the
     #    hairline are reinforcement. HOUSE 1.5:1 keeps the chip a visible
@@ -163,6 +199,8 @@ PAIRS = [
     ("warn-line",    "surface",  "HOUSE", "EXPIRING pill hairline against the card"),
     ("gap-line",     "surface",  "HOUSE", "GAP pill hairline against the card"),
     ("rev-line",     "surface",  "HOUSE", "NEEDS REVIEW pill hairline against the card"),
+    ("ast-bg",       "surface",  "HOUSE", "CLAIMED tint against the card"),
+    ("ast-line",     "surface",  "HOUSE", "CLAIMED pill hairline against the card"),
     ("line",         "surface",  "HOUSE", "table rule against the card"),
     ("line",         "paper",    "HOUSE", "table rule against the ground"),
 ]
@@ -255,12 +293,18 @@ def check_css(md: bool = False):
 # --------------------------------------------------------------------------
 STATUS_MARKS = {
     # status: (solid token, glyph, fill pattern, the word)
-    "covered":      ("ok-solid",   "check in a filled disc", "solid",                    "Covered"),
-    "expiring":     ("warn-solid", "clock in a ring",        "45-degree hatch",          "Expiring"),
-    "gap":          ("gap-solid",  "slash in a hollow disc", "open with a dashed edge",  "Gap"),
-    "needs-review": ("rev-fg",     "question in a square",   "dotted",                   "Needs review"),
+    # Seven states, matching the engine (REVIEW.md B-03 and 2.2). "Covered" is
+    # retired; the green state is "Meets requirements", pill MEETS (REVIEW.md
+    # 2.1). Token names are vocabulary-neutral and did not change.
+    "meets":          ("ok-solid",   "check in a filled disc",   "solid",                        "Meets"),
+    "expiring":       ("warn-solid", "clock in a ring",          "45-degree hatch",              "Expiring"),
+    "asserted-only":  ("ast-solid",  "half-filled disc",         "vertical hatch",               "Claimed, not evidenced"),
+    "gap":            ("gap-solid",  "slash in a hollow disc",   "open, dashed edge",            "Gap"),
+    "needs-review":   ("rev-fg",     "question in a square",     "dot grid",                     "Needs review"),
+    "not-checked":    ("nc-fg",      "em dash, no container",    "open, hairline edge",          "Not checked"),
+    "no-certificate": ("nc-line",    "empty document outline",   "open, single diagonal rule",   "No certificate"),
 }
-# The four status fills are near-isoluminant BY CONSTRUCTION: each must clear
+# The status fills are near-isoluminant BY CONSTRUCTION: each must clear
 # 4.5:1 against the same white, which forces their luminances together. So a
 # greyscale-separation minimum is not achievable and not the right instrument.
 # What is checked instead, and hard-failed, is REDUNDANT ENCODING: every status
@@ -297,11 +341,13 @@ def check_greyscale(theme: dict, name: str, md: bool = False):
     for idx, label in ((1, "glyph"), (2, "fill pattern"), (3, "word")):
         seen = [STATUS_MARKS[s_][idx] for s_ in ids]
         if len(set(seen)) != len(seen):
+            dupes = sorted({v for v in seen if seen.count(v) > 1})
             fails.append(("status", label, "not distinct", "REDUNDANCY",
-                          "every status needs its own " + label))
-            print(f"FAIL: {label} is not distinct across the four statuses")
+                          "every status needs its own " + label + ": " + ", ".join(dupes)))
+            print(f"FAIL: {label} is not distinct across the {len(ids)} statuses "
+                  f"({', '.join(dupes)})")
     if not fails and not md:
-        print("   ok  glyph, fill pattern and word are distinct for all four statuses")
+        print(f"   ok  glyph, fill pattern and word are distinct for all {len(ids)} statuses")
     return fails
 
 

@@ -20,14 +20,14 @@
              background: var(--sr-surface); position: sticky; inset-block-start: 0; z-index: 5; }
   .brand { display: flex; align-items: center; gap: var(--sr-space-2); font-weight: 700; letter-spacing: -0.01em; }
   .mark { inline-size: 1.5rem; block-size: 1.5rem; border-radius: var(--sr-radius-sm);
-           background: var(--sr-ready); color: #fff; display: grid; place-items: center; font-size: 0.85rem; }
+           background: var(--sr-ready); color: var(--sr-on-ink); display: grid; place-items: center; font-size: 0.85rem; }
 </style>
 </head>
 <body>
 
 <header class="topbar">
   <span class="brand"><span class="mark" aria-hidden="true">✓</span> StateReady <span class="sr-meta">design system v1</span></span>
-  <button type="button" class="sr-btn sr-btn--secondary" id="theme">Switch to dark</button>
+  <button type="button" class="sr-btn sr-btn--secondary" id="theme">Switch to paper</button>
 </header>
 
 <div class="sheet">
@@ -138,7 +138,7 @@ fails — 70 pairs across both themes, 0 failures at the time of writing.</p>
             <span class="sr-map__legend-item"><span class="sr-dot" data-status="risk"></span> At risk</span>
             <span class="sr-map__legend-item"><span class="sr-dot" data-status="lapsed"></span> Lapsed</span>
             <span class="sr-map__legend-item"><span class="sr-dot"></span> Not tracked</span>
-            <span class="sr-map__legend-item"><span class="sr-swatch" style="inline-size:.75rem;block-size:.75rem;border-style:dashed;background:var(--sr-paper)"></span> Not operating — expansion report available</span>
+            <span class="sr-map__legend-item"><span class="sr-swatch" style="inline-size:.75rem;block-size:.75rem;border-style:dashed;background:var(--sr-ground)"></span> Not operating — expansion report available</span>
           </div>
         </div>
         <p class="sr-meta sr-mt-6">Every jurisdiction gets the same tile, because your exposure has
@@ -279,95 +279,99 @@ fails — 70 pairs across both themes, 0 failures at the time of writing.</p>
 <!-- ============================================================== COLOUR -->
 <section class="sec">
   <h2>2. Colour</h2>
-  <p>Two families and nothing else. Warm paper and warm ink carry all chrome; the readiness ramp is
-  the only saturated colour in the system and appears only inside status objects. There is no brand
-  hue and no blue at any weight.</p>
+  <p>Two families and nothing else. The graphite board and its ink carry all chrome; the readiness
+  ramp is the only saturated colour in the system and appears only inside status objects. There is no
+  brand hue and no blue at any weight. <strong>The board is the default theme</strong> — it is the
+  surface the coordinator works on. <strong>Paper is the alternate</strong>, and it is what leaves the
+  building: print, the bid PDF, the shareable readiness link, the alert emails. Board for the
+  operator, paper for the forwarder. Ground, ramp and typefaces are allocated across the phase-4
+  fleet by <code>../../IDENTITY_ARBITRATION.md</code> (2026-09-03).</p>
 
   <h3>Ground and ink</h3>
   <div class="swatches">
     <div class="sw">
-      <div class="sr-swatch" style="background:#FAF8F4"></div>
-      <div><code>--sr-paper</code><span class="sr-meta">#FAF8F4 · 1.00:1 on paper</span></div>
+      <div class="sr-swatch" style="background:#181D1A"></div>
+      <div><code>--sr-ground</code><span class="sr-meta">#181D1A · 1.00:1 on the board</span></div>
     </div>
     <div class="sw">
-      <div class="sr-swatch" style="background:#FFFFFF"></div>
-      <div><code>--sr-surface</code><span class="sr-meta">#FFFFFF · 1.06:1 on paper</span></div>
+      <div class="sr-swatch" style="background:#212724"></div>
+      <div><code>--sr-surface</code><span class="sr-meta">#212724 · 1.12:1 on the board</span></div>
     </div>
     <div class="sw">
-      <div class="sr-swatch" style="background:#F0ECE4"></div>
-      <div><code>--sr-sunken</code><span class="sr-meta">#F0ECE4 · 1.11:1 on paper</span></div>
+      <div class="sr-swatch" style="background:#0E1210"></div>
+      <div><code>--sr-sunken</code><span class="sr-meta">#0E1210 · 1.10:1 on the board</span></div>
     </div>
     <div class="sw">
-      <div class="sr-swatch" style="background:#DCD6CB"></div>
-      <div><code>--sr-line</code><span class="sr-meta">#DCD6CB · 1.36:1 on paper</span></div>
+      <div class="sr-swatch" style="background:#333B37"></div>
+      <div><code>--sr-line</code><span class="sr-meta">#333B37 · 1.48:1 on the board</span></div>
     </div>
     <div class="sw">
-      <div class="sr-swatch" style="background:#877F72"></div>
-      <div><code>--sr-line-strong</code><span class="sr-meta">#877F72 · 3.73:1 on paper</span></div>
+      <div class="sr-swatch" style="background:#7E8A84"></div>
+      <div><code>--sr-line-strong</code><span class="sr-meta">#7E8A84 · 4.76:1 on the board</span></div>
     </div>
     <div class="sw">
-      <div class="sr-swatch" style="background:#16130F"></div>
-      <div><code>--sr-ink</code><span class="sr-meta">#16130F · 17.46:1 on paper</span></div>
+      <div class="sr-swatch" style="background:#ECF2EE"></div>
+      <div><code>--sr-ink</code><span class="sr-meta">#ECF2EE · 15.05:1 on the board</span></div>
     </div>
     <div class="sw">
-      <div class="sr-swatch" style="background:#4E4840"></div>
-      <div><code>--sr-ink-2</code><span class="sr-meta">#4E4840 · 8.52:1 on paper</span></div>
+      <div class="sr-swatch" style="background:#B9C4BE"></div>
+      <div><code>--sr-ink-2</code><span class="sr-meta">#B9C4BE · 9.52:1 on the board</span></div>
     </div>
     <div class="sw">
-      <div class="sr-swatch" style="background:#6A635A"></div>
-      <div><code>--sr-ink-3</code><span class="sr-meta">#6A635A · 5.58:1 on paper</span></div>
+      <div class="sr-swatch" style="background:#8D9994"></div>
+      <div><code>--sr-ink-3</code><span class="sr-meta">#8D9994 · 5.79:1 on the board</span></div>
     </div>
   </div>
 
   <h3 class="sr-mt-6">The readiness ramp</h3>
   <div class="swatches">
     <div class="sw">
-      <div class="sr-swatch" style="background:#1B6B3A"></div>
-      <div><code>--sr-ready</code><span class="sr-meta">#1B6B3A · 6.17:1 on paper</span></div>
+      <div class="sr-swatch" style="background:#52D09C"></div>
+      <div><code>--sr-ready</code><span class="sr-meta">#52D09C · 8.83:1 on the board</span></div>
     </div>
     <div class="sw">
-      <div class="sr-swatch" style="background:#DCEEE2"></div>
-      <div><code>--sr-ready-fill</code><span class="sr-meta">#DCEEE2 · 1.14:1 on paper</span></div>
+      <div class="sr-swatch" style="background:#0F3226"></div>
+      <div><code>--sr-ready-fill</code><span class="sr-meta">#0F3226 · 1.22:1 on the board</span></div>
     </div>
     <div class="sw">
-      <div class="sr-swatch" style="background:#3E8F5C"></div>
-      <div><code>--sr-ready-edge</code><span class="sr-meta">#3E8F5C · 3.74:1 on paper</span></div>
+      <div class="sr-swatch" style="background:#38976F"></div>
+      <div><code>--sr-ready-edge</code><span class="sr-meta">#38976F · 4.74:1 on the board</span></div>
     </div>
     <div class="sw">
-      <div class="sr-swatch" style="background:#8A5300"></div>
-      <div><code>--sr-risk</code><span class="sr-meta">#8A5300 · 5.97:1 on paper</span></div>
+      <div class="sr-swatch" style="background:#F0A85A"></div>
+      <div><code>--sr-risk</code><span class="sr-meta">#F0A85A · 8.50:1 on the board</span></div>
     </div>
     <div class="sw">
-      <div class="sr-swatch" style="background:#FAEACB"></div>
-      <div><code>--sr-risk-fill</code><span class="sr-meta">#FAEACB · 1.12:1 on paper</span></div>
+      <div class="sr-swatch" style="background:#37260D"></div>
+      <div><code>--sr-risk-fill</code><span class="sr-meta">#37260D · 1.18:1 on the board</span></div>
     </div>
     <div class="sw">
-      <div class="sr-swatch" style="background:#B07A1E"></div>
-      <div><code>--sr-risk-edge</code><span class="sr-meta">#B07A1E · 3.50:1 on paper</span></div>
+      <div class="sr-swatch" style="background:#A0722C"></div>
+      <div><code>--sr-risk-edge</code><span class="sr-meta">#A0722C · 4.02:1 on the board</span></div>
     </div>
     <div class="sw">
-      <div class="sr-swatch" style="background:#A31E1E"></div>
-      <div><code>--sr-lapsed</code><span class="sr-meta">#A31E1E · 7.17:1 on paper</span></div>
+      <div class="sr-swatch" style="background:#F98A93"></div>
+      <div><code>--sr-lapsed</code><span class="sr-meta">#F98A93 · 7.39:1 on the board</span></div>
     </div>
     <div class="sw">
-      <div class="sr-swatch" style="background:#F8DEDB"></div>
-      <div><code>--sr-lapsed-fill</code><span class="sr-meta">#F8DEDB · 1.20:1 on paper</span></div>
+      <div class="sr-swatch" style="background:#3B1A20"></div>
+      <div><code>--sr-lapsed-fill</code><span class="sr-meta">#3B1A20 · 1.10:1 on the board</span></div>
     </div>
     <div class="sw">
-      <div class="sr-swatch" style="background:#C24A44"></div>
-      <div><code>--sr-lapsed-edge</code><span class="sr-meta">#C24A44 · 4.54:1 on paper</span></div>
+      <div class="sr-swatch" style="background:#BB4E59"></div>
+      <div><code>--sr-lapsed-edge</code><span class="sr-meta">#BB4E59 · 3.54:1 on the board</span></div>
     </div>
     <div class="sw">
-      <div class="sr-swatch" style="background:#6A635A"></div>
-      <div><code>--sr-unknown</code><span class="sr-meta">#6A635A · 5.58:1 on paper</span></div>
+      <div class="sr-swatch" style="background:#8D9994"></div>
+      <div><code>--sr-unknown</code><span class="sr-meta">#8D9994 · 5.79:1 on the board</span></div>
     </div>
     <div class="sw">
-      <div class="sr-swatch" style="background:#EDE9E1"></div>
-      <div><code>--sr-unknown-fill</code><span class="sr-meta">#EDE9E1 · 1.14:1 on paper</span></div>
+      <div class="sr-swatch" style="background:#232925"></div>
+      <div><code>--sr-unknown-fill</code><span class="sr-meta">#232925 · 1.15:1 on the board</span></div>
     </div>
     <div class="sw">
-      <div class="sr-swatch" style="background:#877F72"></div>
-      <div><code>--sr-unknown-edge</code><span class="sr-meta">#877F72 · 3.73:1 on paper</span></div>
+      <div class="sr-swatch" style="background:#7E8A84"></div>
+      <div><code>--sr-unknown-edge</code><span class="sr-meta">#7E8A84 · 4.76:1 on the board</span></div>
     </div>
   </div>
 
@@ -392,8 +396,12 @@ fails — 70 pairs across both themes, 0 failures at the time of writing.</p>
 <!-- ========================================================= TYPOGRAPHY -->
 <section class="sec">
   <h2>3. Typography</h2>
-  <p>Public Sans for everything a person reads, IBM Plex Mono for everything a person compares down a
-  column — licence numbers, dates, hour counts, day counts. Both from Google Fonts. Every size is in
+  <p><strong>Barlow</strong> for everything a person reads — a low-contrast grotesk drawn from
+  American public and transport signage, which is the right lineage for a product about crossing a
+  state line. <strong>Barlow Condensed</strong> is the signage face: state tiles, column heads,
+  runway lane labels, eyebrows. <strong>Overpass Mono</strong>, whose parent family descends from
+  Highway Gothic, carries everything a person compares down a column — licence numbers, dates, hour
+  counts, day counts. All three from Google Fonts, none shared with a sibling app. Every size is in
   <code>rem</code>, so the interface scales with the reader's root font size.</p>
   <div class="sr-table-wrap">
     <table class="sr-table">
@@ -448,11 +456,13 @@ fails — 70 pairs across both themes, 0 failures at the time of writing.</p>
       <p class="sr-meta">6px tiles and chips · 10px cards and buttons · 16px sheets.</p>
       <div class="demo sr-mt-6">
         <div class="sr-card" style="padding:var(--sr-space-4);box-shadow:var(--sr-shadow-1)">shadow-1 · hairline</div>
-        <div class="sr-card" style="padding:var(--sr-space-4);box-shadow:var(--sr-shadow-2)">shadow-2 · card</div>
+        <div class="sr-card" style="padding:var(--sr-space-4);box-shadow:var(--sr-shadow-2)">shadow-2 · card (none)</div>
         <div class="sr-card" style="padding:var(--sr-space-4);box-shadow:var(--sr-shadow-3)">shadow-3 · sheet</div>
       </div>
-      <p class="sr-meta">Three levels, all opaque. No translucency anywhere, so every contrast pair is
-      computable rather than dependent on whatever happens to scroll underneath.</p>
+      <p class="sr-meta">Nothing that rests on the board casts a shadow: a card is a value step plus a
+      hairline. The sheet is the only surface that floats, and it is the only shadow in the system.
+      Everything is opaque, so every contrast pair is computable rather than dependent on whatever
+      happens to scroll underneath.</p>
     </div>
   </div>
 </section>
@@ -598,19 +608,20 @@ advice.</p>
 </div>
 
 <script>
-  // Theme toggle. Three states: explicit light, explicit dark, and system default.
+  // Theme toggle. Three states: explicit board, explicit paper, and system
+  // default (which is the board unless the OS asks for a light interface).
   (function () {
     var btn = document.getElementById('theme');
     var root = document.documentElement;
-    function label() {
-      var dark = root.getAttribute('data-theme') === 'dark' ||
-        (!root.hasAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
-      btn.textContent = dark ? 'Switch to light' : 'Switch to dark';
+    function onPaper() {
+      var t = root.getAttribute('data-theme');
+      if (t === 'paper' || t === 'light') return true;
+      if (t === 'board' || t === 'dark') return false;
+      return window.matchMedia('(prefers-color-scheme: light)').matches;
     }
+    function label() { btn.textContent = onPaper() ? 'Switch to the board' : 'Switch to paper'; }
     btn.addEventListener('click', function () {
-      var dark = root.getAttribute('data-theme') === 'dark' ||
-        (!root.hasAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
-      root.setAttribute('data-theme', dark ? 'light' : 'dark');
+      root.setAttribute('data-theme', onPaper() ? 'board' : 'paper');
       label();
     });
     label();

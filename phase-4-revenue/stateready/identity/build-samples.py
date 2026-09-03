@@ -20,7 +20,7 @@ HERE = pathlib.Path(__file__).resolve().parent
 spec = importlib.util.spec_from_file_location("contrast", HERE / "contrast.py")
 contrast = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(contrast)
-L, ratio = contrast.LIGHT, contrast.ratio
+L, ratio = contrast.BOARD, contrast.ratio   # BOARD is the default theme
 
 # --------------------------------------------------------------- the tile grid
 # 50 states + DC on the conventional 11-column US tile grid. Equal weight per
@@ -80,12 +80,12 @@ def swatches(keys) -> str:
     rows = []
     for k in keys:
         hexv = L[k]
-        r_paper = ratio(hexv, L["paper"])
+        r_ground = ratio(hexv, L["ground"])
         rows.append(
             f'    <div class="sw">\n'
             f'      <div class="sr-swatch" style="background:{hexv}"></div>\n'
             f'      <div><code>--sr-{k.replace("_", "-")}</code>'
-            f'<span class="sr-meta">{hexv} · {r_paper:.2f}:1 on paper</span></div>\n'
+            f'<span class="sr-meta">{hexv} · {r_ground:.2f}:1 on the board</span></div>\n'
             f'    </div>'
         )
     return "\n".join(rows)
@@ -145,14 +145,14 @@ HTML = f"""<!doctype html>
              background: var(--sr-surface); position: sticky; inset-block-start: 0; z-index: 5; }}
   .brand {{ display: flex; align-items: center; gap: var(--sr-space-2); font-weight: 700; letter-spacing: -0.01em; }}
   .mark {{ inline-size: 1.5rem; block-size: 1.5rem; border-radius: var(--sr-radius-sm);
-           background: var(--sr-ready); color: #fff; display: grid; place-items: center; font-size: 0.85rem; }}
+           background: var(--sr-ready); color: var(--sr-on-ink); display: grid; place-items: center; font-size: 0.85rem; }}
 </style>
 </head>
 <body>
 
 <header class="topbar">
   <span class="brand"><span class="mark" aria-hidden="true">✓</span> StateReady <span class="sr-meta">design system v1</span></span>
-  <button type="button" class="sr-btn sr-btn--secondary" id="theme">Switch to dark</button>
+  <button type="button" class="sr-btn sr-btn--secondary" id="theme">Switch to paper</button>
 </header>
 
 <div class="sheet">
@@ -213,7 +213,7 @@ fails — 70 pairs across both themes, 0 failures at the time of writing.</p>
             <span class="sr-map__legend-item"><span class="sr-dot" data-status="risk"></span> At risk</span>
             <span class="sr-map__legend-item"><span class="sr-dot" data-status="lapsed"></span> Lapsed</span>
             <span class="sr-map__legend-item"><span class="sr-dot"></span> Not tracked</span>
-            <span class="sr-map__legend-item"><span class="sr-swatch" style="inline-size:.75rem;block-size:.75rem;border-style:dashed;background:var(--sr-paper)"></span> Not operating — expansion report available</span>
+            <span class="sr-map__legend-item"><span class="sr-swatch" style="inline-size:.75rem;block-size:.75rem;border-style:dashed;background:var(--sr-ground)"></span> Not operating — expansion report available</span>
           </div>
         </div>
         <p class="sr-meta sr-mt-6">Every jurisdiction gets the same tile, because your exposure has
@@ -354,13 +354,17 @@ fails — 70 pairs across both themes, 0 failures at the time of writing.</p>
 <!-- ============================================================== COLOUR -->
 <section class="sec">
   <h2>2. Colour</h2>
-  <p>Two families and nothing else. Warm paper and warm ink carry all chrome; the readiness ramp is
-  the only saturated colour in the system and appears only inside status objects. There is no brand
-  hue and no blue at any weight.</p>
+  <p>Two families and nothing else. The graphite board and its ink carry all chrome; the readiness
+  ramp is the only saturated colour in the system and appears only inside status objects. There is no
+  brand hue and no blue at any weight. <strong>The board is the default theme</strong> — it is the
+  surface the coordinator works on. <strong>Paper is the alternate</strong>, and it is what leaves the
+  building: print, the bid PDF, the shareable readiness link, the alert emails. Board for the
+  operator, paper for the forwarder. Ground, ramp and typefaces are allocated across the phase-4
+  fleet by <code>../../IDENTITY_ARBITRATION.md</code> (2026-09-03).</p>
 
   <h3>Ground and ink</h3>
   <div class="swatches">
-{swatches(["paper", "surface", "sunken", "line", "line_strong", "ink", "ink_2", "ink_3"])}
+{swatches(["ground", "surface", "sunken", "line", "line_strong", "ink", "ink_2", "ink_3"])}
   </div>
 
   <h3 class="sr-mt-6">The readiness ramp</h3>
@@ -390,8 +394,12 @@ fails — 70 pairs across both themes, 0 failures at the time of writing.</p>
 <!-- ========================================================= TYPOGRAPHY -->
 <section class="sec">
   <h2>3. Typography</h2>
-  <p>Public Sans for everything a person reads, IBM Plex Mono for everything a person compares down a
-  column — licence numbers, dates, hour counts, day counts. Both from Google Fonts. Every size is in
+  <p><strong>Barlow</strong> for everything a person reads — a low-contrast grotesk drawn from
+  American public and transport signage, which is the right lineage for a product about crossing a
+  state line. <strong>Barlow Condensed</strong> is the signage face: state tiles, column heads,
+  runway lane labels, eyebrows. <strong>Overpass Mono</strong>, whose parent family descends from
+  Highway Gothic, carries everything a person compares down a column — licence numbers, dates, hour
+  counts, day counts. All three from Google Fonts, none shared with a sibling app. Every size is in
   <code>rem</code>, so the interface scales with the reader's root font size.</p>
   <div class="sr-table-wrap">
     <table class="sr-table">
@@ -430,11 +438,13 @@ fails — 70 pairs across both themes, 0 failures at the time of writing.</p>
       <p class="sr-meta">6px tiles and chips · 10px cards and buttons · 16px sheets.</p>
       <div class="demo sr-mt-6">
         <div class="sr-card" style="padding:var(--sr-space-4);box-shadow:var(--sr-shadow-1)">shadow-1 · hairline</div>
-        <div class="sr-card" style="padding:var(--sr-space-4);box-shadow:var(--sr-shadow-2)">shadow-2 · card</div>
+        <div class="sr-card" style="padding:var(--sr-space-4);box-shadow:var(--sr-shadow-2)">shadow-2 · card (none)</div>
         <div class="sr-card" style="padding:var(--sr-space-4);box-shadow:var(--sr-shadow-3)">shadow-3 · sheet</div>
       </div>
-      <p class="sr-meta">Three levels, all opaque. No translucency anywhere, so every contrast pair is
-      computable rather than dependent on whatever happens to scroll underneath.</p>
+      <p class="sr-meta">Nothing that rests on the board casts a shadow: a card is a value step plus a
+      hairline. The sheet is the only surface that floats, and it is the only shadow in the system.
+      Everything is opaque, so every contrast pair is computable rather than dependent on whatever
+      happens to scroll underneath.</p>
     </div>
   </div>
 </section>
@@ -580,19 +590,20 @@ advice.</p>
 </div>
 
 <script>
-  // Theme toggle. Three states: explicit light, explicit dark, and system default.
+  // Theme toggle. Three states: explicit board, explicit paper, and system
+  // default (which is the board unless the OS asks for a light interface).
   (function () {{
     var btn = document.getElementById('theme');
     var root = document.documentElement;
-    function label() {{
-      var dark = root.getAttribute('data-theme') === 'dark' ||
-        (!root.hasAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
-      btn.textContent = dark ? 'Switch to light' : 'Switch to dark';
+    function onPaper() {{
+      var t = root.getAttribute('data-theme');
+      if (t === 'paper' || t === 'light') return true;
+      if (t === 'board' || t === 'dark') return false;
+      return window.matchMedia('(prefers-color-scheme: light)').matches;
     }}
+    function label() {{ btn.textContent = onPaper() ? 'Switch to the board' : 'Switch to paper'; }}
     btn.addEventListener('click', function () {{
-      var dark = root.getAttribute('data-theme') === 'dark' ||
-        (!root.hasAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
-      root.setAttribute('data-theme', dark ? 'light' : 'dark');
+      root.setAttribute('data-theme', onPaper() ? 'board' : 'paper');
       label();
     }});
     label();

@@ -3,9 +3,16 @@
    Implements IDENTITY.md (2026-09-03). Framework-free. Importable from a
    Next.js app with `import "../../design-system.css"` in the root layout.
 
-   Contract with IDENTITY.md:
-     - Two colour families only: warm paper/ink (all chrome) and the readiness
-       ramp (status only). No third hue. No blue anywhere.
+   Contract with IDENTITY.md and IDENTITY_ARBITRATION.md (2026-09-03):
+     - Two colour families only: the graphite board and its ink (all chrome),
+       and the readiness ramp (status only). No third hue. No blue anywhere.
+     - THE BOARD IS THE DEFAULT THEME. :root is the deep readiness board, the
+       surface the coordinator works on. The PAPER theme is the alternate and
+       is what every forwardable artefact uses: print, the bid PDF, the
+       shareable readiness link, the alert emails. Board for the operator,
+       paper for the forwarder.
+     - Typefaces are allocated by IDENTITY_ARBITRATION.md: Barlow, Barlow
+       Condensed and Overpass Mono belong to StateReady and to no sibling app.
      - No translucency, no backdrop-filter. Every surface is opaque, so every
        contrast pair is computable and is certified in identity/contrast.py.
      - Colour is never the sole carrier of meaning: every status ships a glyph,
@@ -15,8 +22,8 @@
 
    Sections
      1  Fonts
-     2  Tokens — light
-     3  Tokens — dark  (system preference + explicit data-theme)
+     2  Tokens — board (default)
+     3  Tokens — paper (system preference + explicit data-theme)
      4  Reset and base
      5  Typography
      6  Layout: shell, grid, stack
@@ -30,40 +37,45 @@
    ============================================================================= */
 
 /* -------------------------------------------------- 1. Fonts (Google Fonts) */
-@import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&family=Overpass+Mono:wght@400;500;600&display=swap");
 
-/* ---------------------------------------------------- 2. Tokens — light */
+/* ------------------------------------- 2. Tokens — BOARD (the default theme) */
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 
-  /* ground and ink */
-  --sr-paper:        #FAF8F4;
-  --sr-surface:      #FFFFFF;
-  --sr-sunken:       #F0ECE4;
-  --sr-line:         #DCD6CB;
-  --sr-line-strong:  #877F72;
-  --sr-ink:          #16130F;
-  --sr-ink-2:        #4E4840;
-  --sr-ink-3:        #6A635A;
-  --sr-on-ink:       #FAF8F4;
+  /* ground and ink — deep graphite with a green cast, so the readiness ramp
+     is the only thing on screen with chroma in it */
+  --sr-ground:       #181D1A;
+  --sr-surface:      #212724;
+  --sr-sunken:       #0E1210;
+  --sr-line:         #333B37;
+  --sr-line-strong:  #7E8A84;
+  --sr-ink:          #ECF2EE;
+  --sr-ink-2:        #B9C4BE;
+  --sr-ink-3:        #8D9994;
+  --sr-on-ink:       #0E1210;
 
-  /* readiness ramp — the only saturated colour in the system */
-  --sr-ready:        #1B6B3A;
-  --sr-ready-fill:   #DCEEE2;
-  --sr-ready-edge:   #3E8F5C;
-  --sr-risk:         #8A5300;
-  --sr-risk-fill:    #FAEACB;
-  --sr-risk-edge:    #B07A1E;
-  --sr-lapsed:       #A31E1E;
-  --sr-lapsed-fill:  #F8DEDB;
-  --sr-lapsed-edge:  #C24A44;
-  --sr-unknown:      #6A635A;
-  --sr-unknown-fill: #EDE9E1;
-  --sr-unknown-edge: #877F72;
+  /* readiness ramp — the only saturated colour in the system.
+     Luminous signals on a deep board: ready 155deg, risk 31deg, lapsed 355deg */
+  --sr-ready:        #52D09C;
+  --sr-ready-fill:   #0F3226;
+  --sr-ready-edge:   #38976F;
+  --sr-risk:         #F0A85A;
+  --sr-risk-fill:    #37260D;
+  --sr-risk-edge:    #A0722C;
+  --sr-lapsed:       #F98A93;
+  --sr-lapsed-fill:  #3B1A20;
+  --sr-lapsed-edge:  #BB4E59;
+  --sr-unknown:      #8D9994;
+  --sr-unknown-fill: #232925;
+  --sr-unknown-edge: #7E8A84;
 
-  /* type */
-  --sr-font:      "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --sr-font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  /* type — Barlow (American public/transport signage lineage), Barlow
+     Condensed for signage labels, Overpass Mono (Highway Gothic lineage)
+     for anything compared down a column */
+  --sr-font:         "Barlow", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --sr-font-display: "Barlow Condensed", "Barlow", "Roboto Condensed", "Arial Narrow", sans-serif;
+  --sr-font-mono:    "Overpass Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   --sr-text-2xs:  0.6875rem;  /* 11 */
   --sr-text-xs:   0.75rem;    /* 12 */
@@ -91,10 +103,12 @@
   --sr-radius-md: 0.625rem;  /* 10 — cards, buttons */
   --sr-radius-lg: 1rem;      /* 16 — sheets */
 
-  /* elevation — three levels, all opaque */
+  /* elevation — nothing that rests on the board casts a shadow. Cards are
+     separated by a value step plus a hairline. The only shadow in the system
+     belongs to the sheet, which is the one surface that floats. */
   --sr-shadow-1: none;
-  --sr-shadow-2: 0 1px 2px rgba(22, 19, 15, 0.08);
-  --sr-shadow-3: 0 8px 24px rgba(22, 19, 15, 0.14);
+  --sr-shadow-2: none;
+  --sr-shadow-3: 0 12px 32px rgba(0, 0, 0, 0.55);
 
   /* motion */
   --sr-dur-1: 120ms;
@@ -104,67 +118,71 @@
 
   /* geometry */
   --sr-target-min: 2.75rem;   /* 44px — WCAG 2.5.5 */
+  --sr-row-h:      3rem;      /* 48px — the roomiest of the three fleet apps */
   --sr-rail:       15rem;     /* 240px app rail */
   --sr-content-max: 80rem;    /* 1280px */
   --sr-tile:       2.5rem;    /* 40px map tile */
   --sr-tile-gap:   0.25rem;
 }
 
-/* ------------------------------------ 3. Tokens — dark (independently authored) */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --sr-paper:        #12100E;
-    --sr-surface:      #1C1916;
-    --sr-sunken:       #0B0A09;
-    --sr-line:         #332E28;
-    --sr-line-strong:  #7A7268;
-    --sr-ink:          #F5F1EA;
-    --sr-ink-2:        #C6BFB4;
-    --sr-ink-3:        #9C9489;
-    --sr-on-ink:       #12100E;
-    --sr-ready:        #63CE8E;
-    --sr-ready-fill:   #12301F;
-    --sr-ready-edge:   #3E8F5C;
-    --sr-risk:         #E8B75F;
-    --sr-risk-fill:    #332609;
-    --sr-risk-edge:    #9A7526;
-    --sr-lapsed:       #F29289;
-    --sr-lapsed-fill:  #361816;
-    --sr-lapsed-edge:  #B85248;
-    --sr-unknown:      #9C9489;
-    --sr-unknown-fill: #221F1B;
-    --sr-unknown-edge: #7A7268;
-    --sr-shadow-2: 0 1px 2px rgba(0, 0, 0, 0.5);
-    --sr-shadow-3: 0 8px 24px rgba(0, 0, 0, 0.6);
+/* ------------- 3. Tokens — PAPER (the alternate; independently authored)
+   Paper is what leaves the building: print, the bid PDF, the shareable
+   readiness link, the alert emails. It is also what a viewer who has asked
+   their OS for a light interface gets. Hues are identical to the board's
+   (ready 155deg, risk 32deg, lapsed 353deg); only lightness moves, so a user
+   switching themes mid-task never has to re-learn the map.               */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="board"]):not([data-theme="dark"]) {
+    color-scheme: light;
+    --sr-ground:       #E9ECE8;
+    --sr-surface:      #FFFFFF;
+    --sr-sunken:       #DCE0DB;
+    --sr-line:         #CBD1CB;
+    --sr-line-strong:  #78827C;
+    --sr-ink:          #131714;
+    --sr-ink-2:        #454B47;
+    --sr-ink-3:        #5F6762;
+    --sr-on-ink:       #E9ECE8;
+    --sr-ready:        #146A46;
+    --sr-ready-fill:   #D4EBE0;
+    --sr-ready-edge:   #348D68;
+    --sr-risk:         #8A4E08;
+    --sr-risk-fill:    #F8E7CE;
+    --sr-risk-edge:    #A9701F;
+    --sr-lapsed:       #A81B2C;
+    --sr-lapsed-fill:  #F7DEDF;
+    --sr-lapsed-edge:  #BE454B;
+    --sr-unknown:      #5F6762;
+    --sr-unknown-fill: #E4E7E2;
+    --sr-unknown-edge: #78827C;
+    --sr-shadow-3: 0 12px 32px rgba(19, 23, 20, 0.18);
   }
 }
 
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --sr-paper:        #12100E;
-  --sr-surface:      #1C1916;
-  --sr-sunken:       #0B0A09;
-  --sr-line:         #332E28;
-  --sr-line-strong:  #7A7268;
-  --sr-ink:          #F5F1EA;
-  --sr-ink-2:        #C6BFB4;
-  --sr-ink-3:        #9C9489;
-  --sr-on-ink:       #12100E;
-  --sr-ready:        #63CE8E;
-  --sr-ready-fill:   #12301F;
-  --sr-ready-edge:   #3E8F5C;
-  --sr-risk:         #E8B75F;
-  --sr-risk-fill:    #332609;
-  --sr-risk-edge:    #9A7526;
-  --sr-lapsed:       #F29289;
-  --sr-lapsed-fill:  #361816;
-  --sr-lapsed-edge:  #B85248;
-  --sr-unknown:      #9C9489;
-  --sr-unknown-fill: #221F1B;
-  --sr-unknown-edge: #7A7268;
-  --sr-shadow-2: 0 1px 2px rgba(0, 0, 0, 0.5);
-  --sr-shadow-3: 0 8px 24px rgba(0, 0, 0, 0.6);
+:root[data-theme="paper"], :root[data-theme="light"] {
+  color-scheme: light;
+  --sr-ground:       #E9ECE8;
+  --sr-surface:      #FFFFFF;
+  --sr-sunken:       #DCE0DB;
+  --sr-line:         #CBD1CB;
+  --sr-line-strong:  #78827C;
+  --sr-ink:          #131714;
+  --sr-ink-2:        #454B47;
+  --sr-ink-3:        #5F6762;
+  --sr-on-ink:       #E9ECE8;
+  --sr-ready:        #146A46;
+  --sr-ready-fill:   #D4EBE0;
+  --sr-ready-edge:   #348D68;
+  --sr-risk:         #8A4E08;
+  --sr-risk-fill:    #F8E7CE;
+  --sr-risk-edge:    #A9701F;
+  --sr-lapsed:       #A81B2C;
+  --sr-lapsed-fill:  #F7DEDF;
+  --sr-lapsed-edge:  #BE454B;
+  --sr-unknown:      #5F6762;
+  --sr-unknown-fill: #E4E7E2;
+  --sr-unknown-edge: #78827C;
+  --sr-shadow-3: 0 12px 32px rgba(19, 23, 20, 0.18);
 }
 
 /* ------------------------------------------------------ 4. Reset and base */
@@ -174,7 +192,7 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--sr-paper);
+  background: var(--sr-ground);   /* the board. never transparent. */
   color: var(--sr-ink);
   font-family: var(--sr-font);
   font-size: var(--sr-text-base);
@@ -231,14 +249,21 @@ code, kbd, samp, .sr-mono {
 
 .sr-lead      { font-size: var(--sr-text-lg); color: var(--sr-ink-2); }
 .sr-meta      { font-size: var(--sr-text-xs); color: var(--sr-ink-3); }
-.sr-eyebrow   { font-size: var(--sr-text-xs); font-weight: 700; letter-spacing: 0.08em;
-                text-transform: uppercase; color: var(--sr-ink-3); }
+.sr-eyebrow   { font-family: var(--sr-font-display); font-size: var(--sr-text-sm); font-weight: 600;
+                letter-spacing: 0.12em; text-transform: uppercase; color: var(--sr-ink-3); }
 .sr-number    { font-family: var(--sr-font-mono); font-variant-numeric: tabular-nums; }
 
 /* --------------------------------------------------------- 6. Layout */
-.sr-shell        { display: grid; grid-template-columns: var(--sr-rail) minmax(0, 1fr); min-block-size: 100vh; }
-.sr-rail         { border-inline-end: 1px solid var(--sr-line); padding: var(--sr-space-5) var(--sr-space-4);
+/* The shell is a board, not a document: a full-width bar across the top and
+   the board beneath it. Neither sibling app is laid out this way — WageLens
+   and Certly both run a fixed left rail. IDENTITY_ARBITRATION.md 4.3. */
+.sr-shell        { display: grid; grid-template-rows: auto minmax(0, 1fr); min-block-size: 100vh; }
+.sr-bar,
+.sr-rail         { display: flex; align-items: center; gap: var(--sr-space-5); flex-wrap: wrap;
+                   border-block-end: 1px solid var(--sr-line);
+                   padding: var(--sr-space-3) var(--sr-space-5);
                    background: var(--sr-surface); }
+.sr-bar__nav     { display: flex; align-items: center; gap: var(--sr-space-4); flex-wrap: wrap; }
 .sr-main         { padding: var(--sr-space-5) var(--sr-space-5) var(--sr-space-8); min-inline-size: 0; }
 .sr-container    { max-inline-size: var(--sr-content-max); margin-inline: auto; }
 
@@ -256,8 +281,7 @@ code, kbd, samp, .sr-mono {
 .sr-spread       { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sr-space-4); }
 
 @media (max-width: 64rem) {
-  .sr-shell { grid-template-columns: minmax(0, 1fr); }
-  .sr-rail  { border-inline-end: 0; border-block-end: 1px solid var(--sr-line); }
+  .sr-bar, .sr-rail { overflow-x: auto; }
   .sr-col-4, .sr-col-5, .sr-col-6, .sr-col-7, .sr-col-8 { grid-column: span 12; }
 }
 @media (max-width: 40rem) {
@@ -265,6 +289,8 @@ code, kbd, samp, .sr-mono {
 }
 
 /* -------------------------------------------------------- 7. Surfaces */
+/* A card on the board is a value step plus a hairline. No shadow: see the
+   elevation tokens above and IDENTITY_ARBITRATION.md's shadow policy row. */
 .sr-card {
   background: var(--sr-surface);
   border: 1px solid var(--sr-line);
@@ -412,13 +438,14 @@ code, kbd, samp, .sr-mono {
 .sr-table th, .sr-table td { text-align: start; padding: var(--sr-space-3) var(--sr-space-4); vertical-align: middle; }
 .sr-table thead th {
   background: var(--sr-sunken); color: var(--sr-ink-2);
-  font-size: var(--sr-text-xs); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  font-family: var(--sr-font-display);
+  font-size: var(--sr-text-sm); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
   border-block-end: 1px solid var(--sr-line-strong); white-space: nowrap;
 }
 .sr-table tbody tr { border-block-end: 1px solid var(--sr-line); }
 .sr-table tbody tr:last-child { border-block-end: 0; }
 .sr-table tbody tr:hover { background: var(--sr-sunken); }
-.sr-table td { block-size: var(--sr-target-min); }
+.sr-table td { block-size: var(--sr-row-h); }   /* 48px — see IDENTITY.md 8.2 */
 .sr-table--compact td { padding-block: var(--sr-space-2); block-size: 2.25rem; }
 .sr-table .sr-num { font-family: var(--sr-font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
 
@@ -492,7 +519,8 @@ code, kbd, samp, .sr-mono {
   border-radius: var(--sr-radius-sm);
   border: 1.5px solid var(--sr-unknown-edge);
   background: var(--sr-unknown-fill); color: var(--sr-ink);
-  font: inherit; font-size: var(--sr-text-2xs); font-weight: 700; letter-spacing: 0.02em;
+  font: inherit; font-family: var(--sr-font-display);
+  font-size: var(--sr-text-sm); font-weight: 600; letter-spacing: 0.04em;
   cursor: pointer; position: relative; padding: 0;
   transition: transform var(--sr-dur-1) var(--sr-ease);
 }
@@ -502,7 +530,7 @@ code, kbd, samp, .sr-mono {
 .sr-tile[data-status="lapsed"] { background: var(--sr-lapsed-fill); border-color: var(--sr-lapsed-edge); }
 /* states we do not operate in: drawn, hollow, dashed — expansion is visible as an absence */
 .sr-tile[data-status="none"] {
-  background: var(--sr-paper); border-style: dashed; border-color: var(--sr-line-strong);
+  background: var(--sr-ground); border-style: dashed; border-color: var(--sr-line-strong);
   color: var(--sr-ink-3); font-weight: 500; cursor: pointer;
 }
 .sr-tile[aria-pressed="true"], .sr-tile[data-selected="true"] {
@@ -544,7 +572,9 @@ code, kbd, samp, .sr-mono {
   display: flex; align-items: center; border-block-end: 1px solid var(--sr-line);
 }
 .sr-runway__lane:last-child { border-block-end: 0; }
-.sr-runway__label { font-size: var(--sr-text-xs); color: var(--sr-ink-2); inline-size: 9rem; flex: none; padding-inline-end: var(--sr-space-3); }
+.sr-runway__label { font-family: var(--sr-font-display); font-size: var(--sr-text-sm); font-weight: 500;
+                    letter-spacing: 0.03em; text-transform: uppercase; color: var(--sr-ink-2);
+                    inline-size: 9rem; flex: none; padding-inline-end: var(--sr-space-3); }
 .sr-runway__track { position: relative; flex: 1 1 auto; block-size: 100%; }
 .sr-runway__marker {
   position: absolute; inset-block-start: 50%; transform: translate(-50%, -50%);
@@ -589,14 +619,22 @@ code, kbd, samp, .sr-mono {
   .sr-tile[data-status="none"] { border-style: dotted; }
 }
 
+/* Print is the paper theme, forced. A bid package, an audit file and a board
+   packet all leave the building on paper; the board never prints. */
 @media print {
-  :root {
-    --sr-paper: #FFFFFF; --sr-surface: #FFFFFF; --sr-sunken: #F0ECE4;
-    --sr-ink: #16130F; --sr-ink-2: #4E4840; --sr-ink-3: #6A635A;
+  :root, :root[data-theme="board"], :root[data-theme="dark"] {
+    color-scheme: light;
+    --sr-ground: #FFFFFF; --sr-surface: #FFFFFF; --sr-sunken: #E9ECE8;
+    --sr-line: #CBD1CB; --sr-line-strong: #78827C;
+    --sr-ink: #131714; --sr-ink-2: #454B47; --sr-ink-3: #5F6762; --sr-on-ink: #FFFFFF;
+    --sr-ready: #146A46; --sr-ready-fill: #D4EBE0; --sr-ready-edge: #348D68;
+    --sr-risk: #8A4E08; --sr-risk-fill: #F8E7CE; --sr-risk-edge: #A9701F;
+    --sr-lapsed: #A81B2C; --sr-lapsed-fill: #F7DEDF; --sr-lapsed-edge: #BE454B;
+    --sr-unknown: #5F6762; --sr-unknown-fill: #E4E7E2; --sr-unknown-edge: #78827C;
     --sr-shadow-2: none; --sr-shadow-3: none;
   }
   body { background: #FFFFFF; }
-  .sr-rail, .sr-btn, .sr-tabs { display: none !important; }
+  .sr-bar, .sr-rail, .sr-btn, .sr-tabs { display: none !important; }
   .sr-card, .sr-table-wrap { box-shadow: none; break-inside: avoid; }
   /* hatch, so a black-and-white bid package still separates the four statuses */
   .sr-tile[data-status="risk"], .sr-chip[data-status="risk"] {
