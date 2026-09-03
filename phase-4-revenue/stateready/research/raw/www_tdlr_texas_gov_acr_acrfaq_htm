@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- favicons -->
+    <link rel="icon" href="/images/favicons/favicon.svg" type="image/svg+xml" sizes="any">
+    <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" href="/images/favicons/favicon.ico" sizes="32x32">
+    <link rel="apple-touch-icon" href="/images/favicons/apple-touch-icon.png" sizes="180x180">
+
+    <!-- theme -->
+    <script type="module" crossorigin src="/lib/tdlr-web-design-system/base-page-slim.js"></script>
+    <link rel="stylesheet" crossorigin href="/lib/tdlr-web-design-system/base-page-slim.css">
+	<script type="module" crossorigin src="/lib/misc/banner-messages.js"></script>
+	
+	<!-- generative search -->
+	<script type="module" crossorigin src="/lib/misc/gen-search/functions.js"></script>
+
+        <title>Air Conditioning and Refrigeration Contractors FAQs</title>
+        <meta name="description" content="Frequently asked questions about licensing of air conditiong and refrigeration contractors, registered technicians, and certified technicians." />
+
+    </head>
+
+    <body>
+        <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MPP5WF5" height="0" width="0" style="display: none; visibility: hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- <tdlr-banner level="danger" icon="true" dismissable="true" sticky="true" hidden>
+    <div class="banner-title">Scheduled Maintenance</div>
+    <p>All online applications are currently unavailable. We apologize for any inconvenience.</p>
+</tdlr-banner> -->
+
+<!-- <tdlr-banner level="danger" icon="true" dismissable="true" sticky="true" hidden>
+    <div class="banner-title">Scheduled Maintenance</div>
+    <p>Online applications associated with TULIP are currently unavailable. These include TOOLS, SHEARS, TABS, Online Apps, DPS, Palms, TULIP Dashboard and other online applications. We apologize for any inconvenience.</p>
+</tdlr-banner> -->
+
+<header id="top-navigation-menu" data-twe-navbar-ref>
+    <div id="skip-links">
+        <p><a href="#content" class="sr-only">Skip to main content</a></p>
+    </div>
+
+    <div id="top-row">
+        <a href="/" id="logo-link">
+            <picture>
+                <source srcset="/images/logo/desktop.svg" media="(min-width: 1024px)" width="387" height="38" />
+                <source srcset="/images/logo/mobile.svg" media="(max-width: 1023px)" width="280" height="43" />
+                <img src="/images/logo/mobile.svg" alt="TDLR Logo" />
+            </picture>
+        </a>
+
+        <img src="/images/logo/Texas-America-250-logo.jpg" class="texas-america-250" alt="America's 250th celebration logo for state agencies comprising of a star to the left and the words Texas America 250 stacked to the right." />
+
+        <div id="top-row-menu">
+            <div id="translate-menu-wrapper" class="notranslate" height="18"></div>
+            <span id="translate-pipe"> | </span>
+            <a href="/verify.htm" data-menu="search">Search Everything</a> <span> | </span>
+            <a href="https://www.tdlr.texas.gov/LicenseSearch/" data-menu="search">Verify a License</a>
+            <div class="search-box-container">
+                <form id="site-search-top">
+                    <input type="search" class="search-input" placeholder="Search Website" aria-label="Search Website" />
+                    <button type="submit" class="search-button" data-twe-ripple-init data-twe-ripple-color="light" aria-label="Search">Go</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="offcanvas-menu-trigger">
+        <button type="button" id="offcanvas-menu-button" data-twe-offcanvas-toggle data-twe-target="#offcanvas-menu" aria-controls="offcanvas-menu" data-twe-ripple-init data-twe-ripple-color="light">
+            <span role="heading" aria-level="2">Site Navigation</span>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <title>click to expand</title>
+                <path d="M4 18L20 18" stroke="#fff" stroke-width="2" stroke-linecap="round" />
+                <path d="M4 12L20 12" stroke="#fff" stroke-width="2" stroke-linecap="round" />
+                <path d="M4 6L20 6" stroke="#fff" stroke-width="2" stroke-linecap="round" />
+            </svg>
+        </button>
+    </div>
+
+    <div id="navigation-menu">
+        <div id="primary-nav-menu" role="navigation" aria-label="Main" data-twe-collapse-item>
+            <div class="sr-only" role="heading" aria-level="2">Site Navigation</div>
+            <ul data-twe-navbar-nav-ref>
+                <li><a data-menu="licensing" href="/renew/">Renew a License</a></li>
+                <li><a data-menu="licensing" href="/apply/">Apply for a License</a></li>
+                <li><a data-menu="licensing" href="/manage/">Manage Your License</a></li>
+                <li class="megamenu-item" data-twe-nav-item-ref data-twe-dropdown-ref>
+                    <button type="button" class="megamenu-trigger" data-target="/licenses.htm" data-menu="regulated-industries" data-twe-ripple-init data-twe-ripple-color="light" id="regulated-megamenu" data-twe-dropdown-toggle-ref aria-expanded="false" data-twe-nav-link-ref>
+                        Regulated Industries
+                        <span class="ml-2 w-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" height="20" width="20">
+                                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="megamenu-children" aria-labelledby="regulated-megamenu" data-twe-dropdown-menu-ref>
+                        <div class="megamenu-children-inner">
+                            <div class="megamenu-children-grid" role="navigation" aria-label="Regulated Industries">
+                                <div class="sr-only" role="heading" aria-level="3">Regulated Industries Menu</div>
+                                <div>
+                                    <a href="/acr/">Air Conditioning and Refrigeration Contractors</a>
+                                    <a href="/ab/">Elimination of Architectural Barriers</a>
+                                    <a href="/at/">Athletic Trainers</a>
+                                    <a href="/auc/">Auctioneers</a>
+                                    <a href="/barbering-and-cosmetology/">Barbering and Cosmetology</a>
+                                    <a href="/bhv/">Behavior Analysts</a>
+                                    <a href="/boilers/">Boiler Safety</a>
+                                    <a href="/charitable-bingo/">Charitable Bingo</a>
+                                    <a href="/ceo/">Code Enforcement Officers</a>
+                                    <a href="/sports/">Combative Sports</a>
+                                    <a href="/court-ordered/">Court-Ordered Education Programs</a>
+                                </div>
+                                <div>
+                                    <a href="/diet/">Dietitians</a>
+                                    <a href="/driver/">Driver Education and Safety</a>
+                                    <a href="/dtp/">Dyslexia Therapy</a>
+                                    <a href="/electricians/">Electricians</a>
+                                    <a href="/ev-charging/">Electric Vehicle Charging Stations</a>
+                                    <a href="/elevator/">Elevator / Escalator Safety</a>
+                                    <a href="/hearing/">Hearing Instrument Fitters and Dispensers</a>
+                                    <a href="/ihb/">Industrialized Housing and Buildings</a>
+                                    <a href="/las/">Laser Hair Removal</a>
+                                    <a href="/bre/">Licensed Breeders</a>
+                                </div>
+                                <div>
+                                    <a href="/mas/">Massage Therapy</a>
+                                    <a href="/midwives/">Midwives</a>
+                                    <a href="/mld/">Mold Assessors and Remediators</a>
+                                    <a href="/fmq/">Motor Fuel Metering and Quality</a>
+                                    <a href="/mot/">Motorcycle and ATV Operator Safety</a>
+                                    <a href="/op/">Orthotists and Prosthetists</a>
+                                    <a href="/pod/">Podiatry</a>
+                                    <a href="/peo/">Professional Employer Organizations</a>
+                                    <a href="/ptc/">Property Tax Consultants</a>
+                                    <a href="/taxprof/">Property Tax Professionals</a>
+                                    <a href="/residential-solar-retailers/">Residential Solar Retailers</a>
+                                </div>
+                                <div>
+                                    <a href="/san/">Sanitarians</a>
+                                    <a href="/scp/">Service Contract Providers</a>
+                                    <a href="/slpa/">Speech-Language Pathologists and Audiologists</a>
+                                    <a href="/lottery/">Texas Lottery</a>
+                                    <a href="/towing/">Tow Trucks, Operators and VSFs</a>
+                                    <a href="/tnc/">Transportation &amp; Delivery Network Companies</a>
+                                    <a href="/parts/">Used Auto Parts Recyclers</a>
+                                    <a href="/wwd/">Water Well Drillers and Pump Installers</a>
+                                    <a href="/weather/">Weather Modification</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li><a data-menu="licensing" href="/tdlrce.htm">Continuing Education</a></li>
+                <li><a data-menu="contact" href="/help">Contact Us</a></li>
+            </ul>
+        </div>
+        <div id="secondary-nav-menu" role="navigation" aria-label="Secondary">
+            <ul>
+                <li><a data-menu="agency" href="/laws-rules/">Laws and Rules</a></li>
+                <li><a data-menu="agency" href="/meetings/">Open Meetings</a></li>
+                <li><a data-menu="agency" href="/careers">Careers</a></li>
+                <li><a data-menu="agency" href="/commissioners.htm">Commission</a></li>
+                <li><a data-menu="complaints" href="/complaints-and-enforcement/">Complaints and Enforcement</a></li>
+                <li><a data-menu="complaints" href="/lawful-presence.htm">Lawful Presence</a></li>
+                <li><a data-menu="agency" href="https://public.govdelivery.com/accounts/TXDLR/subscriber/new">Email Updates</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="offcanvas-menu" tabindex="-1" data-twe-offcanvas-init>
+        <div id="offcanvas-header">
+            <h2 aria-label="Site Navigaton Modal Window">Site Navigation</h2>
+            <button id="offcanvas-close-button" type="button" aria-label="close site navigation menu" data-twe-offcanvas-dismiss>
+                <span id="offcanvas-svg-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </span>
+            </button>
+        </div>
+
+        <div id="offcanvas-nav-wrapper">
+            <!-- mobile app drawer renders here -->
+        </div>
+    </div>
+</header>
+
+
+        <div id="content-area">
+            <aside>
+    <div id="page-sidebar">
+        <tdlr-sidebar label="Air Conditioning &amp; Refrigeration">
+            <div class="sidebar-section">
+                <div class="sidebar-item-title">Renew a License</div>
+                <div class="sidebar-item-content">
+                    <p><a href="/acr/contractor-renew.htm">Renew a Contractor License</a></p>
+                    <p><a href="/acr/technician-renew.htm">Renew Technician</a></p>
+                    <p><a href="/acr/acrce.htm">Continuing Education</a></p>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-item-title">Apply for a License</div>
+                <div class="sidebar-item-content">
+                    <p><a href="/acr/contractor-apply.htm">Apply for a Contractor License</a></p>
+                    <p><a href="/acr/technician-apply.htm">Apply for a Technician Registration</a></p>
+                    <p><a href="/acr/certified-tech-apply.htm">Apply for a Technician Certification</a></p>
+                    <p><a href="/acr/certified-providers.htm">Apply for Training Program Approval</a></p>
+                    <p><a href="/acr/career-and-technology-education-program.htm">Apply for Career and Technology Education Program Approval</a></p>
+                    <p><a href="/acr/acrstate.htm">Out of State Licensed Applicants</a></p>
+                    <p><a href="/acr/acrexam.htm">Exam Information</a></p>
+                </div>
+            </div>
+
+            <div class="sidebar-item">
+                <a href="https://www.tdlr.texas.gov/LicenseSearch/?program=ACR">Search Licenses</a>
+            </div>
+
+            <div class="sidebar-item">
+                <a href="/acr/acrforms.htm">Forms &amp; Applications</a>
+            </div>
+
+            <div class="sidebar-item">
+                <a href="/acr/laws-rules.htm">Laws &amp; Administrative Rules</a>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-item-title">Continuing Education</div>
+                <div class="sidebar-item-content">
+                    <p><a href="/acr/acrce.htm">Requirements for License Holders</a></p>
+                    <p><a href="https://www.tdlr.texas.gov/ContinuingEducation/ContinuingEducationProvider.aspx">Approved Providers List</a></p>
+                    <p><a href="/continuing-education-providers/air-conditioning-and-refrigeration.htm">Provider &amp; Course Approval</a></p>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-item-title">Knowledge Base</div>
+                <div class="sidebar-item-content">
+                    <p><a href="/acr/acrfaq.htm#licensing">Changes to a License</a></p>
+                    <p><a href="/acr/acrfaq.htm#procedures">Procedures and Practices</a></p>
+                    <p><a href="/acr/acrfaq.htm#continuingeducation">Continuing Education</a></p>
+                    <p><a href="/acr/acrfaq.htm#state">Out-of-State and Municipal Licenses</a></p>
+                    <p><a href="/acr/acrfaq.htm#guidelines">Information for Suppliers and Wholesalers</a></p>
+                    <p><a href="/acr/acrfaq.htm#OAG">Office of the Attorney General (OAG) Denial of License Renewal</a></p>
+                    <p><a href="/acr/acrfaq.htm#communication">Communication</a></p>
+                    <p><a href="/acr/acrfaq.htm#hurricane">Hurricane Disaster Recovery</a></p>
+                    <p><a href="/acr/career-and-technology-education-program.htm">Career and Technology Education Program </a></p>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-item-title">Complaints &amp; Enforcement</div>
+                <div class="sidebar-item-content">
+                    <p><a href="/complaints/">File a Complaint</a></p>
+                    <p><a href="https://www.tdlr.texas.gov/cimsfo/fosearch.asp">Disciplinary Actions</a></p>
+                    <p><a href="/complaint-statistics.htm#acr">Complaint Statistics</a></p>
+                    <p><a href="/enforcement.htm">Enforcement Plan</a></p>
+                    <p><a href="/enforcement/acrsanctions.htm">Penalties and Sanctions</a></p>
+                    <p><a href="/crimHistoryEval.htm">Criminal History Evaluation Letter</a></p>
+                    <p><a href="/crimconvict.htm">Guidelines for License Applicants with Criminal Convictions</a></p>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-item-title">Advisory Board</div>
+                <div class="sidebar-item-content">
+                    <p><a href="/acr/acrboard.htm">Air Conditioning and Refrigeration Contractors Advisory Board</a></p>
+                    <p><a href="/acr/acrboard.htm#upcoming-meetings">Upcoming Meetings</a></p>
+                    <p><a href="/acr/acrboard.htm#past-meetings">Past Meetings</a></p>
+                    <p><a href="/media/vacancies.htm" title="Advisory Board Vacancies">Advisory Board Vacancies</a></p>
+                    <p><a href="/AdvisoryBoard/login.aspx" title="TDLR Advisory Board Application System">Application for Advisory Board</a></p>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-item-title">News &amp; Updates</div>
+                <div class="sidebar-item-content">
+                    <p><a href="/news/category/air-conditioning-and-refrigeration/">Important Notices</a></p>
+                    <p><a href="https://public.govdelivery.com/accounts/TXDLR/subscriber/new">Sign up to Receive Email Updates</a></p>
+                </div>
+            </div>
+        </tdlr-sidebar>
+        <div id="sidecards">
+            <div class="sidecard-group">
+                <div class="sidecard-group-title">Military Service Members, Veterans, and Spouses</div>
+
+                <div class="sidecard-item">
+                    <div class="sidecard-icon">
+                        <img src="/images/sidebar-icons/bookmark.svg" loading="lazy" alt="" height="48" width="48" />
+                    </div>
+                    <div class="sidecard-item-content">
+                        <p>For more information about obtaining a TDLR license or renewing a TDLR license that expired while serving on active duty, please see the <a href="/military/">Military Outreach page</a>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidecard-group" id="sidebar-contact">
+                <div class="sidecard-group-title">Contact Information</div>
+
+                <div class="sidecard-item">
+                    <div class="sidecard-icon">
+                        <img src="/images/sidebar-icons/help-icon.svg" loading="lazy" alt="" height="48" width="48" />
+                    </div>
+                    <div class="sidecard-item-content">
+                        <p>For more information about Air Conditioning and Refrigeration Contractors, <a href="/help/">contact customer service</a>.</p>
+                        <p>
+                            Texas Department of Licensing and Regulation<br />
+                            Air Conditioning and Refrigeration Contractors<br />
+                            PO Box 12157<br />
+                            Austin, TX 78711
+                        </p>
+                        <p>(800) 803-9202 [in state only]<br />(512) 463-6599<br />Relay Texas-TDD: (800) 735-2989</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+
+            <main id="content">
+                <div id="breadcrumbs">
+                    <a href="/acr/">Air Conditioning and Refrigeration Contractors</a>
+                </div>
+
+                <h1>Frequently Asked Questions</h1>
+
+                <div class="TOC">
+                    <h2>On this page:</h2>
+                    <ul>
+                        <li><a href="#licensing">Changes to a License</a></li>
+                        <li><a href="#procedures">Procedures and Practices</a></li>
+                        <li><a href="#continuingeducation">Continuing Education</a></li>
+                        <li><a href="#state">Out-of-State and Municipal Licenses</a></li>
+                        <li><a href="#guidelines">Information for Suppliers and Wholesalers</a></li>
+                        <li><a href="#OAG">Office of the Attorney General (OAG) Denial of License Renewal</a></li>
+                        <li><a href="#communication">Communication</a></li>
+                        <li><a href="#hurricane">Hurricane Disaster Recovery</a></li>
+                    </ul>
+                </div>
+                <div class="Section" id="Licensing">
+
+                    <h2 id="licensing">Changes to a License</h2>
+                    <p><strong>Change of Name, Address, or Business Information</strong></p>
+                    <ol>
+                        <li><a href="#ch1">How do I change my address on my license?</a></li>
+                        <li><a href="#ch2">If I want to add an endorsement to an existing license AND change my business information on my license, what is required?</a></li>
+                    </ol>
+                    <p><strong>Endorsements</strong></p>
+                    <ol>
+                        <li><a href="#en1">How do I add an endorsement to an existing license?</a></li>
+                        <li><a href="#en2">How do I add an endorsement if I have a current application on file?</a></li>
+                        <li><a href="#en3">If I want to add an endorsement to an existing license AND change my business information on my license, what is required?</a></li>
+                    </ol>
+                    <p><strong>Inactive License</strong></p>
+                    <ol>
+                        <li><a href="#in1">Can I inactivate my license?</a></li>
+                        <li><a href="#in2">I am not working in the industry, but I want to keep my license active. What do I do?</a></li>
+                    </ol>
+
+                    <h3>Change of Name, Address, or Business Information</h3>
+                    <p id="ch1"><strong>1. How do I change my name, address, or business information on my license?</strong></p>
+                    <p>Submit a completed <a href="/acr/forms/acr-lic-003-notice-of-change-and-duplicate-license-request.pdf">Notice of Change and Duplicate License Request (PDF)</a> along with the appropriate fees as indicated on the form.</p>
+                    <p id="ch2"><strong>2. If I want to add an endorsement to an existing license AND change my business information on my license, what is required? </strong></p>
+                    <p>
+                        You may complete the <a href="/acr/forms/acr-lic-003-notice-of-change-and-duplicate-license-request.pdf">Notice of Change and Duplicate License Request (PDF)</a> , submit a fee of $50 and provide a new certificate of insurance if the business name is being changed. <br />
+                        A fee of $25 for adding the endorsement AND a fee of $25 to change the existing license is required: Total $50
+                    </p>
+
+                    <h3>Endorsements</h3>
+                    <p id="en1"><strong>1. How do I add an endorsement to an existing license?</strong></p>
+                    <p>You can add an endorsement by using the <a href="/acr/forms/acr-lic-003-notice-of-change-and-duplicate-license-request.pdf">Notice of Change and Duplicate License Request (PDF)</a> , along with a fee of $25.</p>
+                    <p id="en2"><strong>2. How do I add an endorsement if I have a current application on file?</strong></p>
+                    <p>
+                        If it has been <b><em>less than one year</em></b> since you submitted your application, you may email or fax your request to the Department (no fee is required). PSI will mail you a postcard when you are eligible to take the new exam.
+                    </p>
+                    <p id="en3"><strong>3. If I want to add an endorsement to an existing license AND change my business information on my license, what is required?</strong></p>
+                    <p>
+                        You may complete the <a href="/acr/forms/acr-lic-003-notice-of-change-and-duplicate-license-request.pdf">Notice of Change and Duplicate License Request (PDF)</a> , submit a fee of $50 and provide a new certificate of insurance if the business name is being changed. <br />
+                        A fee of $25 for adding the endorsement AND a fee of $25 to change the existing license is required: Total $50
+                    </p>
+
+                    <h3>Inactive License</h3>
+                    <p id="in1"><strong>1. Can I inactivate my license?</strong></p>
+                    <p>No. The Air Conditioning and Refrigeration Law and Administrative Rules do not provide for an "inactive status" for your license.</p>
+                    <p id="in2"><strong>2. I am not working in the industry, but I want to keep my license active. What do I do?</strong></p>
+                    <p>You will need to request a waiver of insurance by downloading the <a href="/acr/forms/acr-lic-003-notice-of-change-and-duplicate-license-request.pdf">Notice of Change and Duplicate License Request (PDF)</a> from our web site. Although you may have a waiver of insurance, you are still required to renew your license.</p>
+                    <p>Mail the completed form with a $25.00 revision fee to:</p>
+                    <p><strong>Texas Department of Licensing and Regulation</strong><br /><strong>P.O. Box 12157</strong><br /><strong>Austin, Texas 78711</strong></p>
+                </div>
+                <div class="Section" id="Procedures-and-Practices">
+                    
+                    <hr>
+                    <h2 id="procedures">Procedures and Practices</h2>
+                    <ol>
+                        <li><a href="#pr1">I am a licensed Air Conditioning and Refrigeration Contractor and want to be certified to perform the installation and repair of LP gas appliances. How do I obtain this certification? </a></li>
+                        <li><a href="#pr2">Can unlicensed persons perform maintenance, service, and repairs on a process cooling and heating system? </a></li>
+                        <li><a href="#pr3">Can a licensed Air Conditioning and Refrigeration Contractor drill closed loop wells for connection to a geothermal air conditioning system? </a></li>
+                        <li><a href="#pr4">Is R438A refrigerant acceptable for use in environmental air conditioning systems in Texas? </a></li>
+                        <li><a href="#pr5">Can unlicensed persons perform installation, maintenance, and repairs on “Mini-Split” air conditioning units?</a></li>
+                    </ol>
+                    <p id="pr1"><strong>1. I am a licensed Air Conditioning and Refrigeration Contractor and want to be certified to perform the installation and repair of LP gas appliances. How do I obtain this certification? </strong></p>
+                    <p>Contact the Texas Railroad Commission at (512) 463-6933, or Fax (512) 463-7292 and ask for <strong>Form 16B</strong>, Application for Examination Exemption by a Class A or B Air Conditioning and Refrigeration Contractor.</p>
+                    <p id="pr2"><strong>2. Can unlicensed persons perform maintenance, service, and repairs on a process cooling and heating system? </strong></p>
+                    <p>Yes. Once the primary (closed loop) process system has been deactivated and rendered inert by a licensee, an unlicensed person may perform maintenance, service and repairs on the secondary (open loop) components which include the piping, heat exchangers, vessels, cooling towers, sump pumps, motors, and fans. See <a href="https://texreg.sos.state.tx.us/public/readtac$ext.TacPage?sl=R&amp;app=9&amp;p_dir=&amp;p_rloc=&amp;p_tloc=&amp;p_ploc=&amp;pg=1&amp;p_tac=&amp;ti=16&amp;pt=4&amp;ch=75&amp;rl=100" target="_blank">Administrative Rule 75.100(d)(2)</a> and <a href="https://statutes.capitol.texas.gov/Docs/OC/htm/OC.1302.htm#1302.002" target="_blank">Chapter 1302.002 Definitions</a> - specifically (2) and (15).</p>
+                    <p><strong>NOTE</strong> : A license <strong>is required</strong> to perform the same work if it is part of an environmental or commercial refrigeration system. See <a href="https://statutes.capitol.texas.gov/Docs/OC/htm/OC.1302.htm#1302.002" target="_blank">Chapter 1302.002 Definitions</a> - specifically (6) and (11) - as they help to clarify.</p>
+                    <p id="pr3"><strong>3. Can a licensed Air Conditioning and Refrigeration Contractor drill closed loop wells for connection to a geothermal air conditioning system? </strong></p>
+                    <p>No. TDLR also regulates water well drillers. An Air Conditioning and Refrigeration Contractor must possess a Closed Loop Water Well Driller license or contract for those services with a licensed Driller. See <a href="/wwd/wwd.htm">http://www.tdlr.texas.gov/wwd/wwd.htm</a> .</p>
+                    <p id="pr4"><strong>4. Is R438A refrigerant acceptable for use in environmental air conditioning systems in Texas? </strong></p>
+                    <p>
+                        Yes. Any refrigerant or refrigerant substitute that meets <strong><em>all</em></strong> of the following can be used in environmental air conditioning systems in Texas:
+                    </p>
+                    <ul>
+                        <li>
+                            classified as nonflammable (Safety Classification A1 under ASHRAE Standard 34), <strong><em>and</em></strong>
+                        </li>
+                        <li>
+                            recognized by the EPA as nonflammable (Safety Classification A1) by rule or by notice of acceptability, <strong><em>and</em></strong>
+                        </li>
+                        <li>classified as acceptable under the <a href="http://www.epa.gov/ozone/snap/refrigerants/lists/homeac.html"> EPA's SNAP Program </a> .</li>
+                    </ul>
+                    <p><a href="/acr/nonflammableRefrigerants.pdf"> See TDLR's legal opinion regarding the sale and use of nonflammable refrigerants or refrigerant substitutes in air conditioning and refrigeration systems in Texas (PDF)</a>.</p>
+                    <p id="pr5"><strong>5. Can unlicensed persons perform installation, maintenance, and repairs on “Mini-Split” air conditioning units?</strong></p>
+                    <p>No. There is an exemption for persons who engage in air conditioning contracting regarding “a portable or self-contained ductless air conditioning product that has a cooling capacity of three tons or less”. However, this is referencing window units, self-contained thru-the-wall units such as in hotel rooms, or self-contained portable ductless units. A “Mini-Split” AC unit is not self-contained, it is a split AC system, therefore requiring a Air Conditioning Contractor’s License to perform any contracting work for the public. See <a href="https://statutes.capitol.texas.gov/Docs/OC/htm/OC.1302.htm#1302.058" target="_blank">Sec. 1302.058.</a></p>
+                </div>
+                <div class="Section" id="CE">
+
+                    <h2 id="continuingeducation">Continuing Education</h2>
+                    <ol>
+                        <li><a href="#ContinuingEducation7">Can I get partial credit for completing part of a required continuing education course? </a></li>
+                        <li><a href="#ContinuingEducation8">Will I be monitored if I take a distance learning continuing education course (for example: online)? </a></li>
+                        <li><a href="#ContinuingEducation10">What can I do if my completed continuing education hours are not posted on the TDLR web site? </a></li>
+                        <li><a href="#ContinuingEducation11">What should I do if I don't receive a certificate for my completed continuing education course? </a></li>
+                        <li><a href="#ContinuingEducation12">If I am a licensee and an instructor for an approved continuing education course, can I get my continuing education hours while teaching that course? </a></li>
+                        <li><a href="#ContinuingEducation13">Will college course hours count towards continuing education for license renewal? </a></li>
+                    </ol>
+                    <p id="ContinuingEducation7"><strong>1. Can I get partial credit for completing part of a required continuing education course? </strong></p>
+                    <p>No. TDLR does not accept partial completion of a continuing education course. However, a provider may allow you to finish the course at another time. When the course is completed the provider will transmit the completion record to TDLR.</p>
+                    <p id="ContinuingEducation8"><strong>2. Will I be monitored if I take a distance learning continuing education course (for example: online)? </strong></p>
+                    <p>Yes. TDLR requires the provider to monitor licensee attendance for all courses, including online courses. If a licensee does not meet the provider's monitoring requirements, no continuing education hours will be given.</p>
+                    <p id="ContinuingEducation10"><strong>3. What can I do if my completed continuing education hours are not posted on the TDLR web site? </strong></p>
+                    <p>If your course completion is not posted seven days after you completed the course, contact your provider.</p>
+                    <p id="ContinuingEducation11"><strong>4. What should I do if I don't receive a certificate for my completed continuing education course? </strong></p>
+                    <p>If you do not receive your course completion certificate within 15 days from the end of your course, please check with your provider.</p>
+                    <p id="ContinuingEducation12"><strong>5. If I am a licensee and an instructor for an approved continuing education course, can I get my continuing education hours while teaching that course? </strong></p>
+                    <p>Instructors who are licensees may arrange with the provider to get continuing education hours for that portion of the course which the instructor taught. However, if the instructor does not teach the entire course, the instructor must attend the remainder of the course to obtain credit for the whole course. No partial course credit is allowed.</p>
+                    <p id="ContinuingEducation13"><strong>6. Will college course hours count towards continuing education for license renewal? </strong></p>
+                    <p>If the college course is a TDLR approved continuing education course, then the course hours can be used for license renewal. However, the courses must be taken during the period of the license being renewed. Courses which are not approved by TDLR as continuing education courses cannot be used for license renewal.</p>
+                </div>
+                <div class="Section" id="Out-of-State">
+
+                    <h2 id="state">Out-of-State and Municipal Licenses</h2>
+                    <ol>
+                        <li><a href="#state1">Does Texas reciprocate with any states, and if so, which states?</a></li>
+                        <li><a href="#state2">Does TDLR accept experience earned by a person licensed in another state or municipality?</a></li>
+                        <li><a href="#state3">Can a municipality charge me a registration fee?</a></li>
+                    </ol>
+                    <p id="state1"><strong>1. Does Texas reciprocate with any states, and if so, which states?</strong></p>
+                    <p>Yes, Texas reciprocates with South Carolina and Georgia. If you have a Texas license and wish to reciprocate with either state, please contact TDLR and request a 'letter of good standing.'</p>
+                    <p>Contact South Carolina or Georgia directly for reciprocal forms and license requirements:</p>
+                    <ul style="margin-left:5%">
+                        <li><a href="http://sos.ga.gov/index.php/licensing/plb/15">Georgia - Board of Conditioned Air Contractors</a></li>
+                        <li><a href="https://www.llr.sc.gov/POL/ResidentialBuilders/index.asp?file=pub.htm">South Carolina - Residential Builders Commission </a></li>
+                    </ul>
+                    <p>If you are currently licensed in South Carolina or Georgia and you want to be licensed in Texas, please see the <a href="/acr/acrstate.htm">Out of State Applicants page</a>.</p>
+                    <p id="state2"><strong>2. Does TDLR accept experience earned by a person licensed in another state or municipality?</strong></p>
+                    <p>Texas accepts air conditioning and refrigeration-related experience earned in states or municipalities that have licensing requirements substantially equivalent to those of Texas. If you are currently licensed in another state or municipality and want to be licensed in Texas, please see the <a href="/acr/acrstate.htm">Out of State Applicants page</a>.</p>
+                    <p id="state3"><strong>3. Can a municipality charge me a registration fee?</strong></p>
+                    <p>Beginning September 1, 2021, Occupations Code Section 1302.304 prohibits any municipality from charging registration fees to TDLR-licensed air conditioning and refrigeration contractors. Section 1302.304 does not, however, prevent municipalities from collecting building permit fees.</p>
+                </div>
+                <div class="Section" id="Suppliers">
+                    
+                    <hr>
+                    <h2 id="guidelines">Information for Suppliers and Wholesalers</h2>
+                    <p><strong>1. What procedures must be followed when selling air conditioning and refrigeration supplies to licensed persons?</strong></p>
+                    <p>Please see the <a href="/acr/acrguide.htm">Air Conditioning and Refrigeration Contractors Guidelines for Suppliers page</a>, which outlines the procedures that suppliers should follow when selling to licensed Air Conditioning and Refrigeration Contractors.</p>
+                    <p><strong>2. Can I sell air conditioning and refrigeration supplies to unlicensed persons?</strong></p>
+                    <p>The department has created a <a href="/acr/acrguide.htm#exempt">list of exemptions</a>, which lists the individuals who are authorized to perform air conditioning and refreigeration work without holding a license.</p>
+                </div>
+                <div class="Section" id="Child-Support">
+                    
+                    <hr>
+                    <h2 id="OAG">Office of the Attorney General (OAG) Denial of License Renewal</h2>
+                    <ol>
+                        <li><a href="#OAGDenial1">Why did I receive a Notice of Denial of License Renewal? </a></li>
+                        <li><a href="#OAGDenial2">Who should I call about removing the nonrenewable status of my license? </a></li>
+                        <li><a href="#OAGDenial3">Can I use my existing license after getting a license nonrenewable notice from TDLR? </a></li>
+                        <li><a href="#OAGDenial4">How can I renew my license if I am in nonrenewable status? </a></li>
+                        <li><a href="#OAGDenial5">Once I settle with the CSD, when can I renew my license? </a></li>
+                        <li><a href="#OAGDenial6">What will happen if I don't get a release from the Child Support Division and my license has not expired? </a></li>
+                        <li><a href="#OAGDenial7">What will happen if I don't get a release from CSD and my license has expired? </a></li>
+                    </ol>
+                    <p id="OAGDenial1"><strong>1. Why did I receive a Notice of Denial of License Renewal? </strong></p>
+                    <p>The OAG's Child Support Division (CSD) records show you have not made a payment in more than 6 months. Contact the CSD at (800) 252-8014 to resolve this matter.</p>
+                    <p id="OAGDenial2"><strong>2. Who should I call about removing the nonrenewable status of my license? </strong></p>
+                    <p>Contact OAG's Child Support Division (CSD) to settle payment of any amounts you may owe and to change the nonrenewable status of your license. Contact CSD at (800) 252-8014.</p>
+                    <p id="OAGDenial3"><strong>3. Can I use my existing license after getting a license nonrenewable notice from TDLR? </strong></p>
+                    <p>You may not use your license after the expiration date on the license.</p>
+                    <p id="OAGDenial4"><strong>4. How can I renew my license if I am in nonrenewable status? </strong></p>
+                    <p>First, contact the OAG's Child Support Division at (800) 252-8014 to resolve payment of any amounts you may owe and obtain a release. Then, apply with the Texas Department of Licensing and Regulation for renewal of your license.</p>
+                    <p id="OAGDenial5"><strong>5. Once I settle with OAG's Child Support Division (CSD), when can I renew my license? </strong></p>
+                    <p>You may not apply for renewal of your license until TDLR receives a release from the CSD.</p>
+                    <p id="OAGDenial6">
+                        <strong>6. What will happen if I don't get a release from the Child Support Division (CSD) and my license has <em>not</em> expired? </strong>
+                    </p>
+                    <p>If you haven't received a release from CSD approximately 65 days before the expiration of your license, you will receive a notice from TDLR that you need to get a release from the Child Support Division in order to apply to the Department for license renewal. You may not use your license after the expiration date on the license.</p>
+                    <p id="OAGDenial7">
+                        <strong>7. What will happen if I don't get a release from the Child Support Division (CSD) and my license <em>has</em> expired? </strong>
+                    </p>
+                    <p>You have 365 days from the expiration date to apply for license late renewal. License holders who are barred from license renewal due to past-due child support must obtain a release from the CSD and apply for renewal within the 365-day period. Otherwise, the license cannot be late renewed.</p>
+                </div>
+                <div class="Section" id="Communication">
+
+                    <h2 id="communication">Communication</h2>
+                    <p id="Communication1"><strong>1. How can I stay in touch with TDLR for updates and new information? </strong></p>
+                    <p><a href="https://public.govdelivery.com/accounts/TXDLR/subscriber/new?category_id=TXDLR_C3"> Sign up to receive TDLR email notices </a> . After you sign up you will receive email notices of new and changing information.</p>
+                    <p>You can also follow us on<a href="http://www.facebook.com/TDLRLicense">Facebook</a> and <a href="http://www.twitter.com/TDLRLicense">Twitter</a>.</p>
+                    <p id="Communication2"><strong>2. How do I contact the Environmental Protection Agency (EPA?) </strong></p>
+                    <p>Contact the EPA at (800) 296-1996.</p>
+                </div>
+                <div class="Section" id="Disaster">
+
+                    <h2 id="hurricane">Hurricane Disaster Recovery</h2>
+                    <ol>
+                        <li><a href="#HurricaneDisaster1">I am an out-of-state air conditioning technician and want to help with disaster recovery. Do I need a license to perform air conditioning work here in Texas on a temporary basis? </a></li>
+                        <li><a href="#HurricaneDisaster2">I am an out-of-state contractor and have experience performing air conditioning and refrigeration work. I would like to assist with disaster recovery. What is the quickest way to get licensed to perform air conditioning and refrigeration work here in Texas? </a></li>
+                        <li><a href="#HurricaneDisaster3">I am a licensed out-of-state Air Conditioning and Refrigeration Contractor; I have liability insurance, and would like to help with disaster recovery. Can I use my out-of-state license to offer my services to those people and businesses affected? </a></li>
+                        <li><a href="#HurricaneDisaster4">I am an out-of-state contractor and would like to assist with disaster recovery. Can TDLR help me find employment with a Texas licensed Air Conditioning and Refrigeration Contractor? </a></li>
+                        <li><a href="#HurricaneDisaster5">Where can I learn more about recovery help for TDLR licensees?</a></li>
+                    </ol>
+                    <p id="HurricaneDisaster1"><strong>1. I am an out-of-state air conditioning technician and want to help with disaster recovery. Do I need a license to perform air conditioning work here in Texas on a temporary basis? </strong></p>
+                    <p>Yes. A person performing non-exempt air conditioning and refrigeration maintenance must, at a minimum, be registered in Texas as an Air Conditioning and Refrigeration Technician. <em> All non-exempt air conditioning and refrigeration work must be provided through a Texas licensed Air Conditioning and Refrigeration Contractor who holds the required amount of liability insurance. </em></p>
+                    <p id="HurricaneDisaster2"><strong>2. I am an out-of-state contractor and have experience performing air conditioning and refrigeration work. I would like to assist with disaster recovery. What is the quickest way to get licensed to perform air conditioning and refrigeration work here in Texas? </strong></p>
+                    <p>The quickest way to get licensed is to <a href="/App_Online/?program=ACR"> register as an Air Conditioning and Refrigeration Technician online</a> . You must be at least 18 years of age, and there is no exam required. The application is only one page (which includes a criminal background check) and the fee is $20. <em> All non-exempt air conditioning and refrigeration work must be provided through a Texas licensed Air Conditioning and Refrigeration Contractor who holds the required amount of liability insurance. </em></p>
+                    <p id="HurricaneDisaster3"><strong>3. I am a licensed out-of-state Air Conditioning and Refrigeration Contractor; I have liability insurance, and would like to help with disaster recovery. Can I use my out-of-state license to offer my services to those people and businesses affected? </strong></p>
+                    <p>No, to <strong>offer</strong> to perform non-exempt air conditioning and refrigeration work in Texas requires that you hold a Texas Air Conditioning and Refrigeration Contractor license. The administrative rules do allow you to sub-contract work through a Texas licensed contractor. You may also be required to register in Texas as an Air Conditioning and Refrigeration Technician. If you have more questions, feel free to <a href="/help/">contact us</a> - be sure to put 'disaster recovery' at the top of your message.</p>
+                    <p id="HurricaneDisaster4"><strong>4. I am an out-of-state contractor and would like to assist with disaster recovery. Can TDLR help me find employment with a Texas licensed Air Conditioning and Refrigeration Contractor? </strong></p>
+                    <p>No, TDLR cannot help you find employment; however, TDLR can assist you with getting the necessary license or registration to perform work. To register as an Air Conditioning and Refrigeration Technician, you can <a href="/App_Online/?program=ACR">apply online</a>. You can also find a <a href="/LicenseSearch/"> list of Texas licensed Air Conditioning and Refrigeration Contractors</a> on TDLR's web site <strong>OR</strong> you may try and contact industry groups such as the <em>Air Conditioning Contractors Association (ACCA) of Texas</em> or the <em>Associated Plumbing-Heating-Cooling Contractors (APHCC) of Texas</em>.</p>
+                    <p id="HurricaneDisaster5"><strong>5. Where can I learn more about recovery help for TDLR licensees?</strong></p>
+                    <p>Please see the <a href="/hurricane-recovery.htm">Recovery Help for TDLR Licensees</a> page to learn more about the agency's outreach efforts to help Texans in affected areas.</p>
+                </div>
+                <p>&nbsp;</p>
+
+                <style>
+                    /* Page-Specific Styling */
+                    h2~p {
+                        margin-left: 20px;
+                    }
+                    .article-content h2~ol {
+                        border: 1px solid #CCC;
+                        background-color: #EFEFEF;
+                        margin: 0 0 20px 0;
+                        padding: 15px;
+                    }
+                    .article-content h2~ol li {
+                        margin-left: 20px;
+                        margin-right: 20px;
+                    }
+                    .article-content h2~ol>li:first-child {
+                        margin-top: 15px;
+                    }
+                    .article-content h2~ol>li:last-child {
+                        margin-bottom: 15px;
+                    }
+                </style>
+            </main>
+        </div>
+
+        <footer>
+    <div id="footer-body">
+        <div id="footer-links">
+            <!-- About section -->
+            <div id="footer-links-about">
+                <div class="footer-section-header">About This Site</div>
+                <p><a href="/disclaimer.htm#Copyright">Copyright Statement</a></p>
+                <p><a href="/disclaimer.htm">Privacy Policy</a></p>
+                <p><a href="/disclaimer.htm">Security Policy</a></p>
+                <p><a href="/disclaimer.htm#PublicInfoPolicy">Open Records Requests</a></p>
+                <p><a href="/digital-accessibility.htm">Accessibility Policy</a></p>
+                <p><a href="/disclaimer.htm#link">Content Linking Policy</a></p>
+            </div>
+            <!-- Texas Government section -->
+            <div id="footer-links-govt">
+                <div class="footer-section-header">Texas Government</div>
+                <p><a href="/compact.htm">Compact with Texans</a></p>
+                <p><a href="/disclaimer.htm#fraud">Report Fraud, Waste, or Abuse</a></p>
+                <p><a href="https://www.texas.gov/" target="_blank">Texas.gov</a></p>
+                <p><a href="https://www.tsl.texas.gov/trail/index.html" target="_blank">Statewide Search</a></p>
+                <p><a href="https://gov.texas.gov/organization/hsgd" target="_blank">Texas Homeland Security</a></p>
+                <p><a href="https://ga.tdlr.texas.gov:1443/form/Subpoena">Subpoenas</a></p>
+            </div>
+            <!-- Contact section -->
+            <div id="footer-contact-info">
+                <div class="footer-section-header">Contact</div>
+                <div id="footer-contact-inner">
+                    <div class="footer-contact-col">
+                        <p>
+                            <strong>Mailing Address:</strong><br />
+                            P.O. Box 12157<br />
+                            Austin, TX 78711
+                        </p>
+                        <p>
+                            <strong>Main Office:</strong><br />
+                            <a href="https://goo.gl/maps/KpBkMPjXKVAixp1H8" target="_blank">920 Colorado St.<br />Austin, Texas 78701</a>
+                        </p>
+                    </div>
+
+                    <div class="footer-contact-col">
+                        <!--<p>
+                            <strong>Need Help?</strong><br />
+                            <a href="https://ga.tdlr.texas.gov:1443/form/csgeneralinquiry">Send Us a Message</a>
+                        </p>-->
+                        <p>
+                            <strong>Call Us</strong><br />
+                            <a href="tel:512-463-6599">(512) 463-6599</a>
+                            <br />
+                            <a href="tel:800-803-9202">(800) 803-9202</a>
+                        </p>
+                        <p>
+                            <strong>Relay Texas-TDD</strong><br />
+                            <a href="tel:800-735-7989">(800) 735-2989</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="bottom-row">
+        <div id="official-website">
+            <img src="/images/footer/tx-flag-sm.png" alt="" width="37" height="25" loading="lazy" />
+            <span><a href="https://www.tdlr.texas.gov">tdlr.texas.gov</a> is an official website of the State of Texas</span>
+        </div>
+        <div id="footer-social-icons">
+            <a href="https://www.facebook.com/TDLRLicense/" target="_blank">
+                <img src="/images/footer/facebook.svg" alt="facebook" height="16" width="16" loading="lazy" />
+            </a>
+
+            <a href="https://twitter.com/tdlrlicense/" target="_blank">
+                <img src="/images/footer/twitter.svg" alt="twitter" height="16" width="16" loading="lazy" />
+            </a>
+
+            <a href="https://www.instagram.com/tdlrlicense/" target="_blank">
+                <img src="/images/footer/instagram.svg" alt="instagram" height="16" width="16" loading="lazy" />
+            </a>
+
+            <a href="https://www.linkedin.com/company/texas-department-of-licensing-and-regulation/" target="_blank">
+                <img src="/images/footer/linkedin.svg" alt="linkedin" height="16" width="16" loading="lazy" />
+            </a>
+        </div>
+    </div>
+</footer>
+
+    </body>
+</html>
