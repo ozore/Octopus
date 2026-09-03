@@ -9,7 +9,7 @@ thing on the page the buyer can falsify on the spot.
 
 ## Story
 
-As a stranger who has never heard of WageLens, I pick my state, my county and my construction
+As a stranger who has never heard of {{PRODUCT}}, I pick my state, my county and my construction
 type on the home page and immediately see the real classifications and rates for my job — with
 the wage determination number, the modification number and a link to SAM.gov — without a login,
 a card, an email address or a cookie wall.
@@ -53,7 +53,10 @@ history and the alerts. Nothing behind the paywall is given away here.
      └──────────────────────────────────────────────────────────────┘
      ↓ the honest conversion line, below the table, never above it:
      "These are the rates. The weekly WH-347 is the work.
-      Start your first two Fridays free →"
+      Your first two Fridays are free — card on file, $99 on day 15.
+      [ Start 14-day trial → ]"          ← never "Start free" (WL-09 V16a)
+     ↓ and, separately and smaller, the consented watch (WL-14), below that again:
+     "Email me when this determination changes"  + an unticked consent box
 ```
 
 ## Screens
@@ -63,8 +66,31 @@ history and the alerts. Nothing behind the paywall is given away here.
 | widget (embedded on `/`) | three selects, one button, result inline | idle · loading · one · many · zero |
 | `/lookup` | the same widget full-page, with the "how to read a determination" explainer | — |
 | `/lookup/:state/:county/:type` | **server-rendered, indexable** result page | — |
-| `/wd/:wdNumber` | lookup by determination number, with the alias forms (WL-02 V8) | found · superseded · not-found |
+| `/wd/:wdNumber` | lookup by determination number, with the alias forms (WL-02 V8), **the modification picker and the modification history** | found · superseded · fetching · not-found |
+| `/wd/:wdNumber/:mod` | the same determination **rendered at an explicit modification**, including a superseded one. Canonical URL for a revision. | found · superseded · fetching · not-found |
 | candidate list | the F3 case, in public: several determinations, what distinguishes them, no default | — |
+| watch form (WL-14) | below the classification table, unticked consent box, one email field | idle · pending · limit-reached |
+
+### The modification control — the public half of the differentiator
+
+`/wd/:wdNumber` renders, beside the modification number, the control `LANDING_SPEC.md` §5.1 calls
+**"My contract locked an earlier one ▾"**. Choosing an earlier modification **re-renders the whole
+classification table at that modification** and draws the modification history beneath it.
+
+This is the public twin of [`WL-02`](WL-02-project-and-wd-lookup.md)'s explicit-modification pin,
+and it reads the same corpus rows that [`WL-13`](WL-13-kb-ingestion-and-refresh.md)'s
+`kb.fetch_history` and on-demand `kb.fetch_determination` now provide (findings B3 and B4). Rules:
+
+- The dropdown is populated from `kb_wd_modifications` — **never invented, never interpolated**.
+  A determination with one revision shows one option and says so.
+- A revision whose text we do not yet hold shows "reading modification {n} from SAM.gov…",
+  enqueues the fetch, and resolves. It never shows the active modification's rates under an older
+  modification's heading.
+- Every rate on a superseded revision renders through the same provenance component with
+  `modification = {n}` and the permanent line *"a newer modification ({m}) was published on
+  {date}"*. **Never presented as current.** *(WL-11 edge case, gate G8)*
+- `modification_pin_used {wd_ref, from_mod, to_mod}` fires on every change. It is the direct
+  measure of whether the differentiator is understood, and it answers `OFFER.md` §11.3 Q7.
 
 **These pages are server-rendered and crawlable on purpose.** 3,088 (state, county) pairs × 4
 construction types is a large, genuinely useful, entirely factual public surface, and it is the
@@ -88,9 +114,10 @@ TTL and revalidation on every ingest run, because the corpus changes at most dai
 | route | auth | effect |
 |---|---|---|
 | `GET /lookup/:state/:county/:type` | none | server-rendered result, cached |
-| `GET /wd/:wdNumber` | none | resolve by number or alias; superseded numbers resolve with a notice |
+| `GET /wd/:wdNumber` | none | resolve by number or alias to the **active** modification; enqueues `kb.fetch_history` so the modification control can render |
+| `GET /wd/:wdNumber/:mod` | none | the determination **at that modification**, superseded included; enqueues `kb.fetch_determination` when the text is not held (WL-13) |
 | `GET /api/public/counties?state=XX` | none | the county select, cached indefinitely |
-| `GET /sitemap.xml` | none | generated from `kb_*` |
+| `GET /sitemap.xml` | none | generated from `kb_*`. **Active modifications only** — superseded revisions are reachable and canonical but not submitted for indexing, because an old rate is not what a searcher wants first |
 
 **There is no public JSON API.** The HTML pages are public; a documented machine endpoint is
 not, because the corpus is the moat and giving it away in bulk is the one way to lose it. This
@@ -108,6 +135,9 @@ is a deliberate decision and it is recorded here so nobody adds one for convenie
 | V6 | No PII, no cookies beyond a strictly-necessary CSRF token, no third-party analytics on these pages — our own `events` table only (PLAN A14). |
 | V7 | The standing disclaimer (KNOWLEDGE_BASE §9.3) is on every public result page in full, not collapsed. |
 | V8 | If the corpus is stale past gate G6 (35 days) the pages still render, with the age shown in amber. Never a blank page. |
+| V9 | **When the corpus is unreachable the page fails closed** — the honest error plus a link to SAM.gov's own search — and **never** serves a shipped snapshot, a cached rate from a previous deploy, or any rate whose current source we cannot confirm. The corpus is our own database, so "unreachable" means **our** outage, and a stale rate shown during our own outage is the exact fact pattern `OFFER.md` §5.2 G2 refunds on. *(Added 2026-09-03, finding M16. `LANDING_SPEC.md` §5.2's snapshot fallback is deleted; this rule is the one that ships.)* |
+| V10 | **Every CTA on a public page that leads to a card reads `Start 14-day trial`**, and the line beside it names the trial length and the charge. The lookup's own microcopy may say "free, no card, no login" because that is true of the lookup. *(WL-09 V16a, finding B9)* |
+| V11 | The watch form ([`WL-14`](WL-14-wd-watch.md)) renders **below** the full classification table, never above it and never as a gate. V2 still governs: the table renders in full with no email. |
 
 ## Acceptance criteria
 
@@ -120,6 +150,19 @@ is a deliberate decision and it is recorded here so nobody adds one for convenie
   TX20260253 and canonicalises the URL.
 - **Given** a superseded WD number, **when** it is opened, **then** it renders with a clear
   "superseded — modification n is current" notice and a link to the current one.
+- **Given** `/wd/TX20260253`, **when** the modification control is opened, **then** it lists
+  **exactly** the revisions in `kb_wd_modifications` — mod 0 (17 May 2026) and mod 1 (18 May
+  2026) — with none invented, and choosing mod 0 re-renders the whole classification table at
+  mod 0, every rate carrying `data-modification="0"` and the permanent "a newer modification (1)
+  was published on 18 May 2026" line. `modification_pin_used {from_mod: 1, to_mod: 0}` fires.
+- **Given** a determination with a single revision, **when** the control renders, **then** it
+  shows one option and the caption says so. No revision is fabricated.
+- **Given** the corpus is unreachable, **when** the widget is used, **then** the honest error and
+  the SAM.gov link render and **no rate of any kind appears on the page**. *(V9)*
+- **Given** any public page, **when** its CTAs are inspected, **then** none reads "Start free".
+  *(V10)*
+- **Given** a public result page, **when** the DOM order is inspected, **then** the watch form
+  follows the last classification row. *(V11)*
 - **Given** any public result page, **when** the HTML is inspected, **then** every rate carries
   `data-wd-number` and `data-modification`. *(V1, G8)*
 - **Given** 61 requests from one IP hash in 10 minutes, **when** the 61st arrives, **then** a
@@ -143,19 +186,44 @@ is a deliberate decision and it is recorded here so nobody adds one for convenie
 
 | condition | user sees | logged |
 |---|---|---|
-| Corpus unavailable | "We can't reach our determination data right now. Search SAM.gov directly →" | `public_lookup_corpus_unavailable` |
+| Corpus unavailable | "We can't reach our determination data right now. Search SAM.gov directly →" **and no rate.** Never a shipped snapshot, never a stale cached rate. *(V9)* | `public_lookup_corpus_unavailable` |
+| A named revision's text is not held yet | "Reading modification {n} from SAM.gov…", the fetch enqueued, the page resolves. Never the active modification's rates under an older heading. | `public_revision_fetch_enqueued` |
 | Unknown county slug | 404 with the state's county list | `public_lookup_not_found` |
 | Rate limited | plain 429 + SAM.gov link | `public_lookup_rate_limited` |
 
 ## Analytics events
 
-`lookup_performed {state_code, county_name, construction_type, result_count, source}` ·
-`lookup_ambiguous {candidate_count}` · `lookup_zero_results {state_code, construction_type}` ·
+**This spec owns the whole public surface's vocabulary — the landing page included.** Names are
+canonical and defined once, in [`WL-EVENTS.md`](WL-EVENTS.md) §1;
+[`../LANDING_SPEC.md`](../LANDING_SPEC.md) §13 reuses them verbatim and coins none of its own.
+
+*Added 2026-09-03, finding B6: ten events the landing page emitted with no owner are now owned
+here, and four the landing page had renamed are back to their spec names —
+`lookup_completed` → `lookup_performed`, `lookup_empty` → `lookup_zero_results`,
+`source_chip_clicked` → `lookup_official_link_clicked`, `plan_cta_clicked` →
+`pricing_cta_clicked` (WL-09).*
+
+**The lookup itself**
+`lookup_started {field_first_touched}` ·
+`lookup_performed {state_code, county_name, construction_type, result_count, latency_ms, source}`
+← **the leading indicator, and [`../THRESHOLDS.md`](../THRESHOLDS.md) §1's denominator** ·
+`lookup_ambiguous {candidate_count}` ·
+`lookup_zero_results {state_code, county_name, construction_type}` ·
 `lookup_classification_searched {query, result_count}` ·
-`lookup_official_link_clicked {wd_number}` ·
-`lookup_cta_clicked {wd_number}` ← **the top of the funnel; the conversion metric in
-[`../THRESHOLDS.md`](../THRESHOLDS.md) §1a** ·
+`lookup_official_link_clicked {wd_number, surface}` ← **the trust event** ·
+`lookup_cta_clicked {wd_number}` ← **the top of the funnel; THRESHOLDS §1's numerator** ·
+`modification_pin_used {wd_ref, from_mod, to_mod}` ← **the differentiator, measured** ·
 `public_lookup_rate_limited`
+
+**The rest of the public page** (the landing page's own surface, owned here so one document owns
+each name): `hero_viewed {variant}` · `hero_cta_clicked {variant}` · `how_step_viewed {step}` ·
+`ledger_used` (**no values, ever — the visitor's inputs are never transmitted**) ·
+`wh347_artefact_expanded {page}` · `timeline_viewed` · `comparison_table_viewed` ·
+`faq_opened {question_id}`
+
+`alert_email_captured` belongs to [`WL-14`](WL-14-wd-watch.md); `pricing_viewed`,
+`pricing_cta_clicked`, `gc_tier_interest`, `checkout_*` and `trial_started` belong to
+[`WL-09`](WL-09-billing.md).
 
 Public events carry **no** user id and an IP **hash**, never an address. *(V6)*
 

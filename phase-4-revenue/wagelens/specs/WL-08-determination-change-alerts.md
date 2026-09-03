@@ -12,7 +12,7 @@ pinned to, I get an email that tells me **what changed**, **which of my workers 
 
 **In**, because: it is nearly free once WL-13 is versioned (one query per pinned pair per day);
 it is the only feature that earns money in a month with no payrolls, which is what carries a
-seasonal subscription to month 2; and it is the concrete difference between WageLens and the
+seasonal subscription to month 2; and it is the concrete difference between {{PRODUCT}} and the
 $49 form-fillers, who have no corpus and therefore cannot do it at all.
 
 **Flagged**, because the data is not as dramatic as the pitch: **3,377 of 4,235** active
@@ -153,6 +153,11 @@ level: a re-run of the ingest job cannot send a second email.
 | Accept fails mid-transaction | Rolled back; the project stays on its old pin | `wd_accept_failed` |
 
 ## Analytics events
+
+**Names are canonical and defined once**, in [`WL-EVENTS.md`](WL-EVENTS.md) §5; this spec coins
+none of its own (finding B6). **These are the *project* alerts. The public, consented
+determination watch is [`WL-14`](WL-14-wd-watch.md) and its events are separate** — different
+table, different consent basis, different unsubscribe, and the two never share a send path.
 
 `wd_modification_detected {wd_number, from_mod, to_mod, pinned_projects}` (server) ·
 `wd_alert_created {affected_worker_count, changed, removed, added}` ·

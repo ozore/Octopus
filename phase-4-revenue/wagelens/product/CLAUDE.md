@@ -149,3 +149,116 @@ Everything else re-verified identically: 4,235 active DBA determinations; Harris
 (TX20260253 Building, TX20260299 Highway, TX20260031/33/34 Heavy, TX20260067 Residential);
 TX20260253 rev 1 document = 17,225 characters; WH-347 sha256 `fa28f033a825…`, 2 pages,
 **0 AcroForm fields**.
+
+---
+
+## Iteration after review (2026-09-03)
+
+**Agent:** wave-1b Iteration author (WageLens). **Stage:** PIPELINE stage 6.
+**Input:** `REVIEW.md` — 9 blocking · 19 major · 10 minor.
+**Output:** `REVIEW_RESPONSE.md` (the changelog, one row per finding),
+two new specs, and edits across `UX.md`, `PERSONA.md`, `BACKLOG.md`, `KNOWLEDGE_BASE.md`,
+`THRESHOLDS.md`, `OFFER.md`, `LANDING_SPEC.md` and `specs/WL-00`–`WL-13`.
+**Result: 32 fixed · 3 fixed differently · 3 declined. No blocking finding left open by this fleet.**
+
+### What I changed
+
+**Two new files.**
+- `specs/WL-14-wd-watch.md` — the public determination watch (B5). It was promised on three
+  surfaces and specified nowhere; `KNOWLEDGE_BASE.md` §3.2 listed a `wd_watches` table no spec
+  owned. Now: unticked consent box naming the determination, double opt-in, ≤3 per address,
+  one-click unsubscribe + `List-Unsubscribe`, CAN-SPAM postal footer, IP-hash rate limits, a
+  retention table, and `email_suppressions`. Must, effort S.
+- `specs/WL-EVENTS.md` — the canonical analytics vocabulary (B6). One event, one definition, one
+  owner, with a CI union test in both directions and §8 restating every THRESHOLDS ratio in
+  canonical names.
+
+**The three fixes that unblock the build.**
+- **B3 + B4 together made modification pinning real.** `WL-02` V3 dropped its `is_active` clause and
+  gained V3a/V3b plus `projects.wd_pinned_superseded`; `WL-13` gained `kb.fetch_history`, on-demand
+  `kb.fetch_determination` for a named superseded revision **through the same gates**, and a launch
+  backfill. `WL-00` got the public modification control, `LANDING_SPEC` V2 now reads our corpus.
+- **B9 auto-renewal** — `WL-09` V14–V16b: disclosure above the button, unticked consent checkbox
+  recorded with the block's content hash, day-10 pre-charge email, ≥7-day annual renewal notice,
+  and `Start 14-day trial` everywhere.
+- **B1 trial** — `UX.md` rewritten to the 14-day card-on-file design the other four documents
+  already had.
+
+**Nine cross-document contradictions closed to a single reading:** trial design, guarantee wording
+(including the cap), event names, archive retention (30 days), keyboard map, magic-link parameters,
+payroll-number allocation, roles, and the Audit Binder's name and shape.
+
+### The five decisions, and why
+
+1. **Trial: 14-day card-on-file, charged day 15**, keeping "first two Fridays free". Three
+   documents to one, the money path was already built on it, and a cardless free week hands a signed
+   federal document to an unverified stranger.
+2. **GC tier: "Coming", waitlist, no purchasable CTA, no live Stripe price.** Moving WL-24 to Must
+   costs the MVP's largest L, cold-starts empty, and delays the day a stranger can pay us. Made
+   structural in `WL-09` V17–V19, not editorial — a sellable-set constant, a boot assertion, a
+   render test.
+3. **Modification pinning: made real end to end.** History eager (one small request, so a timeline
+   can always be drawn), text lazy (17 KB per revision, only when asked for).
+4. **Watch alerts: specced, not removed.** At S the spec is cheaper than the retreat, and it is the
+   only email list the product builds organically.
+5. **Events: one list in `WL-EVENTS.md`.** Spec names are canonical because THRESHOLDS is the
+   pre-committed decision instrument.
+
+**Decided rather than left open (all three under the failure rule — the option that reduces founder
+liability), and all three listed under "founder can override" in `REVIEW_RESPONSE.md` §4:**
+G2's cap is **three months, service-shaped** (≈$59,400 vs ≈$237,600 at 200 accounts) **and the
+sentence is cut from the page unconditionally until counsel signs it**; the GC tier is not
+purchasable; the onboarding promise is **eleven minutes**, not ten, because Checkout is 90 seconds
+and the promise is instrumented.
+
+### What I declined, and to whom it goes
+
+- **B7 (identity collision)** and **m5 (three hard `9px` sizes)** → the **Brand Director**.
+  `IDENTITY.md`, `design-system.css` and `identity/samples.html` were not touched. What I did
+  instead is hold the semantic-token line: `LANDING_SPEC.md` §14 now has an explicit item that every
+  colour is a `--wl-*` token, so the arbitration is a token-file swap. m5's fix is pre-specified in
+  `REVIEW_RESPONSE.md` §3.2 and should land in the same pass, when `contrast.py` is re-run anyway.
+- **M19 (PREREQUISITES P7 asks for an Anthropic key)** → the **orchestrator**. `PREREQUISITES.md` is
+  not this fleet's file; the correction is recorded as a new `OFFER.md` §11.3 Q9 where the founder
+  will meet it. **P7 and P8 both need amending.**
+
+### Advice for the build fleet
+
+1. **Read `specs/WL-EVENTS.md` before you emit anything.** Generate the union type from it and wire
+   the CI test on day one. B6 happened because two documents each invented a name; the test is what
+   stops it happening again inside the code.
+2. **Design WL-13's history and superseded-revision path in from the first commit.** Retrofitting
+   append-only ingestion is expensive, and three shipped promises depend on it. **Capture
+   `kb-samples/sam-wd-detail-TX20260253-rev0.json` first** — every offline test for B3 and B4 runs
+   on the mock, so without that fixture the tests that prove the differentiator cannot be written.
+3. **`is_active` is derived from the index and `/history`, never from "is this the newest row we
+   hold".** Fetching mod 0 after mod 1 must not flip mod 1 to inactive. It is the easiest bug to
+   write in this whole spec set and gate G9 will not catch it on its own.
+4. **The payroll number is allocated at certification.** Drafts hold `null` and display
+   "#8 (provisional)". Do not let a helpful `createPayroll` reserve one.
+5. **Nothing blocks a federal filing on our reading of the customer's legal position.** Block only
+   what makes the *form* invalid (WL-05 B1–B12). A below-determination rate warns loudly and records
+   the acknowledgement; `determination-moved` never blocks, at any age.
+6. **The consent records are gates, not UI.** `createCheckoutSession` refuses without a matching
+   `subscription_terms_acceptances` row; WL-14 sends no alert to an unconfirmed watch. Both are
+   enforced server-side, and both have acceptance criteria that assert the refusal.
+7. **Two CI greps carry more weight than they look:** `Start free` in any user-facing CTA, and a
+   refund sentence without "up to three" in the same sentence. They are the enforcement for B9 and
+   B8, and both findings were copy drifting away from a spec.
+8. **The landing word budget is 445/450 and the counting convention is now written down**
+   (`LANDING_SPEC.md` §2 — step numerals are chrome, hyphenated terms count once). Implement the CI
+   script against that convention or it will read 451 and fail a green build.
+9. **`{{PRODUCT}}` everywhere, slug `wagelens` unchanged, help slugs name-free.** The rename is a
+   founder decision (P11) and the expensive artefacts to fix later are emails, PDF footers and
+   bookmarked URLs.
+10. **Three unknowns are still unknowns** and nothing was hardened around them: SF-1444's field list
+    (`UNVERIFIED`), whether GC portals accept an uploaded PDF (the highest-value unknown in the
+    product), and SAM.gov's real rate limit. Do not let an implementation quietly assume any of them.
+
+### Mistake worth recording
+
+My first landing-page word count read **451/450** because my script counted the `Step 01` numerals
+that the spec's own budget table excludes as layout chrome. The spec was right and the script was
+wrong — but nothing in the document said which. **I wrote the convention into `LANDING_SPEC.md` §2
+rather than adjusting a number to match a script.** A budget with an unstated counting rule is a CI
+failure waiting to happen, and it would have failed on a page that was actually under budget.

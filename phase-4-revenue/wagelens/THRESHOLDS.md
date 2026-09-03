@@ -1,11 +1,21 @@
-# WageLens — Thresholds
+# {{PRODUCT}} — Thresholds
 
 **Pre-committed numbers. Written 2026-09-03, before a single signup, so that the decision is
 made by evidence and not by attachment.**
 
-Author: Product Owner agent (WageLens), wave 1. Evaluated from
+Author: Product Owner agent ({{PRODUCT}}), wave 1. Evaluated from
 [`specs/WL-12-admin-metrics.md`](specs/WL-12-admin-metrics.md), which is a Must item precisely
 so that this document is evaluable.
+Revised **2026-09-03** (wave-1b iteration — findings B2, B6, m3, m4, plus new promise-thresholds P6
+and P7 for the behaviours B3/B4 and B5 made buildable; changelog in `REVIEW_RESPONSE.md`).
+
+> **Every event name in this document is one defined in
+> [`specs/WL-EVENTS.md`](specs/WL-EVENTS.md), and this document coins none of its own.** That is
+> finding **B6**: the landing page was emitting a different vocabulary — `lookup_completed` where
+> the specs say `lookup_performed` — so §1's pre-committed ratio was not computable from what the
+> page actually emitted. **A number this document cannot read is a decision that cannot be made.**
+> WL-EVENTS §8 restates every ratio below in canonical names, so the two documents cannot drift;
+> a CI test asserts the emitted union matches that file in both directions.
 
 ---
 
@@ -17,9 +27,11 @@ so that this document is evaluable.
 2. **Cohorted by signup week, and segmented by `source`** (`outbound`, `landing`, `referral`).
    Cold-outbound and inbound cohorts convert differently and a blended number will hide both.
 3. **Pricing is the three-tier ladder in [`OFFER.md`](OFFER.md) §6** — Crew $79/$790, Shop
-   $99/$990 (the ICP), GC Roll-up $299/$2,990 — with a 14-day card-required trial on every
-   price. Where this document says a price, it means that ladder, and **ARPU is a blend, not
-   $99**.
+   $99/$990 (the ICP), GC Roll-up $299/$2,990 — with a **14-day card-on-file trial charged on day
+   15** on every price. Where this document says a price, it means that ladder, and **ARPU is a
+   blend, not $99**. **At launch only Crew and Shop are sellable**: the GC tier is published as
+   "Coming" with a waitlist and no purchase path until `WL-24` ships (finding B2), so **the launch
+   ARPU blend is Crew + Shop only**, and `gc_tier_interest` is a demand signal, not revenue.
 4. **Every rate is reported with its denominator.** WL-12 V2 and V3 enforce it: under n = 20 the
    page prints `3/14`, not `21.4%`.
 5. **Iterate means one variable at a time, with a changelog** (PIPELINE §6). Changing the
@@ -38,6 +50,15 @@ so that this document is evaluable.
 | Poyar / Rachitsky / Pendo, *What is a good free-to-paid conversion rate* | >1,000 products, six-month cohorts | **free trial: good 8–12%, great 15–25%**; freemium self-serve: good 3–5%, great 6–8% |
 | Poyar / ProductLed / ChartMogul, January 2026 | ~200 B2B products | median free-to-paid **8%**; **free trial with credit card: good 25–35%, great 50–60%**; without a card: good 4–6%, great 10–15%; 10× spread between the top and bottom quintile |
 | SMB SaaS churn benchmarks, 2026 aggregations | mixed | SMB / self-serve monthly **logo churn 3–7% common**, healthy **2–4%**; under $15K ACV, **1.5–3.0%** |
+
+**How MRR is counted, so no band is read off an inflated number.** **MRR = `active` +
+`past_due`-in-grace only.** Trials are reported as **"Trial MRR", on their own line, labelled "not
+yet invoiced"**, and are never added into MRR or ARR. *(Corrected 2026-09-03, finding m4:
+`specs/WL-12`'s `getRevenue` read `status ∈ {active, trialing-with-card}` — a status that does not
+exist in `specs/WL-09`'s enum (`trialing | active | past_due | canceled | incomplete`) — and
+counting a card-on-file trial as revenue reports money that has not been invoiced and may never be.
+With a 14-day trial on every price, that error would have overstated MRR by roughly a fortnight of
+new business, permanently.)*
 
 **A caution that matters for reading the first table:** the published card-required trial
 benchmarks measure *trial start → paid*. Our **signup is upstream of the card** — a
@@ -164,9 +185,18 @@ already churned; the card has simply not noticed yet.
 | | **65–79%** | weak | Iterate. Read cancellation reasons from `subscription_cancelled {reason, days_active, payrolls_generated}`. **If the modal reason is "no active job", the pricing model is wrong, not the product** — go to the pause-when-idle plan in §3. |
 | | **< 65%** | failing | Stop adding accounts. A leaking bucket refilled by outbound is the most expensive mistake available. Fix retention or stop. |
 | **4b Usage** | **≥ 65%** | on plan | A third of subscribers having no covered work in a given month is expected and honest for this buyer. |
+| **4b Usage** | **45–64%** | weak | The seasonality is real and $99 flat is being paid for nothing. **Ship pause-when-idle within 30 days.** This is a pre-committed build decision, not a discussion. |
+| **4b Usage** | **< 45%** | failing | The flat monthly subscription is the wrong shape for this market. Switch to per-active-project pricing, or accept that this is a seasonal tool with an inherently short life and reprice for it. |
 | **Tier mix** | Crew **20–40%** of paid accounts | on plan | Crew exists partly as a decoy that makes Shop obvious (OFFER §6.1) and partly for the genuine one-job sub. **Under 10% on Crew** means it is pure decoy and should be re-priced or retired. **Over 50% on Crew** means we mis-sized the ICP and the $99 anchor is wrong. |
-| | **45–64%** | weak | The seasonality is real and $99 flat is being paid for nothing. **Ship pause-when-idle within 30 days.** This is a pre-committed build decision, not a discussion. |
-| | **< 45%** | failing | The flat monthly subscription is the wrong shape for this market. Switch to per-active-project pricing, or accept that this is a seasonal tool with an inherently short life and reprice for it. |
+
+> **Re-ordered 2026-09-03 (finding m3).** The `45–64%` and `< 45%` bands used to sit **below** the
+> Tier-mix row and inherited its label, so they read as tier-mix thresholds — while their actions
+> ("ship pause-when-idle", "the flat monthly subscription is the wrong shape") plainly belong to
+> **4b usage retention**. Every band now names its own metric in the first column, so no row
+> depends on the one above it. **A pre-committed number nobody can read is not pre-committed.**
+> *(The tier-mix percentages are of paid accounts; the 4b percentages are of month-1 payers who
+> generated a WH-347 between day 31 and day 60. They were never the same denominator, which is
+> exactly why the ambiguity mattered.)*
 
 **The gap between 4a and 4b is itself a committed signal.** If 4a − 4b > **25 points**, a
 quarter of subscribers are paying while getting nothing, and that is churn that has not happened
@@ -176,7 +206,7 @@ yet. Treat next month's logo churn as if it will be 4a − 4b, and act on §4b's
 
 ## 5. Product-promise thresholds
 
-These are not funnel metrics. They are the claims WageLens makes, converted into numbers that
+These are not funnel metrics. They are the claims {{PRODUCT}} makes, converted into numbers that
 can falsify them.
 
 | # | claim | metric | on plan | if it fails |
@@ -186,6 +216,8 @@ can falsify them.
 | P3 | "The exact determination for your project" | `wd_search_ambiguous` ÷ `wd_search_performed` | ≤ **20%** | Measured 12.17% of *combinations* in the corpus; the user-weighted rate may differ, since ambiguity concentrates in Heavy and in dense metros. Above 20%, F3 is the dominant experience and WL-02's candidate screen is the product, not a fallback — invest there. |
 | P4 | "Every rate carries its source" | `official_determination_link_clicked` per activated organisation in its first 30 days | **≥ 1** | If nobody ever opens the source, the provenance is decoration. Either the trust it buys is invisible (fine) or the link is invisible (fix it). Distinguish with the WL-12 voice-of-the-user panel before acting. |
 | P5 | "We don't hold data we're forbidden to transmit" | `ssn_full_entry_blocked` count | **0 is not the target** | Non-zero means people are *trying* to enter a full SSN, and the field label and help copy need work. Zero over 100 signups probably means the field is clear. Either way, gate G7 makes the outcome safe; this metric is about the copy. |
+| **P6** | "Pin the modification your contract locked" — **the differentiator** | `wd_pinned` where `is_superseded = true`, ÷ all `wd_pinned`; plus `modification_pin_used` on the public page | **≥ 10%** of pins | *(Added 2026-09-03, findings B3/B4 — the behaviour is now buildable, so it becomes measurable and therefore falsifiable.)* `OFFER.md` §11.3 Q7 asks whether the buyer feels the contract-lock problem or has to be taught it. **Under 3% of pins naming an older modification, with the control present and used, and the offer's only unheld ground is not ground the buyer is standing on** — the positioning moves to the flat price and the classification-level alerts, and `LANDING_SPEC.md`'s A/B test 1 has its answer. Do not conclude this before the control has been in front of 100 lookups. |
+| **P7** | "Email me when this determination changes" — the public watch ([`specs/WL-14`](specs/WL-14-wd-watch.md)) | `watch_confirmed` ÷ `alert_email_captured` | **≥ 50%** | *(Added 2026-09-03, finding B5.)* Below 50% the confirmation email is not arriving or not landing, and **a double-opt-in list that does not confirm is not a list.** Fix deliverability before concluding anything about demand. Paired with P2: if `watch_alert_email_sent` per confirmed watch per year is also under 0.2, the watch is a courtesy rather than a channel, and it stops being sold as one. |
 
 ---
 

@@ -26,6 +26,13 @@ number and SAM.gov link.
 
 ## Flow / pages
 
+> **Name-agnostic, from this iteration on (finding M12, m8).** Every user-visible string in this
+> spec's pages, components and disclaimers is the token **`{{PRODUCT}}`**, resolved from one
+> constant at build time. The product's final name is a pending founder decision
+> (`PLAN.md` A3, PREREQUISITES P11) and no document may pre-empt it. **Slugs never carry the
+> name** — `/help/what-we-do-not-do`, not `/help/what-wagelens-does-not-do` — so a rename never
+> breaks a link an auditor bookmarked. The repository slug `wagelens` is unchanged.
+
 ```
 /help                       index, six articles, searchable
   /help/what-is-certified-payroll
@@ -33,12 +40,13 @@ number and SAM.gov link.
   /help/choosing-a-classification
   /help/nothing-matches-conformance
   /help/no-work-performed-weeks
-  /help/what-wagelens-does-not-do
+  /help/what-we-do-not-do          ← name-free slug on purpose (m8); title renders {{PRODUCT}}
 /legal/terms
 /legal/privacy
 /legal/disclaimer            the standing disclaimer, linked from every rate and every footer
 in-product:  provenance line (every rate) · certify-screen disclaimer · PDF footer
              · onboarding acknowledgement (once, recorded)
+             · trial-terms disclosure + consent record (WL-09 V14–V15)
 ```
 
 ### The six articles, and the question each one answers
@@ -50,7 +58,7 @@ in-product:  provenance line (every rate) · certify-screen disclaimer · PDF fo
 | `choosing-a-classification` | "Is he an Electrician or a Low Voltage Technician?" | Classification follows **the work actually performed**, not the job title and not what you call him on private jobs; two workers on the same pour can lawfully earn different rates; the same determination can list the same trade twice at very different rates; **this is your decision and your legal responsibility** |
 | `nothing-matches-conformance` | "What if none of them fit?" | Look again first; the three criteria; the request is filed by **your contracting agency** to **DBAConformance@dol.gov**; 30 days; 29 CFR 5.5(a)(1)(iii)(B) — it may not be used to split or subdivide a listed classification; what to pay in the meantime; an approved conformance applies from the first day the work was performed |
 | `no-work-performed-weeks` | "We didn't work last week. Do I still file?" | Yes — a numbered payroll marked no work performed. A gap in numbers is the first thing an auditor looks for and the most common reason a GC withholds a progress payment |
-| `what-wagelens-does-not-do` | "What am I still on the hook for?" | We do not run payroll, move money, file with anyone, choose classifications, or guarantee compliance. We show published determinations with their source, and we make the form. Links to the standing disclaimer |
+| `what-we-do-not-do` | "What am I still on the hook for?" | We do not run payroll, move money, file with anyone, choose classifications, or guarantee compliance. We show published determinations with their source, and we make the form. Links to the standing disclaimer |
 
 ## Data model
 
@@ -93,7 +101,10 @@ fails the build.
 | V4 | **No surface anywhere states a penalty amount, a success rate, or a compliance guarantee.** There is deliberately no component, field or content convention that would make one easy to add. |
 | V5 | The figure `13,508` appears in no **user-facing string** — application source, help content, email templates, landing copy. *(a CI grep, scoped to `apps/wagelens/src`, `content/`, `emails/`; the figure does not survive verification against DOL's own penalty table, see `../identity/CLAUDE.md` V1.* **The grep must not scan `phase-4-revenue/`**, where the planning documents state the prohibition and would trip it.*)* |
 | V6 | Help articles carry a `last_reviewed` date and a source list; every regulatory assertion cites its CFR section. |
-| V7 | Terms and Privacy name TheVillage as the legal entity and WageLens as the product (PLAN D1). |
+| V7 | Terms and Privacy name **TheVillage** as the legal entity and **`{{PRODUCT}}`** as the product (PLAN D1). *(M12)* |
+| V8 | **No user-visible string, help slug, disclaimer text, email template or PDF footer hard-codes the product name.** All resolve `{{PRODUCT}}` from one constant. A CI grep over `apps/wagelens/src`, `content/`, `emails/` fails the build on a literal `WageLens` or `CraftWage` outside that constant's own definition. *(M12, m8)* |
+| **V9** | **The privacy page states, in plain words, how a document can be shared outside the account**: that a share link is an **unauthenticated URL** that streams a WH-347 containing worker names, last-four identifiers, hours and pay; that it **expires in 7 days**; that it can be **revoked at any time** and how; that every access is logged with a count and a timestamp; and that there is no permanent or bookmarkable link. *(M10 — the WL-06 mechanism, said out loud where a customer can read it)* |
+| **V10** | The privacy page also states **WL-14's** collection: an email address, a hashed IP, a timestamp and the consent wording, kept only to send determination alerts, never sold or shared, removable in one click with no account. *(B5)* |
 
 ## Acceptance criteria
 
@@ -117,6 +128,15 @@ fails the build.
   above the button and the three certifications are shown in full, not summarised.
 - **Given** a help article, **when** it renders, **then** its `last_reviewed` date and its
   sources are visible.
+- **Given** the user-facing source tree, **when** CI greps it, **then** no literal `WageLens` or
+  `CraftWage` appears outside the single `{{PRODUCT}}` constant, and no help slug contains a
+  product name. *(V8, M12, m8)*
+- **Given** `/legal/privacy`, **when** it renders, **then** it contains the share-link paragraph
+  (unauthenticated URL, what it exposes, 7-day expiry, revocation, access logging, no permanent
+  link) and the WL-14 watch paragraph. *(V9, V10)*
+- **Given** a rate rendered for a **superseded** modification a project is deliberately pinned to,
+  **when** `<ProvenanceLine>` renders, **then** it reads "modification 1 — a newer modification (2)
+  was published on {date}" and the rate is never presented as current. *(WL-02 V3b, B3)*
 
 ## Edge cases
 
@@ -152,7 +172,10 @@ given organisation. If it stays flat, the provenance is not landing.
 **CI greps**, scoped to user-facing source only (`apps/wagelens/src`, `content/`, `emails/`) and
 explicitly **excluding the planning directory**, which documents the prohibitions and would
 otherwise fail its own rule: `13,508`, `guarantee compliance`, `guaranteed compliance`,
-`success rate`, `we file for you`, `we file it for you`.
+`success rate`, `we file for you`, `we file it for you`, **`Start free`** (WL-09 V16a), and a
+hard-coded product name outside the `{{PRODUCT}}` constant (V8).
+**Privacy-page content test** — assert the share-link and watch paragraphs are present and name
+the 7-day expiry and the revoke control. *(V9, V10)*
 **Content tests** — every help article has `last_reviewed`, at least one source URL, and every
 CFR citation matches `29 CFR 5\.\d+`; the conformance article contains the four required strings.
 **Integration** — acknowledgement written on onboarding; a material change re-prompts once and

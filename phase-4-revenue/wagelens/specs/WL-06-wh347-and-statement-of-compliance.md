@@ -115,14 +115,35 @@ document_share_links
   id                       uuid         primaryKey defaultRandom
   document_id              uuid         notNull references documents(id) on delete cascade
   token_hash               char(64)     notNull unique
-  expires_at               timestamptz  notNull        // 7 days
+  expires_at               timestamptz  notNull        // 7 days, re-issuable
   created_by_user_id       uuid         references users(id)
   accessed_count           integer      notNull default 0
+  last_accessed_at         timestamptz                 // added 2026-09-03 (M10)
+  revoked_at               timestamptz                 // added 2026-09-03 (M10) — a leaked link must be killable
+  revoked_by_user_id       uuid         references users(id)
   created_at               timestamptz  notNull default now()
+  index (document_id) where revoked_at is null
 ```
 
 `document_share_links` is the second half of the WL-24 seam: a GC can be sent a link today, and
 the roll-up tier later reads the same table.
+
+### The share link is revocable, expiring and logged — and it is never permanent
+
+**Changed 2026-09-03 (wave-1b iteration, finding M10).** `GET /api/share/:token` streams,
+**unauthenticated**, a document containing worker names, last-four identifiers, hours and pay.
+The design here — hashed token, 7-day expiry, access count — is sound; what was not sound was
+`OFFER.md` bonus B5 promising *"a read-only link the GC can bookmark"*, i.e. permanence, with
+nothing anywhere able to revoke a leaked one. The regulation forbids full SSNs on transmittals
+precisely because this data travels; an unrevocable URL is the same risk in a new wrapper.
+
+| rule | why |
+|---|---|
+| **7-day expiry stays**, and a link is **re-issuable** in one click from the payroll screen | The GC's real need is "send it again", not "keep it forever". `OFFER.md` B5 is reworded to a 7-day link you can re-issue. |
+| **A visible "revoke" control** beside every live link, and a **"revoke all links on this payroll"** action | The answer to "I sent it to the wrong address" must exist before it is needed. |
+| Every access **logged**: `accessed_count`, `last_accessed_at`, and `share_link_accessed {days_since_created}` | It is also the earliest signal of GC-tier demand (WL-24). |
+| The share panel lists **live links with their expiry, access count and last access** | You cannot revoke what you cannot see. |
+| The sharing mechanism is **stated on the privacy page** ([`WL-11`](WL-11-help-and-legal.md)) — what a link exposes, for how long, that it is unauthenticated, and how to revoke it | Sharing wage data by URL is a disclosure, and a privacy page that omits it is wrong. |
 
 ## Server actions / API
 
@@ -132,7 +153,9 @@ the roll-up tier later reads the same table.
 | `certifyAndGenerate(payrollId, official…)` | WL-05's `certifyPayroll` + enqueue `document.generate` |
 | job `document.generate` | renders both PDFs, hashes, stores, writes `documents`. `dedupe_key` makes a re-run a no-op |
 | `GET /api/documents/:id` | authenticated stream, `Content-Disposition: attachment` |
-| `GET /api/share/:token` | unauthenticated stream against a live, unexpired `document_share_links` row; increments `accessed_count` |
+| `GET /api/share/:token` | unauthenticated stream against a live, **unexpired and unrevoked** `document_share_links` row; increments `accessed_count`, stamps `last_accessed_at` |
+| `revokeShareLink({ id })` / `revokeAllShareLinks({ payrollId })` | stamps `revoked_at` and `revoked_by_user_id`. Takes effect on the **next request**, with no cache in front of the route *(M10)* |
+| `reissueShareLink({ documentId })` | revokes the previous live link for that document and mints a new 7-day one, so "send it again" is one click and never means "leave the old one open" |
 | `regenerateDocuments(payrollId)` | only when `generator_version` has moved; writes new `documents` rows and keeps the old ones |
 
 **Renderer.** Deterministic PDF composition (a layout library producing PDF primitives, fonts
@@ -153,6 +176,10 @@ Vercel's serverless runtime has no Chromium, and a screenshot-based form is not 
 | V8 | A worker whose name overflows its cell is **wrapped**, never truncated. A truncated name on a certified payroll is a defective filing. |
 | V9 | `no_work_performed` payrolls print the header, zero worker rows, and "NO WORK PERFORMED THIS PERIOD" across the grid, plus a full Statement of Compliance. |
 | V10 | The generated PDF is text-based and selectable — an auditor must be able to search it. No rasterised pages. |
+| V11 | **A share link is served only when `expires_at > now()` **and** `revoked_at is null`.** Both conditions are checked on every request; neither the route nor the CDN caches the response. A revoked or expired token 404s with no distinction between the two. *(M10)* |
+| V12 | **No code path creates a share link without an `expires_at` ≤ 7 days**, and there is no "never expires" option, no configuration for one, and no admin override. Permanence is not a feature that can be switched on later by accident. *(M10)* |
+| V13 | The payroll screen lists every live link for that payroll with its expiry, access count and last access, and a revoke control on each. *(M10)* |
+| V14 | The **generated document footer names the pinned modification and, when the project is pinned to a superseded one, the existence of the newer modification** — so a shared PDF carries the same provenance the screen does. *(WL-02 V3b, gate G8, finding B3)* |
 
 ## Acceptance criteria
 
@@ -181,6 +208,18 @@ Vercel's serverless runtime has no Chromium, and a screenshot-based form is not 
   `DRAFT — NOT FOR SUBMISSION` and nothing is written to `documents`. *(V1)*
 - **Given** a share link, **when** it is opened after 7 days, **then** it 404s and no document
   is streamed.
+- **Given** a live share link, **when** it is revoked and then opened, **then** it 404s
+  identically to an expired one, no document is streamed, and no cached copy is served. *(V11)*
+- **Given** a payroll with two live links, **when** "revoke all" is used, **then** both stop and
+  `share_link_revoked` fires twice. *(V13)*
+- **Given** `reissueShareLink`, **when** it runs, **then** the previous link is revoked in the
+  same transaction and exactly one live link remains for that document.
+- **Given** the codebase, **when** it is inspected, **then** no call site constructs a share link
+  with an expiry beyond 7 days and no "never expires" branch exists. *(V12 — a test, because B5's
+  copy used to promise the opposite)*
+- **Given** a payroll on a project pinned to a **superseded** modification, **when** the WH-347's
+  text is extracted, **then** the footer names that modification **and** the newer one's number
+  and publication date. *(V14, B3)*
 
 ## Edge cases
 
@@ -203,7 +242,7 @@ Vercel's serverless runtime has no Chromium, and a screenshot-based form is not 
 | Generation job fails | "Certified. Documents are still generating — we're retrying." Certification is never rolled back | `wh347_generation_failed {reason, attempt}` |
 | Storage write fails | same, retried | `document_storage_failed` |
 | Download of a missing blob | "That file is unavailable — regenerating now" + auto-enqueue | `document_blob_missing` |
-| Share token invalid or expired | 404, no distinction between the two | `share_link_rejected` |
+| Share token invalid, expired **or revoked** | 404, no distinction between the three | `share_link_rejected {reason}` (server-side only — the response says nothing) |
 
 ## Analytics events
 
@@ -215,7 +254,9 @@ the first occurrence of this event per organisation.** ·
 `wh347_preview_viewed` · `wh347_regenerated {reason}` ·
 `wh347_generation_failed {reason}` ·
 `share_link_created` · `share_link_accessed {days_since_created}` ← the earliest possible signal
-of GC-tier demand (WL-24)
+of GC-tier demand (WL-24) · `share_link_revoked`
+
+**Names are canonical and defined once**, in [`WL-EVENTS.md`](WL-EVENTS.md) §5.
 
 ## Test plan
 

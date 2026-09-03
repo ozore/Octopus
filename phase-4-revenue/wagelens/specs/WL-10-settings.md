@@ -121,6 +121,9 @@ they were filed with."
 
 ## Analytics events
 
+**Names are canonical and defined once**, in [`WL-EVENTS.md`](WL-EVENTS.md) §5/§7; this spec
+coins none of its own (finding B6).
+
 `settings_viewed {panel}` · `organisation_updated {fields_changed}` ·
 `certifying_official_set` · `default_daily_hours_changed` · `workweek_start_changed` ·
 `fringe_plan_created {plan_type, is_funded}` · `fringe_plan_archived` ·

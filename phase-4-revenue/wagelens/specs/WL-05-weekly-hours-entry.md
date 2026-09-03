@@ -52,21 +52,42 @@ reaches month 2.
 
 ### Keyboard model — the part that decides retention
 
+**This table is the only keyboard map in the product.** `UX.md` §7 used to carry a second,
+different one (`Ctrl+D` filling to the end of the column rather than copying one cell,
+`Ctrl+→` filling a *day row* rather than the rest of the workweek, `Ctrl+Enter` to save). Finding
+**M5**: the build reads the spec, so the spec is the map, and `UX.md` §7 now points here instead
+of restating it. WL-05's semantics survive because they are the ones with test cases attached;
+two of UX's shortcuts — `Esc` to revert and `S` to split a day — were genuinely better and cheap,
+so they are adopted here.
+
 | key | behaviour |
 |---|---|
 | `Tab` / `Shift-Tab` | next / previous cell, **across the row then down**, skipping computed cells |
 | `↑ ↓ ← →` | cell-wise movement, wrapping at row ends |
 | `Enter` | down one row, same column (spreadsheet muscle memory) |
-| `.` or `Space` in a day cell | fills the worker's default daily hours (8, or their configured default) |
+| `Esc` | **revert the cell to its last saved value** and leave edit mode *(adopted from UX)* |
+| `0`–`9`, `.` | start typing straight into a numeric cell, no `Enter` first |
+| `.` or `Space` on an **empty** day cell | fills the worker's default daily hours (`organisations.default_daily_hours`, 8 unless changed) |
 | `-` or `0` | zero, and moves on |
-| `Ctrl/⌘ + D` | copy the cell above |
-| `Ctrl/⌘ + →` | fill the rest of the workweek with the current cell's value |
+| `Ctrl/⌘ + D` | **copy the cell above** (one cell, not the column) |
+| `Ctrl/⌘ + →` | **fill the rest of the workweek** with the current cell's value |
 | `Ctrl/⌘ + S` | save draft |
-| paste | a tab- or comma-separated block pastes into the grid from the focused cell |
+| `S` on a focused day cell | **split this day** — creates a second line for the same worker under a different classification and moves focus into it *(adopted from UX; it is how the WH-347 handles a worker in two classifications, and the wrong single row must be harder than the right two)* |
+| `Ctrl/⌘ + K` | rate-lookup palette |
+| `Ctrl/⌘ + /` or `?` | shortcut overlay, itself keyboard-reachable and screen-reader readable |
+| `G` then `W` / `P` / `F` | go to week / project / flags |
+| paste | a tab- or comma-separated **rectangular** block pastes into the grid from the focused cell, with a preview before it commits |
 
-Every cell autosaves on blur, debounced 800 ms, with an optimistic value and a per-row saved
-indicator. **A dropped connection must never lose typed hours** — the draft is server-side and
-the client retries.
+**`hours_keyboard_shortcut_used {shortcut}` enumerates exactly this set** — `tab`, `arrow`,
+`enter`, `esc`, `type_through`, `default_day`, `zero`, `fill_down`, `fill_week`, `save`, `split`,
+`palette`, `overlay`, `goto`, `paste` — and nothing else. A shortcut that is not in this table
+does not exist, and a value the event does not enumerate fails the union test in
+[`WL-EVENTS.md`](WL-EVENTS.md).
+
+Rules that hold regardless of key: focus is never trapped; the focus ring is always visible at
+≥3:1; **nothing that changes data is available only by mouse**. Every cell autosaves on blur,
+debounced 800 ms, with an optimistic value and a per-row saved indicator. **A dropped connection
+must never lose typed hours** — the draft is server-side and the client retries.
 
 ## Data model
 
@@ -75,7 +96,10 @@ payrolls
   id                        uuid         primaryKey defaultRandom
   project_id                uuid         notNull references projects(id) on delete cascade
   filer_organisation_id     uuid         notNull references organisations(id)   // ← the WL-24 seam
-  payroll_number            integer      notNull        // WH-347 hdr.certified_payroll_no
+  payroll_number            integer                     // WH-347 hdr.certified_payroll_no
+                                                        // NULLABLE ON PURPOSE: allocated AT CERTIFICATION,
+                                                        // never at creation. A draft shows the provisional
+                                                        // number it *would* get. See "Payroll numbering".
   week_ending_date          date         notNull        // WH-347 hdr.week_ending_date
   is_final                  boolean      notNull default false   // hdr.final_payroll_flag
   no_work_performed         boolean      notNull default false
@@ -94,7 +118,7 @@ payrolls
   superseded_by_payroll_id  uuid         references payrolls(id)
   created_at                timestamptz  notNull default now()
   updated_at                timestamptz  notNull default now()
-  unique (project_id, filer_organisation_id, payroll_number)
+  unique (project_id, filer_organisation_id, payroll_number)   // partial: where payroll_number is not null
   unique (project_id, filer_organisation_id, week_ending_date) where status <> 'superseded'
   index (project_id, week_ending_date)
 
@@ -152,6 +176,26 @@ fringe_plans                                             // org-level, set once 
   archived_at               timestamptz
 ```
 
+### Payroll numbering — allocated at certification, not at creation
+
+**Changed 2026-09-03 (wave-1b iteration, finding M4).** This spec used to allocate the number in
+`createPayroll`; [`WL-07`](WL-07-payroll-history-and-export.md)'s edge cases said it was allocated
+at certification. **WL-07 wins**, and it is not a coin toss: it is the only version in which an
+abandoned draft cannot leave a gap in a certified-payroll sequence, and **both specs say a
+numbered gap is the first thing an auditor looks for.**
+
+| moment | what happens |
+|---|---|
+| `createPayroll` | `payroll_number` stays **null**. Nothing is reserved. The header shows **`payroll #8 (provisional)`** — `nextPayrollNumber()` + 1, computed on read, clearly labelled. |
+| a draft is deleted or abandoned | Nothing to release. No gap is possible, because no number was ever taken. |
+| `certifyPayroll` | Inside the certification transaction, **immediately before** flipping `status = 'certified'`: `SELECT coalesce(max(payroll_number), 0) + 1 … FOR UPDATE` scoped to `(project_id, filer_organisation_id)`, written with the certification. |
+| two tabs certifying at once | The `FOR UPDATE` and the unique index settle it; the loser retries once and gets the next number, or returns the same certified payroll if it is the same draft (certification is idempotent). |
+| reopen-and-supersede | The superseding payroll takes a **new** number and `additional_remarks` says "Corrects payroll #8". The original keeps its own. Both are retained. |
+
+Consequence for the UI, stated so nobody re-invents it: the provisional number is **advisory**,
+it may move if another draft on the same project certifies first, and the grid header says so in
+four words — *"number assigned when you certify"*.
+
 **Three deliberate choices.**
 1. `hours_st` / `hours_ot` are **fixed-length arrays of 7**, not a row per day. The form is a
    7-column grid; the query is always "the whole week"; and a 7-element array is one row read
@@ -167,13 +211,14 @@ fringe_plans                                             // org-level, set once 
 
 | name | input | effect |
 |---|---|---|
-| `createPayroll` | `{ projectId, weekEndingDate }` | allocates the next `payroll_number` in a transaction (`SELECT max … FOR UPDATE`), copies the pin, seeds one line per mapped worker |
+| `createPayroll` | `{ projectId, weekEndingDate }` | **reserves no number** (`payroll_number` stays null), copies the pin, seeds one line per mapped worker. Returns the **provisional** number for display only |
+| `nextPayrollNumber` | `{ projectId }` | `max(payroll_number) + 1` over **certified and superseded** payrolls; the provisional label and WL-07's "start" button both read it |
 | `copyLastWeek` | `{ payrollId }` | copies lines, rates, deductions and fringe credits from the most recent certified payroll on the project; **hours are copied too** and the panel says so, because week-to-week hours really are usually identical and correcting three cells beats typing 168 |
 | `updateCell` | `{ lineId, field, value }` | debounced autosave, recomputes derived columns server-side |
 | `addLine` / `removeLine` | `{ payrollId, workerId, kbClassificationId? }` | a second line for the same worker under a different classification |
-| `markNoWorkPerformed` | `{ payrollId }` | sets the flag, clears lines, keeps the number |
+| `markNoWorkPerformed` | `{ payrollId }` | sets the flag and clears lines. It still has to be **certified** to consume a number — a "no work performed" week is a filed payroll, not a note |
 | `validatePayroll` | `{ payrollId }` | returns `{ errors[], warnings[] }` |
-| `certifyPayroll` | `{ payrollId, officialName, title, phone, email, remarks }` | runs validation, flips to `certified`, stamps `certified_at`, enqueues WL-06 generation. **Idempotent** — a double-submit returns the same payroll. |
+| `certifyPayroll` | `{ payrollId, officialName, title, phone, email, remarks }` | runs validation, **allocates `payroll_number` inside the same transaction** (`SELECT max … FOR UPDATE`), flips to `certified`, stamps `certified_at` and `certified_by_user_id`, enqueues WL-06 generation. **Idempotent** — a double-submit returns the same payroll with the same number. |
 | `reopenPayroll` | `{ payrollId, reason }` | creates a **new** payroll superseding the old one; the original is retained (see edge cases) |
 
 ## Validation rules
@@ -210,13 +255,38 @@ fringe_plans                                             // org-level, set once 
 determination's headline (an approved conformance, a different modification governing the
 contract, an apprentice percentage). Blocking would make us the enforcer of a judgement that is
 legally the contractor's — see the disclaimers in KNOWLEDGE_BASE §9. Showing it, loudly, every
-time, is the right amount of help.
+time, plus **recording the acknowledgement** (`payroll_warning_acknowledged {rule_id}`), is the
+right amount of help.
+
+> **Settled 2026-09-03 (finding M7, decisions D5 and D6).** `UX.md` §3 A9 made
+> `rate-below-determination` and `fringe-missing` **blocking**, and escalated
+> `determination-moved` to blocking after 7 days. **This spec wins, on liability grounds**, and
+> `UX.md` has been amended to match. Blocking a federal filing on our reading of the customer's
+> legal position is the single most dangerous thing this product could do; it contradicts
+> `OFFER.md` §5.2 G4, the KNOWLEDGE_BASE §9.3 disclaimer and `WL-09` V11's principle that nothing
+> we do may stop a filing deadline. **`determination-moved` never blocks, at any age** — a banner
+> on every draft payroll is the whole remedy, and `WL-08` already specifies it. Blocking is
+> reserved for what makes the **form** invalid: B1–B12 above, which is why `fringe-missing` stays
+> blocking (it is B9 — page 2 cannot be completed without it) while a *low rate* does not.
 
 ## Acceptance criteria
 
-- **Given** a project with 12 mapped workers and a certified payroll #7, **when** payroll #8 is
-  created, **then** `payroll_number = 8`, 12 lines exist seeded with each worker's mapped
-  classification and rates, and the pin is copied from the project.
+- **Given** a project with 12 mapped workers and a certified payroll #7, **when** a new payroll is
+  created, **then** `payroll_number` is **null**, the header reads **"payroll #8 (provisional)"**,
+  12 lines exist seeded with each worker's mapped classification and rates, and the pin is copied
+  from the project. *(M4)*
+- **Given** that draft, **when** it is deleted without certifying, **then** the next payroll to
+  certify on that project takes **8**, not 9 — no gap is possible. *(M4)*
+- **Given** two drafts on one project, **when** the second one certifies first, **then** it takes
+  **8**, the first draft's provisional label re-reads **9**, and the unique index holds.
+- **Given** a draft, **when** it certifies, **then** `payroll_number` is written **in the same
+  transaction** as `status = 'certified'` and `certified_at`, and a double-submit returns the same
+  payroll with the same number. *(M4, idempotence)*
+- **Given** a project pinned to a **superseded** modification (WL-02, finding B3), **when** a
+  payroll is created on it, **then** `payrolls.wd_modification_number` is that superseded
+  modification, every seeded rate comes from it, and the draft header carries the permanent
+  "a newer modification ({m}) was published on {date}" line — **which never blocks certification**.
+  *(WL-02 V3b; D5/D6)*
 - **Given** payroll #8, **when** "copy week 7" is clicked, **then** hours, rates, deductions and
   fringe credits are copied, `payroll_copied_from_last_week {lines_copied: 12}` fires, and a
   banner names what was copied.
@@ -266,7 +336,10 @@ time, is the right amount of help.
 
 ## Analytics events
 
-`payroll_created {payroll_number, seeded_lines}` ·
+**Names are canonical and defined once**, in [`WL-EVENTS.md`](WL-EVENTS.md) §5.
+
+`payroll_created {payroll_number_provisional, seeded_lines}` ← *provisional*, because the real one
+is allocated at certification (M4) ·
 `payroll_copied_from_last_week {lines_copied}` ·
 `hours_grid_opened {worker_count}` · `hours_cell_edited` (sampled 1:20) ·
 `hours_keyboard_shortcut_used {shortcut}` ← tells us whether the keyboard model landed ·
@@ -286,10 +359,15 @@ is not being kept and THRESHOLDS says so.
 **Unit** — all 12 blocking rules and all 6 warnings, each with a passing and a failing fixture;
 derived columns (5, 8d, 9) recomputed on every mutation; the 24-hour cap summed across a
 worker's multiple lines; array indexing for a Sunday-start and a Monday-start workweek.
-**Integration (PGlite)** — payroll number allocation under two concurrent `createPayroll` calls
-(no duplicates, no gaps); `copyLastWeek` from a certified payroll; certification is idempotent
-under a double-submit; a certified payroll rejects every mutation; reopen creates a superseding
-row and retains the original.
+**Integration (PGlite)** — **payroll number allocation under two concurrent `certifyPayroll`
+calls** (no duplicates, no gaps, and the loser retries into the next number); a draft created and
+deleted leaves no gap; two drafts certify out of order and the provisional label updates;
+`copyLastWeek` from a certified payroll; certification is idempotent under a double-submit; a
+certified payroll rejects every mutation; reopen creates a superseding row and retains the
+original.
+**Keyboard test** — every shortcut in the table above, asserted by key event, and a test that
+`hours_keyboard_shortcut_used`'s enumerated values equal the table's rows exactly. *(M5 — the
+guard against the two maps drifting apart again.)*
 **E2E** — create a project, add 3 workers, map them, enter a full week using only the keyboard
 (assert zero mouse events), trip W1 deliberately, acknowledge, certify, and assert two PDFs.
 **Performance** — a 60-worker grid renders and stays responsive to typing under 16 ms per

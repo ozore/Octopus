@@ -131,6 +131,9 @@ code path that reads a classification from an unpinned determination** — gate 
 
 ## Analytics events
 
+**Names are canonical and defined once**, in [`WL-EVENTS.md`](WL-EVENTS.md) §5/§7; this spec
+coins none of its own (finding B6).
+
 `classification_catalogue_viewed {wd_number, classification_count}` ·
 `classification_searched {query, result_count}` ·
 `classification_zero_results {query, wd_number}` ← **the conformance demand signal; the single

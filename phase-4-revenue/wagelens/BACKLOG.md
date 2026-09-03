@@ -1,6 +1,8 @@
-# WageLens — Product Backlog
+# {{PRODUCT}} — Product Backlog
 
-Author: Product Owner agent (WageLens), wave 1. Date: **2026-09-03**.
+Author: Product Owner agent ({{PRODUCT}}), wave 1. Date: **2026-09-03**.
+Revised: **2026-09-03** (wave-1b iteration — findings B2, B5, B6, M2, M4, m6; changelog in
+`REVIEW_RESPONSE.md`). Name pending founder decision (PREREQUISITES P11); the slug stays `wagelens`.
 Companion documents: [`KNOWLEDGE_BASE.md`](KNOWLEDGE_BASE.md) (the data),
 [`THRESHOLDS.md`](THRESHOLDS.md) (when to persevere / iterate / stop), `specs/` (one file per
 Must item), `PERSONA.md` / `UX.md` (Buyer & Identity agent, in progress at time of writing —
@@ -32,24 +34,28 @@ get a stranger from signup to that event inside one sitting, and back there ever
 
 ## 1. Must — the MVP
 
-14 items. Effort: **5 L, 4 M, 5 S**. Each has a spec under `specs/`.
+**15 items. Effort: 5 L, 4 M, 6 S.** Each has a spec under `specs/`. Plus one cross-cutting
+contract, [`WL-EVENTS`](specs/WL-EVENTS.md), which is not an item — it is the single definition of
+every analytics event name, and it has no build of its own beyond a CI union test.
 
 | id | item | effort | depends on |
 |---|---|---|---|
-| [WL-13](specs/WL-13-kb-ingestion-and-refresh.md) | Wage-determination corpus: ingestion and daily refresh | L | — |
-| [WL-00](specs/WL-00-public-rate-lookup.md) | **Public rate lookup (unauthenticated)** | S | WL-13 |
+| [WL-13](specs/WL-13-kb-ingestion-and-refresh.md) | Wage-determination corpus: ingestion, daily refresh, **modification history and superseded revisions on demand** | L | — |
+| [WL-00](specs/WL-00-public-rate-lookup.md) | **Public rate lookup (unauthenticated)**, with the modification picker | S | WL-13 |
 | [WL-01](specs/WL-01-auth-and-organisation.md) | Magic-link auth and organisation | M | — |
-| [WL-02](specs/WL-02-project-and-wd-lookup.md) | Project setup with wage-determination lookup | L | WL-01, WL-13 |
+| [WL-02](specs/WL-02-project-and-wd-lookup.md) | Project setup with wage-determination lookup **and modification pinning** | L | WL-01, WL-13 |
 | [WL-03](specs/WL-03-classification-catalogue.md) | Classification catalogue per determination | M | WL-13, WL-02 |
-| [WL-04](specs/WL-04-workers-and-classification-mapping.md) | Worker roster and classification mapping (+ conformance path) | L | WL-02, WL-03 |
+| [WL-04](specs/WL-04-workers-and-classification-mapping.md) | Worker roster and classification mapping (+ paste-a-list, + conformance path) | L | WL-02, WL-03 |
 | [WL-05](specs/WL-05-weekly-hours-entry.md) | Weekly hours entry grid | L | WL-04 |
 | [WL-06](specs/WL-06-wh347-and-statement-of-compliance.md) | WH-347 and Statement of Compliance generation | L | WL-05 |
-| [WL-07](specs/WL-07-payroll-history-and-export.md) | Payroll history and export | S | WL-06 |
-| [WL-08](specs/WL-08-determination-change-alerts.md) | Determination-change alerts | M | WL-13, WL-02 |
-| [WL-09](specs/WL-09-billing.md) | Billing: trial, subscription, portal | M | WL-01 |
+| [WL-07](specs/WL-07-payroll-history-and-export.md) | Payroll history, submission status and export | S | WL-06 |
+| [WL-08](specs/WL-08-determination-change-alerts.md) | Determination-change alerts (per project) | M | WL-13, WL-02 |
+| [WL-09](specs/WL-09-billing.md) | Billing: trial, **auto-renewal disclosure and consent**, subscription, portal | M | WL-01 |
 | [WL-10](specs/WL-10-settings.md) | Settings | S | WL-01 |
 | [WL-11](specs/WL-11-help-and-legal.md) | Help, disclaimers and legal pages | S | — |
 | [WL-12](specs/WL-12-admin-metrics.md) | Admin metrics | S | all |
+| **[WL-14](specs/WL-14-wd-watch.md)** | **Public determination watch — consented email alerts** | **S** | WL-13, WL-00 |
+| — | [`WL-EVENTS`](specs/WL-EVENTS.md) — the canonical analytics vocabulary *(a contract, not an item)* | — | all |
 
 ---
 
@@ -76,16 +82,57 @@ is the *form* — roster, hours, WH-347, Statement of Compliance, history, alert
 
 **Dependencies.** WL-13 only. No auth, no writes, no new tables — a read-only view over `kb_*`.
 
-**Analytics.** `lookup_performed {state_code, county_name, construction_type, result_count}` ·
-`lookup_ambiguous {candidate_count}` · `lookup_zero_results` · `lookup_official_link_clicked` ·
-`lookup_cta_clicked` (the top of the funnel) · `public_lookup_rate_limited`.
+**Analytics.** Defined once in [`specs/WL-EVENTS.md`](specs/WL-EVENTS.md) §1, which WL-00 owns —
+including the ten landing-page events that previously had no owner (finding B6):
+`lookup_started` · `lookup_performed {state_code, county_name, construction_type, result_count, latency_ms, source}` ·
+`lookup_ambiguous {candidate_count}` · `lookup_zero_results` · `lookup_official_link_clicked {wd_number, surface}` ·
+`lookup_cta_clicked` (the top of the funnel) · `modification_pin_used {wd_ref, from_mod, to_mod}` ·
+`hero_viewed` · `hero_cta_clicked` · `how_step_viewed` · `ledger_used` · `wh347_artefact_expanded` ·
+`timeline_viewed` · `comparison_table_viewed` · `faq_opened` · `public_lookup_rate_limited`.
+
+---
+
+### WL-14 · Public determination watch (consented email alerts) — **S**
+
+**Added 2026-09-03 in the wave-1b iteration** (finding B5). Not a new promise — the *existing*
+promise, finally specified. "Email me when this determination changes" was sold in
+[`OFFER.md`](OFFER.md) §6.1 and bonus B3, on the landing page and in `UX.md` P2, and
+[`KNOWLEDGE_BASE.md`](KNOWLEDGE_BASE.md) §3.2 listed a `wd_watches` table **that no spec owned** —
+with no consent record, no confirmation, no unsubscribe design, no CAN-SPAM footer and no privacy
+copy, for an email address collected on a public page.
+
+**Story.** As an estimator who has just looked up a rate, I tick a box, give my email, confirm it
+from a link in my inbox, and get one plain message the next time DOL modifies **that**
+determination — with a one-click unsubscribe in it.
+
+**Value to Rosa.** Indirect: this is her estimator colleague's feature, not hers. Its value to *us*
+is that it is **the only email list this product builds organically**, and a consented list is an
+asset where an unconsented one is a liability.
+
+**Would a stranger pay without it?** Yes — which by §0's own test would make it a Should. **It is a
+Must for a different reason: it is already promised on three customer-facing surfaces**, and the
+only alternative was deleting the promise from all three. At effort S the spec is cheaper than the
+retreat, and the retreat costs the funnel its only organic list. **This is the one Must item that
+the Rosa test does not justify, and it is recorded as such rather than argued around.**
+
+**Dependencies.** WL-13 (it reuses the same modification detection WL-08 uses), WL-00.
+
+**Not WL-08.** WL-08 is keyed to a **project**, scoped to the classifications that project actually
+uses, and is transactional email to a paying customer. WL-14 is keyed to a **determination**,
+unscoped, and is marketing email to a stranger. Different table, different consent basis, different
+unsubscribe. **They never share a send path or a suppression-list entry type.**
+
+**Analytics.** [`WL-EVENTS`](specs/WL-EVENTS.md) §2: `alert_email_captured` · `watch_confirmed` ·
+`watch_limit_reached` · `watch_alert_email_sent` · `watch_unsubscribed` · `watch_expired`.
+**The number that decides its future:** `watch_confirmed ÷ alert_email_captured`. Below **50%** the
+confirmation email is not landing, and a list that does not confirm is a list that does not exist.
 
 ---
 
 ### WL-01 · Magic-link auth and organisation — **M**
 
 **Story.** As a new visitor, I enter my work email, click the link in the message, and I am
-inside my company's WageLens with no password to invent or remember.
+inside my company's {{PRODUCT}} with no password to invent or remember.
 
 **Value to Rosa.** She is the only person who will ever use this. A password is a support
 ticket waiting to happen and a reason to abandon signup on a Friday afternoon. Auth exists so
@@ -106,7 +153,7 @@ them, 54 states and territories, ~135,000 classification rows — with the WD nu
 modification number, publication date and source URL on every single rate, refreshed daily.
 
 **Value to Rosa.** This is the thing she is actually buying and the only part of the product
-she can never build herself. Everything else is a form. Without it WageLens is a $99
+she can never build herself. Everything else is a form. Without it {{PRODUCT}} is a $99
 spreadsheet template.
 
 **Dependencies.** None — it is the other root of the tree. Built in parallel with WL-01.
@@ -124,7 +171,7 @@ bulk download** and **no API key**.
 ### WL-02 · Project setup with wage-determination lookup — **L**
 
 **Story.** As Rosa, I add the Fort Cavazos job: state Texas, county Bell, construction type
-Building. WageLens shows me the determinations that cover it, I pick the one my contract
+Building. {{PRODUCT}} shows me the determinations that cover it, I pick the one my contract
 names, and from then on every payroll for that project is tied to that determination and that
 modification number.
 
@@ -170,9 +217,10 @@ demand signal and the single most valuable event in the product**), `determinati
 
 ### WL-04 · Worker roster and classification mapping — **L**
 
-**Story.** As Rosa, I add my crew once — first name, last name, middle initial, last four of
-the SSN — and map each of them to a classification on this project's determination. When a
-worker's actual duties match nothing on the determination, WageLens tells me plainly what that
+**Story.** As Rosa, I add my crew once — **pasted in from a spreadsheet, or typed**: first name,
+last name, middle initial, last four of the SSN — and map each of them to a classification on this
+project's determination. When a
+worker's actual duties match nothing on the determination, {{PRODUCT}} tells me plainly what that
 means and walks me through preparing a conformance request.
 
 **Value to Rosa.** Misclassification is the most common Davis-Bacon violation and the reason
@@ -187,6 +235,16 @@ either guesses (and gets caught) or gives up (and files late).
 `classification_unmatched_declared`, `conformance_guide_opened`,
 `conformance_worksheet_started`, `conformance_worksheet_completed`,
 `conformance_worksheet_downloaded`.
+
+**Paste, not import (2026-09-03, finding M2).** The crew pastes in from a spreadsheet — one worker
+per line, tab/comma/space separated — into a **preview** where every parsed row is editable and
+**every skipped row is listed with its reason**, and nothing is written until it is confirmed. A
+**file** importer with column mapping is **WL-15, Should**, on the argument below; paste closes the
+3-minute roster budget in `UX.md` §4 at a fraction of the cost and cannot fail silently. A pasted
+row containing a full SSN is skipped with the federal-rule explanation, never truncated.
+**`OFFER.md`'s bonus B6 ("Bring Your Own History"), which sold a payroll importer as the reason to
+choose annual, is deleted from the launch offer** — selling an unbuilt bonus is the one promise here
+that would generate refunds in month one.
 
 **Two rules that are law, not preference.**
 - **Last four digits of the SSN only.** 29 CFR 5.5(a)(3)(ii)(B) forbids the full SSN and the
@@ -217,12 +275,19 @@ the subscription survives to month 2.
 **Analytics.** `payroll_created`, `payroll_copied_from_last_week` (props: `lines_copied`),
 `hours_grid_opened`, `hours_saved` (props: `worker_count`, `total_st_hours`, `total_ot_hours`),
 `no_work_performed_filed`, `payroll_validation_failed` (props: `rule_id`),
-`payroll_certified` (props: payroll_number, worker_count).
+`payroll_certified` (props: payroll_number, worker_count, **`minutes_in_grid`**).
 
-**The two things that must be right.**
+*`minutes_in_grid` was missing from this line while `specs/WL-05` had it and `THRESHOLDS.md` P1 is
+measured on it — finding m6. The full vocabulary is [`specs/WL-EVENTS.md`](specs/WL-EVENTS.md).*
+
+**The three things that must be right.**
 - **"No work performed" weeks.** A covered week with no hours still consumes a payroll number
   and still gets filed. Missing weeks are the most common reason a GC withholds a payment, and
   a numbered gap is what an auditor looks for first.
+- **The payroll number is allocated at *certification*, not at creation** (2026-09-03, finding M4,
+  decision D7). A draft shows "#8 (provisional)" and reserves nothing, so an abandoned draft cannot
+  leave a gap in a certified federal filing sequence. WL-05 used to allocate at creation and WL-07
+  said certification; **WL-07 was right**, and both specs now say so.
 - **Overtime is CWHSSA, and it is separate from the base rate.** The grid keeps ST and OT
   rows separately because column (5), (6A) and the whole compliance question depend on it.
 
@@ -255,8 +320,15 @@ and nothing else. That wording is a constant in the codebase behind a byte-equal
 ### WL-07 · Payroll history and export — **S**
 
 **Story.** As Rosa, I can see every payroll I have filed on this project, in order, with its
-number, its week, its status and its two PDFs — and download the lot as a CSV when the auditor
-asks.
+number, its week, its status, **whether I have sent it and what the prime said about it**, and its
+two PDFs — and download the lot as a CSV when the auditor asks.
+
+**Added 2026-09-03 (finding M8): the submission lifecycle.** `UX.md` shipped a status column, a
+rejection email and a rejection screen, and `PERSONA.md` §6 promised the buyer the words *filed /
+accepted / rejected / needs revision* — while **no spec defined any of it**. WL-07 now owns a
+nullable `submission_status ∈ {not_sent, sent, accepted, rejected}` with `submitted_at`, a
+recipient and a note, **set by the user on the honour system** (no portal integration, no webhook,
+no inference), firing E5 on `rejected`. It changes no payroll line and no document hash.
 
 **Value to Rosa.** Three reasons it is Must and not Should, despite being unglamorous:
 (1) `Certified Payroll No.` is a **sequential integer with no gaps** — the app cannot produce
@@ -304,8 +376,9 @@ comes in under 0.2 the marketing claim moves before the feature does.
 
 ### WL-09 · Billing: trial, subscription, portal — **M**
 
-**Story.** As Rosa, I start a 14-day trial with a card on file, and if I do nothing I am
-charged $99 on day 15 and can cancel myself from a settings link at any time.
+**Story.** As Rosa, I start a 14-day trial with a card on file — **after being told, above the
+button, that $99 will be charged on a named date and how to stop it** — and if I do nothing I am
+charged $99 on day 15 and can cancel myself from a settings link at any time, in two clicks.
 
 **Value to Rosa.** She needs to try it against a real deadline before she trusts it — one
 payroll cycle is 7 days, so a 14-day trial covers two. **Card up front**, because Poyar /
@@ -324,10 +397,24 @@ Clausewright's ADR-007 pattern: **the webhook, not the redirect, is what activat
 **Prices at launch — owned by [`OFFER.md`](OFFER.md) §6 and §10, reconciled here 2026-09-03**
 (founder confirms before Stripe goes live, per PLAN A5/D2): **Crew $79/mo · $790/yr** (≤3
 projects, ≤15 workers), **Shop $99/mo · $990/yr** (the ICP, recommended, unlimited projects,
-≤100 workers), **GC Roll-up $299/mo · $2,990/yr** (created and priced publicly at launch;
-**sellable only when WL-24 ships**). 14-day trial, **card required**, on every price. No metered
-component, no setup fee, no free tier — the free thing is WL-00, and it is outside billing
-entirely.
+≤100 workers), **GC Roll-up $299/mo · $2,990/yr — published on the ladder as "Coming", waitlist
+only, NOT SELLABLE, Stripe prices in test mode only until WL-24 ships.** 14-day trial, **card
+required**, on every price. No metered component, no setup fee, no free tier — the free thing is
+WL-00, and it is outside billing entirely.
+
+**Two things this item gained in the wave-1b iteration.**
+
+- **The GC tier cannot be bought (finding B2).** It carried a live purchase CTA on the landing page
+  while `WL-24` is a Should with a demand trigger. `specs/WL-09` V17–V19 now make "not sellable" a
+  property of the code: a sellable-set constant Checkout refuses to leave, a boot assertion against
+  a live-mode GC price id, and a render test that no purchase control exists inside the card. The
+  waitlist emits `gc_tier_interest`, which is exactly the signal WL-24's own trigger asks for.
+- **The trial's terms are disclosed and the consent is recorded (finding B9).** A card-on-file trial
+  that auto-charges is a **negative-option offer**: `specs/WL-09` V14–V16b require the full terms —
+  trial length, exact amount, exact date, renewal interval, how to cancel — **above the button and
+  before the card**, an **unticked** consent checkbox recorded with the block's content hash, a
+  **day-10 pre-charge email**, a **≥7-day annual renewal notice**, and **no CTA reading "Start
+  free"** anywhere. This was absent from every wave-1 document and is the cheapest fix in the review.
 
 ---
 
@@ -359,7 +446,7 @@ product, and I can see exactly where every number came from.
 (18 U.S.C. § 1001, printed on the form itself). She will not sign what she does not understand,
 and there is no human to ask. Six pages carry the MVP: what a certified payroll is; how to find
 your wage determination number; how to choose a classification; what to do when nothing matches;
-what "no work performed" weeks are; what WageLens does not do.
+what "no work performed" weeks are; what {{PRODUCT}} does not do.
 
 **Value to us.** KNOWLEDGE_BASE §9 is a legal requirement (PLAN A10), and gate **G8** makes it
 structural: the component that renders a rate *is* the component that renders its provenance,
@@ -399,7 +486,7 @@ Ordered by expected effect on retention, which is the only thing that matters in
 
 | id | item | effort | why it is not Must | trigger to build it |
 |---|---|---|---|---|
-| **WL-24** | **GC roll-up tier ($299/mo · $2,990/yr)**: invite subcontractors, see every sub's payroll status per project, chase missing weeks, export the pack | **L** | see the argument below | 3 paying subs on one GC's project, or 5 inbound GC requests |
+| **WL-24** | **GC roll-up tier ($299/mo · $2,990/yr)**: invite subcontractors, see every sub's payroll status per project, chase missing weeks, export the pack | **L** | see the argument below | 3 paying subs on one GC's project, or 5 inbound GC requests, **or `gc_tier_interest` from the launch waitlist reaching either** |
 | WL-15 | Import hours from a CSV / payroll-provider export (QuickBooks, ADP, Paychex time exports) | M | Rosa's hours come off **paper time cards**; a CSV importer solves a problem the 12-person sub does not have. It is the 40-person sub's problem. | 20% of orgs have >25 workers, or `hours_saved.worker_count` p90 > 25 |
 | WL-16 | Pre-submission validation report: rate below determination, missing day, OT under 40 hours, deduction exceeding gross, worker on two projects same day | M | The MVP blocks the errors that make the *form* invalid. This catches the errors that make the *payroll* wrong — higher value, but needs real payrolls to know which checks fire | 200 certified payrolls in the corpus of real use |
 | WL-17 | Weekly reminder email: "payroll #8 for Fort Cavazos is due" | S | A reminder for a product they have not yet made a habit of is noise. After activation it is the cheapest retention lever there is | first 25 activated orgs |
@@ -426,13 +513,22 @@ workflow and a nagging engine, none of which the sub tier needs, all of which de
 stranger can pay us. The sub tier has **no cold start**: Rosa gets value from her own first
 payroll, alone, in one sitting.
 
+**Re-examined in the wave-1b iteration and confirmed as a Should (finding B2).** The review asked
+whether WL-24 should move into Must so the $299 tier could be sold honestly at launch. **It should
+not, at this budget:** it is the MVP's largest **L** — an org-to-org invitation model, a permissions
+matrix, a review-and-reject workflow and a nagging engine — none of which the sub tier needs, all of
+which push out the date a stranger can first pay us, and all of it landing on an empty table on day
+one. **The alternative was taken instead: the tier is not sellable.** The price stays published so
+the ladder is legible; the card is a waitlist; no Checkout path reaches it.
+
 **The concession.** The MVP data model is built so that WL-24 is *additive*, not a migration:
 `payrolls` carries `filer_organisation_id` distinct from `project.organisation_id`, projects
 carry `prime_contractor_name` and `our_role ∈ {prime, sub}` (both are WH-347 header fields
 anyway), and `documents` are addressable by a signed, expiring URL from day one. Building the
 GC tier later then costs an invitation flow and a dashboard — not a rewrite. **This concession
 is in the MVP; the tier is not.** The $299 price is published from launch so the ladder is
-legible and so a GC who asks can be waitlisted rather than lost.
+legible and so a GC who asks can be waitlisted rather than lost — **as a waitlist, with no purchase
+control and no live Stripe price** (finding B2, `specs/WL-09` V17–V19).
 
 ---
 
@@ -455,7 +551,7 @@ legible and so a GC who asks can be waitlisted rather than lost.
 
 | item | why never |
 |---|---|
-| **Running payroll — calculating taxes, moving money, filing 941s** | It is a different company. It needs money transmission, tax-filing registrations in 50 states, and an errors-and-omissions posture we will not have. WageLens takes payroll **as an input** and always will. It is also the honest answer to "why are you cheaper than eBacon": we do less. |
+| **Running payroll — calculating taxes, moving money, filing 941s** | It is a different company. It needs money transmission, tax-filing registrations in 50 states, and an errors-and-omissions posture we will not have. {{PRODUCT}} takes payroll **as an input** and always will. It is also the honest answer to "why are you cheaper than eBacon": we do less. |
 | **Time tracking, GPS clock-in, a field app** | A crowded, well-funded category, a daily habit we would have to win from a phone, and a completely different buyer inside the same company. Rosa already has time cards. |
 | **Storing a full Social Security number or a home address** | 29 CFR 5.5(a)(3)(ii)(B) says the weekly transmittal carries the **last four digits** and no address. There is no schema column that can hold more, and gate G7 is a test that asserts it. Holding data we are forbidden to transmit is pure liability with no product upside. |
 | **Submitting to LCPtracker / eCPR / B2Gnow on the customer's behalf using their credentials** | Taking a customer's login to a system that holds their compliance record makes us the weakest link in their audit trail, and every portal's terms forbid it. We produce the document; they submit it. (Same principle as Clausewright's I4.) |

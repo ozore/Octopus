@@ -1,6 +1,14 @@
-# WageLens — The Offer
+# {{PRODUCT}} — The Offer
 
-**Author:** Offer & Landing agent (WageLens), wave 1. **Date:** 2026-09-03.
+> **Name pending founder decision (PREREQUISITES P11).** Every customer-facing string in this
+> document is the token **`{{PRODUCT}}`**, resolved from one constant at build time. `wagelens.com`
+> is a live, unrelated pay-equity product (`IDENTITY.md` §1), so the working name cannot ship
+> unexamined; `PLAN.md` A3 says the founder decides. The repository slug stays `wagelens`.
+> *(Applied 2026-09-03, wave-1b finding M12.)*
+
+**Author:** Offer & Landing agent ({{PRODUCT}}), wave 1. **Date:** 2026-09-03.
+**Revised:** 2026-09-03 (wave-1b iteration — findings B2, B5, B8, B9, M2, M9, M12, M15, m9;
+changelog in `REVIEW_RESPONSE.md`).
 **Status:** proposal. Per PLAN.md A5 and PREREQUISITES P12, **the founder validates prices and
 guarantees before any Stripe product is created.** Every liability the founder must personally accept
 is marked **⚠ FOUNDER LIABILITY**.
@@ -15,6 +23,12 @@ Dunford — position against the competitive alternative.
 
 ## 1. The offer in five lines
 
+> **Vocabulary, before the list, because it governs every line in it.** `PERSONA.md` records that
+> the buyer's word — and the form's own word — is **modification**, not "revision". All
+> customer-facing copy uses "modification"; "revision" appears **only** where the SAM.gov API
+> field is literally `revisionNumber`. *(Moved out of the middle of the list, 2026-09-03,
+> finding m9 — it broke the numbering of the paragraph the founder reads first.)*
+
 1. **Look up your county's Davis-Bacon rate free, before you sign up — then pin the modification your
    contract actually locked, because 29 CFR 1.6 says that is the one that governs your job, not
    today's.**
@@ -24,13 +38,9 @@ Dunford — position against the competitive alternative.
    modification it was computed from.
 4. When that determination is modified, you get an email naming **the classification that moved** and
    both modification numbers — not "rates changed in your state".
-
-> **Vocabulary.** `PERSONA.md` records that the buyer's word — and the form's own word — is
-> **modification**, not "revision". All customer-facing copy uses "modification"; "revision" appears
-> only where the SAM.gov API field is literally `revisionNumber`.
 5. **$99/month, published on the page, no demo call, no setup fee, no per-report meter. Your first two
-   Fridays are free. Cancel in two clicks. And in three years you can still prove where every number
-   came from.**
+   Fridays are free — card on file, $99 charged on day 15, cancel in two clicks before then and you
+   pay nothing. And in three years you can still prove where every number came from.**
 
 > **What is deliberately *not* claimed here.** A free county rate lookup is not new — at least two
 > exist publicly, one of them our nearest competitor's (`offer/RESEARCH.md` §3.6). We ship it because
@@ -89,7 +99,7 @@ is the exact thing he is afraid of.** The evidence that this is the constraint, 
 
 **The six levers, ranked. Every offer dollar goes here.**
 
-1. **Show the provenance next to every rate, always.** Determination number, revision number, effective
+1. **Show the provenance next to every rate, always.** Determination number, modification number, effective
    date, decision date, and a live link to the determination on sam.gov. A rate without its provenance
    must not be renderable in the product — enforced by a test, exactly as the delivered Clausewright
    page enforces its citation rule.
@@ -104,10 +114,10 @@ is the exact thing he is afraid of.** The evidence that this is the constraint, 
 4. **Name the contract-lock problem before he hits it — this is now lever 1 in commercial terms, even
    though it is lever 4 in trust terms.** The determination that governs his job is the one
    incorporated into his contract, not necessarily today's (29 CFR 1.6). We show today's *and* let him
-   pin the revision his contract locked, and — because superseded revisions stay permanently
+   pin the modification his contract locked, and — because superseded modifications stay permanently
    retrievable (`KNOWLEDGE_BASE.md` KB-3) — we can still reproduce that rate through the whole
    three-year retention window 29 CFR 5.5(a)(3)(ii)(G) imposes. **No incumbent page fetched describes
-   revision history or contract-revision pinning. After the verification pass (RESEARCH.md §3.6) this
+   modification history or contract-modification pinning. After the verification pass (RESEARCH.md §3.6) this
    is the offer's only genuinely unheld ground.**
 5. **Publish the refresh cadence and the last-checked timestamp** on every determination, and a public
    data-incident log. Under PLAN.md A10 every value already carries `source_url`, `last_verified`,
@@ -142,10 +152,12 @@ That last one is not a nicety: 29 CFR 5.5(a)(3)(ii)(B) *requires* that "Full Soc
 and last known addresses, telephone numbers, and email addresses **must not** be included on weekly
 transmittals." An incumbent's users are hand-redacting a legal requirement in Adobe every week.
 
-**Levers:** import once and carry forward forever; the same crew on a second job is two clicks, not a
-re-entry; redaction by construction, never by hand; **no demo call, no implementation fee, no sales
-call to see the price** — against a field where six of nine vendors gate the number behind a form, and
-where 38% of B2B buyers say having to contact sales makes them *less* likely to buy
+**Levers:** **enter the crew once and carry it forward forever** (paste it in from a spreadsheet or
+type it — WL-04; a file importer is WL-15, Should, and is not sold here); the same crew on a second
+job is two clicks, not a re-entry; redaction by construction, never by hand; **no demo call, no
+implementation fee, no sales call to see the price** — against a field where six of nine vendors gate
+the number behind a form, and where 38% of B2B buyers say having to contact sales makes them *less*
+likely to buy
 ([TrustRadius 2023, n=1,604](https://solutions.trustradius.com/vendor-blog/2023-b2b-disconnect/)).
 
 ### 2.5 The read
@@ -182,18 +194,18 @@ Hormozi's MAGIC — Magnet, Avatar, Goal, Interval, Container. Three candidates:
 | # | Obstacle, in the buyer's words | Solution | Cost to us | Value to him | Verdict |
 |---|---|---|---|---|---|
 | O1 | "I don't actually know if the rate I'm paying is right." | **Rate Lookup**: state → county → construction type → every classification, base rate, fringe, with WD number, modification, effective date, sam.gov link | ~$0 marginal | **Very high** | **FREE TIER — the lead magnet.** ⚠ **Parity, not advantage** (RESEARCH.md §3.6). Ship it; never headline it. |
-| O2 | "I don't know when the determination changed." | **Change alerts** — *per determination and per classification*, naming what moved and both revision numbers | Low | Very high | Free tier: 3 determinations. Paid: unlimited. **Differentiated only by granularity**: the competing alert is "when wage rates change in your state" |
-| **O2b** | **"Which version of the rate applies to *my* contract?"** | **Revision pinning + history**: pin the modification the contract incorporated; show pinned vs current side by side; keep every superseded revision retrievable for the whole 3-year retention period | Medium | **Very high** | **CORE — and the only obstacle on this list no incumbent page claims to solve.** This is the offer. |
+| O2 | "I don't know when the determination changed." | **Change alerts** — *per determination and per classification*, naming what moved and both modification numbers | Low | Very high | Public watch: **up to 3 determinations, consented and confirmed** (`specs/WL-14`). In the product: unlimited, per project (`specs/WL-08`). **Differentiated only by granularity**: the competing alert is "when wage rates change in your state" |
+| **O2b** | **"Which version of the rate applies to *my* contract?"** | **Modification pinning + history**: pin the modification the contract incorporated; show pinned vs current side by side; keep every superseded modification retrievable for the whole 3-year retention period | Medium | **Very high** | **CORE — and the only obstacle on this list no incumbent page claims to solve.** This is the offer. |
 | O3 | "Friday takes my whole evening." | Hours in once → filled **WH-347 + Statement of Compliance** | Core | Very high | **CORE** |
 | O4 | "I re-type the same crew on every job." | Workers, classifications and fringe carried across projects and weeks | Core | High | **CORE** |
 | O5 | "I have to redact SSNs in Adobe before I send it." | Last-four-only by construction, per 5.5(a)(3)(ii)(B) | Low | High | **CORE** — stack loudly |
 | O6 | "This worker's job isn't on the list." | **Conformance pack**: the three criteria, SF-1444, the DBAconformance route, and the sentence that the process "may not be used to split, subdivide, or otherwise avoid application of classifications listed" | Build once | High | **Bonus B2** |
-| O7 | "My contract locked an older determination." | Pin a revision per project; show current vs pinned side by side | Medium | High | **CORE — no competitor page mentions this** |
+| O7 | "My contract locked an older determination." | Pin a modification per project; show current vs pinned side by side | Medium | High | **CORE — no competitor page mentions this** |
 | O8 | "I have to keep these for years." | 3-year archive, per 5.5(a)(3)(ii)(G); export the whole file in one click | Low | Medium | **CORE** |
 | O9 | "My GC chases me every week." | Share a read-only weekly link with the prime | Low | Medium | Core (Shop+) |
 | O10 | "I'm the GC and I'm liable for my subs." | **Roll-up**: collect, check and track every sub's weekly submission | Medium-high | Very high | **GC tier** |
 | O11 | "What if I sign up and it's wrong?" | The guarantee stack (§5) | Bounded (§5) | Very high | §5 |
-| O12 | "Will it take a week to set up?" | Guided import, CSV or type-in; no implementation project | Low | High | **Bonus B1** |
+| O12 | "Will it take a week to set up?" | Paste your crew from a spreadsheet, or type it; no file import, no implementation project | Low | High | **Bonus B1** |
 
 **Explicitly trimmed** (Ramanujam's *killers* — features whose presence destroys willingness-to-pay or
 credibility):
@@ -223,12 +235,34 @@ any customer-facing surface, because we cannot substantiate one.**
 
 | # | Bonus | What it is | Cost to us | Value to them | Where it appears |
 |---|---|---|---|---|---|
-| **B1** | **First-Friday Setup** | A guided import of your crew and your first project, done inside the product, plus a checked first WH-347 before you are charged. Not a call — a checklist that ends in a finished form. | Low (build once) + support time in the first 90 days | **Very high** — kills O12 and the "I'll do it next month" delay | In the trial, on the pricing block |
+| **B1** | **First-Friday Setup** | **Paste your crew in from a spreadsheet** — or type it — set your first project, and get a checked first WH-347 before you are charged. Not a call, not an import project: a checklist that ends in a finished form. | Low (build once) + support time in the first 90 days | **Very high** — kills O12 and the "I'll do it next month" delay | In the trial, on the pricing block |
 | **B2** | **The Conformance Pack** | What to do when the classification isn't listed: the three criteria verbatim, SF-1444, the DBAconformance route, the 30-day decision window, and the rule that conformance "may not be used to split, subdivide, or otherwise avoid application of classifications listed in the wage determination." Sourced, dated, one page. | Build once, ~$0 marginal | **High** — this is the buyer's scariest moment | Free tier gated by email → the HVCO |
-| **B3** | **The Determination Watchlist** | Alerts on every determination you touch, naming the classification and what changed, with the revision numbers on both sides. | Low (same pipeline as the product) | **Very high** — the one thing nobody else sells | Free tier: 3. Paid: unlimited |
-| **B4** | **The Audit Binder** | One click: every week of a project — WH-347s, Statements of Compliance, the determination as it stood, and a source-and-date manifest — as a single PDF, retained three years per 5.5(a)(3)(ii)(G). | Low | High — this is the "show me" answer | Shop and GC tiers |
-| **B5** | **The Prime's Weekly Link** | A read-only link the GC can bookmark. Stops the Thursday phone call. | Low | Medium-high | Shop and GC tiers |
-| **B6** | **Bring Your Own History** | Import last quarter's payroll so the 3-year archive starts full, not empty. | Medium (import mapping) | Medium | Annual plans only — a real reason to choose annual |
+| **B3** | **The Determination Watchlist** | Alerts on every determination you touch, naming the classification and what changed, with the modification numbers on both sides. | Low (same pipeline as the product) | **Very high** — the one thing nobody else sells | Public: up to 3, tick a box and confirm the email (`specs/WL-14`). Paid: unlimited, per project (`specs/WL-08`) |
+| **B4** | **The Audit Binder** | One click: **one archive** containing every week of a project — every WH-347, every Statement of Compliance, the determination as it stood, and a source-and-date manifest with a hash per file — retained three years per 5.5(a)(3)(ii)(G). | Low | High — this is the "show me" answer | Shop tier |
+| **B5** | **The Prime's Weekly Link** | A read-only link you send the GC, good for seven days and **re-issued in one click** whenever they ask again — and **revocable the moment you want it closed**. Stops the Thursday phone call. | Low | Medium-high | Shop tier |
+
+> **Changed 2026-09-03 (wave-1b iteration, findings M2, M9, M10).** Three bonuses were sold in a
+> shape the specs do not produce, and one was sold that the MVP does not build at all.
+>
+> - **B4 was "a single PDF"; `WL-07` produces a ZIP of PDFs plus a `manifest.csv`.** Reworded to
+>   "one archive", which is what ships and is an equally good answer to "show me". The alternative
+>   — building a merged binder PDF in WL-07 — is a real deliverable and a good later feature, but it
+>   is new L-shaped work in an S-shaped spec, and the bonus does not need it. The name **"Audit
+>   Binder"** is now the one name for this artefact across `OFFER.md`, `LANDING_SPEC.md` §9,
+>   `WL-07` and the product (finding m10).
+> - **B5 promised a link the GC can "bookmark"; `WL-06` expires the link in 7 days**, and nothing
+>   revoked a leaked one. Reworded to a 7-day, re-issuable, revocable link — and `WL-06` gains
+>   `revoked_at`, a visible revoke control and a privacy-page paragraph (finding M10). We are not
+>   promising permanence for an unauthenticated URL that streams worker names and pay.
+> - **B6 "Bring Your Own History" is deleted from the launch offer.** It sold a payroll importer as
+>   *"a real reason to choose annual"* while `BACKLOG.md` places the importer at **WL-15, Should**,
+>   with a trigger, on the argument that Rosa's hours come off paper time cards. Selling an unbuilt
+>   bonus as the reason to buy annual is the one commercial promise in this document that would
+>   generate refunds in month one. Moving WL-15 into Must was considered and rejected at this scope;
+>   the gap it leaves in `UX.md` §4's 3-minute roster budget is closed instead by **paste a worker
+>   list**, now specified in `WL-04` (finding M2). `history_import=true` is removed from the annual
+>   prices' Stripe metadata in §10, so nobody is billed for an entitlement nothing implements.
+> - **B4 and B5 are Shop-tier bonuses only** while the GC tier is not sellable (finding B2).
 
 **B2 is the outbound magnet.** It is Suby's High-Value Content Offer in its exact intended form —
 content that "should be simple, relevant, and address pressing issues" exchanged for a contact detail
@@ -246,8 +280,8 @@ content that "should be simple, relevant, and address pressing issues" exchanged
 
 1. **"Wrong" is undefined, and the ambiguity is fatal.** A rate can be simultaneously *right* (it
    matches the current published determination) and *wrong for his job* (his contract incorporated an
-   earlier revision — 29 CFR 1.6 fixes the applicable determination at solicitation or award, not at
-   today's date). We do not hold his contract and cannot know which revision it locked. **This
+   earlier modification — 29 CFR 1.6 fixes the applicable determination at solicitation or award, not at
+   today's date). We do not hold his contract and cannot know which modification it locked. **This
    guarantee would pay out on a fact pattern that is not our error.**
 2. **It warrants third-party data we do not produce.** The determinations are the government's.
    SAM.gov itself publishes corrections — its own announcements note determinations published with
@@ -273,26 +307,57 @@ guarantee no competitor offers.
 **⚠ FOUNDER LIABILITY: low and capped.** Accept.
 
 **G2 — The Provenance Guarantee (the honest version of §5.1).**
-> *"Every rate we show carries the determination number, modification, effective date and a link to the
-> source. If a rate we show you does not match the determination we cite, tell us and we refund every
-> month you have paid since that rate first appeared in your account, up to twelve months."*
+
+> **⚠ CHANGED 2026-09-03 (wave-1b iteration, findings B8 and Q6).** Two things were wrong. **(1)**
+> The cap was **twelve months**, at a founder-accepted worst case of **≈$237,600**, and the founder
+> had not yet chosen. **(2)** `LANDING_SPEC.md` §5 carried a short form that **dropped the cap
+> entirely** — *"we refund what you have paid"* — turning a bounded refund into an unbounded promise
+> on the page a court would read. A guarantee sentence that contradicts the guarantee page is worse
+> than no guarantee; that is §5.1's own argument, applied to itself.
+>
+> **Decision taken, under the failure rule (pick the option that reduces founder liability):
+> three months, service-shaped.** Worst case at 200 accounts falls from ≈$237,600 to **≈$59,400**,
+> and it retains the customer and the case data instead of buying an exit. It is what this document
+> already recommended in §11.3 Q1 and what the reviewer's Q6 defaulted to. **The founder can
+> override to twelve months** — it is their liability to accept — and if they do, the number must
+> be changed in **all three places at once** (here, `LANDING_SPEC.md` §5, `UX.md` §11), because that
+> is exactly how B8 happened.
+
+**The canonical wording. This exact text, and no paraphrase of it, is what appears anywhere G2
+appears — `OFFER.md`, `LANDING_SPEC.md` §5, `UX.md` §11 and the guarantee page:**
+
+> *"Every rate we show carries the determination number, modification, effective date and a link to
+> the source. If a rate we show you does not match the determination we cite, tell us: we refund
+> every month you have paid since that rate appeared in your account, **up to three**, and we
+> re-issue every corrected WH-347 free."*
+
+**The short form, for a space that cannot carry the long one. The cap is in the same sentence,
+which is the whole point of the short form existing:**
+
+> *"If a rate does not match the determination we cite, we refund the months you paid since that
+> rate appeared, **up to three**, and re-issue the corrected forms free."*
+
+**Rule, and it is not stylistic: no refund sentence appears anywhere — page, product, email,
+outbound, ad — without its cap in the same sentence.** A CI grep pairs the words "refund" and
+"up to three" in every user-facing string.
 
 This guarantees **fidelity to the source we cite** — entirely in our control — rather than **legal
 correctness** — not in our control. It gives the buyer exactly the reassurance he wants, on the axis
 where we can actually perform, and it is falsifiable by him in ten seconds against the sam.gov link we
 put next to the number.
+
 **⚠ FOUNDER LIABILITY, and it is the real one:**
-- Worst case is correlated: a systematic ingestion error × all affected accounts × up to 12 months.
-  At 200 accounts on $99/mo, a twelve-month systematic claim is **≈$237,600**. That is the number the
-  founder is accepting.
-- Mitigations that must be in place *before* this wording goes live: (a) the 12-month cap, stated;
-  (b) PLAN.md A10's two-agent verification actually running; (c) a public data-incident log so a fixed
-  error is dated and closed; (d) a per-account cap of the amount actually paid — never a multiple;
-  (e) **a lawyer's read before launch** (add to PREREQUISITES as a founder to-do).
-- **Safer still, if the founder wants the exposure lower:** cap at **three months** instead of twelve,
-  or make it service-shaped rather than cash-shaped — *"we refund the affected months and re-issue
-  every corrected WH-347 for you, free"* — which retains the customer and the case data. Hormozi's
-  preference, and the one this agent recommends if only one variant ships.
+- Worst case is correlated: a systematic ingestion error × all affected accounts × **three months**.
+  At 200 accounts on $99/mo that is **≈$59,400** in cash plus the re-issue work. That is the number
+  the founder is now being asked to accept. (At twelve months it was ≈$237,600.)
+- Mitigations that must be in place *before* this wording goes live: (a) the three-month cap, stated
+  **in the same sentence** as the refund; (b) PLAN.md A10's two-agent verification actually running;
+  (c) a public data-incident log so a fixed error is dated and closed; (d) a per-account cap of the
+  amount actually paid — never a multiple; (e) **a lawyer's read before launch** (a founder to-do in
+  PREREQUISITES).
+- **G2 still does not ship until the founder and a lawyer have signed it** (§11.3 Q2). Until then it
+  is **cut from the landing page entirely** — not softened, not shortened — and `LANDING_SPEC.md`
+  §14 makes that unconditional rather than pending. G1, G3 and G4 ship regardless and are unaffected.
 
 **G3 — The Exit Guarantee (unconditional, costless).**
 > *"Cancel inside the product in two clicks. No call, no email, no retention offer. Your archive stays
@@ -325,12 +390,44 @@ available, on the same logic as the honest-triage refusal in the delivered Claus
 
 | Tier | Price | Annual (2 months free) | Who | What |
 |---|---|---|---|---|
-| **Rate Lookup** | **Free** — no card, no login | — | Anyone | Live determination lookup by state / county / construction type; every classification with base rate and fringe; WD number, modification, effective date, sam.gov link. **Email only if you want alerts:** 3 saved determinations, change alerts, the Conformance Pack (B2). |
+| **Rate Lookup** | **Free** — no card, no login | — | Anyone | Live determination lookup by state / county / construction type; every classification with base rate and fringe; WD number, modification, effective date, sam.gov link — **and the modification picker, so you can read the determination at the modification your contract locked**. **Email only if you want alerts:** up to 3 watched determinations, change alerts, the Conformance Pack (B2). The email is opt-in with a ticked box, confirmed from a link, and one-click unsubscribable — the mechanics are `specs/WL-14`. |
 | **Crew** | **$79/mo** | **$790/yr** | The one- to three-job sub, ≤ 15 workers | Everything in Rate Lookup, unlimited alerts, up to **3 active projects** and **15 workers**, unlimited WH-347 + Statement of Compliance, modification pinning, 3-year archive. |
 | **Shop** ⭐ | **$99/mo** | **$990/yr** | **The ICP.** Many small covered jobs, 10–100 workers | **Unlimited active projects**, up to **100 workers**, no per-report fee, Audit Binder (B4), the Prime's Weekly Link (B5), conformance flags, multi-determination pinning, priority support. |
-| **GC Roll-up** | **$299/mo** | **$2,990/yr** | Small GCs carrying prime liability for subs | Everything in Shop for your own crews, plus unlimited subcontractor seats, weekly collection and completeness checking of every sub's certified payroll, a per-sub status board, and one-click assembly of the prime's package. |
+| **GC Roll-up** *(coming)* | **$299/mo** | **$2,990/yr** | Small GCs carrying prime liability for subs | **Not yet available — join the list.** When it ships it *will* add, on top of Shop: unlimited subcontractor seats, weekly collection and completeness checking of every sub's certified payroll, a per-sub status board, and one-click assembly of the prime's package. |
 
-**Why the GC tier exists at all, and why it is worth 3×:** because the regulation says so.
+> **The free watch now has a spec (wave-1b finding B5).** "Email me when this determination
+> changes" was promised here, on the landing page and in `UX.md`, and specified nowhere — no
+> consent record, no unsubscribe, no CAN-SPAM footer, no owner, for an email address collected on
+> a public page. It is now **`specs/WL-14 · Public determination watch`**, a **Must** at effort S:
+> an unticked consent checkbox naming the determination, double opt-in, ≤3 per address, one-click
+> unsubscribe (in the body and in `List-Unsubscribe`), the postal address in every message, rate
+> limits, and stated retention. The promise stays because it is the only email list this product
+> builds organically — but it is built as a consented list, not a scrape.
+
+> **⚠ CHANGED 2026-09-03 (wave-1b iteration, finding B2 and Q2). The GC tier is on the ladder and
+> is not for sale.** It had a live `Start free` CTA on the landing page and six purchasable Stripe
+> prices, while the feature it names — `WL-24` — is a **Should** with a demand trigger attached.
+> Charging $299/month for sub seats, weekly collection and a per-sub status board that do not exist
+> is misrepresentation with a refund and a chargeback behind it.
+>
+> **Decision taken: keep it published as "coming", with a waitlist and no purchase path.** The
+> price stays visible because a legible ladder is what makes $99 read as the middle, and because a
+> GC who asks should be waitlisted rather than lost. What changes is that nothing can take his
+> money for it: `WL-09` V17–V19 make "not sellable" a property of the code (a sellable-set constant
+> Checkout refuses to leave, a boot assertion against a live-mode GC price id, and a render test
+> that no purchase control exists inside the card), and §10's Stripe table marks the GC rows
+> **test mode only**.
+>
+> **The alternative — moving WL-24 into Must — was considered and rejected.** It is the MVP's
+> largest **L** (org-to-org invitations, a permissions matrix, a review-and-reject workflow, a
+> nagging engine), none of which the sub tier needs; its value is *other people's payrolls*, so it
+> cold-starts empty on day one; and it would push out the date a stranger can first pay us. The
+> waitlist gives us `gc_tier_interest`, which is precisely the signal BACKLOG's own trigger for
+> WL-24 asks for. **This decision is the founder's to reverse**, and reversing it means shipping
+> WL-24 first, not exposing the price first.
+
+**Why the GC tier exists at all, and why it *will* be worth 3× when it ships:** because the
+regulation says so.
 "**The prime contractor is responsible for the submission of all certified payrolls by all
 subcontractors**" (29 CFR 5.5(a)(3)(ii)(A)), and the prime "will be liable for any unpaid wages and
 monetary relief due to any workers" of lower-tier subs
@@ -360,7 +457,7 @@ the sharpest rows in the prospect file. All competitor prices fetched 2026-09-03
 | LCPcertified per report ($12) | $2,496 | yes | no | no |
 | Points North | **price not published** | reported yes | no | no |
 | eBacon / Elation / eMars / Foundation / My Construction Payroll | **price not published — demo required** | — | no | no |
-| **WageLens Shop** | **$990 annual / $1,188 monthly** | **no** | **yes** | **yes** |
+| **{{PRODUCT}} Shop** | **$990 annual / $1,188 monthly** | **no** | **yes** | **yes** |
 
 **Three arguments fall out, and only three:**
 
@@ -390,7 +487,7 @@ undifferentiated discount that destroys the category's economics and buys no def
 **What the $50 premium over their Starter actually buys — corrected after verification (RESEARCH.md
 §3.6):** not the lookup, which they give away too. It buys **no per-report meter** (the arithmetic in
 §6.2 — at four projects their Starter reaches $1,628 against our $990 annual), **alerts that name the
-classification rather than the state**, and **the revision: pinning, history, and a rate that is still
+classification rather than the state**, and **the modification: pinning, history, and a rate that is still
 reproducible in year three.** If a reviewer decides those three are not worth $50/month to this buyer,
 the correct response is to cut the price, **not** to invent a fourth claim.
 
@@ -418,18 +515,55 @@ Fridays**. So:
 > **"Your first two Fridays are free. Card on file, charged on day 15, cancel in two clicks before
 > then and you pay nothing."**
 
-Stripe implementation: `trial_period_days = 14`, card collected at checkout, Stripe's own trial-ending
-reminder plus our own day-10 email showing what has already been produced. This satisfies the 30%
-card-on-file benchmark and the 62% 14-day norm **and** guarantees the buyer experiences the outcome
-before deciding — which is the only thing that moves Perceived Likelihood (§2.2).
+**This is the one trial design, everywhere.** `UX.md` used to describe a different one — a cardless
+free *first week*, with the paywall at the second week's form — while this document, `BACKLOG.md`,
+`specs/WL-09` and `THRESHOLDS.md` all described this one, and `BACKLOG.md` §4 lists a free tier
+under **Never**. Three documents to one, and the money path, the Stripe metadata and every threshold
+band are already built on this one. It also reduces liability: a cardless free week hands a signed
+federal document to an unverified stranger. `UX.md` §1, §6 (A16) and §13 have been rewritten to
+match. *(Wave-1b finding B1, decision D1, 2026-09-03.)*
+
+Stripe implementation: `trial_period_days = 14`, card collected at checkout
+(`payment_method_collection = always`), Stripe's own trial-ending reminder plus our own day-10 email.
+This satisfies the 30% card-on-file benchmark and the 62% 14-day norm **and** guarantees the buyer
+experiences the outcome before deciding — which is the only thing that moves Perceived Likelihood
+(§2.2).
+
+### 7.1 The auto-renewal disclosure — added 2026-09-03 (finding B9)
+
+**A free trial that converts into a recurring charge is a negative-option offer.** Nothing in the
+wave-1 documents required a disclosure, a consent record or a renewal notice, and the landing page's
+paid CTAs read `Start free`. Under ROSCA, the FTC's negative-option posture and state automatic
+renewal laws (California's ARL is the strictest, and also requires a renewal reminder on longer
+terms), all four of the following are required, and all four are now **spec requirements** in
+`specs/WL-09` V14–V16b — not marketing intentions:
+
+1. **Clear and conspicuous terms before the card is collected.** The checkout page renders, adjacent
+   to and **above** the button, in the surrounding type size and never in a footnote or a link: the
+   trial length; **the exact amount and the exact date of the first charge**; the renewal interval
+   and that it continues until cancelled; how to cancel, in one sentence, with the link; and that a
+   reminder arrives before the first charge.
+2. **Express, recorded consent.** An **unticked** checkbox — "I've read the trial terms above" —
+   gates Checkout, and acceptance is stored with the content hash of the block as rendered, the
+   amount disclosed and the date disclosed (`subscription_terms_acceptances`, the same mechanism as
+   WL-11's disclaimer acknowledgements).
+3. **Notice before money moves.** The **day-10 email** — four days before the first charge — naming
+   the amount, the date, the cancel link and what has already been produced: *"Here are the two
+   WH-347s {{PRODUCT}} has already produced for you. $99 will be charged on {date}. Keep it or
+   cancel — both are one click."* And on annual plans, a **renewal notice ≥ 7 days before every
+   renewal**. Both are transactional and cannot be switched off by a marketing unsubscribe.
+4. **A CTA that discloses.** **No button that leads to a card may read "Start free."** Every one
+   reads **`Start 14-day trial`**, with the trial length and the charge stated beside it. A CI grep
+   fails the build on `Start free` in a user-facing string. The **free Rate Lookup** keeps its own
+   honest microcopy — "Free. No card, no login, no demo call." — because it genuinely is free and
+   takes no card; the rule is about CTAs that lead to a card.
 
 **Non-negotiable, because it is what makes the card wall fair:**
 - The **Rate Lookup is free forever with no card and no login.** The trial gates the *form*, never the
   *rate*. This is the HVCO and the entire trust argument; card-gating it would gut the funnel in the
   one place where trust is the whole currency.
-- Day 10 email: *"Here are the two WH-347s WageLens has already produced for you. Keep it or cancel —
-  both are one click."*
-- Cancellation is in-product, two clicks, no call (G3).
+- Cancellation is in-product, two clicks, no call, no retention flow (G3) — **at least as easy as
+  subscribing**, which is the legal standard as well as the promise we printed.
 
 ---
 
@@ -437,16 +571,16 @@ before deciding — which is the only thing that moves Perceived Likelihood (§2
 
 | # | Objection, in his words | The answer | Where it lives |
 |---|---|---|---|
-| Q1 | **"How do I know your rate is right?"** | You do not have to take our word for it. Every rate shows the determination number, revision and effective date, with a link to that determination on sam.gov. Look up a county you know before you give us an email. And if a rate we show does not match the determination we cite, G2 applies. | Hero + free lookup + FAQ |
-| Q2 | **"My contract locked an older determination."** | Correct, and most tools ignore it. 29 CFR 1.6 fixes the applicable determination at solicitation or award; open-ended contracts update on each anniversary. Pin the revision your contract locked; we show current and pinned side by side and tell you when they diverge. | FAQ + product |
+| Q1 | **"How do I know your rate is right?"** | You do not have to take our word for it. Every rate shows the determination number, modification and effective date, with a link to that determination on sam.gov. Look up a county you know before you give us an email. And if a rate we show does not match the determination we cite, we refund the months you paid since that rate appeared, up to three, and re-issue the corrected forms free (G2 — **which does not ship until the founder and a lawyer have signed it**). | Hero + free lookup + FAQ |
+| Q2 | **"My contract locked an older determination."** | Correct, and most tools ignore it. 29 CFR 1.6 fixes the applicable determination at solicitation or award; open-ended contracts update on each anniversary. Pin the modification your contract locked; we show current and pinned side by side and tell you when they diverge. | FAQ + product |
 | Q3 | **"Are you telling me how to classify my workers?"** | No, and we will not. That is your determination and your signature. We show the determination's own classifications and duties, flag work that isn't on the list, and hand you the conformance route (SF-1444, the three criteria). | G4, stated on the page |
 | Q4 | **"I already have a payroll company."** | Keep them. We do not process payroll, file taxes or move money. You enter hours; we produce the WH-347 and the Statement of Compliance and watch the determination. | FAQ |
-| Q5 | **"My GC makes me file in LCPtracker."** | Then keep filing there. WageLens gets the numbers right and produces the form; where the agency mandates a portal, you upload what we produce. We are the rate and the paperwork, not a replacement for a mandated portal. *(Verify export formats against agency portals in wave 2 before this claim is made stronger.)* | FAQ |
+| Q5 | **"My GC makes me file in LCPtracker."** | Then keep filing there. {{PRODUCT}} gets the numbers right and produces the form; where the agency mandates a portal, you upload what we produce. We are the rate and the paperwork, not a replacement for a mandated portal. *(Verify export formats against agency portals in wave 2 before this claim is made stronger.)* | FAQ |
 | Q6 | **"I also file California DIR / Washington L&I / New York."** | Not at launch. Launch is federal Davis-Bacon and WH-347 for all 50 states (PLAN.md A11). We say so on the page rather than letting you find out in week two. | FAQ, plainly |
 | Q7 | **"$99 a month is more than I pay now."** | Compare the whole year, including the per-report fee. At four jobs filing weekly: $990 with us against $1,628–$3,196 on metered plans. And if you run one job at a time, one of those is genuinely cheaper than we are — that is on our comparison table too. | Pricing block |
-| Q8 | **"I don't have time to set this up."** | Your crew and your first project are typed or imported in one sitting, and B1 walks you through a checked first WH-347 before you are charged. No implementation project, no setup fee, no call. | Bonus B1 + FAQ |
-| Q9 | **"What happens to my records if I cancel?"** | Your archive stays downloadable for 30 days. The Audit Binder exports everything, retained for the three years 5.5(a)(3)(ii)(G) requires. | G3 + FAQ |
-| Q10 | **"Are you lawyers? Is this legal advice?"** | No. WageLens shows you published wage determinations with their sources and produces the forms from the hours you enter. It is not legal or compliance advice, and it does not sign your Statement of Compliance. | Disclaimer on every screen (A10) |
+| Q8 | **"I don't have time to set this up."** | Your crew pastes in from a spreadsheet — or you type it — and your first project takes three fields, in one sitting. B1 walks you through a checked first WH-347 before you are charged. No file import to fight with, no implementation project, no setup fee, no call. | Bonus B1 + FAQ |
+| Q9 | **"What happens to my records if I cancel?"** | Your archive stays readable and downloadable for **30 days** after you leave — and the three-year retention duty under 5.5(a)(3)(ii)(G) is yours, so the cancel flow offers you the Audit Binder export on the way out. | G3 + FAQ |
+| Q10 | **"Are you lawyers? Is this legal advice?"** | No. {{PRODUCT}} shows you published wage determinations with their sources and produces the forms from the hours you enter. It is not legal or compliance advice, and it does not sign your Statement of Compliance. | Disclaimer on every screen (A10) |
 | Q11 | **"You're new. What if you disappear?"** | Everything you enter exports, at any time, in one click, in formats you can keep. We do not hold your file hostage. | FAQ |
 | Q12 | **"Nobody's audited me in ten years."** | Maybe not. The consequences are not the audit, they are withholding of accrued payments, back wages, liquidated damages per worker per day, and three-year debarment — for which misclassification is a listed circumstance. We will not tell you your odds; nobody honest can. | Proof block, once, without theatre |
 
@@ -472,14 +606,15 @@ get. It is the High-Value Content Offer delivered one-to-one.
 > date, and the link to it on sam.gov. No signup, no call, no charge. Keep it whether or not you ever
 > talk to me again.
 >
-> If it's useful, that's what WageLens does every week: the rate, then your WH-347 and Statement of
+> If it's useful, that's what {{PRODUCT}} does every week: the rate, then your WH-347 and Statement of
 > Compliance from the hours you type once, and an email when the determination changes. $99 a month,
-> price on the page, first two Fridays free.
+> price on the page, first two Fridays free — card on file, charged on day 15, cancel in two clicks
+> before then. Whoever does this on Friday afternoon types the week once.
 >
 > The Department of Labor's own estimate for filling in one WH-347 is 55 minutes. If you're on four
 > jobs, that's most of a working week every year.
 >
-> — {{sender}}, WageLens (a TheVillage company)
+> — {{sender}}, {{PRODUCT}} (a TheVillage company)
 > {{postal address}} · unsubscribe: {{link}}
 
 **Why this is the Godfather version and the landing page is not.** Cold outbound gets one paragraph of
@@ -499,14 +634,24 @@ For `STRIPE_SETUP.md` (wave 2 hand-over). **Test mode first; the founder creates
 (D2, P5).** All prices USD. Annual = 10× monthly (two months free). No setup fees, no metered
 components, no per-report usage records — the absence of a meter is a product decision (§6.2).
 
-| Product name | Price nickname | Amount | Currency | Interval | Trial days | Lookup key | Metadata | Env var for the price id |
-|---|---|---:|---|---|---:|---|---|---|
-| WageLens Crew | Crew Monthly | $79.00 | usd | month | 14 | `wagelens_crew_monthly` | `app=wagelens; tier=crew; projects_max=3; workers_max=15; sub_seats=0; alerts=unlimited; audit_binder=false; prime_link=false` | `WAGELENS_PRICE_CREW_MONTHLY` |
-| WageLens Crew | Crew Annual | $790.00 | usd | year | 14 | `wagelens_crew_annual` | `app=wagelens; tier=crew; projects_max=3; workers_max=15; sub_seats=0; alerts=unlimited; audit_binder=false; prime_link=false; history_import=true` | `WAGELENS_PRICE_CREW_ANNUAL` |
-| WageLens Shop | Shop Monthly | $99.00 | usd | month | 14 | `wagelens_shop_monthly` | `app=wagelens; tier=shop; projects_max=unlimited; workers_max=100; sub_seats=0; alerts=unlimited; audit_binder=true; prime_link=true; recommended=true` | `WAGELENS_PRICE_SHOP_MONTHLY` |
-| WageLens Shop | Shop Annual | $990.00 | usd | year | 14 | `wagelens_shop_annual` | `app=wagelens; tier=shop; projects_max=unlimited; workers_max=100; sub_seats=0; alerts=unlimited; audit_binder=true; prime_link=true; recommended=true; history_import=true` | `WAGELENS_PRICE_SHOP_ANNUAL` |
-| WageLens GC Roll-up | GC Monthly | $299.00 | usd | month | 14 | `wagelens_gc_monthly` | `app=wagelens; tier=gc; projects_max=unlimited; workers_max=unlimited; sub_seats=unlimited; alerts=unlimited; audit_binder=true; prime_link=true; sub_rollup=true` | `WAGELENS_PRICE_GC_MONTHLY` |
-| WageLens GC Roll-up | GC Annual | $2,990.00 | usd | year | 14 | `wagelens_gc_annual` | `app=wagelens; tier=gc; projects_max=unlimited; workers_max=unlimited; sub_seats=unlimited; alerts=unlimited; audit_binder=true; prime_link=true; sub_rollup=true; history_import=true` | `WAGELENS_PRICE_GC_ANNUAL` |
+> **Two changes, 2026-09-03 (wave-1b iteration).**
+> **(B2)** The two **GC rows are marked `TEST MODE ONLY`.** The founder creates them in test mode so
+> the ladder can be exercised end to end, and **does not create them live** until WL-24 ships.
+> `specs/WL-09` V17–V19 back this in code: Checkout refuses a GC lookup key, and a live-mode GC
+> price id in the environment fails the boot assertion.
+> **(M2)** **`history_import=true` is removed from all three annual rows.** It flagged an
+> entitlement for bonus B6, which is deleted from the launch offer because no importer is built
+> (WL-15 is a Should). A metadata flag nothing implements is a customer being billed for a feature
+> that does not exist — the same defect as B2, one level down.
+
+| Product name | Price nickname | Amount | Currency | Interval | Trial days | Lookup key | Metadata | Env var for the price id | live at launch? |
+|---|---|---:|---|---|---:|---|---|---|---|
+| {{PRODUCT}} Crew | Crew Monthly | $79.00 | usd | month | 14 | `wagelens_crew_monthly` | `app=wagelens; tier=crew; projects_max=3; workers_max=15; sub_seats=0; alerts=unlimited; audit_binder=false; prime_link=false` | `WAGELENS_PRICE_CREW_MONTHLY` | **yes** |
+| {{PRODUCT}} Crew | Crew Annual | $790.00 | usd | year | 14 | `wagelens_crew_annual` | `app=wagelens; tier=crew; projects_max=3; workers_max=15; sub_seats=0; alerts=unlimited; audit_binder=false; prime_link=false` | `WAGELENS_PRICE_CREW_ANNUAL` | **yes** |
+| {{PRODUCT}} Shop ⭐ | Shop Monthly | $99.00 | usd | month | 14 | `wagelens_shop_monthly` | `app=wagelens; tier=shop; projects_max=unlimited; workers_max=100; sub_seats=0; alerts=unlimited; audit_binder=true; prime_link=true; recommended=true` | `WAGELENS_PRICE_SHOP_MONTHLY` | **yes** |
+| {{PRODUCT}} Shop ⭐ | Shop Annual | $990.00 | usd | year | 14 | `wagelens_shop_annual` | `app=wagelens; tier=shop; projects_max=unlimited; workers_max=100; sub_seats=0; alerts=unlimited; audit_binder=true; prime_link=true; recommended=true` | `WAGELENS_PRICE_SHOP_ANNUAL` | **yes** |
+| {{PRODUCT}} GC Roll-up | GC Monthly | $299.00 | usd | month | 14 | `wagelens_gc_monthly` | `app=wagelens; tier=gc; projects_max=unlimited; workers_max=unlimited; sub_seats=unlimited; alerts=unlimited; audit_binder=true; prime_link=true; sub_rollup=true` | `WAGELENS_PRICE_GC_MONTHLY` | **NO — TEST MODE ONLY until WL-24 ships (B2)** |
+| {{PRODUCT}} GC Roll-up | GC Annual | $2,990.00 | usd | year | 14 | `wagelens_gc_annual` | `app=wagelens; tier=gc; projects_max=unlimited; workers_max=unlimited; sub_seats=unlimited; alerts=unlimited; audit_binder=true; prime_link=true; sub_rollup=true` | `WAGELENS_PRICE_GC_ANNUAL` | **NO — TEST MODE ONLY until WL-24 ships (B2)** |
 
 **Settings that are part of the offer, not just plumbing**
 
@@ -516,14 +661,24 @@ components, no per-report usage records — the absence of a meter is a product 
 | `trial_period_days` | **14** on every price | 62% of products use 14 days; and 14 days always contains two Fridays (§7) |
 | Stripe trial-ending email | **On**, plus our own day-10 email showing what has been produced | The day-10 email is the offer; the Stripe one is the courtesy |
 | Customer Portal: cancel | **Enabled, immediate, no retention flow** | G3. Any retention wall contradicts the guarantee we printed |
-| Customer Portal: switch plan | **Enabled** between all six prices, proration on | Crew → Shop must be self-serve |
+| Customer Portal: switch plan | **Enabled between the four sellable prices** (Crew ⇄ Shop, monthly ⇄ annual), proration on. **The GC prices are not offered in the Portal** | Crew → Shop must be self-serve; a Portal that can switch you onto an unbuilt tier is the same defect as a Checkout that can (B2) |
+| **Trial terms disclosure + consent** | **Required before Checkout** — the block, the unticked checkbox, the recorded acceptance (`specs/WL-09` V14–V15) | **B9.** A card-on-file trial that auto-charges is a negative-option offer; the terms must be disclosed before the card and the consent recorded |
+| **Pre-charge reminder** | **Day 10, ours**, naming the amount, the date and the cancel link — plus Stripe's own trial-ending email | **B9.** Ours is the notice; Stripe's is the courtesy |
+| **Annual renewal notice** | **≥ 7 days before every renewal**, amount + date + cancel link | **B9.** Required by state automatic renewal laws on longer terms, and it is the right thing anyway |
+| **CTA label on every paid plan** | **`Start 14-day trial`** — never "Start free" | **B9.** A CI grep fails the build on `Start free` in a user-facing string |
+| **GC tier exposure** | **Waitlist card only. No Checkout path, no Portal path, no live price** | **B2.** `specs/WL-09` V17–V19 |
 | Proration | **On** | Upgrading mid-month must not require a human |
 | Tax | Stripe Tax **on** | US-only at launch (A2) |
 | Coupon (optional, §6.4) | `FOUNDING50` — price locked 24 months, `max_redemptions=50` | **Only if the remaining count on the page is wired to the real number.** Founder's decision |
 | Free tier | **No Stripe object** | Rate Lookup is free forever, outside billing entirely |
 
-**Not created:** any metered/usage price, any one-time setup fee, any "contact us" enterprise tier. All
-three are offer decisions (§3.2 trimmed list, §6.2), not oversights.
+**Not created live at launch:** the two **GC prices** (test mode only, B2). **Not created at all:**
+any metered/usage price, any one-time setup fee, any "contact us" enterprise tier. All three of
+those are offer decisions (§3.2 trimmed list, §6.2), not oversights.
+
+**Hand-over note for the founder.** Four live prices at launch — Crew monthly/annual, Shop
+monthly/annual. Create the two GC prices in **test mode** so the ladder can be exercised end to end,
+and leave the live-mode GC environment variables **unset**; the app asserts on boot that they are.
 
 ---
 
@@ -534,15 +689,16 @@ three are offer decisions (§3.2 trimmed list, §6.2), not oversights.
 Asked honestly of a sub on four covered jobs:
 
 *He can see the rate for his own county, with the determination number and the sam.gov link, before he
-gives us an email. He can file his first two Fridays free. The price is on the page and there is no
-call. There is no per-report meter, so his fourth job costs nothing extra. If a rate does not match the
-determination we cite, he gets his money back. And we have told him, in writing, the one thing we will
-not do.*
+gives us an email. He can file his first two Fridays free — card on file, $99 on day 15, and we tell
+him the amount and the date before he types the card. The price is on the page and there is no call.
+There is no per-report meter, so his fourth job costs nothing extra. If a rate does not match the
+determination we cite, we refund the months he paid since it appeared, up to three, and re-issue the
+corrected forms free. And we have told him, in writing, the one thing we will not do.*
 
 **Honest verdict: strong, not irresistible — and weaker after verification than before it.** Two
 things are true at once. (a) The free lookup, which the first draft treated as the wedge, is a
 commodity he can get in two other places (RESEARCH.md §3.6), so it buys entry to the consideration set
-and nothing more. (b) What remains — the revision pinned to his contract, alerts that name the
+and nothing more. (b) What remains — the modification pinned to his contract, alerts that name the
 classification, a flat price, and a rate still provable in year three — is genuinely unheld ground, but
 it is **ground he does not know he is standing on until we explain it.** That is a harder sale than
 "we'll show you the rate", and it is the honest position.
@@ -558,16 +714,32 @@ argument alone is not enough.
 | Term | Before | After | What moved it |
 |---|---:|---:|---|
 | Dream Outcome | 7 | 7 | Unchanged. It is a negative outcome; visuals make it visible, nothing makes it bigger. |
-| **Perceived Likelihood** | **4** | **7** | Free verifiable lookup (parity, but it is what lets him check us) + provenance on every rate + revision history he can re-open years later + G2 + G4's refusal + no invented statistics |
+| **Perceived Likelihood** | **4** | **7** | Free verifiable lookup (parity, but it is what lets him check us) + provenance on every rate + modification history he can re-open years later + G2 + G4's refusal + no invented statistics |
 | Time Delay | 8 | 9 | Rate in seconds with no account; first WH-347 in the first session |
 | Effort & Sacrifice | 6 | 8 | No demo, no setup fee, no meter, import once, redaction by construction, two-click exit |
 
 ### 11.3 Open questions for the founder
 
-1. **G2's cap: twelve months or three?** Twelve is the stronger offer; three is ≈$59,400 rather than
-   ≈$237,600 in the correlated worst case at 200 accounts. This agent recommends **three months, plus
-   free re-issue of every corrected form** — service-shaped rather than cash-shaped.
-2. **Does G2 ship at all before a lawyer reads it?** Recommendation: no. Add to PREREQUISITES.
+**Three of these were decided in the wave-1b iteration (2026-09-03) rather than left open, because
+leaving them open blocked the build and left an unbounded promise on a live page. Each was decided
+in the direction that reduces founder liability, and each is reversible by the founder — the
+reversal cost is written next to it.**
+
+1. **G2's cap: twelve months or three?** **DECIDED: three months, service-shaped** — refund the
+   affected months, up to three, *and* re-issue every corrected form free. Worst case at 200 accounts
+   falls from ≈$237,600 to ≈$59,400, and it keeps the customer and the case data instead of buying an
+   exit. *(Finding B8; the cap now travels inside the sentence everywhere the guarantee appears.)*
+   **Founder can override to twelve months** — it is their liability; changing it means changing the
+   number in `OFFER.md` §5.2, `LANDING_SPEC.md` §5 and `UX.md` §11 **in the same edit**, because
+   editing one of the three is exactly how B8 happened.
+2. **Does G2 ship at all before a lawyer reads it?** **DECIDED: no**, and it is now unconditional
+   rather than pending — `LANDING_SPEC.md` §14 cuts the sentence from the page until founder **and**
+   counsel sign it, and §5 runs at 93 words without it. "Counsel review of G2 wording" is a founder
+   to-do. G1, G3 and G4 ship regardless. *(Finding B8.)*
+2a. **Sell the GC tier at launch?** **DECIDED: no.** It is published as "coming" with a waitlist,
+   no purchase control and no live Stripe price; `specs/WL-09` V17–V19 make that a property of the
+   code. **Founder can override by shipping WL-24 first** — the override is building the tier, not
+   exposing the price. *(Finding B2, §6.1.)*
 3. **Crew at $79 — keep or drop?** Dropping it simplifies the page and loses the genuine single-job
    sub. Keeping it is partly a decoy, which is disclosed in §6.1 and which the reviewer may reject.
 4. **Founding 50 (§6.4) — run it or not?** Only if the counter can be wired to the real number.
@@ -577,12 +749,12 @@ argument alone is not enough.
 6. **The wage-determination data path is now resolved — but on undocumented endpoints.** The API named
    in PREREQUISITES P8 does not exist (404), yet `KNOWLEDGE_BASE.md` §F1 verifies a working
    unauthenticated route through the API sam.gov's own front end calls, including full modification
-   history and permanently retrievable superseded revisions — which is exactly what makes the
+   history and permanently retrievable superseded modifications — which is exactly what makes the
    Provenance Guarantee (§5.2 G2) enforceable. **The residual question for the founder is risk
    appetite:** the guarantee, the alerts and the free lookup all rest on endpoints GSA has not
    documented and could rename or authenticate without notice (KB risk K1). Recommendation: ship G2
    with the three-month cap until the corpus has run unbroken for one quarter, then widen it.
-7. **Is the revision story sellable, or is it too subtle?** This is the biggest open question in the
+7. **Is the modification story sellable, or is it too subtle?** This is the biggest open question in the
    document. Post-verification the whole differentiation rests on a buyer caring that his contract
    locked modification 2 while sam.gov shows modification 4. He certainly cares if it costs him back
    wages; the question is whether he knows that before he is told. **Test it first** — it is
@@ -590,3 +762,10 @@ argument alone is not enough.
 8. **P8 in PREREQUISITES should be amended.** The api.data.gov key it asks the founder to obtain is not
    needed for wage determinations; it may still be needed for other SAM.gov data. Worth correcting so
    the founder does not chase a dependency the product does not have.
+9. **P7 in PREREQUISITES should also be amended.** It asks the founder for an Anthropic API key for a
+   "{{PRODUCT}} classification assistant" — the one feature this product refuses to build, on
+   liability grounds, in three separate documents (`BACKLOG.md` "Never", `KNOWLEDGE_BASE.md` K5, G4
+   above). **{{PRODUCT}} needs no model key at launch.** Leaving it on the founder's to-do list
+   invites the feature back in wave 2, and PREREQUISITES is the document the founder reads.
+   *(Wave-1b finding M19. `PREREQUISITES.md` belongs to the orchestrator, so this fleet records the
+   correction here rather than making it.)*

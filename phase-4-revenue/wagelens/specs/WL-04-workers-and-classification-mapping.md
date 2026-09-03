@@ -6,7 +6,7 @@
 
 As Rosa I add my crew once — first name, last name, middle initial, last four of the SSN — and
 map each of them to a classification on this project's determination. When someone's actual
-duties match nothing on the determination, WageLens tells me plainly what that means and helps
+duties match nothing on the determination, {{PRODUCT}} tells me plainly what that means and helps
 me prepare a conformance request for my contracting officer.
 
 ## Two rules that are law, not preference
@@ -29,7 +29,14 @@ then it prepares a worksheet for the contracting officer rather than deciding an
 
 ```
 /projects/:id/crew
-  ┌─ empty state: "Add the workers who'll be on this job." ─▶ add worker
+  ┌─ empty state: "Add the workers who'll be on this job." ─▶ add worker  |  paste a list
+  │
+  ├─ PASTE A LIST  (the 3-minute path for a 15-50 person crew)
+  │    a textarea: paste rows from a spreadsheet, one worker per line
+  │    last name, first name, MI, last 4      ← tab, comma or two-space separated
+  │    ─▶ PREVIEW table: every parsed row, every skipped row WITH ITS REASON
+  │    ─▶ per-row classification picker (bulk-set: "map all to …")
+  │    ─▶ [ add 14 workers ]      nothing is written until this is pressed
   │
   ├─ add worker  (drawer, keyboard-first)
   │    first name · last name · middle initial · last 4 of SSN
@@ -77,6 +84,28 @@ then it prepares a worksheet for the contracting officer rather than deciding an
 |---|---|---|
 | `/projects/:id/crew` | table: worker, status (J/RA), classification, rate, fringe, mapped-on date, actions | empty · list |
 | add/edit worker drawer | 4 name/id fields, status radio, apprenticeship block when RA | idle · saving · duplicate-warning |
+| **paste a list** | textarea + parsed preview + per-row and bulk classification pickers | idle · parsing · preview · partial · committed |
+
+### Paste a worker list — the 3-minute roster
+
+**Added 2026-09-03 (wave-1b iteration, finding M2).** `UX.md` §4 budgets **3 minutes** for the
+roster. A 15-to-50-worker crew entered one drawer at a time does not fit that, and the CSV
+importer that would have solved it is [`WL-15`](../BACKLOG.md) — a **Should** with a trigger,
+deliberately, because Rosa's hours come off paper time cards. `OFFER.md` meanwhile sold a "guided
+import" as bonus B1 and "Bring Your Own History" as B6. **Selling an importer the MVP does not
+build is the one commercial promise here that generates refunds in month one**, so B6 is deleted
+from the launch offer, B1 is reworded to what this actually is, and the gap is closed by a paste
+box — which is cheap, has no file format, no encoding, no column-mapping memory, and cannot fail
+silently.
+
+| rule | detail |
+|---|---|
+| **Input** | Free text. One worker per line. Fields separated by tab, comma or two-or-more spaces. Order is `last name, first name, MI, last 4`, stated above the box and re-orderable with a header row. Quoted commas inside a name are handled; anything ambiguous goes to the skipped table rather than being guessed. |
+| **Preview before commit** | Every parsed row is shown and editable. **Every skipped row is listed with its reason** — never dropped silently. This is the exact defect `PERSONA.md` §4.3 records against the incumbents ("I often get errors uploading a file into their system", "It is not bringing all wages over"). |
+| **Nothing is written until the button** | One transaction. A partial paste never leaves half a crew behind. |
+| **The last-4 rule applies unchanged** | V2's full-SSN rejection runs **per row**. A pasted row containing a 9-digit sequence is **skipped with the federal-rule explanation**, never truncated to its last four. Truncating would silently accept data we are forbidden to hold. |
+| **Classification is still one decision per worker** | The preview offers the WL-03 picker per row and a "map all to …" bulk control, but **nothing is auto-classified**, ever. Classification is the customer's legal judgement (`OFFER.md` §5.2 G4, BACKLOG "Never"). Rows left unmapped land on the crew page's unmapped banner. |
+| **Not a file import** | No upload, no CSV parsing, no column-mapping memory, no payroll-provider format. That is WL-15, and its trigger is unchanged. |
 | classification picker | the WL-03 search inline, with "none of these match" as a persistent secondary action | searching · chosen · none-match |
 | conformance guide 1–3 | as above | — |
 | conformance worksheet | form + live preview of the PDF | draft · complete · downloaded |
@@ -155,6 +184,8 @@ reasoning that makes `kb_wage_determinations` append-only.
 | name | input | effect |
 |---|---|---|
 | `addWorker` | name fields, last4, status, apprenticeship | insert; warns on a near-duplicate (same last name + last4) but does not block |
+| `parseWorkerPaste` | `{ text }` | **pure, no writes.** Returns `{ parsed: [{last_name, first_name, middle_initial, last4}], skipped: [{line_no, raw, reason}] }`. Reasons are the user's words: "no last-4 found", "that looks like a full SSN — enter only the last four", "couldn't tell the name fields apart" |
+| `commitWorkerPaste` | `{ projectId, rows }` | one transaction: inserts `workers`, and `worker_classifications` for the rows the user mapped. Emits `workers_pasted {rows_parsed, rows_skipped}` |
 | `updateWorker` / `archiveWorker` | — | archive is soft; a worker on a certified payroll can never be hard-deleted |
 | `mapClassification` | `{ projectId, workerId, kbClassificationId }` | closes any open mapping, inserts a new one with the label and rates copied |
 | `unmapClassification` | `{ projectId, workerId }` | sets `unmapped_at` |
@@ -176,6 +207,9 @@ reasoning that makes `kb_wage_determinations` append-only.
 | V7 | `proposed_base_rate > 0`; `proposed_fringe_rate ≥ 0` | field error |
 | V8 | `compared_classifications` must contain **at least 2** entries — the request must show what it was compared against, because criterion 3 is "reasonable relationship to the rates on the determination" | field error |
 | V9 | The worksheet PDF carries a prominent notice: **"This is a worksheet, not Standard Form SF-1444. Your contracting agency submits the conformance request to DBAConformance@dol.gov."** | always rendered |
+| V10 | **Paste writes nothing until the preview is confirmed**, and every unparsed line appears in the skipped table with a reason. No silent drops. *(M2)* | preview state |
+| V11 | **V2's full-SSN rejection applies per pasted row.** A row containing `\d{3}-?\d{2}-?\d{4}` is skipped with the explanation and **never truncated to its last four**. | row skipped, reason shown |
+| V12 | **Paste never assigns a classification.** Rows may be committed unmapped; they land on the unmapped banner and block certification (V5) until a human maps them. *(M2)* | — |
 
 **V9 exists because of KNOWLEDGE_BASE KB-10:** gsa.gov returned 403 to this environment on both
 attempts, so the real SF-1444's field list is `UNVERIFIED`. We do not ship a form we have not
@@ -205,6 +239,17 @@ opened. Generating an actual SF-1444 is WL-31, Later, and gated on someone openi
   modification, the three criteria, DBAConformance@dol.gov, and the V9 "not SF-1444" notice.
 - **Given** three unmapped workers, **when** the crew page opens, **then** the banner names the
   count and links to the first one.
+- **Given** 14 tab-separated lines pasted into the box, one of which has no last-4 and one of
+  which contains `123-45-6789`, **when** it is parsed, **then** the preview shows **12** parsed
+  rows and **2** skipped rows each with its reason, the SSN row's reason is the federal-rule
+  explanation, and **nothing has been written**. *(V10, V11)*
+- **Given** that preview, **when** it is committed, **then** 12 `workers` rows exist in one
+  transaction, `workers_pasted {rows_parsed: 12, rows_skipped: 2}` fires, and no row carries more
+  than four identifying digits. *(V11)*
+- **Given** a paste committed with no classifications chosen, **when** the crew page opens,
+  **then** all 12 appear on the unmapped banner and a payroll cannot be certified. *(V12, V5)*
+- **Given** a commit that fails mid-way, **when** the page reloads, **then** **no** workers from
+  that paste exist. *(V10 — one transaction)*
 
 ## Edge cases
 
@@ -228,7 +273,10 @@ opened. Generating an actual SF-1444 is WL-31, Later, and gated on someone openi
 
 ## Analytics events
 
-`worker_added {status}` · `worker_archived` · `worker_duplicate_warned` ·
+**Names are canonical and defined once**, in [`WL-EVENTS.md`](WL-EVENTS.md) §5.
+
+`worker_added {status}` · `workers_pasted {rows_parsed, rows_skipped}` ·
+`worker_archived` · `worker_duplicate_warned` ·
 `ssn_full_entry_blocked` ← **watch this: it means someone tried, and the help copy needs work** ·
 `classification_mapped {kb_classification_id, base_rate, fringe_rate}` ·
 `classification_unmapped` ·
@@ -246,7 +294,9 @@ the difference between fixing search and building WL-32.
 
 **Unit** — last-4 validation, including the SSN-pattern rejection; RA requires a program;
 duties minimum length; `compared_classifications` minimum of 2; mapping copies label and both
-rates verbatim from `kb_classifications`.
+rates verbatim from `kb_classifications`. **`parseWorkerPaste` across tab, comma and multi-space
+separators, a header row, a quoted comma inside a name, a missing last-4, a full SSN, and a blank
+line — asserting the skipped reasons are the ones the UI shows.**
 **Integration (PGlite)** — map, unmap, re-map: exactly one open mapping per (project, worker);
 a re-pin leaves existing mappings' rates untouched; archiving a worker with a certified payroll
 succeeds and the payroll still renders their name.

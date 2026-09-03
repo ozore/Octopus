@@ -43,12 +43,15 @@ The product's promise is a certified payroll; until one exists nothing has happe
   ├ FUNNEL          signups → pinned → mapped → ACTIVATED → paid, counts and step conversions
   ├ TIME            median hours signup → activation · median minutes in the hours grid
   │                 (from payroll_certified.minutes_in_grid) · median days activation → paid
-  ├ REVENUE         MRR · ARR · paying orgs · trials open · trials ending in 7d · ARPU
+  ├ REVENUE         MRR (active + past_due only) · ARR · paying orgs · ARPU
+  │                 TRIAL MRR — a separate line, labelled "not yet invoiced"
+  │                 trials open · trials ending in 7d · trial_terms_accepted ÷ viewed
   ├ RETENTION       month-2 payroll-generating orgs · logo churn (monthly) · cancellations
   │                 with their subscription_cancelled reasons and payrolls_generated
   ├ USAGE           active projects · payrolls certified this week · payrolls per active org
   │                 · workers per org (p50/p90) · below-determination-rate warnings shown
-  ├ CORPUS HEALTH   active determinations · oldest last_verified · last ingest run + status
+  ├ CORPUS HEALTH   active determinations · superseded revisions held · determinations with
+  │                 history · oldest last_verified · last ingest run + status
   │                 · parse coverage · determinations added/modified in window
   │                 · alerts sent per active project per year  ← the WL-08 verdict number
   └ VOICE OF THE USER
@@ -57,6 +60,9 @@ The product's promise is a certified payroll; until one exists nothing has happe
         ssn_full_entry_blocked count
         gc_tier_interest count           ← the WL-24 trigger
         share_link_accessed count        ← the other WL-24 trigger
+        wd_pinned.is_superseded rate + modification_pin_used count
+                                         ← is the differentiator being used at all (OFFER Q7)
+        watch_confirmed ÷ alert_email_captured   ← is the WL-14 list real
 ```
 
 ## Data model
@@ -85,7 +91,7 @@ arrives at roughly 10 million events, which at this scale is years away.
 | name | effect |
 |---|---|
 | `getFunnel({ window })` | six steps, counts and step-to-step conversion, cohorted by signup week |
-| `getRevenue({ window })` | MRR from `subscriptions.mrr_cents` where status ∈ {active, trialing-with-card}, ARPU, trials ending |
+| `getRevenue({ window })` | **`MRR` = `sum(mrr_cents)` where `status ∈ {active, past_due}`** — invoiced revenue only. **`Trial MRR`** is reported as a **separate, labelled figure** = `sum(mrr_cents)` where `status = 'trialing'`, and is never added into MRR or ARR. ARPU is computed over the MRR population. Plus trials open and trials ending in 7 days. *(Corrected 2026-09-03, finding m4: this action previously read `status ∈ {active, trialing-with-card}` — a status that does not exist in WL-09's enum (`trialing \| active \| past_due \| canceled \| incomplete`), and counting trials as MRR reports revenue that has not been invoiced.)* |
 | `getRetention({ window })` | month-2 activity, monthly logo churn, cancellation reasons |
 | `getCorpusHealth()` | reads `/api/health/corpus` (WL-13) plus `kb_ingest_runs` |
 | `getVoiceOfUser({ window })` | the four event lists above |
@@ -102,6 +108,9 @@ arrives at roughly 10 million events, which at this scale is years away.
 | V5 | No event payload contains an email, a worker name, or an identifying number. *(CI test)* |
 | V6 | The page reads only from `events`, `subscriptions` and `kb_ingest_runs` — never from a vendor API, so it works with no third-party key. |
 | V7 | The page states, at the top, whether n has reached the THRESHOLDS evaluation point (100 signups) and which decisions are therefore live. |
+| V8 | **MRR never includes a subscription that has not been invoiced.** `trialing` is reported as "Trial MRR", separately and labelled. A statuses-in-MRR set that includes `trialing` fails a unit test. *(m4)* |
+| V9 | Every status string on this page comes from WL-09's enum (`trialing \| active \| past_due \| canceled \| incomplete`). A status literal not in that enum fails a test. *(m4 — how `trialing-with-card` got here)* |
+| V10 | Every event name this page reads is one defined in [`WL-EVENTS.md`](WL-EVENTS.md). *(B6)* |
 
 **V7 is the whole point of the page.** It should be impossible to look at `/admin` and not know
 whether the pre-committed decision is due.
@@ -123,9 +132,17 @@ whether the pre-committed decision is due.
   different products failing.
 - **Given** the events table, **when** the CI privacy test runs, **then** no `props` value
   matches an email pattern, a 4-digit identifying number, or a known worker name. *(V5)*
+- **Given** 10 `active` subscriptions at $99 and 6 `trialing` at $99, **when** revenue renders,
+  **then** **MRR reads $990** and **Trial MRR reads $594 on its own line, labelled "not yet
+  invoiced"**. *(V8, m4)*
+- **Given** the codebase, **when** status literals are grepped, **then** every one is a member of
+  WL-09's enum and `trialing-with-card` appears nowhere. *(V9, m4)*
 - **Given** `wd_alert_email_sent` counts and active project-years, **when** the corpus panel
   renders, **then** it shows alerts per active project per year — **the number that decides
   WL-08's future**.
+- **Given** the corpus panel, **when** it renders, **then** it also shows **superseded revisions
+  held** and **determinations with history fetched** — the two numbers that say whether the
+  modification differentiator has data behind it. *(B4)*
 - **Given** the funnel, **when** the definition of activation is grepped, **then** it appears in
   exactly one module. *(V4)*
 

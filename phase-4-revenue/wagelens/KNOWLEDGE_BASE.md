@@ -1,8 +1,12 @@
-# WageLens — Knowledge Base
+# {{PRODUCT}} — Knowledge Base
 
 **The wage-determination data: where it comes from, what shape it has, how it stays true.**
 
-Author: Product Owner agent (WageLens), wave 1. Date: **2026-09-03**.
+Author: Product Owner agent ({{PRODUCT}}), wave 1. Date: **2026-09-03**.
+Revised: **2026-09-03** (wave-1b iteration — findings B4, B5, M12, m2; changelog in
+`REVIEW_RESPONSE.md`). **Every user-visible string is the token `{{PRODUCT}}` and every URL the
+token `{{PRODUCT_URL}}`** — the name is a pending founder decision (PREREQUISITES P11) and the
+host is env-resolved (PLAN D3). The slug stays `wagelens`.
 Every source in §2 was **opened from this environment on 2026-09-03**, not remembered.
 Every command shown was actually run; every number is the number it returned.
 Samples are committed under [`kb-samples/`](kb-samples/).
@@ -46,7 +50,7 @@ same header trick phase 3 discovered for SAM.gov opportunity search
 `/AcroForm` dictionary exists but **`/Fields` is an empty array**, and the only annotation on
 either page is a `/Link` pointing at the instructions. `pypdf.get_fields()` returns **0**.
 
-**Consequence:** the entire "fill the official PDF" approach is dead. WageLens must
+**Consequence:** the entire "fill the official PDF" approach is dead. {{PRODUCT}} must
 **generate** the WH-347 and the Statement of Compliance as its own PDFs, reproducing the
 official layout, the official column numbering (1A–9) and — this part is a legal requirement,
 not an aesthetic one — the Statement of Compliance **wording verbatim**. DOL's own footer
@@ -196,6 +200,27 @@ TX20260253 → rev 1 (2026-05-18, active) and rev 0 (2026-05-17, inactive). **Su
 revisions remain fetchable at `/wd/{ref}/{rev}` forever**, which is what makes a rate we
 showed a customer in March still explainable in December (the CORPUS_DESIGN §2.3 property).
 Sample: [`kb-samples/sam-wd-history-TX20260253.json`](kb-samples/sam-wd-history-TX20260253.json).
+Re-verified by the wave-1b reviewer on 2026-09-03: `/history` returns rev 1 `active:true` and rev 0
+`active:false`, and **`/wdol/v1/wd/TX20260253/0` returns HTTP 200 with a 16,319-byte `document`.**
+
+> **⚠ "Retrievable forever" is a property of SAM.gov, not of our database — and until the wave-1b
+> iteration it was not a property of ours at all (finding B4).** §4.1 read the index at
+> `is_active=true` and fetched only new **active** pairs; `/history` was called nowhere except as a
+> secondary change-detection idea in §6.3. Meanwhile **every user-facing promise reads from our
+> database** — `WL-02`'s `searchDeterminations` says "**never the network**", `WL-03` V1 scopes to
+> the pinned modification, and `LANDING_SPEC.md` §5.2 says the public page never depends on a third
+> party at request time. So modification pinning (`OFFER.md` O2b/O7), the landing page's
+> Determination Timeline (V2) and the "still provable in year three" clause the Provenance
+> Guarantee refunds on **could not render at launch.**
+>
+> **[`specs/WL-13`](specs/WL-13-kb-ingestion-and-refresh.md) now ingests both**, on demand and
+> under the same gates as an active determination: a `kb.fetch_history` job whenever anything
+> touches a WD number (a pin, a public `/wd/:wdNumber` view, a watch, a WL-08 diff), an on-demand
+> `kb.fetch_determination` for a **named** superseded revision, and a **launch backfill** over the
+> landing page's demo determinations plus every determination above modification 1 in the index
+> (858 of them). **History is fetched eagerly** — one small request, so a timeline can always be
+> drawn. **Text is fetched lazily** — 17 KB per revision, only when someone asks for that revision.
+> Crawling every historical revision of 4,235 determinations is neither needed nor polite.
 
 ### KB-4 — the county dictionary
 
@@ -367,11 +392,17 @@ kb_wd_counties
   PRIMARY KEY (wd_id, sam_county_code, county_name)
   INDEX (state_code, sam_county_code)              -- the lookup index. This is the hot path.
 
-kb_wd_modifications                               -- the modification table parsed from the header
+kb_wd_modifications                               -- every revision of a WD number, from /history
+                                                  -- (and from the modification table in the header)
   wd_number             text         NOT NULL
   modification_number   integer      NOT NULL
   publication_date      date         NOT NULL
+  active                boolean      NOT NULL     -- as /history reports it            (added: B4)
+  text_held             boolean      NOT NULL DEFAULT false  -- do we hold this revision's document?
+  history_source_url    text                      -- .../wdol/v1/wd/{ref}/history      (added: B4)
+  history_fetched_at    timestamptz               --                                   (added: B4)
   PRIMARY KEY (wd_number, modification_number)
+  INDEX (wd_number)
 
 kb_rate_groups
   id                    uuid         PK
@@ -418,11 +449,20 @@ kb_ingest_runs
 
 ### 3.2 Customer data (summary — each spec owns its own tables)
 
-`organisations`, `users`, `sessions`, `magic_link_tokens`, `projects`, `workers`,
-`worker_classifications`, `payrolls`, `payroll_lines`, `fringe_plans`,
-`payroll_line_fringe_credits`, `apprenticeship_programs`, `documents`,
-`conformance_worksheets`, `wd_watches`, `subscriptions`, `events`, `jobs`.
-Full definitions in `specs/`.
+`organisations`, `users`, `sessions`, `magic_link_tokens`, `projects`,
+`project_wd_pin_history`, `workers`, `worker_classifications`, `payrolls`, `payroll_lines`,
+`fringe_plans`, `payroll_line_fringe_credits`, `apprenticeship_programs`, `documents`,
+`document_share_links`, `conformance_worksheets`, `wd_change_alerts`, **`wd_watches`**,
+**`email_suppressions`**, `subscriptions`, **`subscription_terms_acceptances`**,
+`disclaimer_acknowledgements`, `payroll_exports`, `events`, `jobs`, `stripe_events`.
+Full definitions in `specs/`, **and every one of them now has an owning spec** — which was not true
+before the wave-1b iteration: **`wd_watches` was listed here and defined nowhere** (finding B5). It
+is now [`specs/WL-14`](specs/WL-14-wd-watch.md), together with `email_suppressions`.
+`subscription_terms_acceptances` is new in [`specs/WL-09`](specs/WL-09-billing.md) (finding B9).
+
+> **The rule that stops this recurring: a table named in this section must name its spec.** A table
+> with no owner is a feature with no consent design, no retention rule and no test — which is
+> exactly what `wd_watches` was, for an email address collected on a public page.
 
 **Hard rule, from 29 CFR 5.5(a)(3)(ii)(B):** `workers` stores `identifying_no_last4 char(4)`.
 There is **no column anywhere in this schema that can hold a full SSN or a home address**, and
@@ -473,6 +513,19 @@ The one miss is edge case 2 above.
                      │   known pair      → skip, bump last_verified │
                      │   gone from index → is_active = false        │
                      └───────────────────┬──────────────────────────┘
+                                         │
+   ON DEMAND (a pin · a public /wd view · a watch · a WL-08 diff · the launch backfill)  ── B4
+                     ┌──────────────────────────────────────────────┐
+                     │ 2b · HISTORY  GET /wdol/v1/wd/{ref}/history  │
+                     │   UPSERT kb_wd_modifications, one row per    │
+                     │   revision (number, date, active). Eager —   │
+                     │   one small request, so a timeline can       │
+                     │   always be drawn.                           │
+                     │ 2c · A NAMED SUPERSEDED REVISION             │
+                     │   GET /wdol/v1/wd/{ref}/{rev} → step 3, with │
+                     │   THE SAME GATES. is_active = false. Lazy —  │
+                     │   17 KB each, fetched only when asked for.   │
+                     └───────────────────┬──────────────────────────┘
                                          ▼
                      ┌──────────────────────────────────────────────┐
                      │ 3 · FETCH  /wdol/v1/wd/{ref}/{rev}           │
@@ -503,9 +556,14 @@ The one miss is edge case 2 above.
 1. **Idempotent.** The unit of work is `(wd_number, modification_number)`. Re-running the job
    on the same day writes nothing. Re-running after a partial failure resumes; the only
    observable effect of a duplicate run is `last_verified` moving forward.
-2. **Versioned and append-only.** A modification is a **new row**, never an update. The old row
-   keeps its `document_text` and gets `superseded_by`. Nothing that was ever shown to a customer
-   is ever mutated. (CORPUS_DESIGN §2.3, applied.)
+2. **Versioned and append-only, and superseded revisions are first-class rows.** A modification is
+   a **new row**, never an update. The old row keeps its `document_text` and gets `superseded_by`.
+   Nothing that was ever shown to a customer is ever mutated. (CORPUS_DESIGN §2.3, applied.)
+   **A superseded revision fetched on demand goes through the identical path** — same parser, same
+   transaction, same gates G1–G4, same provenance on every row. There is no "lite" ingest: a rate
+   we may have to defend in year three is not a second-class row. And `is_active` is derived from
+   the index and `/history`, **never** from "is this the newest row we hold" — fetching mod 0 after
+   mod 1 must not flip mod 1 to inactive. *(Added 2026-09-03, finding B4.)*
 3. **Change detection never silently changes a customer's project.** A project pins
    `(wd_number, modification_number)`. Ingesting modification 2 does **not** move a project off
    modification 1. It raises an alert and offers the change; a human accepts it. Silently
@@ -542,7 +600,7 @@ Because of F2 there is no fillable PDF. The generator is ours.
 | wording | The Statement of Compliance text is **verbatim** from `kb-samples/wh347-page2-statement-of-compliance.txt`. Gated by test G5. |
 | worker id | Column (1E) prints **the last four digits only**. There is no code path that can print more, because no column stores more. |
 | overflow | More than 8 workers → continuation pages, `Page n of m`, the header block repeated. The official form has no continuation convention; ours states one and the help page explains it. |
-| stamp | Every generated PDF carries, in the footer: the WD number, the modification number, the determination's publication date, the generation timestamp, and `wagelens.app` — so an auditor can re-derive the rates from the same source we used. |
+| stamp | Every generated PDF carries, in the footer: the WD number, the modification number, the determination's publication date, the generation timestamp, and **`{{PRODUCT_URL}}`, resolved from env to the live host** — so an auditor can re-derive the rates from the same source we used. *(Changed 2026-09-03, finding m2: this said `wagelens.app`, a domain nobody owns and which the naming pass may never produce — `PLAN.md` D3 puts us on `*.vercel.app` at launch and `IDENTITY.md` §1 records that `wagelens.com` is a live unrelated product. **A wrong URL on a federal filing that must survive three years is a small mistake with a long life.**)* |
 | identity | `documents.sha256` over the PDF bytes. Regenerating an unchanged payroll must produce the same hash (deterministic: no timestamps in the PDF body, fonts embedded, `CreationDate` pinned to `certified_at`). |
 | authority | The footer says the form is our reproduction of DOL form WH-347, Rev. January 2025, OMB 1235-0008, and links to the official PDF. |
 
@@ -668,7 +726,7 @@ component *is* the disclaimer component (gate G8), so a rate cannot be rendered 
 
 ### 9.2 Footer of every generated WH-347 and Statement of Compliance
 
-> Generated by WageLens on {timestamp} from **{wd_number} mod {modification_number}**
+> Generated by {{PRODUCT}} ({{PRODUCT_URL}}) on {timestamp} from **{wd_number} mod {modification_number}**
 > (published {publication_date}), retrieved from SAM.gov. This is a reproduction of U.S.
 > Department of Labor form WH-347 (Rev. January 2025, OMB 1235-0008); it is not an official
 > DOL document. **The contractor signing this form is solely responsible for the accuracy of
@@ -676,7 +734,7 @@ component *is* the disclaimer component (gate G8), so a rate cannot be rendered 
 
 ### 9.3 Standing disclaimer — help page, onboarding, and Terms
 
-> **WageLens is an information tool, not legal or accounting advice, and not a substitute for
+> **{{PRODUCT}} is an information tool, not legal or accounting advice, and not a substitute for
 > the wage determination incorporated into your contract.**
 >
 > The rates shown are our reproduction of published U.S. Department of Labor Davis-Bacon
@@ -688,10 +746,10 @@ component *is* the disclaimer component (gate G8), so a rate cannot be rendered 
 >
 > **Choosing the labor classification for each worker is your decision and your legal
 > responsibility.** Classification follows the work actually performed, not the job title, and
-> not what a worker is called on your other jobs. WageLens shows you the classifications the
+> not what a worker is called on your other jobs. {{PRODUCT}} shows you the classifications the
 > determination lists; it does not decide which one applies. Where no listed classification
 > covers the work, a conformance must be requested through your contracting agency under
-> 29 CFR 5.5(a)(1)(iii) — WageLens helps you prepare that request; it does not file it and
+> 29 CFR 5.5(a)(1)(iii) — {{PRODUCT}} helps you prepare that request; it does not file it and
 > cannot approve it.
 >
 > You remain responsible for paying not less than the required rates and fringes, for the
@@ -699,7 +757,7 @@ component *is* the disclaimer component (gate G8), so a rate cannot be rendered 
 > **Signing a certified payroll you know to be inaccurate carries criminal exposure under
 > 18 U.S.C. § 1001 and civil exposure under 31 U.S.C. § 3729**, as the form itself states.
 >
-> Every rate in WageLens carries the wage determination number, the modification number, the
+> Every rate in {{PRODUCT}} carries the wage determination number, the modification number, the
 > publication date and a link to the official determination on SAM.gov. **When in doubt, open
 > the link and read the determination.**
 
@@ -707,7 +765,7 @@ component *is* the disclaimer component (gate G8), so a rate cannot be rendered 
 promise a rate is current, and they do not name a penalty amount. The "$13,508 per violation"
 figure that appears in `phase-1-ideation/shortlist.json` **is not supportable at DOL's own
 penalty table** (verified by the Buyer & Identity agent, `identity/CLAUDE.md` V1) and must not
-appear in any WageLens surface.
+appear in any {{PRODUCT}} surface.
 
 ---
 
