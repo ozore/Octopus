@@ -137,3 +137,103 @@ wave-1 output. Everything else is aligned. Do not let it be settled by whichever
   record, ~3.5–5 h per state; sequencing and difficulty per state are in `KNOWLEDGE_BASE.md` §11.1.
 - The critical path in wave 2 is **M14 → M5 → M6**. If it slips, cut the number of states loaded, never
   the derivation logic.
+
+---
+
+## Iteration after review (2026-09-03)
+
+**Agent:** Iteration author (StateReady), phase-4 wave-1b→2 hand-off. **Input:** `REVIEW.md`
+(11 blocking, 19 major, 16 minor). **Output:** `REVIEW_RESPONSE.md`, one row per finding, plus the
+edits below. **Result: 29 fixed as asked, 6 fixed differently, 3 declined with reasons, 3 delegated,
+2 split.** No blocking finding left open.
+
+### What changed, by file
+
+- **`specs/05`** — invariant 2 rewritten as a table (the honesty rule for the whole product); AC7/AC7b
+  rewritten; `expiry_overrides` rule added (Florida's board-announced date roll); analytics fixed to
+  `licence_deadline_derived`, emitted **from the derivation service**.
+- **`specs/06`** — rewritten for **one cron a day**: per-recipient `next_send_at`, claim
+  `<= now() + DRAIN_INTERVAL`, offsets as **inequalities with the largest unsent offset**, alerts and
+  digests **per recipient**, five machine-readable suppression reasons.
+- **`specs/07`** — tile grid, one status vocabulary, **AT RISK ≤ 90** asserted equal to the first alert
+  offset by a unit test.
+- **`specs/08`** — narrowed promise, `entryPackReady` gate (distinct from `publishable`), pre-purchase
+  gap disclosure, one guarantee wording, founder review moved **behind** delivery.
+- **`specs/09`** — D1 applied; the canonical Stripe list lives here now; Enterprise "contact us" row
+  with `POST /enterprise-enquiry` behind it.
+- **`specs/12`** — cadence out of the disclaimer, one refund policy, AC7/AC8 as content tests.
+- **`specs/14`** — `no_change` acceptance, G10 scoping, `baselineHead/Tail`, the 180-day staleness rule.
+- **`specs/02`/`04`/`11`/`13`** — tile grid, D6 header inversion, event names, no copied bands.
+- **`kb-scripts/`** — **new `accept_drift.py`** and **new `test_accept_drift.py`** (17 assertions,
+  passing); G10 scoped to citing values; excerpts stored at baseline time.
+- **`ontology/`** — `sourced_value` schema tightened (A10 on every non-null value); `id-grammar.md`
+  example id fixed and `_history/` given its implementation.
+- **`OFFER.md` / `LANDING_SPEC.md` / `THRESHOLDS.md` / `BACKLOG.md` / `UX.md` / `PERSONA.md` /
+  `KNOWLEDGE_BASE.md` / `README.md`** — D1–D5, D7, the guarantees, the narrowed promise, the identity
+  arbitration, M15–M17, S10, and the corrected counts.
+
+### The decisions I took, and why — the ones worth arguing with
+
+1. **D1 (trial over tripwire) was easy; deferring the roster build was the expensive half.** The
+   $149 audit was never the real liability — the *deliverable behind it* was. Removing it cost the
+   landing page its most persuasive sentence (*"We build the roster from the public registers. 30 days
+   or you don't pay."*) and cost the offer's Effort term two points, 8 → **6**. I wrote the downgrade
+   into `OFFER.md` §13 rather than hiding it: **Effort is now the weakest term in the value equation
+   by our own arithmetic**, and every iteration-2 candidate should be scored against it first.
+2. **B6 went against the reviewer, on the brief's instruction, and I hedged it three ways.** Medium +
+   verified now produces an unflagged deadline. That is a real risk — it is how an inference the board
+   never prints reaches a customer as a date. The hedges: the value's **note renders wherever the date
+   appears**; **anything below `high` still goes in the needs-human-check block of a paid pack**; and
+   a medium value with **no note fails closed** to `needsHumanCheck = true` (which catches
+   `tx-plumbing` licence types [1] and [2] today — same field, same confidence, different outcome,
+   decided by whether we can explain ourselves). **If the founder prefers the stricter reading, take
+   it before wave 2 builds M5** — one line now, ~60 golden cases to re-baseline later.
+3. **B2: narrow the promise, do not block the sale.** The alternative gate would have made zero of the
+   nine records purchasable and could only be lifted by human research. The counted table is now in
+   `KNOWLEDGE_BASE.md` §9.1 so nobody has to rediscover it: **23 of 23 bond amounts unknown**, 7 of 9
+   timelines, 7 of 23 application fees — against **23 of 23** renewal cycles and `who_must_hold`
+   verified. Sell the second list; name the first.
+4. **B9: I designed for Hobby rather than waiting for Pro.** Two bugs fell out of taking the daily
+   constraint seriously that would have shipped either way: the naive `next_send_at <= now()` claim
+   **defers every recipient west of the drain time forever**, and exact-equality offsets **delete** an
+   alert whenever a run is missed rather than delaying it. Both now have regression tests. Designing
+   for the worse platform found bugs that the better platform would have hidden.
+5. **The Enterprise "contact us" row is the smallest honest answer.** No price invented; one promise
+   attached that we control ("a quote within two business days"); one route behind it that the app and
+   the outbound workbook both use. Twelve of the top-20 prospects land there on day one.
+
+### Advice to the build fleet
+
+**Build the rules engine first, as a pure function, with golden tests.** `specs/05` is explicitly
+pure and synchronous — licence + KB record + date in, deadlines out — so it is the one module that can
+be built and **proved before any schema exists**. Roughly 60 cases: 9 records × ~2 licence types × 3
+issue dates (start, middle, end of year), expected outputs committed. Those tests fail when the KB
+changes, which is exactly what should happen. Do **not** start with M4 — wave 1's headers had M4 and M5
+blocking each other and it is fixed, but the instinct to start at the database is the thing that
+recreates it. The `deadlines` table lands **with** M5, not before it.
+
+Then, in order: **M14** (fold in `accept_drift.py` and the stored excerpts before the `/admin/kb`
+screens), **M4**, **M6** (build the two regression tests from AC9 and AC10 first — they are the two
+bugs), **M7** (start from the `AT_RISK_DAYS === ALERT_OFFSETS[0]` assertion), **M8**.
+
+**Next KB states: GA, OH, AZ, MI.** All four are one board covering all three trades — Georgia's three
+divisions under `sos.ga.gov`, Ohio's OCILB on `com.ohio.gov`, Arizona's ROC with a published
+classification table, Michigan's LARA — so twelve records for roughly **14 agent-hours**, the cheapest
+tranche in the whole map (`KNOWLEDGE_BASE.md` §11.1). Georgia first: Texas's and North Carolina's own
+reciprocity pages already point at it, so it closes a loop for existing customers rather than only
+opening a new state. **Budget 80–95 agent-hours for all 36, not 60–70** — the review's revision is
+right, and the three `local_only` states (NY, PA, IL) are a **schema and product design problem**, not
+an extraction problem. Give them their own work item and their own design review.
+
+Standing rules that have not changed and that cost me time to re-derive: **do not parallelise the
+crawl** (1.5 s spacing, two attempts, never two agents on one host — CA's CSLB+DIR and VA's two-layer
+DPOR are single-host); expect the dominant error to be **a correct reading attached to the wrong
+source**, which only pass B catches; and run `validate.py` and `verify_pass_b.py` **before** your first
+commit — if either fails, the knowledge base moved under you and that is the news, not a nuisance.
+
+**One trap specific to this iteration.** `kb-scripts/validate.py` contains a hand-written JSON Schema
+subset, and it treats an unknown keyword as an error **inside the `if` probe of an `allOf` branch** —
+which silently disables the branch instead of failing loudly. I hit it writing the m4 schema fix with
+`not: {type: "null"}` and only caught it because I tested that the new branch actually fires on a
+deliberately broken record. **Whenever you touch a schema, prove the new constraint rejects something**;
+"validate.py still exits 0" is not evidence that a rule exists.

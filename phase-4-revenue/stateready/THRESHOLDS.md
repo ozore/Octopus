@@ -108,23 +108,32 @@ threshold of "worth repeating".
 Below 8% conversion, the same cycle produces 3 customers and roughly $500 MRR, which does not pay for
 the attention. Hence the stop band.
 
-**The 14-day no-card trial (spec 09) sets the shape of this number.** No-card trials convert worse
-than card-required ones and produce more signups; the band is set for the no-card design.
+**The 14-day no-card trial (`specs/09`, D1) sets the shape of this number and it is now the shipping
+design, not a proposal.** No-card trials convert worse than card-required ones and produce more
+signups; the band is set for the no-card design and needs no re-derivation.
 
-**Live disagreement, recorded before the data exists.** `OFFER.md` §8 proposes replacing the free
-trial with a **$149 First State Audit** — a paid tripwire that captures a card up front. If the
-founder takes that route, **T2 as defined breaks**: payment precedes activation, so activation → paid
-approaches 1 by construction and the number stops meaning anything. Under the tripwire model the
-metric must be redefined and re-banded *before* launch, not after:
+**The disagreement is resolved. H2 is in force; H2b is not.** `OFFER.md` §8 proposed replacing the
+free trial with a **$149 First State Audit**. The wave-1b review decided against it (**D1**,
+`REVIEW.md` §1) and the decision is applied across `OFFER.md`, `LANDING_SPEC.md`, `specs/09`,
+`BACKLOG.md`, `PERSONA.md` and `UX.md`.
 
-| | free-trial model (this file's bands) | $149 audit model (if adopted) |
+| | **free-trial model — IN FORCE** | ~~$149 audit model~~ — **NOT IN FORCE (D1, wave-1b review, 2026-09-03)** |
 |---|---|---|
-| T2 becomes | activation → paid, 30 days | **audit purchase → annual or monthly subscription, 90 days** |
-| stop / iterate / persevere | < 8% / 8–17% / ≥ 18% | **< 20% / 20–39% / ≥ 40%** — the buyer has already paid us once and been handed a built calendar; if fewer than two in five subscribe after that, the subscription is not the product |
-| watch alongside | signup → activation (T1) | **audit → delivered calendar, in days.** A tripwire that owes a deliverable is a promise; if delivery slips past 5 business days the model is broken regardless of conversion |
+| T2 is | activation → paid, 30 days | ~~audit purchase → subscription, 90 days~~ |
+| stop / iterate / persevere | **< 8% / 8–17% / ≥ 18%** | ~~< 20% / 20–39% / ≥ 40%~~ |
+| watch alongside | signup → activation (T1) | ~~audit → delivered calendar, in days~~ |
 
-Whichever is chosen, the band is committed **before** the first signup. Reading the data first and
-picking the band second is the failure this whole file exists to prevent.
+**The H2b bands stay written down and stay out of force.** They are not deleted, for the same reason
+this file exists at all: if the register-ingestion spike (`BACKLOG.md` S10) passes and the founder
+reverses D1, the band that governs the tripwire will have been committed **before** any tripwire data
+existed, which is the only moment at which it could be honest. Reversing D1 means editing §7's
+changelog first and §2's bands second — in that order, and before a single audit is sold.
+
+**Why the tripwire broke T2, recorded so the reversal argument has to answer it:** payment would
+precede activation, so activation → paid approaches 1 by construction; and H2b's own watch metric
+("audit → delivered calendar in ≤ 5 business days") is exactly the SLA that cannot be met without the
+register automation the spike is meant to establish. A band whose watch metric depends on an unbuilt
+capability is not a pre-commitment, it is a hope with a number on it.
 
 **Falsified if:** conversion is fine but the customers who convert are all one segment (say, only
 PE-backed platforms). Then the metric is right and the ICP in `BACKLOG.md` is wrong. `/admin/cohorts`
@@ -205,7 +214,9 @@ bug, not a business.
 ## 6. Evaluation protocol at n = 100
 
 1. Freeze the cohort: the first 100 organisations with `organisation_created`, excluding
-   `is_internal` (spec 13).
+   `is_internal` (spec 13). **This is the same 100 that D1's no-card trial is scoped to**, and
+   `specs/09` enforces the counter — so the cohort the bands were written for is exactly the cohort
+   that gets measured, with no mixed trial designs inside it.
 2. Wait for the windows to close: T1 needs 7 days per organisation, T2 needs 30 after activation, T3
    needs 60 after first charge, T4 needs 90. **The full read is therefore ~90 days after the 100th
    signup.** T1 and T2 can be read earlier and should be, because they gate the outbound spend.
@@ -224,6 +235,7 @@ changed, the number that prompted it, and who decided.
 |---|---|---|---|
 | 2026-09-03 | Initial bands committed (H1–H4) | none — pre-committed before any data | Product Owner agent, wave 1 |
 | 2026-09-03 | T2 alternative band (H2b) added for the `$149 First State Audit` model | `OFFER.md` §8 proposes a paid tripwire in place of the free trial; recorded before launch so neither band can be chosen after the fact | Product Owner agent, wave 1 |
+| 2026-09-03 | **D1 applied: the launch model is the 14-day no-card trial for the first 100 signups. H2 stands unchanged and in force; H2b is registered and OUT OF FORCE. No band moved.** The $149 First State Audit is deferred to iteration 2, gated on the register-ingestion spike (`BACKLOG.md` S10) | The wave-1b adversarial review (`REVIEW.md` §1) found six documents carrying three different answers to "how does a stranger start", with T2's definition branching on it. Decided on two criteria: the no-human-loop constraint in `PLAN.md`'s Goal, and keeping T1/T2 measurable as defined | wave-1b reviewer (decision), iteration author (application). **Founder may override — see `REVIEW_RESPONSE.md`** |
 
 ---
 
@@ -233,7 +245,7 @@ changed, the number that prompted it, and who decided.
 |---|---|---|---|
 | **H1** | ≥ 45% of signups will derive a deadline within 7 days | design of spec 03/04 + 3 covered states covering 20.5% of US building-equipment establishments | **unmeasured** |
 | **H2** | ≥ 18% of activated organisations convert within 30 days on a 14-day no-card trial | unit economics of the 20/day outbound cap and $149 entry price | **unmeasured** |
-| **H2b** | *If the $149 First State Audit replaces the trial:* ≥ 40% of audit buyers subscribe within 90 days | a buyer who has paid once and received a built calendar is qualified; below 2 in 5 the subscription is not the product | **unmeasured, and contingent on a founder decision** |
+| **H2b** | *If the $149 First State Audit ever replaces the trial:* ≥ 40% of audit buyers subscribe within 90 days | a buyer who has paid once and received a built calendar is qualified; below 2 in 5 the subscription is not the product | **registered, NOT IN FORCE (D1).** Un-freezes only if the register-ingestion spike passes and the founder reverses D1, and the reversal is written into §7 **before** the first audit is sold |
 | **H3** | ≥ 85% survive to month 2, before experiencing a real renewal | annual/biennial renewal cycles in the launch states mean month 2 tests belief, not proof | **unmeasured** |
 | **H4** | ≥ 15% of payers buy a playbook within 90 days | phase-3 evidence that state entry is a quarterly event for PE-backed platforms | **unmeasured** |
 | **H5** | The $149 / $349 / $599 ladder, tiered on **states** with technicians as a guardrail, is inside the buyer's willingness to pay | anchored on LicensedTrades.com's public $199–1,199; **the "independent review" repeating those prices is the same operator's content marketing**, so this is one vendor's list price, not validated demand. `OFFER.md` adds the transacted comparators that are firmer: expediters at $399+ per application, trackers at $39.99–$499/yr | **weakly supported, contested** |

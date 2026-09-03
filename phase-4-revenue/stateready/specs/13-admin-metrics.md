@@ -51,7 +51,7 @@ number in a threshold review are produced by the same text.
 
 | route | contents |
 |---|---|
-| `/admin` | The four threshold metrics as big numbers with n, the band from `THRESHOLDS.md` drawn as a coloured range, and a plain-English verdict: "activation 47% — inside the persevere band (≥ 40%)". |
+| `/admin` | The four threshold metrics as big numbers with n, the band drawn as a range, and a plain-English verdict of the form *"activation {rate} — {verdict} band"*. **Every band on this page is read from the generated `thresholds.json`; not one number is written in a component, a fixture or this spec.** The wave-1 draft of this row carried a worked example reading "inside the persevere band (≥ 40%)" while `THRESHOLDS.md` T1 persevere is **≥ 45%** — a band copied into a spec is how a threshold quietly moves, and it had already moved by five points before a line of code existed (wave-1b **M5**). |
 | `/admin/funnel` | signup → onboarding complete → roster imported → licence created → deadline derived → checkout, with drop-off between each. |
 | `/admin/cohorts` | Weekly signup cohorts × week number, activation and retention. |
 | `/admin/revenue` | MRR, new/expansion/churned MRR, one-off playbook revenue, ARPA. |
@@ -81,6 +81,10 @@ No role in the database can grant it — an escalation bug must not be able to r
 1. Every event name in specs 01–12 appears in the emitted set (test-enforced).
 2. With a seeded fixture of 120 organisations, the four threshold metrics compute to known values.
 3. Below n = 100, verdicts render as "not yet decidable", never as a band.
+3b. **No threshold number appears anywhere outside `thresholds.json`.** A test greps the whole
+   codebase, including tests and fixtures, for the literal band values and fails on any hit outside
+   the generated file and its generator. `thresholds.json` is generated from `THRESHOLDS.md` §2 in CI,
+   and the generator fails if the table there cannot be parsed.
 4. `/admin/health` shows a red state when the cron has not run for 3 hours.
 5. Admin routes return 404 (not 403 — do not confirm they exist) for a non-allowlisted session.
 6. MRR from the subscriptions mirror equals the Stripe dashboard for the test-mode fixture.

@@ -31,7 +31,7 @@ edited later is not in onboarding.
 |---|---|
 | `/onboarding/company` | Company name; entity rows (name, type, home state). "Most companies have one — add more if you operate under separate licences." |
 | `/onboarding/trades` | Three large toggles with the plain-English scope of each, taken from the KB (`licence_types[].scope_note`), so the customer picks correctly. |
-| `/onboarding/states` | US map plus a searchable list. Launch-15 states are selectable and marked "covered"; the other 35 are selectable but marked **"not yet covered — we will track your licences but cannot derive deadlines or produce a playbook"**. Selecting one records demand (this is the L1 trigger in `BACKLOG.md`). |
+| `/onboarding/states` | **The tile grid** (51 equal tiles, `IDENTITY.md` §7.1, `design-system.css` `.sr-map`, the same component as the dashboard in `specs/07`) plus a searchable list — not a geographic map (wave-1b **m14**). Launch-15 states are selectable and marked "covered"; the other 35 are selectable but marked **"not yet covered — we will track your licences but cannot derive deadlines or produce a playbook"**. Selecting one records demand (this is the L1 trigger in `BACKLOG.md`). |
 | `/settings/company` | Same fields, plus entity archive. |
 
 ## Data model

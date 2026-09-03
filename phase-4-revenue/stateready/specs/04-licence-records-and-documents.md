@@ -1,6 +1,14 @@
 # M4 — Licence records and document upload
 
-**Status:** spec, wave 1. **Effort:** M (~2–3 dev-days). **Depends on:** M2, M3, M14. **Blocks:** M5, M6, M7.
+**Status:** spec, wave 1. **Effort:** M (~2–3 dev-days). **Depends on:** M2, M3, **M5**, M14.
+**Blocks:** M6, M7.
+
+> **Dependency direction, corrected (wave-1b D6).** Wave 1 had this spec blocking M5 and `specs/05`
+> blocking M4 — a circular dependency that would have stalled the critical path on its first day.
+> **M5 is built first**, as a pure function with golden tests over `kb-data/`, with no database; M4
+> then calls it, and the `deadlines` table lands with M5. `specs/05` is explicitly pure and
+> synchronous, so it is the one module that can be built and proved before any schema exists, which is
+> exactly what the critical path wants.
 
 ## Story
 
@@ -162,7 +170,10 @@ looking at.
 ## Analytics events
 
 `licence_created` (with `state`, `trade`, `expiry_source`, `covered`), `licence_updated`,
-`licence_archived`, `licence_deadline_derived` (**the activation event** in `THRESHOLDS.md`),
+`licence_archived`. **`licence_deadline_derived` — the activation event — is emitted by the
+derivation service in `specs/05`, not from this create path** (wave-1b **M4**): every route into
+derivation (create, CSV import, profile change, KB publish, nightly cron) must count, and emitting it
+here counted only one of them. This spec emits nothing named `*_deadline_*`.
 `document_uploaded`, `ce_record_added`, `licence_expiry_conflict_shown`,
 `uncovered_state_licence_created`.
 

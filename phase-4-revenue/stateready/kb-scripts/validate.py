@@ -201,14 +201,32 @@ def gates(rid: str, rec: dict) -> list[tuple[str, str, str]]:
         out.append(("G9", "warn", f"{len(weak)} weak values but disclaimer_profile is 'standard'"))
 
     # G10 provenance hashes must match kb-data/_sources.json (a record cannot claim a hash the
-    #     drift baseline never measured)
+    #     drift baseline never measured) — SCOPED to sources the record actually hangs a value on.
+    #
+    #     Wave-1b B11: the coupling that matters is between a hash and the values that cite it. A
+    #     record may list a page it read during authoring and hang no customer-facing value on it
+    #     (a board index, a background page). When such a page changes, nothing we show a customer
+    #     moved with it, and failing the whole build on it is how accept_drift.py's two writes get
+    #     un-coupled by whoever is trying to ship. A mismatch with no citing value is a WARNING,
+    #     named and visible in the queue; a mismatch on a cited page is unchanged and unforgiving.
     baseline = json.loads((KB_DATA / "_sources.json").read_text())["sources"]
+    cited_urls = {v["source_url"] for _, v in svs if v.get("source_url")}
     for s in rec["provenance"]["sources"]:
         b = baseline.get(s["source_id"])
+        is_cited = s["url"] in cited_urls
         if b is None:
             out.append(("G10", "fail", f"provenance source {s['source_id']} absent from _sources.json"))
         elif b.get("content_sha256") != s.get("content_sha256"):
-            out.append(("G10", "fail", f"provenance source {s['source_id']} hash differs from baseline"))
+            if is_cited:
+                n = sum(1 for _, v in svs if v.get("source_url") == s["url"])
+                out.append(("G10", "fail", f"provenance source {s['source_id']} hash differs from "
+                                           f"baseline and {n} value(s) cite it"))
+            else:
+                out.append(("G10", "warn", f"provenance source {s['source_id']} hash differs from "
+                                           f"baseline; no value cites it, so nothing we show a "
+                                           f"customer changed. Accept it with "
+                                           f"kb-scripts/accept_drift.py --source-id "
+                                           f"{s['source_id']}"))
 
     # G11 publishable is a computed flag, never hand-set: it requires zero pass-B disagreements
     pb = rec["provenance"]["pass_b"]

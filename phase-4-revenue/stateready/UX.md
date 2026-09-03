@@ -31,27 +31,45 @@
 ┌──────────┐   ┌───────────────────────────────┐   ┌───────────────────────┐   ┌──────────────────────┐
 │ Landing  │   │ Magic link → Company → Trades │   │ Dashboard             │   │ Pick a state you are │
 │          │──▶│ → States → Import roster      │──▶│  ├ Alerts 90/60/30/7  │──▶│ not in → preview →   │
-│ Free     │   │ → Map lights up               │   │  ├ CE tracking        │   │ pay → report in the  │
-│ audit ───┼──▶│      (target: under 10 min)   │   │  ├ Qualifier clock    │   │ app + PDF by email   │
+│ Rulebook │   │ → The board lights up         │   │  ├ CE tracking        │   │ pay → pack in the    │
+│ demo ────┼──▶│      (target: under 10 min)   │   │  ├ Qualifier clock    │   │ app + PDF by email   │
 └──────────┘   └───────────────────────────────┘   │  └ Bid-ready PDF      │   └──────────────────────┘
-                              │                    └───────────┬───────────┘
-                              ▼                                ▼
-                    Activation step — see note          Subscribe (Stripe Checkout)
+   no login                   │                    └───────────┬───────────┘
+   no email                   ▼                                ▼
+                14-day free trial, no card                Subscribe (Stripe Checkout)
+                    (first 100 signups)
 ```
 
-The **free lapse-risk audit** is not a lead magnet bolted to the side; it is the same import pipeline
-as onboarding, stopped one screen early. A prospect who completes the audit has already done the
-hardest part of activation, which is why the next step is one click and no re-entry of data.
+**The free thing is the demo, and there is only one of it.** Wave 1 specified three different free
+things across three documents — a free State Rulebook lookup (`OFFER.md` §7), this free lapse-risk
+roster audit (S02), and a free trial (`specs/09`) — and nobody had said which one a stranger meets
+(wave-1b **M3**). **D2: the no-login State Rulebook demo is the single free entry point**, because it
+gives the *diagnosis* (what this state requires of this trade) and never the *remedy* (your licences,
+your dates, your alerts), and because it needs no private-individual data to exist. The 14-day trial
+is not a second free entry point; it is what the account does for its first fortnight.
 
-> **Note on the activation step, unresolved at the time of writing.** `PERSONA.md §9` records that the
-> buyer arrives expecting a **free 14-day trial with no card**, because that is the norm across their
-> stack. `OFFER.md §8`, written in parallel, recommends the opposite — **no free trial, and a $149
-> paid "First State Audit" tripwire** with the card captured and credited against an annual plan.
-> **This UX supports either without a redesign**, because the flow is identical up to the moment money
-> is asked for: S02 (free audit, no account) → S03 (magic link) → S04–S07 (onboarding) → S09
-> (dashboard). The only difference is where Stripe Checkout is inserted — after S08 for the tripwire,
-> or after day 14 for the trial — and whether E16 ("trial ending") is sent. The wave-1b reviewer
-> decides; the screen list does not change either way.
+The **free lapse-risk audit** (S02) keeps its design below and stays a SHOULD. When it ships, the
+argument for it is still good: it is the same import pipeline as onboarding stopped one screen early,
+so a prospect who completes it has already done the hardest part of activation.
+
+> **The activation step, decided (D1, wave-1b review).** The stranger meets **three surfaces in this
+> order and no others**: the **no-login State Rulebook demo** — pick a state and a trade, see the cited
+> requirements and what the board does not publish, no email, no account (D2: this is the *single free
+> entry point*); then a **magic link**; then a **14-day free trial, no credit card**, for the first 100
+> signups. Stripe Checkout comes at day 14 or whenever they choose it, not before.
+>
+> `OFFER.md` §8's $149 First State Audit and the done-for-you roster build are **deferred to iteration
+> 2**, gated on the register-ingestion spike (`BACKLOG.md` S10) — the audit's deliverable is a roster
+> build only a human can currently perform, which is C2. **The screen list does not change**: the flow
+> is S01 → (S02 demo) → S03 magic link → S04–S07 onboarding → S09 dashboard, and Checkout is inserted
+> after day 14 rather than after S08. E16 (trial ending) **is** sent, at **day 7 and day 12**, with the
+> account going read-only at day 14 (`specs/09`).
+>
+> The **free lapse-risk audit at S02 stays a SHOULD** (`BACKLOG.md` S8) rather than becoming the free
+> entry point, because it takes a pasted roster of technician names and licence numbers **before an
+> account exists** — private-individual data on a marketing surface (`PIPELINE.md` standing rule 1).
+> When it is built: **parse in the browser, never persist**, privacy notice **above** the paste box,
+> and the flow named in `/legal/privacy`.
 
 ---
 
@@ -62,16 +80,31 @@ hardest part of activation, which is why the next step is one click and no re-en
 One problem, one promise, one action. Full spec belongs to the Offer & Landing agent; the UX
 requirements it must satisfy are:
 
-- **The hero object is the tile map**, not a headline over a photograph — a sample map with three
-  states amber and one red, so the product's core idea is understood before a word is read
-  (`IDENTITY.md §3`).
+- **The hero object is the tile grid on the board**, not a headline over a photograph — a sample
+  footprint with three states **AT RISK** and one **LAPSED**, so the product's core idea is understood
+  before a word is read (`IDENTITY.md §3`). Status words are the four the whole product uses:
+  **READY / AT RISK / LAPSED / NOT TRACKED**, never colour alone.
 - **Price is published on this page**, because the two most-complained-about incumbents hide theirs
   (`PERSONA.md §12`).
 - **Coverage boundary stated** in the same viewport as the price (C10).
-- **One primary CTA: "Check my roster — free".** The secondary is "See a sample report".
+- **One primary CTA: "Start your 14-day free trial"** (D1), repeated unvaried, never a second goal on
+  the page. The secondary is not a CTA and must not look like one: a quiet in-flow link to the demo.
 - No stock photography, no gradients, no scroll-triggered animation (`IDENTITY.md §8.4`, `§8.5`).
 
-### S02 · Free lapse-risk audit `/audit`
+### S02 · Free lapse-risk audit `/audit` — **SHOULD, not built at launch (D2)**
+
+Deferred to `BACKLOG.md` S8. The design below stands for whenever it is built, with **four
+requirements added by the wave-1b review (M14)** that are not optional:
+
+1. **Parse in the browser.** The pasted block never reaches the server. Names and licence numbers of
+   private individuals arriving on a marketing surface, before an account and before consent, is the
+   thing `PIPELINE.md` standing rule 1 exists to stop — and "nothing stored until the last one" does
+   not cover a server-side parse.
+2. **The privacy notice sits *above* the paste box**, not under it and not behind a link: what happens
+   to this text, that it does not leave the browser, and what we keep if they ask for the result.
+3. **`/legal/privacy` names this flow explicitly**, as its own paragraph.
+4. **The exception list is computed client-side too**, from a rules bundle the page fetches. If that
+   proves impossible, the feature does not ship — it does not quietly become a server upload.
 
 Three steps, no account, nothing stored until the last one.
 
@@ -155,9 +188,16 @@ renewal under 90 days costs 1.5× the fee."* → **"See what to do"**.
 
 ### S09 · Dashboard `/app`
 
-The canonical composition from `IDENTITY.md §8.2`: three stats, then map (7 cols) beside runway
-(5 cols), then the expiring list (12 cols), then the alert feed. Rendered in full in
-`identity/samples.html`.
+**The shell is a top bar over a full-width board** (`IDENTITY_ARBITRATION.md` §5, `design-system.css`
+`.sr-bar`) — **not a left rail**. Wave-1 UX assumed the rail; the arbitration replaced it, both to make
+StateReady's layout the third distinct structure in a fleet whose other two apps both run rails, and
+because the board's hero object is a wide grid that wants the width. `.sr-rail` still resolves for
+compatibility; **`.sr-bar` is the correct name and the one to build against.**
+
+The canonical composition from `IDENTITY.md §8.2`: three stats, then the **tile grid** (7 cols) beside
+the runway (5 cols), then the expiring list (12 cols), then the alert feed. Rendered in full in
+`identity/samples.html`. Status vocabulary throughout is **READY / AT RISK / LAPSED / NOT TRACKED**,
+with **AT RISK at 90 days** so the grid and the first alert gate can never disagree (`specs/07`, D7).
 
 **Key interactions**
 
@@ -253,7 +293,17 @@ source is the one failure this product does not recover from.
 ### S17 · Settings, billing, help, admin
 
 - `/app/settings` — company, entities, users, alert recipients, alert cadence (defaults 90/60/30/7,
-  editable), date format, `.ics` URL, theme (light / dark / system).
+  editable), **time zone and the local hour the digest is aimed at** (with the honest note that we
+  currently release one digest a day — `specs/06`), date format, `.ics` URL, and **theme
+  (board / paper / system)**.
+
+  **The theme names are `board` and `paper`, not light and dark** (`IDENTITY_ARBITRATION.md` §3.2,
+  `design-system.css` `data-theme="board" | "paper"`). The board is the deep graphite-green default —
+  the operator's instrument surface. **Paper is what leaves the building**: print, the bid-package PDF,
+  the shareable readiness link (S19), the technician card (S18) and every alert email are rendered on
+  paper whatever the operator's setting, because `PERSONA.md §9` requires every artefact to be
+  forwardable to someone who has never logged in and a forwarded dark screenshot is not that.
+  `system` follows `prefers-color-scheme`, which resolves a light preference to **paper**.
 - `/app/billing` — Stripe Customer Portal. **Cancel is a two-click path from this page and is never
   hidden**, in direct response to the incumbent complaint *"Cancellation is Intentionally Impossible"*
   (`PERSONA.md §5`). Cancelling shows the export button on the same screen.
@@ -324,10 +374,13 @@ preview), and carries one link and the disclaimer. Sent through Resend (`PLAN.md
 | E11 | Qualifier clock | 75 / 45 / 15 / 5 days remaining | `CA — 45 days to replace the qualifier on license #…` |
 | E12 | Rule change | Library change touching a tracked state | `CA rule change: unlicensed-contracting penalty floor` |
 | E13 | Technician card | Coordinator sends it | `Your license card — keep this link` |
-| E14 | Weekly digest | Monday 07:00 local, **opt-in, off by default** | `3 things expiring this month` |
+| E14 | **Renewal-week brief** (the weekly digest) | Monday, **on by default on every paid plan; off during the trial**, editable in S17 | `3 things expiring this month` |
 | E15 | Report delivered | Expansion report generated | `Your Ohio expansion report` |
-| E16 | Trial ending | Day 11 and day 14 | `Your trial ends Friday. Here's what we found.` |
+| E16a | Trial ending — day 7 | 7 days after signup | `Your trial ends in a week. Here's what we found.` |
+| E16b | Trial ending — day 12 | 12 days after signup | `Your trial ends Friday — and the plan your usage points at` |
+| E16c | Trial ended — read-only | Day 14 | `Your trial has ended. Your data is intact; alerts are paused.` |
 | E17 | Receipt / dunning | Stripe webhook | standard |
+| E18 | Enterprise enquiry received | 16th state blocked, enquiry submitted (`specs/09`) | `We have your details — a quote within two business days` |
 
 **Rules that make these emails rather than noise.**
 
@@ -341,6 +394,14 @@ preview), and carries one link and the disclaimer. Sent through Resend (`PLAN.md
   is told at signup that silence means clear.
 - **Cadence is editable per company** in S17. Defaults are 90/60/30/7 because that is what the market
   has standardised on (`PERSONA.md §9`).
+- **E14 is on by default on paid plans** (wave-1b **m8**). `OFFER.md` §4 sells the renewal-week brief
+  as a bonus on all paid plans while wave-1 UX had it opt-in and off — a bonus nobody receives is not
+  a bonus. It stays **off during the trial**, so the trial's only email cadence is the alert digest
+  plus E16a/b/c.
+- **E16's cadence is day 7 and day 12, with read-only at day 14** (`specs/09`), not day 11 and 14
+  (wave-1b **m7**). Twelve rather than eleven, because it lands two days before the wall rather than
+  three, and because the day-12 email is the one that names the plan the usage implies.
+- **Every email renders in the paper theme**, never the board — see S17.
 
 ---
 
@@ -350,16 +411,16 @@ Implementing the decision in `PERSONA.md §11`.
 
 | Surface | Mobile behaviour |
 |---|---|
-| **All emails** | Mobile-first. Single column, 16px minimum, one link, tappable target ≥ 44px |
-| **S18 technician card** | Mobile-first. Works at 320px. Printable. No login. Add-to-home-screen friendly |
-| **S19 shared readiness** | Mobile-first, read-only. The map degrades to a **grouped status list** (Lapsed → At risk → Ready), because 51 tiles at 28px is a poor phone experience and the list carries the same information |
+| **All emails** | Mobile-first, **paper theme always** — an alert forwarded to a GM must not arrive as a dark screenshot. Single column, 16px minimum, one link, tappable target ≥ 44px |
+| **S18 technician card** | Mobile-first, **paper theme** (it is shown to a GC in a truck and printed). Works at 320px. No login. Add-to-home-screen friendly |
+| **S19 shared readiness** | Mobile-first, read-only, **rendered in the paper theme** because it is forwarded. The grid degrades to a **grouped status list** (LAPSED → AT RISK → READY → NOT TRACKED), because 51 tiles at 28px is a poor phone experience and the list carries the same information |
 | **S09 dashboard** | **Read-only on phones.** Stats, the expiring list and the alert feed. Map degrades to the status list. Import, editing and report purchase show "Open on a computer to do this" with a "send me the link" button |
 | **S11 technicians** | Read-only list on phones; row tap opens a read-only card |
 | **S02 free audit** | Works on mobile because paste works on mobile, but the CSV drop zone becomes an upload button |
 | **Everything else** | Not built for phones and says so, rather than shipping a broken small-screen layout |
 
 The minimum bar is the one the brief sets: **read-only alerts work on a phone, always.**
-`design-system.css` collapses the shell rail at 1024px and reduces map tiles to 28px at 640px.
+`design-system.css` collapses the top bar's navigation at 1024px and reduces map tiles to 28px at 640px.
 
 ---
 
@@ -406,6 +467,16 @@ Stated so the wave-1b reviewer can challenge the omissions rather than discover 
 | A compliance "score" out of 100 | It invents a number we cannot source, and it hides which licence is the problem. Counts and dates only |
 | Document OCR / expiry extraction from uploaded certificates | That is Certly's problem shape. Duplicating it here blurs two apps that must stay distinct (`IDENTITY.md §5.1`) |
 | Bond or insurance *purchase* | Tracking only. Selling either makes us a broker |
+| **The free lapse-risk audit (S02) at launch** | **SHOULD** (`BACKLOG.md` S8). D2 makes the no-login demo the single free entry point; S02 needs private-individual data before an account exists and does not ship until the four conditions in S02 above are met |
+| **The CE tracking screen (S13) as its own route at launch** | **SHOULD.** The CE *obligation* ships inside M5 and is rendered on the licence and the dashboard; the dedicated `/app/ce` screen with the constrained-hours meter waits for a customer whose CE is the reason they bought |
+| **The renewal calendar and `.ics` (S14)** | **SHOULD** (`BACKLOG.md` S3), triggered by the first customer who asks how to get this into Outlook |
+| **The technician licence card (S18)** | **SHOULD.** It is the whole technician experience in v1 and it is real, but nothing in the Must chain depends on it and no threshold measures it |
+| **The done-for-you roster build and the $149 First State Audit** | **Iteration 2**, gated on the register-ingestion spike (`BACKLOG.md` S10). Until that verdict exists, no screen and no email says "we build the roster" |
+
+**And the two that were stranded and are now Musts** (wave-1b M1): **S15 qualifier watch → M16** and
+**S19 shared readiness link → M17**. Both were load-bearing in `PERSONA.md` (J6, J5) and in
+`IDENTITY.md` (§2 UA3, §11) and had no Must and no spec — the differentiator was modelled in
+`specs/05` as a `qualifier_replacement` deadline kind and nothing rendered it.
 
 ---
 
@@ -413,14 +484,14 @@ Stated so the wave-1b reviewer can challenge the omissions rather than discover 
 
 | Requirement | Where it is served | Verdict |
 |---|---|---|
-| J1 see what I inherited | S02 audit / S08 complete | ✅ |
+| J1 see what I inherited | S08 complete, after import; **not** S02, which is now a SHOULD (D2) | ✅ |
 | J2 be told without logging in | E5–E9 | ✅ |
-| J3 CE: how many, what kind, what format, by when | S13, with the constrained-hours segment | ✅ |
+| J3 CE: how many, what kind, what format, by when | The obligation, its subject breakdown and its separate cycle window ship inside M5 and render on the licence and the dashboard; the dedicated S13 screen is a SHOULD | ⚠️ partial at launch, by decision |
 | J4 bid file in one click | S09 export | ✅ |
-| J5 answer in five seconds, forwardable | S09 map + S19 shared link | ✅ |
-| J6 qualifier clock | S15 | ✅ |
+| J5 answer in five seconds, forwardable | S09 grid + S19 shared link, now **M17** and rendered in the paper theme | ✅ |
+| J6 qualifier clock | S15, now **M16** | ✅ |
 | J7 what it takes in the next state | S16 | ✅ |
-| J8 rule change alerts | E12 | ✅ |
+| J8 rule change alerts | E12, fed by the drift queue (`specs/14`) once a drift is accepted or corrected | ✅ |
 | J9 per-entity roll-up | S04 entity question + S11 filters | ⚠️ partial — full multi-entity roll-up is deliberately thin in v1 |
 | J10 credential on a phone | S18 | ✅ |
 | O7 ten-minute onboarding | S07 both paths, warnings-not-rejections | ✅ |
@@ -431,6 +502,10 @@ Stated so the wave-1b reviewer can challenge the omissions rather than discover 
 
 **Known gaps, stated rather than hidden.**
 
+0. **Four screens are deliberately not built at launch** — S02, S13, S14, S18 — each with a named
+   trigger in `BACKLOG.md` §2 and a row in §9 above. They were stranded between this document and the
+   backlog at wave 1, treated as load-bearing here and as SHOULDs there; the decision is now explicit
+   in both files rather than in neither.
 1. **Multi-entity roll-up (J9) is thin in v1** — one company can hold several entities, but there is no
    cross-entity consolidated licence view. Persona 2's full need is deferred with the tier that pays
    for it.

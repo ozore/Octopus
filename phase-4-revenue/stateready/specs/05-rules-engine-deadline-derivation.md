@@ -50,6 +50,44 @@ A fourth, `fixed_date_offset` (states that renew on the licensee's birth month),
 widen; it is deliberately **not** implemented, because implementing an unused rule is how the
 vocabulary silently diverges from the data.
 
+#### Board-announced date rolls — `expiry_overrides` (wave-1b **M13**)
+
+A token is a rule; a board sometimes announces an exception to its own rule for one cycle.
+`www2.myfloridalicense.com/construction-industry/`, fetched 2026-09-03, reads:
+
+> *"Registered Contractors — Licenses expire August 31st every odd year. However, because the 31st
+> falls on a Sunday this year, and September 1st is a holiday, the deadline has been extended to
+> September 2nd."*
+
+`fixed_date_parity:08-31:odd` derives 31 August. For that cycle the derived date is two days early —
+in the customer's favour this time, and eventually in the other direction. The engine therefore takes
+an override list per licence type:
+
+```jsonc
+"expiry_overrides": [
+  { "cycle_year": 2027, "date": "2027-09-02",
+    "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+    "evidence": "the deadline has been extended to September 2nd",
+    "last_verified": "2026-09-03", "verified_by": ["pass-a","pass-b"] }
+]
+```
+
+**Rule: an override for the derived cycle year wins over the token**, and the derived deadline carries
+the override's citation rather than the token's, with one sentence of explanation in the "why this
+date?" trace: *"Florida's rule puts this on 31 August 2027; the board has published an extension to
+2 September 2027."* An override never invents a date, never applies outside its `cycle_year`, and is a
+`SourcedValue`-shaped object so it goes through the same two-pass verification as everything else.
+
+**Schema and gate work this requires, and which this iteration did not do** (`ontology/` was outside
+the iteration's edit scope — see `REVIEW_RESPONSE.md` M13): add `expiry_overrides` as an optional
+array on `licence_types[]` in `ontology/schema.state_trade_record.json` (which is
+`additionalProperties: false`, so a wave-2 record cannot carry the field until this lands), and extend
+gate **G8** in `kb-scripts/validate.py` to assert that every override's `date` is a real date inside
+its `cycle_year` and that the licence type's `expiry_rule` token is one the engine implements. Until
+both land, an override is unrepresentable and this rule is dormant — the engine implements it, the
+data cannot yet express it. **This is the first schema change wave 2 should make**; it is also the
+best worked example the rule-change alert (J8) will ever get.
+
 ### CE rules implemented at launch
 
 ```
@@ -120,8 +158,46 @@ over and because a KB publish must reach existing licences.
 1. **No deadline without a citation.** A `deadlines` row with `source = derived` and a null
    `citationUrl` fails a DB check constraint. This is the structural version of "sources are opened,
    not remembered".
-2. **Low confidence forces the flag.** `confidence = low` or a KB value with `status != verified`
-   sets `needsHumanCheck = true`, and the UI renders it differently everywhere it appears.
+2. **What forces the flag, and what does not.** `needsHumanCheck = true` when the governing KB value
+   has `confidence = "low"` **or** `status != "verified"`. A **medium-confidence verified** value is
+   allowed through and produces a normal deadline — it is a reading the board's own page supports with
+   one inference, not a guess — **but it is never allowed to appear bare**:
+
+   | governing value | deadline emitted | `needsHumanCheck` | how it renders |
+   |---|---|---|---|
+   | `verified` + `high` | yes | `false` | date + citation |
+   | `verified` + `medium`, with a note | yes | **`false`** | date + citation **+ the value's `note`, wherever the date appears** — dashboard card, "why this date?" panel, alert email, PDF export. In a **paid Entry Pack** the same value renders inside the needs-human-check block (`specs/08`, and `ontology/schema.sourced_value.json`: *"Anything below high forces needs_human_check on any expansion playbook that uses it"*). |
+   | `verified` + `medium`, **no note** | yes | **`true`** | flagged — fail closed, see below |
+   | `verified` + `low` | yes | `true` | flagged everywhere |
+   | `unverified` (any confidence) | yes | `true` | flagged everywhere, UNVERIFIED badge |
+   | `unknown` (null) | **no** — invariant 3 | – | "we could not derive this", with what we read |
+
+   **Fail closed when the note is missing.** The medium-confidence path above depends entirely on the
+   value carrying a `note` — and today it sometimes does not: `tx-plumbing` licence types **[1] and [2]**
+   carry `renewal.cycle = 12, confidence: medium, note: null`, while only [0] explains the inference
+   (wave-1b **m5**). Gate G3 requires a note only for *non-verified* numerics, so those two passed.
+   **So the rule is: a value with `confidence != "high"` and no `note` sets `needsHumanCheck = true`.**
+   A medium reading we cannot explain is not a medium reading, it is an unexplained one, and the
+   customer gets the flag rather than a confident date with nothing behind it. Two consequences, both
+   wanted: the two Texas plumbing licence types flag until someone writes their note, and the incentive
+   points at fixing the data rather than at loosening the renderer. **Wave 2 should also extend G3 in
+   `kb-scripts/validate.py` — "any numeric below `confidence: high` requires a note" — so the build
+   catches it before the renderer has to.**
+
+   **Two fields, one honesty rule: no component may key on `status` alone.** `deadlines.confidence`
+   and `deadlines.needsHumanCheck` are both carried on the row (see the data model) and the render
+   helper takes both. This is the data-side of the same problem `KNOWLEDGE_BASE.md` §10 assumption 1
+   records: Texas plumbing's annual cycle is `verified` because two passes agreed at the source, and
+   `medium` because the board never prints the word "annual". `verified` is a statement about our
+   process; `confidence` is a statement about the page. A build that reads only the first will show an
+   inference as a fact.
+
+   *Reviewer's note, recorded because this reverses a recommendation:* the wave-1b review (**B6**)
+   proposed `confidence != "high" OR status != "verified"`, which would flag every medium value. That
+   was rejected in iteration because it puts **six of the nine launch records' Texas plumbing and NC
+   fee values** behind a warning the customer cannot act on, and a flag that fires on a third of the
+   product stops being read. The note-everywhere rule above is the narrower instrument for the same
+   risk. See `REVIEW_RESPONSE.md` B6.
 3. **Unknown means silent.** A KB value of `null` produces **no deadline at all**, never a guessed
    one. The licence shows "we cannot derive this — here is what we read and why we could not".
 4. Derivation is deterministic: same inputs, same output, asserted by a golden-file test.
@@ -141,8 +217,17 @@ over and because a KB publish must reach existing licences.
    five mandated subjects.
 6. TX electrical contractor → **no CE deadline**, with the board's sentence quoted so the customer can
    see it is a finding and not a gap; the linked Master Electrician licence → 4-hour CE deadline.
-7. TX plumbing anything → deadline emitted with `needsHumanCheck = true`, because the annual cycle is
-   recorded at medium confidence.
+7. TX plumbing anything → deadline emitted with **`needsHumanCheck = false`** and
+   `confidence = "medium"` (the cycle is `status: verified`, `confidence: medium` in
+   `kb-data/tx-plumbing.json`), **and the rendered output carries the value's `note`** — "TSBPE never
+   prints the word annual; inferred from the yearly CPE requirement and the late-renewal day bands" —
+   in the deadline card, the "why this date?" panel and the alert email. The same value inside an
+   Entry Pack renders in the needs-human-check block (`specs/08` AC2). A test asserts both halves: the
+   flag is false **and** the note is present in all four renderings.
+7b. **`tx-plumbing` licence types [1] and [2] — same medium cycle, `note: null` — emit
+   `needsHumanCheck = true`.** Same record, same field, different outcome, decided by whether we can
+   explain ourselves. The test reads the committed records rather than a fixture, so it starts passing
+   on its own the day someone writes those two notes.
 8. A licence in an uncovered state produces zero deadlines and one explanatory record.
 
 ## Edge cases
@@ -172,9 +257,16 @@ date, and both are worse than a date the customer knows is missing.
 
 ## Analytics events
 
-`deadline_derived` (kind, rule, confidence, needs_human_check), `deadline_superseded`,
-`derivation_failed`, `deadline_explained` (the "why this date?" panel opened — a strong trust signal
-and one worth watching against retention), `ce_shortfall_shown`.
+`licence_deadline_derived` (kind, rule, confidence, needs_human_check) — **the activation event**
+(`THRESHOLDS.md` T1, `specs/13`), and it is emitted **here, from the derivation service**, not from
+the licence-create path in `specs/04`. Every route into derivation (create, CSV import, profile
+change, KB publish, the nightly cron) therefore counts, which is the whole point: an import that
+derives 40 deadlines is an activation, and under the old `deadline_derived` / `licence_deadline_derived`
+split it was not counted at all.
+
+Also: `deadline_superseded`, `derivation_failed`, `deadline_explained` (the "why this date?" panel
+opened — a strong trust signal and one worth watching against retention; this is the single name for
+that event, replacing `specs/11`'s `why_this_date_opened`), `ce_shortfall_shown`.
 
 ## Test plan
 

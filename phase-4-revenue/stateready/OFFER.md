@@ -1,7 +1,17 @@
 # StateReady — the offer
 
-**Status:** proposed by the Offer & Landing agent, wave 1. **Not live.** Per PLAN.md A5 the founder
-validates the offer, and in particular the guarantees, before anything is created in Stripe.
+**Status:** proposed by the Offer & Landing agent, wave 1; **revised 2026-09-03 against the wave-1b
+review** (`REVIEW.md`, and the decision log in `REVIEW_RESPONSE.md`). **Not live.** Per PLAN.md A5 the
+founder validates the offer, and in particular the guarantees, before anything is created in Stripe.
+
+> **The four things the review changed, so nobody reads a superseded paragraph by accident:**
+> **(1) D1** — launch is a **14-day free trial, no card, first 100 signups**. The $149 First State
+> Audit and the done-for-you roster build are **deferred to iteration 2** behind a register-ingestion
+> feasibility spike (§8). **(2)** The **Rollout Guarantee is withdrawn** and the **Alert Guarantee is
+> re-drafted with carve-outs and a cap and does not ship until counsel has read it** (§5).
+> **(3)** The **State Entry Pack promises only what the boards publish**, and names what they do not
+> (§6.1). **(4)** The Stripe list lives in **`specs/09`** and this document points at it (§12).
+> Entry Pack prices are unchanged.
 **Evidence:** every price, fee and regulatory fact below traces to `offer/RESEARCH.md`, where each carries
 a URL fetched on 2026-09-03. **`PERSONA.md` landed mid-draft and has been read and reconciled** (`offer/RESEARCH.md` §7b); its §3 is the
 canonical numbers table and it wins over this document wherever both carry a figure. `IDENTITY.md` did not
@@ -118,10 +128,26 @@ the one-off is the front door and the subscription is what it opens onto.
 Someone must enter every technician, every licence number, every expiry date, in every state. This is
 where products in this category die: not at the price objection, at the empty dashboard.
 
-**The answer is not a discount, it is doing the work.** Licence records are public. We build the roster
-**for** the customer from the state registers, and hand it back verified. Effort at the denominator goes
-from "two weeks of data entry" to "confirm this list is right". Hormozi's rule applies literally: reduce
-the denominator rather than inflate the numerator.
+**The answer is not a discount, it is doing the work — and the honest question is how much of that work
+we can actually do today.** Licence records are public, and the eventual answer is to pull the roster
+from the state registers and hand it back verified, taking the denominator from "two weeks of data
+entry" to "confirm this list is right". **That is deferred (D1), because nobody in the fleet has
+established that those fifteen registers can be read without a human**, and an offer whose strongest
+term is an unbuilt capability is an offer that owes a deliverable.
+
+**What reduces the denominator at launch**, in descending order of what we can prove:
+
+1. **Import that survives a real spreadsheet** — merged headers, blank rows, prose in a Notes column,
+   dates in four formats, and a date-format radio rather than a silent guess (`specs/03`). The file
+   already exists on the buyer's screen; the job is not to make her build one.
+2. **Derivation, so she enters less.** She types an issue date; we produce the renewal date, the CE
+   obligation, its mandated topics and its separate cycle window. Every field the rules engine derives
+   is a field she does not type — that is Effort reduction that costs her nothing and costs us nothing.
+3. **The register build, when it is proven** (§8's spike). Then, and only then, Effort goes to 8.
+
+Scored honestly at **6/10 after the offer** rather than 8. Hormozi's rule still applies literally —
+reduce the denominator rather than inflate the numerator — but the reduction has to be one we can
+perform on the first Tuesday, not one we can describe.
 
 ---
 
@@ -136,17 +162,19 @@ Internally the two products are **the State Entry Pack** (one-off) and **StateRe
 
 **What the buyer gets, stated in one sentence** (Suby's *Clarity* element):
 
-> In 30 days, every licence, CE hour, bond and insurance certificate your company holds is loaded,
-> verified against the issuing board's own published page, and on one calendar that warns you at 90, 60,
-> 30 and 7 days — and when you enter a new state, we hand you the cited, step-by-step playbook for getting
-> licensed there.
+> Every licence and CE obligation your company holds, on one calendar that knows each state's own
+> rule — not the date you typed, the rule behind it — checked against the issuing board's own
+> published page, with the page and the date we read it shown beside every value, and an alert at 90,
+> 60, 30 and 7 days. When you enter a new state, we hand you the cited, step-by-step playbook for
+> getting licensed there — every requirement the board publishes, and a first page naming every one it
+> does not.
 
 **The stack:**
 
 | # | Component | The obstacle it removes | Cost to us | Value to them |
 |---|---|---|---|---|
-| 1 | **Done-for-you roster build** — we pull your company's and your qualifiers' licence records from the public state registers, load them and verify each against the board's own page | *"I will never find time to enter 60 technicians"* | High (the real cost) | Very high — it is the entire onboarding |
-| 2 | **The cited requirement library** — per state × trade: licence classes, renewal cycle, CE hours and topics, bond and insurance minimums, each with its `source_url` and `last_verified` | *"How do I know your dates are right?"* | High (it is the moat) | Very high |
+| 1 | ~~**Done-for-you roster build**~~ — **DEFERRED to iteration 2 (D1).** It has no spec, no Must and no feasibility evidence anywhere in the fleet's output, and it is the one element that reintroduces a human loop. What ships instead: **a CSV import built for a real, messy spreadsheet** (`specs/03` — merged headers, blank rows, four date formats, a date-format radio rather than a silent guess) plus a 14-day trial to do it in. Honest, and it is the buyer's own file rather than a register we have never read. **Nothing may say "we build your roster" until the spike in §8 passes.** | *"I will never find time to enter 60 technicians"* | Low (import) vs High (register build) | High — but it is the buyer's effort, not zero, and the offer must stop pretending otherwise |
+| 2 | **The cited requirement library** — per state × trade: licence classes, who must hold them, renewal cycle, CE hours and topics, fees, bond and insurance **wherever the board publishes them, and an explicit "the board does not publish this" wherever it does not** — each with its `source_url` and `last_verified` | *"How do I know your dates are right?"* | High (it is the moat) | Very high |
 | 3 | **The deadline calendar and alert ladder** — 90 / 60 / 30 / 7 days, routed per licence holder and per category | *"I find out when the renewal is rejected"* | Low | High |
 | 4 | **Bid-and-audit export** — one PDF proving current credential status for a GC, a municipality or a vendor portal | *"Prequal wants a compliance packet and I rebuild it by hand"* | Low | High |
 | 5 | **Rule-change watch** — when a board changes a cycle, an hour count or a fee, the affected customers are told, with the diff and the source | *"CE requirements change and the spreadsheet doesn't know"* | Medium | High |
@@ -179,34 +207,89 @@ Stacked, low marginal cost, each solving a real obstacle (Hormozi's trim-and-sta
 
 ---
 
-## 5. The guarantee — and the one we are not going to make
+## 5. The guarantee — what ships, what is drafted, and what we will never say
 
-### 5.1 Recommended: three guarantees, all on things we control
+**Two guarantees ship at launch. One is drafted and held back. One is on the never list.** The design
+principle behind the whole section, and the test every candidate has to pass:
 
-1. **The Accuracy Guarantee** *(conditional, and the one that does the work)*
-   > Every date, hour and fee in your account shows the state board page it came from and the day we last
-   > checked it. Find one that disagrees with that source on the day you check it, tell us, and we correct
-   > it within one business day and credit you a month.
+> **Guarantee only what our own logs or a published page can adjudicate; cap every one; and never let
+> a guarantee trigger on behaviour the product itself designs.**
 
-   Cheap, entirely in our control, aimed squarely at the binding constraint, and it pays for itself: it
-   turns customers into a correction pipeline for the knowledge base.
+### 5.1 Shipping at launch — exactly two, in exactly these words
 
-2. **The Rollout Guarantee** *(unconditional, fully in our control)*
-   > Your roster — every licence, every state, every expiry — is loaded and verified within 30 days of
-   > kickoff, or you do not pay until it is.
+Both are quoted verbatim in `specs/08`, `specs/12` `/legal/refunds`, the purchase screen and
+`LANDING_SPEC.md` §8. **A paraphrase is a different guarantee**; a content test asserts byte equality
+across every surface (`specs/12` AC8).
 
-   Attacks the Effort term directly, and the outcome depends only on us.
+**1. The Accuracy Guarantee** *(subscription; conditional; adjudicated against a page)*
 
-3. **The Entry Pack Guarantee** *(conditional, bounded, verifiable)*
-   > If your State Entry Pack omits a requirement that the state's own board publishes on the day we
-   > deliver it, we rewrite it and refund the fee.
+> Every date, hour and fee in your account shows the state board page it came from and the day we last
+> checked it. Find one that disagrees with that source on the day you check it, tell us, and we correct
+> it within **five business days** and credit you one month. One credit per customer per month.
 
-   Bounded by a fixed price, adjudicated against a public page rather than an opinion.
+*Changed from wave 1:* the correction SLA was **one** business day, which is a single-founder promise
+with nobody behind it on a Friday (**m13**). Five, everywhere. The monthly cap is new and it is what
+keeps a customer running a script against our whole knowledge base from generating twelve credits in
+an afternoon. It still pays for itself: it turns customers into a correction pipeline for the KB.
 
-### 5.2 Flagged liability: "if we miss a renewal, we pay the reinstatement fee"
+**2. The Entry Pack Guarantee** *(one-off; conditional; bounded in time and money)*
 
-**Recommendation: do not offer this. Founder decision required.** It is the obvious guarantee in this
-category and it is the one that can end the company.
+> If a page published by the state's own licensing board **contradicts a value your State Entry Pack
+> shows as verified**, tell us within **90 days** of your purchase and we rewrite the pack and refund
+> what you paid for it. We adjudicate against the board's published page, not against a conversation.
+> Our liability is limited to the fee you paid for that pack.
+
+*Changed from wave 1:* three wordings existed — this document's, `specs/08`'s and `specs/12`'s — and
+the two in the specs were the dangerous ones: *"full refund if a licensing board **tells you**
+something in this document is wrong"*, an **oral, unverifiable** standard over the **whole document**
+(**B5**). The standard is now a published page contradicting a value **we asserted as verified**; the
+window is 90 days; the liability is the fee. It is affordable precisely because §6.1 now promises only
+what the boards publish and names the gaps on page one: **a disclosed gap is not a contradiction.**
+
+### 5.2 Withdrawn: the Rollout Guarantee
+
+> ~~Your roster — every licence, every state, every expiry — is loaded and verified within 30 days of
+> kickoff, or you do not pay until it is.~~
+
+**Withdrawn, because the thing it guarantees is deferred.** It promised the done-for-you roster build,
+which D1 defers to iteration 2 pending the register-ingestion spike (§8). A guarantee on a deliverable
+we have not built and cannot yet automate is not risk reversal — it is an unpriced human obligation
+with a refund attached. It returns, unchanged, on the day the spike passes and the roster build ships.
+
+### 5.3 Drafted and held back: the Alert Guarantee
+
+Wave 1 proposed this as "the safer alternative", on the grounds that it is adjudicated from our own
+send log. The instinct was right and the wording was not: **as written it paid out on at least five
+behaviours we design or the customer causes** (**B4**), capped at twelve months of fees —
+**$1,788–$7,188 per claim**. Re-drafted:
+
+> **The Alert Guarantee.** If a licence in your account lapses and **our send log shows we did not
+> send the 90-, 60-, 30- and 7-day alerts for it**, we refund the subscription fees you paid us for
+> the twelve months before the lapse, up to a maximum of the lesser of twelve months' fees and the
+> fees you have actually paid us. Claims within **30 days** of the lapse, adjudicated from our send
+> log.
+>
+> **It does not apply where:** (a) the licence was added to your account **fewer than 100 days before
+> its expiry**, so the earlier alerts were never due; (b) alerts for that state were **muted** in your
+> notification settings; (c) notifications were **paused** for the recipient or the organisation;
+> (d) every recipient address had **bounced or complained** and was therefore suppressed; (e) alerts
+> were paused because the **trial had ended or the subscription was past due**.
+
+Each carve-out is a designed behaviour with a row in the database behind it: `specs/06` records every
+one as an `alerts` row with `status = suppressed` and a reason (`added_after_offset`, `muted_state`,
+`recipient_paused`, `address_suppressed`, `subscription_paused`), so adjudication is a query, not an
+argument. 100 days rather than 90 gives the alert schedule a margin either side of the first gate.
+
+**It does not ship at launch.** It goes on no page, in no app screen and in no email until counsel has
+read it (`REVIEW.md` Q15), because the word "guarantee" on a public page is a UDAP hook if it is not
+honoured exactly as printed, and this is the one of the three whose failure mode is a five-figure
+cheque. Drafting it now means the founder has something a lawyer can price in one reading rather than
+a blank page. **`specs/12` AC8 fails the build if this text appears on any rendered surface.**
+
+### 5.4 Never: "if we miss a renewal, we pay the reinstatement fee"
+
+**Not a wording problem. Do not offer it, in any form, ever** — it is on the NEVER list in
+`BACKLOG.md` and the six reasons stand exactly as wave 1 wrote them:
 
 | # | Liability | Detail |
 |---|---|---|
@@ -217,17 +300,6 @@ category and it is the one that can end the company.
 | L5 | **It is insurance in substance** | Fixed periodic premium against a variable contingent third-party loss. A compliance product cannot afford to be non-compliant by accident. |
 | L6 | **It implies an agency we do not have** | We are not the licence holder, cannot file, and have no human in the loop. Indemnifying a regulatory outcome we cannot execute is unhonourable operationally, whatever the terms say. |
 
-### 5.3 The safer alternative, if a risk-reversal on lapses is wanted
-
-> **The Alert Guarantee.** If a licence tracked in your account lapses and we did not send you the 90-,
-> 60-, 30- and 7-day alerts, we refund every month you have paid us, up to twelve.
-
-Capped and knowable in advance. Adjudicated from **our own send log**, not from the customer's behaviour.
-It promises our performance, not their outcome — which is the whole design principle. It should still go
-past a lawyer before it goes on a page.
-
----
-
 ## 6. The expansion report as a productised one-off
 
 ### 6.1 What it is
@@ -235,16 +307,40 @@ past a lawyer before it goes on a page.
 **The State Entry Pack** — one state × one trade, delivered as a cited document plus the same data loaded
 into the app:
 
-1. Which licence classes the work actually requires, at state **and** local level, and who must hold them.
+**The promise, narrowed to what the data supports (wave-1b B2):**
+
+> **Every requirement the state's board publishes, each with the page it came from and the day we
+> checked it — and, on the first page, every requirement it does not publish.**
+
+That is the whole promise and it is deliberately narrower than wave 1's. Wave 1 listed *"bond amounts,
+insurance minimums and the acceptable forms"*, *"fees, line by line"* and *"the filing sequence with
+realistic elapsed times"* as contents. Across the nine committed records **`bond.amount` is unknown 23
+times out of 23**, `bond.required` 21 of 23, `typical_timeline` 7 of 9 and `application_fee` 7 of 23 —
+every one honestly recorded as a gap with the pages we read. Selling a $750–1,500 document on four
+sections it cannot contain is the Entry Pack Guarantee firing on our own data. The alternative — block
+the sale until every field is verified — would make **zero of the nine records purchasable** and would
+only be liftable by human research, which is the loop `PLAN.md` forbids. So the promise narrows, the
+gaps go on page one, and the gap count is shown **before the card is entered** (`specs/08`).
+
+1. Which licence classes the work actually requires, and who must hold them.
 2. The qualifier question: who in your company can hold it, what experience must be evidenced, and what
    happens if they leave.
 3. Reciprocity and exam waivers that genuinely apply to **your** licences — including, explicitly, what is
    *not* waived. Passing NASCLA's exam does not license anyone anywhere by itself.
-4. Bond amounts, insurance minimums and the acceptable forms.
-5. Fees, line by line, at current published amounts.
-6. The filing sequence with realistic elapsed times, and what can run in parallel.
+4. Renewal cycle, renewal date rule and CE obligation — hours, mandated topics, delivery constraints —
+   which is the part we can state completely for every state we sell.
+5. Fees, bond and insurance **as published**: each figure where the board publishes one, and an
+   explicit *"the board does not publish this — here are the pages we read"* where it does not.
+6. The filing sequence, assembled only from durations boards actually publish. Where none is
+   published, the document says so and names the office to ring. **We never write "6–8 weeks".**
 7. What to hand an expediter if you use one, so their engagement is short.
-8. Every one of the above with its source URL and the date we checked it.
+8. Every one of the above with its source URL and the date we checked it — and a medium-confidence
+   value printed **with its reasoning, not just its number**.
+9. **A gaps block, first, before anything we do know.**
+
+**What this costs and what it buys.** It costs the two most quotable lines in the old contents list.
+It buys a document whose every sentence survives a buyer opening the board's own page next to it —
+which is the only durable version of this product, and the reason the guarantee in §5.1 is affordable.
 
 ### 6.2 What it is priced against
 
@@ -297,14 +393,23 @@ for and already pays an expediter for, funds the tier increase.
 | Rung | Price | Limits | Contains | Role |
 |---|---|---|---|---|
 | **State Rulebook** | **Free.** No card, no login | 1 state × 1 trade per lookup | Licence classes, renewal cycle, CE hours and topics, bond/insurance minimums — each with its source and last-checked date | Lead magnet, demo, and the proof that our data is real |
-| **First State Audit** | **$149 one-time** | 1 state | We build your roster for that state from the public registers and hand back a verified calendar. Credits in full against any annual plan within 90 days | Paid tripwire — replaces the free trial (§8) |
+| **14-day free trial** | **Free. No card** | full product, 1 state | Everything on Single State, for 14 days, with alerts live. **First 100 signups** (D1) | The way in. It ends read-only, never deleted |
+| ~~First State Audit~~ | ~~$149 one-time~~ | – | **DEFERRED to iteration 2 (D1)** — it owes a roster build only a human can currently produce. Returns if the spike in §8 passes | not offered at launch |
 | **Single State** | **$149/mo** · $1,490/yr | 1 state, up to 25 technicians. **Stated lower bound: ~10 licensed people.** Below that we say a spreadsheet works | Calendar, 90/60/30/7 alerts, bid-and-audit export, requirement library, CE-provider directory, qualifier map, renewal-week brief | The shop that has one state and one problem |
 | **Multi-State** | **$349/mo** · $3,490/yr | up to 5 states, up to 75 technicians | + rule-change watch, bond & insurance certificate tracking, per-state filtering, **first State Entry Pack included on annual** | **The core buyer.** Dana |
 | **Platform** | **$599/mo** · $5,990/yr | up to 15 states, up to 250 technicians | + multi-entity / per-brand separation, subcontractor credential tracking, audit log, webhooks, acquisition intake checklist, **two State Entry Packs included on annual** | Roll-ups and franchise operators. Marcus |
-| **Enterprise** | **Quote** | unlimited states and technicians | + API, SSO/SAML, per-brand branding, named contact | Apex / Sila / Service Logic scale. **No Stripe price at launch** — we have no basis for one yet |
+| **Enterprise** | **Contact us** — *"a quote within two business days, or we tell you we cannot help"* | over 15 states, or unlimited | + API, SSO/SAML, per-brand branding, named contact | Apex / Sila / Service Logic scale. **No Stripe price at launch** — we have no basis for one and a made-up number rots the whole card. But it is a **published row with a route behind it**, not a silence: the 16th state hits `POST /enterprise-enquiry` (`specs/09`), which writes the enquiry, emails the founder with the state and technician counts pre-filled, and confirms the two-day promise to the customer |
 
 Annual = ten months' price, i.e. two months free. This matches the convention already published in the
 category and is simple to explain.
+
+**Who this ladder is for, decided (D4).** The launch ICP is `PERSONA.md` buyer 1: **15–100
+technicians, 2–6 states**. Twelve of the twenty highest-fit accounts in the phase-3 file operate in
+more than 15 states on day one and land in Enterprise immediately, which is honest and is also a
+statement that they cannot self-serve. They are a **wave-3 Entry-Pack motion**, not a subscription
+motion, and `outbound/stateready/workbook.csv` must carry a `state_count` column, sort on it, and lead
+the first batches with the accounts **inside** 15 states (Sila 13, Any Hour 10, Heartland 9,
+Wrench ~15). Pitching a $599 plan to a 46-state roll-up burns the only first impression we get.
 
 **Reasoning against the alternatives, tier by tier:**
 
@@ -331,33 +436,60 @@ category and is simple to explain.
 
 ---
 
-## 8. Trial design
+## 8. Trial design — **D1: a 14-day free trial, no card, first 100 signups**
 
-**No free trial of the subscription. A $149 paid audit instead.**
+**This section is a reversal.** Wave 1 proposed *"no free trial; a $149 First State Audit instead"*,
+reasoning from Poyar's benchmark that card-gated trials convert at ~30% against ~6% without a card,
+and from the observation that our time-to-value is gated by data entry rather than by attention. The
+reasoning about data entry is correct and it survives. **The mechanism does not**, and the wave-1b
+review resolved it against four documents that each carried a different answer (`REVIEW.md` §1).
 
-Poyar's benchmarks: 14 days is the modal trial (62% of products), card-gated trials convert to paid at
-**30% versus roughly 6% without a card**, median free-to-paid is **8%**. We keep the card-on-file
-mechanism and discard the format, for one reason: **our time-to-value is gated by data entry, not by
-attention.** Fourteen free days of an empty dashboard measures whether Dana will spend two weeks typing.
-She will not. We would have tested our onboarding and called it a verdict on our value.
+**The decision:**
 
-**The design:**
+> **14-day free trial, no credit card, for the first 100 signups. The $149 First State Audit and the
+> "we build the roster from the public registers" promise are deferred to iteration 2 and gated on a
+> register-ingestion feasibility spike. The State Entry Packs ship unchanged from day one.
+> `THRESHOLDS.md` H2 stands; H2b is registered and out of force.**
+
+**Why the tripwire lost, in the order that decided it:**
+
+1. **It owes a deliverable only a human can currently produce.** The audit's promise is a built,
+   verified roster in 5–10 days, pulled from fifteen states' public registers. There is **no spec, no
+   Must and no research** anywhere in the fleet's output showing that can be automated; the nearest
+   artefact is a SHOULD triggered by a support ticket. `PLAN.md`'s Goal sentence forbids a human loop
+   inside the product and `UX.md` C2 restates it as a build constraint. Taking money against an
+   obligation we discharge by hand is precisely what that constraint exists to prevent — and §13
+   weakness 3 of this document said so before the review did.
+2. **It collapses the measurement.** Under the audit, payment precedes activation, so `THRESHOLDS.md`
+   T2 → 1 by construction and the replacement band (H2b, ≥ 40%) is a judgment with no comparator and a
+   watch metric — *"audit → delivered calendar in ≤ 5 business days"* — that is the SLA we cannot meet
+   without the automation in (1). The trial keeps T1 and T2 meaning what `specs/13` computes.
+3. **It does not touch the fast revenue.** The Entry Pack is the front door for buyer 3 and for
+   Marcus, and it is independent of this decision. $750 for a document assembled from the knowledge
+   base is positive revenue on day one; $149 against an unautomated deliverable plus a "30 days or you
+   don't pay" promise is negative revenue.
+
+**The design that ships:**
 
 | Step | What happens | Why |
 |---|---|---|
-| 0 | **State Rulebook** — no card, no login, no email. Pick a state and a trade, see the cited requirements | Gives the *diagnosis*, never the *remedy*. Lets the buyer audit our data before trusting us |
-| 1 | **$149 First State Audit.** Card captured. We pull the company's licence records for one state from the public registers, verify each against the board page, and return a calendar | Card on file (Poyar's 30% mechanism preserved). Value in days, not months. Effort ≈ zero for the buyer |
-| 2 | **Day 7–10 — the handover.** The verified calendar plus what we found: which credentials are within 90 days, which are unmatched, which qualifier is a single point of failure | This is the sales conversation, and it is made of their own data |
-| 3 | **Annual plan, $149 credited.** Or the State Entry Pack if they are entering a state | The decision is now about the eleven other states, not about whether the tool works |
+| 0 | **State Rulebook demo** — no card, no login, no email. Pick a state and a trade, see the cited requirements, and see what the board does not publish | The *diagnosis*, never the *remedy*. It lets the buyer audit our data before trusting us, and it is **the single free entry point** (D2) |
+| 1 | **Start the trial** — magic link, no card. 14 days of the full product, alerts live, one state's worth of limits | The buyer's own stack has taught them this shape: Jobber publishes 14 days, no card (`PERSONA.md` §9). We are not going to be the compliance vendor with the most friction on the way in |
+| 2 | **Their own roster, imported** — CSV or paste, built for a messy file, with a date-format radio rather than a silent guess (`specs/03`) | This is the honest version of "effort ≈ zero". It is their file, and it is minutes, not weeks |
+| 3 | **Day 7 and day 12 emails; day 14 read-only** — data intact, exports open, alerts paused **and said so in words** | Silently continuing to send makes the product free; silently stopping lets a licence lapse on our watch |
 
-**The 3-day free trial the category currently offers is not a benchmark to match.** Three days is too
-short for a compliance tool to prove anything, and it exists to fill a waitlist rather than to convert.
+**What we give up, stated plainly:** the card on file, and roughly a 5× conversion mechanism at the
+signup step. What we get: no owed deliverable, no human loop, a clean read on T1 and T2 at n = 100,
+and the ability to say "no card" on a page whose entire argument is that we do not hide things.
 
-**Escape hatch:** if the $149 audit proves to be friction rather than filter after ~50 outbound
-conversations, the fallback is a **14-day card-required trial with the roster build performed by us during
-it** — same mechanism, no cash up front. Decide on data, not on preference.
-
----
+**The register-ingestion spike — the gate on iteration 2** (`BACKLOG.md` **S10**, wave-1b **B3**):
+two dev-days, a written per-state verdict for all fifteen launch states — is the register searchable
+without a licence number? machine-readable? rate-limited? bot-walled? does it return entity licences
+or only individuals? — then a spec, then a Must. **Until that verdict exists, no surface says "we
+build the roster"**, and the microcopy that said so has been removed from `LANDING_SPEC.md`. If the
+spike comes back positive for a majority of states, the $149 audit becomes a good offer and D1 should
+be reversed at the next review, with the band change recorded in `THRESHOLDS.md` §7 **before** any
+data is read.
 
 ## 9. Honest urgency
 
@@ -376,10 +508,12 @@ and citable. **No countdown timers, ever.**
 | **The acquisition close** | Every close hands over a state's rulebook and a set of qualifier licences in someone else's name. The window to know what you bought is *before* the close | Marcus. This is his entire calendar |
 | **Storm season** | Restoration and roofing crews cross state lines within 48 hours of a CAT event, when there is no time to research registration | The restoration platforms in the prospect list |
 
-**Honest scarcity.** The done-for-you roster build consumes real capacity. If we can start four rollouts a
-week, saying *"four rollout slots a week"* is true and therefore usable. If we can start forty, we say
-nothing. Scarcity claims must be reconciled against actual capacity before launch — that is a founder
-item, not a copy decision.
+**Honest scarcity: we say nothing about capacity, and that is now settled rather than pending.** The
+only capacity-limited thing in the offer was the done-for-you roster build, and D1 defers it. With
+nothing scarce, a scarcity claim would be a manufactured one, which is the single lie a compliance
+brand cannot survive (`REVIEW.md` Q11). The **"first 100 signups"** framing on the trial is not
+scarcity marketing and must never be dressed as it: it is the size of the cohort `THRESHOLDS.md`
+evaluates, it appears in no headline and on no counter, and signup 101 gets the same trial by default.
 
 ---
 
@@ -391,9 +525,9 @@ item, not a copy decision.
 | 2 | *"How do I know your dates are right?"* | **The real objection.** Everything else is politeness | Every value carries its source URL and last-checked date; the demo is public and unauthenticated; the Accuracy Guarantee pays if we are wrong. Demo + guarantee block |
 | 3 | *"$349 a month is more than the state fee."* | Wrong frame — comparing us to a fee, not to the alternative | We are priced against the expediter ($399 per application, or a quote) and against not being able to pull a permit. And the fee comparison is genuinely favourable: one delinquent CSLB renewal is $1,050 |
 | 4 | *"We use ServiceTitan / Housecall Pro — doesn't it do this?"* | **The strongest objection we face, and it is partly right.** `PERSONA.md` O1 | **Never say "it doesn't."** Housecall Pro's own page offers *"built-in tools to store documents, track expiration dates, and set automatic renewal reminders"*, and a ServiceTitan custom field holds a date. **They store the date you type; we hold the rule behind it.** They cannot tell you one of Texas's eight ACR hours must be Texas law, that New Jersey's ten-hour update must be taken live, or that a Texas licence expired past 90 days renews at twice the fee. Demonstrate rather than argue: run their exported list through the audit and hand back rules they did not have |
-| 5 | *"I don't have time to set it up."* | The true blocker, and usually terminal | We build the roster from the public registers. You confirm a list. Rollout Guarantee: 30 days or you do not pay |
+| 5 | *"I don't have time to set it up."* | The true blocker, and usually terminal | **The honest answer, now that the roster build is deferred:** paste or drop the spreadsheet you already keep. Import is built for a messy file — merged headers, blank rows, four date formats — and it asks you which date format you meant rather than guessing (`specs/03`). Minutes, not weeks, and it is your file. **Do not say "we build the roster"** until the spike in §8 passes |
 | 6 | *"Can you just file the renewals for us?"* | They want the expediter, not the software | No, and we will not pretend. We tell you exactly what to file and what to hand an expediter. Honest triage; it buys more than it costs |
-| 7 | *"What if you get it wrong and we get shut down?"* | Liability anxiety, entirely legitimate | Accuracy Guarantee + Alert Guarantee; disclaimers on every screen (PLAN.md A10); we do not indemnify a regulatory outcome and we say so plainly. Never oversell here |
+| 7 | *"What if you get it wrong and we get shut down?"* | Liability anxiety, entirely legitimate | **Accuracy Guarantee** (§5.1) + every value carrying its board page and the day we read it + the gaps named rather than hidden; disclaimers on every screen (PLAN.md A10). We do **not** indemnify a regulatory outcome and we say so plainly. **Do not cite the Alert Guarantee** — it is drafted and not in force (§5.3) |
 | 8 | *"We only work in one state."* | Often persona 3, not persona 1 | **Selling them the subscription is how we earn a refund request** (`PERSONA.md` O6). The product for a single-state shop planning a move is the **State Entry Pack**, one-time. Below roughly ten licensed people a spreadsheet genuinely works, and we should say so. If it is four licences for one person, name CE Broker at $39.99/yr and let them go |
 | 9 | *"Send me a proposal."* (Marcus) | Procurement reflex; also a stall | There is no proposal — there is a published price and a $750 first state. The absence of a quote process is a feature against three quote-gated alternatives |
 | 10 | *"We'll look at this after the acquisition closes."* | The most expensive sentence in the file | After the close you inherit the licence position rather than assess it. The Entry Pack exists to run *before*. Do not manufacture urgency; state the sequence |
@@ -422,9 +556,10 @@ approval.**
 > and on different topics. In Illinois every plumber licence in the state expires on 30 April. California
 > licences run two years, and renewing late costs $1,050 instead of $700 for a corporate licensee.
 >
-> We built the cited version of that: every licence class, renewal cycle, CE hour and bond amount for
-> HVAC, plumbing and electrical, each one showing the state board page it came from and the date we last
-> checked it.
+> We built the cited version of that: every licence class, renewal cycle and CE requirement for HVAC,
+> plumbing and electrical, each one showing the state board page it came from and the date we last
+> checked it — and, where a board publishes no bond amount or no processing time, it says so instead of
+> guessing.
 >
 > No pitch in this email. If it is useful, reply with the two states your last acquisition added and I
 > will send you those two rulebooks as a PDF — free, no call.
@@ -442,44 +577,28 @@ where she has the nearest hard deadline, subject line *"April 30, every Illinois
 
 ---
 
-## 12. Draft Stripe product list
+## 12. Stripe product list — **the list lives in `specs/09`**
 
-**Hand-over table for the founder (PLAN.md D2: the founder creates these; the app reads price ids from
-env). Test mode first. Nothing here is created by an agent.**
+**There is one hand-over table and it is at the end of `specs/09-billing-and-plans.md`.** This section
+used to restate it and the two drifted in three places, all of them in the part the founder actually
+types into Stripe (wave-1b **M6**):
 
-Currency USD. Annual = 10 × monthly. `trial_period_days` is 0 everywhere by design (§8) — the tripwire
-replaces the trial.
+| what diverged | wave 1 here | wave 1 in `specs/09` | settled |
+|---|---|---|---|
+| Multi-State env vars | `STRIPE_PRICE_MULTI_MONTHLY` / `_ANNUAL` | `STRIPE_PRICE_MULTISTATE_MONTHLY` / `_ANNUAL` | **`MULTISTATE`**. The boot check reads exactly the names in `specs/09` |
+| The **$1,000 "Additional State — Entry Pack"** add-on | present (line 11) | **absent** | **kept**, and it is now line 10 of the canonical list |
+| The credit mechanism | *"needs a decision from the founder … customer balance credit is the simplest"* | *"implemented as a Stripe coupon applied at Checkout"*, stated as settled | **It is an open founder question (Q8)**, stated as open in both places. Default if unanswered: a **customer balance credit applied by the app**, `once_per_customer` enforced in the app, and **one credit per customer, whichever is larger** — never two (**M7**) |
 
-| # | Product name | Price nickname | Amount | Interval | Trial days | Env var for the price id | Metadata |
-|---|---|---|---|---|---|---|---|
-| 1 | StateReady — Single State | Monthly | $149.00 | month | 0 | `STRIPE_PRICE_SINGLE_MONTHLY` | `app=stateready` · `tier=single` · `kind=subscription` · `states_limit=1` · `techs_limit=25` · `entry_packs_included=0` |
-| 2 | StateReady — Single State | Annual | $1,490.00 | year | 0 | `STRIPE_PRICE_SINGLE_ANNUAL` | as above + `billing=annual` · `months_free=2` |
-| 3 | StateReady — Multi-State | Monthly | $349.00 | month | 0 | `STRIPE_PRICE_MULTI_MONTHLY` | `app=stateready` · `tier=multi` · `kind=subscription` · `states_limit=5` · `techs_limit=75` · `entry_packs_included=0` |
-| 4 | StateReady — Multi-State | Annual | $3,490.00 | year | 0 | `STRIPE_PRICE_MULTI_ANNUAL` | as above + `billing=annual` · `months_free=2` · `entry_packs_included=1` |
-| 5 | StateReady — Platform | Monthly | $599.00 | month | 0 | `STRIPE_PRICE_PLATFORM_MONTHLY` | `app=stateready` · `tier=platform` · `kind=subscription` · `states_limit=15` · `techs_limit=250` · `entry_packs_included=0` |
-| 6 | StateReady — Platform | Annual | $5,990.00 | year | 0 | `STRIPE_PRICE_PLATFORM_ANNUAL` | as above + `billing=annual` · `months_free=2` · `entry_packs_included=2` |
-| 7 | **First State Audit** | One-time | $149.00 | one_time | — | `STRIPE_PRICE_FIRST_STATE_AUDIT` | `app=stateready` · `kind=one_time` · `sku=first_state_audit` · `credits_against=annual` · `credit_window_days=90` · `states=1` |
-| 8 | **State Entry Pack** | One-time, list | $1,500.00 | one_time | — | `STRIPE_PRICE_ENTRY_PACK` | `app=stateready` · `kind=one_time` · `sku=state_entry_pack` · `states=1` · `includes_tracking_months=12` |
-| 9 | **State Entry Pack — First State** | One-time, godfather | $750.00 | one_time | — | `STRIPE_PRICE_ENTRY_PACK_FIRST` | `app=stateready` · `kind=one_time` · `sku=state_entry_pack_first` · `states=1` · `credits_against=annual` · `credit_window_days=90` · `once_per_customer=true` |
-| 10 | **Acquisition Readiness Pack** | One-time, up to 3 states | $3,750.00 | one_time | — | `STRIPE_PRICE_ACQ_PACK_3` | `app=stateready` · `kind=one_time` · `sku=acquisition_pack` · `states=3` · `includes_tracking_months=12` |
-| 11 | **Additional State — Entry Pack** | One-time add-on | $1,000.00 | one_time | — | `STRIPE_PRICE_ENTRY_PACK_ADDL` | `app=stateready` · `kind=one_time` · `sku=entry_pack_additional` · `states=1` · `quantity_allowed=true` |
-| 12 | StateReady — Enterprise | — | **No price object at launch** | — | — | — | Quote-only; invoice manually until there is a basis for a list price |
+**Two further changes from D1 and D4:**
 
-**Notes for whoever wires this up.**
+- **No `STRIPE_PRICE_FIRST_STATE_AUDIT`.** The $149 audit is deferred; the price object is not created
+  and the app has no code path that can charge it (`specs/09` AC9).
+- **No Enterprise price object**, and that is now a *published row that routes* rather than a silence:
+  "Contact us — a quote within two business days", backed by `POST /enterprise-enquiry` (§7).
 
-- `once_per_customer=true` on line 9 must be enforced in the app, not in Stripe. The godfather price is the
-  one a customer could otherwise buy repeatedly.
-- The `credits_against=annual` metadata on lines 7 and 9 drives a Stripe **coupon or invoice credit**
-  applied at the annual checkout; it is not automatic. Needs a decision from the founder on mechanism
-  (customer balance credit is the simplest and leaves the clearest audit trail).
-- `states_limit` and `techs_limit` are enforced by the app, with a warning at 80% of the band and a
-  prompt to upgrade. They are metadata for the app's benefit, not Stripe features.
-- No tier has a trial. If §8's escape hatch is taken, add `trial_period_days=14` to the **annual** prices
-  only, and require a card.
-- Prices are USD, US market (PLAN.md A2). No tax behaviour is specified here; Stripe Tax is a founder
-  decision.
-
----
+Everything else — three tiers monthly and annual, the four Entry Pack SKUs, `trial_period_days = 0`
+everywhere because the trial is app-managed and no-card — is exactly as `specs/09` prints it. **Prices
+are hypotheses (H5, H6) and are not live until the founder validates them** (PLAN.md A5).
 
 ## 13. Self-review
 
@@ -490,8 +609,11 @@ acquisition created, delivered in days rather than the four-to-eight weeks an ex
 if it misses a requirement the board publishes, and the whole $750 credited against the annual plan if he
 takes one.** The alternative is a phone call with a firm that will not publish a price. That passes.
 
-For Dana: **$149 to have someone else build the thing she has been meaning to build for a year, from
-public records, with a written guarantee that it lands in 30 days or she does not pay.** That passes.
+For Dana, **as the offer now stands**: **fourteen days of the whole product, no card, with her own
+spreadsheet imported in minutes and the state's actual rule — not the date she typed — behind every
+line, and an alert at 90 days when a CE course can still be booked.** That is a weaker "stupid to say
+no" than the wave-1 version, and it is honest: the strong version was buying her effort with labour we
+cannot yet perform. The strong version comes back the day the register spike passes (§8).
 
 Where it does **not** pass: a single-state shop with twelve technicians and no expansion plans. For them
 $149/mo against a $99/yr tracker is a bad deal and we should say so rather than sell it. That is a real
@@ -503,8 +625,8 @@ limit on the market, not a copy problem.
 |---|---|---|---|
 | Dream outcome | 9 | 9 | Already strong; the work was making it *sayable* with regulator citations |
 | Perceived likelihood | **3** | **7** | Visible citations, public demo, Accuracy Guarantee, honest triage. Not 9 — nothing replaces a track record, and pretending otherwise would be the exact failure the guarantee exists to prevent |
-| Time delay | 5 / 9 | **8** | The one-off leads; the subscription's first value is the verified roster in week one, not the next renewal |
-| Effort & sacrifice | **4** | **8** | Done-for-you roster build. The single highest-leverage change in this document |
+| Time delay | 5 / 9 | **8** | The one-off leads and is delivered in minutes; the subscription's first value is a derived deadline in the first session, not the next renewal |
+| Effort & sacrifice | **4** | **6** | **Downgraded from 8 by D1.** Wave 1 scored this on the done-for-you roster build, which is deferred; what actually ships is a CSV/paste import designed for a messy real file with an explicit date-format choice (`specs/03`). That is a genuine improvement on retyping sixty rows and it is not "effort ≈ zero". **8 returns with the roster build**, and the honest reading is that Effort is the term with the most upside left in this offer |
 
 ### Honest weaknesses
 
@@ -516,10 +638,16 @@ limit on the market, not a copy problem.
    `KNOWLEDGE_BASE.md` being right. If coverage at launch is 15 states × 3 trades (PLAN.md A11), the offer
    must say *which* states, and refuse the rest. An offer that outruns the data would destroy the one term
    we spent everything on.
-3. **The done-for-you roster build is unpriced labour.** It is the strongest lever in the offer and it is
-   the one thing here that does not scale without automation of register lookups. If it cannot be largely
-   automated, the $149 audit is loss-making and the Rollout Guarantee is dangerous. **Founder must see the
-   register-scraping feasibility before this ships.**
-4. **State-count pricing will meet resistance from the largest accounts**, who are in 40+ states and will
-   land in Enterprise immediately — where we have no price. That is honest but it means the biggest names
-   in the prospect list cannot self-serve.
+3. **The done-for-you roster build was unpriced labour, and it is now deferred rather than promised.**
+   It remains the strongest lever available to this offer and the one thing that does not scale without
+   automated register lookups. **It is gated on the two-day spike in §8** and until that verdict exists
+   no surface says "we build the roster". This is the weakness wave 1 named and did not act on; acting
+   on it costs the offer its best line and removes its largest liability.
+4. **State-count pricing still meets resistance from the largest accounts**, who are in 40+ states and
+   land in Enterprise immediately. D4 accepts that rather than papering over it: they are an Entry-Pack
+   motion, the ladder says "contact us" with a two-business-day promise attached, and the outbound
+   workbook sorts by state count so the first batches go to accounts that can actually buy.
+5. **Effort is now the weakest term in the value equation** (6/10), by our own arithmetic. Every
+   iteration-2 candidate should be scored against it first — the register spike, board licence-number
+   verification (`BACKLOG.md` S2), and an integration that reads a roster out of the FSM platform the
+   buyer already pays for.

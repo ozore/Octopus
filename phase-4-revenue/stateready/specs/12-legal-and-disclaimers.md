@@ -19,9 +19,11 @@ without protecting anyone. Ours names what we do, what we do not, and what the c
 > service.**
 >
 > The licensing information in StateReady is compiled from state licensing boards' own published
-> pages and from state statutes and administrative rules. Every value we show you carries the web
-> address it came from and the date we last checked it. We check every source for changes daily and
-> re-verify every value in full every month.
+> pages and from state statutes and administrative rules. **Every value we show you carries the web
+> address it came from and the date we last checked it, and every value we could not establish from a
+> public source is shown as unestablished rather than estimated.** Where a value has not been
+> re-checked in 180 days we stop showing it as verified and show you the board's page instead. Our
+> coverage, and the age of every value in it, is published live at /coverage.
 >
 > **What we do not do.** We do not file applications, renewals or continuing-education records on your
 > behalf. We do not cover county or city licensing, permits or registrations, which exist in most
@@ -35,6 +37,17 @@ without protecting anyone. Ours names what we do, what we do not, and what the c
 >
 > Last reviewed: {{date}}. Coverage: {{n}} states × {{m}} trades. Questions about a specific value:
 > every value links to its source.
+
+**What is deliberately *not* in the disclaimer (wave-1b M12).** The wave-1 text stated an operational
+cadence as fact — *"We check every source for changes daily and re-verify every value in full every
+month."* A cadence claim on a legal page is a promise about our own uptime, made to a consumer, on the
+page a state UDAP action would be built from — and `specs/14` itself contemplates the cron failing.
+The cadence is a **target**, and targets live on the methodology page (`/help/methodology`, `UX.md`
+S17), stated as targets, beside the live figures that show whether we are meeting them:
+*"Target: every source checked daily, every value re-verified monthly. Actual, right now: N sources
+checked in the last 24 hours, oldest `last_verified` M days."* The legal page carries only what is
+**structurally** true — the provenance line exists on every value, and the 180-day rule is enforced in
+code (`specs/14`) — because those are guaranteed by a code path, not by a cron.
 
 **Where it appears:** the footer of every page; in full on `/legal/disclaimer`; as a short form at the
 top of every expansion playbook and in every alert email; and beside any value flagged
@@ -56,13 +69,36 @@ top of every expansion playbook and in every alert email; and beside any value f
 - **Subscription:** cancel any time in the Stripe Portal; access to period end; no pro-rata refund on
   a month; a full refund of the current month if you cancel within 7 days of the first charge and
   have not generated a playbook.
-- **Expansion playbook:** **full refund if a licensing board tells you something in the document is
-  wrong.** Send us what they said; we refund within 3 business days and correct the record within 5.
-  We publish the correction with a date.
+- **State Entry Pack — the Entry Pack Guarantee, in the one wording used everywhere** (`OFFER.md`
+  §5.1.3, `specs/08`, the purchase screen, the pack's first page, `LANDING_SPEC.md` §8):
 
-That second clause is deliberate risk reversal in the Hormozi sense, and it is affordable precisely
-because the knowledge base carries citations: a claim of error is checkable in minutes, and if we are
-wrong we wanted to know.
+  > If a page published by the state's own licensing board contradicts a value your State Entry Pack
+  > shows as verified, tell us within **90 days** of your purchase and we rewrite the pack and refund
+  > what you paid for it. We adjudicate against the board's published page, not against a conversation.
+  > Our liability is limited to the fee you paid for that pack.
+
+  **Refund within 3 business days of the claim being upheld; the record corrected and republished
+  within 5 business days**, with the correction dated. Five, not one — `OFFER.md` §5.1.1's one
+  business day was a single-founder SLA with no cover behind it (wave-1b **m13**).
+
+- **The Accuracy Guarantee** (subscriptions), same wording as `OFFER.md` §5.1.1:
+
+  > Every date, hour and fee in your account shows the state board page it came from and the day we
+  > last checked it. Find one that disagrees with that source on the day you check it, tell us, and we
+  > correct it within **five business days** and credit you one month. One credit per customer per
+  > month.
+
+- **The Alert Guarantee is not in force and appears on no surface.** It is drafted in `OFFER.md` §5.3
+  with its carve-outs and its cap, and it does not go on a page — here, on the landing page, or in the
+  app — until counsel has read it (`REVIEW.md` Q15). Publishing a guarantee we have not had reviewed
+  is the UDAP hook the whole of §5.2 exists to avoid.
+- **We never guarantee a regulatory outcome**, never pay a reinstatement fee, and never indemnify a
+  fine. That is on the NEVER list in `BACKLOG.md` and it is not a wording question.
+
+The Entry Pack clause is deliberate risk reversal in the Hormozi sense, and it is affordable precisely
+because the knowledge base carries citations and because the pack now promises **only what the board
+publishes**, naming its gaps on page one (`specs/08`): a claim of error is checkable in minutes
+against a URL, and a disclosed gap is not an error.
 
 ## Data model
 
@@ -92,6 +128,13 @@ they accept" is answerable years later without a separate CMS.
    the TheVillage postal address (P10).
 6. The privacy page's data list matches the actual schema, asserted by a test that compares the
    documented field list against the Drizzle schema and fails on drift.
+7. **The disclaimer contains no cadence claim.** A content test greps `/legal/disclaimer` for
+   "daily", "every month", "monthly" and fails on a match; the same words are required on
+   `/help/methodology`, where they are labelled as targets and sit beside the live figures.
+8. **The three guarantee wordings on the site are byte-identical to the ones in this spec.** A content
+   test extracts every block quoted as a guarantee from the marketing route, the app and the legal
+   pages and asserts set equality with the two in force. The Alert Guarantee text appearing anywhere
+   in the rendered site fails the test.
 
 ## Edge cases
 

@@ -130,7 +130,9 @@ the code, which is what we want for anything that states a rule.
 
 `help_searched` (query — **read these weekly; they are the roadmap**), `help_article_viewed`,
 `help_article_rated`, `ticket_submitted` (category), `ticket_auto_answered`, `ticket_escalated`,
-`data_quality_report_submitted`, `why_this_date_opened`.
+`data_quality_report_submitted`. The "why this date?" panel emits **`deadline_explained`**
+(`specs/05`), not `why_this_date_opened` — one name per event, so `specs/13`'s parity test means
+something (wave-1b **M4**).
 
 ## Test plan
 

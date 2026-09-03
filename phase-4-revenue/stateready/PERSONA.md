@@ -467,16 +467,27 @@ MVP.
   across every piece of software in their stack. The persona-led recommendation is therefore
   **14 days, no credit card, no call** — the most generous self-serve norm in the buyer's own stack,
   and 11 days more than the direct competitor.
-  > **⚠ Open conflict for the wave-1b reviewer.** `OFFER.md` §8, written in parallel, recommends the
-  > opposite: **no free trial, and a $149 paid "First State Audit" as a tripwire** with the card
-  > captured up front and the $149 credited against an annual plan. That is a defensible offer
-  > decision (a paid tripwire filters, and it puts a card on file) and it is the Offer agent's remit,
-  > not this document's. But it is made **against** the expectation recorded here, so it has to
-  > overcome it rather than ignore it. Two things follow and both belong in the review:
-  > **(a)** the landing page must answer "why is there no free trial?" in the same viewport as the
-  > price, because every alternative the buyer has looked at offers one; **(b)** `UX.md §2` keeps the
-  > **free lapse-risk audit** — no account, no card — precisely so there is still a zero-risk way in.
-  > If the reviewer upholds the paid tripwire, the free audit becomes load-bearing, not optional.
+  > **Resolved (D1, wave-1b review, 2026-09-03 — `REVIEW.md` §1, applied per `REVIEW_RESPONSE.md`).**
+  > The persona finding recorded here **won**. `OFFER.md` §8's $149 First State Audit is deferred to
+  > iteration 2 and the launch model is a **14-day free trial, no credit card, no call, for the first
+  > 100 signups** — the buyer's own norm, and eleven days more than the direct competitor.
+  >
+  > It was not decided on the persona's expectation alone, which would not have been enough to
+  > overturn an offer decision inside the Offer agent's remit. It was decided on two things this
+  > document cannot see: the audit's deliverable is a **built roster pulled from fifteen states'
+  > public registers**, which nobody in the fleet has established can be automated — so it
+  > reintroduces the human loop `PLAN.md`'s Goal forbids; and payment-before-activation **collapses
+  > `THRESHOLDS.md` T2 by construction**, replacing a pre-committed band with one that has no
+  > comparator behind it. The audit returns if the register-ingestion spike (`BACKLOG.md` S10) passes.
+  >
+  > Two consequences this section flagged, and where each landed:
+  > **(a)** *"the landing page must answer 'why is there no free trial?' in the same viewport as the
+  > price"* — moot; there **is** a free trial, and the page's job is now the simpler one of saying
+  > "no card" plainly. **(b)** *"`UX.md` §2 keeps the free lapse-risk audit so there is still a
+  > zero-risk way in"* — the zero-risk way in is now the **no-login State Rulebook demo** (D2), which
+  > gives the diagnosis without asking for a roster of technician names before an account exists. The
+  > free audit stays a SHOULD (`BACKLOG.md` S8).
+
 - **Price anchors, in the order the buyer meets them.**
 
 | Anchor | Price | What it teaches the buyer |

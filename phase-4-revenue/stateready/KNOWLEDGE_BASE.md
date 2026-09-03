@@ -159,7 +159,9 @@ and different agent ids:
 |---|---|---|
 | method | fetch the page, read it, record the value and a verbatim `evidence` fragment | **`kb-scripts/verify_pass_b.py`**: re-fetch every `source_url` over the network, independently of pass A's cache, and assert the `evidence` fragment is still literally present |
 | shares with the other | nothing but the record file | – |
-| catches | – | transcription errors, cross-source attribution errors, invented values, quotes "improved" in transit, and page changes |
+| **proves** | – | **exactly one thing: the quoted `evidence` fragment is still literally present at the cited `source_url`.** That is a strong claim and it is the only one it makes |
+| catches, as a consequence | – | transcription errors, invented values, quotes "improved" in transit, page changes, and the class it was built for — a correct reading attached to the **wrong source**, which it catches whenever the fragment is absent from the wrongly-cited page |
+| **cannot see** | – | **whether the reading is right.** A fragment that is genuinely on the page, attached to a field it does not govern, passes. Live example in the committed data: `tx.hvac licence_types[0].exam.fee = $74` — *"pay the examination fee of $74"* is on the TDLR renewal page, in the **Class B → Class A upgrade** paragraph, and the record generalises it to the Class A exam fee. The record's note says so and confidence is `medium`, so this is honest rather than defective — but no amount of pass B would have raised it |
 | outcome | `status: unverified`, one verifier | agreement → `verified`, two verifiers; disagreement → **demoted to `unverified`**, note appended, `publishable` withdrawn |
 
 ### 5.1 What disagreement does
@@ -202,6 +204,17 @@ the number that says something about the method; the 100% says something about t
 
 **The lesson, for the next 36 records:** the dominant error class was not misreading a page, it was
 *attaching a correct reading to the wrong source*. Pass B catches that and nothing else would have.
+
+**And the lesson about pass B itself (wave-1b M10).** It is a **citation check, not a semantic
+check**, and this document over-claimed it at wave 1 by listing "cross-source attribution errors"
+among the things it catches without the qualifier: it catches them **only when the fragment is absent
+from the wrongly-cited page**. The gap matters commercially, not just methodologically, because **the
+Accuracy Guarantee is adjudicated on the reading, not on the fragment** (`OFFER.md` §5.1). A customer
+who says *"that $74 is not the application exam fee"* has a valid claim that pass B would never have
+flagged. Two things follow, both now in force: a value below `confidence: high` **renders its note,
+not just its number**, everywhere it reaches a customer (`specs/05` invariant 2, `specs/08`); and a
+customer-reported error is a first-class queue item at the top of the drift queue, not a support
+ticket (`specs/14`).
 
 ---
 
@@ -344,6 +357,43 @@ The main ones today:
 - **County and municipal licensing everywhere.** The honest hard problem, and a "later" in
   `BACKLOG.md` rather than a half-answer.
 
+### 9.1 The four fields that are mostly missing — and what the commercial documents may therefore say
+
+Counted across all nine records with `walk_sourced_values`, this is the coverage the offer has to live
+inside:
+
+| field | verified | unknown |
+|---|---:|---:|
+| `licence_types[].bond.amount` | **0** | 23 |
+| `licence_types[].bond.required` | 2 | 21 |
+| `typical_timeline` (per record) | 2 | 7 |
+| `licence_types[].application_fee` | 16 | 7 |
+| `licence_types[].renewal.fee` | 17 | 6 |
+| `licence_types[].insurance.general_liability` | 9 | 14 |
+| — for contrast — `renewal.cycle`, `who_must_hold` | **23 / 23** | 0 |
+
+**There is not one bond amount in the knowledge base.** The `unknown` discipline is exactly right —
+every one carries a note listing the pages read, gate G2 fails the build without it, and the Texas
+bond entry is the model: recorded as *"not established"*, explicitly **not** as *"no bond required"*.
+**The data is honest; the wave-1 commercial documents were not** (wave-1b **B2**). `OFFER.md` §6.1
+promised *"bond amounts, insurance minimums and the acceptable forms"*, *"fees, line by line"* and
+*"the filing sequence with realistic elapsed times"*; the landing subhead sold *"bond and insurance
+certificate"*; and `LANDING_SPEC.md` V4 rendered a step card reading *"Bond amount + acceptable forms"*
+— four of eight advertised sections that would have arrived in the needs-check block of a $750–1,500
+document.
+
+**The rule now in force, and it binds every surface:**
+
+> **The Entry Pack, the landing page and the demo may promise only what the records contain: every
+> requirement the board publishes, with what is not published marked as such.**
+
+Applied in `OFFER.md` §6.1, `specs/08` (the promise, the disclosure before payment, and the
+`entryPackReady` gate that is distinct from `publishable`), and `LANDING_SPEC.md` §2.3, §4 V4 and
+§12.2. **The knowledge base does not change; the promises did.** The alternative — a completeness gate
+blocking the sale until bond, fees and timeline are verified — was considered and rejected: it would
+make **zero of the nine records purchasable** and would only be liftable by human research, which is
+the loop `PLAN.md` forbids. Reasoning in full in `REVIEW_RESPONSE.md` B2.
+
 ---
 
 ## 10. Assumptions taken, flagged in the data
@@ -485,16 +535,37 @@ python3 kb-scripts/refresh_sources.py            # daily drift check
 
 ## 14. Open questions for the founder
 
-1. **Do we widen states or trades first?** The phase-3 prospect file's twenty highest-fit accounts are
-   dominated by roofing, fire protection and restoration platforms, none of which we cover, while the
-   HVAC/plumbing/electrical platforms mostly already operate in more than 15 states. Trades and states
-   pull in different directions and the answer is a positioning decision, not a data one.
-2. **Is the playbook guarantee acceptable as written?** "Full refund if a board tells you something in
-   this document is wrong" is bounded and cheap if the data is good. It is still a promise the founder
-   owns (PLAN.md A5).
-3. **How long should a `last_verified` date be allowed to age before the product stops showing the
-   value as verified?** G13 warns at 400 days; monthly re-verification should keep everything under
-   35. A hard cut-off is a product decision with a churn consequence.
+1. **Do we widen states or trades first? — ANSWERED: states (D5), and the question mis-stated its own
+   evidence.** Wave 1 wrote that the phase-3 file's twenty highest-fit accounts are *"dominated by
+   roofing, fire protection and restoration platforms"*. **Counted from that file: 5 of 20** are in
+   uncovered trades (Vertex, Pye-Barker, Tecta, BluSky, ATI; Astra is mixed). **Fourteen to fifteen are
+   HVAC / plumbing / electrical** — the trades we already cover. The premise that pointed at trades was
+   simply wrong (wave-1b **M9**).
+
+   **Widen states, in §11.1's order: GA, OH, AZ, MI → VA, NJ, CO, MA → CA → NY, PA, IL.** Three
+   reasons: the count above; roofing is licensed at state **and county** level, which is a different
+   data model rather than a bigger one (`BACKLOG.md` L2), while a new state is the same model and the
+   same tooling; and **H7 already bets activation on covered-state count**, so widening states is the
+   experiment `THRESHOLDS.md` is waiting for. **Trades re-open only when a named prospect is blocked by
+   a trade** — not by a count, by a name.
+
+   **GA, OH, AZ, MI first** because each is one board covering all three trades (§11.1 marks all four
+   `easy`), which is ~14 agent-hours for twelve records, and because Georgia closes the reciprocity
+   loop that Texas's and North Carolina's own pages already point at for existing customers.
+2. **Is the playbook guarantee acceptable as written? — NO, and it has been rewritten.** *"Full refund
+   if a board **tells you** something in this document is wrong"* is an **oral, unverifiable** standard
+   over the **whole document**, with no time limit and no cap (wave-1b **B5**). The one wording now in
+   force, in `OFFER.md` §5.1, `specs/08`, `specs/12` and the landing page: **a page published by the
+   board contradicts a value the pack shows as verified, claimed within 90 days of purchase, rewrite
+   plus refund of the pack, liability capped at the fee.** Still the founder's to validate (PLAN.md
+   A5) — but now it is a promise a URL can settle.
+3. **How long may a `last_verified` date age before we stop calling a value verified? — 180 days**
+   (wave-1b **m15**, Q7 default applied). Past 180 days the value renders exactly as an `unverified`
+   one — badge, `needsHumanCheck` on any derived deadline, excluded from unqualified statements in a
+   paid pack — with the board's link beside it (`specs/14` invariant 2). It is a **runtime rendering
+   rule**; G13's 400-day build-breaking warning stays as the backstop. Monthly re-verification should
+   keep everything under 35 days, so a value reaching 180 is itself the signal that re-verification has
+   stopped running. The honest failure direction: some values flip to unverified during a quiet month.
 4. **Do we publish `/coverage` before launch?** It is the most credible page we could put on the
    internet and it also tells competitors exactly what we have.
 5. **State-specific consumer-protection wording** in the terms — out of scope for wave 1 and needs

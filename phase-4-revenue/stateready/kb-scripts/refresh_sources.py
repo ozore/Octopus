@@ -32,6 +32,7 @@ from lib_kb import ROOT, KB_DATA, fetch, normalise, content_hash          # noqa
 
 SOURCES_FILE = ROOT / "kb-scripts" / "sources.json"
 BASELINE_FILE = KB_DATA / "_sources.json"
+EXCERPT_CHARS = 4000          # see run(): bounded normalised-text excerpts for the diff screen
 POLITE_DELAY_S = 1.5          # one request every 1.5s per run; never parallel. These are small
                               # state agencies, not CDNs.
 
@@ -54,6 +55,12 @@ def run(sources: list[dict]) -> dict:
             text = normalise(body, ctype)
             entry["content_sha256"] = content_hash(text)
             entry["normalised_chars"] = len(text)
+            # Bounded excerpts of the normalised text, so specs/14's word-level diff screen can be
+            # built at all (wave-1b M16): a hash tells you THAT a page changed and nothing about
+            # WHAT. 2 x 4000 chars x 35 sources is ~280 KB, which is nothing, and it is written
+            # only at --write-baseline time and by accept_drift.py, never by the daily check.
+            entry["normalised_head"] = text[:EXCERPT_CHARS]
+            entry["normalised_tail"] = text[-EXCERPT_CHARS:] if len(text) > EXCERPT_CHARS else ""
         else:
             entry["content_sha256"] = None
             entry["error"] = body[:200].decode("utf-8", "replace") if body else f"http {status}"
