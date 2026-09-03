@@ -14,7 +14,122 @@ that reduces founder liability wins, and the finding says so.
 
 ---
 
-## Verdict
+# RE-REVIEW — 2026-09-03 (round 2, after `REVIEW_RESPONSE.md`)
+
+**Reviewed:** `REVIEW_RESPONSE.md`, then every finding I marked blocking or major, re-checked
+against the *current* text of `PERSONA.md`, `UX.md`, `BACKLOG.md`, `KNOWLEDGE_BASE.md`,
+`THRESHOLDS.md`, `OFFER.md`, `LANDING_SPEC.md`, `specs/WL-00`–`WL-13`, and the two new specs
+`WL-14` and `WL-EVENTS`; plus the identity outcome in `../IDENTITY_ARBITRATION.md`.
+**I did not edit any reviewed file.** Everything below the horizontal rule is the round-1 review,
+unchanged, so the two rounds can be diffed.
+
+## Verdict, round 2
+
+> **0 blocking · 1 major open (owned by the orchestrator, not this fleet) · 2 minor open (owned by
+> the identity author). 9 of 9 blocking and 18 of 19 major findings closed and verified.**
+>
+> **Signed for wave 2.**
+
+### How I checked, not just what I read
+
+Four gates re-run, not taken on trust:
+
+| check | result |
+|---|---|
+| `python3 ../scripts/identity-distinctness.py` | **exit 0** — "All checks pass: 3 apps, 3 ground pairs, 3 typeface pairs". WageLens vs Certly ΔE 7.87, vs StateReady ΔE 87.87; no two apps share a family (WageLens Public Sans/IBM Plex Mono · Certly Source Sans 3/Source Code Pro · StateReady Barlow/Barlow Condensed/Overpass Mono) |
+| `python3 identity/contrast.py` | **exit 0** — "All 72 pairs pass (39 light, 33 dark)". Unchanged, as expected: WageLens's palette was not touched |
+| `grep "Start free"` across the fleet's files | Only inside prohibitions (`OFFER.md` §7.1/§10, `LANDING_SPEC.md` §8/§14, `specs/WL-09` V16a, `WL-11`'s CI grep list) |
+| `grep "free week"`, `grep "we refund what you have paid"` | Only inside the notes recording their removal |
+
+## Findings still open
+
+Three, none of them this fleet's to close, none blocking wave 2.
+
+| id | severity | one line | what is missing | owner |
+|---|---|---|---|---|
+| **M19** | **major, open** | `../PREREQUISITES.md` P7 still asks the founder for an Anthropic key for a "**WageLens classification assistant**" — the feature `BACKLOG.md` puts under *Never* and `KNOWLEDGE_BASE.md` K5 forbids. | The P7 row, verbatim and unchanged: `Certly extraction, StateReady playbooks, WageLens classification assistant`. The fleet correctly declined to edit a file outside its scope and recorded the correction in `OFFER.md` §11.3 Q9, but PREREQUISITES is the document the founder actually reads, and P8 was already corrected there once, so the precedent exists. **Drop WageLens from P7.** | **orchestrator** |
+| **M12-residual** | minor, open *(was major; the app-side fix is complete)* | `identity/samples.html` still renders both product names in specimen copy — 9 occurrences, including *"read by CraftWage"* inside the `.wl-prov` sample and *"CraftWage is not a law firm"* in the disclaimer sample. | The file was frozen during the iteration (Brand Director's, B7) and the arbitration left it untouched — correctly, since WageLens does not change visually. **It is unfrozen now.** The app-side fix is done and enforced: `specs/WL-11` **V8** fails the build on a literal `WageLens` or `CraftWage` in any user-visible string, slug, disclaimer, email template or PDF footer. Only the specimen lags. | identity author |
+| **m5** | minor, open | Three hard `9px` font sizes (`design-system.css` lines 798, 810, 983) and five hard-coded hexes in `.wl-doc` do not scale with the user's root size and never enter `contrast.py`'s table. | Declined during the iteration as a frozen file, correctly. **Also unfrozen now.** The fix is one token — `--wl-text-3xs: 0.5625rem` — plus `--wl-doc-*` tokens for the document preview's palette, and it should land in the same pass as any future arbitration edit, when `contrast.py` is re-run anyway. | identity author |
+
+## Regressions introduced by the iteration
+
+**None found.** I looked specifically at the places a fix of this size usually breaks something else:
+
+- **The word budget held.** The 450-word ceiling above the pricing block is intact at **445**, and I
+  re-added the section counts myself (55 + 83 + 53 + 117 + 94 + 43 = 445). Per-section budgets were
+  re-allocated rather than inflated — §2 70→83 for the modification control and the consented watch,
+  §4 105→117 for M18's line, §5 110→**94** because G2's sentence is cut. `LANDING_SPEC.md` §2 states
+  that if G2 is ever approved its 29 words come out of §1–§6, not out of the ceiling. That is the
+  right invariant.
+- **The onboarding promise moved cleanly.** "About eleven minutes" appears in §0, §4, the A2 heading
+  and the instrumented threshold; `grep` finds no surviving "ten minutes" or "9.5".
+- **The activation definition did not move.** `wh347_generated`, first per organisation, in
+  `BACKLOG.md`, `THRESHOLDS.md` §2 and `specs/WL-12` V4 — still one definition in one module.
+- **The price ladder and limits still agree** across `OFFER.md` §6.1/§10, `BACKLOG.md` WL-09,
+  `specs/WL-09`, `LANDING_SPEC.md` §8 and `THRESHOLDS.md` §0.3 — with the GC tier's limits now in
+  the future tense in all five, which is the correct consequence of B2 rather than a new drift.
+- **The new Must item is counted.** `BACKLOG.md` reads 15 items, 5 L / 4 M / 6 S; WL-14 is an S and
+  the arithmetic is right. Its own honesty note — that WL-14 is Must because it is already promised
+  on three surfaces, not because the Rosa test demands it — is the correct way to record that.
+- **B5 did not smuggle a free tier back in.** `specs/WL-14` V7 keeps marketing suppression strictly
+  separate from magic-link, billing and WL-08 project alerts, and the two never share a send path.
+
+**One thing that is not a regression but is now a dependency to honour in wave 3:** WL-14 introduces
+`email_suppressions` and shares it with the outbound engine (PLAN D4). A suppression written by
+outbound must suppress watch mail and vice versa, or the fleet will have built two lists and one
+reputation. Worth one line in `outbound/wagelens/PLAYBOOK.md` when it is written.
+
+## What impressed me, since round 2 is also a judgement on the iteration
+
+Three things went beyond what I asked for, and all three reduce liability rather than argue with it:
+
+1. **B2 was made structural, not editorial.** I asked for a waitlist card. What shipped is a
+   sellable-set constant Checkout refuses to leave (V17), a **boot assertion that fails the deploy**
+   if a live-mode GC price id is present (V18), and a render test that no purchase control exists in
+   the card (V19). "Not for sale" is now a property of the code.
+2. **B8 was fixed more conservatively than I asked, and the open founder question was closed.** I
+   offered "carry the cap or cut it" and left the cap number to Q6. The iteration did both, decided
+   **three months, service-shaped** (≈$59,400 rather than ≈$237,600 at 200 accounts), wrote the
+   sentence identically in three files so they can be diffed together, and added a CI grep pairing
+   "refund" with its cap. That is the right direction under the failure rule.
+3. **B3/B4 were fixed as one problem.** V9's "there is no lite ingest" — a superseded revision goes
+   through the same parser, the same transaction and the same gates as an active one — is exactly
+   right for a rate that may have to be defended in year three, and it is the sentence that turns
+   the differentiator from copy into a property of the corpus.
+
+The two "fixed differently" answers (M2, M9) are both better than what I proposed: rewording a bonus
+is cheaper and more honest than growing an S-shaped spec an L-shaped merge step to rescue a
+marketing line.
+
+## Signature
+
+**Signed for wave 2** — wave-1b Reviewer, 2026-09-03.
+
+Wave 2 may scaffold and build every item in §3.1 *and* the six that were blocked in §3.2 — WL-02's
+pinning path, WL-00's modification control, LANDING V2, the landing page end to end, WL-09's
+checkout surface, and WL-14 — because every blocking finding behind them is closed and verified
+above. The three open items are carried forward, not waived:
+
+- **M19 → the orchestrator.** Amend `PREREQUISITES.md` P7. One row, one line.
+- **M12-residual and m5 → the identity author**, in one pass now that the arbitration has released
+  the file freeze, with `identity/contrast.py` re-run afterwards.
+
+**Two build-order conditions that are mine, and that I will check at the wave-2 review:**
+
+1. **Capture `kb-samples/sam-wd-detail-TX20260253-rev0.json` before WL-13's first commit.** Every
+   offline test that proves B3 and B4 runs on the mock adapter, so without that fixture the tests
+   that prove the differentiator cannot be written. I verified during round 1 that
+   `/wdol/v1/wd/TX20260253/0` returns HTTP 200 with a 16,319-byte `document` — the fixture is one
+   `curl` away, and it must carry the `Accept: application/hal+json` header.
+2. **Build every component against the semantic `--wl-*` tokens, never a hex.** WageLens is now
+   *pinned* by `IDENTITY_ARBITRATION.md` — its typefaces and ground are load-bearing for two sibling
+   decisions — so the token discipline is no longer a hedge against a change, it is what keeps a
+   future change cheap for the whole fleet. `identity/contrast.py` and
+   `../scripts/identity-distinctness.py` both belong in CI, both exit 0 today.
+
+---
+
+## Verdict (round 1, 2026-09-03 — superseded by the re-review above)
 
 > **9 blocking · 19 major · 10 minor.**
 >

@@ -116,3 +116,41 @@ pinning is sold (OFFER, LANDING), forbidden (WL-02 V3), and unbuildable from the
   cares which modification his contract locked** (OFFER §11.3 Q7). It is the whole differentiator
   and it is a hypothesis. LANDING_SPEC's A/B #1 and the `modification_pin_used` event are the
   cheapest way to learn it — make sure they survive iteration.
+
+---
+
+## Round 2 — re-review after `REVIEW_RESPONSE.md` (2026-09-03)
+
+**Outcome: signed for wave 2.** 0 blocking · 1 major open (M19, orchestrator's file) · 2 minor open
+(M12-residual and m5, identity author's files, both released by the arbitration's file freeze).
+The re-review is the section at the top of `REVIEW.md`; round 1 is preserved below it unchanged so
+the two can be diffed.
+
+**How I re-checked, and what it cost.** Not by reading the response — by re-running the gates and
+grepping the current documents for the *old* text. The four cheapest, highest-value checks:
+
+- `../scripts/identity-distinctness.py` → exit 0 (this is the file that closes B7; the Brand
+  Director pinned WageLens unchanged and moved Certly and StateReady off the shared face and ground).
+- `identity/contrast.py` → exit 0, still 72/72, confirming WageLens's palette really was untouched.
+- `grep "Start free"` and `grep "free week"` → hits only inside the prohibitions and the notes
+  recording the removal. **Grepping for the old string is faster and more honest than reading the
+  new one**: a fix that missed a file shows up immediately.
+- Re-added the landing word budget by hand (55+83+53+117+94+43 = 445 ≤ 450). Per-section budgets
+  moved; the ceiling did not. That is the number an author is most tempted to quietly raise.
+
+**Lesson worth keeping.** The response's own §5 ("what the reviewer should re-check, and where") made
+this round perhaps three times faster, and I could verify every claim in it. A changelog that maps
+each finding to the exact section it was fixed in is the single most useful thing an iterating author
+can produce — ask for it in the first review next time, as part of the format.
+
+**Second lesson.** Two of my findings were fixed *differently* and both answers were better than my
+proposal (M2: reword the bonus rather than build the importer; M9: reword the Audit Binder rather
+than grow an S spec an L-shaped merge step). A reviewer's required-change column should name the
+constraint, not the implementation — the author is closer to the cost.
+
+**Carried forward, and routed rather than waived:** M19 to the orchestrator (one row in
+`PREREQUISITES.md` P7); M12-residual and m5 to the identity author, in one pass with `contrast.py`
+re-run. Plus two build-order conditions I will check at the wave-2 review: capture
+`kb-samples/sam-wd-detail-TX20260253-rev0.json` before WL-13's first commit (every offline test that
+proves the differentiator runs on the mock), and build against `--wl-*` tokens only, because
+WageLens is now *pinned* by the arbitration and its tokens are load-bearing for two sibling apps.

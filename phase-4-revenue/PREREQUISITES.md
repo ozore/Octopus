@@ -10,7 +10,7 @@ Status legend: `todo` (founder), `given`, `n/a`, `later`.
 | P4 | Neon Postgres (Vercel Marketplace) one database per app, `DATABASE_URL` set per project | apps | todo | free tier is enough to start |
 | P5 | Stripe: test-mode secret key + webhook secret per project, then products and prices from the list we hand over | billing | later | list produced at the end of wave 2 |
 | P6 | Resend account, TheVillage domain verified (SPF, DKIM, DMARC), `RESEND_API_KEY` | magic links, receipts, lifecycle emails | todo | DNS access on the TheVillage domain required |
-| P7 | Anthropic API key with a spending cap, `ANTHROPIC_API_KEY` | Certly extraction, StateReady playbooks, WageLens classification assistant | todo | |
+| P7 | Anthropic API key with a spending cap, `ANTHROPIC_API_KEY` | Certly extraction, StateReady playbooks | todo | WageLens does not use the model at launch (a classification assistant is under Never in its backlog); the key is for Certly and StateReady only |
 | P8 | ~~api.data.gov / SAM.gov API key~~ | WageLens wage-determination ingestion | n/a | Corrected 2026-09-03: the documented API page returns 404; SAM.gov's own front-end endpoints (`sam.gov/api/prod/sgs/v1/search/?index=dbra`, `sam.gov/api/prod/wdol/v1/wd/{ref}/{rev}`) work with no key. See `wagelens/KNOWLEDGE_BASE.md` §6. |
 | P9 | A sending mailbox on the TheVillage domain for outbound (e.g. `wagelens@` or `hello@`), warmed up 2 to 3 weeks, connected to this session's Gmail connector if Gmail | outbound drafts and sends | todo | separate from the product's transactional domain if possible |
 | P10 | Physical postal address and support email for TheVillage | legal pages, CAN-SPAM footer | todo | |
