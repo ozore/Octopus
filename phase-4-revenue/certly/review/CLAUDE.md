@@ -5,6 +5,38 @@
 **Deliverables:** `REVIEW.md`, this file. **Nothing else was written and nothing reviewed was edited**
 (PIPELINE standing rule: reviewers never edit).
 
+## Round 2 (re-review, 2026-09-03) — outcome
+
+**BLOCKING 15 → 0 · MAJOR 20 → 3 · MINOR 12 → 8.** **Signed for wave 2 on everything except
+`IDENTITY.md` and one paragraph of `identity/samples.html`.** The re-review section is at the **top** of
+`REVIEW.md`.
+
+**How I re-reviewed, and the one rule that mattered: verify by running, never by reading the response's
+claim.** Five of the six things I could execute reproduced exactly what the author said (`contrast.py`
+166 pairs exit 0; the new `--css` guard exit 0; the schema structural walk; the published word-count
+script printing 413/450; every event-shaped name resolving in `specs/00`). The sixth — counting the
+golden-set table by hand — did **not**: `specs/03 §15`'s header says "16 real + 5 synthetic" while its
+own table is 17 + 4 and the two files it forbids from disagreeing both have it right. That is the
+regression (R-1), and a prose-only re-review would have missed it.
+
+**The pattern in what stayed open.** Every one of the eleven open items is in `IDENTITY.md`, and the
+cause is structural rather than careless: the iteration author swept the *product* files of the retired
+word and the stale numbers (thoroughly — I grepped, and every survivor there is a negation or a quoted
+correction), and `IDENTITY.md §17` item 8 explicitly asks somebody to own that sweep. Nobody owned the
+sweep of `IDENTITY.md`'s **own body**. Two agents each did the other's half. **When a ruling crosses a
+file-ownership boundary, name the owner of each side of it** — I did not, in round 1, and that is why
+these ten lines survived.
+
+**Worth copying into the next review:** the author's `--css` guard (assert the document's declared
+tokens are actually present in the stylesheet) makes B-15 — a document drifting from its
+implementation — mechanically unrepeatable. Ask for that guard by default wherever a document
+certifies values that live in code.
+
+**Where I was wrong in round 1:** MJ-07 offered "mark it as an estimate **or** replace it with a counted
+number". The author deleted the 60% instead and said why — a hedged number is still a number, and
+counting the corpus by eye would have produced a second unverified one. Their answer was better than
+both of mine.
+
 ## Rules I held to
 
 - Read `../PLAN.md` and `../PIPELINE.md` first, then every wave-1 deliverable in full, then

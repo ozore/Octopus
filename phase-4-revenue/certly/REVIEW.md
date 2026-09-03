@@ -1,5 +1,141 @@
 # Certly — wave-1b adversarial review
 
+---
+
+# RE-REVIEW — 2026-09-03 (round 2)
+
+**Input:** `REVIEW_RESPONSE.md` (iteration author), `../IDENTITY_ARBITRATION.md` (Brand Director),
+and the current state of every reviewed file. **Method: I re-checked all 15 blocking and all 20 major
+findings against the documents, not against the response's claims** — every "fixed" below was verified
+by reading the changed section or by running the check. I edited nothing.
+
+## Verdict
+
+> **BLOCKING 0 · MAJOR 3 · MINOR 8 open — all eleven in one file, `IDENTITY.md` (plus one paragraph of
+> `identity/samples.html`), and every one is a one-line copy edit that needs no design decision.**
+>
+> ## ✅ Signed for wave 2 — `PERSONA.md`, `UX.md`, `BACKLOG.md`, `specs/00`–`specs/15`, `specs/schema/coi.v1.schema.json`, `KNOWLEDGE_BASE.md`, `kb-samples/MANIFEST.md`, `THRESHOLDS.md`, `OFFER.md`, `LANDING_SPEC.md`, `design-system.css`, `identity/contrast.py`.
+>
+> ## ⛔ Not signed — `IDENTITY.md`, and the `c-note` paragraph at `identity/samples.html` L489-492.
+>
+> The build can start today on every module in §4.1 below. `IDENTITY.md` must not be used as a build
+> reference for the review panel, the disclaimer, the status word or the reminder ladder until the
+> eleven edits in §R3 land; `design-system.css` is the reference for everything visual and is signed.
+
+This is an unusually good iteration. Fourteen of fifteen blocking findings and eighteen of twenty major
+ones are genuinely closed, several of them **tightened beyond what I asked for** — the M15 retention
+window went to 7 days when I asked for 7 and the producer's personal data was dropped from the anonymous
+path entirely; the reminder caps were given a number (6 per recipient / 10 per expiry) where I only said
+"a cap"; the CAN-SPAM opt-out got a `scope` column and a NEVER entry banning marketing in vendor mail;
+and MJ-07's unsourced 60% was **deleted** rather than hedged, which is the better answer and the one I
+should have given.
+
+## R1. What I verified by running it, not by reading a claim
+
+| check | result |
+|---|---|
+| `python3 identity/contrast.py` | **exit 0** — *"All 166 declared pairs pass: 62 contrast + 21 greyscale, × 2 themes"*, *"glyph, fill pattern and word are distinct for all 7 statuses"*. B-03's seven states are certified, not asserted. |
+| `python3 identity/contrast.py --css` | **exit 0** — every declared token and light value is actually present in `design-system.css`. This is a new guard and it is the right one: it makes B-15 unrepeatable. |
+| Committed schema, structural walk | **OK** — `form_edition` enum is now `['2010/05','2014/01','2016/03','2025/12','unknown']` (B-01); `limits[]` is `['label_raw','label','amount']` with all three `required` (MJ-18); `additionalProperties:false` and `required == properties` everywhere; all `$ref`s resolve. |
+| The word-count script published in `LANDING_SPEC.md §14.1`, extracted and run | **413 / 450, exit 0** — reproduced independently. MJ-11 is closed and the number is now falsifiable by anyone. |
+| Event-name resolution: every event-shaped token in `THRESHOLDS.md`, `BACKLOG.md`, `LANDING_SPEC.md`, `UX.md` and `specs/*` against `specs/00-event-vocabulary.md` | **All resolve.** The only misses are `BACKLOG.md`'s Should/Later rows, which `specs/00 §4` explicitly excludes from `events:check`, and `past_due`, which is a subscription status. 162 registered names, a retired-names table, and `lp_*` namespaced. B-14 closed. |
+| `grep -io "covered"` across the product files | Every survivor is a negation ("Covered is not a status word"), a quoted correction, the form name *Covered Autos*, or JTBD prose about the buyer's question. **B-02 is closed product-side.** `identity/samples.html`: **0 occurrences.** |
+| `specs/03 §15` golden-set table, counted | 21 rows: **17 real (G1–G17) + 4 synthetic (G18–G21)**, G3/G8 merged, E1 named as living in `endorsements/`, G17 = the 2025/12 blank. |
+
+## R2. Findings I close, with what convinced me
+
+**Blocking.** B-01 (enum + KB §A.2 "2025/12 (CURRENT)" + C16 + the `kb:check` assertion that any edition
+quoted in §A.2 must exist in the schema — a better fix than I asked for, because it makes the *class* of
+error impossible). B-02 (product side; identity residual is R3 I-1). B-03 (arbitration §4.2: seven
+states, no fifth hue, `asserted_only` on the Expiring hue separated by a half-disc, a **vertical** hatch
+and "Claimed, not evidenced"; the reasoning that a claimed-but-unevidenced endorsement is *a kind of
+caution* rather than a new meaning is better than my proposal). B-04 (UX side, and `UX.md §3.2` now
+records the withdrawn requirement rather than silently deleting it). B-05, B-06 (plus a `trialConsents`
+row storing the exact disclosure string, the price and the first-charge date — beyond what I asked).
+B-07 (see R2.1). B-08 (option (a), with the CHECK constraint and the security test rewritten against the
+chosen shape). B-09 (and the same section added to the *paid* report, which I had not thought of).
+B-10, B-11 (product side), B-12 (KB side), B-13, B-14, B-15 (§6 regenerated; `--css` proves it).
+
+**Major.** MJ-01, MJ-02 (the gate is now `N_ship = floor(D × 0.03)` with `D` computed from the
+expected-value files and published with its date — exactly right), MJ-03, MJ-04, MJ-06 (five surfaces →
+eleven), MJ-07, MJ-09, MJ-10 (`no_subscription` with a stated 25-vendor / 3-document free-onboarding
+allowance — deliberately enough to activate and too small to run a portfolio on), MJ-11, MJ-12, MJ-13,
+MJ-14, MJ-15, MJ-16, MJ-17, MJ-18, MJ-19, MJ-20 (the blanket assurance **withdrawn** and marked
+`UNVERIFIED` with a named owner, plus `evals/redacted-names.json` and a test — the honest answer).
+MJ-08 is the orchestrator's and is correctly recorded rather than quietly dropped.
+
+**Minor.** MN-01, MN-02 (product half), MN-03, MN-04, MN-06, MN-07, MN-08, MN-09, MN-11, MN-12 closed.
+MN-05 (`README.md`) declined for scope — accepted; it is the orchestrator's file.
+
+### R2.1 On `specs/15 §6.1`, which the author asked to be argued with
+
+**I accept it.** The eight `offer/RESEARCH.md §7` conditions were written for a one-file hero demo, and
+M15 is a portfolio report; the reconciliation names each deviation, justifies it, and adds a ninth
+condition §7 did not think of (no producer personal data stored at all). Two of the three reductions are
+in fact *strictly safer* than §7: source files die inside the render job (minutes, not 24 hours), and
+"processed in memory" was not achievable on this platform in the first place — the property §7 wanted
+(*the file does not outlive the job*) is preserved and is now **testable** at A6 rather than assumed.
+The 25-file reduction is the one real widening of exposure, and it is bounded by per-session caps, IP
+rate limits, a daily spend cap and a 7-day purge, with the strict one-file fallback named and costing no
+new code. The founder's legal read remains a launch gate, which is where I left it.
+
+## R3. Still open — eleven items, all in `IDENTITY.md`
+
+The iteration author swept the product files of the retired word and the stale numbers; `IDENTITY.md §17`
+item 8 asks somebody to own that sweep. **It was done — but `IDENTITY.md`'s own body was not swept.** Each
+item below is a one-line edit. None needs a design decision, and none is disputed: the identity document
+simply lags the rulings its own Arbitration section records.
+
+| id | severity | `IDENTITY.md` (line) | what is still there | what must change |
+|---|---|---|---|---|
+| **I-1** | **major** (B-02 residual) | §1 (116), §3 Step 4 (277), §4.3 (393), §9 (992), §9.2 (1032), §9.4 (1062), §11 (1106), §12.6 (1165), §13.3 (1219) | **"Covered" is still the status word in nine substantive places**, three of them normative: §9.4's hard rule *"a low-confidence field can never contribute to a **Covered** status"*, §12.6's sort order *"then Needs review, then Covered"*, and §3 Step 4's *"the word we own: **Covered**"*. §4.3 lists ✅ *"Know which vendors are covered"* as **approved hero copy**. §1 also still describes **four** states. `contrast.py`'s labels (`"COVERED pill text"` ×20, L157-180) propagate into §6.5's regenerated tables. | Replace with **"Meets requirements"** / `meets`; §1's state list becomes the seven of §6.4; relabel `contrast.py`'s `ok-*` rows `MEETS …` and re-run `--md`. The document's own §4.2 and its Arbitration table already say this — only the body lags. |
+| **I-2** | **major** (B-12 residual) | §4.4 rule 4 (440-441); `identity/samples.html` L489-492 | Both still carry the **second** disclaimer text — *"Certly reports what a certificate says against the requirement you set. It is not insurance advice and it does not verify the underlying policy."* `KNOWLEDGE_BASE.md §F`'s new preamble names this exact conflict and `specs/13 §12` now runs **a grep that fails the build on a near-duplicate disclaimer string anywhere in the repo**. As written, the identity files fail the test the specs just added. | §4.4 rule 4 becomes a **pointer** to KB §F.1; `samples.html`'s `c-note` renders the §F.1 string verbatim. |
+| **I-3** | **major** (B-04 residual) | §12.2 (1132), §11 (1108) | Still specifies *"**highlight boxes** keyed to extracted fields… a 2px `--c-focus` outline at 40% opacity; the active highlight is solid"* and *"as each field resolves, its highlight box appears on the document"*. `UX.md §2.2 S12`/`§3.2` now say the opposite in as many words — *"nothing is highlighted on the page"* — and the schema returns `page` + `source_text` with **no geometry**. **A builder reading `IDENTITY.md §12.2` builds a screen the extractor cannot feed.** | Rewrite §12.2 and §11 to `UX.md §3.2`: scroll-to-page, the `source_text` span as a quotation, the quote-gate result in words, and the reveal animating **in the panel**. |
+| **I-4** | minor (B-11 residual) | §12.1 (1127) | Hardcodes `vendor-name@in.certly.app` — the domain `IDENTITY.md §2.1` itself records as somebody else's parked placeholder. Every other file now uses `{INBOUND_DOMAIN}`. | `{INBOUND_DOMAIN}` from env. |
+| **I-5** | minor (MJ-05 residual) | §7.1 (906) | *"Exactly one stylesheet link, `fonts.googleapis.com`"* against `LANDING_SPEC.md §10`'s CI-enforced *"third-party requests: 0 on first view, no CDN fonts"* and its `next/font` ruling. | State `next/font`, self-hosted at build time; the CDN link survives only in `samples.html`, which is not a shipped surface. |
+| **I-6** | minor (§2.7 residual) | §4.3 (422) | ✅ *"$99 a month up to 50 certificates. $199 to 150. **$299 to 500**."* — wrong on both the number (**400**) and the unit (**tracked vendors**, B-10). | *"$99 up to 50 tracked vendors. $199 to 150. $299 to 400."* |
+| **I-7** | minor (§2.8 residual) | §12.10 (1189) | The reminder composer still specifies offsets **"−30, −14, −3, +1"**. Canonical everywhere else is T−60/−30/−14/−7/−1/T+1/weekly-to-T+28. | Adopt the canonical ladder; add the "message {n} of {total}" line `specs/07 §6` now requires. |
+| **I-8** | minor (MN-02 residual) | §9.2 (1032) | The coverage-bar `aria-label` example still reads *"…then **no coverage** on record"* — a statement about coverage where we mean the record. The arbitration rewrote `samples.html`'s labels but not this one. | *"then no certificate on record"*. |
+| **I-9** | minor (MN-10 residual) | §12.1 (1127) | The drop zone *"always shows the forward-to address"*, but forward-by-email is `SH-1`. `UX.md §1.2` now says so; the identity does not. | Mark post-MVP or remove. |
+| **I-10** | minor (MJ-12 residual) | §17.5 (1385) | *"Whether the founder wants a free tier"* is still open. `PERSONA.md §9.4` is now struck through and marked resolved by `BACKLOG.md N12` + `OFFER.md §9`. | Mark resolved, same wording. |
+| **I-11** | minor | §17.7 (1389) | Notes that the requirement-level `needs_review` → `undetermined` rename (MN-04) is *"not applied here"*. `specs/05` has applied it and `specs/05 §2.1` maps both onto the identity's `needs_review` **display** state, which is correct — two scopes, one word at the display layer. | Adopt, or record the mapping so a reader does not think it was missed. |
+
+## R4. Regression introduced by the iteration
+
+| id | file · section | what happened |
+|---|---|---|
+| **R-1** | `specs/03 §15` (623) | **The section MJ-01 was raised against still does not add up.** Its header reads *"Membership — **21 fixtures: 16 real documents + 5 synthetic**. This list is canonical; `KNOWLEDGE_BASE.md §D.5` and `THRESHOLDS.md §4.1` quote it and must not restate it differently."* Its own table is **17 real (G1–G17) + 4 synthetic (G18–G21)** — and the two files it forbids from disagreeing both have it right (KB §D.5: *"17 real documents (G1–G17) + 4 synthetic"*; THRESHOLDS §4.1: *"the 17 real fixtures G1–G17 — sixteen in `kb-samples/certificates/` plus E1"*). One sentence, but it is the canonical one, and MJ-02's denominator sums over G1..G17. **Fix the header to 17 + 4.** |
+
+Nothing else regressed. I re-checked the areas most at risk from a large rename — the `--c-ok-*` token
+names (unchanged, and `--css` proves the CSS matches), the comparison-engine state machine, the Stripe
+metadata keys, and the eleven disclaimer surfaces — and found no collateral damage.
+
+## R5. Two things carried forward, neither blocking
+
+1. **C16 is a manifest row without a file** (`kb-samples/MANIFEST.md` C16, `specs/03 §15` G17). The
+   author made this a deliberate, `kb:check`-gated exception to the manifest's own rule 4 and asked for
+   a second opinion. **I accept it, with one practical note:** I fetched the bytes myself in this
+   session, so the blocker is not access. The first attempt 403s with a Chrome UA; this works —
+   `curl -sSL --compressed -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15
+   (KHTML, like Gecko) Version/17.0 Safari/605.1.15" "<the NY DFS URL in the manifest row>"`. Commit
+   the file before G17 runs; **M4 cannot be declared done while a golden-set fixture is a URL.**
+2. **The golden set still does not exist.** MJ-01/MJ-02 are closed as *documents* — membership,
+   ownership, the two-day estimate and the computed denominator are all now written down — but no
+   expected-value file has been written. It remains the only multi-day serial dependency in wave 2.
+   Start it on day one.
+
+## R6. What must change before `IDENTITY.md` is signed
+
+The eleven edits in §R3 and the one-sentence fix in §R4. Two of them (**I-2**, **I-3**) would actively
+mislead a builder or fail a test the specs just added, so they come first; the rest are copy hygiene.
+None is disputed and none requires a design decision — `IDENTITY.md`'s own Arbitration section and §4.2
+already record the rulings its body has not yet caught up with. Re-run `python3 identity/contrast.py`
+and `--css` after the `contrast.py` label change, and re-run `--md` to regenerate §6.5.
+
+**On the rest of the folder I am satisfied. Signed for wave 2.**
+
+---
+
 **Reviewer:** wave-1b Reviewer agent (Certly). **Date:** 2026-09-03.
 **Scope read in full:** `PERSONA.md`, `IDENTITY.md`, `design-system.css`, `UX.md`, `identity/samples.html`,
 `identity/contrast.py`, `identity/research/*`, `BACKLOG.md`, `specs/01`–`specs/15`,
