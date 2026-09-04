@@ -1,0 +1,1461 @@
+{
+ "_embedded": {
+  "results": [
+   {
+    "_index": "db-prod-samdotgovsearch-wdol-dba_idxref_09032026",
+    "year": 2026,
+    "shortReferenceNumber": "TX253",
+    "revisionNumber": 1,
+    "suggestion": {
+     "input": [
+      "tx20260253"
+     ],
+     "contexts": {
+      "isActive": true
+     }
+    },
+    "_rScore": 0,
+    "publishDate": 1779076800000,
+    "_type": "wdDBRA",
+    "indexedDate": "2026-09-03T06:04:29-04:00",
+    "allReferenceNumbers": [
+     {
+      "wdNumber": "TX260253"
+     },
+     {
+      "wdNumber": "TX26253"
+     },
+     {
+      "wdNumber": "TX2026253"
+     },
+     {
+      "wdNumber": "TX0253"
+     }
+    ],
+    "type": {
+     "code": "DBA",
+     "value": "Davis-Bacon Act"
+    },
+    "title": "TX20260253",
+    "isActive": true,
+    "_samdotgovType": "wdDBRA",
+    "fullReferenceNumber": "TX20260253",
+    "isStandard": true,
+    "constructionTypes": [
+     "Building"
+    ],
+    "modifiedDate": "2026-05-18T00:00:00-04:00",
+    "rollover": false,
+    "location": {
+     "state": {
+      "code": "TX",
+      "name": "Texas",
+      "counties": [
+       {
+        "code": 14885,
+        "value": "Harris"
+       }
+      ]
+     }
+    },
+    "_id": "TX20260253"
+   },
+   {
+    "_index": "db-prod-samdotgovsearch-wdol-dba_idxref_09032026",
+    "year": 2026,
+    "shortReferenceNumber": "TX299",
+    "revisionNumber": 1,
+    "suggestion": {
+     "input": [
+      "tx20260299"
+     ],
+     "contexts": {
+      "isActive": true
+     }
+    },
+    "_rScore": 0,
+    "publishDate": 1779076800000,
+    "_type": "wdDBRA",
+    "indexedDate": "2026-09-03T06:04:29-04:00",
+    "allReferenceNumbers": [
+     {
+      "wdNumber": "TX260299"
+     },
+     {
+      "wdNumber": "TX26299"
+     },
+     {
+      "wdNumber": "TX2026299"
+     },
+     {
+      "wdNumber": "TX0299"
+     }
+    ],
+    "type": {
+     "code": "DBA",
+     "value": "Davis-Bacon Act"
+    },
+    "title": "TX20260299",
+    "isActive": true,
+    "_samdotgovType": "wdDBRA",
+    "fullReferenceNumber": "TX20260299",
+    "isStandard": true,
+    "constructionTypes": [
+     "Highway"
+    ],
+    "modifiedDate": "2026-05-18T00:00:00-04:00",
+    "rollover": false,
+    "location": {
+     "state": {
+      "code": "TX",
+      "name": "Texas",
+      "counties": [
+       {
+        "code": 14815,
+        "value": "Hardin"
+       },
+       {
+        "code": 14817,
+        "value": "Jefferson"
+       },
+       {
+        "code": 14820,
+        "value": "Orange"
+       },
+       {
+        "code": 14878,
+        "value": "Austin"
+       },
+       {
+        "code": 14879,
+        "value": "Brazoria"
+       },
+       {
+        "code": 14880,
+        "value": "Chambers"
+       },
+       {
+        "code": 14882,
+        "value": "Fort Bend"
+       },
+       {
+        "code": 14883,
+        "value": "Galveston"
+       },
+       {
+        "code": 14885,
+        "value": "Harris"
+       },
+       {
+        "code": 14889,
+        "value": "Liberty"
+       },
+       {
+        "code": 14892,
+        "value": "Montgomery"
+       },
+       {
+        "code": 14893,
+        "value": "San Jacinto"
+       },
+       {
+        "code": 14896,
+        "value": "Waller"
+       }
+      ]
+     }
+    },
+    "_id": "TX20260299"
+   },
+   {
+    "_index": "db-prod-samdotgovsearch-wdol-dba_idxref_09032026",
+    "year": 2026,
+    "shortReferenceNumber": "TX31",
+    "revisionNumber": 1,
+    "suggestion": {
+     "input": [
+      "tx20260031"
+     ],
+     "contexts": {
+      "isActive": true
+     }
+    },
+    "_rScore": 0,
+    "publishDate": 1779076800000,
+    "_type": "wdDBRA",
+    "indexedDate": "2026-09-03T06:04:29-04:00",
+    "allReferenceNumbers": [
+     {
+      "wdNumber": "TX260031"
+     },
+     {
+      "wdNumber": "TX2631"
+     },
+     {
+      "wdNumber": "TX202631"
+     },
+     {
+      "wdNumber": "TX0031"
+     }
+    ],
+    "type": {
+     "code": "DBA",
+     "value": "Davis-Bacon Act"
+    },
+    "title": "TX20260031",
+    "isActive": true,
+    "_samdotgovType": "wdDBRA",
+    "fullReferenceNumber": "TX20260031",
+    "isStandard": true,
+    "constructionTypes": [
+     "Heavy"
+    ],
+    "modifiedDate": "2026-05-18T00:00:00-04:00",
+    "rollover": false,
+    "location": {
+     "state": {
+      "code": "TX",
+      "name": "Texas",
+      "counties": [
+       {
+        "code": 14885,
+        "value": "Harris"
+       }
+      ]
+     }
+    },
+    "_id": "TX20260031"
+   },
+   {
+    "_index": "db-prod-samdotgovsearch-wdol-dba_idxref_09032026",
+    "year": 2026,
+    "shortReferenceNumber": "TX33",
+    "revisionNumber": 1,
+    "suggestion": {
+     "input": [
+      "tx20260033"
+     ],
+     "contexts": {
+      "isActive": true
+     }
+    },
+    "_rScore": 0,
+    "publishDate": 1779076800000,
+    "_type": "wdDBRA",
+    "indexedDate": "2026-09-03T06:04:29-04:00",
+    "allReferenceNumbers": [
+     {
+      "wdNumber": "TX260033"
+     },
+     {
+      "wdNumber": "TX2633"
+     },
+     {
+      "wdNumber": "TX202633"
+     },
+     {
+      "wdNumber": "TX0033"
+     }
+    ],
+    "type": {
+     "code": "DBA",
+     "value": "Davis-Bacon Act"
+    },
+    "title": "TX20260033",
+    "isActive": true,
+    "_samdotgovType": "wdDBRA",
+    "fullReferenceNumber": "TX20260033",
+    "isStandard": true,
+    "constructionTypes": [
+     "Heavy"
+    ],
+    "modifiedDate": "2026-05-18T00:00:00-04:00",
+    "rollover": false,
+    "location": {
+     "state": {
+      "code": "TX",
+      "name": "Texas",
+      "counties": [
+       {
+        "code": 14794,
+        "value": "Bastrop"
+       },
+       {
+        "code": 14795,
+        "value": "Blanco"
+       },
+       {
+        "code": 14796,
+        "value": "Burleson"
+       },
+       {
+        "code": 14797,
+        "value": "Burnet"
+       },
+       {
+        "code": 14798,
+        "value": "Caldwell"
+       },
+       {
+        "code": 14799,
+        "value": "Fayette"
+       },
+       {
+        "code": 14800,
+        "value": "Hays"
+       },
+       {
+        "code": 14801,
+        "value": "Lampasas"
+       },
+       {
+        "code": 14802,
+        "value": "Lee"
+       },
+       {
+        "code": 14803,
+        "value": "Llano"
+       },
+       {
+        "code": 14804,
+        "value": "Mason"
+       },
+       {
+        "code": 14805,
+        "value": "Milam"
+       },
+       {
+        "code": 14806,
+        "value": "San Saba"
+       },
+       {
+        "code": 14807,
+        "value": "Travis"
+       },
+       {
+        "code": 14808,
+        "value": "Williamson"
+       },
+       {
+        "code": 14814,
+        "value": "Angelina"
+       },
+       {
+        "code": 14815,
+        "value": "Hardin"
+       },
+       {
+        "code": 14816,
+        "value": "Jasper"
+       },
+       {
+        "code": 14817,
+        "value": "Jefferson"
+       },
+       {
+        "code": 14818,
+        "value": "Nacogdoches"
+       },
+       {
+        "code": 14819,
+        "value": "Newton"
+       },
+       {
+        "code": 14820,
+        "value": "Orange"
+       },
+       {
+        "code": 14821,
+        "value": "Polk"
+       },
+       {
+        "code": 14822,
+        "value": "Sabine"
+       },
+       {
+        "code": 14823,
+        "value": "San Augustine"
+       },
+       {
+        "code": 14824,
+        "value": "Shelby"
+       },
+       {
+        "code": 14825,
+        "value": "Tyler"
+       },
+       {
+        "code": 14826,
+        "value": "Aransas"
+       },
+       {
+        "code": 14827,
+        "value": "Bee"
+       },
+       {
+        "code": 14828,
+        "value": "Calhoun"
+       },
+       {
+        "code": 14829,
+        "value": "Goliad"
+       },
+       {
+        "code": 14830,
+        "value": "Jim Wells"
+       },
+       {
+        "code": 14831,
+        "value": "Kleberg"
+       },
+       {
+        "code": 14832,
+        "value": "Live Oak"
+       },
+       {
+        "code": 14833,
+        "value": "Nueces"
+       },
+       {
+        "code": 14834,
+        "value": "Refugio"
+       },
+       {
+        "code": 14835,
+        "value": "San Patricio"
+       },
+       {
+        "code": 14836,
+        "value": "Victoria"
+       },
+       {
+        "code": 14837,
+        "value": "Collin"
+       },
+       {
+        "code": 14838,
+        "value": "Cooke"
+       },
+       {
+        "code": 14839,
+        "value": "Dallas"
+       },
+       {
+        "code": 14840,
+        "value": "Delta"
+       },
+       {
+        "code": 14841,
+        "value": "Denton"
+       },
+       {
+        "code": 14842,
+        "value": "Ellis"
+       },
+       {
+        "code": 14843,
+        "value": "Fannin"
+       },
+       {
+        "code": 14844,
+        "value": "Grayson"
+       },
+       {
+        "code": 14845,
+        "value": "Henderson"
+       },
+       {
+        "code": 14846,
+        "value": "Hopkins"
+       },
+       {
+        "code": 14847,
+        "value": "Hunt"
+       },
+       {
+        "code": 14848,
+        "value": "Kaufman"
+       },
+       {
+        "code": 14849,
+        "value": "Lamar"
+       },
+       {
+        "code": 14850,
+        "value": "Navarro"
+       },
+       {
+        "code": 14851,
+        "value": "Rains"
+       },
+       {
+        "code": 14852,
+        "value": "Rockwall"
+       },
+       {
+        "code": 14853,
+        "value": "Smith"
+       },
+       {
+        "code": 14854,
+        "value": "Van Zandt"
+       },
+       {
+        "code": 14855,
+        "value": "Wood"
+       },
+       {
+        "code": 14865,
+        "value": "Culberson"
+       },
+       {
+        "code": 14866,
+        "value": "El Paso"
+       },
+       {
+        "code": 14867,
+        "value": "Hudspeth"
+       },
+       {
+        "code": 14868,
+        "value": "Erath"
+       },
+       {
+        "code": 14869,
+        "value": "Hood"
+       },
+       {
+        "code": 14870,
+        "value": "Jack"
+       },
+       {
+        "code": 14871,
+        "value": "Johnson"
+       },
+       {
+        "code": 14872,
+        "value": "Montague"
+       },
+       {
+        "code": 14873,
+        "value": "Palo Pinto"
+       },
+       {
+        "code": 14874,
+        "value": "Parker"
+       },
+       {
+        "code": 14875,
+        "value": "Somervell"
+       },
+       {
+        "code": 14876,
+        "value": "Tarrant"
+       },
+       {
+        "code": 14877,
+        "value": "Wise"
+       },
+       {
+        "code": 14878,
+        "value": "Austin"
+       },
+       {
+        "code": 14879,
+        "value": "Brazoria"
+       },
+       {
+        "code": 14880,
+        "value": "Chambers"
+       },
+       {
+        "code": 14881,
+        "value": "Colorado"
+       },
+       {
+        "code": 14882,
+        "value": "Fort Bend"
+       },
+       {
+        "code": 14883,
+        "value": "Galveston"
+       },
+       {
+        "code": 14884,
+        "value": "Grimes"
+       },
+       {
+        "code": 14885,
+        "value": "Harris"
+       },
+       {
+        "code": 14886,
+        "value": "Houston"
+       },
+       {
+        "code": 14887,
+        "value": "Jackson"
+       },
+       {
+        "code": 14888,
+        "value": "Lavaca"
+       },
+       {
+        "code": 14889,
+        "value": "Liberty"
+       },
+       {
+        "code": 14890,
+        "value": "Madison"
+       },
+       {
+        "code": 14891,
+        "value": "Matagorda"
+       },
+       {
+        "code": 14892,
+        "value": "Montgomery"
+       },
+       {
+        "code": 14893,
+        "value": "San Jacinto"
+       },
+       {
+        "code": 14894,
+        "value": "Trinity"
+       },
+       {
+        "code": 14895,
+        "value": "Walker"
+       },
+       {
+        "code": 14896,
+        "value": "Waller"
+       },
+       {
+        "code": 14897,
+        "value": "Washington"
+       },
+       {
+        "code": 14898,
+        "value": "Wharton"
+       },
+       {
+        "code": 14907,
+        "value": "Andrews"
+       },
+       {
+        "code": 14908,
+        "value": "Armstrong"
+       },
+       {
+        "code": 14909,
+        "value": "Bailey"
+       },
+       {
+        "code": 14910,
+        "value": "Borden"
+       },
+       {
+        "code": 14911,
+        "value": "Brewster"
+       },
+       {
+        "code": 14912,
+        "value": "Briscoe"
+       },
+       {
+        "code": 14913,
+        "value": "Brown"
+       },
+       {
+        "code": 14914,
+        "value": "Callahan"
+       },
+       {
+        "code": 14915,
+        "value": "Carson"
+       },
+       {
+        "code": 14916,
+        "value": "Castro"
+       },
+       {
+        "code": 14917,
+        "value": "Childress"
+       },
+       {
+        "code": 14918,
+        "value": "Cochran"
+       },
+       {
+        "code": 14919,
+        "value": "Coke"
+       },
+       {
+        "code": 14920,
+        "value": "Coleman"
+       },
+       {
+        "code": 14921,
+        "value": "Collingsworth"
+       },
+       {
+        "code": 14922,
+        "value": "Comanche"
+       },
+       {
+        "code": 14923,
+        "value": "Concho"
+       },
+       {
+        "code": 14924,
+        "value": "Cottle"
+       },
+       {
+        "code": 14925,
+        "value": "Crane"
+       },
+       {
+        "code": 14926,
+        "value": "Crockett"
+       },
+       {
+        "code": 14927,
+        "value": "Crosby"
+       },
+       {
+        "code": 14928,
+        "value": "Dallam"
+       },
+       {
+        "code": 14929,
+        "value": "Dawson"
+       },
+       {
+        "code": 14930,
+        "value": "Deaf Smith"
+       },
+       {
+        "code": 14931,
+        "value": "Dickens"
+       },
+       {
+        "code": 14932,
+        "value": "Donley"
+       },
+       {
+        "code": 14933,
+        "value": "Eastland"
+       },
+       {
+        "code": 14934,
+        "value": "Ector"
+       },
+       {
+        "code": 14935,
+        "value": "Fisher"
+       },
+       {
+        "code": 14936,
+        "value": "Floyd"
+       },
+       {
+        "code": 14937,
+        "value": "Foard"
+       },
+       {
+        "code": 14938,
+        "value": "Gaines"
+       },
+       {
+        "code": 14939,
+        "value": "Garza"
+       },
+       {
+        "code": 14940,
+        "value": "Glasscock"
+       },
+       {
+        "code": 14941,
+        "value": "Gray"
+       },
+       {
+        "code": 14942,
+        "value": "Hale"
+       },
+       {
+        "code": 14943,
+        "value": "Hall"
+       },
+       {
+        "code": 14944,
+        "value": "Hansford"
+       },
+       {
+        "code": 14945,
+        "value": "Hardeman"
+       },
+       {
+        "code": 14946,
+        "value": "Hartley"
+       },
+       {
+        "code": 14947,
+        "value": "Haskell"
+       },
+       {
+        "code": 14948,
+        "value": "Hemphill"
+       },
+       {
+        "code": 14949,
+        "value": "Hockley"
+       },
+       {
+        "code": 14950,
+        "value": "Howard"
+       },
+       {
+        "code": 14951,
+        "value": "Hutchinson"
+       },
+       {
+        "code": 14952,
+        "value": "Irion"
+       },
+       {
+        "code": 14953,
+        "value": "Jeff Davis"
+       },
+       {
+        "code": 14954,
+        "value": "Jones"
+       },
+       {
+        "code": 14955,
+        "value": "Kent"
+       },
+       {
+        "code": 14956,
+        "value": "Kimble"
+       },
+       {
+        "code": 14957,
+        "value": "King"
+       },
+       {
+        "code": 14958,
+        "value": "Knox"
+       },
+       {
+        "code": 14959,
+        "value": "Lamb"
+       },
+       {
+        "code": 14960,
+        "value": "Lipscomb"
+       },
+       {
+        "code": 14961,
+        "value": "Loving"
+       },
+       {
+        "code": 14962,
+        "value": "Lubbock"
+       },
+       {
+        "code": 14963,
+        "value": "Lynn"
+       },
+       {
+        "code": 14964,
+        "value": "Martin"
+       },
+       {
+        "code": 14965,
+        "value": "McCulloch"
+       },
+       {
+        "code": 14966,
+        "value": "Menard"
+       },
+       {
+        "code": 14967,
+        "value": "Midland"
+       },
+       {
+        "code": 14968,
+        "value": "Mitchell"
+       },
+       {
+        "code": 14969,
+        "value": "Moore"
+       },
+       {
+        "code": 14970,
+        "value": "Motley"
+       },
+       {
+        "code": 14971,
+        "value": "Nolan"
+       },
+       {
+        "code": 14972,
+        "value": "Ochiltree"
+       },
+       {
+        "code": 14973,
+        "value": "Oldham"
+       },
+       {
+        "code": 14974,
+        "value": "Parmer"
+       },
+       {
+        "code": 14975,
+        "value": "Pecos"
+       },
+       {
+        "code": 14976,
+        "value": "Potter"
+       },
+       {
+        "code": 14977,
+        "value": "Presidio"
+       },
+       {
+        "code": 14978,
+        "value": "Randall"
+       },
+       {
+        "code": 14979,
+        "value": "Reagan"
+       },
+       {
+        "code": 14980,
+        "value": "Reeves"
+       },
+       {
+        "code": 14981,
+        "value": "Roberts"
+       },
+       {
+        "code": 14982,
+        "value": "Runnels"
+       },
+       {
+        "code": 14983,
+        "value": "Schleicher"
+       },
+       {
+        "code": 14984,
+        "value": "Scurry"
+       },
+       {
+        "code": 14985,
+        "value": "Shackelford"
+       },
+       {
+        "code": 14986,
+        "value": "Sherman"
+       },
+       {
+        "code": 14987,
+        "value": "Stephens"
+       },
+       {
+        "code": 14988,
+        "value": "Sterling"
+       },
+       {
+        "code": 14989,
+        "value": "Stonewall"
+       },
+       {
+        "code": 14990,
+        "value": "Sutton"
+       },
+       {
+        "code": 14991,
+        "value": "Swisher"
+       },
+       {
+        "code": 14992,
+        "value": "Taylor"
+       },
+       {
+        "code": 14993,
+        "value": "Terrell"
+       },
+       {
+        "code": 14994,
+        "value": "Terry"
+       },
+       {
+        "code": 14995,
+        "value": "Throckmorton"
+       },
+       {
+        "code": 14996,
+        "value": "Tom Green"
+       },
+       {
+        "code": 14997,
+        "value": "Upton"
+       },
+       {
+        "code": 14998,
+        "value": "Ward"
+       },
+       {
+        "code": 14999,
+        "value": "Wheeler"
+       },
+       {
+        "code": 15000,
+        "value": "Winkler"
+       },
+       {
+        "code": 15001,
+        "value": "Yoakum"
+       },
+       {
+        "code": 15002,
+        "value": "Young"
+       },
+       {
+        "code": 15003,
+        "value": "Brooks"
+       },
+       {
+        "code": 15004,
+        "value": "Cameron"
+       },
+       {
+        "code": 15005,
+        "value": "Dimmit"
+       },
+       {
+        "code": 15006,
+        "value": "Duval"
+       },
+       {
+        "code": 15007,
+        "value": "Frio"
+       },
+       {
+        "code": 15008,
+        "value": "Hidalgo"
+       },
+       {
+        "code": 15009,
+        "value": "Jim Hogg"
+       },
+       {
+        "code": 15010,
+        "value": "Kenedy"
+       },
+       {
+        "code": 15011,
+        "value": "La Salle"
+       },
+       {
+        "code": 15012,
+        "value": "Maverick"
+       },
+       {
+        "code": 15013,
+        "value": "Starr"
+       },
+       {
+        "code": 15014,
+        "value": "Webb"
+       },
+       {
+        "code": 15015,
+        "value": "Willacy"
+       },
+       {
+        "code": 15016,
+        "value": "Zapata"
+       },
+       {
+        "code": 15017,
+        "value": "Zavala"
+       },
+       {
+        "code": 15018,
+        "value": "Atascosa"
+       },
+       {
+        "code": 15019,
+        "value": "Bandera"
+       },
+       {
+        "code": 15020,
+        "value": "Bexar"
+       },
+       {
+        "code": 15021,
+        "value": "Comal"
+       },
+       {
+        "code": 15022,
+        "value": "De Witt"
+       },
+       {
+        "code": 15023,
+        "value": "Edwards"
+       },
+       {
+        "code": 15024,
+        "value": "Gillespie"
+       },
+       {
+        "code": 15025,
+        "value": "Gonzales"
+       },
+       {
+        "code": 15026,
+        "value": "Guadalupe"
+       },
+       {
+        "code": 15027,
+        "value": "Karnes"
+       },
+       {
+        "code": 15028,
+        "value": "Kendall"
+       },
+       {
+        "code": 15029,
+        "value": "Kerr"
+       },
+       {
+        "code": 15030,
+        "value": "Kinney"
+       },
+       {
+        "code": 15388,
+        "value": "Bowie"
+       },
+       {
+        "code": 15389,
+        "value": "Camp"
+       },
+       {
+        "code": 15390,
+        "value": "Cass"
+       },
+       {
+        "code": 15391,
+        "value": "Cherokee"
+       },
+       {
+        "code": 15392,
+        "value": "Franklin"
+       },
+       {
+        "code": 15393,
+        "value": "Gregg"
+       },
+       {
+        "code": 15394,
+        "value": "Harrison"
+       },
+       {
+        "code": 15395,
+        "value": "Marion"
+       },
+       {
+        "code": 15396,
+        "value": "Morris"
+       },
+       {
+        "code": 15397,
+        "value": "Panola"
+       },
+       {
+        "code": 15398,
+        "value": "Red River"
+       },
+       {
+        "code": 15399,
+        "value": "Rusk"
+       },
+       {
+        "code": 15400,
+        "value": "Titus"
+       },
+       {
+        "code": 15401,
+        "value": "Upshur"
+       },
+       {
+        "code": 16821,
+        "value": "McMullen"
+       },
+       {
+        "code": 16822,
+        "value": "Medina"
+       },
+       {
+        "code": 16823,
+        "value": "Real"
+       },
+       {
+        "code": 16824,
+        "value": "Uvalde"
+       },
+       {
+        "code": 16825,
+        "value": "Val Verde"
+       },
+       {
+        "code": 16826,
+        "value": "Wilson"
+       },
+       {
+        "code": 16827,
+        "value": "Anderson"
+       },
+       {
+        "code": 16828,
+        "value": "Bell"
+       },
+       {
+        "code": 16829,
+        "value": "Bosque"
+       },
+       {
+        "code": 16830,
+        "value": "Brazos"
+       },
+       {
+        "code": 16831,
+        "value": "Coryell"
+       },
+       {
+        "code": 16832,
+        "value": "Falls"
+       },
+       {
+        "code": 16833,
+        "value": "Freestone"
+       },
+       {
+        "code": 16834,
+        "value": "Hamilton"
+       },
+       {
+        "code": 16835,
+        "value": "Hill"
+       },
+       {
+        "code": 16836,
+        "value": "Leon"
+       },
+       {
+        "code": 16837,
+        "value": "Limestone"
+       },
+       {
+        "code": 16838,
+        "value": "McLennan"
+       },
+       {
+        "code": 16839,
+        "value": "Mills"
+       },
+       {
+        "code": 16840,
+        "value": "Robertson"
+       },
+       {
+        "code": 16850,
+        "value": "Archer"
+       },
+       {
+        "code": 16851,
+        "value": "Baylor"
+       },
+       {
+        "code": 16852,
+        "value": "Clay"
+       },
+       {
+        "code": 16853,
+        "value": "Wichita"
+       },
+       {
+        "code": 16854,
+        "value": "Wilbarger"
+       }
+      ]
+     }
+    },
+    "_id": "TX20260033"
+   },
+   {
+    "_index": "db-prod-samdotgovsearch-wdol-dba_idxref_09032026",
+    "year": 2026,
+    "shortReferenceNumber": "TX34",
+    "revisionNumber": 1,
+    "suggestion": {
+     "input": [
+      "tx20260034"
+     ],
+     "contexts": {
+      "isActive": true
+     }
+    },
+    "_rScore": 0,
+    "publishDate": 1779076800000,
+    "_type": "wdDBRA",
+    "indexedDate": "2026-09-03T06:04:29-04:00",
+    "allReferenceNumbers": [
+     {
+      "wdNumber": "TX260034"
+     },
+     {
+      "wdNumber": "TX2634"
+     },
+     {
+      "wdNumber": "TX202634"
+     },
+     {
+      "wdNumber": "TX0034"
+     }
+    ],
+    "type": {
+     "code": "DBA",
+     "value": "Davis-Bacon Act"
+    },
+    "title": "TX20260034",
+    "isActive": true,
+    "_samdotgovType": "wdDBRA",
+    "fullReferenceNumber": "TX20260034",
+    "isStandard": true,
+    "constructionTypes": [
+     "Heavy"
+    ],
+    "modifiedDate": "2026-05-18T00:00:00-04:00",
+    "rollover": false,
+    "location": {
+     "state": {
+      "code": "TX",
+      "name": "Texas",
+      "counties": [
+       {
+        "code": 14879,
+        "value": "Brazoria"
+       },
+       {
+        "code": 14882,
+        "value": "Fort Bend"
+       },
+       {
+        "code": 14883,
+        "value": "Galveston"
+       },
+       {
+        "code": 14885,
+        "value": "Harris"
+       },
+       {
+        "code": 14891,
+        "value": "Matagorda"
+       },
+       {
+        "code": 14892,
+        "value": "Montgomery"
+       },
+       {
+        "code": 14896,
+        "value": "Waller"
+       },
+       {
+        "code": 14898,
+        "value": "Wharton"
+       }
+      ]
+     }
+    },
+    "_id": "TX20260034"
+   },
+   {
+    "_index": "db-prod-samdotgovsearch-wdol-dba_idxref_09032026",
+    "year": 2026,
+    "shortReferenceNumber": "TX67",
+    "revisionNumber": 1,
+    "suggestion": {
+     "input": [
+      "tx20260067"
+     ],
+     "contexts": {
+      "isActive": true
+     }
+    },
+    "_rScore": 0,
+    "publishDate": 1779076800000,
+    "_type": "wdDBRA",
+    "indexedDate": "2026-09-03T06:04:29-04:00",
+    "allReferenceNumbers": [
+     {
+      "wdNumber": "TX260067"
+     },
+     {
+      "wdNumber": "TX2667"
+     },
+     {
+      "wdNumber": "TX202667"
+     },
+     {
+      "wdNumber": "TX0067"
+     }
+    ],
+    "type": {
+     "code": "DBA",
+     "value": "Davis-Bacon Act"
+    },
+    "title": "TX20260067",
+    "isActive": true,
+    "_samdotgovType": "wdDBRA",
+    "fullReferenceNumber": "TX20260067",
+    "isStandard": true,
+    "constructionTypes": [
+     "Residential"
+    ],
+    "modifiedDate": "2026-05-18T00:00:00-04:00",
+    "rollover": false,
+    "location": {
+     "state": {
+      "code": "TX",
+      "name": "Texas",
+      "counties": [
+       {
+        "code": 14885,
+        "value": "Harris"
+       }
+      ]
+     }
+    },
+    "_id": "TX20260067"
+   }
+  ]
+ },
+ "_links": {
+  "self": {
+   "href": "https://52samdotgovsearch.prod.apps-internal.prod-iae.bsp.gsa.gov/sgs/v1/search?index=dbra&index=dbra&page=0&page=0&size=10&size=10&sort=-relevance&raw=false&mode=search&mode=search&is_active=true&state=TX&county=14885{&q,qMode,exactMatch}",
+   "templated": true
+  }
+ },
+ "page": {
+  "size": 6,
+  "totalElements": 6,
+  "totalPages": 1,
+  "number": 0,
+  "maxAllowedRecords": 10000
+ }
+}

@@ -1,0 +1,67 @@
+{
+  "block_tags_and_br": {
+    "input": "<html><head><title>x</title><style>a{}</style></head><body><h1>Renew</h1><p>Licenses are valid for a period of 1 year.</p><br/><div>Fee: $65</div><ul><li>One</li><li>Two</li></ul></body></html>",
+    "normalised": "Renew\nLicenses are valid for a period of 1 year.\nFee: $65\nOne\nTwo",
+    "sha256": "0ef0de2bd8e439d8c00cbae207a646bb790d1598892116206bfe4d1311f53a03"
+  },
+  "table_cells": {
+    "input": "<table><tr><th>Class</th><th>Fee</th></tr><tr><td>Class A</td><td>$115</td></tr></table>",
+    "normalised": "| Class\n| Fee\n| Class A\n| $115",
+    "sha256": "d055b54b9387f6d5172abafbf4a66337a6ee7bd232f97c8a33daf06a6e42261b"
+  },
+  "entities": {
+    "input": "<p>Fee &amp; charge &mdash; &ldquo;Class&nbsp;A&rdquo; &copy; DBPR &#8212; 5&#37; &#x2014; caf&eacute; &unknownref;</p>",
+    "normalised": "Fee & charge — “Class A” © DBPR — 5% — café &unknownref;",
+    "sha256": "b9edaae83d9b467c5fe8de7ac966aee9e23653115a188dc94b0efa26bef297e6"
+  },
+  "unicode_spaces": {
+    "input": "<p>a b c d\te   f</p>",
+    "normalised": "a b c d e f",
+    "sha256": "2278f6cde63745760a3899421d0522e392a58136735ee20dda5eecb69b8645ec"
+  },
+  "volatile_dbpr_clock": {
+    "input": "<p>10:31:07 AM 9/3/2026 Licenses expire August 31st every even year.</p>",
+    "normalised": "Licenses expire August 31st every even year.",
+    "sha256": "08869c60da6db2ee8a93dada5ee9d0ebd05c16001cee51a716fd703a690d299b"
+  },
+  "volatile_copyright": {
+    "input": "<footer>Copyright &copy; 2026 State of Florida</footer>",
+    "normalised": "State of Florida",
+    "sha256": "fdec8705eaf14bf8abd463b88d9dad591249efb87d4b69ea370555904fc1fcc4"
+  },
+  "volatile_last_updated": {
+    "input": "<p>Last updated: September 3, 2026</p><p>8 hours of CE</p>",
+    "normalised": "8 hours of CE",
+    "sha256": "9d1ecacec738ddacb6fe03ecb736b544ef4e31b55f958ac152f5e513c87b877b"
+  },
+  "volatile_board_meeting": {
+    "input": "<div>Next Board Meeting will be held in Austin on the third Tuesday of the month at the William P. Hobby building, room 2-225.</div>\n<p>after</p>",
+    "normalised": "y building, room 2-225.\nafter",
+    "sha256": "f234a1dd509755256d1ad8c443d7d41f371b2f1a86ca828c058b813290c27dcd"
+  },
+  "volatile_board_meeting_newline": {
+    "input": "<div>Next Board Meeting</div>\n<p>8 hours of CE</p>",
+    "normalised": "8 hours of CE",
+    "sha256": "9d1ecacec738ddacb6fe03ecb736b544ef4e31b55f958ac152f5e513c87b877b"
+  },
+  "volatile_nonce_csrf": {
+    "input": "<p>nonce-AbCd1234efGH= and sid=abc123XYZ and csrf=ZZZZ9999</p>",
+    "normalised": "and and",
+    "sha256": "001b684fbfdadddbc5b0fecdf8ffc6245499aeb6f0d4d2cff797c2e0cef20892"
+  },
+  "script_and_svg_dropped": {
+    "input": "<p>keep</p><script>var x = '<p>drop</p>';</script><svg><path d='M0 0'/></svg><noscript>drop2</noscript><p>keep2</p>",
+    "normalised": "keep\nkeep2",
+    "sha256": "30a06a86523dee89a2ae6ff0130a60f23fbb34c7b1ef88716d341f1e83300ad7"
+  },
+  "plain_text_passthrough": {
+    "input": "TDLR ACR renewal fee is $65 per year.",
+    "normalised": "TDLR ACR renewal fee is $65 per year.",
+    "sha256": "9d1e0f936ebbf3c957ecd8653ccd87215ea7f554bbcb6e819916de0e28c5d67d"
+  },
+  "blank_line_collapse": {
+    "input": "<p>a</p>\n\n\n<p>b</p>",
+    "normalised": "a\nb",
+    "sha256": "7e18f737311b2dc3b2f269dd78396b0351f14fb66efa879f768cb23181883c78"
+  }
+}

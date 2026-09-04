@@ -1,0 +1,21 @@
+{
+  "_comment": "The allowlist of hosts kb-data/ may cite. A TLD test is not good enough: Florida's own licensing portal is myfloridalicense.com, a .com, while thousands of contractor-licence lead-generation sites are .org. Adding a host here is a deliberate human act with a reason recorded, and validate.py gate G5 rejects any source outside the list.",
+  "hosts": {
+    "www.tdlr.texas.gov": "Texas Department of Licensing and Regulation, the licensing agency itself.",
+    "tsbpe.texas.gov": "Texas State Board of Plumbing Examiners, the licensing agency itself.",
+    "www.tsbpe.texas.gov": "Texas State Board of Plumbing Examiners (www alias).",
+    "www2.myfloridalicense.com": "Florida DBPR's own licensing portal. A .com operated by the State of Florida; every page carries the DBPR masthead and the Tallahassee address.",
+    "www.myfloridalicense.com": "Florida DBPR licensing portal, application-checklist host.",
+    "www.flrules.org": "Florida Department of State, Division of Library and Information Services — the official publisher of the Florida Administrative Code.",
+    "nclicensing.org": "North Carolina State Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors, the board itself.",
+    "www.ncbeec.org": "North Carolina State Board of Examiners of Electrical Contractors, the board itself.",
+    "www.ncleg.gov": "North Carolina General Assembly, the official publisher of the General Statutes.",
+    "data.bls.gov": "US Bureau of Labor Statistics open data API."
+  },
+  "rejected": {
+    "licenseroadmap.com": "vendor content marketing; the phase-3 identity agent established it repeats a competitor's own pricing page, so it is not independent.",
+    "rocketcert.com": "exam-prep vendor; accurate or not, it is not the source of a rule.",
+    "staterequirement.com": "affiliate content site.",
+    "contractorlicensehq.com": "affiliate content site."
+  }
+}

@@ -1,0 +1,236 @@
+/* =============================================================================
+   StateReady — the app layer.
+
+   `design-system.css` is the identity fleet's file and is COPIED BYTE FOR BYTE
+   from `phase-4-revenue/stateready/design-system.css`; `tests/kb-copy.test.ts`
+   fails the build if the two diverge. Nothing in this file may edit it.
+
+   What this file does, and all it does: give the generic class names the
+   platform template ships (`.site-header`, `.button`, `.card`, `.notice`,
+   `.badge`, `table`) a StateReady body, **built from `--sr-*` tokens only** so
+   the login page, the settings pages, the billing page and the legal pages
+   inherit the identity without being rewritten. Product screens use the
+   `.sr-*` components directly.
+
+   NO LITERAL COLOUR APPEARS BELOW. If a value is not a `--sr-*` token it is a
+   layout number. There is no blue anywhere, at any weight (identity rule).
+   ============================================================================= */
+
+/* --- Chrome --------------------------------------------------------------- */
+
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sr-space-5);
+  flex-wrap: wrap;
+  padding: var(--sr-space-3) var(--sr-space-5);
+  background: var(--sr-surface);
+  border-block-end: 1px solid var(--sr-line);
+}
+.site-header nav {
+  display: flex;
+  align-items: center;
+  gap: var(--sr-space-4);
+  flex-wrap: wrap;
+  inline-size: 100%;
+}
+.site-header .brand {
+  font-family: var(--sr-font-display);
+  font-size: var(--sr-text-xl);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-decoration: none;
+  margin-inline-end: auto;
+  color: var(--sr-ink);
+}
+.site-header a {
+  color: var(--sr-ink-2);
+  text-decoration: none;
+  font-size: var(--sr-text-sm);
+}
+.site-header a:hover { color: var(--sr-ink); text-decoration: underline; }
+
+.site-footer {
+  border-block-start: 1px solid var(--sr-line);
+  padding: var(--sr-space-5);
+  color: var(--sr-ink-3);
+  font-size: var(--sr-text-sm);
+  margin-block-start: var(--sr-space-8);
+}
+.site-footer a { color: var(--sr-ink-2); }
+
+main {
+  max-inline-size: var(--sr-content-max);
+  margin-inline: auto;
+  padding: var(--sr-space-5) var(--sr-space-5) var(--sr-space-8);
+}
+main.narrow { max-inline-size: var(--sr-measure); }
+
+/* --- Type ----------------------------------------------------------------- */
+
+h1 { font-size: var(--sr-text-2xl); }
+.small { font-size: var(--sr-text-sm); }
+.muted { color: var(--sr-ink-3); }
+.mono, code { font-family: var(--sr-font-mono); }
+
+/* --- Surfaces ------------------------------------------------------------- */
+
+.card {
+  background: var(--sr-surface);
+  border: 1px solid var(--sr-line);
+  border-radius: var(--sr-radius-md);
+  padding: var(--sr-space-5);
+  margin-block-end: var(--sr-space-5);
+  box-shadow: var(--sr-shadow-1);
+}
+
+.notice {
+  border: 1px solid var(--sr-ready-edge);
+  background: var(--sr-ready-fill);
+  border-radius: var(--sr-radius-sm);
+  padding: var(--sr-space-3) var(--sr-space-4);
+  margin-block-end: var(--sr-space-4);
+  font-size: var(--sr-text-sm);
+}
+.notice.warn { border-color: var(--sr-risk-edge); background: var(--sr-risk-fill); }
+.notice.error { border-color: var(--sr-lapsed-edge); background: var(--sr-lapsed-fill); }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sr-space-2);
+  border: 1px solid var(--sr-line-strong);
+  border-radius: 999px;
+  padding: 0.15rem var(--sr-space-3);
+  font-size: var(--sr-text-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--sr-sunken);
+  color: var(--sr-ink-2);
+}
+
+.disclaimer {
+  font-size: var(--sr-text-xs);
+  color: var(--sr-ink-3);
+  border-block-start: 1px solid var(--sr-line);
+  padding-block-start: var(--sr-space-3);
+  margin-block-start: var(--sr-space-6);
+  max-inline-size: var(--sr-measure);
+}
+
+/* --- Controls ------------------------------------------------------------- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sr-space-2);
+  min-block-size: var(--sr-target-min);
+  padding-inline: var(--sr-space-5);
+  border-radius: var(--sr-radius-md);
+  border: 1px solid var(--sr-ink);
+  background: var(--sr-ink);
+  color: var(--sr-on-ink);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+.button:hover { background: var(--sr-ink-2); border-color: var(--sr-ink-2); }
+.button.secondary {
+  background: var(--sr-surface);
+  color: var(--sr-ink);
+  border-color: var(--sr-line-strong);
+}
+.button.secondary:hover { background: var(--sr-sunken); }
+
+label {
+  display: block;
+  font-size: var(--sr-text-sm);
+  font-weight: 500;
+  margin-block-end: var(--sr-space-1);
+}
+
+input, select, textarea {
+  inline-size: 100%;
+  max-inline-size: 28rem;
+  min-block-size: var(--sr-target-min);
+  padding: var(--sr-space-2) var(--sr-space-3);
+  border: 1px solid var(--sr-line-strong);
+  border-radius: var(--sr-radius-sm);
+  background: var(--sr-surface);
+  color: var(--sr-ink);
+  font: inherit;
+}
+
+.stack > * + * { margin-block-start: var(--sr-space-3); }
+.row { display: flex; gap: var(--sr-space-4); align-items: flex-end; flex-wrap: wrap; }
+
+/* --- Tables --------------------------------------------------------------- */
+
+table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: var(--sr-text-sm);
+  background: var(--sr-surface);
+  border: 1px solid var(--sr-line);
+  border-radius: var(--sr-radius-md);
+  overflow: hidden;
+}
+th, td {
+  text-align: start;
+  padding: var(--sr-space-3) var(--sr-space-4);
+  border-block-end: 1px solid var(--sr-line);
+  block-size: var(--sr-row-h);
+}
+thead th {
+  font-family: var(--sr-font-display);
+  font-size: var(--sr-text-sm);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sr-ink-3);
+  background: var(--sr-sunken);
+}
+tbody tr:last-child td { border-block-end: 0; }
+
+/* --- StateReady additions on top of the design system --------------------- */
+
+/* The board is full width and the bar sits over it, so `main` inside the app
+   shell must not re-centre at the marketing measure. */
+.sr-shell main { max-inline-size: none; padding: 0; }
+
+.sr-kv { display: grid; grid-template-columns: max-content 1fr; gap: var(--sr-space-2) var(--sr-space-4); }
+.sr-kv dt { font-size: var(--sr-text-xs); color: var(--sr-ink-3); }
+.sr-kv dd { margin: 0; font-size: var(--sr-text-sm); }
+
+/* The refusal state: "not yet verified" where a number would be. It is a
+   first-class outcome, styled to read as an answer rather than as an error. */
+.sr-refusal {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--sr-space-2);
+  font-style: normal;
+  color: var(--sr-risk);
+  font-weight: 500;
+}
+.sr-refusal__why {
+  display: block;
+  margin-block-start: var(--sr-space-1);
+  font-size: var(--sr-text-xs);
+  color: var(--sr-ink-3);
+  font-weight: 400;
+  max-inline-size: var(--sr-measure);
+}
+
+.sr-note {
+  display: block;
+  margin-block-start: var(--sr-space-1);
+  font-size: var(--sr-text-xs);
+  color: var(--sr-ink-2);
+  max-inline-size: var(--sr-measure);
+  border-inline-start: 2px solid var(--sr-risk-edge);
+  padding-inline-start: var(--sr-space-3);
+}

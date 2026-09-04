@@ -1,0 +1,931 @@
+/* ==========================================================================
+   CERTLY — DESIGN SYSTEM
+   Implements phase-4-revenue/certly/IDENTITY.md (v1, 2026-09-03).
+
+   Framework-free. No build step. No preprocessor. Import once from the Next.js
+   root layout:
+
+       import "../../phase-4-revenue/certly/design-system.css";
+
+   ...or copy this file to apps/certly/src/app/design-system.css and import it
+   there. The only external resource is the Google Fonts stylesheet, which the
+   app should load in <head> (next/font is also fine and is preferred in prod):
+
+       <link rel="preconnect" href="https://fonts.googleapis.com">
+       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap">
+
+   RULES THAT ARE CHECKED IN REVIEW
+   - Chroma means status. The one non-status hue is the interaction blue,
+     and it is used only for interaction: links, focus, the primary button.
+     No third hue exists.                                                IDENTITY 5 P2
+   - Typeface allocation is fixed by IDENTITY_ARBITRATION.md (2026-09-03):
+     Source Sans 3 + Source Code Pro belong to Certly and to no sibling app.
+   - No status is shown without a date.                                  IDENTITY 5 P3
+   - Every status carries a word, a glyph, a fill pattern and a hue.      IDENTITY 6.4
+   - SEVEN states, not four. The engine emits met / gap / asserted_only /
+     not_checked / needs_review at requirement level and adds expiring and
+     no_certificate at vendor level; the identity carries all of them.
+     REVIEW.md B-03 and 2.2.
+   - "Covered" is RETIRED as a status word (REVIEW.md 2.1). The green state
+     is "Meets requirements", pill MEETS. Token names (--c-ok-*) are
+     vocabulary-neutral and did not change. The noun "coverage" survives in
+     its form-derived sense: the coverage bar, a coverage line.
+   - Every ratio in IDENTITY 6.5 is produced by identity/contrast.py.
+   - No `outline: none`. Anywhere.                                       IDENTITY 12.13
+   - No backdrop-filter, no icon font, no shimmer.                        IDENTITY 15
+   - No gradient FILLS. The *-gradient() functions appear only to draw the
+     hard-stop status patterns (45deg hatch, dot grid). No soft stops.       IDENTITY 15.2
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. TOKENS — LIGHT (the base; bare :root so it is always the fallback)
+   -------------------------------------------------------------------------- */
+:root {
+  color-scheme: light;
+
+  /* -- ground and surfaces ------------------------------------------------ */
+  --c-paper:        #E8EEF6;   /* cool office white — the PM stack's ground   */
+  --c-surface:      #FFFFFF;
+  --c-sunken:       #DEE7F1;
+  --c-line:         #C7D3E0;
+  --c-line-strong:  #718094;
+
+  /* -- ink ---------------------------------------------------------------- */
+  --c-ink:          #0F1A2B;
+  --c-ink-strong:   #1B2941;
+  --c-ink-muted:    #495A73;
+  --c-ink-faint:    #6E7C91;
+  --c-ink-disabled: #828E9E;
+  --c-on-ink:       #FFFFFF;
+  --c-on-solid:     #FFFFFF;
+
+  /* -- interaction (the one non-status hue; 215.5deg, far from all states).
+        It carries links, focus AND the primary button: the interaction hue
+        does interaction. Status colour never appears on a control. --------- */
+  --c-link:         #14458C;
+  --c-link-hover:   #0E3266;
+  --c-focus:        #14458C;
+  --c-action:       #14458C;
+  --c-action-hover: #0E3266;
+  --c-on-action:    #FFFFFF;
+  --c-select-bg:    #DCE7FA;
+
+  /* -- status: MEETS REQUIREMENTS — teal-green, hue 164deg ----------------- */
+  --c-ok-fg:        #0C5F4A;
+  --c-ok-bg:        #DCEDE8;
+  --c-ok-line:      #7FBBAB;
+  --c-ok-solid:     #0F6E55;
+
+  /* -- status: EXPIRING — olive-gold, hue 47deg ---------------------------- */
+  --c-warn-fg:      #6B5507;
+  --c-warn-bg:      #F2EBCE;
+  --c-warn-line:    #C6B370;
+  --c-warn-solid:   #7A6209;
+
+  /* -- status: GAP — crimson, hue 345deg ----------------------------------- */
+  --c-gap-fg:       #A01739;
+  --c-gap-bg:       #F8E1E7;
+  --c-gap-line:     #DFA0B2;
+  --c-gap-solid:    #B01A40;
+
+  /* -- status: NEEDS REVIEW ----------------------------------------------- */
+  --c-rev-fg:       #3D4F66;
+  --c-rev-bg:       #E3E9F1;
+  --c-rev-line:     #A6B5C7;
+
+  /* -- status: CLAIMED, NOT EVIDENCED (asserted_only) ----------------------
+        The endorsement box is ticked and no endorsement page is attached.
+        Deliberately the EXPIRING hue, one step deeper: this is a kind of
+        caution, not a new meaning, and IDENTITY 6.1 allows no fifth hue.
+        It is separated from Expiring by its half-filled disc, its VERTICAL
+        hatch and its word — never by colour.                              */
+  --c-ast-fg:       #4F3D06;
+  --c-ast-bg:       #EDE3C0;
+  --c-ast-line:     #B7A25E;
+  --c-ast-solid:    #5E4907;
+
+  /* -- status: NOT CHECKED / NO CERTIFICATE — achromatic on purpose --------
+        Neither is a judgement about a party, so neither gets chroma.       */
+  --c-nc-fg:        var(--c-ink-muted);
+  --c-nc-line:      var(--c-line-strong);
+  --c-none-fg:      var(--c-ink-muted);
+  --c-none-line:    var(--c-line-strong);
+
+  /* -- type --------------------------------------------------------------- */
+  --c-font-ui:  "Source Sans 3", "Source Sans Pro", -apple-system,
+                BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+                Arial, sans-serif;
+  --c-font-num: "Source Code Pro", ui-monospace, "SF Mono", "Cascadia Mono",
+                Menlo, Consolas, monospace;
+
+  --c-text-2xs: 0.6875rem;  /* 11 */
+  --c-text-xs:  0.75rem;    /* 12 */
+  --c-text-sm:  0.875rem;   /* 14 */
+  --c-text-base:1rem;       /* 16 */
+  --c-text-lg:  1.125rem;   /* 18 */
+  --c-text-xl:  1.375rem;   /* 22 */
+  --c-text-2xl: 1.75rem;    /* 28 */
+  --c-text-3xl: 2.25rem;    /* 36 */
+  --c-text-4xl: 3rem;       /* 48 */
+
+  --c-lh-tight: 1.15;
+  --c-lh-snug:  1.35;
+  --c-lh-base:  1.55;
+
+  --c-measure:     68ch;
+  --c-measure-doc: 74ch;
+
+  /* -- space (4px grid) --------------------------------------------------- */
+  --c-space-1: 4px;
+  --c-space-2: 8px;
+  --c-space-3: 12px;
+  --c-space-4: 16px;
+  --c-space-5: 24px;
+  --c-space-6: 32px;
+  --c-space-7: 48px;
+  --c-space-8: 64px;
+  --c-space-9: 96px;
+
+  /* -- radius ------------------------------------------------------------- */
+  --c-radius-sm:   4px;
+  --c-radius-md:   8px;
+  --c-radius-lg:   12px;
+  --c-radius-full: 999px;
+
+  /* -- elevation (exactly two) -------------------------------------------- */
+  --c-shadow-1: 0 1px 2px rgba(15, 26, 43, .06), 0 1px 1px rgba(15, 26, 43, .04);
+  --c-shadow-2: 0 8px 24px rgba(15, 26, 43, .12), 0 2px 6px rgba(15, 26, 43, .08);
+  --c-hairline: none;
+
+  /* -- motion ------------------------------------------------------------- */
+  --c-ease:        cubic-bezier(.2, 0, .38, .9);
+  --c-motion-fast: 120ms;
+  --c-motion-base: 200ms;
+  --c-motion-slow: 320ms;
+
+  /* -- layout ------------------------------------------------------------- */
+  --c-nav-w:      240px;
+  --c-nav-w-rail: 56px;
+  --c-content-max:1440px;
+  --c-row-h:      44px;
+  --c-row-h-comf: 56px;
+}
+
+/* --------------------------------------------------------------------------
+   2. TOKENS — DARK
+   Authored, not inverted. Guarded so an explicit light choice always wins.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --c-paper:        #0B1220;
+    --c-surface:      #141D2C;
+    --c-sunken:       #0F1725;
+    --c-line:         #2A3547;
+    --c-line-strong:  #5E7090;
+
+    --c-ink:          #E9ECF2;
+    --c-ink-strong:   #F4F6F9;
+    --c-ink-muted:    #A7B3C4;
+    --c-ink-faint:    #8B98AB;
+    --c-ink-disabled: #67748A;
+    --c-on-ink:       #0B1220;
+    --c-on-solid:     #0B1220;
+
+    --c-link:         #8FB4F5;
+    --c-link-hover:   #B3CCFA;
+    --c-focus:        #8FB4F5;
+    --c-action:       #8FB4F5;
+    --c-action-hover: #B3CCFA;
+    --c-on-action:    #0B1220;
+    --c-select-bg:    #1B2740;
+
+    --c-ok-fg:        #5FD3B0;
+    --c-ok-bg:        #0F3A30;
+    --c-ok-line:      #2A6B5B;
+    --c-ok-solid:     #5FD3B0;
+
+    --c-warn-fg:      #E5C267;
+    --c-warn-bg:      #332B10;
+    --c-warn-line:    #665521;
+    --c-warn-solid:   #E5C267;
+
+    --c-gap-fg:       #FF97AE;
+    --c-gap-bg:       #40202A;
+    --c-gap-line:     #78323F;
+    --c-gap-solid:    #FF97AE;
+
+    --c-rev-fg:       #AEBACB;
+    --c-rev-bg:       #243044;
+    --c-rev-line:     #3A4759;
+
+    --c-ast-fg:       #CBA855;
+    --c-ast-bg:       #322813;
+    --c-ast-line:     #60501E;
+    --c-ast-solid:    #CBA855;
+
+    --c-shadow-1: 0 1px 2px rgba(0, 0, 0, .5);
+    --c-shadow-2: 0 10px 28px rgba(0, 0, 0, .6);
+    --c-hairline: inset 0 1px 0 rgba(255, 255, 255, .04);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --c-paper:        #0B1220;
+  --c-surface:      #141D2C;
+  --c-sunken:       #0F1725;
+  --c-line:         #2A3547;
+  --c-line-strong:  #5E7090;
+
+  --c-ink:          #E9ECF2;
+  --c-ink-strong:   #F4F6F9;
+  --c-ink-muted:    #A7B3C4;
+  --c-ink-faint:    #8B98AB;
+  --c-ink-disabled: #67748A;
+  --c-on-ink:       #0B1220;
+  --c-on-solid:     #0B1220;
+
+  --c-link:         #8FB4F5;
+  --c-link-hover:   #B3CCFA;
+  --c-focus:        #8FB4F5;
+  --c-action:       #8FB4F5;
+  --c-action-hover: #B3CCFA;
+  --c-on-action:    #0B1220;
+  --c-select-bg:    #1B2740;
+
+  --c-ok-fg:        #5FD3B0;
+  --c-ok-bg:        #0F3A30;
+  --c-ok-line:      #2A6B5B;
+  --c-ok-solid:     #5FD3B0;
+
+  --c-warn-fg:      #E5C267;
+  --c-warn-bg:      #332B10;
+  --c-warn-line:    #665521;
+  --c-warn-solid:   #E5C267;
+
+  --c-gap-fg:       #FF97AE;
+  --c-gap-bg:       #40202A;
+  --c-gap-line:     #78323F;
+  --c-gap-solid:    #FF97AE;
+
+  --c-rev-fg:       #AEBACB;
+  --c-rev-bg:       #243044;
+  --c-rev-line:     #3A4759;
+
+  --c-ast-fg:       #CBA855;
+  --c-ast-bg:       #322813;
+  --c-ast-line:     #60501E;
+  --c-ast-solid:    #CBA855;
+
+  --c-shadow-1: 0 1px 2px rgba(0, 0, 0, .5);
+  --c-shadow-2: 0 10px 28px rgba(0, 0, 0, .6);
+  --c-hairline: inset 0 1px 0 rgba(255, 255, 255, .04);
+}
+
+/* --------------------------------------------------------------------------
+   3. RESET AND BASE
+   -------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--c-paper);
+  color: var(--c-ink);
+  font-family: var(--c-font-ui);
+  font-size: var(--c-text-base);
+  line-height: var(--c-lh-base);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 { margin: 0 0 var(--c-space-3); color: var(--c-ink-strong); font-weight: 600; }
+h1 { font-size: var(--c-text-3xl); line-height: var(--c-lh-tight); letter-spacing: -.02em; }
+h2 { font-size: var(--c-text-2xl); line-height: 1.25;             letter-spacing: -.015em; }
+h3 { font-size: var(--c-text-xl);  line-height: var(--c-lh-snug);  letter-spacing: -.01em; }
+h4 { font-size: var(--c-text-lg);  line-height: 1.4;               letter-spacing: -.005em; }
+h5, h6 { font-size: var(--c-text-base); line-height: 1.4; }
+
+p { margin: 0 0 var(--c-space-4); max-width: var(--c-measure); }
+
+a { color: var(--c-link); text-decoration: underline; text-underline-offset: 2px; }
+a:hover { color: var(--c-link-hover); }
+
+small { font-size: var(--c-text-xs); }
+
+hr { border: 0; border-top: 1px solid var(--c-line); margin: var(--c-space-5) 0; }
+
+/* Every figure the buyer compares is monospaced and tabular. IDENTITY 7.1 */
+.c-num, .c-limit, .c-date, .c-policy, code, kbd, samp {
+  font-family: var(--c-font-num);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: .9375em;
+  letter-spacing: -.01em;
+}
+
+/* One focus treatment, everywhere. IDENTITY 12.13 */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 2px;
+  border-radius: var(--c-radius-sm);
+}
+
+::selection { background: var(--c-select-bg); color: var(--c-ink); }
+
+.c-visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   4. LAYOUT
+   -------------------------------------------------------------------------- */
+.c-shell { display: grid; grid-template-columns: var(--c-nav-w) 1fr; min-height: 100vh; }
+.c-nav {
+  background: var(--c-surface);
+  border-right: 1px solid var(--c-line);
+  padding: var(--c-space-5) var(--c-space-4);
+}
+.c-main {
+  padding: var(--c-space-6);
+  max-width: var(--c-content-max);
+  width: 100%;
+}
+.c-stack > * + * { margin-top: var(--c-space-4); }
+.c-stack-lg > * + * { margin-top: var(--c-space-6); }
+.c-row { display: flex; align-items: center; gap: var(--c-space-3); }
+.c-row--between { justify-content: space-between; }
+.c-grid { display: grid; gap: var(--c-space-5); grid-template-columns: repeat(12, 1fr); }
+
+/* The one exception to the grid: document + extraction. IDENTITY 8.2 */
+.c-split {
+  display: grid;
+  gap: var(--c-space-5);
+  grid-template-columns: minmax(420px, 1fr) minmax(380px, 480px);
+  align-items: start;
+}
+
+@media (max-width: 1199px) { .c-shell { grid-template-columns: var(--c-nav-w-rail) 1fr; } }
+@media (max-width: 1023px) { .c-split { grid-template-columns: 1fr; } }
+@media (max-width: 899px)  {
+  .c-shell { grid-template-columns: 1fr; }
+  .c-nav   { border-right: 0; border-bottom: 1px solid var(--c-line); }
+  .c-main  { padding: var(--c-space-4); }
+  .c-grid  { grid-template-columns: repeat(4, 1fr); gap: var(--c-space-4); }
+}
+
+/* --------------------------------------------------------------------------
+   5. CARD, SHEET, NOTE
+   -------------------------------------------------------------------------- */
+.c-card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: var(--c-radius-md);
+  box-shadow: var(--c-shadow-1), var(--c-hairline);
+  padding: var(--c-space-5);
+}
+.c-card__head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--c-space-3); margin-bottom: var(--c-space-4);
+}
+.c-card__title { font-size: var(--c-text-lg); font-weight: 600; margin: 0; color: var(--c-ink-strong); }
+
+.c-sheet {
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: var(--c-radius-lg);
+  box-shadow: var(--c-shadow-2), var(--c-hairline);
+  padding: var(--c-space-6);
+}
+
+.c-note {
+  background: var(--c-sunken);
+  border-left: 3px solid var(--c-line-strong);
+  border-radius: 0 var(--c-radius-sm) var(--c-radius-sm) 0;
+  padding: var(--c-space-3) var(--c-space-4);
+  color: var(--c-ink-muted);
+  font-size: var(--c-text-sm);
+}
+
+/* The "as of" stamp. Mandatory beside every status surface. IDENTITY 12.3 */
+.c-asof {
+  display: inline-flex; align-items: center; gap: var(--c-space-2);
+  font-size: var(--c-text-xs); color: var(--c-ink-muted);
+}
+.c-asof::before { content: ""; width: 16px; height: 1px; background: var(--c-line-strong); }
+.c-asof time { font-family: var(--c-font-num); font-variant-numeric: tabular-nums; }
+
+/* --------------------------------------------------------------------------
+   6. BUTTONS
+   -------------------------------------------------------------------------- */
+.c-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--c-space-2);
+  min-height: 40px;
+  padding: 0 var(--c-space-4);
+  font: 600 var(--c-text-sm)/1 var(--c-font-ui);
+  border-radius: var(--c-radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--c-motion-fast) var(--c-ease),
+              border-color var(--c-motion-fast) var(--c-ease),
+              color var(--c-motion-fast) var(--c-ease);
+}
+/* The primary action carries the interaction hue, not a status and not ink.
+   IDENTITY_ARBITRATION.md fixes a distinct primary-action colour per app. */
+.c-btn--primary { background: var(--c-action); color: var(--c-on-action); }
+.c-btn--primary:hover { background: var(--c-action-hover); color: var(--c-on-action); }
+
+.c-btn--secondary {
+  background: var(--c-surface); color: var(--c-ink); border-color: var(--c-line-strong);
+}
+.c-btn--secondary:hover { background: var(--c-sunken); color: var(--c-ink); }
+
+.c-btn--quiet { background: transparent; color: var(--c-link); padding: 0 var(--c-space-2); }
+.c-btn--quiet:hover { color: var(--c-link-hover); text-decoration: underline; }
+
+.c-btn--sm { min-height: 32px; font-size: var(--c-text-xs); padding: 0 var(--c-space-3); }
+.c-btn[disabled], .c-btn[aria-disabled="true"] {
+  color: var(--c-ink-disabled); background: var(--c-sunken);
+  border-color: var(--c-line); cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------------------
+   7. FIELDS
+   -------------------------------------------------------------------------- */
+.c-field { display: block; margin-bottom: var(--c-space-4); }
+.c-field__label {
+  display: block; font-size: var(--c-text-sm); font-weight: 500;
+  color: var(--c-ink-strong); margin-bottom: var(--c-space-1);
+}
+.c-field__hint { display: block; font-size: var(--c-text-xs); color: var(--c-ink-muted); margin-bottom: var(--c-space-2); }
+.c-input, .c-select, .c-textarea {
+  width: 100%; min-height: 44px;
+  padding: var(--c-space-2) var(--c-space-3);
+  font: 400 var(--c-text-base)/1.4 var(--c-font-ui);
+  color: var(--c-ink);
+  background: var(--c-surface);
+  border: 1px solid var(--c-line-strong);
+  border-radius: var(--c-radius-sm);
+}
+.c-textarea { min-height: 120px; resize: vertical; line-height: var(--c-lh-base); }
+.c-input--num { font-family: var(--c-font-num); font-variant-numeric: tabular-nums lining-nums; }
+.c-input::placeholder, .c-textarea::placeholder { color: var(--c-ink-faint); }
+.c-input[aria-invalid="true"], .c-textarea[aria-invalid="true"] { border-color: var(--c-gap-solid); border-width: 2px; }
+
+/* An error is words plus a glyph, never colour alone. IDENTITY 6.4 */
+.c-field__error {
+  display: flex; align-items: flex-start; gap: var(--c-space-2);
+  margin-top: var(--c-space-2); font-size: var(--c-text-sm); color: var(--c-gap-fg);
+}
+
+/* --------------------------------------------------------------------------
+   8. STATUS — the four-signal encoding. IDENTITY 6.4
+   Word + glyph + fill pattern + hue. Never fewer than four.
+   -------------------------------------------------------------------------- */
+.c-pill {
+  display: inline-flex; align-items: center; gap: var(--c-space-2);
+  padding: 3px var(--c-space-2) 3px 6px;
+  border: 1px solid; border-radius: var(--c-radius-sm);
+  font: 600 var(--c-text-2xs)/1.2 var(--c-font-ui);
+  letter-spacing: .04em; text-transform: uppercase; white-space: nowrap;
+}
+.c-pill__glyph { flex: none; width: 14px; height: 14px; }
+.c-pill__n { font-family: var(--c-font-num); font-variant-numeric: tabular-nums; letter-spacing: 0; }
+
+.c-pill--ok   { color: var(--c-ok-fg);   background: var(--c-ok-bg);   border-color: var(--c-ok-line); }
+.c-pill--warn { color: var(--c-warn-fg); background: var(--c-warn-bg); border-color: var(--c-warn-line); }
+.c-pill--gap  { color: var(--c-gap-fg);  background: var(--c-gap-bg);  border-color: var(--c-gap-line); }
+.c-pill--rev  { color: var(--c-rev-fg);  background: var(--c-rev-bg);  border-color: var(--c-rev-line); }
+.c-pill--ast  { color: var(--c-ast-fg);  background: var(--c-ast-bg);  border-color: var(--c-ast-line); }
+/* Not checked and No certificate carry no tint: they are not judgements. */
+.c-pill--nc   { color: var(--c-nc-fg);   background: transparent; border-color: var(--c-nc-line); }
+.c-pill--none { color: var(--c-none-fg); background: transparent; border-color: var(--c-none-line);
+                border-style: dashed; }
+
+/* The dot, for places too small for a pill. Always accompanied by text. */
+.c-dot { display: inline-block; width: 10px; height: 10px; border-radius: var(--c-radius-full); flex: none; }
+.c-dot--ok   { background: var(--c-ok-solid); }
+.c-dot--warn { background: var(--c-warn-solid); }
+.c-dot--gap  { background: var(--c-surface); border: 2px dashed var(--c-gap-solid); box-sizing: content-box; width: 8px; height: 8px; }
+.c-dot--rev  { background: var(--c-rev-fg); border-radius: 2px; }
+/* Claimed, not evidenced: the half-filled disc. LANDING_SPEC 5 V1 calls this
+   the product's logo-equivalent, so it is drawn, not tinted. */
+.c-dot--ast  { background: linear-gradient(90deg, var(--c-ast-solid) 0 50%, transparent 50% 100%);
+               border: 1.5px solid var(--c-ast-solid); box-sizing: border-box; }
+.c-dot--nc   { background: transparent; border: 1.5px solid var(--c-nc-line); box-sizing: border-box; }
+.c-dot--none { background: transparent; border: 1.5px dashed var(--c-none-line); box-sizing: border-box; }
+
+/* --------------------------------------------------------------------------
+   9. COVERAGE BAR — the signature device. IDENTITY 9.2
+   Segments are separated by a 1px --c-surface line so each contrasts with the
+   surface (5.5:1 to 6.7:1) and never with its neighbour (~1.1:1, which would
+   fail WCAG 1.4.11). The separator is structural. Do not remove it.
+   -------------------------------------------------------------------------- */
+.c-bar {
+  position: relative;
+  height: 12px;
+  background: var(--c-sunken);
+  border-radius: 2px;
+  overflow: hidden;
+  isolation: isolate;
+}
+.c-bar--sm { height: 8px; }
+
+.c-bar__seg {
+  position: absolute; top: 0; bottom: 0;
+  border-left: 1px solid var(--c-surface);
+  border-right: 1px solid var(--c-surface);
+}
+.c-bar__seg--ok { background-color: var(--c-ok-solid); }
+
+/* Expiring: 45-degree hatch, so the state survives greyscale and CVD. */
+.c-bar__seg--warn {
+  background-color: var(--c-warn-solid);
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, .38) 0 3px,
+    rgba(255, 255, 255, 0)   3px 6px
+  );
+}
+
+/* Gap: the absence of a segment, outlined. The hole is the point. */
+.c-bar__seg--gap {
+  background-color: transparent;
+  border: 2px dashed var(--c-gap-solid);
+  border-radius: 2px;
+}
+
+/* Needs review: a dot grid. */
+.c-bar__seg--rev {
+  background-color: var(--c-rev-bg);
+  background-image: radial-gradient(var(--c-rev-fg) 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+
+/* Claimed, not evidenced: a VERTICAL hatch — the one pattern whose rules run
+   with gravity, so it never reads as Expiring's 45-degree hatch. */
+.c-bar__seg--ast {
+  background-color: var(--c-ast-solid);
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, .42) 0 2px,
+    rgba(255, 255, 255, 0)   2px 6px
+  );
+}
+
+/* Not checked: an open track with a hairline edge. Nothing is claimed. */
+.c-bar__seg--nc {
+  background-color: transparent;
+  border: 1px solid var(--c-nc-line);
+  border-radius: 2px;
+}
+
+/* No certificate: an open track crossed by a single diagonal rule. */
+.c-bar__seg--none {
+  background-color: transparent;
+  background-image: linear-gradient(
+    to top right,
+    transparent calc(50% - 0.5px),
+    var(--c-none-line) calc(50% - 0.5px) calc(50% + 0.5px),
+    transparent calc(50% + 0.5px)
+  );
+}
+
+/* Today, drawn once per screen, never labelled per row. */
+.c-bar__today { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--c-ink); z-index: 2; }
+
+.c-bar__axis {
+  display: flex; justify-content: space-between;
+  font: 400 var(--c-text-2xs)/1 var(--c-font-num);
+  font-variant-numeric: tabular-nums;
+  color: var(--c-ink-faint);
+  margin-top: var(--c-space-1);
+}
+
+/* --------------------------------------------------------------------------
+   10. PORTFOLIO STRIP — the only chart in the product. IDENTITY 9.3
+   -------------------------------------------------------------------------- */
+.c-strip { display: flex; height: 40px; border-radius: var(--c-radius-sm); overflow: hidden; border: 1px solid var(--c-line); }
+.c-strip__seg {
+  display: flex; align-items: center; justify-content: center;
+  font: 600 var(--c-text-sm)/1 var(--c-font-num);
+  font-variant-numeric: tabular-nums;
+  border-right: 1px solid var(--c-surface);
+  min-width: 2px;
+}
+.c-strip__seg:last-child { border-right: 0; }
+.c-strip__seg--ok   { background: var(--c-ok-solid);   color: var(--c-on-solid); }
+.c-strip__seg--warn {
+  background-color: var(--c-warn-solid); color: var(--c-on-solid);
+  background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.30) 0 3px, rgba(255,255,255,0) 3px 6px);
+}
+.c-strip__seg--gap  { background: var(--c-gap-solid);  color: var(--c-on-solid); }
+.c-strip__seg--rev  { background: var(--c-rev-bg);     color: var(--c-rev-fg); }
+.c-strip__seg--ast  {
+  background-color: var(--c-ast-solid); color: var(--c-on-solid);
+  background-image: repeating-linear-gradient(90deg, rgba(255,255,255,.34) 0 2px, rgba(255,255,255,0) 2px 6px);
+}
+.c-strip__seg--nc   { background: transparent; color: var(--c-nc-fg);   box-shadow: inset 0 0 0 1px var(--c-nc-line); }
+.c-strip__seg--none { background: transparent; color: var(--c-none-fg); box-shadow: inset 0 0 0 1px var(--c-none-line); }
+
+.c-legend { display: flex; flex-wrap: wrap; gap: var(--c-space-4); margin-top: var(--c-space-3); font-size: var(--c-text-xs); color: var(--c-ink-muted); }
+.c-legend__item { display: inline-flex; align-items: center; gap: var(--c-space-2); }
+
+
+/* --------------------------------------------------------------------------
+   10b. EXPIRY TIMELINE — the portfolio-level coverage bar. IDENTITY 12.9
+   One row per party against a shared date axis. Sticky party column, scrolled
+   inside its own container so the page body never scrolls sideways.
+   -------------------------------------------------------------------------- */
+.c-timeline {
+  position: relative;
+  overflow-x: auto;
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: var(--c-radius-md);
+}
+.c-timeline__grid { min-width: 640px; }
+.c-timeline__row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  align-items: center;
+  gap: var(--c-space-4);
+  padding: var(--c-space-2) var(--c-space-4);
+  border-bottom: 1px solid var(--c-line);
+}
+.c-timeline__row:last-child { border-bottom: 0; }
+.c-timeline__row:hover { background: var(--c-sunken); }
+.c-timeline__party {
+  position: sticky; left: 0; z-index: 1;
+  background: inherit;
+  font-size: var(--c-text-sm); font-weight: 600; color: var(--c-ink-strong);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.c-timeline__track { position: relative; }
+.c-timeline__head {
+  display: grid; grid-template-columns: 200px 1fr; gap: var(--c-space-4);
+  padding: var(--c-space-2) var(--c-space-4);
+  border-bottom: 1px solid var(--c-line);
+  position: sticky; top: 0; background: var(--c-surface); z-index: 2;
+}
+.c-timeline__months {
+  display: flex; justify-content: space-between;
+  font: 400 var(--c-text-2xs)/1 var(--c-font-num);
+  font-variant-numeric: tabular-nums; color: var(--c-ink-muted);
+}
+
+/* --------------------------------------------------------------------------
+   10c. GAP REPORT — a printable document, not a screen. IDENTITY 12.11
+   -------------------------------------------------------------------------- */
+.c-report { background: var(--c-surface); color: var(--c-ink); max-width: 900px; }
+.c-report__head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--c-space-4); flex-wrap: wrap;
+  padding-bottom: var(--c-space-3); border-bottom: 2px solid var(--c-ink);
+  margin-bottom: var(--c-space-5);
+}
+.c-report__block { padding: var(--c-space-4) 0; border-bottom: 1px solid var(--c-line); break-inside: avoid; }
+.c-report__block h3 { margin-bottom: var(--c-space-2); font-size: var(--c-text-base); }
+.c-report__finding { font-size: var(--c-text-sm); color: var(--c-ink); max-width: var(--c-measure); margin: 0 0 var(--c-space-2); }
+.c-report__disclaimer {
+  margin-top: var(--c-space-6); padding-top: var(--c-space-3);
+  border-top: 1px solid var(--c-line);
+  font-size: var(--c-text-xs); color: var(--c-ink-muted);
+}
+
+/* --------------------------------------------------------------------------
+   11. TABLE — the screen the buyer lives in. IDENTITY 12.6
+   -------------------------------------------------------------------------- */
+.c-table-wrap { overflow-x: auto; border: 1px solid var(--c-line); border-radius: var(--c-radius-md); background: var(--c-surface); }
+.c-table { width: 100%; border-collapse: collapse; font-size: var(--c-text-sm); }
+.c-table th {
+  text-align: left; font-weight: 500; font-size: var(--c-text-2xs);
+  letter-spacing: .04em; text-transform: uppercase; color: var(--c-ink-muted);
+  padding: var(--c-space-3) var(--c-space-4);
+  border-bottom: 1px solid var(--c-line); white-space: nowrap;
+  background: var(--c-surface); position: sticky; top: 0; z-index: 1;
+}
+.c-table td {
+  padding: var(--c-space-3) var(--c-space-4);
+  border-bottom: 1px solid var(--c-line);
+  height: var(--c-row-h); vertical-align: middle;
+}
+.c-table tr:last-child td { border-bottom: 0; }
+.c-table tbody tr:hover td { background: var(--c-sunken); }
+.c-table tbody tr[aria-selected="true"] td { background: var(--c-select-bg); }
+.c-table--comfortable td { height: var(--c-row-h-comf); }
+.c-table__party { font-weight: 600; color: var(--c-ink-strong); }
+.c-table__meta  { color: var(--c-ink-muted); font-size: var(--c-text-xs); }
+
+/* --------------------------------------------------------------------------
+   12. DOCUMENT UPLOAD AND PREVIEW. IDENTITY 12.1, 12.2
+   -------------------------------------------------------------------------- */
+.c-drop {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: var(--c-space-3); text-align: center;
+  padding: var(--c-space-7) var(--c-space-5);
+  background: var(--c-sunken);
+  border: 2px dashed var(--c-line-strong);
+  border-radius: var(--c-radius-md);
+  color: var(--c-ink-muted);
+}
+.c-drop[data-state="over"] { border-color: var(--c-focus); border-style: solid; }
+.c-drop__hint { font-size: var(--c-text-sm); }
+.c-drop__mail {
+  font-family: var(--c-font-num); font-size: var(--c-text-sm);
+  background: var(--c-surface); border: 1px solid var(--c-line);
+  border-radius: var(--c-radius-sm); padding: var(--c-space-1) var(--c-space-2);
+  color: var(--c-ink);
+}
+
+.c-doc {
+  background: var(--c-sunken);
+  border: 1px solid var(--c-line);
+  border-radius: var(--c-radius-md);
+  padding: var(--c-space-4);
+  overflow: auto;
+}
+.c-doc__page {
+  position: relative;
+  background: var(--c-surface);
+  box-shadow: var(--c-shadow-1);
+  border: 1px solid var(--c-line);
+  border-radius: 2px;
+  padding: var(--c-space-4);
+  font-size: var(--c-text-xs);
+  color: var(--c-ink);
+}
+.c-doc__hl {
+  position: absolute;
+  border: 2px solid var(--c-line-strong);            /* fallback */
+  border-color: color-mix(in srgb, var(--c-focus) 40%, transparent);
+  border-radius: 2px;
+  pointer-events: none;
+  transition: border-color var(--c-motion-fast) var(--c-ease);
+}
+.c-doc__hl[data-active="true"] { border-color: var(--c-focus); border-left-width: 4px; }
+
+/* --------------------------------------------------------------------------
+   13. EXTRACTION REVIEW + CONFIDENCE. IDENTITY 9.4, 12.4
+   Confidence is achromatic on purpose: the colour budget is spent on status.
+   -------------------------------------------------------------------------- */
+.c-review { display: flex; flex-direction: column; }
+.c-review__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--c-space-2) var(--c-space-4);
+  align-items: baseline;
+  padding: var(--c-space-3) 0;
+  border-bottom: 1px solid var(--c-line);
+}
+.c-review__row:last-child { border-bottom: 0; }
+.c-review__label { font-size: var(--c-text-xs); color: var(--c-ink-muted); grid-column: 1 / -1; }
+.c-review__value {
+  font-family: var(--c-font-num); font-variant-numeric: tabular-nums lining-nums;
+  font-size: var(--c-text-sm); color: var(--c-ink); font-weight: 500;
+}
+.c-review__row[data-confidence="medium"] { padding-left: var(--c-space-3); border-left: 2px solid var(--c-line-strong); }
+.c-review__row[data-confidence="low"] {
+  padding-left: var(--c-space-3);
+  border-left: 2px solid var(--c-rev-line);
+  background: var(--c-rev-bg);
+}
+
+.c-conf { display: inline-flex; align-items: center; gap: var(--c-space-2); font-size: var(--c-text-xs); color: var(--c-ink-muted); }
+.c-conf__meter { display: inline-flex; gap: 2px; }
+.c-conf__seg { width: 6px; height: 12px; border-radius: 1px; background: var(--c-line); }
+.c-conf__seg[data-on="true"] { background: var(--c-ink-muted); }
+
+/* --------------------------------------------------------------------------
+   14. REQUIREMENT TEMPLATE EDITOR. IDENTITY 12.5
+   -------------------------------------------------------------------------- */
+.c-req__paste {
+  font-size: var(--c-text-lg); line-height: var(--c-lh-base);
+  max-width: var(--c-measure-doc);
+  background: var(--c-surface); border: 1px solid var(--c-line);
+  border-radius: var(--c-radius-md); padding: var(--c-space-4);
+  color: var(--c-ink);
+}
+.c-req__mark {
+  background: var(--c-select-bg);                    /* fallback */
+  background: color-mix(in srgb, var(--c-focus) 14%, transparent);
+  border-bottom: 2px solid var(--c-focus);
+  padding: 0 1px;
+}
+.c-req__rows { display: grid; gap: var(--c-space-2); }
+.c-req__row {
+  display: grid; gap: var(--c-space-3);
+  grid-template-columns: 1.4fr .8fr 1fr 1.4fr;
+  align-items: center;
+  padding: var(--c-space-3);
+  background: var(--c-surface); border: 1px solid var(--c-line);
+  border-radius: var(--c-radius-sm);
+}
+@media (max-width: 899px) { .c-req__row { grid-template-columns: 1fr; } }
+.c-chip {
+  display: inline-flex; align-items: center; gap: var(--c-space-1);
+  padding: 2px var(--c-space-2);
+  font-size: var(--c-text-xs);
+  background: var(--c-sunken); border: 1px solid var(--c-line);
+  border-radius: var(--c-radius-sm); color: var(--c-ink-muted);
+}
+
+/* --------------------------------------------------------------------------
+   15. REMINDER COMPOSER. IDENTITY 12.10
+   -------------------------------------------------------------------------- */
+.c-remind__schedule { display: flex; flex-wrap: wrap; gap: var(--c-space-2); }
+.c-remind__offset {
+  font-family: var(--c-font-num); font-size: var(--c-text-xs);
+  padding: var(--c-space-1) var(--c-space-2);
+  border: 1px solid var(--c-line-strong); border-radius: var(--c-radius-sm);
+  background: var(--c-surface); color: var(--c-ink);
+}
+.c-remind__offset[aria-pressed="true"] { background: var(--c-action); color: var(--c-on-action); border-color: var(--c-action); }
+.c-remind__preview {
+  background: var(--c-surface); border: 1px solid var(--c-line);
+  border-radius: var(--c-radius-md); padding: var(--c-space-4);
+  font-size: var(--c-text-sm); max-width: var(--c-measure);
+}
+.c-remind__stop { font-size: var(--c-text-xs); color: var(--c-ink-muted); margin-top: var(--c-space-3); }
+
+/* --------------------------------------------------------------------------
+   16. EMPTY, TOAST, TABS
+   -------------------------------------------------------------------------- */
+.c-empty {
+  text-align: center; padding: var(--c-space-8) var(--c-space-5);
+  color: var(--c-ink-muted); border: 1px dashed var(--c-line-strong);
+  border-radius: var(--c-radius-md); background: var(--c-surface);
+}
+.c-empty__title { font-size: var(--c-text-lg); font-weight: 600; color: var(--c-ink-strong); margin-bottom: var(--c-space-2); }
+
+.c-toast {
+  display: flex; align-items: flex-start; gap: var(--c-space-3);
+  background: var(--c-surface); border: 1px solid var(--c-line);
+  border-left: 3px solid var(--c-line-strong);
+  border-radius: var(--c-radius-sm); box-shadow: var(--c-shadow-2);
+  padding: var(--c-space-3) var(--c-space-4); max-width: 420px;
+  font-size: var(--c-text-sm);
+}
+
+.c-tabs { display: flex; gap: var(--c-space-4); border-bottom: 1px solid var(--c-line); }
+.c-tab {
+  appearance: none; background: none; border: 0; cursor: pointer;
+  padding: var(--c-space-3) 0; margin-bottom: -1px;
+  font: 500 var(--c-text-sm)/1 var(--c-font-ui);
+  color: var(--c-ink-muted); border-bottom: 2px solid transparent;
+}
+.c-tab[aria-selected="true"] { color: var(--c-ink-strong); border-bottom-color: var(--c-action); font-weight: 600; }
+
+/* --------------------------------------------------------------------------
+   17. WORDMARK
+   -------------------------------------------------------------------------- */
+.c-wordmark {
+  display: inline-flex; align-items: baseline; gap: 4px;
+  font: 700 var(--c-text-xl)/1 var(--c-font-ui);
+  letter-spacing: -.02em; color: var(--c-ink); text-decoration: none;
+}
+.c-wordmark::after {
+  content: ""; width: .5em; height: .5em; border-radius: var(--c-radius-full);
+  background: var(--c-ok-solid); flex: none;
+}
+
+/* --------------------------------------------------------------------------
+   18. MOTION AND PRINT
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* A gap report goes into a board packet or an audit file. It prints on paper,
+   in light, with the patterns doing the work the hues cannot. IDENTITY 13.6 */
+@media print {
+  :root, :root[data-theme="dark"] {
+    --c-paper: #FFFFFF; --c-surface: #FFFFFF; --c-sunken: #EDF1F6;
+    --c-ink: #000000; --c-ink-strong: #000000; --c-ink-muted: #333333;
+    --c-line: #B4BFCB; --c-line-strong: #5F6E80;
+    --c-action: #14458C; --c-on-action: #FFFFFF;
+    --c-ok-fg: #0C5F4A; --c-warn-fg: #6B5507; --c-gap-fg: #A01739; --c-rev-fg: #3D4F66;
+    --c-ast-fg: #4F3D06; --c-ast-bg: #EDE3C0; --c-ast-line: #B7A25E;
+    --c-ok-solid: #0F6E55; --c-warn-solid: #7A6209; --c-gap-solid: #B01A40;
+    --c-ast-solid: #5E4907;
+    --c-shadow-1: none; --c-shadow-2: none; --c-hairline: none;
+  }
+  body { background: #FFFFFF; }
+  .c-nav, .c-btn, .c-tabs, .c-toast { display: none !important; }
+  .c-card, .c-table-wrap { break-inside: avoid; box-shadow: none; }
+  .c-report__disclaimer { position: running(footer); }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 90%; color: #333333; }
+}

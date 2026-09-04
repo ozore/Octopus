@@ -1,0 +1,905 @@
+{
+  "record_id": "nc.hvac",
+  "schema_version": "1.0.0",
+  "state": "NC",
+  "state_name": "North Carolina",
+  "trade": "hvac",
+  "jurisdiction_model": {
+    "level": "state_only",
+    "summary": {
+      "value": "HVAC is licensed in North Carolina as 'heating', in three groups, by the same board that licenses plumbing. There is no separate HVAC board.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://nclicensing.org/applicant-information/",
+      "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+      "source_kind": "board_page",
+      "evidence": "the Plumbing, Heating Group No. 1, Heating Group No. 2 and/or Heating Group No. 3 Contractor examination",
+      "last_verified": "2026-09-03",
+      "verified_by": [
+        "po-stateready-pass-a",
+        "po-stateready-pass-b"
+      ]
+    },
+    "local_layer_note": "Note the cross-board overlap: North Carolina's ELECTRICAL board issues a Special Restricted 'Plumbing, Heating and Air Conditioning' licence (SP-PH) for the electrical work inside that scope. A North Carolina HVAC company can therefore need a licence from each of two boards."
+  },
+  "boards": [
+    {
+      "board_id": "nc.phfs",
+      "name": "North Carolina State Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+      "url": "https://nclicensing.org/",
+      "scope": "Plumbing, Heating Groups 1-3, fuel piping and fire sprinkler contractor and technician licences — 31 licence qualifications in total",
+      "phone": "919-875-3612"
+    }
+  ],
+  "licence_types": [
+    {
+      "licence_type_id": "nc.hvac.heating_group_1",
+      "name": "Heating Contractor — Group No. 1 (H-1)",
+      "level": "contractor",
+      "issuer_level": "state",
+      "board_id": "nc.phfs",
+      "who_must_hold": {
+        "value": "A contractor installing, maintaining, servicing or repairing heating systems in the Group 1 category.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://nclicensing.org/applicant-information/",
+        "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+        "source_kind": "board_page",
+        "evidence": "an applicant must have 2 years (4,000 hours) on-site full-time experience",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://nclicensing.org/applicant-information/",
+          "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+          "source_kind": "board_page",
+          "evidence": "All persons desiring to obtain licensure with this Board must meet the requirements listed herein and satisfactorily complete the applicable examination(s).",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": 150,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://nclicensing.org/faq/",
+          "source_title": "FAQ — NC Plumbing, Heating and Fire Sprinkler Board",
+          "source_kind": "board_page",
+          "evidence": "The examination application fee is $150.00 and is non-refundable.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "note": "The exam must be taken within 90 days of the eligibility notice; a failing candidate waits 90 days before retesting; a passing candidate has 45 days to file the License Activation Form or must retest. Three separate clocks, all of them alertable."
+      },
+      "experience": {
+        "requirement": {
+          "value": "2 years (4,000 hours) of on-site full-time experience in the installation, maintenance, service or repair of plumbing or heating systems in the category sought, whether or not a licence was required for the work.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://nclicensing.org/applicant-information/",
+          "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+          "source_kind": "board_page",
+          "evidence": "an applicant must have 2 years (4,000 hours) on-site full-time experience",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "alternatives": {
+          "value": "Up to one-half (2,000 hours, or 45 quarter / 30 semester hours) may be academic or technical training in the same field. Military experience counts with a DD214 and supervisor statements. Code-enforcement experience does NOT count.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://nclicensing.org/applicant-information/",
+          "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+          "source_kind": "board_page",
+          "evidence": "Certified Code Enforcement Official experience does not meet the experience requirements for licensure.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "application_fee": {
+        "value": 150,
+        "unit": "USD",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://nclicensing.org/faq/",
+        "source_title": "FAQ — NC Plumbing, Heating and Fire Sprinkler Board",
+        "source_kind": "board_page",
+        "evidence": "The examination application fee is $150.00",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ],
+        "note": "This is the examination application fee. The separate licence activation fee is not published on the board's site."
+      },
+      "renewal": {
+        "cycle": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncleg.gov/EnactedLegislation/Statutes/PDF/BySection/Chapter_87/GS_87-22.pdf",
+          "source_title": "N.C. G.S. 87-22 License fee; expiration and renewal; reinstatement",
+          "source_kind": "statute",
+          "evidence": "All licenses shall expire on the last day of December in each year following their issuance or renewal.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "G.S. 87-22 sets a CEILING of $150 for the annual plumbing or heating licence fee, not the fee itself, and the board publishes the actual amount only on the renewal invoice it mails each September. A ceiling is not a price and is not recorded as one.",
+          "source_url": "https://www.ncleg.gov/EnactedLegislation/Statutes/PDF/BySection/Chapter_87/GS_87-22.pdf"
+        },
+        "expiry_rule": {
+          "value": "fixed_date:12-31",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://nclicensing.org/license-renewal/",
+          "source_title": "License Renewal — NC Plumbing, Heating and Fire Sprinkler Board",
+          "source_kind": "board_page",
+          "evidence": "All licenses expire on the last day of December in each year following their issuance or renewal.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "Every licence in the state expires on the same day. For a contractor with 30 North Carolina licences that is not 30 deadlines, it is one December wall — which changes what a good alert looks like: a single batch task in October, not thirty reminders."
+        },
+        "grace_period": {
+          "value": 0,
+          "unit": "days",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://nclicensing.org/license-renewal/",
+          "source_title": "License Renewal — NC Plumbing, Heating and Fire Sprinkler Board",
+          "source_kind": "board_page",
+          "evidence": "Contrary to popular belief, there is NO GRACE PERIOD following the expiration of a license",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "An explicit zero, stated by the board in capitals, and all licensed activity (bidding, contracting, supervising, installing) must cease on 1 January until renewal."
+        },
+        "late_fee": {
+          "value": 25,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncleg.gov/EnactedLegislation/Statutes/PDF/BySection/Chapter_87/GS_87-22.pdf",
+          "source_title": "N.C. G.S. 87-22 License fee; expiration and renewal; reinstatement",
+          "source_kind": "statute",
+          "evidence": "the Board shall increase the license fee by twenty",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "Applies on failure to renew during January. A licence unrenewed for three years requires re-examination."
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": false,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://nclicensing.org/education/",
+          "source_title": "Education — NC Plumbing, Heating and Fire Sprinkler Board",
+          "source_kind": "board_page",
+          "evidence": "Mandatory Continuing Education was eliminated by the Board in 2012, and is no longer required in order to renew licenses annually",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "hours": {
+          "value": 0,
+          "unit": "hours",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://nclicensing.org/education/",
+          "source_title": "Education — NC Plumbing, Heating and Fire Sprinkler Board",
+          "source_kind": "board_page",
+          "evidence": "Mandatory Continuing Education was eliminated by the Board in 2012",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "A positive finding, not a gap. Two North Carolina boards, opposite rules: the plumbing/heating board requires none, the electrical board requires eight hours a year with half in a classroom. A single 'North Carolina CE' rule in a customer's spreadsheet is wrong for one of the two trades."
+        },
+        "period": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "not applicable"
+        },
+        "approved_provider_rule": {
+          "value": "None: the Board does not approve providers or courses and no hours are reported to it.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://nclicensing.org/education/",
+          "source_title": "Education — NC Plumbing, Heating and Fire Sprinkler Board",
+          "source_kind": "board_page",
+          "evidence": "The Board does not approve providers or courses and there is no need to report CE hours to the Board.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No bond appears on the applicant-information, renewal, education or FAQ pages read.",
+          "source_url": "https://nclicensing.org/applicant-information/"
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see bond.required"
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No liability-insurance minimum appears on the board pages read. G.S. ch. 87 art. 2 was read only at s. 87-22 (fees and renewal); the rest of the article is in the wave-2 queue.",
+          "source_url": "https://nclicensing.org/applicant-information/"
+        }
+      }
+    },
+    {
+      "licence_type_id": "nc.hvac.heating_group_3",
+      "name": "Heating Contractor — Group No. 3 (H-3)",
+      "level": "contractor",
+      "issuer_level": "state",
+      "board_id": "nc.phfs",
+      "who_must_hold": {
+        "value": "A contractor in the Group 3 heating category.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://nclicensing.org/applicant-information/",
+        "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+        "source_kind": "board_page",
+        "evidence": "Heating Group No. 2 and/or Heating Group No. 3 Contractor examination",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://nclicensing.org/applicant-information/",
+          "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+          "source_kind": "board_page",
+          "evidence": "All persons desiring to obtain licensure with this Board must meet the requirements listed herein and satisfactorily complete the applicable examination(s).",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": 150,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://nclicensing.org/faq/",
+          "source_title": "FAQ — NC Plumbing, Heating and Fire Sprinkler Board",
+          "source_kind": "board_page",
+          "evidence": "The examination application fee is $150.00 and is non-refundable.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "note": "The exam must be taken within 90 days of the eligibility notice; a failing candidate waits 90 days before retesting; a passing candidate has 45 days to file the License Activation Form or must retest. Three separate clocks, all of them alertable."
+      },
+      "experience": {
+        "requirement": {
+          "value": "2 years (4,000 hours) of on-site full-time experience in the installation, maintenance, service or repair of plumbing or heating systems in the category sought, whether or not a licence was required for the work.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://nclicensing.org/applicant-information/",
+          "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+          "source_kind": "board_page",
+          "evidence": "an applicant must have 2 years (4,000 hours) on-site full-time experience",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "alternatives": {
+          "value": "Up to one-half (2,000 hours, or 45 quarter / 30 semester hours) may be academic or technical training in the same field. Military experience counts with a DD214 and supervisor statements. Code-enforcement experience does NOT count.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://nclicensing.org/applicant-information/",
+          "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+          "source_kind": "board_page",
+          "evidence": "Certified Code Enforcement Official experience does not meet the experience requirements for licensure.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "application_fee": {
+        "value": 150,
+        "unit": "USD",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://nclicensing.org/faq/",
+        "source_title": "FAQ — NC Plumbing, Heating and Fire Sprinkler Board",
+        "source_kind": "board_page",
+        "evidence": "The examination application fee is $150.00",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ],
+        "note": "This is the examination application fee. The separate licence activation fee is not published on the board's site."
+      },
+      "renewal": {
+        "cycle": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncleg.gov/EnactedLegislation/Statutes/PDF/BySection/Chapter_87/GS_87-22.pdf",
+          "source_title": "N.C. G.S. 87-22 License fee; expiration and renewal; reinstatement",
+          "source_kind": "statute",
+          "evidence": "All licenses shall expire on the last day of December in each year following their issuance or renewal.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "G.S. 87-22 sets a CEILING of $150 for the annual plumbing or heating licence fee, not the fee itself, and the board publishes the actual amount only on the renewal invoice it mails each September. A ceiling is not a price and is not recorded as one.",
+          "source_url": "https://www.ncleg.gov/EnactedLegislation/Statutes/PDF/BySection/Chapter_87/GS_87-22.pdf"
+        },
+        "expiry_rule": {
+          "value": "fixed_date:12-31",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://nclicensing.org/license-renewal/",
+          "source_title": "License Renewal — NC Plumbing, Heating and Fire Sprinkler Board",
+          "source_kind": "board_page",
+          "evidence": "All licenses expire on the last day of December in each year following their issuance or renewal.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "Every licence in the state expires on the same day. For a contractor with 30 North Carolina licences that is not 30 deadlines, it is one December wall — which changes what a good alert looks like: a single batch task in October, not thirty reminders."
+        },
+        "grace_period": {
+          "value": 0,
+          "unit": "days",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://nclicensing.org/license-renewal/",
+          "source_title": "License Renewal — NC Plumbing, Heating and Fire Sprinkler Board",
+          "source_kind": "board_page",
+          "evidence": "Contrary to popular belief, there is NO GRACE PERIOD following the expiration of a license",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "An explicit zero, stated by the board in capitals, and all licensed activity (bidding, contracting, supervising, installing) must cease on 1 January until renewal."
+        },
+        "late_fee": {
+          "value": 25,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncleg.gov/EnactedLegislation/Statutes/PDF/BySection/Chapter_87/GS_87-22.pdf",
+          "source_title": "N.C. G.S. 87-22 License fee; expiration and renewal; reinstatement",
+          "source_kind": "statute",
+          "evidence": "the Board shall increase the license fee by twenty",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "Applies on failure to renew during January. A licence unrenewed for three years requires re-examination."
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": false,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://nclicensing.org/education/",
+          "source_title": "Education — NC Plumbing, Heating and Fire Sprinkler Board",
+          "source_kind": "board_page",
+          "evidence": "Mandatory Continuing Education was eliminated by the Board in 2012, and is no longer required in order to renew licenses annually",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "hours": {
+          "value": 0,
+          "unit": "hours",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://nclicensing.org/education/",
+          "source_title": "Education — NC Plumbing, Heating and Fire Sprinkler Board",
+          "source_kind": "board_page",
+          "evidence": "Mandatory Continuing Education was eliminated by the Board in 2012",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "A positive finding, not a gap. Two North Carolina boards, opposite rules: the plumbing/heating board requires none, the electrical board requires eight hours a year with half in a classroom. A single 'North Carolina CE' rule in a customer's spreadsheet is wrong for one of the two trades."
+        },
+        "period": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "not applicable"
+        },
+        "approved_provider_rule": {
+          "value": "None: the Board does not approve providers or courses and no hours are reported to it.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://nclicensing.org/education/",
+          "source_title": "Education — NC Plumbing, Heating and Fire Sprinkler Board",
+          "source_kind": "board_page",
+          "evidence": "The Board does not approve providers or courses and there is no need to report CE hours to the Board.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No bond appears on the applicant-information, renewal, education or FAQ pages read.",
+          "source_url": "https://nclicensing.org/applicant-information/"
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see bond.required"
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No liability-insurance minimum appears on the board pages read. G.S. ch. 87 art. 2 was read only at s. 87-22 (fees and renewal); the rest of the article is in the wave-2 queue.",
+          "source_url": "https://nclicensing.org/applicant-information/"
+        }
+      }
+    }
+  ],
+  "reciprocity": [
+    {
+      "with_state": "SC",
+      "direction": "inbound",
+      "grants": {
+        "value": "A waiver of the NC technical examination only.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://nclicensing.org/applicant-information/",
+        "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+        "source_kind": "board_page",
+        "evidence": "North Carolina does have an Technical Examination Waiver Agreement with South Carolina for plumbing and HVAC contractors",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "requires_from": "South Carolina plumbing or HVAC contractor licence",
+      "conditions": {
+        "value": "The North Carolina business law exam must still be passed.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://nclicensing.org/applicant-information/",
+        "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+        "source_kind": "board_page",
+        "evidence": "however, applicants must pass the North Carolina business law exam",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": "technical exam only",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://nclicensing.org/applicant-information/",
+        "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+        "source_kind": "board_page",
+        "evidence": "Technical Examination Waiver Agreement with South Carolina",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      }
+    },
+    {
+      "with_state": "GA",
+      "direction": "inbound",
+      "grants": {
+        "value": "Possible eligibility for the equivalent North Carolina licence.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://nclicensing.org/applicant-information/",
+        "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+        "source_kind": "board_page",
+        "evidence": "may be eligible for equivalent licensure in North Carolina",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "requires_from": "current GA licence",
+      "conditions": {
+        "value": "The applicant must be a current PERMANENT RESIDENT of North Carolina as well as holding the neighbouring state's licence.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://nclicensing.org/applicant-information/",
+        "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+        "source_kind": "board_page",
+        "evidence": "Individuals who are currently permanent residents of North Carolina and also currently hold licensure in the neighboring states",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "The Act's text was not read; the board page describes eligibility, not the exam consequence."
+      }
+    },
+    {
+      "with_state": "SC",
+      "direction": "inbound",
+      "grants": {
+        "value": "Possible eligibility for the equivalent North Carolina licence.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://nclicensing.org/applicant-information/",
+        "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+        "source_kind": "board_page",
+        "evidence": "may be eligible for equivalent licensure in North Carolina",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "requires_from": "current SC licence",
+      "conditions": {
+        "value": "The applicant must be a current PERMANENT RESIDENT of North Carolina as well as holding the neighbouring state's licence.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://nclicensing.org/applicant-information/",
+        "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+        "source_kind": "board_page",
+        "evidence": "Individuals who are currently permanent residents of North Carolina and also currently hold licensure in the neighboring states",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "The Act's text was not read; the board page describes eligibility, not the exam consequence."
+      }
+    },
+    {
+      "with_state": "TN",
+      "direction": "inbound",
+      "grants": {
+        "value": "Possible eligibility for the equivalent North Carolina licence.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://nclicensing.org/applicant-information/",
+        "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+        "source_kind": "board_page",
+        "evidence": "may be eligible for equivalent licensure in North Carolina",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "requires_from": "current TN licence",
+      "conditions": {
+        "value": "The applicant must be a current PERMANENT RESIDENT of North Carolina as well as holding the neighbouring state's licence.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://nclicensing.org/applicant-information/",
+        "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+        "source_kind": "board_page",
+        "evidence": "Individuals who are currently permanent residents of North Carolina and also currently hold licensure in the neighboring states",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "The Act's text was not read; the board page describes eligibility, not the exam consequence."
+      }
+    },
+    {
+      "with_state": "VA",
+      "direction": "inbound",
+      "grants": {
+        "value": "Possible eligibility for the equivalent North Carolina licence.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://nclicensing.org/applicant-information/",
+        "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+        "source_kind": "board_page",
+        "evidence": "may be eligible for equivalent licensure in North Carolina",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "requires_from": "current VA licence",
+      "conditions": {
+        "value": "The applicant must be a current PERMANENT RESIDENT of North Carolina as well as holding the neighbouring state's licence.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://nclicensing.org/applicant-information/",
+        "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+        "source_kind": "board_page",
+        "evidence": "Individuals who are currently permanent residents of North Carolina and also currently hold licensure in the neighboring states",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "The Act's text was not read; the board page describes eligibility, not the exam consequence."
+      }
+    },
+    {
+      "with_state": "WV",
+      "direction": "inbound",
+      "grants": {
+        "value": "Possible eligibility for the equivalent North Carolina licence.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://nclicensing.org/applicant-information/",
+        "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+        "source_kind": "board_page",
+        "evidence": "may be eligible for equivalent licensure in North Carolina",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "requires_from": "current WV licence",
+      "conditions": {
+        "value": "The applicant must be a current PERMANENT RESIDENT of North Carolina as well as holding the neighbouring state's licence.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://nclicensing.org/applicant-information/",
+        "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+        "source_kind": "board_page",
+        "evidence": "Individuals who are currently permanent residents of North Carolina and also currently hold licensure in the neighboring states",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "The Act's text was not read; the board page describes eligibility, not the exam consequence."
+      }
+    }
+  ],
+  "reciprocity_statement": {
+    "value": "None. The board states in terms that it has no reciprocity agreement with any state. Two narrower routes exist: a Technical Examination Waiver Agreement with South Carolina, under which the NC business law exam must still be passed; and the Neighbor State License Recognition Act for people who are permanent NC residents AND hold a licence in Georgia, South Carolina, Tennessee, Virginia or West Virginia.",
+    "status": "verified",
+    "confidence": "high",
+    "source_url": "https://nclicensing.org/applicant-information/",
+    "source_title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+    "source_kind": "board_page",
+    "evidence": "There are no license reciprocity agreements with any other state.",
+    "last_verified": "2026-09-03",
+    "verified_by": [
+      "po-stateready-pass-a",
+      "po-stateready-pass-b"
+    ],
+    "note": "Note the residency condition on the Neighbor State route: it is a rule about the PERSON, not about the company. A Virginia-licensed qualifier who does not move to North Carolina cannot use it."
+  },
+  "business_entity": {
+    "qualifying_individual_rule": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "The board's licence structure distinguishes licensees from sub-licensees (there is an address-change form for both), but the qualifying-individual rule for a company was not established from the pages read.",
+      "source_url": "https://nclicensing.org/applicant-information/"
+    },
+    "entity_registration": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "Not read in this pass."
+    },
+    "per_location_rule": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "Not stated on the pages read."
+    },
+    "change_notification_deadline": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "Not stated on the pages read."
+    }
+  },
+  "typical_timeline": {
+    "value": "Renewals are processed within 2-3 business days of receipt, with 3-5 further days for the printed licence to arrive.",
+    "status": "verified",
+    "confidence": "medium",
+    "source_url": "https://nclicensing.org/license-renewal/",
+    "source_title": "License Renewal — NC Plumbing, Heating and Fire Sprinkler Board",
+    "source_kind": "board_page",
+    "evidence": "Renewals are currently being processed within 2-3 business days of receipt",
+    "last_verified": "2026-09-03",
+    "verified_by": [
+      "po-stateready-pass-a",
+      "po-stateready-pass-b"
+    ],
+    "note": "This is the RENEWAL turnaround, the only duration the board publishes. It is not the new-licence timeline, and the playbook must not present it as one."
+  },
+  "coverage_notes": [
+    "The board offers 31 licence qualifications. Two heating contractor groups are modelled; Group 2, the Class I/II technician licences, the state-and-local-government and private-educational technician licences and fuel piping are not.",
+    "Heating Group definitions (what distinguishes Group 1 from 2 from 3) are behind the board's 'Contractor License Definitions' link, which was not fetched. The playbook must not tell a customer which group they need."
+  ],
+  "disclaimer_profile": "unverified_fields_present",
+  "provenance": {
+    "created_at": "2026-09-03",
+    "pass_a": {
+      "agent_id": "po-stateready-pass-a",
+      "date": "2026-09-03",
+      "method": "fetched each source URL with curl (desktop UA), read the rendered text, recorded each value with a verbatim evidence fragment"
+    },
+    "pass_b": {
+      "agent_id": "po-stateready-pass-b",
+      "date": "2026-09-03",
+      "method": "kb-scripts/verify_pass_b.py re-fetches every source_url independently of the pass-A cache and asserts the evidence fragment is still literally present; a value whose evidence cannot be found is a disagreement and is demoted to UNVERIFIED",
+      "agreements": 42,
+      "disagreements": 0,
+      "disagreement_detail": [],
+      "unreachable": 0,
+      "agreement_rate_pct": 100.0
+    },
+    "sources": [
+      {
+        "source_id": "nc.phfs.applicant",
+        "url": "https://nclicensing.org/applicant-information/",
+        "title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 607669,
+        "content_sha256": "da367cf007a3064dbe10b6d24c19df6a0bbc1752c057c8ea98825b514ca51828"
+      },
+      {
+        "source_id": "nc.phfs.renewal",
+        "url": "https://nclicensing.org/license-renewal/",
+        "title": "License Renewal — NC Plumbing, Heating and Fire Sprinkler Board",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 598877,
+        "content_sha256": "b3895cb4eb9e02a706c5fb5a2b558ab6d477d98b2ef50f5ea6a7f2feb732ca46"
+      },
+      {
+        "source_id": "nc.phfs.education",
+        "url": "https://nclicensing.org/education/",
+        "title": "Education — NC Plumbing, Heating and Fire Sprinkler Board",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 656052,
+        "content_sha256": "15e842563527e3f023c51169420f78ecedd28cc429fbcee0d2c0ebeaf72c69d6"
+      },
+      {
+        "source_id": "nc.phfs.faq",
+        "url": "https://nclicensing.org/faq/",
+        "title": "FAQ — NC Plumbing, Heating and Fire Sprinkler Board",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 620089,
+        "content_sha256": "b903b92ddace79fe87e0353963fdd87c1da22f1dd3e215b52c82f99e7354b82b"
+      },
+      {
+        "source_id": "nc.gs.87_22",
+        "url": "https://www.ncleg.gov/EnactedLegislation/Statutes/PDF/BySection/Chapter_87/GS_87-22.pdf",
+        "title": "N.C. G.S. 87-22 License fee; expiration and renewal; reinstatement",
+        "kind": "statute",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 96593,
+        "content_sha256": "f2ba223c29ec0106b4dfc1d4d7259980b58361238294ad9a9f2036690b67ce84"
+      }
+    ],
+    "publishable": true
+  }
+}

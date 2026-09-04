@@ -1,0 +1,81 @@
+{
+  "id": "hoa.baseline",
+  "audience": "hoa",
+  "label": "Homeowners association — baseline vendor",
+  "summary": "$1M minimum limits, additional insured on the general liability AND the auto policy, workers' compensation where the vendor has employees.",
+  "confidence": "medium",
+  "unverified": false,
+  "requirements": [
+    {
+      "kind": "limit",
+      "coverage": "general_liability",
+      "limit": "each_occurrence",
+      "min": 1000000
+    },
+    {
+      "kind": "limit",
+      "coverage": "general_liability",
+      "limit": "general_aggregate",
+      "min": 2000000
+    },
+    {
+      "kind": "limit",
+      "coverage": "general_liability",
+      "limit": "products_comp_op_agg",
+      "min": 2000000
+    },
+    {
+      "kind": "limit",
+      "coverage": "automobile_liability",
+      "limit": "combined_single_limit",
+      "min": 1000000
+    },
+    {
+      "kind": "coverage_present",
+      "coverage": "workers_compensation",
+      "note": "Statutory workers' compensation, as required by the state the work is performed in."
+    },
+    {
+      "kind": "limit",
+      "coverage": "workers_compensation",
+      "limit": "el_each_accident",
+      "min": 1000000
+    },
+    {
+      "kind": "endorsement",
+      "endorsement": "additional_insured_ongoing",
+      "accepts": [
+        "CG 20 10",
+        "CG 20 33",
+        "CG 20 38",
+        "CG 20 26"
+      ]
+    },
+    {
+      "kind": "endorsement",
+      "endorsement": "auto_additional_insured",
+      "accepts": [
+        "CA 20 48"
+      ]
+    },
+    {
+      "kind": "endorsement",
+      "endorsement": "waiver_of_subrogation_gl",
+      "accepts": [
+        "CG 24 04",
+        "CG 24 53"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://blog.vendorsmart.com/the-hoa-guide-to-vendor-insurance-requirements/",
+      "title": "VendorSmart — The HOA Guide to Vendor Insurance Requirements",
+      "last_verified": "2026-09-03",
+      "verified_by": [
+        "po-agent"
+      ],
+      "confidence": "medium"
+    }
+  ]
+}

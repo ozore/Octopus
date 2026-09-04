@@ -1,0 +1,2233 @@
+{
+  "today": "2026-09-03",
+  "issueDates": [
+    "2026-01-31",
+    "2026-03-14",
+    "2026-12-31"
+  ],
+  "cases": [
+    {
+      "caseId": "fl.electrical.certified_electrical_contractor@2026-01-31",
+      "recordId": "fl.electrical",
+      "state": "FL",
+      "trade": "electrical",
+      "licenceTypeId": "fl.electrical.certified_electrical_contractor",
+      "licenceTypeName": "Certified Electrical Contractor (EC)",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date_parity:08-31:even",
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": {
+          "dueOn": "2026-08-31",
+          "rule": "fixed_date_parity:08-31:even",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www2.myfloridalicense.com/electrical-contractors/"
+        },
+        "ce": {
+          "dueOn": "2026-08-31",
+          "rule": "licence_term",
+          "hoursRequired": 11,
+          "hoursOutstanding": 13,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "fl.electrical.certified_electrical_contractor@2026-03-14",
+      "recordId": "fl.electrical",
+      "state": "FL",
+      "trade": "electrical",
+      "licenceTypeId": "fl.electrical.certified_electrical_contractor",
+      "licenceTypeName": "Certified Electrical Contractor (EC)",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date_parity:08-31:even",
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": {
+          "dueOn": "2026-08-31",
+          "rule": "fixed_date_parity:08-31:even",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www2.myfloridalicense.com/electrical-contractors/"
+        },
+        "ce": {
+          "dueOn": "2026-08-31",
+          "rule": "licence_term",
+          "hoursRequired": 11,
+          "hoursOutstanding": 13,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "fl.electrical.certified_electrical_contractor@2026-12-31",
+      "recordId": "fl.electrical",
+      "state": "FL",
+      "trade": "electrical",
+      "licenceTypeId": "fl.electrical.certified_electrical_contractor",
+      "licenceTypeName": "Certified Electrical Contractor (EC)",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date_parity:08-31:even",
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": {
+          "dueOn": "2028-08-31",
+          "rule": "fixed_date_parity:08-31:even",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www2.myfloridalicense.com/electrical-contractors/"
+        },
+        "ce": {
+          "dueOn": "2028-08-31",
+          "rule": "licence_term",
+          "hoursRequired": 11,
+          "hoursOutstanding": 13,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "fl.electrical.registered_electrical_contractor@2026-01-31",
+      "recordId": "fl.electrical",
+      "state": "FL",
+      "trade": "electrical",
+      "licenceTypeId": "fl.electrical.registered_electrical_contractor",
+      "licenceTypeName": "Registered Electrical Contractor (ER)",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": null,
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": null,
+        "ce": null,
+        "explanations": [
+          {
+            "kind": "renewal",
+            "reason": "unknown_value"
+          },
+          {
+            "kind": "ce",
+            "reason": "unknown_value"
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "fl.electrical.registered_electrical_contractor@2026-03-14",
+      "recordId": "fl.electrical",
+      "state": "FL",
+      "trade": "electrical",
+      "licenceTypeId": "fl.electrical.registered_electrical_contractor",
+      "licenceTypeName": "Registered Electrical Contractor (ER)",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": null,
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": null,
+        "ce": null,
+        "explanations": [
+          {
+            "kind": "renewal",
+            "reason": "unknown_value"
+          },
+          {
+            "kind": "ce",
+            "reason": "unknown_value"
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "fl.electrical.registered_electrical_contractor@2026-12-31",
+      "recordId": "fl.electrical",
+      "state": "FL",
+      "trade": "electrical",
+      "licenceTypeId": "fl.electrical.registered_electrical_contractor",
+      "licenceTypeName": "Registered Electrical Contractor (ER)",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": null,
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": null,
+        "ce": null,
+        "explanations": [
+          {
+            "kind": "renewal",
+            "reason": "unknown_value"
+          },
+          {
+            "kind": "ce",
+            "reason": "unknown_value"
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "fl.hvac.certified_class_a_ac@2026-01-31",
+      "recordId": "fl.hvac",
+      "state": "FL",
+      "trade": "hvac",
+      "licenceTypeId": "fl.hvac.certified_class_a_ac",
+      "licenceTypeName": "Certified Class A Air-Conditioning Contractor (CA)",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date_parity:08-31:even",
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": {
+          "dueOn": "2026-08-31",
+          "rule": "fixed_date_parity:08-31:even",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www2.myfloridalicense.com/construction-industry/"
+        },
+        "ce": {
+          "dueOn": "2026-08-31",
+          "rule": "licence_term",
+          "hoursRequired": 14,
+          "hoursOutstanding": 14,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "fl.hvac.certified_class_a_ac@2026-03-14",
+      "recordId": "fl.hvac",
+      "state": "FL",
+      "trade": "hvac",
+      "licenceTypeId": "fl.hvac.certified_class_a_ac",
+      "licenceTypeName": "Certified Class A Air-Conditioning Contractor (CA)",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date_parity:08-31:even",
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": {
+          "dueOn": "2026-08-31",
+          "rule": "fixed_date_parity:08-31:even",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www2.myfloridalicense.com/construction-industry/"
+        },
+        "ce": {
+          "dueOn": "2026-08-31",
+          "rule": "licence_term",
+          "hoursRequired": 14,
+          "hoursOutstanding": 14,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "fl.hvac.certified_class_a_ac@2026-12-31",
+      "recordId": "fl.hvac",
+      "state": "FL",
+      "trade": "hvac",
+      "licenceTypeId": "fl.hvac.certified_class_a_ac",
+      "licenceTypeName": "Certified Class A Air-Conditioning Contractor (CA)",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date_parity:08-31:even",
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": {
+          "dueOn": "2028-08-31",
+          "rule": "fixed_date_parity:08-31:even",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www2.myfloridalicense.com/construction-industry/"
+        },
+        "ce": {
+          "dueOn": "2028-08-31",
+          "rule": "licence_term",
+          "hoursRequired": 14,
+          "hoursOutstanding": 14,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "fl.hvac.certified_class_b_ac@2026-01-31",
+      "recordId": "fl.hvac",
+      "state": "FL",
+      "trade": "hvac",
+      "licenceTypeId": "fl.hvac.certified_class_b_ac",
+      "licenceTypeName": "Certified Class B Air-Conditioning Contractor (CA)",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date_parity:08-31:even",
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": {
+          "dueOn": "2026-08-31",
+          "rule": "fixed_date_parity:08-31:even",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www2.myfloridalicense.com/construction-industry/"
+        },
+        "ce": {
+          "dueOn": "2026-08-31",
+          "rule": "licence_term",
+          "hoursRequired": 14,
+          "hoursOutstanding": 14,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "fl.hvac.certified_class_b_ac@2026-03-14",
+      "recordId": "fl.hvac",
+      "state": "FL",
+      "trade": "hvac",
+      "licenceTypeId": "fl.hvac.certified_class_b_ac",
+      "licenceTypeName": "Certified Class B Air-Conditioning Contractor (CA)",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date_parity:08-31:even",
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": {
+          "dueOn": "2026-08-31",
+          "rule": "fixed_date_parity:08-31:even",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www2.myfloridalicense.com/construction-industry/"
+        },
+        "ce": {
+          "dueOn": "2026-08-31",
+          "rule": "licence_term",
+          "hoursRequired": 14,
+          "hoursOutstanding": 14,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "fl.hvac.certified_class_b_ac@2026-12-31",
+      "recordId": "fl.hvac",
+      "state": "FL",
+      "trade": "hvac",
+      "licenceTypeId": "fl.hvac.certified_class_b_ac",
+      "licenceTypeName": "Certified Class B Air-Conditioning Contractor (CA)",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date_parity:08-31:even",
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": {
+          "dueOn": "2028-08-31",
+          "rule": "fixed_date_parity:08-31:even",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www2.myfloridalicense.com/construction-industry/"
+        },
+        "ce": {
+          "dueOn": "2028-08-31",
+          "rule": "licence_term",
+          "hoursRequired": 14,
+          "hoursOutstanding": 14,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "fl.hvac.registered_ac@2026-01-31",
+      "recordId": "fl.hvac",
+      "state": "FL",
+      "trade": "hvac",
+      "licenceTypeId": "fl.hvac.registered_ac",
+      "licenceTypeName": "Registered Air Conditioning Contractor (RA)",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date_parity:08-31:odd",
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-08-31",
+          "rule": "fixed_date_parity:08-31:odd",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www2.myfloridalicense.com/construction-industry/"
+        },
+        "ce": {
+          "dueOn": "2027-08-31",
+          "rule": "licence_term",
+          "hoursRequired": 14,
+          "hoursOutstanding": 14,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "fl.hvac.registered_ac@2026-03-14",
+      "recordId": "fl.hvac",
+      "state": "FL",
+      "trade": "hvac",
+      "licenceTypeId": "fl.hvac.registered_ac",
+      "licenceTypeName": "Registered Air Conditioning Contractor (RA)",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date_parity:08-31:odd",
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-08-31",
+          "rule": "fixed_date_parity:08-31:odd",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www2.myfloridalicense.com/construction-industry/"
+        },
+        "ce": {
+          "dueOn": "2027-08-31",
+          "rule": "licence_term",
+          "hoursRequired": 14,
+          "hoursOutstanding": 14,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "fl.hvac.registered_ac@2026-12-31",
+      "recordId": "fl.hvac",
+      "state": "FL",
+      "trade": "hvac",
+      "licenceTypeId": "fl.hvac.registered_ac",
+      "licenceTypeName": "Registered Air Conditioning Contractor (RA)",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date_parity:08-31:odd",
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-08-31",
+          "rule": "fixed_date_parity:08-31:odd",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www2.myfloridalicense.com/construction-industry/"
+        },
+        "ce": {
+          "dueOn": "2027-08-31",
+          "rule": "licence_term",
+          "hoursRequired": 14,
+          "hoursOutstanding": 14,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "fl.plumbing.certified_plumbing_contractor@2026-01-31",
+      "recordId": "fl.plumbing",
+      "state": "FL",
+      "trade": "plumbing",
+      "licenceTypeId": "fl.plumbing.certified_plumbing_contractor",
+      "licenceTypeName": "Certified Plumbing Contractor (CF)",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date_parity:08-31:even",
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": {
+          "dueOn": "2026-08-31",
+          "rule": "fixed_date_parity:08-31:even",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www2.myfloridalicense.com/construction-industry/"
+        },
+        "ce": {
+          "dueOn": "2026-08-31",
+          "rule": "licence_term",
+          "hoursRequired": 14,
+          "hoursOutstanding": 14,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "fl.plumbing.certified_plumbing_contractor@2026-03-14",
+      "recordId": "fl.plumbing",
+      "state": "FL",
+      "trade": "plumbing",
+      "licenceTypeId": "fl.plumbing.certified_plumbing_contractor",
+      "licenceTypeName": "Certified Plumbing Contractor (CF)",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date_parity:08-31:even",
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": {
+          "dueOn": "2026-08-31",
+          "rule": "fixed_date_parity:08-31:even",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www2.myfloridalicense.com/construction-industry/"
+        },
+        "ce": {
+          "dueOn": "2026-08-31",
+          "rule": "licence_term",
+          "hoursRequired": 14,
+          "hoursOutstanding": 14,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "fl.plumbing.certified_plumbing_contractor@2026-12-31",
+      "recordId": "fl.plumbing",
+      "state": "FL",
+      "trade": "plumbing",
+      "licenceTypeId": "fl.plumbing.certified_plumbing_contractor",
+      "licenceTypeName": "Certified Plumbing Contractor (CF)",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date_parity:08-31:even",
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": {
+          "dueOn": "2028-08-31",
+          "rule": "fixed_date_parity:08-31:even",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www2.myfloridalicense.com/construction-industry/"
+        },
+        "ce": {
+          "dueOn": "2028-08-31",
+          "rule": "licence_term",
+          "hoursRequired": 14,
+          "hoursOutstanding": 14,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "fl.plumbing.registered_plumbing_contractor@2026-01-31",
+      "recordId": "fl.plumbing",
+      "state": "FL",
+      "trade": "plumbing",
+      "licenceTypeId": "fl.plumbing.registered_plumbing_contractor",
+      "licenceTypeName": "Registered Plumbing Contractor (RF)",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date_parity:08-31:odd",
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-08-31",
+          "rule": "fixed_date_parity:08-31:odd",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www2.myfloridalicense.com/construction-industry/"
+        },
+        "ce": {
+          "dueOn": "2027-08-31",
+          "rule": "licence_term",
+          "hoursRequired": 14,
+          "hoursOutstanding": 14,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "fl.plumbing.registered_plumbing_contractor@2026-03-14",
+      "recordId": "fl.plumbing",
+      "state": "FL",
+      "trade": "plumbing",
+      "licenceTypeId": "fl.plumbing.registered_plumbing_contractor",
+      "licenceTypeName": "Registered Plumbing Contractor (RF)",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date_parity:08-31:odd",
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-08-31",
+          "rule": "fixed_date_parity:08-31:odd",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www2.myfloridalicense.com/construction-industry/"
+        },
+        "ce": {
+          "dueOn": "2027-08-31",
+          "rule": "licence_term",
+          "hoursRequired": 14,
+          "hoursOutstanding": 14,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "fl.plumbing.registered_plumbing_contractor@2026-12-31",
+      "recordId": "fl.plumbing",
+      "state": "FL",
+      "trade": "plumbing",
+      "licenceTypeId": "fl.plumbing.registered_plumbing_contractor",
+      "licenceTypeName": "Registered Plumbing Contractor (RF)",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date_parity:08-31:odd",
+      "cycleMonths": 24,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-08-31",
+          "rule": "fixed_date_parity:08-31:odd",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www2.myfloridalicense.com/construction-industry/"
+        },
+        "ce": {
+          "dueOn": "2027-08-31",
+          "rule": "licence_term",
+          "hoursRequired": 14,
+          "hoursOutstanding": 14,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "nc.electrical.unlimited@2026-01-31",
+      "recordId": "nc.electrical",
+      "state": "NC",
+      "trade": "electrical",
+      "licenceTypeId": "nc.electrical.unlimited",
+      "licenceTypeName": "Unlimited License (U)",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-01-31",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.ncbeec.org/licensing/"
+        },
+        "ce": {
+          "dueOn": "2027-01-31",
+          "rule": "licence_term",
+          "hoursRequired": 8,
+          "hoursOutstanding": 8,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 1
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "nc.electrical.unlimited@2026-03-14",
+      "recordId": "nc.electrical",
+      "state": "NC",
+      "trade": "electrical",
+      "licenceTypeId": "nc.electrical.unlimited",
+      "licenceTypeName": "Unlimited License (U)",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-03-14",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.ncbeec.org/licensing/"
+        },
+        "ce": {
+          "dueOn": "2027-03-14",
+          "rule": "licence_term",
+          "hoursRequired": 8,
+          "hoursOutstanding": 8,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 1
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "nc.electrical.unlimited@2026-12-31",
+      "recordId": "nc.electrical",
+      "state": "NC",
+      "trade": "electrical",
+      "licenceTypeId": "nc.electrical.unlimited",
+      "licenceTypeName": "Unlimited License (U)",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-12-31",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.ncbeec.org/licensing/"
+        },
+        "ce": {
+          "dueOn": "2027-12-31",
+          "rule": "licence_term",
+          "hoursRequired": 8,
+          "hoursOutstanding": 8,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 1
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "nc.electrical.intermediate@2026-01-31",
+      "recordId": "nc.electrical",
+      "state": "NC",
+      "trade": "electrical",
+      "licenceTypeId": "nc.electrical.intermediate",
+      "licenceTypeName": "Intermediate License (I)",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-01-31",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.ncbeec.org/licensing/"
+        },
+        "ce": {
+          "dueOn": "2027-01-31",
+          "rule": "licence_term",
+          "hoursRequired": 8,
+          "hoursOutstanding": 8,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 1
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "nc.electrical.intermediate@2026-03-14",
+      "recordId": "nc.electrical",
+      "state": "NC",
+      "trade": "electrical",
+      "licenceTypeId": "nc.electrical.intermediate",
+      "licenceTypeName": "Intermediate License (I)",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-03-14",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.ncbeec.org/licensing/"
+        },
+        "ce": {
+          "dueOn": "2027-03-14",
+          "rule": "licence_term",
+          "hoursRequired": 8,
+          "hoursOutstanding": 8,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 1
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "nc.electrical.intermediate@2026-12-31",
+      "recordId": "nc.electrical",
+      "state": "NC",
+      "trade": "electrical",
+      "licenceTypeId": "nc.electrical.intermediate",
+      "licenceTypeName": "Intermediate License (I)",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-12-31",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.ncbeec.org/licensing/"
+        },
+        "ce": {
+          "dueOn": "2027-12-31",
+          "rule": "licence_term",
+          "hoursRequired": 8,
+          "hoursOutstanding": 8,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 1
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "nc.electrical.limited@2026-01-31",
+      "recordId": "nc.electrical",
+      "state": "NC",
+      "trade": "electrical",
+      "licenceTypeId": "nc.electrical.limited",
+      "licenceTypeName": "Limited License (L)",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-01-31",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.ncbeec.org/licensing/"
+        },
+        "ce": {
+          "dueOn": "2027-01-31",
+          "rule": "licence_term",
+          "hoursRequired": 8,
+          "hoursOutstanding": 8,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 1
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "nc.electrical.limited@2026-03-14",
+      "recordId": "nc.electrical",
+      "state": "NC",
+      "trade": "electrical",
+      "licenceTypeId": "nc.electrical.limited",
+      "licenceTypeName": "Limited License (L)",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-03-14",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.ncbeec.org/licensing/"
+        },
+        "ce": {
+          "dueOn": "2027-03-14",
+          "rule": "licence_term",
+          "hoursRequired": 8,
+          "hoursOutstanding": 8,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 1
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "nc.electrical.limited@2026-12-31",
+      "recordId": "nc.electrical",
+      "state": "NC",
+      "trade": "electrical",
+      "licenceTypeId": "nc.electrical.limited",
+      "licenceTypeName": "Limited License (L)",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-12-31",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.ncbeec.org/licensing/"
+        },
+        "ce": {
+          "dueOn": "2027-12-31",
+          "rule": "licence_term",
+          "hoursRequired": 8,
+          "hoursOutstanding": 8,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 1
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "nc.electrical.sp_ph@2026-01-31",
+      "recordId": "nc.electrical",
+      "state": "NC",
+      "trade": "electrical",
+      "licenceTypeId": "nc.electrical.sp_ph",
+      "licenceTypeName": "Special Restricted — Plumbing, Heating and Air Conditioning License (SP-PH)",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-01-31",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.ncbeec.org/licensing/"
+        },
+        "ce": {
+          "dueOn": "2027-01-31",
+          "rule": "licence_term",
+          "hoursRequired": 4,
+          "hoursOutstanding": 4,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 1
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "nc.electrical.sp_ph@2026-03-14",
+      "recordId": "nc.electrical",
+      "state": "NC",
+      "trade": "electrical",
+      "licenceTypeId": "nc.electrical.sp_ph",
+      "licenceTypeName": "Special Restricted — Plumbing, Heating and Air Conditioning License (SP-PH)",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-03-14",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.ncbeec.org/licensing/"
+        },
+        "ce": {
+          "dueOn": "2027-03-14",
+          "rule": "licence_term",
+          "hoursRequired": 4,
+          "hoursOutstanding": 4,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 1
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "nc.electrical.sp_ph@2026-12-31",
+      "recordId": "nc.electrical",
+      "state": "NC",
+      "trade": "electrical",
+      "licenceTypeId": "nc.electrical.sp_ph",
+      "licenceTypeName": "Special Restricted — Plumbing, Heating and Air Conditioning License (SP-PH)",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-12-31",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.ncbeec.org/licensing/"
+        },
+        "ce": {
+          "dueOn": "2027-12-31",
+          "rule": "licence_term",
+          "hoursRequired": 4,
+          "hoursOutstanding": 4,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 1
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "nc.hvac.heating_group_1@2026-01-31",
+      "recordId": "nc.hvac",
+      "state": "NC",
+      "trade": "hvac",
+      "licenceTypeId": "nc.hvac.heating_group_1",
+      "licenceTypeName": "Heating Contractor — Group No. 1 (H-1)",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date:12-31",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2026-12-31",
+          "rule": "fixed_date:12-31",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://nclicensing.org/license-renewal/"
+        },
+        "ce": null,
+        "explanations": [
+          {
+            "kind": "ce",
+            "reason": "ce_not_required"
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "nc.hvac.heating_group_1@2026-03-14",
+      "recordId": "nc.hvac",
+      "state": "NC",
+      "trade": "hvac",
+      "licenceTypeId": "nc.hvac.heating_group_1",
+      "licenceTypeName": "Heating Contractor — Group No. 1 (H-1)",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date:12-31",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2026-12-31",
+          "rule": "fixed_date:12-31",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://nclicensing.org/license-renewal/"
+        },
+        "ce": null,
+        "explanations": [
+          {
+            "kind": "ce",
+            "reason": "ce_not_required"
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "nc.hvac.heating_group_1@2026-12-31",
+      "recordId": "nc.hvac",
+      "state": "NC",
+      "trade": "hvac",
+      "licenceTypeId": "nc.hvac.heating_group_1",
+      "licenceTypeName": "Heating Contractor — Group No. 1 (H-1)",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date:12-31",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-12-31",
+          "rule": "fixed_date:12-31",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://nclicensing.org/license-renewal/"
+        },
+        "ce": null,
+        "explanations": [
+          {
+            "kind": "ce",
+            "reason": "ce_not_required"
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "nc.hvac.heating_group_3@2026-01-31",
+      "recordId": "nc.hvac",
+      "state": "NC",
+      "trade": "hvac",
+      "licenceTypeId": "nc.hvac.heating_group_3",
+      "licenceTypeName": "Heating Contractor — Group No. 3 (H-3)",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date:12-31",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2026-12-31",
+          "rule": "fixed_date:12-31",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://nclicensing.org/license-renewal/"
+        },
+        "ce": null,
+        "explanations": [
+          {
+            "kind": "ce",
+            "reason": "ce_not_required"
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "nc.hvac.heating_group_3@2026-03-14",
+      "recordId": "nc.hvac",
+      "state": "NC",
+      "trade": "hvac",
+      "licenceTypeId": "nc.hvac.heating_group_3",
+      "licenceTypeName": "Heating Contractor — Group No. 3 (H-3)",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date:12-31",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2026-12-31",
+          "rule": "fixed_date:12-31",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://nclicensing.org/license-renewal/"
+        },
+        "ce": null,
+        "explanations": [
+          {
+            "kind": "ce",
+            "reason": "ce_not_required"
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "nc.hvac.heating_group_3@2026-12-31",
+      "recordId": "nc.hvac",
+      "state": "NC",
+      "trade": "hvac",
+      "licenceTypeId": "nc.hvac.heating_group_3",
+      "licenceTypeName": "Heating Contractor — Group No. 3 (H-3)",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date:12-31",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-12-31",
+          "rule": "fixed_date:12-31",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://nclicensing.org/license-renewal/"
+        },
+        "ce": null,
+        "explanations": [
+          {
+            "kind": "ce",
+            "reason": "ce_not_required"
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "nc.plumbing.plumbing_contractor@2026-01-31",
+      "recordId": "nc.plumbing",
+      "state": "NC",
+      "trade": "plumbing",
+      "licenceTypeId": "nc.plumbing.plumbing_contractor",
+      "licenceTypeName": "Plumbing Contractor",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date:12-31",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2026-12-31",
+          "rule": "fixed_date:12-31",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://nclicensing.org/license-renewal/"
+        },
+        "ce": null,
+        "explanations": [
+          {
+            "kind": "ce",
+            "reason": "ce_not_required"
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "nc.plumbing.plumbing_contractor@2026-03-14",
+      "recordId": "nc.plumbing",
+      "state": "NC",
+      "trade": "plumbing",
+      "licenceTypeId": "nc.plumbing.plumbing_contractor",
+      "licenceTypeName": "Plumbing Contractor",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date:12-31",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2026-12-31",
+          "rule": "fixed_date:12-31",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://nclicensing.org/license-renewal/"
+        },
+        "ce": null,
+        "explanations": [
+          {
+            "kind": "ce",
+            "reason": "ce_not_required"
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "nc.plumbing.plumbing_contractor@2026-12-31",
+      "recordId": "nc.plumbing",
+      "state": "NC",
+      "trade": "plumbing",
+      "licenceTypeId": "nc.plumbing.plumbing_contractor",
+      "licenceTypeName": "Plumbing Contractor",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date:12-31",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-12-31",
+          "rule": "fixed_date:12-31",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://nclicensing.org/license-renewal/"
+        },
+        "ce": null,
+        "explanations": [
+          {
+            "kind": "ce",
+            "reason": "ce_not_required"
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "nc.plumbing.restricted_limited_plumbing@2026-01-31",
+      "recordId": "nc.plumbing",
+      "state": "NC",
+      "trade": "plumbing",
+      "licenceTypeId": "nc.plumbing.restricted_limited_plumbing",
+      "licenceTypeName": "Restricted Limited Plumbing Contractor",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date:12-31",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2026-12-31",
+          "rule": "fixed_date:12-31",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://nclicensing.org/license-renewal/"
+        },
+        "ce": null,
+        "explanations": [
+          {
+            "kind": "ce",
+            "reason": "ce_not_required"
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "nc.plumbing.restricted_limited_plumbing@2026-03-14",
+      "recordId": "nc.plumbing",
+      "state": "NC",
+      "trade": "plumbing",
+      "licenceTypeId": "nc.plumbing.restricted_limited_plumbing",
+      "licenceTypeName": "Restricted Limited Plumbing Contractor",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date:12-31",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2026-12-31",
+          "rule": "fixed_date:12-31",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://nclicensing.org/license-renewal/"
+        },
+        "ce": null,
+        "explanations": [
+          {
+            "kind": "ce",
+            "reason": "ce_not_required"
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "nc.plumbing.restricted_limited_plumbing@2026-12-31",
+      "recordId": "nc.plumbing",
+      "state": "NC",
+      "trade": "plumbing",
+      "licenceTypeId": "nc.plumbing.restricted_limited_plumbing",
+      "licenceTypeName": "Restricted Limited Plumbing Contractor",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "fixed_date:12-31",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-12-31",
+          "rule": "fixed_date:12-31",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://nclicensing.org/license-renewal/"
+        },
+        "ce": null,
+        "explanations": [
+          {
+            "kind": "ce",
+            "reason": "ce_not_required"
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "tx.electrical.electrical_contractor@2026-01-31",
+      "recordId": "tx.electrical",
+      "state": "TX",
+      "trade": "electrical",
+      "licenceTypeId": "tx.electrical.electrical_contractor",
+      "licenceTypeName": "Electrical Contractor",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-01-31",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.tdlr.texas.gov/electricians/apply/businesses/contractor-elec.htm"
+        },
+        "ce": null,
+        "explanations": [
+          {
+            "kind": "ce",
+            "reason": "ce_not_required"
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "tx.electrical.electrical_contractor@2026-03-14",
+      "recordId": "tx.electrical",
+      "state": "TX",
+      "trade": "electrical",
+      "licenceTypeId": "tx.electrical.electrical_contractor",
+      "licenceTypeName": "Electrical Contractor",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-03-14",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.tdlr.texas.gov/electricians/apply/businesses/contractor-elec.htm"
+        },
+        "ce": null,
+        "explanations": [
+          {
+            "kind": "ce",
+            "reason": "ce_not_required"
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "tx.electrical.electrical_contractor@2026-12-31",
+      "recordId": "tx.electrical",
+      "state": "TX",
+      "trade": "electrical",
+      "licenceTypeId": "tx.electrical.electrical_contractor",
+      "licenceTypeName": "Electrical Contractor",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-12-31",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.tdlr.texas.gov/electricians/apply/businesses/contractor-elec.htm"
+        },
+        "ce": null,
+        "explanations": [
+          {
+            "kind": "ce",
+            "reason": "ce_not_required"
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "tx.electrical.master_electrician@2026-01-31",
+      "recordId": "tx.electrical",
+      "state": "TX",
+      "trade": "electrical",
+      "licenceTypeId": "tx.electrical.master_electrician",
+      "licenceTypeName": "Master Electrician",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-01-31",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.tdlr.texas.gov/electricians/renew/individuals/master-electrician.htm"
+        },
+        "ce": {
+          "dueOn": "2027-01-31",
+          "rule": "licence_term",
+          "hoursRequired": 4,
+          "hoursOutstanding": 4,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "tx.electrical.master_electrician@2026-03-14",
+      "recordId": "tx.electrical",
+      "state": "TX",
+      "trade": "electrical",
+      "licenceTypeId": "tx.electrical.master_electrician",
+      "licenceTypeName": "Master Electrician",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-03-14",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.tdlr.texas.gov/electricians/renew/individuals/master-electrician.htm"
+        },
+        "ce": {
+          "dueOn": "2027-03-14",
+          "rule": "licence_term",
+          "hoursRequired": 4,
+          "hoursOutstanding": 4,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "tx.electrical.master_electrician@2026-12-31",
+      "recordId": "tx.electrical",
+      "state": "TX",
+      "trade": "electrical",
+      "licenceTypeId": "tx.electrical.master_electrician",
+      "licenceTypeName": "Master Electrician",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-12-31",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.tdlr.texas.gov/electricians/renew/individuals/master-electrician.htm"
+        },
+        "ce": {
+          "dueOn": "2027-12-31",
+          "rule": "licence_term",
+          "hoursRequired": 4,
+          "hoursOutstanding": 4,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "tx.electrical.journeyman_electrician@2026-01-31",
+      "recordId": "tx.electrical",
+      "state": "TX",
+      "trade": "electrical",
+      "licenceTypeId": "tx.electrical.journeyman_electrician",
+      "licenceTypeName": "Journeyman Electrician",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-01-31",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.tdlr.texas.gov/electricians/apply/individuals/journeyman-electrician.htm"
+        },
+        "ce": {
+          "dueOn": "2027-01-31",
+          "rule": "licence_term",
+          "hoursRequired": 4,
+          "hoursOutstanding": 4,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "tx.electrical.journeyman_electrician@2026-03-14",
+      "recordId": "tx.electrical",
+      "state": "TX",
+      "trade": "electrical",
+      "licenceTypeId": "tx.electrical.journeyman_electrician",
+      "licenceTypeName": "Journeyman Electrician",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-03-14",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.tdlr.texas.gov/electricians/apply/individuals/journeyman-electrician.htm"
+        },
+        "ce": {
+          "dueOn": "2027-03-14",
+          "rule": "licence_term",
+          "hoursRequired": 4,
+          "hoursOutstanding": 4,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "tx.electrical.journeyman_electrician@2026-12-31",
+      "recordId": "tx.electrical",
+      "state": "TX",
+      "trade": "electrical",
+      "licenceTypeId": "tx.electrical.journeyman_electrician",
+      "licenceTypeName": "Journeyman Electrician",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-12-31",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.tdlr.texas.gov/electricians/apply/individuals/journeyman-electrician.htm"
+        },
+        "ce": {
+          "dueOn": "2027-12-31",
+          "rule": "licence_term",
+          "hoursRequired": 4,
+          "hoursOutstanding": 4,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "tx.hvac.acr_contractor_class_a@2026-01-31",
+      "recordId": "tx.hvac",
+      "state": "TX",
+      "trade": "hvac",
+      "licenceTypeId": "tx.hvac.acr_contractor_class_a",
+      "licenceTypeName": "Air Conditioning and Refrigeration Contractor — Class A",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-01-31",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.tdlr.texas.gov/acr/contractor-apply.htm"
+        },
+        "ce": {
+          "dueOn": "2027-01-31",
+          "rule": "licence_term",
+          "hoursRequired": 8,
+          "hoursOutstanding": 8,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 1
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "tx.hvac.acr_contractor_class_a@2026-03-14",
+      "recordId": "tx.hvac",
+      "state": "TX",
+      "trade": "hvac",
+      "licenceTypeId": "tx.hvac.acr_contractor_class_a",
+      "licenceTypeName": "Air Conditioning and Refrigeration Contractor — Class A",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-03-14",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.tdlr.texas.gov/acr/contractor-apply.htm"
+        },
+        "ce": {
+          "dueOn": "2027-03-14",
+          "rule": "licence_term",
+          "hoursRequired": 8,
+          "hoursOutstanding": 8,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 1
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "tx.hvac.acr_contractor_class_a@2026-12-31",
+      "recordId": "tx.hvac",
+      "state": "TX",
+      "trade": "hvac",
+      "licenceTypeId": "tx.hvac.acr_contractor_class_a",
+      "licenceTypeName": "Air Conditioning and Refrigeration Contractor — Class A",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-12-31",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.tdlr.texas.gov/acr/contractor-apply.htm"
+        },
+        "ce": {
+          "dueOn": "2027-12-31",
+          "rule": "licence_term",
+          "hoursRequired": 8,
+          "hoursOutstanding": 8,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 1
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "tx.hvac.acr_contractor_class_b@2026-01-31",
+      "recordId": "tx.hvac",
+      "state": "TX",
+      "trade": "hvac",
+      "licenceTypeId": "tx.hvac.acr_contractor_class_b",
+      "licenceTypeName": "Air Conditioning and Refrigeration Contractor — Class B",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-01-31",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.tdlr.texas.gov/acr/contractor-apply.htm"
+        },
+        "ce": {
+          "dueOn": "2027-01-31",
+          "rule": "licence_term",
+          "hoursRequired": 8,
+          "hoursOutstanding": 8,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "tx.hvac.acr_contractor_class_b@2026-03-14",
+      "recordId": "tx.hvac",
+      "state": "TX",
+      "trade": "hvac",
+      "licenceTypeId": "tx.hvac.acr_contractor_class_b",
+      "licenceTypeName": "Air Conditioning and Refrigeration Contractor — Class B",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-03-14",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.tdlr.texas.gov/acr/contractor-apply.htm"
+        },
+        "ce": {
+          "dueOn": "2027-03-14",
+          "rule": "licence_term",
+          "hoursRequired": 8,
+          "hoursOutstanding": 8,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "tx.hvac.acr_contractor_class_b@2026-12-31",
+      "recordId": "tx.hvac",
+      "state": "TX",
+      "trade": "hvac",
+      "licenceTypeId": "tx.hvac.acr_contractor_class_b",
+      "licenceTypeName": "Air Conditioning and Refrigeration Contractor — Class B",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-12-31",
+          "rule": "anniversary",
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 0,
+          "citationUrl": "https://www.tdlr.texas.gov/acr/contractor-apply.htm"
+        },
+        "ce": {
+          "dueOn": "2027-12-31",
+          "rule": "licence_term",
+          "hoursRequired": 8,
+          "hoursOutstanding": 8,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "tx.plumbing.responsible_master_plumber@2026-01-31",
+      "recordId": "tx.plumbing",
+      "state": "TX",
+      "trade": "plumbing",
+      "licenceTypeId": "tx.plumbing.responsible_master_plumber",
+      "licenceTypeName": "Responsible Master Plumber (RMP designation)",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-01-31",
+          "rule": "anniversary",
+          "confidence": "medium",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 1,
+          "citationUrl": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/"
+        },
+        "ce": {
+          "dueOn": "2027-01-31",
+          "rule": "licence_term",
+          "hoursRequired": 6,
+          "hoursOutstanding": 6,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "tx.plumbing.responsible_master_plumber@2026-03-14",
+      "recordId": "tx.plumbing",
+      "state": "TX",
+      "trade": "plumbing",
+      "licenceTypeId": "tx.plumbing.responsible_master_plumber",
+      "licenceTypeName": "Responsible Master Plumber (RMP designation)",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-03-14",
+          "rule": "anniversary",
+          "confidence": "medium",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 1,
+          "citationUrl": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/"
+        },
+        "ce": {
+          "dueOn": "2027-03-14",
+          "rule": "licence_term",
+          "hoursRequired": 6,
+          "hoursOutstanding": 6,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "tx.plumbing.responsible_master_plumber@2026-12-31",
+      "recordId": "tx.plumbing",
+      "state": "TX",
+      "trade": "plumbing",
+      "licenceTypeId": "tx.plumbing.responsible_master_plumber",
+      "licenceTypeName": "Responsible Master Plumber (RMP designation)",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-12-31",
+          "rule": "anniversary",
+          "confidence": "medium",
+          "needsHumanCheck": false,
+          "flagReasons": [],
+          "noteCount": 1,
+          "citationUrl": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/"
+        },
+        "ce": {
+          "dueOn": "2027-12-31",
+          "rule": "licence_term",
+          "hoursRequired": 6,
+          "hoursOutstanding": 6,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "tx.plumbing.master_plumber@2026-01-31",
+      "recordId": "tx.plumbing",
+      "state": "TX",
+      "trade": "plumbing",
+      "licenceTypeId": "tx.plumbing.master_plumber",
+      "licenceTypeName": "Master Plumber",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-01-31",
+          "rule": "anniversary",
+          "confidence": "medium",
+          "needsHumanCheck": true,
+          "flagReasons": [
+            "unexplained_inference"
+          ],
+          "noteCount": 0,
+          "citationUrl": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/"
+        },
+        "ce": {
+          "dueOn": "2027-01-31",
+          "rule": "licence_term",
+          "hoursRequired": 6,
+          "hoursOutstanding": 6,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "tx.plumbing.master_plumber@2026-03-14",
+      "recordId": "tx.plumbing",
+      "state": "TX",
+      "trade": "plumbing",
+      "licenceTypeId": "tx.plumbing.master_plumber",
+      "licenceTypeName": "Master Plumber",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-03-14",
+          "rule": "anniversary",
+          "confidence": "medium",
+          "needsHumanCheck": true,
+          "flagReasons": [
+            "unexplained_inference"
+          ],
+          "noteCount": 0,
+          "citationUrl": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/"
+        },
+        "ce": {
+          "dueOn": "2027-03-14",
+          "rule": "licence_term",
+          "hoursRequired": 6,
+          "hoursOutstanding": 6,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "tx.plumbing.master_plumber@2026-12-31",
+      "recordId": "tx.plumbing",
+      "state": "TX",
+      "trade": "plumbing",
+      "licenceTypeId": "tx.plumbing.master_plumber",
+      "licenceTypeName": "Master Plumber",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-12-31",
+          "rule": "anniversary",
+          "confidence": "medium",
+          "needsHumanCheck": true,
+          "flagReasons": [
+            "unexplained_inference"
+          ],
+          "noteCount": 0,
+          "citationUrl": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/"
+        },
+        "ce": {
+          "dueOn": "2027-12-31",
+          "rule": "licence_term",
+          "hoursRequired": 6,
+          "hoursOutstanding": 6,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "tx.plumbing.journeyman_plumber@2026-01-31",
+      "recordId": "tx.plumbing",
+      "state": "TX",
+      "trade": "plumbing",
+      "licenceTypeId": "tx.plumbing.journeyman_plumber",
+      "licenceTypeName": "Journeyman Plumber",
+      "issuedOn": "2026-01-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-01-31",
+          "rule": "anniversary",
+          "confidence": "medium",
+          "needsHumanCheck": true,
+          "flagReasons": [
+            "unexplained_inference"
+          ],
+          "noteCount": 0,
+          "citationUrl": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/"
+        },
+        "ce": {
+          "dueOn": "2027-01-31",
+          "rule": "licence_term",
+          "hoursRequired": 6,
+          "hoursOutstanding": 6,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "tx.plumbing.journeyman_plumber@2026-03-14",
+      "recordId": "tx.plumbing",
+      "state": "TX",
+      "trade": "plumbing",
+      "licenceTypeId": "tx.plumbing.journeyman_plumber",
+      "licenceTypeName": "Journeyman Plumber",
+      "issuedOn": "2026-03-14",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-03-14",
+          "rule": "anniversary",
+          "confidence": "medium",
+          "needsHumanCheck": true,
+          "flagReasons": [
+            "unexplained_inference"
+          ],
+          "noteCount": 0,
+          "citationUrl": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/"
+        },
+        "ce": {
+          "dueOn": "2027-03-14",
+          "rule": "licence_term",
+          "hoursRequired": 6,
+          "hoursOutstanding": 6,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    },
+    {
+      "caseId": "tx.plumbing.journeyman_plumber@2026-12-31",
+      "recordId": "tx.plumbing",
+      "state": "TX",
+      "trade": "plumbing",
+      "licenceTypeId": "tx.plumbing.journeyman_plumber",
+      "licenceTypeName": "Journeyman Plumber",
+      "issuedOn": "2026-12-31",
+      "today": "2026-09-03",
+      "expiryRuleToken": "anniversary",
+      "cycleMonths": 12,
+      "expected": {
+        "renewal": {
+          "dueOn": "2027-12-31",
+          "rule": "anniversary",
+          "confidence": "medium",
+          "needsHumanCheck": true,
+          "flagReasons": [
+            "unexplained_inference"
+          ],
+          "noteCount": 0,
+          "citationUrl": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/"
+        },
+        "ce": {
+          "dueOn": "2027-12-31",
+          "rule": "licence_term",
+          "hoursRequired": 6,
+          "hoursOutstanding": 6,
+          "confidence": "high",
+          "needsHumanCheck": false,
+          "noteCount": 0
+        },
+        "explanations": []
+      }
+    }
+  ]
+}

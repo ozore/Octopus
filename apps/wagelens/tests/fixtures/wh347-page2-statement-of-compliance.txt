@@ -1,0 +1,60 @@
+# WH-347 page 2 - Statement of Compliance
+# Verbatim text layer extracted from the official DOL PDF (Rev. January 2025, OMB 1235-0008).
+# Source: https://www.dol.gov/sites/dolgov/files/WHD/legacy/files/wh347.pdf
+# sha256 fa28f033a8250dc3c209fe9c8e7f5cfcde70f8f0cb11a6ab2486eaebdd5db557 - downloaded 2026-09-03
+# Extractor: pypdf 6.16.2 PdfReader.pages[1].extract_text()
+# NOTE: 29 CFR 5.5(a)(3)(ii)(B) and the WH-347 footer allow 'page 2 of the WH-347 OR ANOTHER
+#       DOCUMENT WITH IDENTICAL WORDING'. This file is the wording WageLens must reproduce.
+# ---------------------------------------------------------------------------------------
+
+PROJECT NAME  PROJECT NO. or CONTRACT NO. PAYROLL NO. PRIME CONTRACTOR’S/SUBCONTRACTOR’S BUSINESS NAME 
+    
+PROJECT LOCATION WEEK ENDING DATE CERTIFYING OFFICIAL’s NAME AND TITLE 
+   
+I paid or supervised the payment of the laborers or mechanics working on the above project during the stated time period.  I certify the following: 
+ 
+The payroll information submitted with this statement is correct and complete for the above project during the above period, and the wage and fringe beneﬁt rates paid to the workers, 
+including credit taken for the reasonably anticipated costs of a bona ﬁde fringe beneﬁt plan, fund or program, are not less than the applicable wage and fringe beneﬁts rates for the 
+classiﬁcation(s) of work actually performed, as speciﬁed in the wage determination(s) incorporated into the contract. 
+ All regular payrolls and all other basic records that the contractor is required to maintain for this payroll period are complete and accurate and will be made available upon request from the 
+agency or the Department of Labor. 
+ The classiﬁcations reported for each laborer or mechanic are the classiﬁcation(s) of work that each worker actually performed. 
+ 
+ 
+Any workers paid as apprentices during the above period are duly registered in a bona ﬁde apprenticeship program registered with the Oﬃce of Apprenticeship, Employment and Training 
+Administration, United States Department of Labor (“OA”), or a State Apprenticeship Agency (“SAA”) recognized by Department of Labor. I have veriﬁed the registered apprenticeship program 
+information provided below as accurate and applicable to any apprentices identiﬁed on page 1 of this form.   
+APPRENTICESHIP PROGRAM NAME REGISTERED NAME OF LABOR CLASSIFICATION 
+  OA  SAA  
+  OA  SAA  
+  OA  SAA  
+ 
+ 
+Fringe beneﬁts have been paid in cash and/or to bona ﬁde fringe beneﬁt plans, funds, or programs. Where the contractor is claiming an hourly credit for their contributions to or reasonably 
+anticipated costs of a bona ﬁde fringe beneﬁt plan, fund, or program, provide plan information and the hourly credit claimed for each worker listed on the previous page of this form. 
+HOURLY CREDIT FOR FRINGE BENEFITS 
+ If an amount is listed in (6B) on the ﬁrst page of this certiﬁed payroll form, enter the hourly credit claimed under each plan name, type and number for each worker and check whether the plan is funded or unfunded. 
+NAME OF WORKER 
+FB NAME  FB NAME  FB NAME  FB NAME  FB NAME  FB NAME  
+TOTAL 
+HOURLY 
+CREDIT 
+FB TYPE  FB TYPE  FB TYPE  FB TYPE  FB TYPE  FB TYPE  
+PLAN NO.  PLAN NO.  PLAN NO.  PLAN NO.  PLAN NO.  PLAN NO.  
+ Funded  Unfunded  Funded  Unfunded  Funded  Unfunded  Funded  Unfunded  Funded  Unfunded  Funded  Unfunded 
+ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ $ 
+ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ $ 
+ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ $ 
+ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ $ 
+ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ $ 
+ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ $ 
+ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ $ 
+ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hourly Credit $ Hrly Credit $ $ 
+ All workers on the project have been paid the full weekly wages earned, and no rebates or deductions have been or will be made either directly or indirectly, other than permissible 
+deductions as deﬁned in 29 CFR part 3. 
+ADDITIONAL REMARKS 
+ 
+SIGNATURE OF CERTIFYING OFFICIAL DATE TELEPHONE NUMBER  EMAIL ADDRESS 
+  ( __ __ __ )    __ __ __  – __ __ __ __        
+THE WILLFUL FALSIFICATION OF ANY OF THE ABOVE STATEMENTS MAY SUBJECT THE CONTRACTOR OR SUBCONTRACTOR TO CIVIL OR CRIMINAL PROSECUTION (SEE SECTION 1001 OF TITLE 18 AND SECTION 3729 OF TITLE 31 OF THE UNITED STATES 
+CODE), AS WELL AS DEBARMENT FROM FUTURE FEDERAL AND FEDERALLY-ASSISTED CONTRACTS. INFORMATION REPORTED IN CERTIFIED PAYROLLS MAY BE SUBJECT TO DISCLOSURE IN RESPONSE TO A FREEDOM OF INFORMATION ACT REQUEST.  

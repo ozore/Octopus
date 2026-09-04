@@ -1,0 +1,89 @@
+{
+  "id": "hoa.improvements",
+  "audience": "hoa",
+  "label": "Homeowners association — construction and improvements on association property",
+  "summary": "Work on association property: additional insured specifically endorsed for the association, completed operations, and a $2M umbrella.",
+  "confidence": "medium",
+  "unverified": false,
+  "requirements": [
+    {
+      "kind": "limit",
+      "coverage": "general_liability",
+      "limit": "each_occurrence",
+      "min": 1000000
+    },
+    {
+      "kind": "limit",
+      "coverage": "general_liability",
+      "limit": "general_aggregate",
+      "min": 2000000
+    },
+    {
+      "kind": "limit",
+      "coverage": "general_liability",
+      "limit": "products_comp_op_agg",
+      "min": 2000000
+    },
+    {
+      "kind": "limit",
+      "coverage": "automobile_liability",
+      "limit": "combined_single_limit",
+      "min": 1000000
+    },
+    {
+      "kind": "coverage_present",
+      "coverage": "workers_compensation",
+      "note": "Statutory workers' compensation, as required by the state the work is performed in."
+    },
+    {
+      "kind": "limit",
+      "coverage": "workers_compensation",
+      "limit": "el_each_accident",
+      "min": 1000000
+    },
+    {
+      "kind": "limit",
+      "coverage": "umbrella_liability",
+      "limit": "umbrella_each_occurrence",
+      "min": 2000000
+    },
+    {
+      "kind": "endorsement",
+      "endorsement": "additional_insured_ongoing",
+      "accepts": [
+        "CG 20 10",
+        "CG 20 33",
+        "CG 20 38",
+        "CG 20 26"
+      ],
+      "note": "VendorSmart's HOA guide asks for the association to be specifically endorsed rather than relying on blanket wording; a scheduled endorsement naming the association is stronger than an automatic-status form."
+    },
+    {
+      "kind": "endorsement",
+      "endorsement": "additional_insured_completed",
+      "accepts": [
+        "CG 20 37",
+        "CG 20 26"
+      ]
+    },
+    {
+      "kind": "endorsement",
+      "endorsement": "waiver_of_subrogation_gl",
+      "accepts": [
+        "CG 24 04",
+        "CG 24 53"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://blog.vendorsmart.com/the-hoa-guide-to-vendor-insurance-requirements/",
+      "title": "VendorSmart — The HOA Guide to Vendor Insurance Requirements",
+      "last_verified": "2026-09-03",
+      "verified_by": [
+        "po-agent"
+      ],
+      "confidence": "medium"
+    }
+  ]
+}

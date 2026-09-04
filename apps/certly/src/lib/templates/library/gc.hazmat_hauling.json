@@ -1,0 +1,135 @@
+{
+  "id": "gc.hazmat_hauling",
+  "audience": "gc",
+  "label": "General contractor — hazardous-materials hauling",
+  "summary": "The baseline plus the two federal and ISO forms R2 demands of a hazmat hauler: MCS-90 and CA 99 48. Certly does not read either form at launch and says so.",
+  "confidence": "high",
+  "unverified": false,
+  "requirements": [
+    {
+      "kind": "limit",
+      "coverage": "general_liability",
+      "limit": "each_occurrence",
+      "min": 1000000
+    },
+    {
+      "kind": "limit",
+      "coverage": "general_liability",
+      "limit": "general_aggregate",
+      "min": 2000000
+    },
+    {
+      "kind": "limit",
+      "coverage": "general_liability",
+      "limit": "products_comp_op_agg",
+      "min": 2000000
+    },
+    {
+      "kind": "limit",
+      "coverage": "automobile_liability",
+      "limit": "combined_single_limit",
+      "min": 1000000,
+      "note": "R2 requires the $1,000,000 combined single limit to apply to the vehicles carrying hazardous materials."
+    },
+    {
+      "kind": "coverage_present",
+      "coverage": "workers_compensation",
+      "note": "Statutory workers' compensation, as required by the state the work is performed in."
+    },
+    {
+      "kind": "limit",
+      "coverage": "workers_compensation",
+      "limit": "el_each_accident",
+      "min": 1000000
+    },
+    {
+      "kind": "endorsement",
+      "endorsement": "additional_insured_ongoing",
+      "accepts": [
+        "CG 20 10",
+        "CG 20 33",
+        "CG 20 38",
+        "CG 20 26"
+      ]
+    },
+    {
+      "kind": "endorsement",
+      "endorsement": "auto_additional_insured",
+      "accepts": [
+        "CA 20 48"
+      ]
+    },
+    {
+      "kind": "endorsement",
+      "endorsement": "primary_non_contributory",
+      "accepts": [
+        "CG 20 01"
+      ]
+    },
+    {
+      "kind": "endorsement",
+      "endorsement": "waiver_of_subrogation_gl",
+      "accepts": [
+        "CG 24 04",
+        "CG 24 53"
+      ]
+    },
+    {
+      "kind": "policy_condition",
+      "manual_check": "MCS-90 endorsement",
+      "label": "MCS-90 (federal financial responsibility for hazmat carriers)",
+      "note": "R2 requires the MCS-90. It is a federal financial-responsibility endorsement, not a grant of cover to the certificate holder, and it is not printed on an ACORD 25 — ask for the endorsement page."
+    },
+    {
+      "kind": "policy_condition",
+      "manual_check": "CA 99 48 endorsement",
+      "label": "CA 99 48 (pollution liability — broadened coverage for covered autos)",
+      "note": "R2 requires CA 99 48 alongside the MCS-90. It is not printed on an ACORD 25 — ask for the endorsement page."
+    },
+    {
+      "kind": "policy_condition",
+      "coverage": "general_liability",
+      "form": "occurrence",
+      "note": "R1 forbids claims-made general liability without written consent; R5 requires an occurrence basis."
+    },
+    {
+      "kind": "policy_condition",
+      "coverage": "general_liability",
+      "aggregate_applies_per": "project",
+      "note": "R2, R3 and R5 all require the general aggregate to apply separately to each project."
+    },
+    {
+      "kind": "policy_condition",
+      "coverage": "general_liability",
+      "max_sir": 25000,
+      "note": "R1: any deductible or self-insured retention over $25,000 must be disclosed on the certificate and approved."
+    },
+    {
+      "kind": "policy_condition",
+      "coverage": "workers_compensation",
+      "stop_gap_states": [
+        "WA",
+        "OH",
+        "WY",
+        "ND"
+      ],
+      "note": "R2: state fund cover in a monopolistic state does not include employers' liability, so a stop-gap endorsement is required there."
+    },
+    {
+      "kind": "carrier",
+      "am_best_min": "A-",
+      "financial_size_min": "VIII"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.accoes.com/wp-content/uploads/2019/08/Exhibit-D-Subcontractor-Insurance-ACCO.pdf",
+      "title": "ACCO Engineered Systems — Exhibit D subcontractor insurance (corpus R2)",
+      "last_verified": "2026-09-03",
+      "verified_by": [
+        "po-agent"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

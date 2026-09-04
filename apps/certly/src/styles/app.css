@@ -1,0 +1,241 @@
+/* ==========================================================================
+   APPLICATION LAYER — the classes the app needs that the design system does
+   not ship, plus the handful of platform-template class names the shared
+   route handlers and pages still emit.
+
+   ONE RULE, AND IT IS CHECKED IN REVIEW: every value here is a `--c-*` token
+   from design-system.css. No literal colour, no literal spacing, no font
+   stack. If a value is missing, it is missing from the design system and that
+   is a finding for the Brand Director, not a licence to type a hex code.
+
+   design-system.css is byte-identical to phase-4-revenue/certly/design-system.css
+   and must never be edited here (`npm run identity:check`). This file is where
+   Certly's own layout lives.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. SHELL — left nav 240px + content (UX.md §2.2, IDENTITY.md §8.2)
+   -------------------------------------------------------------------------- */
+.c-nav__brand {
+  display: block;
+  margin-bottom: var(--c-space-6);
+}
+
+.c-nav__group {
+  margin-bottom: var(--c-space-5);
+}
+.c-nav__grouptitle {
+  font-size: var(--c-text-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--c-ink-faint);
+  margin-bottom: var(--c-space-2);
+}
+.c-nav__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.c-nav__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--c-space-2);
+  padding: var(--c-space-2) var(--c-space-3);
+  border-radius: var(--c-radius-sm);
+  color: var(--c-ink-muted);
+  font-size: var(--c-text-sm);
+  font-weight: 500;
+  text-decoration: none;
+}
+.c-nav__link:hover {
+  background: var(--c-sunken);
+  color: var(--c-ink);
+}
+.c-nav__link[aria-current="page"] {
+  background: var(--c-select-bg);
+  color: var(--c-ink-strong);
+  font-weight: 600;
+}
+.c-nav__foot {
+  margin-top: auto;
+  padding-top: var(--c-space-5);
+  border-top: 1px solid var(--c-line);
+  font-size: var(--c-text-xs);
+  color: var(--c-ink-muted);
+}
+.c-nav {
+  display: flex;
+  flex-direction: column;
+}
+
+/* The page header inside .c-main. */
+.c-page__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--c-space-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--c-space-5);
+}
+.c-page__title {
+  margin: 0;
+  font-size: var(--c-text-2xl);
+}
+.c-page__lede {
+  color: var(--c-ink-muted);
+  max-width: var(--c-measure);
+}
+
+/* --------------------------------------------------------------------------
+   2. MARKETING CHROME — the public pages share the app's ground, not a
+   second theme. IDENTITY.md §0.
+   -------------------------------------------------------------------------- */
+.c-topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--c-space-4);
+  flex-wrap: wrap;
+  padding: var(--c-space-4) var(--c-space-6);
+  background: var(--c-surface);
+  border-bottom: 1px solid var(--c-line);
+}
+.c-topbar__spacer {
+  margin-left: auto;
+}
+.c-topbar a {
+  font-size: var(--c-text-sm);
+}
+.c-footer {
+  padding: var(--c-space-6);
+  border-top: 1px solid var(--c-line);
+  color: var(--c-ink-muted);
+  font-size: var(--c-text-xs);
+}
+.c-prose {
+  max-width: var(--c-measure);
+  padding: var(--c-space-7) var(--c-space-6);
+  margin: 0 auto;
+}
+
+/* --------------------------------------------------------------------------
+   3. UTILITIES
+   -------------------------------------------------------------------------- */
+.c-muted { color: var(--c-ink-muted); }
+.c-small { font-size: var(--c-text-sm); }
+.c-xs { font-size: var(--c-text-xs); }
+.c-mono {
+  font-family: var(--c-font-num);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.c-hr {
+  border: 0;
+  border-top: 1px solid var(--c-line);
+  margin: var(--c-space-5) 0;
+}
+.c-list-reset { list-style: none; margin: 0; padding: 0; }
+.c-gap-2 { display: flex; gap: var(--c-space-2); flex-wrap: wrap; align-items: center; }
+.c-gap-3 { display: flex; gap: var(--c-space-3); flex-wrap: wrap; align-items: center; }
+
+/* The canonical disclaimer block (KB §F, specs/13 §12). The string itself
+   comes from src/lib/kb/disclaimers.ts and appears nowhere else in the repo. */
+.c-disclaimer {
+  margin-top: var(--c-space-5);
+  padding: var(--c-space-3) var(--c-space-4);
+  border: 1px solid var(--c-line);
+  border-left: 3px solid var(--c-line-strong);
+  border-radius: 0 var(--c-radius-sm) var(--c-radius-sm) 0;
+  background: var(--c-sunken);
+  color: var(--c-ink-muted);
+  font-size: var(--c-text-xs);
+  line-height: var(--c-lh-snug);
+  max-width: var(--c-measure-doc);
+}
+.c-disclaimer strong { color: var(--c-ink); display: block; margin-bottom: var(--c-space-1); }
+.c-disclaimer--inline { margin-top: var(--c-space-3); }
+
+/* --------------------------------------------------------------------------
+   4. PLATFORM TEMPLATE CLASS NAMES
+   The shared route handlers and the platform's own pages emit these; mapping
+   them onto Certly components here is cheaper and safer than forking the
+   platform. Recorded as platform request PR-6 in BUILD.md.
+   -------------------------------------------------------------------------- */
+.button,
+button.button,
+a.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--c-space-2);
+  min-height: 40px;
+  padding: 0 var(--c-space-4);
+  border: 1px solid var(--c-action);
+  border-radius: var(--c-radius-sm);
+  background: var(--c-action);
+  color: var(--c-on-action);
+  font: 600 var(--c-text-sm)/1 var(--c-font-ui);
+  text-decoration: none;
+  cursor: pointer;
+}
+.button.secondary {
+  background: transparent;
+  color: var(--c-link);
+  border-color: var(--c-line-strong);
+}
+.button.small { min-height: 32px; font-size: var(--c-text-xs); }
+.badge {
+  display: inline-block;
+  border: 1px solid var(--c-line-strong);
+  border-radius: var(--c-radius-full);
+  padding: 2px var(--c-space-3);
+  font-size: var(--c-text-xs);
+  color: var(--c-ink-muted);
+}
+.notice {
+  border-left: 3px solid var(--c-line-strong);
+  background: var(--c-sunken);
+  padding: var(--c-space-3) var(--c-space-4);
+  margin-bottom: var(--c-space-4);
+  font-size: var(--c-text-sm);
+  border-radius: 0 var(--c-radius-sm) var(--c-radius-sm) 0;
+}
+.notice.warn { border-left-color: var(--c-warn-solid); }
+.notice.error { border-left-color: var(--c-gap-solid); }
+.muted { color: var(--c-ink-muted); }
+.small { font-size: var(--c-text-sm); }
+.card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: var(--c-radius-md);
+  padding: var(--c-space-5);
+  margin-bottom: var(--c-space-4);
+}
+main.narrow { max-width: var(--c-measure); margin: 0 auto; padding: var(--c-space-7) var(--c-space-6); }
+form.stack { display: flex; flex-direction: column; gap: var(--c-space-3); align-items: flex-start; }
+form.row { display: flex; gap: var(--c-space-3); align-items: flex-end; flex-wrap: wrap; }
+label { display: block; font-weight: 600; font-size: var(--c-text-sm); margin-bottom: var(--c-space-1); color: var(--c-ink-strong); }
+input[type="text"],
+input[type="email"],
+select {
+  font: inherit;
+  padding: 10px var(--c-space-3);
+  border: 1px solid var(--c-line-strong);
+  border-radius: var(--c-radius-sm);
+  background: var(--c-surface);
+  color: var(--c-ink);
+  width: 100%;
+  max-width: 360px;
+  min-height: 40px;
+}
+table { border-collapse: collapse; width: 100%; font-size: var(--c-text-sm); }
+th, td { text-align: left; padding: var(--c-space-2) var(--c-space-3); border-bottom: 1px solid var(--c-line); }
+.disclaimer {
+  font-size: var(--c-text-xs);
+  color: var(--c-ink-muted);
+  border-top: 1px solid var(--c-line);
+  padding-top: var(--c-space-2);
+  margin-top: var(--c-space-5);
+}

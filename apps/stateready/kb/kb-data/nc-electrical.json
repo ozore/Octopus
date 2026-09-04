@@ -1,0 +1,1773 @@
+{
+  "record_id": "nc.electrical",
+  "schema_version": "1.0.0",
+  "state": "NC",
+  "state_name": "North Carolina",
+  "trade": "electrical",
+  "jurisdiction_model": {
+    "level": "state_only",
+    "summary": {
+      "value": "A single state board licenses electrical contracting in ten classifications, three by project value and seven special-restricted by type of work.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://www.ncbeec.org/licensing/",
+      "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+      "source_kind": "board_page",
+      "evidence": "There are 10 different classifications of electrical contracting licenses.",
+      "last_verified": "2026-09-03",
+      "verified_by": [
+        "po-stateready-pass-a",
+        "po-stateready-pass-b"
+      ]
+    },
+    "local_layer_note": "The classification is bounded by PROJECT VALUE, not by geography: Limited is capped at a single project of $60,000 and 600 volts, Intermediate at $150,000, Unlimited is uncapped. A contractor can therefore be correctly licensed and still be unable to bid the job in front of them — a licensing constraint that behaves like a commercial one."
+  },
+  "boards": [
+    {
+      "board_id": "nc.ncbeec",
+      "name": "North Carolina State Board of Examiners of Electrical Contractors",
+      "url": "https://www.ncbeec.org/",
+      "scope": "All electrical contracting licences in North Carolina, ten classifications",
+      "phone": "(919) 733-9042"
+    }
+  ],
+  "licence_types": [
+    {
+      "licence_type_id": "nc.electrical.unlimited",
+      "name": "Unlimited License (U)",
+      "level": "contractor",
+      "issuer_level": "state",
+      "board_id": "nc.ncbeec",
+      "who_must_hold": {
+        "value": "The electrical contracting business, through a listed qualified individual who passed the board's examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/licensing/",
+        "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+        "source_kind": "board_page",
+        "evidence": "will be the qualified person holding the electrical license",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "scope_note": {
+        "value": "Any electrical contracting project regardless of value.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/licensing/",
+        "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+        "source_kind": "board_page",
+        "evidence": "The Unlimited ( U ) license allows the licensee to engage in any electrical contracting project regardless of value.",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "Apply for and pass the required electrical contracting examination.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": 125,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/fees-services/",
+          "source_title": "Fees & Services — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "Application & Exam Fee (all classifications)",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "One fee for all classifications; a failed-exam review costs a further $25."
+        }
+      },
+      "experience": {
+        "requirement": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The board's examinations page states that experience requirements exist per classification ('only if you meet the experience requirements for the classification') but the numeric requirements are in the Exam Application packet, which was not fetched. Left empty rather than borrowed from a third-party guide.",
+          "source_url": "https://www.ncbeec.org/examinations/"
+        }
+      },
+      "application_fee": {
+        "value": 200,
+        "unit": "USD",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.ncbeec.org/licensing/",
+        "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+        "source_kind": "board_page",
+        "evidence": "Unlimited License - $200/year",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ],
+        "note": "The board publishes one figure per classification and describes it as a per-year licence fee, so the same number is recorded as the application fee and the renewal fee."
+      },
+      "renewal": {
+        "cycle": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "All licenses issued by the Board will expire one (1) year after the date of issuance.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": 200,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "Unlimited License - $200/year",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "expiry_rule": {
+          "value": "anniversary",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "All licenses issued by the Board will expire one (1) year after the date of issuance.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "ANNIVERSARY, unlike the NC plumbing/heating board's fixed 31 December. The same company, same state, two boards, two different expiry algorithms. This is the clearest single illustration of why the deadline rule has to be data and not code."
+        },
+        "late_fee": {
+          "value": 25,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "An administrative fee of $25.00 shall be imposed on all renewals received after the license expiration date.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "shall complete continuing education for each annual license period to renew the license",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "hours": {
+          "value": 8,
+          "unit": "hours",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "8-hours CE Required",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "period": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "for each annual license period",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "The CE licence period runs 1 July to 30 June, which is NOT the licence's own anniversary year. Two different twelve-month windows per licence."
+        },
+        "approved_provider_rule": {
+          "value": "Board-approved sponsors and instructors only; sponsors must apply by 1 March of the year before the July-June licence period in which the course runs.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "Interested parties must submit applications to the Board by March 1 of the year prior to the license period",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "carryover": {
+          "value": "Hours in excess of the requirement may be carried forward into the following one or two licence periods.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "the extra hours may be carried forward in multiples as specified in .1104(a)",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "delivery_constraint": {
+          "value": "At least half the hours must be earned by in-person classroom or seminar attendance.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "a minimum of one-half the continuing education hours for each annual license period were obtained by in-person classroom",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "A live-attendance floor. Any product that only tracks an hours total will report a compliant technician who is not."
+        }
+      },
+      "bond": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "A statement of bonding ability is required to activate a license in both the Intermediate and Unlimited classifications.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "What the board requires is a STATEMENT OF BONDING ABILITY, not a bond in a stated amount. Recording a dollar figure here would be a fabrication.",
+          "source_url": "https://www.ncbeec.org/licensing/"
+        },
+        "alternative": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not stated."
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No liability-insurance minimum appears on the licensing or fees pages read.",
+          "source_url": "https://www.ncbeec.org/licensing/"
+        }
+      }
+    },
+    {
+      "licence_type_id": "nc.electrical.intermediate",
+      "name": "Intermediate License (I)",
+      "level": "contractor",
+      "issuer_level": "state",
+      "board_id": "nc.ncbeec",
+      "who_must_hold": {
+        "value": "The electrical contracting business, through a listed qualified individual who passed the board's examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/licensing/",
+        "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+        "source_kind": "board_page",
+        "evidence": "will be the qualified person holding the electrical license",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "scope_note": {
+        "value": "A single project not exceeding $150,000.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/licensing/",
+        "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+        "source_kind": "board_page",
+        "evidence": "electrical contracting project of a value not in excess of one hundred fifty thousand dollars ($150,000)",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "Apply for and pass the required electrical contracting examination.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": 125,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/fees-services/",
+          "source_title": "Fees & Services — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "Application & Exam Fee (all classifications)",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "One fee for all classifications; a failed-exam review costs a further $25."
+        }
+      },
+      "experience": {
+        "requirement": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The board's examinations page states that experience requirements exist per classification ('only if you meet the experience requirements for the classification') but the numeric requirements are in the Exam Application packet, which was not fetched. Left empty rather than borrowed from a third-party guide.",
+          "source_url": "https://www.ncbeec.org/examinations/"
+        }
+      },
+      "application_fee": {
+        "value": 150,
+        "unit": "USD",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.ncbeec.org/licensing/",
+        "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+        "source_kind": "board_page",
+        "evidence": "Intermediate License - $150/year",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ],
+        "note": "The board publishes one figure per classification and describes it as a per-year licence fee, so the same number is recorded as the application fee and the renewal fee."
+      },
+      "renewal": {
+        "cycle": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "All licenses issued by the Board will expire one (1) year after the date of issuance.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": 150,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "Intermediate License - $150/year",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "expiry_rule": {
+          "value": "anniversary",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "All licenses issued by the Board will expire one (1) year after the date of issuance.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "ANNIVERSARY, unlike the NC plumbing/heating board's fixed 31 December. The same company, same state, two boards, two different expiry algorithms. This is the clearest single illustration of why the deadline rule has to be data and not code."
+        },
+        "late_fee": {
+          "value": 25,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "An administrative fee of $25.00 shall be imposed on all renewals received after the license expiration date.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "shall complete continuing education for each annual license period to renew the license",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "hours": {
+          "value": 8,
+          "unit": "hours",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "8-hours CE Required",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "period": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "for each annual license period",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "The CE licence period runs 1 July to 30 June, which is NOT the licence's own anniversary year. Two different twelve-month windows per licence."
+        },
+        "approved_provider_rule": {
+          "value": "Board-approved sponsors and instructors only; sponsors must apply by 1 March of the year before the July-June licence period in which the course runs.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "Interested parties must submit applications to the Board by March 1 of the year prior to the license period",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "carryover": {
+          "value": "Hours in excess of the requirement may be carried forward into the following one or two licence periods.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "the extra hours may be carried forward in multiples as specified in .1104(a)",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "delivery_constraint": {
+          "value": "At least half the hours must be earned by in-person classroom or seminar attendance.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "a minimum of one-half the continuing education hours for each annual license period were obtained by in-person classroom",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "A live-attendance floor. Any product that only tracks an hours total will report a compliant technician who is not."
+        }
+      },
+      "bond": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "A statement of bonding ability is required to activate a license in both the Intermediate and Unlimited classifications.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "What the board requires is a STATEMENT OF BONDING ABILITY, not a bond in a stated amount. Recording a dollar figure here would be a fabrication.",
+          "source_url": "https://www.ncbeec.org/licensing/"
+        },
+        "alternative": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not stated."
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No liability-insurance minimum appears on the licensing or fees pages read.",
+          "source_url": "https://www.ncbeec.org/licensing/"
+        }
+      }
+    },
+    {
+      "licence_type_id": "nc.electrical.limited",
+      "name": "Limited License (L)",
+      "level": "contractor",
+      "issuer_level": "state",
+      "board_id": "nc.ncbeec",
+      "who_must_hold": {
+        "value": "The electrical contracting business, through a listed qualified individual who passed the board's examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/licensing/",
+        "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+        "source_kind": "board_page",
+        "evidence": "will be the qualified person holding the electrical license",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "scope_note": {
+        "value": "A single project not exceeding $60,000, rated at not more than 600 volts.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/licensing/",
+        "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+        "source_kind": "board_page",
+        "evidence": "contracting project of a value not in excess of sixty thousand dollars ($60,000)",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "Apply for and pass the required electrical contracting examination.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": 125,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/fees-services/",
+          "source_title": "Fees & Services — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "Application & Exam Fee (all classifications)",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "One fee for all classifications; a failed-exam review costs a further $25."
+        }
+      },
+      "experience": {
+        "requirement": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The board's examinations page states that experience requirements exist per classification ('only if you meet the experience requirements for the classification') but the numeric requirements are in the Exam Application packet, which was not fetched. Left empty rather than borrowed from a third-party guide.",
+          "source_url": "https://www.ncbeec.org/examinations/"
+        }
+      },
+      "application_fee": {
+        "value": 100,
+        "unit": "USD",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.ncbeec.org/licensing/",
+        "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+        "source_kind": "board_page",
+        "evidence": "Limited License - $100/year",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ],
+        "note": "The board publishes one figure per classification and describes it as a per-year licence fee, so the same number is recorded as the application fee and the renewal fee."
+      },
+      "renewal": {
+        "cycle": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "All licenses issued by the Board will expire one (1) year after the date of issuance.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": 100,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "Limited License - $100/year",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "expiry_rule": {
+          "value": "anniversary",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "All licenses issued by the Board will expire one (1) year after the date of issuance.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "ANNIVERSARY, unlike the NC plumbing/heating board's fixed 31 December. The same company, same state, two boards, two different expiry algorithms. This is the clearest single illustration of why the deadline rule has to be data and not code."
+        },
+        "late_fee": {
+          "value": 25,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "An administrative fee of $25.00 shall be imposed on all renewals received after the license expiration date.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "shall complete continuing education for each annual license period to renew the license",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "hours": {
+          "value": 8,
+          "unit": "hours",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "8-hours CE Required",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "period": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "for each annual license period",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "The CE licence period runs 1 July to 30 June, which is NOT the licence's own anniversary year. Two different twelve-month windows per licence."
+        },
+        "approved_provider_rule": {
+          "value": "Board-approved sponsors and instructors only; sponsors must apply by 1 March of the year before the July-June licence period in which the course runs.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "Interested parties must submit applications to the Board by March 1 of the year prior to the license period",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "carryover": {
+          "value": "Hours in excess of the requirement may be carried forward into the following one or two licence periods.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "the extra hours may be carried forward in multiples as specified in .1104(a)",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "delivery_constraint": {
+          "value": "At least half the hours must be earned by in-person classroom or seminar attendance.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "a minimum of one-half the continuing education hours for each annual license period were obtained by in-person classroom",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "A live-attendance floor. Any product that only tracks an hours total will report a compliant technician who is not."
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "not established from a public source in this pass",
+          "source_url": "https://www.ncbeec.org/licensing/"
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "What the board requires is a STATEMENT OF BONDING ABILITY, not a bond in a stated amount. Recording a dollar figure here would be a fabrication.",
+          "source_url": "https://www.ncbeec.org/licensing/"
+        },
+        "alternative": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not stated."
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No liability-insurance minimum appears on the licensing or fees pages read.",
+          "source_url": "https://www.ncbeec.org/licensing/"
+        }
+      }
+    },
+    {
+      "licence_type_id": "nc.electrical.sp_ph",
+      "name": "Special Restricted — Plumbing, Heating and Air Conditioning License (SP-PH)",
+      "level": "contractor",
+      "issuer_level": "state",
+      "board_id": "nc.ncbeec",
+      "who_must_hold": {
+        "value": "The electrical contracting business, through a listed qualified individual who passed the board's examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/licensing/",
+        "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+        "source_kind": "board_page",
+        "evidence": "will be the qualified person holding the electrical license",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "scope_note": {
+        "value": "The electrical work within plumbing, heating and air-conditioning scope only.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/licensing/",
+        "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+        "source_kind": "board_page",
+        "evidence": "Plumbing, Heating and Air Conditioning License",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "Apply for and pass the required electrical contracting examination.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": 125,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/fees-services/",
+          "source_title": "Fees & Services — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "Application & Exam Fee (all classifications)",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "One fee for all classifications; a failed-exam review costs a further $25."
+        }
+      },
+      "experience": {
+        "requirement": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The board's examinations page states that experience requirements exist per classification ('only if you meet the experience requirements for the classification') but the numeric requirements are in the Exam Application packet, which was not fetched. Left empty rather than borrowed from a third-party guide.",
+          "source_url": "https://www.ncbeec.org/examinations/"
+        }
+      },
+      "application_fee": {
+        "value": 100,
+        "unit": "USD",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.ncbeec.org/licensing/",
+        "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+        "source_kind": "board_page",
+        "evidence": "Special Restricted Licenses - $100/year",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ],
+        "note": "The board publishes one figure per classification and describes it as a per-year licence fee, so the same number is recorded as the application fee and the renewal fee."
+      },
+      "renewal": {
+        "cycle": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "All licenses issued by the Board will expire one (1) year after the date of issuance.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": 100,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "Special Restricted Licenses - $100/year",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "expiry_rule": {
+          "value": "anniversary",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "All licenses issued by the Board will expire one (1) year after the date of issuance.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "ANNIVERSARY, unlike the NC plumbing/heating board's fixed 31 December. The same company, same state, two boards, two different expiry algorithms. This is the clearest single illustration of why the deadline rule has to be data and not code."
+        },
+        "late_fee": {
+          "value": 25,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/licensing/",
+          "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+          "source_kind": "board_page",
+          "evidence": "An administrative fee of $25.00 shall be imposed on all renewals received after the license expiration date.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "shall complete continuing education for each annual license period to renew the license",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "hours": {
+          "value": 4,
+          "unit": "hours",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "4-hours CE Required",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "period": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "for each annual license period",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "The CE licence period runs 1 July to 30 June, which is NOT the licence's own anniversary year. Two different twelve-month windows per licence."
+        },
+        "approved_provider_rule": {
+          "value": "Board-approved sponsors and instructors only; sponsors must apply by 1 March of the year before the July-June licence period in which the course runs.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "Interested parties must submit applications to the Board by March 1 of the year prior to the license period",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "carryover": {
+          "value": "Hours in excess of the requirement may be carried forward into the following one or two licence periods.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "the extra hours may be carried forward in multiples as specified in .1104(a)",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "delivery_constraint": {
+          "value": "At least half the hours must be earned by in-person classroom or seminar attendance.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.ncbeec.org/continuing-education/",
+          "source_title": "Continuing Education — NCBEEC",
+          "source_kind": "board_page",
+          "evidence": "a minimum of one-half the continuing education hours for each annual license period were obtained by in-person classroom",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "A live-attendance floor. Any product that only tracks an hours total will report a compliant technician who is not."
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "not established from a public source in this pass",
+          "source_url": "https://www.ncbeec.org/licensing/"
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "What the board requires is a STATEMENT OF BONDING ABILITY, not a bond in a stated amount. Recording a dollar figure here would be a fabrication.",
+          "source_url": "https://www.ncbeec.org/licensing/"
+        },
+        "alternative": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not stated."
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No liability-insurance minimum appears on the licensing or fees pages read.",
+          "source_url": "https://www.ncbeec.org/licensing/"
+        }
+      }
+    }
+  ],
+  "reciprocity": [
+    {
+      "with_state": "AL",
+      "direction": "inbound",
+      "grants": {
+        "value": "A North Carolina electrical contracting licence of the same or equivalent classification, without written examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "may obtain a North Carolina electrical contracting license without written examinations",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "requires_from": "a licence issued by the AL contractor licensing board",
+      "conditions": {
+        "value": "Eligibility and the application packet are published per state on the board's own per-state reciprocity pages, which were not individually fetched in this pass.",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "Click on the state name for detailed information about eligibility and application packets.",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "without written examinations",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      }
+    },
+    {
+      "with_state": "FL",
+      "direction": "inbound",
+      "grants": {
+        "value": "A North Carolina electrical contracting licence of the same or equivalent classification, without written examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "may obtain a North Carolina electrical contracting license without written examinations",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "requires_from": "a licence issued by the FL contractor licensing board",
+      "conditions": {
+        "value": "Eligibility and the application packet are published per state on the board's own per-state reciprocity pages, which were not individually fetched in this pass.",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "Click on the state name for detailed information about eligibility and application packets.",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "without written examinations",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      }
+    },
+    {
+      "with_state": "GA",
+      "direction": "inbound",
+      "grants": {
+        "value": "A North Carolina electrical contracting licence of the same or equivalent classification, without written examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "may obtain a North Carolina electrical contracting license without written examinations",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "requires_from": "a licence issued by the GA contractor licensing board",
+      "conditions": {
+        "value": "Eligibility and the application packet are published per state on the board's own per-state reciprocity pages, which were not individually fetched in this pass.",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "Click on the state name for detailed information about eligibility and application packets.",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "without written examinations",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      }
+    },
+    {
+      "with_state": "MS",
+      "direction": "inbound",
+      "grants": {
+        "value": "A North Carolina electrical contracting licence of the same or equivalent classification, without written examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "may obtain a North Carolina electrical contracting license without written examinations",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "requires_from": "a licence issued by the MS contractor licensing board",
+      "conditions": {
+        "value": "Eligibility and the application packet are published per state on the board's own per-state reciprocity pages, which were not individually fetched in this pass.",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "Click on the state name for detailed information about eligibility and application packets.",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "without written examinations",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      }
+    },
+    {
+      "with_state": "OH",
+      "direction": "inbound",
+      "grants": {
+        "value": "A North Carolina electrical contracting licence of the same or equivalent classification, without written examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "may obtain a North Carolina electrical contracting license without written examinations",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "requires_from": "a licence issued by the OH contractor licensing board",
+      "conditions": {
+        "value": "Eligibility and the application packet are published per state on the board's own per-state reciprocity pages, which were not individually fetched in this pass.",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "Click on the state name for detailed information about eligibility and application packets.",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "without written examinations",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      }
+    },
+    {
+      "with_state": "SC",
+      "direction": "inbound",
+      "grants": {
+        "value": "A North Carolina electrical contracting licence of the same or equivalent classification, without written examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "may obtain a North Carolina electrical contracting license without written examinations",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "requires_from": "a licence issued by the SC contractor licensing board",
+      "conditions": {
+        "value": "Eligibility and the application packet are published per state on the board's own per-state reciprocity pages, which were not individually fetched in this pass.",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "Click on the state name for detailed information about eligibility and application packets.",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "without written examinations",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      }
+    },
+    {
+      "with_state": "TN",
+      "direction": "inbound",
+      "grants": {
+        "value": "A North Carolina electrical contracting licence of the same or equivalent classification, without written examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "may obtain a North Carolina electrical contracting license without written examinations",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "requires_from": "a licence issued by the TN contractor licensing board",
+      "conditions": {
+        "value": "Eligibility and the application packet are published per state on the board's own per-state reciprocity pages, which were not individually fetched in this pass.",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "Click on the state name for detailed information about eligibility and application packets.",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "without written examinations",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      }
+    },
+    {
+      "with_state": "TX",
+      "direction": "inbound",
+      "grants": {
+        "value": "A North Carolina electrical contracting licence of the same or equivalent classification, without written examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "may obtain a North Carolina electrical contracting license without written examinations",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "requires_from": "a licence issued by the TX contractor licensing board",
+      "conditions": {
+        "value": "Eligibility and the application packet are published per state on the board's own per-state reciprocity pages, which were not individually fetched in this pass.",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "Click on the state name for detailed information about eligibility and application packets.",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "without written examinations",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      }
+    },
+    {
+      "with_state": "VA",
+      "direction": "inbound",
+      "grants": {
+        "value": "A North Carolina electrical contracting licence of the same or equivalent classification, without written examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "may obtain a North Carolina electrical contracting license without written examinations",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "requires_from": "a licence issued by the VA contractor licensing board",
+      "conditions": {
+        "value": "Eligibility and the application packet are published per state on the board's own per-state reciprocity pages, which were not individually fetched in this pass.",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "Click on the state name for detailed information about eligibility and application packets.",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "without written examinations",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      }
+    },
+    {
+      "with_state": "WV",
+      "direction": "inbound",
+      "grants": {
+        "value": "A North Carolina electrical contracting licence of the same or equivalent classification, without written examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "may obtain a North Carolina electrical contracting license without written examinations",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "requires_from": "a licence issued by the WV contractor licensing board",
+      "conditions": {
+        "value": "Eligibility and the application packet are published per state on the board's own per-state reciprocity pages, which were not individually fetched in this pass.",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "Click on the state name for detailed information about eligibility and application packets.",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "without written examinations",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      }
+    }
+  ],
+  "reciprocity_statement": {
+    "value": "Ten formal agreements — Alabama, Florida, Georgia, Mississippi, Ohio, South Carolina, Tennessee, Texas, Virginia and West Virginia — made under G.S. 87-50, plus a separate NASCLA-qualified route.",
+    "status": "verified",
+    "confidence": "high",
+    "source_url": "https://www.ncbeec.org/reciprocity/",
+    "source_title": "Reciprocity — NCBEEC",
+    "source_kind": "board_page",
+    "evidence": "The Board has entered into formal reciprocal licensing agreements with contractor licensing boards of several states",
+    "last_verified": "2026-09-03",
+    "verified_by": [
+      "po-stateready-pass-a",
+      "po-stateready-pass-b"
+    ],
+    "note": "Compare tx.electrical: Texas lists North Carolina as an inbound master-electrician source, and North Carolina lists Texas. That pair happens to be mutual; most are not, which is the whole reason the expansion playbook is worth $750 to $1,500."
+  },
+  "business_entity": {
+    "qualifying_individual_rule": {
+      "value": "The licence is held in the business's name with a listed Qualified Individual; adding or removing one requires a Request to Add/Remove a Qualified Individual and produces a new certificate.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://www.ncbeec.org/licensing/",
+      "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+      "source_kind": "board_page",
+      "evidence": "To add or remove a qualified individual to your license, you must complete and submit a Request to Add/Remove a Qualified Individual form.",
+      "last_verified": "2026-09-03",
+      "verified_by": [
+        "po-stateready-pass-a",
+        "po-stateready-pass-b"
+      ]
+    },
+    "entity_registration": {
+      "value": "Incorporating requires filing articles of incorporation, articles of organization or a certificate of authority showing registration with the NC Secretary of State, and the licence is reissued.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://www.ncbeec.org/licensing/",
+      "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+      "source_kind": "board_page",
+      "evidence": "If you incorporate your business, you must submit a copy of your articles of incorporation",
+      "last_verified": "2026-09-03",
+      "verified_by": [
+        "po-stateready-pass-a",
+        "po-stateready-pass-b"
+      ]
+    },
+    "per_location_rule": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "Not stated; the constraint is on the name and the qualified individual, not on locations."
+    },
+    "change_notification_deadline": {
+      "value": 30,
+      "unit": "days",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://www.ncbeec.org/licensing/",
+      "source_title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+      "source_kind": "board_page",
+      "evidence": "Notification of any change should be filed with the Board within 30-days.",
+      "last_verified": "2026-09-03",
+      "verified_by": [
+        "po-stateready-pass-a",
+        "po-stateready-pass-b"
+      ],
+      "note": "Applies to address and contact changes. A name change is worse than a notification: it reissues the licence and MOVES THE EXPIRATION DATE, so a post-acquisition rebrand silently resets every renewal deadline the customer has in their calendar."
+    }
+  },
+  "typical_timeline": {
+    "value": null,
+    "status": "unknown",
+    "confidence": "low",
+    "note": "No end-to-end processing time is published. The board states only that a failed candidate may reapply immediately in an alternate classification if they meet its experience requirement.",
+    "source_url": "https://www.ncbeec.org/examinations/"
+  },
+  "coverage_notes": [
+    "Four of the ten classifications are modelled: Unlimited, Intermediate, Limited and the Special Restricted SP-PH. The other six special-restricted classes (SFD, FA/LV, SP, WP, ES, EL) share the $100 fee and the 4-hour CE rule but are not written out.",
+    "Per-state reciprocity detail pages (ten of them) were not fetched; only the agreement's existence and the no-written-exam term are recorded. A playbook quoting a specific inbound route must open the relevant page.",
+    "Numeric experience requirements per classification live in the Exam Application packet, which was not fetched. Every experience field in this record is empty on purpose."
+  ],
+  "disclaimer_profile": "unverified_fields_present",
+  "provenance": {
+    "created_at": "2026-09-03",
+    "pass_a": {
+      "agent_id": "po-stateready-pass-a",
+      "date": "2026-09-03",
+      "method": "fetched each source URL with curl (desktop UA), read the rendered text, recorded each value with a verbatim evidence fragment"
+    },
+    "pass_b": {
+      "agent_id": "po-stateready-pass-b",
+      "date": "2026-09-03",
+      "method": "kb-scripts/verify_pass_b.py re-fetches every source_url independently of the pass-A cache and asserts the evidence fragment is still literally present; a value whose evidence cannot be found is a disagreement and is demoted to UNVERIFIED",
+      "agreements": 97,
+      "disagreements": 0,
+      "disagreement_detail": [],
+      "unreachable": 0,
+      "agreement_rate_pct": 100.0
+    },
+    "sources": [
+      {
+        "source_id": "nc.ncbeec.licensing",
+        "url": "https://www.ncbeec.org/licensing/",
+        "title": "Licensing — NC State Board of Examiners of Electrical Contractors",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 545847,
+        "content_sha256": "de2c84d01b575765a1ac8e92583c8139d0b82b4f02204f613eaabefea0d7dbbb"
+      },
+      {
+        "source_id": "nc.ncbeec.fees",
+        "url": "https://www.ncbeec.org/fees-services/",
+        "title": "Fees & Services — NCBEEC",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 534559,
+        "content_sha256": "232d011fd32d18af3b959fc947f5b0b723341565566ab7c6a5bb6e86b79e8def"
+      },
+      {
+        "source_id": "nc.ncbeec.ce",
+        "url": "https://www.ncbeec.org/continuing-education/",
+        "title": "Continuing Education — NCBEEC",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 544930,
+        "content_sha256": "fcdaef6ca5f80658050d58d6fd776d4ea1e3b3661cefe49c9303e88ab27f75be"
+      },
+      {
+        "source_id": "nc.ncbeec.reciprocity",
+        "url": "https://www.ncbeec.org/reciprocity/",
+        "title": "Reciprocity — NCBEEC",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 518778,
+        "content_sha256": "d722a9c0b1711bf3d61164a78709e47fa38281ae82d987e92726ae72834b3b5a"
+      },
+      {
+        "source_id": "nc.ncbeec.examinations",
+        "url": "https://www.ncbeec.org/examinations/",
+        "title": "Examinations — NCBEEC",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 562233,
+        "content_sha256": "efd2d114fbddb9feabab374cebb0df15655efb8a7d9312a20110da30821eee9e"
+      }
+    ],
+    "publishable": true
+  }
+}

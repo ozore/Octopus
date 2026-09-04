@@ -1,0 +1,561 @@
+{
+ "wd_number": "TX20260253",
+ "publication_date": "05/18/2026",
+ "state": "Texas",
+ "construction_types": [
+  "Building"
+ ],
+ "counties": [
+  "Harris"
+ ],
+ "modifications": [
+  {
+   "modification_number": 0,
+   "publication_date": "01/02/2026"
+  },
+  {
+   "modification_number": 1,
+   "publication_date": "05/18/2026"
+  }
+ ],
+ "rate_groups": [
+  {
+   "identifier": "ASBE0022-009",
+   "effective_date": "07/01/2024",
+   "kind": "union"
+  },
+  {
+   "identifier": "BOIL0074-003",
+   "effective_date": "01/01/2025",
+   "kind": "union"
+  },
+  {
+   "identifier": "CARP0551-008",
+   "effective_date": "04/01/2025",
+   "kind": "union"
+  },
+  {
+   "identifier": "ELEC0716-005",
+   "effective_date": "09/01/2025",
+   "kind": "union"
+  },
+  {
+   "identifier": "ELEV0031-003",
+   "effective_date": "01/01/2025",
+   "kind": "union"
+  },
+  {
+   "identifier": "ENGI0450-002",
+   "effective_date": "04/01/2024",
+   "kind": "union"
+  },
+  {
+   "identifier": "IRON0084-001",
+   "effective_date": "06/01/2024",
+   "kind": "union"
+  },
+  {
+   "identifier": "IRON0084-012",
+   "effective_date": "06/01/2017",
+   "kind": "union"
+  },
+  {
+   "identifier": "IRON0084-012",
+   "effective_date": "06/01/2024",
+   "kind": "union"
+  },
+  {
+   "identifier": "PLAS0783-001",
+   "effective_date": "04/01/2023",
+   "kind": "union"
+  },
+  {
+   "identifier": "PLUM0068-002",
+   "effective_date": "10/01/2024",
+   "kind": "union"
+  },
+  {
+   "identifier": "PLUM0211-010",
+   "effective_date": "10/01/2025",
+   "kind": "union"
+  },
+  {
+   "identifier": "SFTX0669-002",
+   "effective_date": "04/01/2025",
+   "kind": "union"
+  },
+  {
+   "identifier": "SHEE0054-006",
+   "effective_date": "04/01/2020",
+   "kind": "union"
+  },
+  {
+   "identifier": "SUTX2014-029",
+   "effective_date": "07/21/2014",
+   "kind": "survey"
+  }
+ ],
+ "classifications": [
+  {
+   "rate_group": "ASBE0022-009",
+   "rate_kind": "union",
+   "group_effective_date": "07/01/2024",
+   "classification": "ASBESTOS WORKER/HEAT & FROST INSULATOR (DUCT, PIPE AND MECHANICAL SYSTEM INSULATION)",
+   "base_rate": 30.2,
+   "fringe": 12.38
+  },
+  {
+   "rate_group": "BOIL0074-003",
+   "rate_kind": "union",
+   "group_effective_date": "01/01/2025",
+   "classification": "BOILERMAKER",
+   "base_rate": 33.17,
+   "fringe": 24.92
+  },
+  {
+   "rate_group": "CARP0551-008",
+   "rate_kind": "union",
+   "group_effective_date": "04/01/2025",
+   "classification": "CARPENTER (EXCLUDES ACOUSTICAL CEILING INSTALLATION,DRYWALL HANGING, FORM WORK AND METAL STUD INSTALLATION)",
+   "base_rate": 33.27,
+   "fringe": 9.73
+  },
+  {
+   "rate_group": "ELEC0716-005",
+   "rate_kind": "union",
+   "group_effective_date": "09/01/2025",
+   "classification": "ELECTRICIAN (EXCLUDES LOW VOLTAGE WIRING AND INSTALLATION OF ALARMS)",
+   "base_rate": 38.5,
+   "fringe": 10.71
+  },
+  {
+   "rate_group": "ELEV0031-003",
+   "rate_kind": "union",
+   "group_effective_date": "01/01/2025",
+   "classification": "ELEVATOR MECHANIC: FOOTNOTES: A. 6% UNDER 5 YEARS BASED ON REGULAR HOURLY RATE FOR ALL HOURS WORKED. 8% OVER 5 YEARS BASED ON REGULAR HOURLY RATE FOR ALL HOURS WORKED. B. HOLIDAYS: NEW YEAR'S DAY; MEMORIAL DAY; INDEPENDENCE DAY; LABOR DAY; THANKSGIVING DAY; FRIDAY AFTER THANKSGIVING DAY; CHRISTMAS DAY; AND VETERANS DAY",
+   "base_rate": 53.59,
+   "fringe": 38.44
+  },
+  {
+   "rate_group": "ENGI0450-002",
+   "rate_kind": "union",
+   "group_effective_date": "04/01/2024",
+   "classification": "POWER EQUIPMENT OPERATOR (CRANES)",
+   "base_rate": 39.47,
+   "fringe": 10.39
+  },
+  {
+   "rate_group": "IRON0084-001",
+   "rate_kind": "union",
+   "group_effective_date": "06/01/2024",
+   "classification": "IRONWORKER, STRUCTURAL",
+   "base_rate": 28.26,
+   "fringe": 8.13
+  },
+  {
+   "rate_group": "IRON0084-012",
+   "rate_kind": "union",
+   "group_effective_date": "06/01/2017",
+   "classification": "GLAZIER",
+   "base_rate": 23.27,
+   "fringe": 7.12
+  },
+  {
+   "rate_group": "IRON0084-012",
+   "rate_kind": "union",
+   "group_effective_date": "06/01/2017",
+   "classification": "IRONWORKER: ORNAMENTAL",
+   "base_rate": 28.26,
+   "fringe": 8.13
+  },
+  {
+   "rate_group": "IRON0084-012",
+   "rate_kind": "union",
+   "group_effective_date": "06/01/2024",
+   "classification": "GLAZIER",
+   "base_rate": 23.27,
+   "fringe": 7.12
+  },
+  {
+   "rate_group": "IRON0084-012",
+   "rate_kind": "union",
+   "group_effective_date": "06/01/2024",
+   "classification": "IRONWORKER: ORNAMENTAL",
+   "base_rate": 28.26,
+   "fringe": 8.13
+  },
+  {
+   "rate_group": "PLAS0783-001",
+   "rate_kind": "union",
+   "group_effective_date": "04/01/2023",
+   "classification": "PLASTERER",
+   "base_rate": 31.34,
+   "fringe": 10.3
+  },
+  {
+   "rate_group": "PLUM0068-002",
+   "rate_kind": "union",
+   "group_effective_date": "10/01/2024",
+   "classification": "PLUMBER",
+   "base_rate": 39.98,
+   "fringe": 11.61
+  },
+  {
+   "rate_group": "PLUM0211-010",
+   "rate_kind": "union",
+   "group_effective_date": "10/01/2025",
+   "classification": "PIPEFITTER: INCLUDING HVAC PIPE INSTALLATION",
+   "base_rate": 42.09,
+   "fringe": 12.96
+  },
+  {
+   "rate_group": "SFTX0669-002",
+   "rate_kind": "union",
+   "group_effective_date": "04/01/2025",
+   "classification": "SPRINKLER FITTER (FIRE SPRINKLERS)",
+   "base_rate": 38.57,
+   "fringe": 24.47
+  },
+  {
+   "rate_group": "SHEE0054-006",
+   "rate_kind": "union",
+   "group_effective_date": "04/01/2020",
+   "classification": "SHEET METAL WORKER (HVAC DUCT INSTALLATION ONLY)",
+   "base_rate": 29.7,
+   "fringe": 13.85
+  },
+  {
+   "rate_group": "SHEE0054-006",
+   "rate_kind": "union",
+   "group_effective_date": "04/01/2020",
+   "classification": "SHEET METAL WORKER (EXCLUDES HVAC UNIT INSTALLATION)",
+   "base_rate": 29.7,
+   "fringe": 13.85
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "WATERPROOFER",
+   "base_rate": 14.39,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "TRUCK DRIVER: WATER TRUCK",
+   "base_rate": 12.0,
+   "fringe": 4.11
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "TRUCK DRIVER: SEMI-TRAILER TRUCK",
+   "base_rate": 12.5,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "TRUCK DRIVER: FLATBED TRUCK",
+   "base_rate": 19.65,
+   "fringe": 8.57
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "TRUCK DRIVER: DUMP TRUCK",
+   "base_rate": 12.39,
+   "fringe": 1.18
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "TRUCK DRIVER: 1/SINGLE AXLE TRUCK",
+   "base_rate": 14.18,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "TILE SETTER",
+   "base_rate": 16.17,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "TILE FINISHER",
+   "base_rate": 12.0,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "SHEET METAL WORKER (HVAC UNIT INSTALLATION ONLY)",
+   "base_rate": 20.05,
+   "fringe": 2.24
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "ROOFER",
+   "base_rate": 15.4,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "PAINTER (BRUSH, ROLLER AND SPRAY), EXCLUDES DRYWALL FINISHING/TAPING",
+   "base_rate": 17.24,
+   "fringe": 4.41
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "OPERATOR: ROLLER",
+   "base_rate": 16.0,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "OPERATOR: PAVER (ASPHALT, AGGREGATE, AND CONCRETE)",
+   "base_rate": 16.03,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "OPERATOR: MECHANIC",
+   "base_rate": 17.52,
+   "fringe": 3.33
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "OPERATOR: LOADER",
+   "base_rate": 13.55,
+   "fringe": 0.94
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "OPERATOR: GRADER/BLADE",
+   "base_rate": 13.37,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "OPERATOR: FORKLIFT",
+   "base_rate": 16.0,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "OPERATOR: DRILL",
+   "base_rate": 16.22,
+   "fringe": 0.34
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "OPERATOR: BULLDOZER",
+   "base_rate": 22.75,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "OPERATOR: BOBCAT/SKID STEER/SKID LOADER",
+   "base_rate": 13.93,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "OPERATOR: BACKHOE/EXCAVATOR/TRACKHOE",
+   "base_rate": 13.94,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "LATHER",
+   "base_rate": 19.73,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "LABORER: LANDSCAPE AND IRRIGATION",
+   "base_rate": 9.52,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "LABORER: ROOF TEAROFF",
+   "base_rate": 11.28,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "LABORER: PIPELAYER",
+   "base_rate": 12.94,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "LABORER: MASON TENDER - CEMENT/CONCRETE",
+   "base_rate": 10.48,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "LABORER: MASON TENDER - BRICK",
+   "base_rate": 13.47,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "LABORER: COMMON OR GENERAL",
+   "base_rate": 11.76,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "IRONWORKER, REINFORCING",
+   "base_rate": 12.14,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "INSULATOR - BATT",
+   "base_rate": 14.87,
+   "fringe": 0.73
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "FORM WORKER",
+   "base_rate": 12.77,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "FLOOR LAYER: CARPET",
+   "base_rate": 20.0,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "ELECTRICIAN (LOW VOLTAGE WIRING ONLY)",
+   "base_rate": 18.0,
+   "fringe": 1.68
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "ELECTRICIAN (ALARM INSTALLATION ONLY)",
+   "base_rate": 17.97,
+   "fringe": 3.37
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "DRYWALL HANGER AND METAL STUD INSTALLER",
+   "base_rate": 17.44,
+   "fringe": 3.93
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "DRYWALL FINISHER/TAPER",
+   "base_rate": 16.27,
+   "fringe": 3.66
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "CEMENT MASON/CONCRETE FINISHER",
+   "base_rate": 13.93,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "CAULKER",
+   "base_rate": 15.36,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "BRICKLAYER",
+   "base_rate": 18.87,
+   "fringe": 0.0
+  },
+  {
+   "rate_group": "SUTX2014-029",
+   "rate_kind": "survey",
+   "group_effective_date": "07/21/2014",
+   "classification": "ACOUSTICAL CEILING MECHANIC",
+   "base_rate": 17.27,
+   "fringe": 3.98
+  }
+ ],
+ "notes": {
+  "welders": true,
+  "eo13706_paid_sick_leave": true,
+  "conformance_required_for_unlisted": true
+ }
+}

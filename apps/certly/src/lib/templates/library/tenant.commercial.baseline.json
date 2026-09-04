@@ -1,0 +1,81 @@
+{
+  "id": "tenant.commercial.baseline",
+  "audience": "tenant",
+  "label": "Commercial landlord — tenant baseline",
+  "summary": "Lease insurance clauses are negotiated, not standard, so this is a range rather than a rule: $1M each occurrence, $2M aggregate, landlord and property manager as additional insured, a mutual waiver, primary and non-contributory.",
+  "confidence": "medium",
+  "unverified": false,
+  "requirements": [
+    {
+      "kind": "limit",
+      "coverage": "general_liability",
+      "limit": "each_occurrence",
+      "min": 1000000
+    },
+    {
+      "kind": "limit",
+      "coverage": "general_liability",
+      "limit": "general_aggregate",
+      "min": 2000000
+    },
+    {
+      "kind": "limit",
+      "coverage": "automobile_liability",
+      "limit": "combined_single_limit",
+      "min": 1000000,
+      "severity": "advisory",
+      "note": "Required only where the tenant operates vehicles; tracked as advisory so it appears in the report without marking the tenant red."
+    },
+    {
+      "kind": "coverage_present",
+      "coverage": "workers_compensation",
+      "note": "Statutory workers' compensation where the tenant has employees."
+    },
+    {
+      "kind": "limit",
+      "coverage": "umbrella_liability",
+      "limit": "umbrella_each_occurrence",
+      "min": 2000000,
+      "severity": "advisory",
+      "note": "Lease umbrella requirements range from nothing to $5,000,000; tracked as advisory until your own lease says otherwise."
+    },
+    {
+      "kind": "endorsement",
+      "endorsement": "additional_insured_ongoing",
+      "accepts": [
+        "CG 20 10",
+        "CG 20 33",
+        "CG 20 38",
+        "CG 20 26"
+      ],
+      "note": "The landlord, the property manager and any lender the lease names all have to appear. Certly checks that an accepted form is evidenced; who is scheduled on it is a reading only you can do."
+    },
+    {
+      "kind": "endorsement",
+      "endorsement": "waiver_of_subrogation_gl",
+      "accepts": [
+        "CG 24 04",
+        "CG 24 53"
+      ],
+      "note": "Commercial leases usually make the waiver mutual. Certly checks the tenant's side."
+    },
+    {
+      "kind": "endorsement",
+      "endorsement": "primary_non_contributory",
+      "accepts": [
+        "CG 20 01"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.lawinsider.com/clause/tenants-commercial-general-liability-insurance",
+      "title": "LawInsider — tenant's commercial general liability insurance clauses",
+      "last_verified": "2026-09-03",
+      "verified_by": [
+        "po-agent"
+      ],
+      "confidence": "medium"
+    }
+  ]
+}
