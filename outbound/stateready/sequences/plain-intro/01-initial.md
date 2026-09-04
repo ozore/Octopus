@@ -1,23 +1,17 @@
 ---
-subject: How {{org.name}} tracks trade licences by state
+subject: One calendar per state, with the rule behind it
 delay_days: 0
 send_window: 09:00-11:00
 ---
 Hello,
 
-{{fact.opening}}, which is why I am writing to you rather than to a list.
+{{fact.opening}}, which is why I am writing to the office rather than to a list.
 
-I am building StateReady: it keeps one record of every contractor licence,
-qualifying individual and renewal date you hold, per state, and tells you which
-one is about to lapse before a permit desk does.
-{{#if fact.brands}}With {{fact.brands}}, that is a matrix rather than a list.{{/if}}
-{{#if fact.states_operated}}Operating in {{fact.states_operated}} means a different renewal cycle and a different qualifier rule in each one.{{/if}}
-{{#if fact.locations}}With {{fact.locations}}, the same question repeats at every branch.{{/if}}
+I am building StateReady. It keeps every HVAC, plumbing and electrical license and CE hour a company holds on one calendar, per state, and behind each date it holds the state's own rule, with the board page it came from and the day we last checked it.
+{{#if fact.states_operated}}Operating in {{fact.states_operated}} means a different renewal rule in each one.{{/if}}
 
-Straight with you: StateReady is new, I have no customer results to quote, and
-I am not going to quote any.
+One example of why the rule matters: Texas asks an HVAC contractor for 8 CE hours a year, one of them Texas law, and a master electrician for 4. A spreadsheet has one column called CE hours.
 
-What would help me is fifteen minutes on how you handle it today: where the
-licence list lives, who watches the renewal dates, and what happens when an
-acquisition arrives with its own. If that is not worth your time, a no closes
-it and I will not chase.
+No pitch here. Reply with one state and one trade and I will send that rulebook as a PDF, free, no call. Today that is Texas, Florida or North Carolina; for another state I will say when, not guess.
+
+{{sender.name}}

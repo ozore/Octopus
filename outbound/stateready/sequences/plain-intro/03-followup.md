@@ -1,17 +1,14 @@
 ---
-subject: Last useful thing, then I stop
-delay_days: 12
+subject: A second branch is a licensing event
+delay_days: 9
 send_window: 09:00-11:00
 ---
 Hello,
 
-One more worth keeping, then I will leave you alone.
+One more, then I stop.
 
-Acquisitions are where the licence record goes wrong: the acquired company's
-licence usually does not transfer with the assets, and a change of control can
-require a new application in that state rather than an update. The gap shows up
-at the permit desk, weeks after the deal closed.
-{{#if fact.segment}}That is the pattern I keep hearing about from a {{fact.segment}}.{{/if}}
+In Texas an air conditioning company must employ a licensed contractor in each permanent location, so a second Texas branch needs a second license holder, not just a second address. And if a master electrician leaves, a Texas electrical contractor has thirty business days to designate a replacement of record.
 
-If licensing belongs to somebody else at {{org.name}}, a redirect would be
-genuinely useful. If it is nobody's job, that is an answer too.
+If licensing belongs to someone else at {{org.name}}, a redirect would help. If it is nobody's job yet, that is an answer too.
+
+{{sender.name}}

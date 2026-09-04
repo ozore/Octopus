@@ -1,17 +1,15 @@
 ---
-subject: One thing on qualifying individuals
-delay_days: 5
+subject: One state, two boards, opposite CE rules
+delay_days: 4
 send_window: 09:00-11:00
 ---
 Hello,
 
-Following up once, with something useful whether or not you reply.
+Following up once, with something useful either way.
 
-In most states the licence hangs on a named qualifying individual, not on the
-company. When that person leaves, the clock starts: a fixed window to name a
-replacement or the licence goes inactive, and the rule differs state by state.
-It is the single failure that stops work in a market overnight.
-{{#if fact.employees}}At your size ({{fact.employees}}), one departure can sit under several licences at once.{{/if}}
+North Carolina licenses HVAC as heating, through the same board as plumbing, and that board eliminated mandatory continuing education in 2012. The electrical board asks for 8 hours a year, at least half of them in a classroom. Every plumbing and heating license there expires on 31 December with no grace period; an electrical license expires a year after issue.
+{{#if fact.employees}}At your size ({{fact.employees}}), that is a lot of dates to hold in one column.{{/if}}
 
-The fifteen minutes stands with no expiry, and I will say honestly if
-StateReady would not help you.
+The offer stands: one state and one trade, and I send the cited rulebook.
+
+{{sender.name}}
