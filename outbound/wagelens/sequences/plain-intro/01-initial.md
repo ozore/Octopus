@@ -1,5 +1,5 @@
 ---
-subject: How {{org.name}} handles certified payroll
+subject: A free Davis-Bacon determination for your county
 delay_days: 0
 send_window: 09:00-11:00
 ---
@@ -7,17 +7,10 @@ Hello,
 
 {{fact.opening}}, which is why I am writing to you and not to a list.
 
-I am building WageLens: it works out the Davis-Bacon wage determination and
-classification for each worker on a federally funded job, and produces the
-weekly WH-347 from that.
-{{#if fact.payroll_filings}}You file more of these than most: {{fact.payroll_filings}}.{{/if}}
-{{#if fact.certification}}Certified firms usually end up on federally assisted work as a subcontractor, which is where the weekly filing starts.{{/if}}
-{{#if fact.registration}}A public work registration means the filing obligation is already yours, every week the job runs.{{/if}}
+I am building {{app}}. It looks up the Davis-Bacon determination for a county, lets you pin the modification your contract locked, and produces the weekly WH-347 and Statement of Compliance from hours typed once. It does not choose classifications and does not sign the statement; those stay yours.
 
-Two things you should know before deciding whether to reply: WageLens is new,
-and I have no results to quote, so I am not going to quote any.
+If you do any federally funded construction, reply with your county and your trade and I will send back the current determination for that work, with the determination number, modification date and the sam.gov link. Free, no signup, no call. Keep it whether or not you ever write to me again.
 
-What I would find useful is fifteen minutes on how you do it today: who works
-out the classification, what happens when an audit letter arrives, and what
-you would not give up. If that is not a good use of your time, a no closes it
-and I will not chase.
+$99 a month, price on the page, first two Fridays free: card on file, charged on day 15, cancel in two clicks before then.
+
+{{sender.name}}, {{app}}, a {{company}} company

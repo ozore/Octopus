@@ -1,5 +1,5 @@
 ---
-subject: Which modification your contract locked
+subject: Which modification the contract locked
 delay_days: 9
 send_window: 09:00-11:00
 ---

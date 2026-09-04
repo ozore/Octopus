@@ -1,5 +1,5 @@
 ---
-subject: When the classification is not on the determination
+subject: When the classification is not on the list
 delay_days: 4
 send_window: 09:00-11:00
 ---
