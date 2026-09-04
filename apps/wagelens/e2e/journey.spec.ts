@@ -99,8 +99,10 @@ test('a stranger signs up, pins a determination, hits the limit, subscribes and 
 });
 
 test('the admin metrics page is closed without the ops secret', async ({ page }) => {
+  // 404 and not 401 since WL-12 took the route over: a 401 confirms the page is
+  // there, and WL-12 V1 asks for no oracle that it exists.
   const unauthorised = await page.request.get('/admin');
-  expect(unauthorised.status()).toBe(401);
+  expect(unauthorised.status()).toBe(404);
 
   const authorised = await page.request.get('/admin?secret=e2e-ops-secret');
   expect(authorised.status()).toBe(200);

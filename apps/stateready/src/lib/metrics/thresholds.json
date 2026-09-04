@@ -1,0 +1,100 @@
+{
+  "source": "phase-4-revenue/stateready/THRESHOLDS.md §2 — generated, never edited by hand",
+  "minimumN": 100,
+  "metrics": [
+    {
+      "id": "T1",
+      "label": "Activation (signup → derived deadline, 7 days)",
+      "stop": {
+        "kind": "below",
+        "limit": 0.25
+      },
+      "iterate": {
+        "kind": "between",
+        "from": 0.25,
+        "to": 0.44
+      },
+      "persevere": {
+        "kind": "atLeast",
+        "limit": 0.45
+      },
+      "printed": {
+        "stop": "< 25%",
+        "iterate": "25 – 44%",
+        "persevere": "≥ 45%"
+      }
+    },
+    {
+      "id": "T2",
+      "label": "Activation → paid (30 days)",
+      "stop": {
+        "kind": "below",
+        "limit": 0.08
+      },
+      "iterate": {
+        "kind": "between",
+        "from": 0.08,
+        "to": 0.17
+      },
+      "persevere": {
+        "kind": "atLeast",
+        "limit": 0.18
+      },
+      "printed": {
+        "stop": "< 8%",
+        "iterate": "8 – 17%",
+        "persevere": "≥ 18%"
+      }
+    },
+    {
+      "id": "T3",
+      "label": "Month-2 retention",
+      "stop": {
+        "kind": "below",
+        "limit": 0.7
+      },
+      "iterate": {
+        "kind": "between",
+        "from": 0.7,
+        "to": 0.84
+      },
+      "persevere": {
+        "kind": "atLeast",
+        "limit": 0.85
+      },
+      "printed": {
+        "stop": "< 70%",
+        "iterate": "70 – 84%",
+        "persevere": "≥ 85%"
+      }
+    },
+    {
+      "id": "T4",
+      "label": "Playbook attach rate (90 days)",
+      "stop": {
+        "kind": "below",
+        "limit": 0.05
+      },
+      "iterate": {
+        "kind": "between",
+        "from": 0.05,
+        "to": 0.14
+      },
+      "persevere": {
+        "kind": "atLeast",
+        "limit": 0.15
+      },
+      "printed": {
+        "stop": "< 5%",
+        "iterate": "5 – 14%",
+        "persevere": "≥ 15%"
+      }
+    }
+  ],
+  "compositeRule": [
+    "Any single metric in the stop band → stop that motion and fix it, before scaling spend. Not \"shut the company\", but \"stop sending outbound into a funnel with this hole in it\".",
+    "Two or more in stop → stop the product. Move the knowledge-base assets to whichever of the three phase-4 apps is working.",
+    "All four in persevere → scale outbound. That is the only condition under which the daily send cap in `outbound/` goes up.",
+    "Anything else → iterate, one variable at a time, and re-evaluate at the next n = 100."
+  ]
+}

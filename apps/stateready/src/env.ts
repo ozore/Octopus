@@ -34,6 +34,22 @@ export const appEnvSchema = basePlatformEnv.extend({
 
   /** Overrides the snapshot version; normally `VERCEL_GIT_COMMIT_SHA`. */
   KB_VERSION: z.string().optional(),
+
+  /**
+   * The founder addresses allowed to open `/admin` with a browser session,
+   * comma-separated (`specs/13` §Screens). **No role in the database can grant
+   * it**: an escalation bug must not be able to reach these pages, so the
+   * allowlist is an env var and the check is server-side on every admin route.
+   * Empty means "ops secret only", which is the safe default.
+   */
+  ADMIN_EMAILS: z.string().default(''),
+
+  /**
+   * Resend's webhook signing secret (`specs/06` — delivery state comes back as
+   * `delivered | bounced | complained`). Optional: without it the endpoint
+   * refuses every request rather than trusting an unsigned one.
+   */
+  RESEND_WEBHOOK_SECRET: z.string().optional(),
 });
 
 export type AppEnv = z.infer<typeof appEnvSchema>;

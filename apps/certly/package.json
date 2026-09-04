@@ -2,7 +2,7 @@
   "name": "@octopus/certly",
   "version": "0.1.0",
   "private": true,
-  "description": "Certly — reads a certificate of insurance and tells you what it does and does not evidence against the requirements you set. Next.js 15 on @octopus/platform.",
+  "description": "Certly \u2014 reads a certificate of insurance and tells you what it does and does not evidence against the requirements you set. Next.js 15 on @octopus/platform.",
   "type": "module",
   "engines": {
     "node": ">=22.0.0"
@@ -26,6 +26,7 @@
     "@vercel/blob": "^2.8.0",
     "drizzle-orm": "^0.44.6",
     "next": "^15.5.4",
+    "pdf-lib": "^1.17.1",
     "postgres": "^3.4.7",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
@@ -38,6 +39,7 @@
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
     "drizzle-kit": "^0.31.5",
+    "pdfjs-dist": "^6.3.289",
     "playwright": "1.56.1",
     "tsx": "^4.20.6",
     "typescript": "^5.9.2",

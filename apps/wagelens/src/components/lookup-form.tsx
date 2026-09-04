@@ -21,6 +21,11 @@ export type LookupFormProps = {
   selectedState?: string;
   selectedCounty?: string;
   selectedType?: string;
+  /** Where the GET lands. `/lookup` redirects to the indexable result page;
+   *  the landing page points it at itself so the result renders in place,
+   *  below the widget, which is what LANDING_SPEC §3's wireframe draws.
+   *  Additive and defaulted: every existing call site is unchanged. */
+  action?: string;
 };
 
 export function LookupForm({
@@ -29,9 +34,10 @@ export function LookupForm({
   selectedState,
   selectedCounty,
   selectedType,
+  action = '/lookup',
 }: LookupFormProps) {
   return (
-    <form className="wl-lookup" action="/lookup" method="get" data-testid="lookup-form">
+    <form className="wl-lookup" action={action} method="get" data-testid="lookup-form">
       <div className="wl-field">
         <label className="wl-field__label" htmlFor="state">State</label>
         <select

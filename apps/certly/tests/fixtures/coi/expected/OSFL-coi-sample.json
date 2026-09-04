@@ -1,0 +1,451 @@
+{
+  "fixture": "OSFL-coi-sample.pdf",
+  "golden_id": "G2",
+  "labelled_by": "agent:certly-b1-m4",
+  "labelled_on": "2026-09-04",
+  "reviewed_by": "agent:certly-b1-m4-second-pass",
+  "notes": "specs/03 A3's fixture. MED EXP prints the word 'Excluded' and the GL block's ticked free line prints '$100,000 SIR'; both carry amount null with the printed characters in raw, so the engine answers undetermined rather than a confident, wrong gap. The DATE box is empty and no NAIC number is given. Insurer C's name is printed 'INSUARNCE COMPANY NAME' — a typo in the source document, kept verbatim. A stray '0' is printed in the LIMITS column of the empty row below workers' compensation; it belongs to no coverage and is not labelled. The workers' compensation block is entirely empty and is not a row.",
+  "expected": {
+    "schema_version": "coi.v1",
+    "document_kind": "acord_25",
+    "form_edition": "2014/01",
+    "certificate_date": {
+      "value": null,
+      "raw": null,
+      "page": null,
+      "source_text": null,
+      "confidence": 1.0
+    },
+    "producer": {
+      "name": {
+        "value": "SAMPLE BROKER",
+        "raw": "SAMPLE BROKER",
+        "page": 1,
+        "source_text": "SAMPLE BROKER",
+        "confidence": 1.0
+      },
+      "address": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      },
+      "contact_name": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      },
+      "phone": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      },
+      "fax": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      },
+      "email": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      }
+    },
+    "insured": {
+      "name": {
+        "value": "SAMPLE VENDOR",
+        "raw": "SAMPLE VENDOR",
+        "page": 1,
+        "source_text": "SAMPLE VENDOR",
+        "confidence": 1.0
+      },
+      "address": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      }
+    },
+    "insurers": [
+      {
+        "letter": "A",
+        "name": {
+          "value": "INSURANCE COMPANY NAME",
+          "raw": "INSURANCE COMPANY NAME",
+          "page": 1,
+          "source_text": "INSURANCE COMPANY NAME",
+          "confidence": 1.0
+        },
+        "naic": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "letter": "B",
+        "name": {
+          "value": "INSURANCE COMPANY NAME",
+          "raw": "INSURANCE COMPANY NAME",
+          "page": 1,
+          "source_text": "INSURANCE COMPANY NAME",
+          "confidence": 1.0
+        },
+        "naic": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "letter": "C",
+        "name": {
+          "value": "INSUARNCE COMPANY NAME",
+          "raw": "INSUARNCE COMPANY NAME",
+          "page": 1,
+          "source_text": "INSUARNCE COMPANY NAME",
+          "confidence": 1.0
+        },
+        "naic": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        }
+      }
+    ],
+    "coverages": [
+      {
+        "insr_letter": {
+          "value": "A",
+          "raw": "A",
+          "page": 1,
+          "source_text": "A",
+          "confidence": 1.0
+        },
+        "type": "general_liability",
+        "type_label_raw": {
+          "value": "COMMERCIAL GENERAL LIABILITY",
+          "raw": "COMMERCIAL GENERAL LIABILITY",
+          "page": 1,
+          "source_text": "COMMERCIAL GENERAL LIABILITY",
+          "confidence": 1.0
+        },
+        "addl_insd": {
+          "value": "Y",
+          "raw": "X",
+          "page": 1,
+          "source_text": "X",
+          "confidence": 1.0
+        },
+        "subr_wvd": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "policy_number": {
+          "value": "CGL 123456",
+          "raw": "CGL 123456",
+          "page": 1,
+          "source_text": "CGL 123456",
+          "confidence": 1.0
+        },
+        "policy_eff": {
+          "value": "2020-10-01",
+          "raw": "10/01/2020",
+          "page": 1,
+          "source_text": "10/01/2020",
+          "confidence": 1.0
+        },
+        "policy_exp": {
+          "value": "2021-10-01",
+          "raw": "10/1/2021",
+          "page": 1,
+          "source_text": "10/1/2021",
+          "confidence": 1.0
+        },
+        "form_basis": {
+          "value": "occurrence",
+          "raw": "X",
+          "page": 1,
+          "source_text": "X",
+          "confidence": 1.0
+        },
+        "aggregate_applies_per": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "wc_officer_excluded": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "limits": [
+          {
+            "label": "each_occurrence",
+            "label_raw": {
+              "value": "EACH OCCURRENCE",
+              "raw": "EACH OCCURRENCE",
+              "page": 1,
+              "source_text": "EACH OCCURRENCE",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1000000,
+              "raw": "1,000,000",
+              "page": 1,
+              "source_text": "1,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "damage_to_rented_premises",
+            "label_raw": {
+              "value": "DAMAGE TO RENTED PREMISES (Ea occurrence)",
+              "raw": "DAMAGE TO RENTED PREMISES (Ea occurrence)",
+              "page": 1,
+              "source_text": "DAMAGE TO RENTED PREMISES (Ea occurrence)",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1000000,
+              "raw": "1,000,000",
+              "page": 1,
+              "source_text": "1,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "med_exp",
+            "label_raw": {
+              "value": "MED EXP (Any one person)",
+              "raw": "MED EXP (Any one person)",
+              "page": 1,
+              "source_text": "MED EXP (Any one person)",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": null,
+              "raw": "Excluded",
+              "page": 1,
+              "source_text": "Excluded",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "personal_and_adv_injury",
+            "label_raw": {
+              "value": "PERSONAL & ADV INJURY",
+              "raw": "PERSONAL & ADV INJURY",
+              "page": 1,
+              "source_text": "PERSONAL & ADV INJURY",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1000000,
+              "raw": "1,000,000",
+              "page": 1,
+              "source_text": "1,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "general_aggregate",
+            "label_raw": {
+              "value": "GENERAL AGGREGATE",
+              "raw": "GENERAL AGGREGATE",
+              "page": 1,
+              "source_text": "GENERAL AGGREGATE",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 2000000,
+              "raw": "2,000,000",
+              "page": 1,
+              "source_text": "2,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "products_comp_op_agg",
+            "label_raw": {
+              "value": "PRODUCTS - COMP/OP AGG",
+              "raw": "PRODUCTS - COMP/OP AGG",
+              "page": 1,
+              "source_text": "PRODUCTS - COMP/OP AGG",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1000000,
+              "raw": "1,000,000",
+              "page": 1,
+              "source_text": "1,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "ded_retention",
+            "label_raw": {
+              "value": "$100,000 SIR",
+              "raw": "$100,000 SIR",
+              "page": 1,
+              "source_text": "$100,000 SIR",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": null,
+              "raw": "$100,000 SIR",
+              "page": 1,
+              "source_text": "$100,000 SIR",
+              "confidence": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "insr_letter": {
+          "value": "A",
+          "raw": "A",
+          "page": 1,
+          "source_text": "A",
+          "confidence": 1.0
+        },
+        "type": "automobile_liability",
+        "type_label_raw": {
+          "value": "AUTOMOBILE LIABILITY",
+          "raw": "AUTOMOBILE LIABILITY",
+          "page": 1,
+          "source_text": "AUTOMOBILE LIABILITY",
+          "confidence": 1.0
+        },
+        "addl_insd": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "subr_wvd": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "policy_number": {
+          "value": "CAL 987654",
+          "raw": "CAL 987654",
+          "page": 1,
+          "source_text": "CAL 987654",
+          "confidence": 1.0
+        },
+        "policy_eff": {
+          "value": "2020-10-01",
+          "raw": "10/01/2020",
+          "page": 1,
+          "source_text": "10/01/2020",
+          "confidence": 1.0
+        },
+        "policy_exp": {
+          "value": "2021-10-01",
+          "raw": "10/1/2021",
+          "page": 1,
+          "source_text": "10/1/2021",
+          "confidence": 1.0
+        },
+        "form_basis": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "aggregate_applies_per": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "wc_officer_excluded": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "limits": [
+          {
+            "label": "combined_single_limit",
+            "label_raw": {
+              "value": "COMBINED SINGLE LIMIT (Ea accident)",
+              "raw": "COMBINED SINGLE LIMIT (Ea accident)",
+              "page": 1,
+              "source_text": "COMBINED SINGLE LIMIT (Ea accident)",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1000000,
+              "raw": "1,000,000",
+              "page": 1,
+              "source_text": "1,000,000",
+              "confidence": 1.0
+            }
+          }
+        ]
+      }
+    ],
+    "description_of_operations": {
+      "value": "Cornell University, its , officers, employees, & Fraternity & Sorority Affairs, directors, agents, representatives and employees are added as Additional Insured for the limits represented on this certificate.",
+      "raw": "Cornell University, its , officers, employees, & Fraternity & Sorority Affairs, directors, agents, representatives and employees are added as Additional Insured for the limits represented on this certificate.",
+      "page": 1,
+      "source_text": "are added as Additional",
+      "confidence": 1.0
+    },
+    "endorsement_forms_mentioned": [],
+    "certificate_holder": {
+      "value": "CORNELL UNIVERSITY, It's Officers, employees, Fraternity & Sorority Affairs, 538 Willard Straight Hall, ITHACA, NY 14853",
+      "raw": "CORNELL UNIVERSITY, It's\nOfficers, employees, Fraternity &\nSorority Affairs\n538 Willard Straight Hall\n ITHACA, NY  14853",
+      "page": 1,
+      "source_text": "538 Willard Straight Hall",
+      "confidence": 1.0
+    },
+    "authorized_representative_present": {
+      "value": false,
+      "raw": null,
+      "page": null,
+      "source_text": null,
+      "confidence": 1.0
+    },
+    "acord_101_attached": {
+      "value": false,
+      "raw": null,
+      "page": null,
+      "source_text": null,
+      "confidence": 1.0
+    },
+    "notes": "A specimen certificate: the certificate date and the authorised-representative box are both blank."
+  }
+}

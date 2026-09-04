@@ -1,0 +1,1092 @@
+{
+  "record_id": "oh.electrical",
+  "schema_version": "1.0.0",
+  "state": "OH",
+  "state_name": "Ohio",
+  "trade": "electrical",
+  "jurisdiction_model": {
+    "level": "state_and_local",
+    "summary": {
+      "value": "One OCILB licence covers the trade statewide for COMMERCIAL work. Local building and health departments regulate residential contractors, and a department with a registration in place must require the state licence before issuing a commercial permit.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board",
+      "source_title": "Ohio Construction Industry Licensing Board — Ohio Department of Commerce",
+      "source_kind": "board_page",
+      "evidence": "requires building and health departments who have a registration in place to require the State License before issuing commercial permits",
+      "last_verified": "2026-09-04",
+      "verified_by": [
+        "kb-b5-pass-a",
+        "kb-b5-pass-b"
+      ]
+    },
+    "local_layer_note": "Ohio is a two-layer state and the layers split by work type, not by geography: the state licence is the COMMERCIAL credential, and 'All local building and health departments regulate residential contractors.' The same page adds that a local department may also require the state commercial licence of its residential contractors, so a residential-only Ohio company can still need this licence. The specific municipal and county registrations are not modelled."
+  },
+  "boards": [
+    {
+      "board_id": "oh.ocilb",
+      "name": "Ohio Construction Industry Licensing Board (OCILB), Division of Industrial Compliance, Ohio Department of Commerce",
+      "url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board",
+      "scope": "Commercial contractor (master) licences for the five specialty trades — electrical, HVAC, refrigeration, plumbing and hydronics — statewide",
+      "licence_search_url": "https://elicense4.com.ohio.gov/",
+      "phone": "(614) 644-3493"
+    }
+  ],
+  "licence_types": [
+    {
+      "licence_type_id": "oh.electrical.electrical_contractor",
+      "name": "Electrical Contractor (Master License)",
+      "level": "contractor",
+      "issuer_level": "state",
+      "board_id": "oh.ocilb",
+      "who_must_hold": {
+        "value": "Any person contracting commercially in the electrical trade in Ohio. The licence is issued in the name of the individual and assigned to one contracting company; the board calls it a Contractor Licence and also a Master Licence.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "issues State Licenses to Commercial Contractors for the following trades: Electrical, HVAC, Hydronics, Plumbing, and Refrigeration",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "scope_note": {
+        "value": "Commercial electrical contracting statewide. ORC 4740.13(D) carves out work under fifty volts limited to fire or burglar alarm, cabling, tele-data, sound, communication, landscape lighting and irrigation.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board",
+        "source_title": "Ohio Construction Industry Licensing Board — Ohio Department of Commerce",
+        "source_kind": "board_page",
+        "evidence": "The Licensing Board regulates commercial contractors who perform the above five specialty trades.",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+          "source_title": "Contractors & Contracting Companies — OCILB",
+          "source_kind": "board_page",
+          "evidence": "Pass the examination in the trade.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "name": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The board names the trade examination but publishes no separate exam title on the pages read.",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies"
+        },
+        "provider": {
+          "value": "PSI",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board",
+          "source_title": "Ohio Construction Industry Licensing Board — Ohio Department of Commerce",
+          "source_kind": "board_page",
+          "evidence": "who successfully pass the PSI licensing examination",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "The OCILB landing page names PSI. Third-party summaries of this board name PROV; only the board's own wording is recorded here."
+        },
+        "fee": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The examination fee is paid to the testing agency, not to the board, and no amount is printed on the OCILB pages read (board home, Contractors & Contracting Companies, Continuing Education Providers).",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies"
+        },
+        "note": "After board approval the applicant must complete state (BCI) and federal (FBI) background checks before sitting the examination; those checks are valid for one year and an application older than that must be re-made and both checks retaken."
+      },
+      "experience": {
+        "requirement": {
+          "value": "Five years as a tradesperson in the licensed trade immediately before the application is filed.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+          "source_title": "Contractors & Contracting Companies — OCILB",
+          "source_kind": "board_page",
+          "evidence": "have been a tradesperson in the type of licensed trade for which the application is filed for not less than five (5) years",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "alternatives": {
+          "value": "A currently registered Ohio engineer with three years of business experience in the construction industry in the trade may sit the examination instead. Proof of the five years is by the last five years of W-2s, Schedule C or Schedule K-1 plus one of: five consecutive years of permits, a valid journeyman card, an Ohio- or USDOL-approved apprenticeship certificate, or 40 hours of live or webinar CE from an OCILB-approved provider dated within one year of application.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+          "source_title": "Contractors & Contracting Companies — OCILB",
+          "source_kind": "board_page",
+          "evidence": "currently be a registered engineer in this state with three (3) years of business experience",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        }
+      },
+      "application_fee": {
+        "value": 25,
+        "unit": "USD",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "$25 application fee per trade",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "Per trade. A separate $25 licensing fee per trade approved is due at issuance, so a single-trade applicant pays $25 twice."
+      },
+      "renewal": {
+        "cycle": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://codes.ohio.gov/ohio-revised-code/chapter-4740",
+          "source_title": "Chapter 4740 Construction Industry Licensing Board — Ohio Revised Code",
+          "source_kind": "statute",
+          "evidence": "All licenses a contractor holds pursuant to this chapter shall expire annually on the same date",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "The statute sets an annual expiry. The board's own renewal notice additionally offers a licensee in good standing a CHOICE of a one-year renewal ($60, 8 CE hours) or a three-year renewal ($180, 24 CE hours), so a licensee who took the three-year option has a 36-month term. Twelve months is recorded because it is the statutory default and it errs early; confirm the option on the licence before relying on a derived date."
+        },
+        "fee": {
+          "value": 60,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+          "source_title": "Contractors & Contracting Companies — OCILB",
+          "source_kind": "board_page",
+          "evidence": "you must pay the $60 renewal fee annually",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "$60 per licence per year. The board's renewal notice prices the three-year option at $180 per licence. The $60 figure is quoted here from the board's current escrow paragraph, which states it as the annual renewal fee."
+        },
+        "expiry_rule": {
+          "value": "anniversary",
+          "status": "verified",
+          "confidence": "low",
+          "source_url": "https://codes.ohio.gov/ohio-revised-code/chapter-4740",
+          "source_title": "Chapter 4740 Construction Industry Licensing Board — Ohio Revised Code",
+          "source_kind": "statute",
+          "evidence": "All licenses a contractor holds pursuant to this chapter shall expire annually on the same date",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Expiry = the expiration date of the licensee's ORIGINAL licence, not of this licence. Ohio's rule is unusual and it is the single most useful thing in this record: a contractor holding electrical, HVAC and plumbing licences has ONE Ohio date, not three, and every later licence carries the first licence's number and expiry. The board does not restate this on its own pages, so confidence is low and the source is the Revised Code."
+        },
+        "grace_period": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No grace period is stated. The board publishes only the consequence of a long lapse — 'If your license has been expired for more than one year, you must reapply and take the appropriate test' — which is not the same as a period during which work may lawfully continue. Recorded as not established, NOT as 'no grace period'.",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies"
+        },
+        "late_fee": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The board tells licensees to renew by the expiration date 'to avoid a late fee' but prints no amount on the pages read. ORC 4740.09 leaves late fees to each specialty section to set, so there may be no single statewide figure.",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies"
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+          "source_title": "Contractors & Contracting Companies — OCILB",
+          "source_kind": "board_page",
+          "evidence": "All trades must complete 8 hours of CE for one-year renewals or 24 hours for three-year renewals.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "hours": {
+          "value": 8,
+          "unit": "hours",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+          "source_title": "Contractors & Contracting Companies — OCILB",
+          "source_kind": "board_page",
+          "evidence": "All trades must complete 8 hours of CE for one-year renewals or 24 hours for three-year renewals.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "8 hours for a one-year renewal; 24 hours for a three-year renewal. A licensee NOT in good standing must complete 10 hours and is not eligible for the three-year option. Separately, ORC 4740.04(G)(2)(a) directs the board to require ten hours per year of an individual holding any number of licences; the board's published figure is eight and that is what is recorded here. Do not attribute the board's number to the statute or the statute's to the board."
+        },
+        "period": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+          "source_title": "Contractors & Contracting Companies — OCILB",
+          "source_kind": "board_page",
+          "evidence": "All trades must complete 8 hours of CE for one-year renewals or 24 hours for three-year renewals.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Tied to the licence term, not to a calendar window: the hours are proved at renewal (ORC 4740.06 requires proof of compliance with the renewal application). No calendar_window: token is recorded because the board publishes no month and day for the CE year, and reading a date out of 'per year' is the inference this product refuses."
+        },
+        "subject_breakdown": {
+          "value": [
+            {
+              "hours": 4,
+              "subject": "code courses"
+            }
+          ],
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+          "source_title": "Contractors & Contracting Companies — OCILB",
+          "source_kind": "board_page",
+          "evidence": "Electrical trade must have half of the required hours in code courses.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "approved_provider_rule": {
+          "value": "Courses must be given by a training agency approved by the board in advance, and each course must separately be approved by the appropriate specialty section. Both approvals last one year.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/continuing-education-providers",
+          "source_title": "Continuing Education Providers — OCILB",
+          "source_kind": "board_page",
+          "evidence": "Training agencies must be approved prior to submitting requests to conduct education courses",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "carryover": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No carry-over provision appears on the OCILB pages read. The board does state that the same 4-hour class may not be repeated in the same year, which limits but does not describe carry-over.",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies"
+        },
+        "delivery_constraint": {
+          "value": "Up to 4 hours per year may be self-guided/self-paced on a one-year renewal (up to 12 hours over a three-year renewal, all of which may be taken in a single year). The balance must be live in person or by webinar. Code courses for an unlicensed applicant must be live or webinar; self-paced courses are not accepted.",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+          "source_title": "Contractors & Contracting Companies — OCILB",
+          "source_kind": "board_page",
+          "evidence": "One-year renewals: Up to 4 hours self-guided/self-paced per year.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Recorded as prose, NOT as a min_classroom_fraction: token, and the difference is the whole point. Ohio caps SELF-PACED hours (4 of 8 on a one-year renewal), and the hours that are not self-paced may be taken 'live (in person) or virtual (webinar)'. Emitting min_classroom_fraction:0.5 would be arithmetically right and factually wrong: it would tell an Ohio licensee that four hours must be in a classroom when a webinar satisfies the rule. The token this state actually needs is a max_self_paced_fraction:, which the engine does not have (see product/CLAUDE.md, B5)."
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No bond requirement appears on any OCILB page read (board home, Contractors & Contracting Companies, Continuing Education Providers) or in ORC chapter 4740, all of which were read in full. The board's published financial condition is liability insurance, not a bond. Recorded as NOT ESTABLISHED, not as 'no bond required'.",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies"
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see bond.required"
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": 500000,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+          "source_title": "Contractors & Contracting Companies — OCILB",
+          "source_kind": "board_page",
+          "evidence": "Carry minimum $500,000 contractor liability coverage.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Contractor liability coverage, minimum $500,000, and it must be held in ONE contracting company name (ORC 4740.06(B)(4) uses the same words). Proof no longer has to be filed with the renewal form, but the cover must be maintained throughout the licence year — failure to do so is a disciplinary ground under ORC 4740.10(B)(1)(j). The board does not state whether the figure is per occurrence or aggregate, so no unit finer than USD is recorded."
+        },
+        "property_damage": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The board publishes a single liability figure and no separate property-damage minimum.",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies"
+        },
+        "aggregate": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The board publishes a single liability figure and does not say whether it is per occurrence or aggregate.",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies"
+        },
+        "workers_compensation": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No workers'-compensation requirement appears on the OCILB pages read.",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies"
+        },
+        "financial_responsibility": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No credit, net-worth or financial-responsibility test appears on the OCILB pages read.",
+          "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies"
+        }
+      }
+    }
+  ],
+  "reciprocity": [
+    {
+      "with_state": "KY",
+      "direction": "inbound",
+      "grants": {
+        "value": "An OCILB contractor (master) licence in electrical, without the Ohio examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "Kentucky — Electrical, HVAC, Refrigeration",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "requires_from": "that state's licence in the same trade, obtained by passing that state's recognised test",
+      "conditions": {
+        "value": "The applicant must have tested in the applicable trade in that state. A reciprocity applicant files the notarised reciprocity application, an OCILB verification form signed by the other state's board office, and the $25 application fee per trade.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "OCILB verification form signed by the licensing board office in the other state",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "Ohio offers reciprocity with the states listed below only to applicants who have passed the state-recognized test.",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "The board frames reciprocity as an alternative route to the trade examination. It does not use the word 'waiver', so this is recorded at medium confidence."
+      }
+    },
+    {
+      "with_state": "LA",
+      "direction": "inbound",
+      "grants": {
+        "value": "An OCILB contractor (master) licence in electrical, without the Ohio examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "Louisiana — Electrical, HVAC, Refrigeration — B&L",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "requires_from": "that state's licence in the same trade, obtained by passing that state's recognised test",
+      "conditions": {
+        "value": "The applicant must have tested in the applicable trade in that state and must also pass the Ohio Business and Law examination. A reciprocity applicant files the notarised reciprocity application, an OCILB verification form signed by the other state's board office, and the $25 application fee per trade.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "OCILB verification form signed by the licensing board office in the other state",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "Ohio offers reciprocity with the states listed below only to applicants who have passed the state-recognized test.",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "The board frames reciprocity as an alternative route to the trade examination, but a Business and Law examination is still required for this state. It does not use the word 'waiver', so this is recorded at medium confidence."
+      }
+    },
+    {
+      "with_state": "MS",
+      "direction": "inbound",
+      "grants": {
+        "value": "An OCILB contractor (master) licence in electrical, without the Ohio examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "Mississippi — Electrical, HVAC, Refrigeration, Plumbing — B&L",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "requires_from": "that state's licence in the same trade, obtained by passing that state's recognised test",
+      "conditions": {
+        "value": "The applicant must have tested in the applicable trade in that state and must also pass the Ohio Business and Law examination. A reciprocity applicant files the notarised reciprocity application, an OCILB verification form signed by the other state's board office, and the $25 application fee per trade.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "OCILB verification form signed by the licensing board office in the other state",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "Ohio offers reciprocity with the states listed below only to applicants who have passed the state-recognized test.",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "The board frames reciprocity as an alternative route to the trade examination, but a Business and Law examination is still required for this state. It does not use the word 'waiver', so this is recorded at medium confidence."
+      }
+    },
+    {
+      "with_state": "NC",
+      "direction": "inbound",
+      "grants": {
+        "value": "An OCILB contractor (master) licence in electrical, without the Ohio examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "North Carolina — Electrical",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "requires_from": "that state's licence in the same trade, obtained by passing that state's recognised test",
+      "conditions": {
+        "value": "The applicant must have tested in the applicable trade in that state. A reciprocity applicant files the notarised reciprocity application, an OCILB verification form signed by the other state's board office, and the $25 application fee per trade.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "OCILB verification form signed by the licensing board office in the other state",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "Ohio offers reciprocity with the states listed below only to applicants who have passed the state-recognized test.",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "The board frames reciprocity as an alternative route to the trade examination. It does not use the word 'waiver', so this is recorded at medium confidence."
+      }
+    },
+    {
+      "with_state": "SC",
+      "direction": "inbound",
+      "grants": {
+        "value": "An OCILB contractor (master) licence in electrical, without the Ohio examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "South Carolina — Electrical, HVAC, Plumbing — B&L",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "requires_from": "that state's licence in the same trade, obtained by passing that state's recognised test",
+      "conditions": {
+        "value": "The applicant must have tested in the applicable trade in that state and must also pass the Ohio Business and Law examination. A reciprocity applicant files the notarised reciprocity application, an OCILB verification form signed by the other state's board office, and the $25 application fee per trade.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "OCILB verification form signed by the licensing board office in the other state",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "Ohio offers reciprocity with the states listed below only to applicants who have passed the state-recognized test.",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "The board frames reciprocity as an alternative route to the trade examination, but a Business and Law examination is still required for this state. It does not use the word 'waiver', so this is recorded at medium confidence."
+      }
+    },
+    {
+      "with_state": "TN",
+      "direction": "inbound",
+      "grants": {
+        "value": "An OCILB contractor (master) licence in electrical, without the Ohio examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "Tennessee — Electrical, HVAC, Refrigeration, Plumbing, Hydronics — B&L",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "requires_from": "that state's licence in the same trade, obtained by passing that state's recognised test",
+      "conditions": {
+        "value": "The applicant must have tested in the applicable trade in that state and must also pass the Ohio Business and Law examination. A reciprocity applicant files the notarised reciprocity application, an OCILB verification form signed by the other state's board office, and the $25 application fee per trade.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "OCILB verification form signed by the licensing board office in the other state",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "Ohio offers reciprocity with the states listed below only to applicants who have passed the state-recognized test.",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "The board frames reciprocity as an alternative route to the trade examination, but a Business and Law examination is still required for this state. It does not use the word 'waiver', so this is recorded at medium confidence."
+      }
+    },
+    {
+      "with_state": "VA",
+      "direction": "inbound",
+      "grants": {
+        "value": "An OCILB contractor (master) licence in electrical, without the Ohio examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "Virginia — Electrical",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "requires_from": "that state's licence in the same trade, obtained by passing that state's recognised test",
+      "conditions": {
+        "value": "The applicant must have tested in the applicable trade in that state. A reciprocity applicant files the notarised reciprocity application, an OCILB verification form signed by the other state's board office, and the $25 application fee per trade.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "OCILB verification form signed by the licensing board office in the other state",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "Ohio offers reciprocity with the states listed below only to applicants who have passed the state-recognized test.",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "The board frames reciprocity as an alternative route to the trade examination. It does not use the word 'waiver', so this is recorded at medium confidence."
+      }
+    },
+    {
+      "with_state": "WV",
+      "direction": "inbound",
+      "grants": {
+        "value": "An OCILB contractor (master) licence in electrical, without the Ohio examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "West Virginia — Electrical, HVAC, Plumbing",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "requires_from": "that state's licence in the same trade, obtained by passing that state's recognised test",
+      "conditions": {
+        "value": "The applicant must have tested in the applicable trade in that state. A reciprocity applicant files the notarised reciprocity application, an OCILB verification form signed by the other state's board office, and the $25 application fee per trade.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "OCILB verification form signed by the licensing board office in the other state",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "Ohio offers reciprocity with the states listed below only to applicants who have passed the state-recognized test.",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "The board frames reciprocity as an alternative route to the trade examination. It does not use the word 'waiver', so this is recorded at medium confidence."
+      }
+    },
+    {
+      "with_state": "TX",
+      "direction": "inbound",
+      "grants": {
+        "value": "An OCILB contractor (master) licence in electrical, without the Ohio examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "Texas — Electrical",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "requires_from": "that state's licence in the same trade, obtained by passing that state's recognised test",
+      "conditions": {
+        "value": "The applicant must have tested in the applicable trade in that state. A reciprocity applicant files the notarised reciprocity application, an OCILB verification form signed by the other state's board office, and the $25 application fee per trade.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "OCILB verification form signed by the licensing board office in the other state",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "source_title": "Contractors & Contracting Companies — OCILB",
+        "source_kind": "board_page",
+        "evidence": "Ohio offers reciprocity with the states listed below only to applicants who have passed the state-recognized test.",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "The board frames reciprocity as an alternative route to the trade examination. It does not use the word 'waiver', so this is recorded at medium confidence."
+      }
+    },
+    {
+      "with_state": "NC",
+      "direction": "outbound",
+      "grants": {
+        "value": "A North Carolina electrical contracting licence of the same or equivalent classification, without written examination.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "may obtain a North Carolina electrical contracting license without written examinations",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "requires_from": "an Ohio OCILB electrical contractor (master) licence",
+      "conditions": {
+        "value": "NCBEEC publishes eligibility and the application packet on its own per-state page for Ohio, which was not individually fetched in this pass.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "Click on the state name for detailed information about eligibility and application packets.",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.ncbeec.org/reciprocity/",
+        "source_title": "Reciprocity — NCBEEC",
+        "source_kind": "board_page",
+        "evidence": "may obtain a North Carolina electrical contracting license without written examinations",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      }
+    },
+    {
+      "with_state": "TX",
+      "direction": "outbound",
+      "grants": {
+        "value": "A Texas Master Electrician licence by reciprocity.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.tdlr.texas.gov/electricians/out-of-state.htm",
+        "source_title": "Out of State Applicants — Electricians — TDLR",
+        "source_kind": "board_page",
+        "evidence": "*1 year for Alabama, Iowa, Nebraska, and Ohio",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "requires_from": "an Ohio master electrician licence",
+      "conditions": {
+        "value": "Passed Ohio's statewide examination; held the Ohio licence at least one year; 12,000 hours under a master electrician; and a journeyman licence held at least one year (Ohio is one of four states given the shortened one-year journeyman period rather than two). TDLR charges a $45 licence fee on the reciprocity application.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.tdlr.texas.gov/electricians/out-of-state.htm",
+        "source_title": "Out of State Applicants — Electricians — TDLR",
+        "source_kind": "board_page",
+        "evidence": "Ohio Completed Master Electrician by Reciprocity License Application Form (PDF) License fee of $45.00",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.tdlr.texas.gov/electricians/out-of-state.htm",
+        "source_title": "Out of State Applicants — Electricians — TDLR",
+        "source_kind": "board_page",
+        "evidence": "Master Electrician - Alabama, Arkansas (master electrician), Iowa (Class A master electrician)",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "TDLR grants the Texas licence on the strength of the Ohio licence plus a letter of good standing showing the statewide examination was passed; it does not use the word 'waiver'."
+      }
+    }
+  ],
+  "reciprocity_statement": {
+    "value": "Reciprocity is offered with eleven named states and only to applicants who passed that state's recognised test; the states are listed trade by trade, so a state that reciprocates for electrical may not for plumbing. Tennessee alone accepts Ohio grandfathered licensees.",
+    "status": "verified",
+    "confidence": "high",
+    "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+    "source_title": "Contractors & Contracting Companies — OCILB",
+    "source_kind": "board_page",
+    "evidence": "Ohio offers reciprocity with the states listed below only to applicants who have passed the state-recognized test.",
+    "last_verified": "2026-09-04",
+    "verified_by": [
+      "kb-b5-pass-a",
+      "kb-b5-pass-b"
+    ]
+  },
+  "business_entity": {
+    "qualifying_individual_rule": {
+      "value": "The licence is issued in the individual's name and assigned to exactly one contracting company — no DBAs. Every tradesperson working under it must be on that company's payroll and receive a W-2, or come through a nationally recognised temporary agency; anyone paid on a 1099 is an independent contractor and needs their own state licence for the trade.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+      "source_title": "Contractors & Contracting Companies — OCILB",
+      "source_kind": "board_page",
+      "evidence": "Your license may be assigned to only one company name (no DBAs).",
+      "last_verified": "2026-09-04",
+      "verified_by": [
+        "kb-b5-pass-a",
+        "kb-b5-pass-b"
+      ]
+    },
+    "entity_registration": {
+      "value": "An out-of-state applicant must show that the contracting company employing them is licensed as a foreign corporation under ORC 1703.04 with an Ohio agent designated under ORC 1703.041, or registered as a foreign LLC under ORC 1706.511 with an agent under ORC 1706.09.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+      "source_title": "Contractors & Contracting Companies — OCILB",
+      "source_kind": "board_page",
+      "evidence": "Licensed as a foreign corporation under Ohio Revised Code (ORC) section 1703.04",
+      "last_verified": "2026-09-04",
+      "verified_by": [
+        "kb-b5-pass-a",
+        "kb-b5-pass-b"
+      ]
+    },
+    "per_location_rule": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "No per-location or per-branch licensing rule appears on the OCILB pages read; the rule the board publishes is per COMPANY (one company name per licence), not per address.",
+      "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies"
+    },
+    "change_notification_deadline": {
+      "value": "90 days from the date OCILB receives written notice, unless the previous company signs a letter of release, in which case reassignment is immediate.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+      "source_title": "Contractors & Contracting Companies — OCILB",
+      "source_kind": "board_page",
+      "evidence": "you must wait 90 days from the date OCILB receives written notice to reassign the license",
+      "last_verified": "2026-09-04",
+      "verified_by": [
+        "kb-b5-pass-a",
+        "kb-b5-pass-b"
+      ],
+      "note": "This is a waiting period on the LICENSEE's side, not a filing deadline: the licence stays with the old company for those 90 days. ORC 4740.07(D)(1) puts the notification duty on both the contractor and the company and requires it 'immediately', and makes the assignation invalid ninety calendar days after the change-of-company form is completed. A letter of release on company letterhead collapses the 90 days to nothing, which is the single cheapest thing an acquirer can negotiate."
+    }
+  },
+  "typical_timeline": {
+    "value": null,
+    "status": "unknown",
+    "confidence": "low",
+    "note": "OCILB publishes no end-to-end processing time for a new licence. The only published duration is for renewals — 'We process and mail licenses within two business days of receiving your renewal' — and applications are reviewed at the trade's own board meeting, which is bi-monthly with a deadline two weeks before. Quoting the two-day renewal figure as an application timeline would be wrong, so the field stays empty.",
+    "source_url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies"
+  },
+  "coverage_notes": [
+    "Journeyman and apprentice credentials are NOT modelled. OCILB licenses contractors (master licences) only; the tradespeople on an Ohio roster are regulated by their employer's licence and, for residential work, by the local building or health department. A customer tracking 40 Ohio technicians will get renewal maths for the contractor licences and nothing for the technicians.",
+    "The three-year renewal option is recorded in the notes but not modelled as a second licence type or a second cycle. A licensee who took it has a 36-month term and 24 CE hours, and the derived date in this record will be up to two years early for them.",
+    "County and municipal registration of residential contractors — which the board's own page says every local building and health department does — is not covered.",
+    "No late-fee amount and no bond position could be established from any OCILB page or from ORC 4740; both are left empty rather than guessed.",
+    "The ORC 4740.13(D) carve-out for work under fifty volts (fire and burglar alarm, cabling, tele-data, sound, communication, landscape lighting and irrigation) is described in the scope note but is not modelled as a separate trackable credential."
+  ],
+  "disclaimer_profile": "local_layer_warning",
+  "provenance": {
+    "created_at": "2026-09-04",
+    "pass_a": {
+      "agent_id": "kb-b5-pass-a",
+      "date": "2026-09-04",
+      "method": "fetched each source with kb-scripts/lib_kb.fetch (serial, 1.5 s spacing, two attempts, no retry on 403/404), read the normalised text in full, and recorded each value with a verbatim evidence fragment checked against the normalised page before writing"
+    },
+    "pass_b": {
+      "agent_id": "kb-b5-pass-b",
+      "date": "2026-09-04",
+      "method": "two checks. (1) kb-scripts/verify_pass_b.py re-fetches every source_url over the network, independently of the pass-A cache, and asserts the evidence fragment is still literally present. (2) a separate semantic re-read of every source, re-deriving each value from the page rather than from the record, recorded per value in kb-data/_verification/<record>.md. A disagreement in either check demotes the value.",
+      "agreements": 0,
+      "disagreements": 0,
+      "unreachable": 0,
+      "agreement_rate_pct": 0.0,
+      "disagreement_detail": []
+    },
+    "sources": [
+      {
+        "source_id": "oh.ocilb.home",
+        "url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board",
+        "title": "Ohio Construction Industry Licensing Board — Ohio Department of Commerce",
+        "kind": "board_page",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "6f3e34162cd36277ca17fc3a4b71822a76feba55c5d2f7e34b678f85ec6e173b",
+        "http_status": 200,
+        "bytes": 356448
+      },
+      {
+        "source_id": "oh.ocilb.contractors",
+        "url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+        "title": "Contractors & Contracting Companies — OCILB",
+        "kind": "board_page",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "9ee62dafb16a885d21f4c60ceaba7941377c22799ebec72f3352dd0c36abba70",
+        "http_status": 200,
+        "bytes": 422729
+      },
+      {
+        "source_id": "oh.ocilb.ce_providers",
+        "url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/continuing-education-providers",
+        "title": "Continuing Education Providers — OCILB",
+        "kind": "board_page",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "f2c69f9f3e17eb8433a033cc26bc6712880337edd246398e64b144640871abb9",
+        "http_status": 200,
+        "bytes": 410575
+      },
+      {
+        "source_id": "oh.ocilb.renewal_notice_2016",
+        "url": "https://com.ohio.gov/documents/dico_OCILBNewRenewalRequirements2016.pdf",
+        "title": "New Contractor License Renewal Requirements — OCILB",
+        "kind": "board_pdf",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "9d5b3684523569dfe349b3c0e1642a35f11475ce33f8872c80327018edc35890",
+        "http_status": 200,
+        "bytes": 100546
+      },
+      {
+        "source_id": "oh.orc.4740",
+        "url": "https://codes.ohio.gov/ohio-revised-code/chapter-4740",
+        "title": "Chapter 4740 Construction Industry Licensing Board — Ohio Revised Code",
+        "kind": "statute",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "7ea4f302144f8913de61d2739c684f1d7fc573fbd976ed99f9e9d37a71e44fba",
+        "http_status": 200,
+        "bytes": 90830
+      },
+      {
+        "source_id": "nc.ncbeec.reciprocity",
+        "url": "https://www.ncbeec.org/reciprocity/",
+        "title": "Reciprocity — NCBEEC",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "content_sha256": "d722a9c0b1711bf3d61164a78709e47fa38281ae82d987e92726ae72834b3b5a",
+        "http_status": 200,
+        "bytes": 518778
+      },
+      {
+        "source_id": "tx.tdlr.elec_out_of_state",
+        "url": "https://www.tdlr.texas.gov/electricians/out-of-state.htm",
+        "title": "Out of State Applicants — Electricians — TDLR",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "content_sha256": "4ddf9a404d393c636876911bc78a5504e7bf87e241ba469d608d59dcc21e3b2d",
+        "http_status": 200,
+        "bytes": 39386
+      }
+    ],
+    "publishable": false
+  }
+}

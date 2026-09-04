@@ -234,3 +234,28 @@ tbody tr:last-child td { border-block-end: 0; }
   border-inline-start: 2px solid var(--sr-risk-edge);
   padding-inline-start: var(--sr-space-3);
 }
+
+/* ---------------------------------------------------------------- M17
+   The shared readiness link degrades to the grouped status list on a phone:
+   51 tiles at 28px is a poor phone experience and the list below carries the
+   same information, in the same order (`UX.md` S19). */
+@media (max-width: 40rem) {
+  .sr-share-map { display: none; }
+}
+
+/* ---------------------------------------------------------------- M4 / M7
+   The licence form and the board's two-column deadline bands. Layout only —
+   every colour on these surfaces comes from the design system's tokens. */
+.sr-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--sr-space-4);
+  align-items: start;
+}
+.sr-form-grid .sr-field { max-inline-size: none; }
+.sr-two-up {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: var(--sr-space-5);
+  align-items: start;
+}

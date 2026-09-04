@@ -177,3 +177,100 @@ python3 phase-4-revenue/stateready/kb-scripts/accept_drift.py --source-id <id>
 - **`apps/stateready/kb/` is a copy. Never hand-edit it.** Change
   `phase-4-revenue/stateready/`, re-copy, re-run `validate.py` and let the golden
   tests tell you what moved.
+
+---
+
+# B4 — M15: the landing page, the five visuals and the no-login demo
+
+**Scope:** `src/app/(marketing)/page.tsx`, `src/app/(marketing)/{rulebook,demo,lp-events}/`,
+`src/app/(marketing)/landing.css`, `src/components/marketing/**`, `tests/landing.test.ts`,
+`e2e/landing.spec.ts`, plus this section, `BUILD.md` §4 (D7–D13) and `REQUESTS.md`.
+Wave 2, sub-wave B. Delivered 2026-09-04. **Nothing shared was edited.**
+
+## What is here
+
+| file | what it is |
+|---|---|
+| `components/marketing/copy.ts` | the §13 copy deck, as data, and `countWords` — the §1 counting rule, mechanically |
+| `components/marketing/data.ts` | every number on the page, read from the knowledge base through `getKbRecord`. **Pure**: takes `today`, touches no database and no clock |
+| `components/marketing/sources.ts` | the four cited claims that cannot be KB records (CSLB, NYC DOB, Cal. B&P §7031, IDPH) plus CE Broker's published price, carried as `SourcedValue`s so they age by the same 180-day rule |
+| `components/marketing/visuals.tsx` | V1–V5. Static. No transition, no keyframes, no client JS |
+| `components/marketing/rulebook.tsx` | the demo: a GET form and a server-rendered answer |
+| `components/marketing/landing.tsx` | the page, and `buildLandingData` — the one assembler the route and the word-count test both use |
+| `components/marketing/events.ts` | the fourteen canonical `lp_*` names and ~1 KB of inline instrumentation |
+| `components/marketing/track.ts` | server-side `lp_view` / `lp_demo_query`, and the demo's rate limit |
+
+## The things I would tell the next agent before they open an editor
+
+1. **The word count is 439 and the test asserts equality, not just the ceiling.**
+   `tests/landing.test.ts` renders the real component, slices the DOM between
+   `#hero` and `#pricing`, skips every subtree marked `data-wc="chrome"` and
+   counts under §1's rule. It came out at **439 on the first run**, which is the
+   number `LANDING_SPEC.md` §1 and §13 both publish — so the deck, the table and
+   the build agree. If you change copy, change §1's table and §13's figures in
+   the same commit, or the test tells you the deck is now fiction.
+2. **`data-wc="chrome"` is the only lever, and it is not a loophole.** It marks
+   what §1 already excludes: form labels, map legends, labels inside a graphic,
+   source-chip text, the demo's output. If you find yourself marking a sentence
+   that *argues*, you are over budget and the sentence has to go (that is D11).
+3. **No number is typed on this page.** The divergence card's 8 and 4, the
+   caption that quotes them, the coverage counter, the runway's walls, every
+   demo row and two of the six FAQ answers are derived from the committed
+   records. The test compares them against the JSON read independently, so a
+   number typed into the copy would have to be typed into the record too.
+4. **The four non-KB citations are `SourcedValue`s on purpose.** California, New
+   York City and Illinois can never be `kb-data/` records — they are states we do
+   not cover — but they are still regulatory quotations on a marketing page.
+   Carrying them in the KB's own shape means `assessValue` ages them: on the day
+   one passes 180 days the page stops asserting it and renders the refusal. A
+   string constant in JSX could not do that. **Re-read them before a launch
+   deploy** and move `CITED_ON` with the evidence, never on its own.
+5. **The guarantee test reads `OFFER.md`, not a copy of it.** `specs/12` AC8b
+   wants byte equality; asserting against a constant in the same repository
+   proves only that the constant equals itself. It parses the blockquote under
+   *"**2. The Entry Pack Guarantee**"*, strips the emphasis marks and compares.
+   Watch the apostrophes: the canonical text uses straight `'` in *"the state's
+   own"* and *"the board's published page"*, and a typographic `’` fails the test
+   — which is the test doing its job.
+6. **The demo is the single free entry point (D2), so it must never need
+   JavaScript.** The picker is a GET form; the answer is in the HTML; every
+   state × trade is a URL with its own title. A Playwright test runs the whole
+   thing with `javaScriptEnabled: false`.
+7. **The default Texas × HVAC view contains no unverified value row, and that is
+   a test, not a habit** (wave-1b M19). Rows are built only from values that
+   pass `isVerified`; everything else becomes a line in the gaps panel with the
+   count of board pages we read looking. The refusal is the proof point — but
+   only underneath the four rows that are verified in every launch record.
+8. **`lp_view` and `lp_demo_query` are server-side, and the beacon endpoint
+   refuses to accept them.** A lookup is a navigation, so counting it in the
+   browser would drop every JS-off visit and every deep link opened from an
+   email — and `was_covered=false` is the most valuable signal the page
+   produces. `CLIENT_EVENT_NAMES` is the allowlist `/lp-events` checks.
+9. **The rate limit fails open and never prompts** (D10). If you tighten it,
+   keep both properties: refusing to answer a stranger's question because our own
+   counter is down is the worst trade on this page.
+10. **What tripped me up:** `formatAmount` renders `$1490` with no thousands
+    separator, which is right in a billing table and wrong on a price card; the
+    landing page groups locally and a test pins both the string and the cents
+    (D13). And a CSS grep for `transition:` matches the comment that explains why
+    there are none — strip comments before grepping, the way `tests/app.test.ts`
+    already does.
+
+## Rules I had to hold that are easy to lose
+
+- **No animation anywhere.** Not on load, not on scroll, not on hover. There is
+  no `@keyframes`, no `transition` and no `animation` in `landing.css`, and a
+  test greps for all three.
+- **No third-party request.** No script, no image, no iframe, no analytics
+  vendor. The only external request on the page is the Google Fonts `@import`
+  that the signed `design-system.css` already makes app-wide, which
+  `LANDING_SPEC.md` §9 permits; this module adds none. A Playwright test fails
+  on any other host.
+- **No blue, no hex.** Every colour in `landing.css` is a `--sr-*` token.
+- **The banned figures.** The EPA 608 penalty (`ERRATA.md`) and any Illinois
+  plumber CE hour count appear nowhere, and both are grepped over the rendered
+  HTML rather than over the source, because the rule is about what a stranger
+  can read. **Re-grep before every deploy.**
+- **No outcome promise.** "No job stops because a licence expired" is a headline
+  the guarantee section refuses to stand behind, and it is deleted from the test
+  plan rather than deprioritised. The test greps for it.

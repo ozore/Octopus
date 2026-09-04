@@ -1,26 +1,26 @@
 import Link from 'next/link';
-import { count, desc, eq } from 'drizzle-orm';
+import { and, count, desc, eq, inArray, max, sql } from 'drizzle-orm';
 
+import { InlineDisclaimer } from '@/components/disclaimer';
 import { Ledger, LedgerRow, Panel, StatusPill } from '@/components/primitives';
 import { SourceChip, formatDay } from '@/components/provenance';
-import { InlineDisclaimer } from '@/components/disclaimer';
 import { getDb } from '@/lib/db';
-import { projects } from '@/lib/schema';
+import { kbWdModifications, payrolls, projects } from '@/lib/schema';
 import { limitOf, withinLimit } from '@octopus/platform/billing';
 import { requireOrg } from '@octopus/platform/next';
 
 export const dynamic = 'force-dynamic';
 
 /**
- * `/projects` — the signed-in home (UX.md A6).
+ * `/projects` — the signed-in home (UX.md A6), and the first place the
+ * product's one differentiator is visible.
  *
- * **WL-02 REPLACES THIS FILE AND OWNS THE WHOLE `projects/` DIRECTORY** (see
- * BUILD.md). What sub-wave A built here is the seam the rest of the product
- * hangs off and nothing more: the entitlement check against real rows, the
- * pinned determination on the card, and the permanent superseded line. It is
- * deliberately the same shape WL-02 needs — `requireOrg()` → count real rows →
- * `withinLimit()` before the write — so replacing it is a rewrite of the
- * screen, not a rewrite of the rules.
+ * **A project pinned to a superseded modification says so permanently, and is
+ * never nagged** (WL-02 V3b). 29 CFR 1.6 fixes the applicable determination at
+ * solicitation or award, so a project sitting on the modification its contract
+ * locked is CORRECT, not late. The pill says "Older modification" and the meta
+ * line names the newer one; neither is a call to action, and nothing in this
+ * product moves a pin by itself.
  */
 export default async function ProjectsPage({
   searchParams,
@@ -44,6 +44,38 @@ export default async function ProjectsPage({
   const usedCount = Number(used?.value ?? 0);
   const limit = limitOf(entitlement, 'projects', 0);
   const canCreate = withinLimit(entitlement, 'projects', usedCount);
+
+  // The card's two operational facts, in one query each rather than one per
+  // card: which payroll number comes next, and which week was last filed.
+  const projectIds = rows.map((project) => project.id);
+  const payrollFacts = projectIds.length
+    ? await db
+        .select({
+          projectId: payrolls.projectId,
+          lastNumber: max(payrolls.payrollNumber),
+          lastFiledWeek: sql<string | null>`max(${payrolls.weekEndingDate}) filter (where ${payrolls.status} = 'certified')`,
+        })
+        .from(payrolls)
+        .where(inArray(payrolls.projectId, projectIds))
+        .groupBy(payrolls.projectId)
+    : [];
+  const byProject = new Map(payrollFacts.map((fact) => [fact.projectId, fact]));
+
+  // The "a newer modification exists" badge reads `kb_wd_modifications`, which
+  // is the corpus's own record of what SAM.gov published — never a guess, and
+  // never a reason to move the pin.
+  const wdNumbers = [...new Set(rows.map((project) => project.wdNumber))];
+  const activeModifications = wdNumbers.length
+    ? await db
+        .select({
+          wdNumber: kbWdModifications.wdNumber,
+          modificationNumber: kbWdModifications.modificationNumber,
+          publicationDate: kbWdModifications.publicationDate,
+        })
+        .from(kbWdModifications)
+        .where(and(inArray(kbWdModifications.wdNumber, wdNumbers), eq(kbWdModifications.active, true)))
+    : [];
+  const activeByWd = new Map(activeModifications.map((row) => [row.wdNumber, row]));
 
   return (
     <>
@@ -91,6 +123,10 @@ export default async function ProjectsPage({
         <div className="wl-alert wl-alert--success" role="status">
           <div>
             <p className="wl-alert__title">Project created and determination pinned.</p>
+            <p className="wl-alert__body">
+              Next: add the crew and map each of them to a classification on this
+              determination.
+            </p>
           </div>
         </div>
       ) : null}
@@ -110,40 +146,69 @@ export default async function ProjectsPage({
         </Panel>
       ) : (
         <Ledger>
-          {rows.map((project) => (
-            <LedgerRow
-              key={project.id}
-              href={`/projects/${project.id}`}
-              title={project.name}
-              meta={
-                <>
-                  <SourceChip
-                    provenance={{
-                      wdNumber: project.wdNumber,
-                      modificationNumber: project.wdModificationNumber,
-                      publicationDate: '',
-                    }}
-                  />
-                  {project.countyName ? (
+          {rows.map((project) => {
+            const facts = byProject.get(project.id);
+            const active = activeByWd.get(project.wdNumber);
+            const newer =
+              active && active.modificationNumber !== project.wdModificationNumber ? active : null;
+            return (
+              <LedgerRow
+                key={project.id}
+                href={`/projects/${project.id}`}
+                title={project.name}
+                meta={
+                  <>
+                    <SourceChip
+                      provenance={{
+                        wdNumber: project.wdNumber,
+                        modificationNumber: project.wdModificationNumber,
+                        publicationDate: '',
+                      }}
+                    />
+                    {project.countyName ? (
+                      <span>
+                        {project.countyName} County, {project.stateCode}
+                      </span>
+                    ) : null}
+                    {project.constructionType ? <span>{project.constructionType}</span> : null}
                     <span>
-                      {project.countyName} County, {project.stateCode}
+                      Next payroll #{Number(facts?.lastNumber ?? 0) + 1}
+                      {facts?.lastFiledWeek
+                        ? ` · last week filed ${formatDay(facts.lastFiledWeek)}`
+                        : ' · nothing filed yet'}
                     </span>
-                  ) : null}
-                  {project.constructionType ? <span>{project.constructionType}</span> : null}
-                  {project.wdPinnedSuperseded ? (
-                    <span data-testid="project-superseded">
-                      pinned to a superseded modification — your contract governs
-                    </span>
-                  ) : null}
-                </>
-              }
-              side={
-                <StatusPill tone={project.wdPinnedSuperseded ? 'flag' : 'none'}>
-                  {project.wdPinnedSuperseded ? 'Older modification' : 'Current'}
-                </StatusPill>
-              }
-            />
-          ))}
+                    {project.wdPinnedSuperseded && newer ? (
+                      <span data-testid="project-superseded">
+                        modification {project.wdModificationNumber} — a newer modification (
+                        {newer.modificationNumber}) was published on{' '}
+                        {formatDay(newer.publicationDate)}. Your contract governs; we will not move
+                        this project for you.
+                      </span>
+                    ) : project.wdPinnedSuperseded ? (
+                      <span data-testid="project-superseded">
+                        modification {project.wdModificationNumber} — pinned to a superseded
+                        modification. Your contract governs.
+                      </span>
+                    ) : newer ? (
+                      <span data-testid="project-newer-modification">
+                        a newer modification ({newer.modificationNumber}) was published on{' '}
+                        {formatDay(newer.publicationDate)}
+                      </span>
+                    ) : null}
+                  </>
+                }
+                side={
+                  <StatusPill tone={project.wdPinnedSuperseded || newer ? 'flag' : 'none'}>
+                    {project.wdPinnedSuperseded
+                      ? 'Older modification'
+                      : newer
+                        ? 'Newer modification published'
+                        : 'Current'}
+                  </StatusPill>
+                }
+              />
+            );
+          })}
         </Ledger>
       )}
 

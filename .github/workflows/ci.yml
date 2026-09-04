@@ -199,5 +199,14 @@ jobs:
       # cannot: the knowledge base is imported as JSON modules into the RSC
       # graph, so a record that stops parsing, or a server-only import reached
       # from a client component, fails here and nowhere earlier.
+      #
+      # `prebuild` runs scripts/check-legal-address.mjs first, which REFUSES to
+      # build without a real COMPANY_ADDRESS (specs/12 §Edge cases, founder
+      # prerequisite P10: a missing legal address in a CAN-SPAM footer is a
+      # launch blocker, not a TODO). The value below is the same offline shape
+      # vitest.config.ts and playwright.config.ts use; the deploy gets the real
+      # one from Vercel, and a deploy without one fails exactly here.
       - name: next build — apps/stateready
+        env:
+          COMPANY_ADDRESS: 1 Example Street, Wilmington DE
         run: npm run build --workspace apps/stateready

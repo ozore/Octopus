@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation';
 import { StandingDisclaimer } from '@/components/disclaimer';
 import { getEnv, productName } from '@/env';
 import { HELP_ARTICLES, findArticle } from '@/content/help/articles';
+import { emitEvent } from '@/lib/analytics/events';
+import { getDb } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
@@ -38,10 +40,24 @@ function render(text: string, key: string) {
   return parts;
 }
 
-export default async function HelpArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function HelpArticlePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const { slug } = await params;
   const article = findArticle(slug);
   if (!article) notFound();
+
+  // `from` tells us which surface sent the reader here — the index, a search,
+  // the certify screen or a rate's disclaimer. Whichever one dominates is the
+  // screen that is not answering its own question (WL-11).
+  const query = searchParams ? await searchParams : {};
+  const from = typeof query['from'] === 'string' ? query['from'].slice(0, 32) : 'direct';
+  const db = await getDb();
+  await emitEvent(db, 'help_article_viewed', { props: { slug, from } });
 
   const env = getEnv();
   const product = productName();

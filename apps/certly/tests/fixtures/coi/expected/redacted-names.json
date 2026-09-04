@@ -1,0 +1,73 @@
+{
+  "checked_on": "2026-09-04",
+  "checked_by": "agent:certly-b1-m4",
+  "why": "specs/03 §15.3. kb-samples/MANIFEST.md §Licence 3 asserts that no producer contact name, signatory or insured principal in this corpus is a real private individual. This file is what turns that assurance into a test: tests/extract/redacted-names.test.ts asserts that none of these strings appears in any prompt, any UI string, any help article, any marketing copy, any eval report or anywhere else in the repository outside tests/fixtures/coi/. The fixtures themselves are private test fixtures and are the one place these strings are allowed to be.",
+  "scope": "Every producer.contact_name value in every expected-value file, plus every other personal name found anywhere in the corpus while labelling — including the ones that are documented placeholders. The rule is mechanical: it does not ask whether a name is real, because the point is that no name from this corpus can reach a customer-facing surface by accident.",
+  "names": [
+    "Joseph A. Sample",
+    "Jane Doe",
+    "John Burkart",
+    "DENISE D. BARNES",
+    "MARLENE EDWARDS",
+    "JASON AL-IMAM",
+    "Elizabeth Carmichael",
+    "AGENT NAME",
+    "PRODUCER NAME"
+  ],
+  "provenance": [
+    {
+      "name": "Joseph A. Sample",
+      "fixture": "wisdot-insurance-cert-example-acord25-2016-03.pdf",
+      "where": "authorised-representative signature",
+      "status": "documented placeholder (kb-samples MANIFEST rule 4)"
+    },
+    {
+      "name": "Jane Doe",
+      "fixture": "tn-suppliers-certificate-of-insurance.pdf",
+      "where": "producer.contact_name",
+      "status": "documented placeholder (kb-samples MANIFEST rule 4)"
+    },
+    {
+      "name": "John Burkart",
+      "fixture": "story-county-ia-coi.pdf",
+      "where": "authorised-representative ink signature on page 1",
+      "status": "REAL INDIVIDUAL. Found at labelling and reported here, which is what kb-samples/MANIFEST.md rule 4 asks the labeller to do: this settles C2's UNVERIFIED status. The signature is an image, it is not extracted as a value, and authorized_representative_present records only that the box is signed. The fixture is kept: it is a public document and the only genuinely issued certificate in the corpus."
+    },
+    {
+      "name": "DENISE D. BARNES",
+      "fixture": "los-alamitos-ca-coi-sample.pdf",
+      "where": "printed above the agency name in the PRODUCER box on page 4",
+      "status": "REAL INDIVIDUAL. producer.name is labelled as the agency, not the person."
+    },
+    {
+      "name": "MARLENE EDWARDS",
+      "fixture": "los-alamitos-ca-coi-sample.pdf",
+      "where": "producer.contact_name on page 4",
+      "status": "REAL INDIVIDUAL. Labelled, as specs/03 §15.3 anticipates, and blocked from every output by this file."
+    },
+    {
+      "name": "JASON AL-IMAM",
+      "fixture": "los-alamitos-ca-coi-sample.pdf",
+      "where": "the ATT: line of the certificate-holder block on page 4",
+      "status": "A NAMED PUBLIC OFFICIAL, printed as part of the city's delivery address. The holder value is labelled as printed because the holder match reads it; the name is blocked from every output by this file."
+    },
+    {
+      "name": "Elizabeth Carmichael",
+      "fixture": "certificates_how_to_read_and_review_with_acord_forms.pdf",
+      "where": "the copyright byline in the footer of every page",
+      "status": "documented author byline (kb-samples MANIFEST rule 4). Not on the certificate page and not labelled."
+    },
+    {
+      "name": "AGENT NAME",
+      "fixture": "riverside-ca-risk-management-sample-coi.pdf",
+      "where": "producer.contact_name",
+      "status": "printed placeholder, listed because §15.3's rule is every contact_name value without exception"
+    },
+    {
+      "name": "PRODUCER NAME",
+      "fixture": "mcgough-subcontractor-sample-coi-exhibit-b.pdf",
+      "where": "producer.contact_name",
+      "status": "printed placeholder, listed for the same reason"
+    }
+  ]
+}

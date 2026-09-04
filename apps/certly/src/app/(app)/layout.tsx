@@ -27,11 +27,17 @@ type NavItem = { href: string; label: string; note?: string };
 const PRIMARY: NavItem[] = [
   { href: '/dashboard', label: 'Coverage' },
   { href: '/vendors', label: 'Vendors' },
+  { href: '/timeline', label: 'Timeline' },
+  { href: '/review', label: 'Review' },
   { href: '/requirements', label: 'Requirements' },
+  { href: '/reports', label: 'Gap reports' },
 ];
 
 const SECONDARY: NavItem[] = [
   { href: '/settings', label: 'Settings' },
+  // M7 (`specs/07` §5). The only nav item this app has that names a promise
+  // rather than a screen: the chasing is the thing the subscription buys.
+  { href: '/settings/reminders', label: 'Reminders' },
   { href: '/settings/billing', label: 'Billing' },
   { href: '/help', label: 'Help' },
 ];

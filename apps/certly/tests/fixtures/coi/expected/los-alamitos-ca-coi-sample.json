@@ -1,0 +1,677 @@
+{
+  "fixture": "los-alamitos-ca-coi-sample.pdf",
+  "golden_id": "G7",
+  "labelled_by": "agent:certly-b1-m4",
+  "labelled_on": "2026-09-04",
+  "reviewed_by": "agent:certly-b1-m4-second-pass",
+  "notes": "A twelve-page package. THE CERTIFICATE IS PAGE 4, and every page number in this file is absolute: pages 1-2 are the city's requirements summary, page 3 is a guidance overlay ('MUST include this section verbatim') that is not a certificate, page 4 is the ACORD 25 (2016/03), and pages 5-12 are eight endorsements. The scan's OCR layer is badly corrupt on the pre-printed form ('06101118' for 06/01/18, 'ACORD 25 (2016103)'), so every value here was read from the page image. The general-liability policy number really is printed 'ABC/23' where the automobile and workers' compensation rows print 'ABC123' — checked at 600 dpi rather than assumed to be a scanning artefact. The umbrella/excess block and the trailing OTHER block are filled with the printed word N/A in every cell; a coverage the certificate says is not applicable is not a coverage row, so neither is labelled. PERSONAL DATA: the producer block prints an individual's name above the agency name and the CONTACT NAME box names another individual. The agency is what producer.name records; both names are in redacted-names.json. The certificate-holder block routes to a named city official; that is the address as printed and it is labelled as printed, and the name is in redacted-names.json as well.",
+  "expected": {
+    "schema_version": "coi.v1",
+    "document_kind": "acord_25",
+    "form_edition": "2016/03",
+    "certificate_date": {
+      "value": "2018-05-17",
+      "raw": "05/17/2018",
+      "page": 4,
+      "source_text": "05/17/2018",
+      "confidence": 1.0
+    },
+    "producer": {
+      "name": {
+        "value": "USI HEALTHCARE – A DIVISION OF USI SOUTHWEST, INC.",
+        "raw": "USI HEALTHCARE – A DIVISION OF USI SOUTHWEST, INC.",
+        "page": 4,
+        "source_text": "USI HEALTHCARE – A DIVISION OF USI SOUTHWEST, INC.",
+        "confidence": 1.0
+      },
+      "address": {
+        "value": "9811 KATY FREEWAY, SUITE 500, HOUSTON, TX 77024",
+        "raw": "9811 KATY FREEWAY, SUITE 500\nHOUSTON, TX 77024",
+        "page": 4,
+        "source_text": "9811 KATY FREEWAY, SUITE 500",
+        "confidence": 1.0
+      },
+      "contact_name": {
+        "value": "MARLENE EDWARDS",
+        "raw": "MARLENE EDWARDS",
+        "page": 4,
+        "source_text": "MARLENE EDWARDS",
+        "confidence": 1.0
+      },
+      "phone": {
+        "value": "713-490-4685",
+        "raw": "713-490-4685",
+        "page": 4,
+        "source_text": "713-490-4685",
+        "confidence": 1.0
+      },
+      "fax": {
+        "value": "713-343-5025",
+        "raw": "713-343-5025",
+        "page": 4,
+        "source_text": "713-343-5025",
+        "confidence": 1.0
+      },
+      "email": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      }
+    },
+    "insured": {
+      "name": {
+        "value": "INTERCARE HOLDINGS, INC.",
+        "raw": "INTERCARE HOLDINGS, INC.",
+        "page": 4,
+        "source_text": "INTERCARE HOLDINGS, INC.",
+        "confidence": 1.0
+      },
+      "address": {
+        "value": "6020 WEST OAKS BLVD., SUITE 100, ROCKLIN, CA 95765",
+        "raw": "6020 WEST OAKS BLVD., SUITE 100\nROCKLIN, CA  95765",
+        "page": 4,
+        "source_text": "6020 WEST OAKS BLVD., SUITE 100",
+        "confidence": 1.0
+      }
+    },
+    "insurers": [
+      {
+        "letter": "A",
+        "name": {
+          "value": "HARTFORD ACCIDENT & INDEMNITY INSURANCE CO.",
+          "raw": "HARTFORD ACCIDENT & INDEMNITY INSURANCE CO.",
+          "page": 4,
+          "source_text": "HARTFORD ACCIDENT & INDEMNITY INSURANCE CO.",
+          "confidence": 1.0
+        },
+        "naic": {
+          "value": "22357",
+          "raw": "22357",
+          "page": 4,
+          "source_text": "22357",
+          "confidence": 1.0
+        }
+      },
+      {
+        "letter": "B",
+        "name": {
+          "value": "TRUMBULL INSURANCE COMPANY",
+          "raw": "TRUMBULL INSURANCE COMPANY",
+          "page": 4,
+          "source_text": "TRUMBULL INSURANCE COMPANY",
+          "confidence": 1.0
+        },
+        "naic": {
+          "value": "27120",
+          "raw": "27120",
+          "page": 4,
+          "source_text": "27120",
+          "confidence": 1.0
+        }
+      },
+      {
+        "letter": "C",
+        "name": {
+          "value": "TWIN CITY FIRE INSURANCE COMPANY",
+          "raw": "TWIN CITY FIRE INSURANCE COMPANY",
+          "page": 4,
+          "source_text": "TWIN CITY FIRE INSURANCE COMPANY",
+          "confidence": 1.0
+        },
+        "naic": {
+          "value": "29459",
+          "raw": "29459",
+          "page": 4,
+          "source_text": "29459",
+          "confidence": 1.0
+        }
+      }
+    ],
+    "coverages": [
+      {
+        "insr_letter": {
+          "value": "A",
+          "raw": "A",
+          "page": 4,
+          "source_text": "A",
+          "confidence": 1.0
+        },
+        "type": "general_liability",
+        "type_label_raw": {
+          "value": "COMMERCIAL GENERAL LIABLITY",
+          "raw": "COMMERCIAL GENERAL LIABLITY",
+          "page": 4,
+          "source_text": "COMMERCIAL GENERAL LIABLITY",
+          "confidence": 1.0
+        },
+        "addl_insd": {
+          "value": "Y",
+          "raw": "X",
+          "page": 4,
+          "source_text": "X",
+          "confidence": 1.0
+        },
+        "subr_wvd": {
+          "value": "Y",
+          "raw": "X",
+          "page": 4,
+          "source_text": "X",
+          "confidence": 1.0
+        },
+        "policy_number": {
+          "value": "ABC/23",
+          "raw": "ABC/23",
+          "page": 4,
+          "source_text": "ABC/23",
+          "confidence": 1.0
+        },
+        "policy_eff": {
+          "value": "2018-06-01",
+          "raw": "06/01/18",
+          "page": 4,
+          "source_text": "06/01/18",
+          "confidence": 1.0
+        },
+        "policy_exp": {
+          "value": "2019-06-01",
+          "raw": "06/01/19",
+          "page": 4,
+          "source_text": "06/01/19",
+          "confidence": 1.0
+        },
+        "form_basis": {
+          "value": "occurrence",
+          "raw": "X",
+          "page": 4,
+          "source_text": "X",
+          "confidence": 1.0
+        },
+        "aggregate_applies_per": {
+          "value": "loc",
+          "raw": "X",
+          "page": 4,
+          "source_text": "X",
+          "confidence": 1.0
+        },
+        "wc_officer_excluded": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "limits": [
+          {
+            "label": "each_occurrence",
+            "label_raw": {
+              "value": "EACH OCCURRENCE",
+              "raw": "EACH OCCURRENCE",
+              "page": 4,
+              "source_text": "EACH OCCURRENCE",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1000000,
+              "raw": "$1,000,000",
+              "page": 4,
+              "source_text": "$1,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "damage_to_rented_premises",
+            "label_raw": {
+              "value": "DAMAGE TO RENTED PREMISES (Ea occurrence)",
+              "raw": "DAMAGE TO RENTED PREMISES (Ea occurrence)",
+              "page": 4,
+              "source_text": "DAMAGE TO RENTED PREMISES (Ea occurrence)",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 300000,
+              "raw": "$300,000",
+              "page": 4,
+              "source_text": "$300,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "med_exp",
+            "label_raw": {
+              "value": "MED EXP (Any one person)",
+              "raw": "MED EXP (Any one person)",
+              "page": 4,
+              "source_text": "MED EXP (Any one person)",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 10000,
+              "raw": "$10,000",
+              "page": 4,
+              "source_text": "$10,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "personal_and_adv_injury",
+            "label_raw": {
+              "value": "PERSONAL & ADV INJURY",
+              "raw": "PERSONAL & ADV INJURY",
+              "page": 4,
+              "source_text": "PERSONAL & ADV INJURY",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1000000,
+              "raw": "$1,000,000",
+              "page": 4,
+              "source_text": "$1,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "general_aggregate",
+            "label_raw": {
+              "value": "GENERAL AGGREGATE",
+              "raw": "GENERAL AGGREGATE",
+              "page": 4,
+              "source_text": "GENERAL AGGREGATE",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 2000000,
+              "raw": "$2,000,000",
+              "page": 4,
+              "source_text": "$2,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "products_comp_op_agg",
+            "label_raw": {
+              "value": "PRODUCTS – COMP/OP AGG",
+              "raw": "PRODUCTS – COMP/OP AGG",
+              "page": 4,
+              "source_text": "PRODUCTS – COMP/OP AGG",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 2000000,
+              "raw": "$2,000,000",
+              "page": 4,
+              "source_text": "$2,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "other",
+            "label_raw": {
+              "value": "EMPLOYEE BENEFITS",
+              "raw": "EMPLOYEE BENEFITS",
+              "page": 4,
+              "source_text": "EMPLOYEE BENEFITS",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1000000,
+              "raw": "$1,000,000",
+              "page": 4,
+              "source_text": "$1,000,000",
+              "confidence": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "insr_letter": {
+          "value": "B",
+          "raw": "B",
+          "page": 4,
+          "source_text": "B",
+          "confidence": 1.0
+        },
+        "type": "automobile_liability",
+        "type_label_raw": {
+          "value": "AUTOMOBILE LIABILITY",
+          "raw": "AUTOMOBILE LIABILITY",
+          "page": 4,
+          "source_text": "AUTOMOBILE LIABILITY",
+          "confidence": 1.0
+        },
+        "addl_insd": {
+          "value": "Y",
+          "raw": "X",
+          "page": 4,
+          "source_text": "X",
+          "confidence": 1.0
+        },
+        "subr_wvd": {
+          "value": "Y",
+          "raw": "X",
+          "page": 4,
+          "source_text": "X",
+          "confidence": 1.0
+        },
+        "policy_number": {
+          "value": "ABC123",
+          "raw": "ABC123",
+          "page": 4,
+          "source_text": "ABC123",
+          "confidence": 1.0
+        },
+        "policy_eff": {
+          "value": "2018-06-01",
+          "raw": "06/01/18",
+          "page": 4,
+          "source_text": "06/01/18",
+          "confidence": 1.0
+        },
+        "policy_exp": {
+          "value": "2019-06-01",
+          "raw": "06/01/19",
+          "page": 4,
+          "source_text": "06/01/19",
+          "confidence": 1.0
+        },
+        "form_basis": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "aggregate_applies_per": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "wc_officer_excluded": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "limits": [
+          {
+            "label": "combined_single_limit",
+            "label_raw": {
+              "value": "COMBINED SINGLE LIMIT (Ea accident)",
+              "raw": "COMBINED SINGLE LIMIT (Ea accident)",
+              "page": 4,
+              "source_text": "COMBINED SINGLE LIMIT (Ea accident)",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1000000,
+              "raw": "$1,000,000",
+              "page": 4,
+              "source_text": "$1,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "bodily_injury_per_person",
+            "label_raw": {
+              "value": "BODILY INJURY (Per person)",
+              "raw": "BODILY INJURY (Per person)",
+              "page": 4,
+              "source_text": "BODILY INJURY (Per person)",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": null,
+              "raw": "$N/A",
+              "page": 4,
+              "source_text": "$N/A",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "bodily_injury_per_accident",
+            "label_raw": {
+              "value": "BODILY INJURY (Per accident)",
+              "raw": "BODILY INJURY (Per accident)",
+              "page": 4,
+              "source_text": "BODILY INJURY (Per accident)",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": null,
+              "raw": "$N/A",
+              "page": 4,
+              "source_text": "$N/A",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "property_damage",
+            "label_raw": {
+              "value": "PROPERTY DAMAGE (Per accident)",
+              "raw": "PROPERTY DAMAGE (Per accident)",
+              "page": 4,
+              "source_text": "PROPERTY DAMAGE (Per accident)",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": null,
+              "raw": "$N/A",
+              "page": 4,
+              "source_text": "$N/A",
+              "confidence": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "insr_letter": {
+          "value": "C",
+          "raw": "C",
+          "page": 4,
+          "source_text": "C",
+          "confidence": 1.0
+        },
+        "type": "workers_compensation",
+        "type_label_raw": {
+          "value": "WORKERS COMPENSATION AND EMPLOYERS' LIABILITY",
+          "raw": "WORKERS COMPENSATION AND EMPLOYERS' LIABILITY",
+          "page": 4,
+          "source_text": "WORKERS COMPENSATION AND EMPLOYERS' LIABILITY",
+          "confidence": 1.0
+        },
+        "addl_insd": {
+          "value": "N/A",
+          "raw": "N / A",
+          "page": 4,
+          "source_text": "N / A",
+          "confidence": 1.0
+        },
+        "subr_wvd": {
+          "value": "Y",
+          "raw": "X",
+          "page": 4,
+          "source_text": "X",
+          "confidence": 1.0
+        },
+        "policy_number": {
+          "value": "ABC123",
+          "raw": "ABC123",
+          "page": 4,
+          "source_text": "ABC123",
+          "confidence": 1.0
+        },
+        "policy_eff": {
+          "value": "2018-06-01",
+          "raw": "06/01/18",
+          "page": 4,
+          "source_text": "06/01/18",
+          "confidence": 1.0
+        },
+        "policy_exp": {
+          "value": "2019-06-01",
+          "raw": "06/01/19",
+          "page": 4,
+          "source_text": "06/01/19",
+          "confidence": 1.0
+        },
+        "form_basis": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "aggregate_applies_per": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "wc_officer_excluded": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "limits": [
+          {
+            "label": "el_each_accident",
+            "label_raw": {
+              "value": "E.L. EACH ACCIDENT",
+              "raw": "E.L. EACH ACCIDENT",
+              "page": 4,
+              "source_text": "E.L. EACH ACCIDENT",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1000000,
+              "raw": "$1,000,000",
+              "page": 4,
+              "source_text": "$1,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "el_disease_ea_employee",
+            "label_raw": {
+              "value": "E.L. DISEASE – EA EMPLOYEE",
+              "raw": "E.L. DISEASE – EA EMPLOYEE",
+              "page": 4,
+              "source_text": "E.L. DISEASE – EA EMPLOYEE",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1000000,
+              "raw": "$1,000,000",
+              "page": 4,
+              "source_text": "$1,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "el_disease_policy_limit",
+            "label_raw": {
+              "value": "E.L. DISEASE – POLICY LIMIT",
+              "raw": "E.L. DISEASE – POLICY LIMIT",
+              "page": 4,
+              "source_text": "E.L. DISEASE – POLICY LIMIT",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1000000,
+              "raw": "$1,000,000",
+              "page": 4,
+              "source_text": "$1,000,000",
+              "confidence": 1.0
+            }
+          }
+        ]
+      }
+    ],
+    "description_of_operations": {
+      "value": "CITY OF LOS ALAMITOS, IT'S OFFICERS, AGENTS, EMPLOYEES, AND VOLUNTEERS ARE TO BE COVERED AS ADDITIONAL INSURED FOR ALL\nLIABILITY ARISING OUT OF THE OPERATIONS BY OR ON BEHALF OF THE NAMED INSURED WITH RESPECTS TO GENERAL LIABILITY PER\nATTACHED  FORM #HG000010605.  WAIVER OF SUBROGATION IS INCLUDED ON THE WORKER'S COMPENSATION, GENERAL LIABILITY AND\nAUTO LIABILITY POLICIES.",
+      "raw": "CITY OF LOS ALAMITOS, IT'S OFFICERS, AGENTS, EMPLOYEES, AND VOLUNTEERS ARE TO BE COVERED AS ADDITIONAL INSURED FOR ALL\nLIABILITY ARISING OUT OF THE OPERATIONS BY OR ON BEHALF OF THE NAMED INSURED WITH RESPECTS TO GENERAL LIABILITY PER\nATTACHED  FORM #HG000010605.  WAIVER OF SUBROGATION IS INCLUDED ON THE WORKER'S COMPENSATION, GENERAL LIABILITY AND\nAUTO LIABILITY POLICIES.",
+      "page": 4,
+      "source_text": "ATTACHED  FORM #HG000010605",
+      "confidence": 1.0
+    },
+    "endorsement_forms_mentioned": [
+      {
+        "form_number": "HG000010605",
+        "edition": null,
+        "context": "description_of_operations",
+        "conditional": false
+      },
+      {
+        "form_number": "CG 20 10",
+        "edition": "04 13",
+        "context": "attached_endorsement_page",
+        "conditional": false
+      },
+      {
+        "form_number": "CA 20 48",
+        "edition": "10 13",
+        "context": "attached_endorsement_page",
+        "conditional": false
+      },
+      {
+        "form_number": "CG 29 88",
+        "edition": "10 93",
+        "context": "attached_endorsement_page",
+        "conditional": false
+      },
+      {
+        "form_number": "CA 04 44",
+        "edition": "10 13",
+        "context": "attached_endorsement_page",
+        "conditional": false
+      },
+      {
+        "form_number": "WC 04 03 06",
+        "edition": null,
+        "context": "attached_endorsement_page",
+        "conditional": false
+      },
+      {
+        "form_number": "IH 03 16",
+        "edition": "06 11",
+        "context": "attached_endorsement_page",
+        "conditional": false
+      },
+      {
+        "form_number": "WC 99 05 28",
+        "edition": null,
+        "context": "attached_endorsement_page",
+        "conditional": false
+      }
+    ],
+    "certificate_holder": {
+      "value": "CITY OF LOS ALAMITOS, 3191 KATELLA AVE., LOS ALAMITOS, CA 90720",
+      "raw": "CITY OF LOS ALAMITOS\nATT: JASON AL-IMAM\n3191 KATELLA AVE.\nLOS ALAMITOS, CA  90720",
+      "page": 4,
+      "source_text": "3191 KATELLA AVE.",
+      "confidence": 1.0
+    },
+    "authorized_representative_present": {
+      "value": true,
+      "raw": null,
+      "page": 4,
+      "source_text": null,
+      "confidence": 1.0
+    },
+    "acord_101_attached": {
+      "value": false,
+      "raw": null,
+      "page": null,
+      "source_text": null,
+      "confidence": 1.0
+    },
+    "notes": "The certificate is page 4 of 12; pages 5-12 are the attached endorsements. A red SAMPLE stamp is printed across the lower half."
+  }
+}

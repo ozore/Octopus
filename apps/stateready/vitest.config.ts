@@ -1,3 +1,5 @@
+import { fileURLToPath } from 'node:url';
+
 import { defineConfig } from 'vitest/config';
 
 import { sharedTestConfig } from '../../vitest.base';
@@ -11,9 +13,15 @@ import { sharedTestConfig } from '../../vitest.base';
  * `CRON_EXPRESSION` and `VERCEL_PLAN` are here because the boot assertion in
  * `src/lib/cron.ts` is a TEST, not a comment: a sub-daily schedule on a Hobby
  * project must fail, and the suite proves it does.
+ *
+ * `resolve.alias` mirrors the `@/*` path in `tsconfig.json` (added by B1). It
+ * is what lets a test render a real component with `react-dom/server` and
+ * assert on the DOM it produces — `specs/04` AC8 and `specs/07` AC2/AC3c are
+ * statements about markup, and a server test that never renders cannot prove
+ * one of them.
  */
-export default defineConfig(
-  sharedTestConfig({
+export default defineConfig({
+  ...sharedTestConfig({
     env: {
       APP_NAME: 'StateReady',
       APP_SLUG: 'stateready',
@@ -40,4 +48,12 @@ export default defineConfig(
       STRIPE_PRICE_ENTRY_PACK_ADDL: 'price_test_entry_pack_addl',
     },
   }),
-);
+  resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
+  /**
+   * `tsconfig.json` leaves `jsx: "preserve"` for Next's own compiler, so esbuild
+   * would otherwise fall back to the CLASSIC transform and every component
+   * render in the suite would fail with `React is not defined`. The automatic
+   * runtime is what Next uses in the app itself; the suite now uses the same one.
+   */
+  esbuild: { jsx: 'automatic' },
+});

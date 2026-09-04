@@ -2,11 +2,28 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { getEnv, productName } from '@/env';
+import {
+  PRODUCT_LEGAL_SLUGS,
+  productLegalDoc,
+  type ProductLegalSlug,
+} from '@/content/legal/product-docs';
+import { emitEvent } from '@/lib/analytics/events';
+import { getDb } from '@/lib/db';
 import { disclaimerContent, privacyContent, termsContent } from '@octopus/platform/legal';
 
 export const dynamic = 'force-dynamic';
 
-const DOCS = ['terms', 'privacy', 'disclaimer'] as const;
+/**
+ * Seven documents on one route. Three are the platform's — Terms, Privacy and
+ * the Disclaimer are the same instrument in every app it carries — and four
+ * are this product's own (`src/content/legal/product-docs.ts`): the guarantee,
+ * security, accessibility and where the numbers come from.
+ *
+ * They live on one route because the footer links to all seven and a reader
+ * who has found one should be able to reach the others without going back.
+ */
+const PLATFORM_DOCS = ['terms', 'privacy', 'disclaimer'] as const;
+const DOCS = [...PLATFORM_DOCS, ...PRODUCT_LEGAL_SLUGS] as const;
 type DocSlug = (typeof DOCS)[number];
 
 /**
@@ -28,6 +45,45 @@ export default async function LegalPage({ params }: { params: Promise<{ doc: str
 
   const env = getEnv();
   const product = productName();
+  const db = await getDb();
+  await emitEvent(db, 'legal_page_viewed', { props: { page: doc } });
+
+  // This product's own four, rendered from the same shape as the platform's.
+  if ((PRODUCT_LEGAL_SLUGS as readonly string[]).includes(doc)) {
+    const own = productLegalDoc(doc as ProductLegalSlug, {
+      productName: product,
+      companyName: env.COMPANY_NAME,
+      companyAddress: env.COMPANY_ADDRESS,
+      supportEmail: env.SUPPORT_EMAIL,
+    });
+    return (
+      <article className="wl-panel" data-testid={`legal-${own.slug}`}>
+        <div className="wl-panel__body wl-stack wl-prose">
+          <h1>{own.title}</h1>
+          <p className="wl-xs wl-muted">Last reviewed {own.lastReviewed}</p>
+          <p className="wl-lead">{own.intro}</p>
+          {own.sections.map((section) => (
+            <section key={section.heading}>
+              <h2>{section.heading}</h2>
+              {section.paragraphs.map((paragraph) => (
+                <p key={paragraph.slice(0, 40)}>{paragraph}</p>
+              ))}
+            </section>
+          ))}
+          <p className="wl-xs wl-muted">
+            {product}, a {env.COMPANY_NAME} company. {env.COMPANY_ADDRESS}. Questions:{' '}
+            <a href={`mailto:${env.SUPPORT_EMAIL}`}>{env.SUPPORT_EMAIL}</a> ·{' '}
+            <Link href="/legal/terms">Terms</Link> · <Link href="/legal/privacy">Privacy</Link> ·{' '}
+            <Link href="/legal/disclaimer">Disclaimer</Link> ·{' '}
+            <Link href="/legal/guarantee">Guarantee</Link> ·{' '}
+            <Link href="/legal/security">Security</Link> ·{' '}
+            <Link href="/legal/accessibility">Accessibility</Link> ·{' '}
+            <Link href="/legal/data-sources">Data sources</Link>
+          </p>
+        </div>
+      </article>
+    );
+  }
   const placeholders = {
     appName: product,
     companyName: env.COMPANY_NAME,
@@ -96,9 +152,14 @@ export default async function LegalPage({ params }: { params: Promise<{ doc: str
         ) : null}
 
         <p className="wl-xs wl-muted">
-          Questions: <a href={`mailto:${env.SUPPORT_EMAIL}`}>{env.SUPPORT_EMAIL}</a> ·{' '}
+          {product}, a {env.COMPANY_NAME} company. {env.COMPANY_ADDRESS}. Questions:{' '}
+          <a href={`mailto:${env.SUPPORT_EMAIL}`}>{env.SUPPORT_EMAIL}</a> ·{' '}
           <Link href="/legal/terms">Terms</Link> · <Link href="/legal/privacy">Privacy</Link> ·{' '}
-          <Link href="/legal/disclaimer">Disclaimer</Link>
+          <Link href="/legal/disclaimer">Disclaimer</Link> ·{' '}
+          <Link href="/legal/guarantee">Guarantee</Link> ·{' '}
+          <Link href="/legal/security">Security</Link> ·{' '}
+          <Link href="/legal/accessibility">Accessibility</Link> ·{' '}
+          <Link href="/legal/data-sources">Data sources</Link>
         </p>
       </div>
     </article>

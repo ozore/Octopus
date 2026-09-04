@@ -118,3 +118,99 @@ Next agent: read [`BUILD.md`](BUILD.md) first — it is the module map. This fil
 - The three commands that must stay green: `npm run typecheck` and `npm test` at the root,
   `npm run build --workspace apps/wagelens`, and the Playwright suite from `apps/wagelens`.
 - `cd app && npm test` (Clausewright) is a separate lockfile and a separate CI job. Leave it alone.
+
+---
+
+# B4 — the landing page and WL-11 (sub-wave B, 2026-09-04)
+
+**Scope:** `src/app/(marketing)/page.tsx`, `src/components/landing/**`, `src/styles/landing.css`,
+WL-11's remainder (`src/components/certify-disclaimer.tsx`, `src/lib/disclaimer-acknowledgement.ts`,
+`src/content/help/search.ts`, `src/content/legal/product-docs.ts`, `/help` search, the four new
+`/legal` documents), `tests/landing*.tsx`, `tests/wl11.test.tsx`, `e2e/landing.spec.ts`.
+One additive edit outside that: an optional `action` prop on `<LookupForm>` (REQUESTS B4-1).
+
+## What is true now
+
+- **`/` is the landing page `LANDING_SPEC.md` describes.** Hero → live lookup (V1, or V1b on the
+  1-in-8 ambiguous case) → the modification picker and V2 → the 55-minute ledger (V4) → how it
+  works and the Friday wall (V3) → proof and the rendered WH-347 (V5) → what we will not do →
+  pricing → FAQ → footer. **430 words above the pricing block against a ceiling of 450**, counted
+  in CI by `LANDING_SPEC` §2's own convention.
+- **The demo is the product.** The widget is a GET form that lands back on `/`; the page reads the
+  ingested corpus through `@/lib/kb` (`findDeterminations`, `searchClassifications`,
+  `getModificationHistory`) exactly as the public result page does. **No sam.gov call at request
+  time and no snapshot fallback** — when the corpus is empty the page shows the honest error, the
+  SAM.gov link and no rate at all (finding M16).
+- **The modification control works in place.** `/?state=TX&county=harris&type=Building&mod=0`
+  re-renders the whole card at modification 0 with the newer modification named permanently beside
+  it, and draws V2 with a **real** divergence count computed from the rows we hold for both
+  modifications. It emits `modification_pin_used`.
+- **WL-11 is finished** except for two screens other agents own: `<CertifyDisclaimer>` needs
+  mounting on WL-06's certify screen and the acknowledgement needs mounting in onboarding
+  (REQUESTS B4-8, B4-9). Both modules are built and tested.
+
+## What tripped me up
+
+1. **The HTML walker in the word-count test silently stopped excluding.** React closes SVG shapes
+   with real end tags (`<path …></path>`), so treating `path`/`rect`/`line` as void elements
+   unbalanced the tag stack: the first `</path>` popped the enclosing `<svg data-wordcount="exclude">`
+   and **everything after the first drawing was counted**. It read 632 against a ceiling of 450 and
+   the cause was in the counter, not the copy. `VOID_TAGS` is now HTML-only and the walker unwinds
+   to the matching open tag instead of popping blind. If a word count ever jumps, suspect the
+   walker before the writing.
+2. **A "rate surface" detector that follows imports is wrong.** The first version of the
+   disclaimer gate walked every `@/…` import and asked "does this module render a rate?" — so
+   `/settings`, which imports `formatDay` from `provenance.tsx`, looked like a screen that shows
+   money. It now follows only the components a file actually **renders**, and reads the body of the
+   named export, so `<SourceChip>` (a citation) is distinguished from `<ProvenanceCard>` (a rate).
+   Over-detecting is not the safe direction: it puts required notices on screens that show no
+   number, which is how a disclaimer becomes wallpaper.
+3. **Substring search made every article match everything.** "sales tax in ohio" contains "in",
+   "in" is inside "including", and all six articles came back. `help_searched.result_count` is then
+   a number nobody can read. `/help` search matches whole words with a prefix allowance for
+   plurals, and drops stop words.
+4. **The CI greps caught my own comments — again.** A file header quoting the banned penalty figure
+   failed `tests/naming.test.ts`, exactly as this file's §7 warned. Reword the comment, never the
+   grep. (WL-09's `/billing/start` has the same defect with `Start free` today: REQUESTS B4-7.)
+5. **`LANDING_SPEC` §5.4 and §2 disagree about counting field labels.** §2's rule excludes them,
+   §5.4's arithmetic includes twelve of them. The script implements the rule and the deviation is
+   recorded (BUILD.md 6.B4-8); the difference is 12 words and the page is 20 under either way.
+6. **Two visuals need two drawings.** A horizontally scrolling axis on a phone is forbidden
+   (§11), so V2 ships as a horizontal SVG and a vertical one, and V3 as 52×1 and 13×4, swapped by
+   CSS. The captions live **outside** both SVGs so they are written — and counted — once.
+7. **The corpus fixtures hold two modifications, never three.** §6 V2 anticipates this: the diagram
+   ships with two and the caption is honest about it. The example determination is *chosen by a
+   query* (the one with the most modifications on record), not hard-coded, so it improves by itself
+   when the corpus grows.
+
+## Decisions taken (reasoning in BUILD.md §6.B4)
+
+| # | decision | one-line reason |
+|---|---|---|
+| B4-a | no email capture anywhere on `/` — no watch box, and `Join the list` is a mailto | the consent record, double opt-in and unsubscribe are WL-14's; a second copy is how two records disagree |
+| B4-b | V1/V4/V5 are DOM, V2/V3 are inline SVG | each brief asks for it, and the rendered WH-347 must be accessible HTML first |
+| B4-c | V5 shows the DOL notation carrying a **real** rate | keeps the notation, keeps the caption honest, and lets the artefact carry provenance so G8 is satisfied |
+| B4-d | V2 renders once, beneath the modification picker | §5.1's interaction is the point of the page, and one diagram is one caption |
+| B4-e | the landing's own V1b and modification picker | the shared components carry 65 words of copy written for a page with no budget |
+| B4-f | a separate `src/styles/landing.css` | four agents were editing this app at once and `app.css` is the file all four would have touched |
+| B4-g | analytics through a server action, not a public JSON route | the browser cannot name an event: the action allow-lists, and `emitEvent` allow-lists again |
+| B4-h | the sticky CTA is `position: sticky` in a bounded zone | the required behaviour, with no scroll listener and no JavaScript |
+| B4-i | four new `/legal` documents rather than more help articles | the footer's links must resolve, and the six articles are asserted at six in two suites |
+
+## Advice to the next agent
+
+- **Run `npx vitest run tests/landing.test.tsx --reporter=verbose` to see the word count.** The test
+  name carries the number (`counts 430 words against a ceiling of 450`), so a copy edit that costs
+  words shows its price in the test output.
+- **Do not add copy to a component under `src/components/landing/` without putting it in
+  `copy.ts`.** The budget test asserts that every counted string lives there; that is what keeps the
+  page's argument readable in one screen.
+- **Mark data as data.** Anything the corpus produced — a classification, a date, a modification
+  number, a county list — belongs in a subtree carrying `data-wordcount="exclude"`, or it will be
+  counted as prose and the budget will look spent when it is not.
+- **`/` and `/lookup` must keep answering the same question the same way.** They share
+  `<LookupForm>` and the same `@/lib/kb` queries on purpose; if you change how one resolves a
+  county, change both or neither.
+- The Playwright suite for this page is `e2e/landing.spec.ts`. It runs the demo lookup to a real
+  fixture determination, picks the earlier modification, and follows the paid CTA to the trial
+  start — with JavaScript both on and off.

@@ -12,6 +12,8 @@ import { registerPlatformJobs, createJobRegistry } from '@octopus/platform/jobs'
 import { configurePlatform, getContext, type PlatformContext } from '@octopus/platform/runtime';
 
 import { appMigrationsDir } from './db';
+import { registerGapReportJobs } from './gap-report/jobs';
+import { registerReminderJobs } from './reminders/jobs';
 import { ACTIVATION_EVENT, plans } from './plans';
 
 const registry = createJobRegistry();
@@ -44,21 +46,26 @@ registry.override('certly.extract_document', async () => {
 registry.override('certly.run_comparison', async () => {
   // M5 — specs/05 §6. The engine is done; this wraps it in a job.
 });
-registry.override('certly.schedule_reminders', async () => {
-  // M7 — specs/07 §8. Owner: the reminders agent.
-});
-registry.override('certly.send_due_reminders', async () => {
-  // M7 — the cron-driven send, with the 72-hour and per-expiry caps.
-});
+// M7 — specs/07 §8: `certly.schedule_reminders` and `certly.send_due_reminders`.
+registerReminderJobs(registry);
 registry.override('certly.import_vendors', async () => {
   // M3 — specs/04 §5, the job path above 200 rows.
 });
-registry.override('certly.render_report', async () => {
-  // M12 — specs/12 §7.
+registry.override('certly.render_report', async (payload) => {
+  // M12 — `specs/12` §7: synchronous under 100 vendors, a job above. The
+  // handler calls the SAME renderer the request path calls, so the two cannot
+  // produce different documents. Imported dynamically so that `pdf-lib` is not
+  // in the module graph of every request that merely configures the platform.
+  const [{ renderQueuedReport }, { getDb }] = await Promise.all([
+    import('./reports'),
+    import('./db'),
+  ]);
+  await renderQueuedReport(await getDb(), payload as unknown as Parameters<typeof renderQueuedReport>[1]);
 });
-registry.override('certly.purge_gap_reports', async () => {
-  // M15 — specs/15 §6, the 7-day purge.
-});
+// M15 — specs/15 §2 and §6: `certly.render_gap_report` and
+// `certly.purge_gap_reports`. The render job is also where the source files are
+// deleted, which is the promise printed next to the drop zone.
+registerGapReportJobs(registry);
 registry.override('certly.sweep_orphan_blobs', async () => {
   // specs/03 §9 — a blob with no `documents` row, swept daily.
 });

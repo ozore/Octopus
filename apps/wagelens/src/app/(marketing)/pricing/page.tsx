@@ -1,26 +1,45 @@
 import Link from 'next/link';
 
 import { StandingDisclaimer } from '@/components/disclaimer';
+import { GcComingCard } from '@/components/gc-card';
 import { StatusPill } from '@/components/primitives';
 import { getEnv } from '@/env';
+import { pricingCtaAction, trackPricingViewed } from '@/lib/billing-actions';
+import { lookupKeyFor } from '@/lib/billing/sellable';
+import { formatCents, TRIAL_CTA_LABEL } from '@/lib/billing/terms';
 import { plans } from '@/lib/plans';
-import { formatAmount, priceIdFor } from '@octopus/platform/billing';
+import { priceIdFor } from '@octopus/platform/billing';
 
 export const dynamic = 'force-dynamic';
 
 /**
- * `/pricing` — WL-09 owns this page and its trial-terms disclosure. What is
- * fixed here and must not regress:
+ * `/pricing` — the ladder, and the two rules that are decisions rather than
+ * copy:
  *
  *  - **no call to action calls the trial free** (WL-09 V16a). The rate lookup
- *    is free; the trial takes a card and charges on day 15, and saying
- *    otherwise is the kind of small lie that produces a chargeback;
+ *    is free forever and takes no card; the trial takes a card and charges on
+ *    day 15, and saying otherwise is the kind of small lie that produces a
+ *    chargeback. Every paid CTA reads `Start 14-day trial`, and
+ *    `tests/naming.test.ts` fails the build on the alternative.
  *  - **the GC Roll-up tier is published and not for sale** (finding B2). It has
  *    no plan key and no price variable, so there is nothing to click even by
- *    accident.
+ *    accident; the card's only control joins a waitlist.
+ *
+ * The amount is rendered with `formatCents`, which always prints two decimals.
+ * "$99" and "$99.00" are the same number and not the same disclosure.
  */
-export default function PricingPage() {
+export default async function PricingPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const params = await searchParams;
   const env = getEnv();
+  const source = typeof params['source'] === 'string' ? params['source'] : 'direct';
+  await trackPricingViewed(source);
+
+  const gcState =
+    params['gc'] === 'joined' ? 'joined' : params['gc'] === 'refused' ? 'refused' : undefined;
 
   return (
     <>
@@ -44,7 +63,9 @@ export default function PricingPage() {
               <li>Every classification with its base rate and fringe</li>
               <li>The determination number, modification, date and SAM.gov link on every rate</li>
               <li>The modification picker — read the determination your contract locked</li>
+              <li>An email when a determination you name is modified</li>
             </ul>
+            <p className="wl-xs wl-muted">Free. No card, no login, no demo call.</p>
             <p>
               <Link className="wl-btn wl-btn--secondary" href="/lookup">
                 Look up a rate
@@ -55,6 +76,7 @@ export default function PricingPage() {
 
         {plans.plans.map((plan) => {
           const configured = Boolean(priceIdFor(plan, env));
+          const lookupKey = lookupKeyFor(plan);
           return (
             <section className="wl-panel" key={plan.key}>
               <div className="wl-panel__body wl-stack-2">
@@ -63,7 +85,7 @@ export default function PricingPage() {
                 </h2>
                 <p className="wl-sm wl-muted">{plan.tagline}</p>
                 <p className="wl-num" style={{ fontSize: 'var(--wl-text-2xl)', fontWeight: 700 }}>
-                  {formatAmount(plan.amountCents, plan.currency)}
+                  {formatCents(plan.amountCents, plan.currency)}
                   <span className="wl-xs wl-muted"> /{plan.interval}</span>
                 </p>
                 <ul className="wl-xs wl-prose">
@@ -73,16 +95,22 @@ export default function PricingPage() {
                 </ul>
                 {plan.trialDays ? (
                   <p className="wl-xs wl-muted">
-                    Your first two Fridays are free. Card on file, {formatAmount(plan.amountCents)}{' '}
-                    charged on day {plan.trialDays + 1} unless you cancel first.
+                    {plan.trialDays} days, then {formatCents(plan.amountCents, plan.currency)} a{' '}
+                    {plan.interval} until you cancel. Card on file; the first charge is on day{' '}
+                    {plan.trialDays + 1} and we email you four days before it.
                   </p>
                 ) : null}
                 {configured ? (
-                  <p>
-                    <Link className="wl-btn wl-btn--primary" href={`/login?plan=${plan.key}`}>
-                      Start 14-day trial
-                    </Link>
-                  </p>
+                  <form action={pricingCtaAction}>
+                    <input type="hidden" name="lookupKey" value={lookupKey} />
+                    <button
+                      className="wl-btn wl-btn--primary"
+                      type="submit"
+                      data-testid={`pricing-cta-${plan.key}`}
+                    >
+                      {TRIAL_CTA_LABEL}
+                    </button>
+                  </form>
                 ) : (
                   <p className="wl-xs wl-muted">
                     Not on sale yet: <span className="wl-mono">{plan.priceEnvVar}</span> is not
@@ -94,26 +122,9 @@ export default function PricingPage() {
           );
         })}
 
-        <section className="wl-panel" data-testid="gc-waitlist">
-          <div className="wl-panel__body wl-stack-2">
-            <h2>GC Roll-up</h2>
-            <p className="wl-sm wl-muted">Small general contractors carrying prime liability</p>
-            <p className="wl-num" style={{ fontSize: 'var(--wl-text-2xl)', fontWeight: 700 }}>
-              $299<span className="wl-xs wl-muted"> /month</span>
-            </p>
-            <StatusPill tone="draft">Coming — join the list</StatusPill>
-            <ul className="wl-xs wl-prose">
-              <li>It will add unlimited subcontractor seats</li>
-              <li>It will collect and completeness-check every sub&rsquo;s weekly payroll</li>
-              <li>It will show a per-sub status board and assemble the prime&rsquo;s package</li>
-            </ul>
-            <p className="wl-xs wl-muted">
-              None of that exists yet, so none of it is for sale yet. Email{' '}
-              <a href={`mailto:${env.SUPPORT_EMAIL}?subject=GC%20Roll-up`}>{env.SUPPORT_EMAIL}</a>{' '}
-              and we will tell you when it ships.
-            </p>
-          </div>
-        </section>
+        {/* Published, not for sale. The card's only control is the waitlist;
+            there is no plan key and no price variable behind it. */}
+        <GcComingCard surface="pricing" waitlist {...(gcState ? { state: gcState } : {})} />
       </div>
 
       <StandingDisclaimer />

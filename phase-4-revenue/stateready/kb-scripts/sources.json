@@ -1,40 +1,359 @@
 {
   "_comment": "Every page the 9 launch records were read from. kb-scripts/refresh_sources.py fetches each one, normalises it and writes kb-data/_sources.json with a content hash so the daily drift job can tell a re-theme from a rule change.",
   "sources": [
-    {"source_id": "tx.tdlr.acr_home",            "url": "https://www.tdlr.texas.gov/acr/", "kind": "board_page", "title": "Air Conditioning and Refrigeration Contractors Homepage — TDLR"},
-    {"source_id": "tx.tdlr.acr_apply",           "url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm", "kind": "board_page", "title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR"},
-    {"source_id": "tx.tdlr.acr_renew",           "url": "https://www.tdlr.texas.gov/acr/contractor-renew.htm", "kind": "board_page", "title": "Renew an Air Conditioning and Refrigeration Contractor License — TDLR"},
-    {"source_id": "tx.tdlr.acr_ce",              "url": "https://www.tdlr.texas.gov/acr/acrce.htm", "kind": "board_page", "title": "Air Conditioning and Refrigeration Continuing Education — TDLR"},
-    {"source_id": "tx.tdlr.acr_reciprocity",     "url": "https://www.tdlr.texas.gov/acr/acrreciprocity.htm", "kind": "board_page", "title": "Licensing Reciprocity for Air Conditioning and Refrigeration — TDLR"},
-    {"source_id": "tx.tdlr.elec_contractor_apply","url": "https://www.tdlr.texas.gov/electricians/apply/businesses/contractor-elec.htm", "kind": "board_page", "title": "Apply for an Electrical Contractor License — TDLR"},
-    {"source_id": "tx.tdlr.elec_contractor_renew","url": "https://www.tdlr.texas.gov/electricians/renew/businesses/contractor-elec.htm", "kind": "board_page", "title": "Renew an Electrical Contractor License — TDLR"},
-    {"source_id": "tx.tdlr.elec_master_apply",   "url": "https://www.tdlr.texas.gov/electricians/apply/individuals/master-electrician.htm", "kind": "board_page", "title": "Apply for a Master Electrician License — TDLR"},
-    {"source_id": "tx.tdlr.elec_master_renew",   "url": "https://www.tdlr.texas.gov/electricians/renew/individuals/master-electrician.htm", "kind": "board_page", "title": "Renew a Master Electrician License — TDLR"},
-    {"source_id": "tx.tdlr.elec_journeyman_apply","url": "https://www.tdlr.texas.gov/electricians/apply/individuals/journeyman-electrician.htm", "kind": "board_page", "title": "Apply for a Journeyman Electrician License — TDLR"},
-    {"source_id": "tx.tdlr.elec_ce",             "url": "https://www.tdlr.texas.gov/electricians/elecce.htm", "kind": "board_page", "title": "Electricians Continuing Education — TDLR"},
-    {"source_id": "tx.tdlr.elec_out_of_state",   "url": "https://www.tdlr.texas.gov/electricians/out-of-state.htm", "kind": "board_page", "title": "Out of State Applicants — Electricians — TDLR"},
-    {"source_id": "tx.tsbpe.rmp",                "url": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/", "kind": "board_page", "title": "Responsible Master Plumber — TSBPE"},
-    {"source_id": "tx.tsbpe.master",             "url": "https://tsbpe.texas.gov/license-types/master-plumber/", "kind": "board_page", "title": "Master Plumber — TSBPE"},
-    {"source_id": "tx.tsbpe.journeyman",         "url": "https://tsbpe.texas.gov/license-types/journeyman/", "kind": "board_page", "title": "Journeyman Plumber — TSBPE"},
-    {"source_id": "tx.tsbpe.training",           "url": "https://tsbpe.texas.gov/training-and-education/", "kind": "board_page", "title": "Training and Education (CPE) — TSBPE"},
-    {"source_id": "fl.dbpr.construction",        "url": "https://www2.myfloridalicense.com/construction-industry/", "kind": "board_page", "title": "Construction Industry — Florida DBPR / CILB"},
-    {"source_id": "fl.dbpr.cilb_ac_checklist",   "url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1042&clientCode=0601&XACT_DEFN_ID=18292", "kind": "board_page", "title": "Certified Air Conditioning Contractor as an Individual – Active (CILB 5-G/5-H) checklist"},
-    {"source_id": "fl.dbpr.cilb_plumb_checklist","url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1042&clientCode=0604&XACT_DEFN_ID=18295", "kind": "board_page", "title": "Certified Plumbing Contractor as an Individual – Active (CILB 5-M) checklist"},
-    {"source_id": "fl.dbpr.fin_resp",            "url": "https://www2.myfloridalicense.com/pro/cilb/documents/Financial%20Responsibility_and_Stability_Requirements_for_Contractor_Applicants.pdf", "kind": "board_pdf", "title": "Financial Responsibility and Stability Requirements for Contractor Applicants — CILB"},
-    {"source_id": "fl.far.61g4_15_003",          "url": "https://www.flrules.org/gateway/readFile.asp?sid=0&tid=4819074&type=1&file=61G4-15.003.doc", "kind": "administrative_rule", "title": "Rule 61G4-15.003 F.A.C. Public Liability Insurance (adopted text)"},
-    {"source_id": "fl.dbpr.electrical",          "url": "https://www2.myfloridalicense.com/electrical-contractors/", "kind": "board_page", "title": "Electrical Contractors — Florida DBPR / ECLB"},
-    {"source_id": "fl.dbpr.eclb_initial",        "url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1030&clientCode=0801&XACT_DEFN_ID=3657", "kind": "board_page", "title": "Certified Electrical Contractor – Initial (ECLB 1) checklist"},
-    {"source_id": "fl.dbpr.eclb_exam",           "url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1010&clientCode=0801&XACT_DEFN_ID=3685", "kind": "board_page", "title": "Certified Electrical Contractor – Examination (ECLB 8) checklist"},
-    {"source_id": "nc.phfs.applicant",           "url": "https://nclicensing.org/applicant-information/", "kind": "board_page", "title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors"},
-    {"source_id": "nc.phfs.renewal",             "url": "https://nclicensing.org/license-renewal/", "kind": "board_page", "title": "License Renewal — NC Plumbing, Heating and Fire Sprinkler Board"},
-    {"source_id": "nc.phfs.education",           "url": "https://nclicensing.org/education/", "kind": "board_page", "title": "Education — NC Plumbing, Heating and Fire Sprinkler Board"},
-    {"source_id": "nc.phfs.faq",                 "url": "https://nclicensing.org/faq/", "kind": "board_page", "title": "FAQ — NC Plumbing, Heating and Fire Sprinkler Board"},
-    {"source_id": "nc.gs.87_22",                 "url": "https://www.ncleg.gov/EnactedLegislation/Statutes/PDF/BySection/Chapter_87/GS_87-22.pdf", "kind": "statute", "title": "N.C. G.S. 87-22 License fee; expiration and renewal; reinstatement"},
-    {"source_id": "nc.ncbeec.licensing",         "url": "https://www.ncbeec.org/licensing/", "kind": "board_page", "title": "Licensing — NC State Board of Examiners of Electrical Contractors"},
-    {"source_id": "nc.ncbeec.fees",              "url": "https://www.ncbeec.org/fees-services/", "kind": "board_page", "title": "Fees & Services — NCBEEC"},
-    {"source_id": "nc.ncbeec.ce",                "url": "https://www.ncbeec.org/continuing-education/", "kind": "board_page", "title": "Continuing Education — NCBEEC"},
-    {"source_id": "nc.ncbeec.reciprocity",       "url": "https://www.ncbeec.org/reciprocity/", "kind": "board_page", "title": "Reciprocity — NCBEEC"},
-    {"source_id": "nc.ncbeec.examinations",      "url": "https://www.ncbeec.org/examinations/", "kind": "board_page", "title": "Examinations — NCBEEC"},
-    {"source_id": "bls.qcew.2382",               "url": "https://data.bls.gov/cew/data/api/2025/a/industry/2382.csv", "kind": "federal_statistics", "title": "BLS QCEW 2025 annual averages, NAICS 2382 Building Equipment Contractors, all areas"}
+    {
+      "source_id": "tx.tdlr.acr_home",
+      "url": "https://www.tdlr.texas.gov/acr/",
+      "kind": "board_page",
+      "title": "Air Conditioning and Refrigeration Contractors Homepage — TDLR"
+    },
+    {
+      "source_id": "tx.tdlr.acr_apply",
+      "url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+      "kind": "board_page",
+      "title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR"
+    },
+    {
+      "source_id": "tx.tdlr.acr_renew",
+      "url": "https://www.tdlr.texas.gov/acr/contractor-renew.htm",
+      "kind": "board_page",
+      "title": "Renew an Air Conditioning and Refrigeration Contractor License — TDLR"
+    },
+    {
+      "source_id": "tx.tdlr.acr_ce",
+      "url": "https://www.tdlr.texas.gov/acr/acrce.htm",
+      "kind": "board_page",
+      "title": "Air Conditioning and Refrigeration Continuing Education — TDLR"
+    },
+    {
+      "source_id": "tx.tdlr.acr_reciprocity",
+      "url": "https://www.tdlr.texas.gov/acr/acrreciprocity.htm",
+      "kind": "board_page",
+      "title": "Licensing Reciprocity for Air Conditioning and Refrigeration — TDLR"
+    },
+    {
+      "source_id": "tx.tdlr.elec_contractor_apply",
+      "url": "https://www.tdlr.texas.gov/electricians/apply/businesses/contractor-elec.htm",
+      "kind": "board_page",
+      "title": "Apply for an Electrical Contractor License — TDLR"
+    },
+    {
+      "source_id": "tx.tdlr.elec_contractor_renew",
+      "url": "https://www.tdlr.texas.gov/electricians/renew/businesses/contractor-elec.htm",
+      "kind": "board_page",
+      "title": "Renew an Electrical Contractor License — TDLR"
+    },
+    {
+      "source_id": "tx.tdlr.elec_master_apply",
+      "url": "https://www.tdlr.texas.gov/electricians/apply/individuals/master-electrician.htm",
+      "kind": "board_page",
+      "title": "Apply for a Master Electrician License — TDLR"
+    },
+    {
+      "source_id": "tx.tdlr.elec_master_renew",
+      "url": "https://www.tdlr.texas.gov/electricians/renew/individuals/master-electrician.htm",
+      "kind": "board_page",
+      "title": "Renew a Master Electrician License — TDLR"
+    },
+    {
+      "source_id": "tx.tdlr.elec_journeyman_apply",
+      "url": "https://www.tdlr.texas.gov/electricians/apply/individuals/journeyman-electrician.htm",
+      "kind": "board_page",
+      "title": "Apply for a Journeyman Electrician License — TDLR"
+    },
+    {
+      "source_id": "tx.tdlr.elec_ce",
+      "url": "https://www.tdlr.texas.gov/electricians/elecce.htm",
+      "kind": "board_page",
+      "title": "Electricians Continuing Education — TDLR"
+    },
+    {
+      "source_id": "tx.tdlr.elec_out_of_state",
+      "url": "https://www.tdlr.texas.gov/electricians/out-of-state.htm",
+      "kind": "board_page",
+      "title": "Out of State Applicants — Electricians — TDLR"
+    },
+    {
+      "source_id": "tx.tsbpe.rmp",
+      "url": "https://tsbpe.texas.gov/license-types/responsible-master-plumber/",
+      "kind": "board_page",
+      "title": "Responsible Master Plumber — TSBPE"
+    },
+    {
+      "source_id": "tx.tsbpe.master",
+      "url": "https://tsbpe.texas.gov/license-types/master-plumber/",
+      "kind": "board_page",
+      "title": "Master Plumber — TSBPE"
+    },
+    {
+      "source_id": "tx.tsbpe.journeyman",
+      "url": "https://tsbpe.texas.gov/license-types/journeyman/",
+      "kind": "board_page",
+      "title": "Journeyman Plumber — TSBPE"
+    },
+    {
+      "source_id": "tx.tsbpe.training",
+      "url": "https://tsbpe.texas.gov/training-and-education/",
+      "kind": "board_page",
+      "title": "Training and Education (CPE) — TSBPE"
+    },
+    {
+      "source_id": "fl.dbpr.construction",
+      "url": "https://www2.myfloridalicense.com/construction-industry/",
+      "kind": "board_page",
+      "title": "Construction Industry — Florida DBPR / CILB"
+    },
+    {
+      "source_id": "fl.dbpr.cilb_ac_checklist",
+      "url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1042&clientCode=0601&XACT_DEFN_ID=18292",
+      "kind": "board_page",
+      "title": "Certified Air Conditioning Contractor as an Individual – Active (CILB 5-G/5-H) checklist"
+    },
+    {
+      "source_id": "fl.dbpr.cilb_plumb_checklist",
+      "url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1042&clientCode=0604&XACT_DEFN_ID=18295",
+      "kind": "board_page",
+      "title": "Certified Plumbing Contractor as an Individual – Active (CILB 5-M) checklist"
+    },
+    {
+      "source_id": "fl.dbpr.fin_resp",
+      "url": "https://www2.myfloridalicense.com/pro/cilb/documents/Financial%20Responsibility_and_Stability_Requirements_for_Contractor_Applicants.pdf",
+      "kind": "board_pdf",
+      "title": "Financial Responsibility and Stability Requirements for Contractor Applicants — CILB"
+    },
+    {
+      "source_id": "fl.far.61g4_15_003",
+      "url": "https://www.flrules.org/gateway/readFile.asp?sid=0&tid=4819074&type=1&file=61G4-15.003.doc",
+      "kind": "administrative_rule",
+      "title": "Rule 61G4-15.003 F.A.C. Public Liability Insurance (adopted text)"
+    },
+    {
+      "source_id": "fl.dbpr.electrical",
+      "url": "https://www2.myfloridalicense.com/electrical-contractors/",
+      "kind": "board_page",
+      "title": "Electrical Contractors — Florida DBPR / ECLB"
+    },
+    {
+      "source_id": "fl.dbpr.eclb_initial",
+      "url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1030&clientCode=0801&XACT_DEFN_ID=3657",
+      "kind": "board_page",
+      "title": "Certified Electrical Contractor – Initial (ECLB 1) checklist"
+    },
+    {
+      "source_id": "fl.dbpr.eclb_exam",
+      "url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1010&clientCode=0801&XACT_DEFN_ID=3685",
+      "kind": "board_page",
+      "title": "Certified Electrical Contractor – Examination (ECLB 8) checklist"
+    },
+    {
+      "source_id": "nc.phfs.applicant",
+      "url": "https://nclicensing.org/applicant-information/",
+      "kind": "board_page",
+      "title": "Applicant Information — NC Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors"
+    },
+    {
+      "source_id": "nc.phfs.renewal",
+      "url": "https://nclicensing.org/license-renewal/",
+      "kind": "board_page",
+      "title": "License Renewal — NC Plumbing, Heating and Fire Sprinkler Board"
+    },
+    {
+      "source_id": "nc.phfs.education",
+      "url": "https://nclicensing.org/education/",
+      "kind": "board_page",
+      "title": "Education — NC Plumbing, Heating and Fire Sprinkler Board"
+    },
+    {
+      "source_id": "nc.phfs.faq",
+      "url": "https://nclicensing.org/faq/",
+      "kind": "board_page",
+      "title": "FAQ — NC Plumbing, Heating and Fire Sprinkler Board"
+    },
+    {
+      "source_id": "nc.gs.87_22",
+      "url": "https://www.ncleg.gov/EnactedLegislation/Statutes/PDF/BySection/Chapter_87/GS_87-22.pdf",
+      "kind": "statute",
+      "title": "N.C. G.S. 87-22 License fee; expiration and renewal; reinstatement"
+    },
+    {
+      "source_id": "nc.ncbeec.licensing",
+      "url": "https://www.ncbeec.org/licensing/",
+      "kind": "board_page",
+      "title": "Licensing — NC State Board of Examiners of Electrical Contractors"
+    },
+    {
+      "source_id": "nc.ncbeec.fees",
+      "url": "https://www.ncbeec.org/fees-services/",
+      "kind": "board_page",
+      "title": "Fees & Services — NCBEEC"
+    },
+    {
+      "source_id": "nc.ncbeec.ce",
+      "url": "https://www.ncbeec.org/continuing-education/",
+      "kind": "board_page",
+      "title": "Continuing Education — NCBEEC"
+    },
+    {
+      "source_id": "nc.ncbeec.reciprocity",
+      "url": "https://www.ncbeec.org/reciprocity/",
+      "kind": "board_page",
+      "title": "Reciprocity — NCBEEC"
+    },
+    {
+      "source_id": "nc.ncbeec.examinations",
+      "url": "https://www.ncbeec.org/examinations/",
+      "kind": "board_page",
+      "title": "Examinations — NCBEEC"
+    },
+    {
+      "source_id": "bls.qcew.2382",
+      "url": "https://data.bls.gov/cew/data/api/2025/a/industry/2382.csv",
+      "kind": "federal_statistics",
+      "title": "BLS QCEW 2025 annual averages, NAICS 2382 Building Equipment Contractors, all areas"
+    },
+    {
+      "source_id": "oh.ocilb.home",
+      "url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board",
+      "kind": "board_page",
+      "title": "Ohio Construction Industry Licensing Board — Ohio Department of Commerce"
+    },
+    {
+      "source_id": "oh.ocilb.contractors",
+      "url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/contractors-and-contracting-companies",
+      "kind": "board_page",
+      "title": "Contractors & Contracting Companies — OCILB"
+    },
+    {
+      "source_id": "oh.ocilb.ce_providers",
+      "url": "https://com.ohio.gov/divisions-and-programs/industrial-compliance/boards/ohio-construction-industry-licensing-board/continuing-education-providers",
+      "kind": "board_page",
+      "title": "Continuing Education Providers — OCILB"
+    },
+    {
+      "source_id": "oh.ocilb.renewal_notice_2016",
+      "url": "https://com.ohio.gov/documents/dico_OCILBNewRenewalRequirements2016.pdf",
+      "kind": "board_pdf",
+      "title": "New Contractor License Renewal Requirements — OCILB"
+    },
+    {
+      "source_id": "oh.orc.4740",
+      "url": "https://codes.ohio.gov/ohio-revised-code/chapter-4740",
+      "kind": "statute",
+      "title": "Chapter 4740 Construction Industry Licensing Board — Ohio Revised Code"
+    },
+    {
+      "source_id": "mi.bcc.licensing",
+      "url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section",
+      "kind": "board_page",
+      "title": "Bureau of Construction Codes — Licensing Section, Michigan LARA"
+    },
+    {
+      "source_id": "mi.bcc.renewals",
+      "url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+      "kind": "board_page",
+      "title": "License/Registration Renewals — Michigan LARA BCC"
+    },
+    {
+      "source_id": "mi.bcc.mechanical",
+      "url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/mechanical-examination-licensing-registration-application-information",
+      "kind": "board_page",
+      "title": "Mechanical Examination, Licensing/Registration & Application Information — Michigan LARA BCC"
+    },
+    {
+      "source_id": "mi.bcc.electrical",
+      "url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+      "kind": "board_page",
+      "title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC"
+    },
+    {
+      "source_id": "mi.bcc.plumbing",
+      "url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information",
+      "kind": "board_page",
+      "title": "Plumbing Examination, Licensing/Registration & Application Information — Michigan LARA BCC"
+    },
+    {
+      "source_id": "mi.bcc.mechanical_app",
+      "url": "https://www.michigan.gov/lara/-/media/Project/Websites/lara/bcc-media/Licensing/Mechanical/MECHANICAL-APP.pdf",
+      "kind": "board_pdf",
+      "title": "Application for Mechanical Contractor Examination & Licensing (BCC-11) — Michigan LARA BCC"
+    },
+    {
+      "source_id": "mi.bcc.plumbing_app",
+      "url": "https://www.michigan.gov/lara/-/media/Project/Websites/lara/bcc-media/BCC-Forms/Plumbing/bcc329_plumbing_examination_0317-fillable.pdf",
+      "kind": "board_pdf",
+      "title": "Application for Plumbing Examinations (BCC-329) — Michigan LARA BCC"
+    },
+    {
+      "source_id": "mi.bcc.electrical_app",
+      "url": "https://www.michigan.gov/lara/-/media/Project/Websites/lara/bcc-media/Licensing/lara_bcc_bcc974_app_for_electrical_fire_alarm_sign_contractor_examination_317-fillable.pdf",
+      "kind": "board_pdf",
+      "title": "Application for Electrical/Fire Alarm/Sign Contractor Examination and License (BCC-974) — Michigan LARA BCC"
+    },
+    {
+      "source_id": "az.ars.32_1101_01",
+      "url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01101-01.htm",
+      "kind": "statute",
+      "title": "A.R.S. § 32-1101.01 Local authority"
+    },
+    {
+      "source_id": "az.ars.32_1102",
+      "url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01102.htm",
+      "kind": "statute",
+      "title": "A.R.S. § 32-1102 Classification of licenses; contracting business"
+    },
+    {
+      "source_id": "az.ars.32_1122",
+      "url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm",
+      "kind": "statute",
+      "title": "A.R.S. § 32-1122 Qualifications for license"
+    },
+    {
+      "source_id": "az.ars.32_1123_01",
+      "url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01123-01.htm",
+      "kind": "statute",
+      "title": "A.R.S. § 32-1123.01 Staggered periods of licensure; biennial renewal"
+    },
+    {
+      "source_id": "az.ars.32_1125",
+      "url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01125.htm",
+      "kind": "statute",
+      "title": "A.R.S. § 32-1125 Renewal of license; qualifying party"
+    },
+    {
+      "source_id": "az.ars.32_1126",
+      "url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01126.htm",
+      "kind": "statute",
+      "title": "A.R.S. § 32-1126 Fees"
+    },
+    {
+      "source_id": "az.ars.32_1127",
+      "url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01127.htm",
+      "kind": "statute",
+      "title": "A.R.S. § 32-1127 Qualifying party; responsibility"
+    },
+    {
+      "source_id": "az.ars.32_1127_01",
+      "url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01127-01.htm",
+      "kind": "statute",
+      "title": "A.R.S. § 32-1127.01 Qualifying parties; disassociation with license; requalification"
+    },
+    {
+      "source_id": "az.ars.32_1151",
+      "url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01151.htm",
+      "kind": "statute",
+      "title": "A.R.S. § 32-1151 Engaging in contracting without license prohibited"
+    },
+    {
+      "source_id": "az.ars.32_1152",
+      "url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01152.htm",
+      "kind": "statute",
+      "title": "A.R.S. § 32-1152 Bonds"
+    },
+    {
+      "source_id": "ga.ag.consumered_home_improvement",
+      "url": "https://consumered.georgia.gov/your-home/home-improvement",
+      "kind": "board_page",
+      "title": "Home Improvement — Consumer Ed, Georgia Attorney General's Consumer Protection Division"
+    }
   ]
 }

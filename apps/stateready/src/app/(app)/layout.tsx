@@ -35,7 +35,10 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
             {env.APP_NAME}
           </Link>
           <Link href="/dashboard">Board</Link>
+          <Link href="/licences">Licences</Link>
           <Link href="/roster">Roster</Link>
+          <Link href="/qualifiers">Qualifiers</Link>
+          <Link href="/expansion">Expansion</Link>
           <Link href="/coverage">Coverage</Link>
           <Link href="/settings">Settings</Link>
           <Link href="/settings/billing">Billing</Link>

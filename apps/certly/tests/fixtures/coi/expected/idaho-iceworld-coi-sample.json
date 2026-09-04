@@ -1,0 +1,112 @@
+{
+  "fixture": "idaho-iceworld-coi-sample.pdf",
+  "golden_id": "G14",
+  "labelled_by": "agent:certly-b1-m4",
+  "labelled_on": "2026-09-04",
+  "reviewed_by": "agent:certly-b1-m4-second-pass",
+  "notes": "THIS FILE CONTAINS NO CERTIFICATE, and that is the finding, not a labelling failure. specs/03 §15 describes G14 as a certificate 'embedded in guidance text'; the committed bytes are five pages of guidance with no ACORD 25 anywhere in them. Page 1 is the City of Boise's numbered checklist for reviewing a certificate, page 2 is the IMPORTANT / DISCLAIMER text that is printed on the REVERSE of an ACORD form, page 3 is an 'ACORD FORMS INSTRUCTION GUIDE' essay, and pages 4-5 are two scanned pages of ACORD's own 'Certificates FAQs'. kb-samples/MANIFEST.md's own row already says as much — it records the edition as '(unstamped)' and describes the file as a 'Quick Tips' gloss. Both were read page by page, at 130 dpi as images and through the text layer, before this was written. See BUILD.md D-16. So document_kind is 'other' and every field is null. That makes G14 a REJECTION fixture in practice: a plausible-looking upload that the pipeline must refuse with the sentence specs/03 A5 specifies, rather than map onto ACORD 25 boxes. It is a valuable one — 'my vendor sent me the instructions instead of the certificate' is a real upload.",
+  "expected": {
+    "schema_version": "coi.v1",
+    "document_kind": "other",
+    "form_edition": "unknown",
+    "certificate_date": {
+      "value": null,
+      "raw": null,
+      "page": null,
+      "source_text": null,
+      "confidence": 1.0
+    },
+    "producer": {
+      "name": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      },
+      "address": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      },
+      "contact_name": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      },
+      "phone": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      },
+      "fax": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      },
+      "email": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      }
+    },
+    "insured": {
+      "name": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      },
+      "address": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      }
+    },
+    "insurers": [],
+    "coverages": [],
+    "description_of_operations": {
+      "value": null,
+      "raw": null,
+      "page": null,
+      "source_text": null,
+      "confidence": 1.0
+    },
+    "endorsement_forms_mentioned": [],
+    "certificate_holder": {
+      "value": null,
+      "raw": null,
+      "page": null,
+      "source_text": null,
+      "confidence": 1.0
+    },
+    "authorized_representative_present": {
+      "value": false,
+      "raw": null,
+      "page": null,
+      "source_text": null,
+      "confidence": 1.0
+    },
+    "acord_101_attached": {
+      "value": false,
+      "raw": null,
+      "page": null,
+      "source_text": null,
+      "confidence": 1.0
+    },
+    "notes": "Five pages of guidance about certificates of insurance. No ACORD 25 is present in this file."
+  }
+}

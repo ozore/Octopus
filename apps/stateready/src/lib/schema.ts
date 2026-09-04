@@ -450,6 +450,15 @@ export const oneOffPurchases = pgTable(
      * migration, and `tests/billing.test.ts` asserts no code path can write it.
      */
     kind: text('kind').notNull(),
+    /**
+     * WHICH LINE OF `specs/09`'s canonical Stripe table was bought:
+     * `entry_pack_first | entry_pack | acq_pack_3 | entry_pack_additional`.
+     * `kind` says what class of thing it is (a playbook); `sku` says which
+     * price, and the two are not the same question — the godfather
+     * `once_per_customer=true` rule and the credit are both per SKU, and
+     * deriving the SKU from `amount_cents` would break the day a price moves.
+     */
+    sku: text('sku'),
     playbookId: text('playbook_id').references(() => playbooks.id, { onDelete: 'set null' }),
     stripePaymentIntentId: text('stripe_payment_intent_id'),
     amountCents: integer('amount_cents').notNull(),
@@ -460,6 +469,58 @@ export const oneOffPurchases = pgTable(
   (t) => [
     index('one_off_purchases_org_idx').on(t.orgId),
     uniqueIndex('one_off_purchases_pi_idx').on(t.stripePaymentIntentId),
+  ],
+);
+
+/**
+ * THE ENTRY PACK CREDIT — `specs/09` §Stripe list line 7, `OFFER.md` §6.3.
+ *
+ * *"$750 for your first state — and the full $750 credits against an annual
+ * plan taken within 90 days."* Three properties, each of which is a hole
+ * somebody has fallen through before:
+ *
+ *  1. **One credit per customer, whichever is LARGER — never two.** The
+ *     wave-1b **M7** finding: two stacked credits are $899 off a $3,490 plan.
+ *     `plan_credits_org_idx` is a partial unique index on `status='pending'`,
+ *     so a second pending credit cannot exist at the row level.
+ *  2. **It expires.** `expires_at` is the purchase + 90 days; an expired credit
+ *     is a row that says so, not a row that quietly disappears.
+ *  3. **Applied is a fact with a target.** `applied_to_subscription_id` and
+ *     `applied_at` are the audit trail the founder needs when Stripe's balance
+ *     and our mirror are compared.
+ *
+ * The mechanism itself is **Q8 in `REVIEW.md` §6 and it is open**. The default
+ * this app implements is the documented one: a Stripe **customer balance
+ * credit applied by the app**, `once_per_customer` enforced HERE and not in
+ * Stripe. See `REQUESTS.md` P-6 — the billing port has no balance-credit
+ * method yet, so the app records the credit and the founder posts it.
+ */
+export const planCredits = pgTable(
+  'plan_credits',
+  {
+    id: text('id').primaryKey(),
+    orgId: orgRef(),
+    sourcePurchaseId: text('source_purchase_id').references(() => oneOffPurchases.id, {
+      onDelete: 'cascade',
+    }),
+    /** The SKU the credit came from, so a report can say what earned it. */
+    sku: text('sku').notNull(),
+    amountCents: integer('amount_cents').notNull(),
+    /** `pending | applied | expired`. */
+    status: text('status').notNull().default('pending'),
+    /** Purchase + 90 days (`credit_window_days=90`). */
+    expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+    appliedAt: timestamp('applied_at', { withTimezone: true }),
+    appliedToSubscriptionId: text('applied_to_subscription_id'),
+    appliedPlanKey: text('applied_plan_key'),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    index('plan_credits_org_idx').on(t.orgId, t.status),
+    uniqueIndex('plan_credits_one_pending_idx')
+      .on(t.orgId)
+      .where(sql`status = 'pending'`),
+    uniqueIndex('plan_credits_source_idx').on(t.sourcePurchaseId),
   ],
 );
 
@@ -548,6 +609,34 @@ export const deletionRequests = pgTable(
   (t) => [index('deletion_requests_org_idx').on(t.orgId)],
 );
 
+/**
+ * A pending email change (`specs/10` AC4).
+ *
+ * **The address does not move until the NEW address consumes the link.** The
+ * token is hashed at rest, exactly as the platform hashes a login token: a
+ * database dump must not be a set of account-takeover coupons. Single use, and
+ * the consuming UPDATE is conditional on `consumed_at IS NULL`.
+ */
+export const emailChangeRequests = pgTable(
+  'email_change_requests',
+  {
+    id: text('id').primaryKey(),
+    orgId: orgRef(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    newEmail: text('new_email').notNull(),
+    tokenHash: text('token_hash').notNull(),
+    expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+    consumedAt: timestamp('consumed_at', { withTimezone: true }),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    uniqueIndex('email_change_token_idx').on(t.tokenHash),
+    index('email_change_user_idx').on(t.userId),
+  ],
+);
+
 // ---------------------------------------------------------------------------
 // M11 — help and support (specs/11)
 // ---------------------------------------------------------------------------
@@ -598,6 +687,54 @@ export const legalAcceptances = pgTable(
     ipAddress: text('ip_address'),
   },
   (t) => [index('legal_acceptances_org_idx').on(t.orgId)],
+);
+
+// ---------------------------------------------------------------------------
+// M17 — shared readiness links and technician licence cards (UX.md S19, S18)
+// ---------------------------------------------------------------------------
+
+/**
+ * A tokenised, revocable, read-only view of an organisation's readiness.
+ *
+ * `PERSONA.md` J5 — *"answer in five seconds with something I can forward"* —
+ * and the cheapest distribution mechanism in the product, because the person it
+ * gets forwarded to is the economic buyer.
+ *
+ * THREE PROPERTIES THE TABLE EXISTS TO GUARANTEE:
+ *
+ *  1. **The token is the whole credential and it carries no data.** It is a
+ *     random id; the row it names is what decides the scope. A guessed token
+ *     resolves to nothing.
+ *  2. **Revocation is a column, not a delete.** A revoked link must keep
+ *     answering — with "this link has been turned off" — rather than 404ing,
+ *     because the person holding it is usually a general contractor who needs
+ *     to know whether to ask for a new one.
+ *  3. **A card link names its technician** (`subject_id`). A readiness link
+ *     names none. One table, because both are "a token that opens a paper
+ *     surface for one organisation" and two tables would mean two revocation
+ *     paths and, eventually, one that was forgotten.
+ */
+export const sharedLinks = pgTable(
+  'shared_links',
+  {
+    id: text('id').primaryKey(),
+    orgId: orgRef(),
+    /** `readiness` (S19, `/r/:token`) | `technician_card` (S18, `/c/:token`). */
+    kind: text('kind').notNull(),
+    token: text('token').notNull(),
+    /** The technician a card belongs to; null for a readiness link. */
+    subjectId: text('subject_id').references(() => technicians.id, { onDelete: 'cascade' }),
+    label: text('label'),
+    createdByUserId: text('created_by_user_id').references(() => users.id, { onDelete: 'set null' }),
+    revokedAt: timestamp('revoked_at', { withTimezone: true }),
+    lastViewedAt: timestamp('last_viewed_at', { withTimezone: true }),
+    viewCount: integer('view_count').notNull().default(0),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    uniqueIndex('shared_links_token_idx').on(t.token),
+    index('shared_links_org_idx').on(t.orgId, t.kind),
+  ],
 );
 
 // ---------------------------------------------------------------------------
@@ -741,14 +878,17 @@ export const appSchema = {
   dashboardSummaries,
   playbooks,
   oneOffPurchases,
+  planCredits,
   trialGrants,
   enterpriseEnquiries,
   organisationSettings,
   dataExports,
   deletionRequests,
+  emailChangeRequests,
   supportTickets,
   helpArticleFeedback,
   legalAcceptances,
+  sharedLinks,
   kbSnapshots,
   kbRecords,
   kbSources,
@@ -760,5 +900,6 @@ export type Entity = typeof entities.$inferSelect;
 export type Technician = typeof technicians.$inferSelect;
 export type Licence = typeof licences.$inferSelect;
 export type Deadline = typeof deadlines.$inferSelect;
+export type SharedLink = typeof sharedLinks.$inferSelect;
 export type KbSnapshot = typeof kbSnapshots.$inferSelect;
 export type KbDriftItem = typeof kbDriftItems.$inferSelect;

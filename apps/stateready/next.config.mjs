@@ -11,6 +11,14 @@
  */
 const nextConfig = {
   reactStrictMode: true,
+  /**
+   * `specs/04` caps a licence document at 20 MB and a phone photo of a wallet
+   * card is routinely 3-8 MB. Next's default server-action body limit is 1 MB,
+   * so without this the upload fails with a framework error rather than with
+   * the product's own "That file is 34 MB. The limit is 20 MB" message - and
+   * the size check in `repos/licences.ts` would never run. (M4)
+   */
+  experimental: { serverActions: { bodySizeLimit: '21mb' } },
   transpilePackages: ['@octopus/platform'],
   serverExternalPackages: ['@electric-sql/pglite', 'postgres'],
   env: {

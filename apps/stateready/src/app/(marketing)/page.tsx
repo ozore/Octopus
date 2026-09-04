@@ -1,77 +1,70 @@
-import Link from 'next/link';
+import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 
-import { Disclaimer } from '@/components/provenance';
-import { TileGrid, type Tile } from '@/components/status';
+import { LANDING_EVENTS } from '@/components/marketing/events';
+import { buildLandingData, Landing } from '@/components/marketing/landing';
+import { recordLandingEvent } from '@/components/marketing/track';
 import { getEnv } from '@/env';
-import { coverageTable, JURISDICTION_NAMES, US_JURISDICTIONS } from '@/lib/kb/accessors';
 
-export const dynamic = 'force-dynamic';
+import './landing.css';
 
 /**
- * LANDING PLACEHOLDER — deliberately, and with a note about why.
+ * `/` — the landing page (M15, `LANDING_SPEC.md`).
  *
- * `LANDING_SPEC.md` and the no-login State Rulebook demo are **M15**, owned by
- * the sub-wave C agent (`BUILD.md`); the copy deck has a 450-word ceiling and a
- * CI word counter, and writing half of it here would leave that agent editing
- * around a placeholder rather than shipping the deck.
+ * The copy deck, the five visuals and the demo live in
+ * `src/components/marketing/`; this route is the thin part: read the
+ * environment, read the clock once, assemble the data, record `lp_view`.
  *
- * What this page does carry, because they are constraints rather than copy:
+ * **`force-dynamic`, and for two reasons rather than one.** The page reads
+ * `APP_NAME`, `COMPANY_ADDRESS` and the support address at request time
+ * (Twelve-Factor III — prerendering would bake one deploy's values into the
+ * bundle and would fail the build in CI, where no environment is set); and the
+ * coverage counter, the divergence card and the demo are read from the
+ * knowledge base against **today's** civil date, so the 180-day staleness rule
+ * is applied on the day the visitor arrives rather than on the day we deployed.
  *
- *  - the hero object is **the tile grid on the board**, not a headline over a
- *    photograph (`UX.md` S01) — drawn from the REAL coverage table, so it can
- *    never overstate what we hold;
- *  - **one primary call to action**, repeated unvaried: start the free trial;
- *  - the **coverage boundary stated in the same viewport** (`UX.md` C10);
- *  - the disclaimer.
- *
- * It says nothing about building a roster from the public registers, quotes no
- * penalty figure, and makes no guarantee — the three things `LANDING_SPEC.md`
- * §11 permanently prohibits until their gates pass.
+ * There is no third-party request on this page and no client framework: the
+ * only script is ~1 KB of inline instrumentation posting to our own endpoint,
+ * and the page is fully functional without it.
  */
-export default function LandingPage() {
+export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: 'Every licence, every state, with the board page it came from',
+  description:
+    'StateReady tracks every licence and CE hour your crews hold, in every state you work in — each ' +
+    'date shown with the board page it came from and the day we last checked it. Try it without ' +
+    'signing up.',
+};
+
+export default async function LandingPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const params = await searchParams;
   const env = getEnv();
   const today = new Date().toISOString().slice(0, 10);
-  const covered = coverageTable(today).filter((row) => row.covered);
-  const coveredStates = new Set(covered.map((row) => row.state));
+  const billing = params['billing'] === 'monthly' ? 'monthly' : 'annual';
 
-  const tiles: Tile[] = US_JURISDICTIONS.map((state) => ({
-    state,
-    stateName: JURISDICTION_NAMES[state] ?? state,
-    status: coveredStates.has(state) ? 'READY' : null,
-    licenceCount: 0,
-    accessibleName: coveredStates.has(state)
-      ? `${JURISDICTION_NAMES[state] ?? state} — covered`
-      : `${JURISDICTION_NAMES[state] ?? state} — not covered yet`,
-  }));
+  const data = buildLandingData({
+    today,
+    billing,
+    appName: env.APP_NAME,
+    companyName: env.COMPANY_NAME,
+    companyAddress: env.COMPANY_ADDRESS,
+    supportEmail: env.SUPPORT_EMAIL,
+  });
 
-  return (
-    <main className="narrow">
-      <p className="sr-eyebrow">{env.APP_NAME}</p>
-      <h1>Every licence you hold, every date the state actually publishes.</h1>
-      <p className="sr-lead">
-        StateReady works out your renewal and continuing-education deadlines from each state board&apos;s own
-        published rule — and shows you the page it came from and the day we last checked it. Where a board
-        publishes nothing, we say so instead of estimating.
-      </p>
-
-      <p className="sr-row">
-        <Link className="sr-btn sr-btn--primary" href="/login">
-          Start your 14-day free trial
-        </Link>
-        <Link href="/coverage">See exactly what we cover</Link>
-      </p>
-      <p className="small muted">No credit card. HVAC, plumbing and electrical.</p>
-
-      <section className="sr-mt-6">
-        <h2 className="sr-eyebrow">What we hold today</h2>
-        <TileGrid tiles={tiles} />
-        <p className="small muted">
-          {coveredStates.size} states · {covered.length} state × trade rule sets · the rest are drawn hollow
-          because they are not covered yet.
-        </p>
-      </section>
-
-      <Disclaimer />
-    </main>
+  const headerList = await headers();
+  const utm = Object.fromEntries(
+    Object.entries(params).filter(([key]) => key.startsWith('utm_')).map(([key, value]) => [key, String(value)]),
   );
+  await recordLandingEvent(LANDING_EVENTS.view, {
+    referrer: headerList.get('referer') ?? null,
+    campaign: typeof params['c'] === 'string' ? params['c'] : (utm['utm_campaign'] ?? null),
+    ...utm,
+  });
+
+  return <Landing data={data} />;
 }

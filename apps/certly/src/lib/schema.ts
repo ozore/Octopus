@@ -200,6 +200,13 @@ export const vendors = pgTable(
     index('vendors_org_status_idx').on(t.orgId, t.status),
     index('vendors_org_expiry_idx').on(t.orgId, t.earliestRequiredExpiry),
     index('vendors_org_name_idx').on(t.orgId, t.name),
+    // `specs/06` §4, added by M6 (migration 0002). The dashboard's counter
+    // query and its table share one predicate — org, not archived, status,
+    // soonest expiry — so they share one index. Added rather than folded into
+    // the three above because a partial roster scan that has to re-check
+    // `archived_at` is the difference between 200 ms and a sequential scan at
+    // 5,000 vendors (`specs/06` §8).
+    index('vendors_dashboard').on(t.orgId, t.archivedAt, t.status, t.earliestRequiredExpiry),
     // The six vendor states, mutually exclusive and exhaustive (specs/06 §3).
     // 'covered' is RETIRED and the database refuses it (REVIEW.md B-02).
     check(
@@ -778,6 +785,201 @@ export const auditEvents = pgTable(
   ],
 );
 
+// ---------------------------------------------------------------------------
+// M11 — onboarding state (specs/11 §5) · added by sub-wave B agent B4
+// ---------------------------------------------------------------------------
+
+/**
+ * The six-step checklist, resumable and skippable.
+ *
+ * `activatedAt` IS WRITTEN BY THE COMPARISON PATH, NEVER BY THE UI
+ * (`specs/11` §5). Activation is a fact about the data — one comparison against
+ * a certificate the org uploaded, out of `needs_review` — and measuring it from
+ * the screens somebody visited is how an activation metric comes to overstate
+ * reality. `audience` is deliberately NOT duplicated here: it lives on
+ * `org_settings`, where sub-wave A put it and where M2's library reads it.
+ */
+export const onboardingState = pgTable('onboarding_state', {
+  orgId: text('org_id')
+    .primaryKey()
+    .references(() => organisations.id, { onDelete: 'cascade' }),
+  /** `{ who: true, entity: true, requirements: false, … }` — one key per step. */
+  stepsCompleted: jsonb('steps_completed')
+    .$type<Record<string, boolean>>()
+    .notNull()
+    .default(sql`'{}'::jsonb`),
+  startedAt: timestamp('started_at', { withTimezone: true }).notNull().defaultNow(),
+  skippedAt: timestamp('skipped_at', { withTimezone: true }),
+  /** Set once, by the comparison path. The activation event carries the delta. */
+  activatedAt: timestamp('activated_at', { withTimezone: true }),
+  firstCertificateId: text('first_certificate_id').references(() => certificates.id),
+  createdAt: createdAt(),
+  updatedAt: updatedAt(),
+});
+
+// ---------------------------------------------------------------------------
+// M13 — roles, invitations, preferences, deletion (specs/13 §5)
+// ---------------------------------------------------------------------------
+
+/**
+ * THE PRODUCT ROLE, which is not the platform role.
+ *
+ * `packages/platform`'s `membership_role` enum is `owner | member` and belongs
+ * to the platform, which this fleet may not modify. `specs/13` §7 needs three:
+ * **owner** (billing, deletion, members), **editor** (everything operational),
+ * **viewer** (read and export only). So Certly keeps its own row per member and
+ * derives a default from the platform role — owner→owner, member→editor — which
+ * means an org that never opens this screen behaves exactly as it did before.
+ * Recorded as platform request PR-9.
+ */
+export const memberRoles = pgTable(
+  'member_roles',
+  {
+    orgId: orgRef(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    role: text('role').notNull().default('editor'),
+    updatedAt: updatedAt(),
+  },
+  (t) => [
+    uniqueIndex('member_roles_org_user').on(t.orgId, t.userId),
+    check('member_roles_role', sql`role IN ('owner','editor','viewer')`),
+  ],
+);
+
+export const invitations = pgTable(
+  'invitations',
+  {
+    id: text('id').primaryKey(),
+    orgId: orgRef(),
+    /** Lower-cased at every write: no citext extension is enabled (specs/13 §9). */
+    email: text('email').notNull(),
+    role: text('role').notNull().default('editor'),
+    /** SHA-256 at rest, like every other token in this codebase. */
+    tokenHash: text('token_hash').notNull(),
+    expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+    acceptedAt: timestamp('accepted_at', { withTimezone: true }),
+    revokedAt: timestamp('revoked_at', { withTimezone: true }),
+    invitedBy: text('invited_by').references(() => users.id),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    uniqueIndex('invitations_token_hash').on(t.tokenHash),
+    index('invitations_org_idx').on(t.orgId, t.createdAt),
+    check('invitations_role', sql`role IN ('owner','editor','viewer')`),
+  ],
+);
+
+/**
+ * Per-user notification switches. TWO MESSAGES HAVE NO SWITCH AND ARE NOT
+ * COLUMNS HERE: the trial-ending T-3/T-1 emails (`specs/10` §3.1) and the
+ * customer-facing expiry warning (`UX.md` §4.1 C4), because the Lapse Watch
+ * guarantee is conditioned on our having warned (REVIEW.md MJ-19). A column
+ * would be a switch, and the screen says so where the toggles would be.
+ */
+export const userPreferences = pgTable(
+  'user_preferences',
+  {
+    id: text('id').primaryKey(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    orgId: orgRef(),
+    weeklyDigest: boolean('weekly_digest').notNull().default(true),
+    reviewAlerts: boolean('review_alerts').notNull().default(true),
+    bounceAlerts: boolean('bounce_alerts').notNull().default(true),
+    updatedAt: updatedAt(),
+  },
+  (t) => [uniqueIndex('user_preferences_user_org').on(t.userId, t.orgId)],
+);
+
+export const deletionRequests = pgTable(
+  'deletion_requests',
+  {
+    id: text('id').primaryKey(),
+    orgId: orgRef(),
+    requestedBy: text('requested_by').references(() => users.id),
+    requestedAt: timestamp('requested_at', { withTimezone: true }).notNull().defaultNow(),
+    /** +30 days, cancellable until then (`specs/13` §7). */
+    scheduledFor: timestamp('scheduled_for', { withTimezone: true }).notNull(),
+    completedAt: timestamp('completed_at', { withTimezone: true }),
+    cancelledAt: timestamp('cancelled_at', { withTimezone: true }),
+  },
+  (t) => [index('deletion_requests_org_idx').on(t.orgId, t.requestedAt)],
+);
+
+// ---------------------------------------------------------------------------
+// M10 — the Vendor Pack add-on (specs/10 §2, §A12) · added by B4
+// ---------------------------------------------------------------------------
+
+/**
+ * THE VENDOR PACK, MIRRORED HERE RATHER THAN IN THE PLATFORM'S `subscriptions`.
+ *
+ * `packages/platform`'s entitlement reads ONE live subscription row per
+ * organisation (the newest), and `normaliseSubscription` reads
+ * `items.data[0]` — one item. A Vendor Pack is a second line, so mirroring it
+ * into that table would make the newest row (the add-on) answer "what plan is
+ * this org on?", and the shell would show a customer who just bought fifty more
+ * vendors as having none. So Certly routes pack events here, keys the row on
+ * the organisation, and computes `vendorLimit = base + 50 × packQuantity`
+ * itself. Recorded as platform request PR-10.
+ */
+export const billingAddons = pgTable(
+  'billing_addons',
+  {
+    orgId: text('org_id')
+      .primaryKey()
+      .references(() => organisations.id, { onDelete: 'cascade' }),
+    /** 0–10 packs of 50 tracked vendors (`specs/10` §9). */
+    packQuantity: integer('pack_quantity').notNull().default(0),
+    packPriceId: text('pack_price_id'),
+    stripeSubscriptionId: text('stripe_subscription_id'),
+    /** Stripe's own status for the add-on subscription. */
+    status: text('status'),
+    updatedAt: updatedAt(),
+  },
+  (t) => [check('billing_addons_pack_quantity', sql`pack_quantity BETWEEN 0 AND 10`)],
+);
+
+// ---------------------------------------------------------------------------
+// M7 — the org's reminder settings (specs/07 §5) · added by sub-wave B agent B3
+// ---------------------------------------------------------------------------
+
+/**
+ * A TABLE OF ITS OWN RATHER THAN FOUR COLUMNS ON `org_settings`.
+ *
+ * `org_settings` is sub-wave A's shared row and three sub-wave B agents are
+ * editing this file at once; appending a table is a conflict-free hunk at the
+ * end of the file, while widening a shared row in the middle of it is not.
+ * The data is also genuinely M7's: nothing outside the reminder ladder reads
+ * any of it.
+ *
+ * `ladder` holds the rungs this org keeps. `specs/07` §2: rungs can be
+ * REMOVED, never invented — a fixed set is what keeps the copy honest and the
+ * tests finite — so `parseLadder` intersects whatever is stored with the ten
+ * canonical rungs rather than trusting the column.
+ *
+ * `replyToEmail` is the customer's own mailbox (§6 item 6), so an agent's reply
+ * reaches a human who can decide. Null falls back to the org owner's address,
+ * which is the same promise with one less thing to configure.
+ */
+export const reminderSettings = pgTable('reminder_settings', {
+  orgId: text('org_id')
+    .primaryKey()
+    .references(() => organisations.id, { onDelete: 'cascade' }),
+  /** A subset of the ten canonical rungs, in ladder order. */
+  ladder: jsonb('ladder').$type<string[]>(),
+  /** The `From` display name is "{Org} via {APP_NAME}"; this overrides {Org}. */
+  sendingName: text('sending_name'),
+  replyToEmail: text('reply_to_email'),
+  /** 1 = Monday. The weekly digest to the CUSTOMER, never to a vendor. */
+  weeklyDigestDay: integer('weekly_digest_day').notNull().default(1),
+  /** Kill switch for one org, distinct from `vendors.remindersPaused`. */
+  paused: boolean('paused').notNull().default(false),
+  updatedAt: updatedAt(),
+});
+
 export const appSchema = {
   orgSettings,
   requirementSets,
@@ -801,9 +1003,16 @@ export const appSchema = {
   suppressions,
   recipientSends,
   emailEvents,
+  reminderSettings,
   reports,
   trialConsents,
+  billingAddons,
   auditEvents,
+  onboardingState,
+  memberRoles,
+  invitations,
+  userPreferences,
+  deletionRequests,
 };
 
 export type Vendor = typeof vendors.$inferSelect;

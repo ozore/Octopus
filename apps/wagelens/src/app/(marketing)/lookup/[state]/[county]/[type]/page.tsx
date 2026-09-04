@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 
 import { StandingDisclaimer } from '@/components/disclaimer';
+import { WatchForm, parseWatchState } from '@/components/watch-form';
 import {
   CandidateList,
   ClassificationTable,
@@ -209,6 +210,13 @@ export default async function LookupResultPage({
       />
       {/* Below the table, never above it and never over it (V3). */}
       <ConversionLine wdNumber={determination.wdNumber} />
+      {/* WL-14 V12 — and BELOW the last classification row, for the same
+          reason: the rate is free and this is an offer, not a gate. */}
+      <WatchForm
+        wdNumber={determination.wdNumber}
+        returnPath={`/lookup/${state}/${county}/${type}`}
+        state={parseWatchState(query['watch'])}
+      />
       <StandingDisclaimer />
     </>
   );

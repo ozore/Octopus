@@ -8,6 +8,20 @@
       "when": 1788473672219,
       "tag": "0000_app_init",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1788480518531,
+      "tag": "0001_boring_la_nuit",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1788480577058,
+      "tag": "0002_b2_alerts_billing_settings",
+      "breakpoints": true
     }
   ]
 }

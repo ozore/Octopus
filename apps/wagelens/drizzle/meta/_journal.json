@@ -8,6 +8,20 @@
       "when": 1788472601207,
       "tag": "0000_wagelens_init",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1788480541412,
+      "tag": "0001_outstanding_magus",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1788481278402,
+      "tag": "0002_amazing_scream",
+      "breakpoints": true
     }
   ]
 }

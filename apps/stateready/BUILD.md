@@ -364,6 +364,83 @@ not built** — its data model, coverage logic and tile-grid picker all exist an
 are used by `/settings/company`; the four-step wizard is M2's remaining UI and
 belongs with M4's "add your first licence" step. `/licences` is M4's.
 
+### D7 — the demo is `/rulebook`, and `/demo` redirects to it *(M15, 2026-09-04)*
+
+- **Conflict:** §2 of this document assigns M15 `src/app/(marketing)/rulebook/**`;
+  `LANDING_SPEC.md` §12.2 publishes the deep link as `/demo?state=tx&trade=hvac`
+  and tells the outbound fleet to send prospects to it.
+- **Shipped:** the page is `/rulebook`, and `/demo` is a redirect that preserves
+  `state` and `trade`. Both spellings answer; neither document is wrong.
+
+### D8 — V1 and V2 are inline SVG; V3, V4 and V5 are static HTML *(M15, 2026-09-04)*
+
+- **Spec:** `LANDING_SPEC.md` §4 V1 says the grid is `<rect>`s (a size budget
+  argument) **and** that its markup is "a `<ul>` of `<button>`s".
+- **Shipped:** the grid is an `aria-hidden` SVG of 51 `<rect>`s **mirrored by a
+  visually-hidden `<ul>` in DOM reading order**, one item per jurisdiction,
+  carrying the status word — the same pattern `Runway` already uses in
+  `components/status.tsx`. On the marketing page the grid is a *sample
+  footprint* with nothing to click, and 51 buttons that do nothing are 51
+  promises to a screen-reader user that the page does not keep.
+- **V3, V4 and V5 stay HTML** because the spec describes them typographically —
+  tabular numerals, hairline rules, step cards, an inline chip after a value —
+  and SVG text would lose wrapping, selection and the type scale.
+
+### D9 — below 40rem the runway is a list, not a sideways scroll *(M15, 2026-09-04)*
+
+- **Spec:** §8 asks for the runway to scroll horizontally with the 30 April
+  stack **pre-scrolled into view**, and in the same list requires **no
+  horizontal page scroll at any width**.
+- **Shipped:** the SVG below 40rem is replaced by the lane list (the same lanes,
+  the same dates, the same source chips) and above 40rem the list becomes the
+  accessible equivalent. Pre-scrolling a container needs JavaScript this page
+  does not load, and a twelve-month axis is not legible at 390px whatever you
+  scroll it to. The reader does not have to discover the point: on a phone it is
+  the first line.
+
+### D10 — the demo's rate limit is invisible, and fails open *(M15, 2026-09-04)*
+
+- **Conflict:** the build brief requires the demo route to be rate limited;
+  `LANDING_SPEC.md` §12.2 says *"no email, no account, no card, no rate-limit
+  prompt"*.
+- **Shipped:** sixty lookups per connection per ten minutes (`track.ts`), keyed
+  on a truncated SHA-256 of the client address with the day mixed in — **no IP is
+  stored**. Nothing is ever asked of the visitor: when the limit trips the page
+  says one plain sentence and keeps working, and when the counter's own table is
+  unreachable the limiter **allows** the lookup. It exists to stop a script
+  walking 153 combinations in a loop, not to gate a human.
+
+### D11 — the demo panel's closing line and in-panel CTA are not rendered *(M15, 2026-09-04)*
+
+- **Spec:** the §12.1 wireframe ends the demo with *"This is one state and one
+  trade. You work in more than one."* and a fourth CTA button.
+- **Shipped:** neither. They are not in the §13 copy deck, which is the page
+  verbatim and says *"anything not on this list is UI chrome, a source chip, or
+  demo output"*. They are prose, not chrome, so CI would count them: **+21 words,
+  460 of 450**. Marking an argument "chrome" to get under the ceiling is exactly
+  the evasion §1's mechanical rule exists to prevent. The same reasoning keeps
+  the **mobile sticky CTA** (§8) off the page: a fourth placement is 9 more
+  words, and §13 counts three.
+
+### D12 — the uncovered state links the support address; it captures no email *(M15, 2026-09-04)*
+
+- **Spec:** §12.2 offers *"a one-field email capture that is optional and
+  clearly labelled as a waitlist"* on an uncovered state × trade.
+- **Shipped:** the refusal, the promise that it goes to the front of the queue,
+  a link to `/coverage` and a `mailto:` with the state and trade prefilled.
+  `PIPELINE.md`'s standing rule is no private individuals' data anywhere, and a
+  form that stores a stranger's address before an account exists has no consent
+  record, no deletion path and no owner. `lp_demo_query` with
+  `was_covered=false` still captures the demand signal, which is what the
+  waitlist was for.
+
+### D13 — prices are grouped on the marketing page *(M15, 2026-09-04)*
+
+- `formatAmount` (platform) renders `$1490`; `LANDING_SPEC.md` §5 publishes the
+  ladder as `$1,490/yr`. The landing page groups thousands locally and takes
+  every amount from `plans.ts`; a test asserts both the rendered strings and the
+  underlying cents.
+
 ---
 
 ## 5. Requests to other fleets

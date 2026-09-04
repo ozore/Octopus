@@ -239,3 +239,42 @@ th, td { text-align: left; padding: var(--c-space-2) var(--c-space-3); border-bo
   padding-top: var(--c-space-2);
   margin-top: var(--c-space-5);
 }
+
+/* --------------------------------------------------------------------------
+   6. B2 — M6's dashboard and M12's report surfaces
+   Every value below is a `--c-*` token; `tests/identity.test.ts` refuses a
+   literal colour here.
+   -------------------------------------------------------------------------- */
+
+/* A counter that is also the active filter. `specs/06` A2: the filter is in
+   the URL, so the chip is a LINK and its selected state has to be visible
+   without colour alone — the border weight and the ink change together. */
+.c-chip--on {
+  background: var(--c-select-bg);
+  border-color: var(--c-line-strong);
+  color: var(--c-ink-strong);
+  font-weight: 600;
+}
+a.c-chip { text-decoration: none; }
+
+/* Surface 6 of the eleven (KB §F.4): the same rows as cards on a phone.
+   The table and the cards carry the SAME data — one is hidden, never a
+   different, shorter truth. */
+.c-cards { display: none; }
+@media (max-width: 899px) {
+  .c-cards { display: flex; flex-direction: column; gap: var(--c-space-3); }
+  .c-cards > .c-card { padding: var(--c-space-4); }
+  .c-split > div > .c-card > .c-table-wrap { display: none; }
+}
+
+/* The requirement editor's rows (`specs/02` §3). `.c-req__row` is a four
+   column grid in the design system and is NOT redefined here; the editor puts
+   the row's prose in the first three tracks and its controls in the fourth,
+   which is the shape the grid was drawn for. */
+.c-req__row > div:first-child { grid-column: 1 / 4; }
+.c-req__row > div:last-child { grid-column: 4; align-self: start; }
+.c-req__row details > summary { cursor: pointer; list-style: none; }
+.c-req__row details[open] > form { margin-top: var(--c-space-3); }
+
+/* The review panel embedded in the vendor detail (`UX.md` §3.2). */
+.c-review__row q { display: block; color: var(--c-ink-muted); }

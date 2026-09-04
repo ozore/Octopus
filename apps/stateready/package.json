@@ -2,13 +2,14 @@
   "name": "@octopus/stateready",
   "version": "0.1.0",
   "private": true,
-  "description": "StateReady — licence, CE and readiness tracking for multi-state HVAC, plumbing and electrical contractors. Scaffolded from apps/_template onto @octopus/platform.",
+  "description": "StateReady \u2014 licence, CE and readiness tracking for multi-state HVAC, plumbing and electrical contractors. Scaffolded from apps/_template onto @octopus/platform.",
   "type": "module",
   "engines": {
     "node": ">=22.0.0"
   },
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/check-legal-address.mjs",
     "build": "next build",
     "start": "next start -p ${PORT:-3000}",
     "typecheck": "tsc --noEmit",
@@ -24,6 +25,7 @@
     "@octopus/platform": "*",
     "drizzle-orm": "^0.44.6",
     "next": "^15.5.4",
+    "pdf-lib": "^1.17.1",
     "postgres": "^3.4.7",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

@@ -44,7 +44,11 @@ export default async function MarketingLayout({ children }: { children: ReactNod
         <p className="small">
           {env.APP_NAME}, a {env.COMPANY_NAME} company · <Link href="/legal/terms">Terms</Link> ·{' '}
           <Link href="/legal/privacy">Privacy</Link> · <Link href="/legal/disclaimer">Disclaimer</Link> ·{' '}
+          <Link href="/legal/refunds">Refunds and guarantees</Link> ·{' '}
+          <Link href="/legal/subprocessors">Sub-processors</Link> · <Link href="/support">Support</Link> ·{' '}
           <a href={`mailto:${env.SUPPORT_EMAIL}`}>{env.SUPPORT_EMAIL}</a>
+          <br />
+          {env.COMPANY_ADDRESS}
         </p>
       </footer>
     </>

@@ -10,8 +10,16 @@
  */
 
 import Link from 'next/link';
+import { Fragment, type ReactNode } from 'react';
 
-import { ProvenanceCard, Rate, formatDay, formatMoney, type Provenance } from './provenance';
+import {
+  ProvenanceCard,
+  ProvenanceLine,
+  Rate,
+  formatDay,
+  formatMoney,
+  type Provenance,
+} from './provenance';
 import { StandingDisclaimer } from './disclaimer';
 import type { ClassificationRow, DeterminationCandidate } from '@/lib/kb';
 
@@ -126,23 +134,60 @@ export function ModificationControl({
   );
 }
 
+/**
+ * EXTENDED BY PROPS FOR WL-03, NOT FORKED. Every optional prop below is off by
+ * default, so the public determination page renders exactly what it rendered
+ * before and gate G8's currency count over two rows is unchanged.
+ *
+ *  - `heading`      the catalogue's own header ("57 classifications on
+ *                   TX20260253 mod 1"), which names the PINNED modification.
+ *  - `showQualifier` the MN20260080 case: the same label twice in one rate
+ *                   group, told apart only by its project-value qualifier.
+ *                   Both rows are shown; there is no dedupe.
+ *  - `expandedIds` / `detailHref` row detail as a LINK rather than a script, so
+ *                   the footnote — which IS part of the rate — is reachable
+ *                   with no JavaScript at all.
+ *  - `rowAction`    the mapping picker's per-row control (WL-04).
+ *  - `emptyMessage` the "Not finding it?" panel is the caller's, because at
+ *                   zero results the catalogue offers conformance and the
+ *                   public page does not.
+ */
 export function ClassificationTable({
   rows,
   total,
   provenance,
   query,
+  heading,
+  showQualifier = false,
+  expandedIds,
+  detailHref,
+  rowAction,
+  emptyMessage,
+  footer,
 }: {
   rows: ClassificationRow[];
   total: number;
   provenance: Provenance;
   query?: string;
+  heading?: ReactNode;
+  showQualifier?: boolean;
+  expandedIds?: string[];
+  detailHref?: (row: ClassificationRow) => string;
+  rowAction?: (row: ClassificationRow) => ReactNode;
+  emptyMessage?: ReactNode;
+  footer?: ReactNode;
 }) {
+  const expanded = new Set(expandedIds ?? []);
   return (
     <section className="wl-panel">
       <header className="wl-panel__head">
         <h2>
-          {total} classification{total === 1 ? '' : 's'}
-          {query ? ` matching “${query}”` : ''}
+          {heading ?? (
+            <>
+              {total} classification{total === 1 ? '' : 's'}
+              {query ? ` matching “${query}”` : ''}
+            </>
+          )}
         </h2>
       </header>
       <div className="wl-table-wrap wl-scroll-x">
@@ -150,6 +195,7 @@ export function ClassificationTable({
           <thead>
             <tr>
               <th scope="col">Classification</th>
+              {showQualifier ? <th scope="col">Qualifier</th> : null}
               <th scope="col" className="wl-num">
                 Rate
               </th>
@@ -160,44 +206,91 @@ export function ClassificationTable({
                 Total
               </th>
               <th scope="col">Rate group</th>
+              {rowAction ? <th scope="col">Map</th> : null}
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
-              <tr key={row.id} data-testid="classification-row">
-                <td>
-                  {row.classificationLabel}
-                  {row.footnoteText ? (
-                    <span className="wl-2xs wl-muted"> {row.footnoteText}</span>
+            {rows.map((row) => {
+              const isOpen = expanded.has(row.id);
+              const columns = 5 + (showQualifier ? 1 : 0) + (rowAction ? 1 : 0);
+              return (
+                <Fragment key={row.id}>
+                  <tr data-testid="classification-row" data-classification-id={row.id}>
+                    <td>
+                      {detailHref ? (
+                        <Link href={detailHref(row)} data-testid="classification-expand">
+                          {row.classificationLabel}
+                        </Link>
+                      ) : (
+                        row.classificationLabel
+                      )}
+                      {!detailHref && row.footnoteText ? (
+                        <span className="wl-2xs wl-muted"> {row.footnoteText}</span>
+                      ) : null}
+                    </td>
+                    {showQualifier ? <td className="wl-xs">{row.qualifier ?? ''}</td> : null}
+                    <td className="wl-num">
+                      <Rate base={row.baseRate} provenance={provenance} label="Base rate" />
+                    </td>
+                    <td className="wl-num">
+                      <Rate base={row.fringeRate} provenance={provenance} label="Fringe" />
+                    </td>
+                    <td className="wl-num">
+                      <Rate
+                        base={Number(row.baseRate) + Number(row.fringeRate)}
+                        provenance={provenance}
+                        label="Total"
+                      />
+                    </td>
+                    <td className="wl-xs wl-mono">
+                      {row.rateGroupIdentifier}
+                      <span className="wl-muted"> · {row.rateGroupKind.replace('_', ' ')}</span>
+                    </td>
+                    {rowAction ? <td>{rowAction(row)}</td> : null}
+                  </tr>
+                  {isOpen ? (
+                    <tr data-testid="classification-detail">
+                      <td colSpan={columns}>
+                        <div className="wl-stack-2">
+                          <p className="wl-sm wl-strong">{row.classificationLabel}</p>
+                          {row.qualifier ? (
+                            <p className="wl-xs">Qualifier: {row.qualifier}</p>
+                          ) : null}
+                          {row.footnoteText ? (
+                            <p className="wl-xs" data-testid="classification-footnote">
+                              {row.footnoteText}
+                            </p>
+                          ) : null}
+                          <p className="wl-2xs wl-muted">
+                            Rate group <span className="wl-mono">{row.rateGroupIdentifier}</span> ·{' '}
+                            {row.rateGroupKind.replace('_', ' ')} · effective{' '}
+                            {formatDay(row.rateGroupEffectiveDate)}
+                          </p>
+                          <ProvenanceLine
+                            provenance={{
+                              ...provenance,
+                              publicationDate: row.publicationDate,
+                              lastVerified: row.lastVerified,
+                            }}
+                          />
+                        </div>
+                      </td>
+                    </tr>
                   ) : null}
-                </td>
-                <td className="wl-num">
-                  <Rate base={row.baseRate} provenance={provenance} label="Base rate" />
-                </td>
-                <td className="wl-num">
-                  <Rate base={row.fringeRate} provenance={provenance} label="Fringe" />
-                </td>
-                <td className="wl-num">
-                  <Rate
-                    base={Number(row.baseRate) + Number(row.fringeRate)}
-                    provenance={provenance}
-                    label="Total"
-                  />
-                </td>
-                <td className="wl-xs wl-mono">
-                  {row.rateGroupIdentifier}
-                  <span className="wl-muted"> · {row.rateGroupKind.replace('_', ' ')}</span>
-                </td>
-              </tr>
-            ))}
+                </Fragment>
+              );
+            })}
           </tbody>
         </table>
       </div>
       {rows.length === 0 ? (
         <div className="wl-panel__body">
-          <p className="wl-muted">No classification on this determination matches that search.</p>
+          {emptyMessage ?? (
+            <p className="wl-muted">No classification on this determination matches that search.</p>
+          )}
         </div>
       ) : null}
+      {footer ? <div className="wl-panel__body">{footer}</div> : null}
     </section>
   );
 }

@@ -124,16 +124,34 @@ describe('the GC tier is not sellable (finding B2)', () => {
     expect(plans).not.toMatch(/key: 'gc'/);
   });
 
-  it('is published on the pricing page as "coming", with no purchase control', () => {
+  /**
+   * V19 asks for one property: the GC card carries **no purchase control**. Its
+   * only interactive element is the waitlist, which WL-09 requires — so the
+   * assertion is about what the card can DO, not about whether it contains a
+   * `<form>` element. (It did read "no form at all" until the waitlist was
+   * built; that was a proxy for the property, and the property is testable
+   * directly.)
+   */
+  it('is published as "coming", with a waitlist and no purchase control', () => {
+    const card = readFileSync(join(appRoot, 'src', 'components', 'gc-card.tsx'), 'utf8');
+    expect(card).toContain('GC Roll-up');
+    expect(card).toContain('Coming — join the list');
+
+    // Nothing in the card can begin a purchase.
+    expect(card).not.toMatch(/startCheckoutAction|startTrialAction|pricingCtaAction/);
+    expect(card).not.toMatch(/Start 14-day trial|\bBuy\b|\bSubscribe\b/);
+    // Its ONE action is the waitlist, and the waitlist creates no Stripe object.
+    expect(card).toContain('joinGcWaitlistAction');
+    expect([...card.matchAll(/action=\{([A-Za-z0-9_]+)\}/g)].map((m) => m[1])).toEqual([
+      'joinGcWaitlistAction',
+    ]);
+
+    // And the pricing page renders it rather than rolling its own.
     const pricing = readFileSync(
       join(appRoot, 'src', 'app', '(marketing)', 'pricing', 'page.tsx'),
       'utf8',
     );
-    expect(pricing).toContain('GC Roll-up');
-    expect(pricing).toContain('Coming — join the list');
-    // The waitlist section contains no form and no checkout action.
-    const card = pricing.slice(pricing.indexOf('data-testid="gc-waitlist"'));
-    expect(card).not.toMatch(/startCheckoutAction|<form/);
+    expect(pricing).toContain('GcComingCard');
   });
 });
 

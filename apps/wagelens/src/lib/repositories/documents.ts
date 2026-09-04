@@ -22,7 +22,7 @@ import { createHash, randomBytes } from 'node:crypto';
 import { and, desc, eq, gt, isNull, sql } from 'drizzle-orm';
 
 import { newId } from '@octopus/platform';
-import type { Db } from '@octopus/platform/db';
+import { withTx, type Db } from '@octopus/platform/db';
 
 import { documentShareLinks, documents, type DocumentRow, type DocumentShareLink } from '../schema';
 
@@ -160,4 +160,100 @@ export async function liveShareLinks(
       ),
     )
     .orderBy(desc(documentShareLinks.createdAt));
+}
+
+// ---------------------------------------------------------------------------
+// Reads and actions the payroll screen needs (WL-06 V11–V13)
+// ---------------------------------------------------------------------------
+
+export async function documentsOfPayroll(db: Db, payrollId: string): Promise<DocumentRow[]> {
+  return db
+    .select()
+    .from(documents)
+    .where(eq(documents.payrollId, payrollId))
+    .orderBy(desc(documents.generatedAt));
+}
+
+export async function getDocument(db: Db, documentId: string): Promise<DocumentRow | undefined> {
+  const [row] = await db.select().from(documents).where(eq(documents.id, documentId)).limit(1);
+  return row as DocumentRow | undefined;
+}
+
+/**
+ * "Send it again" in one click, and never "leave the old one open": the
+ * previous live link for the document is revoked in the SAME transaction as
+ * the new one is minted, so exactly one live link remains.
+ */
+export async function reissueShareLink(
+  db: Db,
+  input: { documentId: string; createdByUserId?: string; now?: Date },
+): Promise<{ token: string; link: DocumentShareLink; revoked: number }> {
+  return withTx(db, async (tx) => {
+    const revoked = await revokeAllLinksForDocument(tx, {
+      documentId: input.documentId,
+      ...(input.createdByUserId ? { revokedByUserId: input.createdByUserId } : {}),
+    });
+    const created = await createShareLink(tx, input);
+    return { ...created, revoked };
+  });
+}
+
+/** The plural mistake needs a plural control: "revoke every link on this
+ *  payroll" is beside the per-link one, because the wrong address is usually
+ *  sent more than one document. */
+export async function revokeAllLinksForPayroll(
+  db: Db,
+  input: { payrollId: string; revokedByUserId?: string },
+): Promise<number> {
+  const rows = await db
+    .select({ id: documents.id })
+    .from(documents)
+    .where(eq(documents.payrollId, input.payrollId));
+  let revoked = 0;
+  for (const row of rows) {
+    revoked += await revokeAllLinksForDocument(db, {
+      documentId: row.id,
+      ...(input.revokedByUserId ? { revokedByUserId: input.revokedByUserId } : {}),
+    });
+  }
+  return revoked;
+}
+
+/** Every live link on a payroll, with what V13 requires beside it: the expiry,
+ *  the access count and the last access. You cannot revoke what you cannot see. */
+export async function liveShareLinksForPayroll(
+  db: Db,
+  payrollId: string,
+  now = new Date(),
+): Promise<Array<DocumentShareLink & { kind: string }>> {
+  const rows = await db
+    .select({
+      link: documentShareLinks,
+      kind: documents.kind,
+    })
+    .from(documentShareLinks)
+    .innerJoin(documents, eq(documents.id, documentShareLinks.documentId))
+    .where(
+      and(
+        eq(documents.payrollId, payrollId),
+        isNull(documentShareLinks.revokedAt),
+        gt(documentShareLinks.expiresAt, now),
+      ),
+    )
+    .orderBy(desc(documentShareLinks.createdAt));
+  return rows.map((row) => ({ ...(row.link as DocumentShareLink), kind: row.kind }));
+}
+
+/** The document a share token points at, or `undefined`. Expired and revoked
+ *  are indistinguishable from outside, on purpose (V11). */
+export async function resolveShareToken(
+  db: Db,
+  token: string,
+  now = new Date(),
+): Promise<{ link: DocumentShareLink; document: DocumentRow } | undefined> {
+  const link = await consumeShareLink(db, token, now);
+  if (!link) return undefined;
+  const document = await getDocument(db, link.documentId);
+  if (!document) return undefined;
+  return { link, document };
 }

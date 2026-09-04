@@ -47,6 +47,22 @@ export const appEnvSchema = basePlatformEnv.extend({
    *  easiest way to lose money on this product, so the cap is a launch
    *  requirement rather than a nice-to-have. */
   GAP_REPORT_DAILY_SPEND_CAP_CENTS: z.coerce.number().int().min(0).default(2000),
+  /**
+   * `specs/15`'s LAUNCH GATE, as a variable rather than a branch.
+   *
+   * Until the founder's legal read lands (REVIEW.md B-07, §2.6), `/gap-report`
+   * accepts nothing from a stranger: the page ships the samples-only demo and
+   * the report sits behind a waitlist line. Defaults to **false**, because the
+   * failure mode of the wrong default is holding a third party's insurance
+   * documents with no contract, and the failure mode of the right one is a
+   * page that says "not yet".
+   */
+  GAP_REPORT_UPLOADS_ENABLED: z
+    .string()
+    .optional()
+    .transform((value) => value === 'true'),
+  /** Svix-scheme signing secret for `POST /api/webhooks/resend` (`specs/07` §8). */
+  RESEND_WEBHOOK_SECRET: z.string().optional(),
   /** M4's model, stamped onto every extraction. No default that could ship. */
   ANTHROPIC_API_KEY: z.string().optional(),
   EXTRACTION_MODEL: z.string().default('claude-sonnet-4-5'),

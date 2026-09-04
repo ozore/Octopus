@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 
 import { StandingDisclaimer } from '@/components/disclaimer';
+import { WatchForm, parseWatchState } from '@/components/watch-form';
 import {
   ClassificationTable,
   ConversionLine,
@@ -241,6 +242,13 @@ export default async function DeterminationPage({
         {...(search ? { query: search } : {})}
       />
       <ConversionLine wdNumber={determination.wdNumber} />
+      {/* WL-14 V12 — the watch form sits BELOW the last classification row.
+          The table renders with no email; this is an offer, never a gate. */}
+      <WatchForm
+        wdNumber={determination.wdNumber}
+        returnPath={canonicalPath}
+        state={parseWatchState(query['watch'])}
+      />
       <StandingDisclaimer />
     </>
   );
