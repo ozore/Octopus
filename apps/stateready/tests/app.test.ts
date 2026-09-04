@@ -18,11 +18,14 @@ import { testEnv } from '@octopus/platform/testing';
 
 import { PAPER_THEME_ATTRS, themeAttributes } from '../src/components/paper';
 import { DISCLAIMER_SECTIONS, DISCLAIMER_SHORT } from '../src/components/provenance';
+import { FORBIDDEN_PRICE_KEYS } from '../src/lib/billing/prices';
 import { parseEnv } from '../src/env';
 import { ENTERPRISE_STATE_THRESHOLD, ONE_OFF_PRICES, plans, TRIAL_DAYS } from '../src/lib/plans';
 import { STATUSES, STATUS_GLYPH, STATUS_TOKEN } from '../src/lib/repos/dashboard';
 
 const appRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
+/** The file that DECLARES the forbidden keys, and so may name them. */
+const pricesFile = join(appRoot, 'src', 'lib', 'billing', 'prices.ts');
 
 function sourceFiles(root = join(appRoot, 'src')): string[] {
   const out: string[] = [];
@@ -118,7 +121,13 @@ describe('the plan map is the offer, as data', () => {
   it('never names a First State Audit price — deferred by D1 and not created in Stripe', () => {
     const all = JSON.stringify({ plans, ONE_OFF_PRICES });
     expect(all).not.toMatch(/FIRST_STATE_AUDIT/);
+    // `prices.ts` is where the key is NAMED AS FORBIDDEN, which is the
+    // opposite of using it, so it is checked by the assertion below instead of
+    // by the scan.
+    expect(readFileSync(pricesFile, 'utf8')).toMatch(/FORBIDDEN_PRICE_KEYS/);
+    expect(FORBIDDEN_PRICE_KEYS).toContain('STRIPE_PRICE_FIRST_STATE_AUDIT');
     for (const file of sourceFiles()) {
+      if (file === pricesFile) continue;
       const text = readFileSync(file, 'utf8');
       // The enum value survives in the schema, dormant, with the comment that
       // explains it; no price id and no code path may exist.
@@ -247,9 +256,16 @@ describe('identity rules that are checkable, checked', () => {
     // Never colour alone: every status carries a glyph.
     expect(Object.values(STATUS_GLYPH)).toEqual(['✓', '◑', '✕', '—']);
 
-    const banned = /\b(status|worstStatus|data-status)\s*[=:]\s*['"](amber|red|green|ok)['"]/i;
+    // A colour name is never a status. `ok` is not a colour, and it is a
+    // legitimate discriminant elsewhere (the admin gate returns
+    // `{ status: 'ok' }` for an authenticated operator), so it is banned only
+    // where it would drive a colour: the DOM attribute the stylesheet reads.
+    const banned = /\b(status|worstStatus|data-status)\s*[=:]\s*['"](amber|red|green)['"]/i;
+    const bannedToken = /data-status\s*=\s*['"]ok['"]/i;
     for (const file of files) {
-      expect(banned.test(readFileSync(file, 'utf8')), `${file} uses a colour name as a status`).toBe(false);
+      const text = readFileSync(file, 'utf8');
+      expect(banned.test(text), `${file} uses a colour name as a status`).toBe(false);
+      expect(bannedToken.test(text), `${file} uses ok as a status token`).toBe(false);
     }
   });
 });
@@ -320,7 +336,9 @@ describe('no secret is in the repository', () => {
 
     for (const file of paths) {
       const text = readFileSync(file, 'utf8');
-      expect(text, file).not.toMatch(/sk_live_|sk_test_[A-Za-z0-9]{10,}/);
+      // Key MATERIAL, not the prefix: `prices.ts` reads the prefix to tell
+      // test mode from live mode, which is exactly what we want it to do.
+      expect(text, file).not.toMatch(/sk_(live|test)_[A-Za-z0-9]{10,}/);
       expect(text, file).not.toMatch(/whsec_[A-Za-z0-9]{16,}/);
       expect(text, file).not.toMatch(/re_[A-Za-z0-9]{16,}/);
       expect(text, file).not.toMatch(/vercel_blob_rw_[A-Za-z0-9]{10,}/);

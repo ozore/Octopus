@@ -119,6 +119,10 @@ export type PackStep = {
  * which is the sentence `specs/08` calls "the product".
  */
 export type PackReciprocity = {
+  /** Its position in `record.reciprocity`. Two entries can name the SAME state
+   *  (a board publishes one line per licence class), so the index, not the
+   *  state, is what identifies an entry and what groups its items. */
+  index: number;
   withState: string;
   withStateName: string;
   direction: 'inbound' | 'outbound' | 'mutual';

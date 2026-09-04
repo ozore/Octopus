@@ -254,12 +254,22 @@ describe('M16 — the cadence is labelled as a design judgment', () => {
     // standard set for everything else. `selectDueOffsets` already takes the
     // offsets as an argument, so no shared constant had to move.
     const dueOn = addDays(TODAY, 44);
+    // The selector never skips a milestone: with nothing sent yet it sends the
+    // widest one whose window we are inside, late if a run was missed
+    // (`tests/alerts.test.ts`, "a run missed across the 7-day boundary"). So
+    // the two ladders differ at the first rung as well as the second.
     expect(
       selectDueOffsets([{ id: 'q1', dueOn }], new Set(), TODAY, [...QUALIFIER_ALERT_OFFSETS]),
-    ).toEqual([{ deadlineId: 'q1', offsetDays: 45 }]);
-    // The standard schedule would have chosen 60, which does not exist inside a
-    // 90-day window that is already half gone.
+    ).toEqual([{ deadlineId: 'q1', offsetDays: 75 }]);
     expect(selectDueOffsets([{ id: 'q1', dueOn }], new Set(), TODAY)).toEqual([
+      { deadlineId: 'q1', offsetDays: 90 },
+    ]);
+    // And once the first rung has gone out, this deadline steps to 45, where a
+    // standard deadline would step to 60. That difference IS the cadence.
+    expect(
+      selectDueOffsets([{ id: 'q1', dueOn }], new Set(['q1|75']), TODAY, [...QUALIFIER_ALERT_OFFSETS]),
+    ).toEqual([{ deadlineId: 'q1', offsetDays: 45 }]);
+    expect(selectDueOffsets([{ id: 'q1', dueOn }], new Set(['q1|90']), TODAY)).toEqual([
       { deadlineId: 'q1', offsetDays: 60 },
     ]);
   });

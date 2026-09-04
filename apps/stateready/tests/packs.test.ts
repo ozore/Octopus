@@ -265,8 +265,14 @@ describe('specs/08 acceptance criteria', () => {
     expect(items.get('licence_types[0].exam.fee')?.text).toBe('$74');
     expect(items.get('licence_types[0].continuing_education.hours')?.text).toBe('8 hours');
     expect(items.get('licence_types[0].renewal.cycle')?.text).toBe('12 months');
-    expect(items.get('licence_types[0].insurance.general_liability')?.text).toBe('$300,000');
-    expect(items.get('licence_types[1].insurance.general_liability')?.text).toBe('$100,000');
+    // The record's unit is `per_occurrence_usd`, and the pack prints the unit
+    // rather than dropping it (`src/lib/packs/format.ts`, and m4.test.ts pins
+    // the same string in the rendered HTML): a silently dropped unit is how a
+    // per-occurrence figure becomes an aggregate one in a reader's head.
+    expect(items.get('licence_types[0].insurance.general_liability')?.text).toBe(
+      '$300,000 per occurrence',
+    );
+    expect(items.get('licence_types[1].insurance.general_liability')?.text).toBe('$100,000 per occurrence');
     expect(items.get('licence_types[0].application_fee')?.provenance.url).toBe(
       'https://www.tdlr.texas.gov/acr/contractor-apply.htm',
     );
@@ -639,49 +645,11 @@ describe('purchase, generation and delivery', () => {
     );
   });
 
-  it('AC7 — a tampered record fails generation, delivers nothing and refunds', async () => {
-    const purchase = await createEntryPackPurchase(db.db, { orgId, state: 'TX', trades: ['hvac'], today: TODAY });
-    if (purchase.status !== 'ok') throw new Error('purchase refused');
-    await db.db.insert(oneOffPurchases).values({
-      id: newId('oop'),
-      orgId,
-      kind: 'playbook',
-      playbookId: purchase.playbookId,
-      amountCents: 75_000,
-      status: 'paid',
-    });
-    await markEntryPackPaid(db.db, { playbookId: purchase.playbookId, today: TODAY });
-
-    // Tamper with the record the generator will read, exactly as a corrupted
-    // knowledge-base publish would: a number where the board publishes nothing.
-    const source = record('tx.hvac');
-    const timeline = source.typical_timeline as { value: unknown; status: string; confidence: string };
-    const original = { ...timeline };
-    Object.assign(timeline, { value: 42, status: 'unknown', confidence: 'low' });
-
-    try {
-      const generated = await generateEntryPack(db.db, { playbookId: purchase.playbookId, today: TODAY });
-      expect(generated.status).toBe('failed');
-      if (generated.status !== 'failed') return;
-      expect(generated.reason).toBe('integrity_assertion');
-      expect(generated.failures.join(' ')).toMatch(/typical_timeline/);
-    } finally {
-      Object.assign(timeline, original);
-    }
-
-    const row = (await db.db.select().from(playbooks).where(eq(playbooks.id, purchase.playbookId)))[0];
-    expect(row?.status).toBe('failed');
-    // Nothing delivered …
-    expect(row?.contentJson).toBeNull();
-    expect(row?.pdfStorageKey).toBeNull();
-    expect(row?.shareToken).toBeNull();
-    // … and refunded automatically, with the reason on the purchase.
-    const purchases = await db.db.select().from(oneOffPurchases);
-    expect(purchases[0]?.status).toBe('refunded');
-    expect(purchases[0]?.refundReason).toBe('integrity_assertion');
-    const refunded = await db.db.select().from(events).where(eq(events.name, 'playbook_refunded'));
-    expect(refunded).toHaveLength(1);
-  });
+  // AC7 lives in `tests/packs-ac7.test.ts`. It needs the renderer and the
+  // knowledge base to DISAGREE, and no amount of tampering with a record can
+  // produce that here: the assembler and the assertion read the same object,
+  // so they agree on whatever it says. The disagreement has to be injected at
+  // the assembler seam, which needs a module mock, which is per file.
 
   it('AC8 — the share link works without a session, is watermarked, and expires', async () => {
     const purchase = await createEntryPackPurchase(db.db, { orgId, state: 'NC', trades: ['electrical'], today: TODAY });

@@ -195,6 +195,7 @@ export function matchReciprocity(
       );
 
     return {
+      index: i,
       withState: entry.with_state.toUpperCase(),
       withStateName: stateName(entry.with_state),
       direction: entry.direction,
@@ -313,10 +314,7 @@ function groupsFor(
     const statement = items.find((item) => item.id === 'reciprocity_statement');
     if (statement) groups.push({ heading: 'What the board says about reciprocity', items: [statement] });
     for (const entry of reciprocity) {
-      const own = items.filter((item) => {
-        const idx = reciprocityIndex(item.id);
-        return idx !== null && record.reciprocity[idx]?.with_state.toUpperCase() === entry.withState;
-      });
+      const own = items.filter((item) => reciprocityIndex(item.id) === entry.index);
       if (own.length > 0) {
         groups.push({
           heading: `${entry.withStateName} → ${record.state_name}${entry.matchesHolding ? ' — you hold a licence here' : ''}`,
