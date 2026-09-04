@@ -31,34 +31,19 @@ import { newId } from '../ids';
 import { gapReportDocuments, gapReportSessions } from '../schema';
 import { spendCentsSince } from '../repos/documents';
 import { getTemplate, toRequirementSet, type Audience } from '../templates';
+import {
+  AUDIENCE_LABEL,
+  AUDIENCE_TEMPLATE,
+  DOCUMENTS_PER_IP_PER_DAY,
+  MAX_DOCUMENTS_PER_SESSION,
+  MAX_SESSION_BYTES,
+  PURGE_AFTER_DAYS,
+  SESSIONS_PER_IP_PER_DAY,
+  isAudience,
+} from './limits';
 import type { RequirementSet } from '../engine';
 
 /** `specs/15` §8 and §6, as constants a test can quote. */
-export const MAX_DOCUMENTS_PER_SESSION = 25;
-export const MAX_SESSION_BYTES = 50 * 1024 * 1024;
-export const SESSIONS_PER_IP_PER_DAY = 3;
-export const DOCUMENTS_PER_IP_PER_DAY = 100;
-export const PURGE_AFTER_DAYS = 7;
-
-/** The four audiences and the library template each one starts from (§2). */
-export const AUDIENCE_TEMPLATE: Record<Audience, string> = {
-  pm: 'pm.baseline',
-  hoa: 'hoa.baseline',
-  gc: 'gc.baseline',
-  tenant: 'tenant.commercial.baseline',
-};
-
-export const AUDIENCE_LABEL: Record<Audience, string> = {
-  pm: 'property manager',
-  hoa: 'HOA manager',
-  gc: 'general contractor',
-  tenant: 'commercial landlord',
-};
-
-export function isAudience(value: unknown): value is Audience {
-  return typeof value === 'string' && value in AUDIENCE_TEMPLATE;
-}
-
 export type GapSessionRow = typeof gapReportSessions.$inferSelect;
 export type GapDocumentRow = typeof gapReportDocuments.$inferSelect;
 

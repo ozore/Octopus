@@ -15,7 +15,7 @@
 
 import { useState } from 'react';
 
-import { AUDIENCE_LABEL, MAX_DOCUMENTS_PER_SESSION } from '@/lib/gap-report';
+import { AUDIENCE_LABEL, MAX_DOCUMENTS_PER_SESSION } from '@/lib/gap-report/limits';
 
 type Audience = keyof typeof AUDIENCE_LABEL;
 type Phase = 'choose' | 'files' | 'email' | 'sending' | 'done' | 'error';

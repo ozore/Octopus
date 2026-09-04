@@ -26,6 +26,8 @@ export {
   type ReviewReason,
 } from './extraction';
 
+// The pure limits and labels come from `./limits`, which a client component may
+// import; the barrel re-exports them for server code that wants one import.
 export {
   AUDIENCE_LABEL,
   AUDIENCE_TEMPLATE,
@@ -34,11 +36,14 @@ export {
   MAX_SESSION_BYTES,
   PURGE_AFTER_DAYS,
   SESSIONS_PER_IP_PER_DAY,
+  isAudience,
+} from './limits';
+
+export {
   addSessionDocument,
   captureEmail,
   createGapSession,
   findSessionByToken,
-  isAudience,
   listSessionDocuments,
   sessionsToPurge,
   snapshotFor,
