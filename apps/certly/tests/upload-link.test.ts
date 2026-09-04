@@ -70,9 +70,13 @@ describe('specs/08 §4 — the token', () => {
   it('expires at the certificate expiry + 45 days, never sooner than 30 days out', () => {
     const now = new Date('2026-06-01T00:00:00Z');
     expect(linkExpiry('2026-12-01', now).toISOString().slice(0, 10)).toBe('2027-01-15');
-    // A certificate that expired yesterday still gets the 30-day floor: the
-    // agent needs time to act, and the link is the only way they can.
-    const floor = linkExpiry('2026-05-31', now);
+    // A certificate that expired yesterday is still inside expiry + 45, so it
+    // gets 15 July, not the floor.
+    expect(linkExpiry('2026-05-31', now).toISOString().slice(0, 10)).toBe('2026-07-15');
+    // The floor bites only once expiry + 45 has itself gone by: a certificate
+    // that lapsed in January still gets thirty days, because the agent needs
+    // time to act and the link is the only way they can.
+    const floor = linkExpiry('2026-01-01', now);
     expect(floor.getTime()).toBe(now.getTime() + LINK_MIN_DAYS * 86_400_000);
   });
 

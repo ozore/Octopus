@@ -23,9 +23,14 @@ describe('kb:check', () => {
     expect(report.notes.some((note) => note.startsWith('tenant.retail_food'))).toBe(true);
   });
 
-  it('reports G17 as pending, and the golden set as unlabelled', () => {
-    expect(report.notes.some((note) => note.includes('G17 is PENDING'))).toBe(true);
-    expect(report.notes.some((note) => note.includes('NOT LABELLED'))).toBe(true);
+  it('has the whole golden set on disk, labelled, with nothing pending', () => {
+    // Both of these were open when the check was written: G17 was a URL in the
+    // manifest, and no fixture had an expected-value file. Both are done, so
+    // the notes that reported them must be gone. `report.failures` being empty
+    // above is what proves the labelling is COMPLETE: once one expected-value
+    // file exists, `kb:check` turns every unlabelled fixture into a failure.
+    expect(report.notes.some((note) => note.includes('PENDING'))).toBe(false);
+    expect(report.notes.some((note) => note.includes('NOT LABELLED'))).toBe(false);
   });
 
   it('warns on a template source older than 180 days, without failing the build', () => {

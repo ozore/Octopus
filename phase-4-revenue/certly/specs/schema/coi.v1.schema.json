@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://certly.app/schema/coi.v1.schema.json",
+  "$id": "urn:coi-extraction:schema:v1",
   "title": "ACORD 25 Certificate of Liability Insurance — extraction record",
   "description": "The strict output schema for Certly's extraction call. Passed verbatim as output_config.format. Every object sets additionalProperties:false and lists every property in required; optionality is expressed as a nullable value, never as an absent key. See specs/03-coi-extraction.md §6 and KNOWLEDGE_BASE.md §A.3.",
   "type": "object",

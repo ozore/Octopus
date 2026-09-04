@@ -63,12 +63,10 @@ const GOLDEN_SET: { id: string; file: string; pending?: string }[] = [
   { id: 'G14', file: 'idaho-iceworld-coi-sample.pdf' },
   { id: 'G15', file: 'certificates_how_to_read_and_review_with_acord_forms.pdf' },
   { id: 'G16', file: 'nevada-risk-cert-and-endorsement-samples.pdf' },
-  {
-    id: 'G17',
-    file: 'acord25-2025-12-blank.pdf',
-    pending:
-      'the current edition (2025/12). Fetch it before writing the extractor — the command is in tests/fixtures/coi/MANIFEST.md. M4 cannot be declared done while a golden-set fixture is a URL.',
-  },
+  // The current edition (2025/12). It was a URL when the golden set was
+  // written; it is committed now, so it is an ordinary member of the set and a
+  // missing file is a failure like any other.
+  { id: 'G17', file: 'acord25-2025-12-blank.pdf' },
 ];
 
 /** Editions `KNOWLEDGE_BASE.md` §A.2 treats as real; 2025/12 is CURRENT. */

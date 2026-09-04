@@ -100,7 +100,9 @@ it next to every button that collects a card (\`specs/10\` §3.1, REVIEW.md B-06
 
 > ${TRIAL_DISCLOSURE('{date}')}
 
-**Never label any of these "Start free".** The only free thing Certly offers is
+**No product, price or button here is ever labelled as starting free**, which is
+why the banned wording is not spelled out even in this note: the vocabulary test
+fails the build on it anywhere in the app. The only free thing Certly offers is
 the Free Gap Report, which has no Stripe object at all.
 
 ### 0.3 Settings that go with them
