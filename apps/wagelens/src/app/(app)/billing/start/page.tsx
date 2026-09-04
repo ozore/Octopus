@@ -41,9 +41,10 @@ const ERRORS: Record<string, string> = {
  *    changes the content hash — the previous acceptance then no longer
  *    satisfies V15, which is exactly what should happen;
  *  - the checkbox has **no `defaultChecked`**. A pre-ticked box is not consent;
- *  - the button reads `Start 14-day trial`. Never "Start free": the lookup is
- *    free, this takes a card, and `tests/naming.test.ts` fails the build on the
- *    other wording.
+ *  - the button reads `Start 14-day trial`, and never calls the trial itself
+ *    free: the lookup is free, this takes a card, and `tests/naming.test.ts`
+ *    fails the build on any other wording (which is why the banned phrase is
+ *    not spelled out here either).
  */
 export default async function BillingStartPage({
   searchParams,

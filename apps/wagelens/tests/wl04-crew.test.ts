@@ -206,7 +206,6 @@ describe('paste a crew list (V10, V11, V12)', () => {
     'Ramirez\tLucia\tP\t8834',
     'Petrov\tDmitri\t\t1907',
     'Hayes\tColin\t\t4055',
-    'Ferreira\tPaulo\t\t7120',
     'Mistry\tNilesh\t\t', // no last-4
     'Chan\tWei\t\t123-45-6789', // a full identifying number
     '',
@@ -221,8 +220,13 @@ describe('paste a crew list (V10, V11, V12)', () => {
       PASTE_SKIP_REASONS.fullNumber,
     ]);
     expect(result.skipped[1]?.reason).toContain('enter only the last four digits');
-    // The skipped row is never truncated to its last four.
-    expect(result.parsed.map((row) => row.last4)).not.toContain('6789');
+    // The skipped row is never truncated to its last four: the full number is
+    // refused outright, so no worker is parsed out of that line at all. (The
+    // last four of that number, 6789, IS a legitimate value: Rivera's. So the
+    // absence of the NAME is what proves the rule, not the absence of the
+    // digits.)
+    expect(result.parsed.map((row) => row.lastName)).not.toContain('Chan');
+    expect(result.parsed.map((row) => row.lastName)).not.toContain('Mistry');
 
     expect(await listWorkers(db, orgId)).toHaveLength(0);
   });
