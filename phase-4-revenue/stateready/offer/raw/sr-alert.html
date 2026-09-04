@@ -1,0 +1,1640 @@
+<!DOCTYPE html><html lang="en-US"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script>
+  (() => {
+    const consentKey = "sr-cookie-consent-v2";
+    const legacyConsentKey = "sr-cookie-consent-v1";
+    const containerId = "GTM-T2ZB2ZV";
+    const googleAdsId = "AW-17709571330";
+    const affiliateTagUrl = "https://www.p.zjptg.com/tag/3604767/100002";
+    const isProductionHost =
+      window.location.hostname === "staterequirement.com" ||
+      window.location.hostname === "www.staterequirement.com";
+    const isBusinessLicensePage =
+      window.location.pathname.replace(/\/+$/, "") === "/business-license-service";
+
+    let storedConsent = null;
+    try {
+      storedConsent = localStorage.getItem(consentKey);
+      if (storedConsent !== "accept" && storedConsent !== "decline") {
+        const legacyConsent = localStorage.getItem(legacyConsentKey);
+        storedConsent = legacyConsent === "accept" || legacyConsent === "decline" ? legacyConsent : null;
+        if (storedConsent) localStorage.setItem(consentKey, storedConsent);
+      }
+    } catch {}
+
+    window.dataLayer = window.dataLayer || [];
+    window.gtag =
+      window.gtag ||
+      function () {
+        window.dataLayer.push(arguments);
+      };
+
+    const clearAnalyticsCookies = () => {
+      const analyticsCookieNames = document.cookie
+        .split(";")
+        .map((cookie) => cookie.split("=", 1)[0]?.trim())
+        .filter((name) => /^_ga(?:_|$)|^_gid$|^_gat(?:_|$)/.test(name ?? ""));
+      for (const name of analyticsCookieNames) {
+        document.cookie = `${name}=; Max-Age=0; Path=/; SameSite=Lax`;
+        document.cookie = `${name}=; Max-Age=0; Path=/; Domain=.staterequirement.com; SameSite=Lax`;
+      }
+    };
+
+    const consentValue = storedConsent === "accept" ? "granted" : "denied";
+    window.gtag("consent", "default", {
+      ad_storage: consentValue,
+      analytics_storage: consentValue,
+      ad_user_data: consentValue,
+      ad_personalization: consentValue,
+      wait_for_update: storedConsent ? 0 : 500
+    });
+    if (storedConsent === "decline") clearAnalyticsCookies();
+
+    const loadScript = (id = "", source = "", defer = false) => {
+      if (document.getElementById(id)) return;
+      const script = document.createElement("script");
+      script.id = id;
+      script.async = !defer;
+      script.defer = defer;
+      script.src = source;
+      document.head.appendChild(script);
+    };
+
+    const loadAffiliateTag = () => {
+      if (!isProductionHost) return;
+      loadScript("sr-cj-affiliate-tag", affiliateTagUrl, true);
+    };
+
+    window.addEventListener("sr:tracking-consent", (event) => {
+      if (!(event instanceof CustomEvent)) return;
+      const choice = event.detail?.choice;
+      if (choice !== "accept" && choice !== "decline") return;
+      const value = choice === "accept" ? "granted" : "denied";
+      window.gtag("consent", "update", {
+        ad_storage: value,
+        analytics_storage: value,
+        ad_user_data: value,
+        ad_personalization: value
+      });
+      if (choice === "decline") clearAnalyticsCookies();
+      if (choice === "accept") loadAffiliateTag();
+    });
+
+    if (!isProductionHost) return;
+
+    window.dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });
+    loadScript(
+      "sr-google-tag-manager",
+      `https://www.googletagmanager.com/gtm.js?id=${containerId}`
+    );
+
+    if (isBusinessLicensePage) {
+      window.gtag("js", new Date());
+      window.gtag("config", googleAdsId);
+      loadScript(
+        "sr-google-ads-tag",
+        `https://www.googletagmanager.com/gtag/js?id=${googleAdsId}`
+      );
+    }
+
+    if (storedConsent === "accept") loadAffiliateTag();
+  })();
+</script><title>License Alert - Renewal Deadline Tracker - StateRequirement</title><link rel="icon" href="/wp-content/uploads/2021/08/cropped-staterequirement-favicon-32x32.png" sizes="32x32"><link rel="icon" href="/wp-content/uploads/2021/08/cropped-staterequirement-favicon-192x192.png" sizes="192x192"><link rel="apple-touch-icon" href="/wp-content/uploads/2021/08/cropped-staterequirement-favicon-180x180.png"><link rel="preload" href="/fonts/lato/lato-400-latin.woff2" as="font" type="font/woff2" crossorigin><meta name="description" content="StateRequirement's License Alert monitors your professional licenses, tracks CE requirements, and sends timely reminders across all 50 states. Start your 7-day free trial today."><link rel="canonical" href="https://staterequirement.com/license-alert/"><meta name="robots" content="follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large"><meta property="og:locale" content="en_US"><meta property="og:type" content="article"><meta property="og:title" content="License Alert - Renewal Deadline Tracker - StateRequirement"><meta property="og:description" content="StateRequirement's License Alert monitors your professional licenses, tracks CE requirements, and sends timely reminders across all 50 states. Start your 7-day free trial today."><meta property="og:url" content="https://staterequirement.com/license-alert/"><meta property="og:site_name" content="StateRequirement"><meta property="og:updated_time" content="2025-10-15T09:42:25-04:00"><meta property="article:published_time" content="2025-04-01T08:33:42-04:00"><meta property="article:modified_time" content="2025-10-15T09:42:25-04:00"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="License Alert - Renewal Deadline Tracker - StateRequirement"><meta name="twitter:description" content="StateRequirement's License Alert monitors your professional licenses, tracks CE requirements, and sends timely reminders across all 50 states. Start your 7-day free trial today."><meta name="twitter:label1" content="Time to read"><meta name="twitter:data1" content="3 minutes"><meta name="generator" content="Site Kit by Google 1.162.1"><meta name="msapplication-TileImage" content="https://staterequirement.com/wp-content/uploads/2021/08/cropped-staterequirement-favicon-270x270.png"><link rel="stylesheet" href="/wp-content/uploads/generatepress/fonts/fonts.css?ver=1763379406"><link rel="stylesheet" href="/wp-includes/css/dist/block-library/style.min.css?ver=6.8.6"><link rel="stylesheet" href="/wp-includes/css/dist/components/style.min.css?ver=6.8.6"><link rel="stylesheet" href="/wp-includes/css/dist/preferences/style.min.css?ver=6.8.6"><link rel="stylesheet" href="/wp-includes/css/dist/block-editor/style.min.css?ver=6.8.6"><link rel="stylesheet" href="/wp-content/plugins/popup-maker/dist/packages/block-library-style.css?ver=dbea705cfafe089d65f1"><link rel="stylesheet" href="/wp-content/plugins/cookie-notice/css/front.min.css?ver=2.5.8"><link rel="stylesheet" href="/wp-content/plugins/stripe/includes/core/assets/css/simpay-public.min.css?ver=4.15.0"><link rel="stylesheet" href="/wp-content/plugins/widgets-on-pages/public/css/widgets-on-pages-public.css?ver=1.4.0"><link rel="stylesheet" href="/wp-content/themes/generatepress/assets/css/components/widget-areas.min.css?ver=3.5.1"><link rel="stylesheet" href="/wp-content/themes/generatepress/assets/css/main.min.css?ver=3.5.1"><link rel="stylesheet" href="/wp-content/uploads/generateblocks/style-global.css?ver=1736943098"><link rel="stylesheet" href="/wp-content/plugins/gp-premium/menu-plus/functions/css/navigation-branding-flex.min.css?ver=2.5.3"><link rel="stylesheet" href="/wp-content/cache/perfmatters/staterequirement.com/minify/1bb65f36dae7.wp-about-author.min.css?ver=1.6"><link rel="stylesheet" href="/migrated-css/823de15cc4c84a379fcc.css"><link rel="stylesheet" href="/migrated-css/4bc9e12db2b2e3f1dce2.css"><link rel="stylesheet" href="/migrated-css/dcd9f488bd62ba0ee403.css"><link rel="stylesheet" href="/migrated-css/0e16bda74e661ff8ab5d.css"><link rel="stylesheet" href="/migrated-css/171f26362865508c968c.css"><link rel="stylesheet" href="/migrated-css/de033f206ac44bb69608.css"><link rel="stylesheet" href="/migrated-css/2f002b4a594a55b1ab38.css"><link rel="stylesheet" href="/migrated-css/3329e4b870124f02a2a9.css"><link rel="stylesheet" href="/migrated-css/95482d9f6501bcbcb3fb.css"><link rel="stylesheet" href="/migrated-css/ddd234624a1a90c0a300.css"><link rel="stylesheet" href="/migrated-css/5894aa5716fa1e3ef735.css"><link rel="stylesheet" href="/migrated-css/ec893172c75c2b6a5f06.css"><link rel="stylesheet" href="/migrated-css/89d62ffb94877380e438.css"><link rel="stylesheet" href="/migrated-css/42c551431237a166764f.css"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://staterequirement.com/#organization","name":"StateRequirement","url":"https://staterequirement.com","logo":{"@type":"ImageObject","@id":"https://staterequirement.com/#logo","url":"https://staterequirement.com/wp-content/uploads/2021/08/cropped-Logo.png","contentUrl":"https://staterequirement.com/wp-content/uploads/2021/08/cropped-Logo.png","caption":"StateRequirement","inLanguage":"en-US","width":"331","height":"48"}},{"@type":"WebSite","@id":"https://staterequirement.com/#website","url":"https://staterequirement.com","name":"StateRequirement","alternateName":"StateRequirement","publisher":{"@id":"https://staterequirement.com/#organization"},"inLanguage":"en-US"},{"@type":"ImageObject","@id":"https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&amp;h=300&amp;fit=crop&amp;crop=face","url":"https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&amp;h=300&amp;fit=crop&amp;crop=face","width":"200","height":"200","inLanguage":"en-US"},{"@type":"BreadcrumbList","@id":"https://staterequirement.com/license-alert/#breadcrumb","itemListElement":[{"@type":"ListItem","position":"1","item":{"@id":"https://staterequirement.com","name":"Home"}},{"@type":"ListItem","position":"2","item":{"@id":"https://staterequirement.com/license-alert/","name":"License Alert"}}]},{"@type":"WebPage","@id":"https://staterequirement.com/license-alert/#webpage","url":"https://staterequirement.com/license-alert/","name":"License Alert - Renewal Deadline Tracker - StateRequirement","datePublished":"2025-04-01T08:33:42-04:00","dateModified":"2025-10-15T09:42:25-04:00","isPartOf":{"@id":"https://staterequirement.com/#website"},"primaryImageOfPage":{"@id":"https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&amp;h=300&amp;fit=crop&amp;crop=face"},"inLanguage":"en-US","breadcrumb":{"@id":"https://staterequirement.com/license-alert/#breadcrumb"}},{"@type":"Person","@id":"https://staterequirement.com/about/nik-ventouris/","name":"Nik Ventouris","url":"https://staterequirement.com/about/nik-ventouris/","image":{"@type":"ImageObject","@id":"https://staterequirement.com/wp-content/uploads/2025/06/nik-ventouris_avatar-96x96.jpg","url":"https://staterequirement.com/wp-content/uploads/2025/06/nik-ventouris_avatar-96x96.jpg","caption":"Nik Ventouris","inLanguage":"en-US"},"worksFor":{"@id":"https://staterequirement.com/#organization"}},{"@type":"Article","headline":"License Alert - Renewal Deadline Tracker - StateRequirement","datePublished":"2025-04-01T08:33:42-04:00","dateModified":"2025-10-15T09:42:25-04:00","author":{"@id":"https://staterequirement.com/about/nik-ventouris/","name":"Nik Ventouris"},"publisher":{"@id":"https://staterequirement.com/#organization"},"description":"StateRequirement&#039;s License Alert monitors your professional licenses, tracks CE requirements, and sends timely reminders across all 50 states. Start your 7-day free trial today.","name":"License Alert - Renewal Deadline Tracker - StateRequirement","@id":"https://staterequirement.com/license-alert/#richSnippet","isPartOf":{"@id":"https://staterequirement.com/license-alert/#webpage"},"image":{"@id":"https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&amp;h=300&amp;fit=crop&amp;crop=face"},"inLanguage":"en-US","mainEntityOfPage":{"@id":"https://staterequirement.com/license-alert/#webpage"}}]}</script><link rel="stylesheet" href="/_astro/BaseLayout.B6Z9THHP.css"><script type="module" src="/_astro/page.CTxKKjGj.js"></script></head> <body class="astro-migration wp-singular page-template-default page page-id-90822 wp-custom-logo wp-embed-responsive wp-theme-generatepress cookies-not-set post-image-aligned-center sticky-menu-no-transition sticky-enabled desktop-sticky-menu no-sidebar nav-below-header separate-containers header-aligned-right dropdown-hover"> <a class="skip-link" href="#content">Skip to content</a> <header class="site-header"> <div class="site-header__inner"> <a class="site-logo" href="/" aria-label="StateRequirement home"> <img src="/wp-content/uploads/2021/08/cropped-Logo.png" alt="StateRequirement" width="331" height="48" fetchpriority="high"> </a> <nav id="primary-nav" class="primary-nav" aria-label="Primary"> <ul> <li class="nav-group"> <button type="button" aria-expanded="false"> Insurance<span aria-hidden="true">⌄</span> </button> <ul class="submenu"> <li><a href="/insurance-licensing/">Insurance Agent Licensing</a></li><li><a href="/insurance-licensing-tool/">Insurance Licensing Tool</a></li><li><a href="/insurance-license-exam/">Insurance License Exam</a></li><li><a href="/insurance-license-renewal/">Insurance License Renewal</a></li><li><a href="/become-a-life-insurance-agent/">Life Insurance Licensing</a></li><li><a href="/how-to-get-property-casualty-license/">Property and Casualty Licensing</a></li><li><a href="/insurance-agent-marketing/">Insurance Agent Marketing</a></li><li><a href="/how-to-sell-insurance/">Insurance Selling</a></li><li><a href="/insurance-adjuster-licensing/">Adjuster Licensing</a></li><li><a href="/adjuster-license-renewal/">Adjuster License Renewal</a></li> </ul> </li><li class="nav-group"> <button type="button" aria-expanded="false"> LLC<span aria-hidden="true">⌄</span> </button> <ul class="submenu"> <li><a href="/llc/">LLC Formation</a></li><li><a href="/llc/registered-agent/">Registered Agent</a></li><li><a href="/llc/cost-to-form-an-llc/">LLC Cost</a></li><li><a href="/llc/llc-name-search/">LLC Name Search</a></li> </ul> </li><li class="nav-group"> <button type="button" aria-expanded="false"> Real Estate<span aria-hidden="true">⌄</span> </button> <ul class="submenu"> <li><a href="/real-estate/">Real Estate Salesperson Licensing</a></li><li><a href="/real-estate/how-to-become-real-estate-broker/">Real Estate Broker Licensing</a></li><li><a href="/real-estate/how-to-renew-my-real-estate-license/">Real Estate License Renewal</a></li> </ul> </li><li class="nav-group"> <button type="button" aria-expanded="false"> Notaries<span aria-hidden="true">⌄</span> </button> <ul class="submenu"> <li><a href="/how-to-become-a-notary/">Notaries Public</a></li><li><a href="/how-to-become-a-notary-signing-agent/">Notary Signing Agents</a></li> </ul> </li><li class="nav-group"> <button type="button" aria-expanded="false"> Business Licenses<span aria-hidden="true">⌄</span> </button> <ul class="submenu"> <li><a href="/how-to-get-a-business-license/">State Licensing Guide</a></li> </ul> </li><li class="nav-group"> <button type="button" aria-expanded="false"> Law<span aria-hidden="true">⌄</span> </button> <ul class="submenu"> <li><a href="/what-is-the-lsat/">LSAT</a></li><li><a href="/what-is-the-bar-exam/">Bar Exam</a></li> </ul> </li><li class="nav-group"> <button type="button" aria-expanded="false"> Financial Advisors<span aria-hidden="true">⌄</span> </button> <ul class="submenu"> <li><a href="/securities-licensing/">Securities Licensing</a></li><li><a href="/how-to-become-a-wealth-manager/">Wealth Management</a></li><li><a href="/what-is-a-cfa/">CFA</a></li><li><a href="/cfp-certification/">CFP</a></li><li><a href="/chfc-designation/">ChFC</a></li> </ul> </li> <li><a class="service-link" href="/business-license-service/?nocache">Business License Report</a></li> </ul> </nav> <div class="header-actions"> <button class="search-link" type="button" aria-label="Search StateRequirement" aria-haspopup="dialog" aria-controls="site-search-dialog" data-search-open> <svg viewBox="0 0 24 24" aria-hidden="true"> <path d="m20.7 19.3-4.2-4.2a7.5 7.5 0 1 0-1.4 1.4l4.2 4.2a1 1 0 0 0 1.4-1.4ZM5 10.5a5.5 5.5 0 1 1 11 0 5.5 5.5 0 0 1-11 0Z"></path> </svg> </button> <button class="menu-toggle" type="button" aria-controls="primary-nav" aria-expanded="false"> <svg viewBox="0 0 24 24" aria-hidden="true" data-menu-icon> <path d="M4 6h16M4 12h16M4 18h16"></path> </svg> <span class="visually-hidden">Menu</span> </button> </div> </div> </header> <dialog id="site-search-dialog" class="search-dialog" data-search-dialog aria-labelledby="search-dialog-title"> <h2 id="search-dialog-title" class="visually-hidden">Search StateRequirement</h2> <form class="search-dialog__form" action="/search/" method="get" role="search"> <div class="search-dialog__field"> <label class="visually-hidden" for="header-site-search">Search StateRequirement</label> <input id="header-site-search" name="q" type="search" autocomplete="off" placeholder="Search StateRequirement" data-search-input> <button class="search-dialog__close" type="button" aria-label="Clear and close search" data-search-close> <span aria-hidden="true">×</span> </button> </div> <button class="search-dialog__submit" type="submit" aria-label="Submit search"> <svg viewBox="0 0 24 24" aria-hidden="true"> <path d="m20.7 19.3-4.2-4.2a7.5 7.5 0 1 0-1.4 1.4l4.2 4.2a1 1 0 0 0 1.4-1.4ZM5 10.5a5.5 5.5 0 1 1 11 0 5.5 5.5 0 0 1-11 0Z"></path> </svg> </button> </form> </dialog> <script>
+  (() => {
+    const menuButton = document.querySelector(".menu-toggle");
+    const nav = document.querySelector("#primary-nav");
+    if (menuButton instanceof HTMLButtonElement && nav instanceof HTMLElement) {
+        menuButton.addEventListener("click", () => {
+          const open = menuButton.getAttribute("aria-expanded") === "true";
+          menuButton.setAttribute("aria-expanded", String(!open));
+          nav.classList.toggle("is-open", !open);
+        });
+
+        document.addEventListener("keydown", (event) => {
+          if (event.key !== "Escape" || menuButton.getAttribute("aria-expanded") !== "true") return;
+          menuButton.setAttribute("aria-expanded", "false");
+          nav.classList.remove("is-open");
+          menuButton.focus();
+        });
+    }
+
+    document.querySelectorAll(".nav-group > button").forEach((button) => {
+      button.addEventListener("click", () => {
+        const open = button.getAttribute("aria-expanded") === "true";
+        button.setAttribute("aria-expanded", String(!open));
+      });
+    });
+
+    const searchButton = document.querySelector("[data-search-open]");
+    const searchDialog = document.querySelector("[data-search-dialog]");
+    const searchInput = document.querySelector("[data-search-input]");
+    const searchClose = document.querySelector("[data-search-close]");
+
+    if (
+      searchButton instanceof HTMLElement &&
+      searchDialog instanceof HTMLDialogElement &&
+      searchInput instanceof HTMLInputElement
+    ) {
+      const currentQuery = new URLSearchParams(window.location.search).get("q");
+      if (currentQuery) searchInput.value = currentQuery;
+
+      searchButton.addEventListener("click", () => {
+        if (typeof searchDialog.showModal !== "function") {
+          window.location.assign("/search/");
+          return;
+        }
+        searchDialog.showModal();
+        document.documentElement.classList.add("search-dialog-open");
+        requestAnimationFrame(() => {
+          searchInput.focus();
+          const caretPosition = searchInput.value.length;
+          searchInput.setSelectionRange(caretPosition, caretPosition);
+        });
+      });
+
+      searchClose?.addEventListener("click", () => searchDialog.close());
+      searchInput.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter") return;
+        event.preventDefault();
+        searchInput.form?.requestSubmit();
+      });
+      searchDialog.addEventListener("close", () => {
+        document.documentElement.classList.remove("search-dialog-open");
+        searchButton.focus();
+      });
+      searchDialog.addEventListener("click", (event) => {
+        const bounds = searchDialog.getBoundingClientRect();
+        const outside =
+          event.clientX < bounds.left ||
+          event.clientX > bounds.right ||
+          event.clientY < bounds.top ||
+          event.clientY > bounds.bottom;
+        if (outside) searchDialog.close();
+      });
+    }
+  })();
+</script> <main id="content" data-pagefind-body> <div class="legacy-page site grid-container container hfeed" id="page" data-page-id="90822"> <div class="site-content"> <div class="content-area" id="primary"> <div class="site-main"> <article id="post-90822" class="post-90822 page type-page status-publish" itemtype="https://schema.org/CreativeWork" itemscope>
+	<div class="inside-article">
+		
+			<header class="entry-header">
+				<h1 class="entry-title" itemprop="headline">License Alert</h1>			</header>
+
+			
+		<div class="entry-content" itemprop="text">
+			
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>License Alert &#8211; Professional License Monitoring Service</title>
+    
+    
+    
+</head>
+<body>
+
+<div class="license-alert-fullwidth">
+  <!-- HERO SECTION - Matching Business License Service Style -->
+  <section class="la-hero">
+    <div class="la-container">
+      <div class="la-hero-content-new">
+        <div class="hero-text-section">
+          <h1>Never Miss a <span class="highlight-blue">License Renewal</span> Again</h1>
+          <p>Stop losing sleep over professional license deadlines. We&#8217;ll track your renewal dates, CE requirements, and regulatory changes &#8211; sending you timely reminders so you stay compliant without the stress.</p>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <span class="star-rating">★★★★★</span>
+              <span class="rating-text">4.8/5 from 1,500+ professionals</span>
+            </div>
+          </div>
+          <a href="#pricing" class="la-btn la-btn-primary la-btn-large">View Plans &#038; Pricing</a>
+        </div>
+        <div class="hero-image-section">
+          <div class="hero-images-container">
+            <div class="hero-image-main">
+              <img decoding="async" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&#038;h=300&#038;fit=crop&#038;crop=face" alt="Insurance professional" class="hero-image-large">
+            </div>
+            <div class="hero-image-small hero-image-2">
+              <img decoding="async" src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&#038;h=200&#038;fit=crop&#038;crop=face" alt="Doctor in white coat" class="hero-image-small-img">
+            </div>
+            <div class="hero-image-small hero-image-3">
+              <img decoding="async" src="https://images.unsplash.com/photo-1582896911227-c966f6e7fb93?w=200&#038;h=200&#038;fit=crop&#038;crop=face&#038;q=80&#038;auto=format&#038;ixlib=rb-4.1.0" alt="Contractor professional" class="hero-image-small-img">
+            </div>
+            <div class="success-badge">
+              <span class="badge-number">50,000+</span>
+              <span class="badge-text">Licenses Monitored</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW WE HELP SECTION -->
+  <section class="la-section la-section-light">
+    <div class="la-container">
+      <div class="la-section-header la-text-center">
+        <h2>How We Protect Your Career</h2>
+        <p>Complete compliance management for busy professionals</p>
+      </div>
+      
+      <div class="la-features-grid">
+        <div class="la-feature-card">
+          <div class="la-feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          </div>
+          <div class="la-feature-title">Smart Deadline Tracking</div>
+          <div class="la-feature-description">
+            <p>We monitor all your renewal dates and CE deadlines across multiple states, sending you alerts 90, 60, 30, and 7 days before your deadlines.</p>
+          </div>
+        </div>
+        
+        <div class="la-feature-card">
+          <div class="la-feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+          </div>
+          <div class="la-feature-title">CE Requirements Made Simple</div>
+          <div class="la-feature-description">
+            <p>We provide a clear breakdown of your continuing education requirements with progress tracking and approved course recommendations.</p>
+          </div>
+        </div>
+        
+        <div class="la-feature-card">
+          <div class="la-feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          </div>
+          <div class="la-feature-title">Regulatory Change Alerts</div>
+          <div class="la-feature-description">
+            <p>We&#8217;ll keep you informed about licensing law changes that affect you with plain-English explanations and action items.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS TIMELINE -->
+  <section class="la-section la-section-blue">
+    <div class="la-container">
+      <div class="la-section-header la-text-center">
+        <h2>How It Works</h2>
+        <p>Get started in minutes, protected forever</p>
+      </div>
+      
+      <div class="la-timeline">
+        <div class="la-timeline-item">
+          <div class="la-timeline-dot"></div>
+          <div class="la-timeline-content">
+            <div class="la-timeline-title">Quick Sign Up</div>
+            <p>Choose a plan, enter your payment details, and start your 7-day free trial. No commitment required to get started.</p>
+          </div>
+        </div>
+        
+        <div class="la-timeline-item">
+          <div class="la-timeline-dot"></div>
+          <div class="la-timeline-content">
+            <div class="la-timeline-title">Brief Consultation</div>
+            <p>Our representative will reach out for a quick call to gather your license information and understand your specific needs.</p>
+          </div>
+        </div>
+        
+        <div class="la-timeline-item">
+          <div class="la-timeline-dot"></div>
+          <div class="la-timeline-content">
+            <div class="la-timeline-title">Clear Deadlines &#038; Requirements</div>
+            <p>We provide a clear overview of your renewal dates, CE requirements, and exactly what you need to do to stay compliant.</p>
+          </div>
+        </div>
+        
+        <div class="la-timeline-item">
+          <div class="la-timeline-dot"></div>
+          <div class="la-timeline-content">
+            <div class="la-timeline-title">Timely Alerts &#038; Updates</div>
+            <p>You&#8217;ll receive deadline reminders and notifications of industry changes that affect your licenses. We handle the monitoring so you don&#8217;t have to.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO THIS IS PERFECT FOR -->
+  <section class="la-section la-section-light">
+    <div class="la-container">
+      <div class="la-section-header la-text-center">
+        <h2>Who This Is Perfect For</h2>
+        <p>If any of these sound like you, you need License Alert</p>
+      </div>
+      
+      <div class="perfect-for-simple">
+        <div class="perfect-for-item">
+          <div class="perfect-for-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+          </div>
+          <div class="perfect-for-title">Healthcare Professionals</div>
+          <div class="perfect-for-desc">Doctors, nurses, and therapists managing state licenses with complex CE requirements</div>
+        </div>
+        <div class="perfect-for-item">
+          <div class="perfect-for-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          </div>
+          <div class="perfect-for-title">Real Estate Professionals</div>
+          <div class="perfect-for-desc">Agents and brokers juggling renewal dates and education requirements across states</div>
+        </div>
+        <div class="perfect-for-item">
+          <div class="perfect-for-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+          </div>
+          <div class="perfect-for-title">Insurance Agents</div>
+          <div class="perfect-for-desc">Insurance agents managing multiple lines of authority with different renewal cycles and CE hours</div>
+        </div>
+        <div class="perfect-for-item">
+          <div class="perfect-for-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+          </div>
+          <div class="perfect-for-title">Contractors &#038; Trades</div>
+          <div class="perfect-for-desc">General contractors, electricians, and plumbers tracking license renewals and deadlines</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING SECTION -->
+  <section id="pricing" class="la-section la-section-blue">
+    <div class="la-container">
+      <div class="la-section-header la-text-center">
+        <h2>Simple, Transparent Pricing</h2>
+        <p>Choose the plan that fits your needs. Change or cancel anytime.</p>
+      </div>
+
+      <!-- Pricing Cards Grid -->
+      <div class="pricing-cards-grid">
+        <!-- Basic Plan -->
+        <div class="pricing-card-new">
+          <div class="plan-header">
+            <h3 class="plan-name">Basic</h3>
+            <div class="plan-price">$99<span>/year</span></div>
+            <p class="plan-desc">Perfect for single license holders</p>
+          </div>
+          <div class="plan-features">
+            <div class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Track 1 professional license</span>
+            </div>
+            <div class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>CE requirement tracking</span>
+            </div>
+            <div class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Quarterly regulatory updates</span>
+            </div>
+            <div class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Email support (24hr response)</span>
+            </div>
+          </div>
+          <a href="https://buy.stripe.com/4gw9C3gLD3nj7zGbIL" class="plan-cta-btn" target="_blank" rel="noopener">Start Free Trial</a>
+        </div>
+
+        <!-- Professional Plan -->
+        <div class="pricing-card-new featured">
+          <div class="best-value-badge">MOST POPULAR</div>
+          <div class="plan-header">
+            <h3 class="plan-name">Professional</h3>
+            <div class="plan-price">$299<span>/year</span></div>
+            <p class="plan-desc">Ideal for multi-state professionals</p>
+          </div>
+          <div class="plan-features">
+            <div class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span><strong>Track up to 5 licenses</strong></span>
+            </div>
+            <div class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Advanced CE tracking &#038; progress</span>
+            </div>
+            <div class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span><strong>Monthly regulatory insights</strong></span>
+            </div>
+            <div class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span><strong>2 expert consultations/year</strong></span>
+            </div>
+            <div class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Custom requirement guides</span>
+            </div>
+            <div class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Priority email support</span>
+            </div>
+          </div>
+          <a href="https://buy.stripe.com/aEUdSj9jb5vr2fm001" class="plan-cta-btn" target="_blank" rel="noopener">Start Free Trial</a>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="pricing-card-new">
+          <div class="plan-header">
+            <h3 class="plan-name">Enterprise</h3>
+            <div class="plan-price">$499<span>/year</span></div>
+            <p class="plan-desc">For firms &#038; multi-license holders</p>
+          </div>
+          <div class="plan-features">
+            <div class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span><strong>Track up to 10 licenses</strong></span>
+            </div>
+            <div class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Complete CE management</span>
+            </div>
+            <div class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span><strong>5 expert consultations/year</strong></span>
+            </div>
+            <div class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Custom compliance calendar</span>
+            </div>
+            <div class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Quarterly compliance reviews</span>
+            </div>
+            <div class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Dedicated account manager</span>
+            </div>
+          </div>
+          <a href="https://buy.stripe.com/eVa29B0MF6zv9HO8wy" class="plan-cta-btn" target="_blank" rel="noopener">Start Free Trial</a>
+        </div>
+      </div>
+
+      <!-- Warning Box -->
+      <div class="warning-box-centered">
+        <h4>Don&#8217;t Risk Your Career</h4>
+        <p>A single missed renewal can result in <strong>license suspension, thousands in fines</strong>, and months of lost income while you reinstate. Our service costs less than 1% of what you could lose.</p>
+      </div>
+
+      <!-- Money Back Guarantee -->
+      <div class="guarantee-section">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        <span>7-Day Free Trial • Cancel Anytime</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section class="la-section la-section-off">
+    <div class="la-container">
+      <div class="la-section-header la-text-center">
+        <h2>Frequently Asked Questions</h2>
+        <p>Everything you need to know about License Alert</p>
+      </div>
+      
+      <div class="faq-container">
+        <div class="faq-item">
+          <div class="faq-question">
+            <h4>What types of professional licenses can you monitor?</h4>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>We monitor all professional licenses across all 50 states including healthcare (doctors, nurses, therapists), real estate, insurance, contractors, CPAs, attorneys, engineers, and more. If it requires renewal and CE, we can track it.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            <h4>How far in advance do you send renewal reminders?</h4>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>We send strategic reminders at 90, 60, 30, 14, and 7 days before your deadlines. This gives you plenty of time to complete requirements without last-minute stress. You can also customize your reminder schedule.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            <h4>What happens during the 7-day free trial?</h4>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>You get full access to all features of your chosen plan. We&#8217;ll set up your license monitoring, and you&#8217;ll start receiving alerts immediately. Your card won&#8217;t be charged until after the trial ends, and you can cancel anytime.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            <h4>Can I change plans later?</h4>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>Yes! You can upgrade or downgrade your plan at any time. Changes take effect at your next billing cycle, and we&#8217;ll prorate any difference. No penalties or fees for changing plans.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            <h4>Do you help with the actual license renewal process?</h4>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>We provide detailed instructions, direct links to renewal portals, and requirement checklists. Professional and Enterprise plans include expert consultations where we can walk you through complex renewals. We also offer renewal filing as an add-on service.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            <h4>What if I have licenses in multiple states?</h4>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>Perfect! Our system is designed for multi-state license holders. We track different requirements, deadlines, and regulations for each state. The Professional plan covers up to 5 licenses, Enterprise covers 10, and we offer custom plans for more.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA SECTION -->
+  <section class="la-section la-section-blue">
+    <div class="la-container">
+      <div class="final-cta-box">
+        <h2>Start Your Free Trial Today</h2>
+        <p>Join 10,000+ professionals who never miss a renewal deadline</p>
+        <div class="cta-buttons">
+          <a href="#pricing" class="la-btn la-btn-primary la-btn-large">Start 7-Day Free Trial</a>
+         
+        </div>
+        <p class="cta-subtext">No credit card required • Cancel anytime • Setup in 60 seconds</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<style>
+/* Core styles for full-width implementation */
+.license-alert-fullwidth {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  max-width: 100vw;
+  overflow: hidden;
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif !important;
+  color: #333;
+  line-height: 1.6;
+}
+
+.license-alert-fullwidth * {
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif !important;
+}
+
+/* Force headings to use Poppins */
+.license-alert-fullwidth h1,
+.license-alert-fullwidth h2,
+.license-alert-fullwidth h3,
+.license-alert-fullwidth h4,
+.la-section-header h2,
+.hero-text-section h1,
+.la-feature-title,
+.perfect-for-title,
+.plan-name,
+.la-timeline-title {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif !important;
+}
+
+/* Variables */
+.license-alert-fullwidth {
+  --primary-color: #2f86e5;
+  --primary-dark: #1e73be;
+  --primary-light: #eef7ff;
+  --accent-color: #ff9800;
+  --dark-text: #333333;
+  --medium-text: #555555;
+  --light-text: #777777;
+  --background-light: #ffffff;
+  --background-off: #f8f9fa;
+  --border-color: #e0e0e0;
+}
+
+/* Container styles */
+.la-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.la-section {
+  padding: 70px 0;
+  width: 100%;
+}
+
+.la-section-light {
+  background-color: var(--background-light);
+}
+
+.la-section-off {
+  background-color: var(--background-off);
+}
+
+.la-section-blue {
+  background-color: var(--primary-light);
+  border-top: 1px solid rgba(0,0,0,0.05);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+/* Text alignment */
+.la-text-center {
+  text-align: center;
+}
+
+/* Section headers */
+.la-section-header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.la-section-header h2 {
+  font-size: 32px;
+  font-weight: 700 !important;
+  margin-bottom: 15px;
+  color: var(--dark-text);
+  font-family: 'Poppins', sans-serif !important;
+  letter-spacing: -0.02em;
+}
+
+.la-section-header p {
+  font-size: 18px;
+  color: var(--medium-text);
+  max-width: 700px;
+  margin: 0 auto;
+  font-weight: 400 !important;
+  font-family: 'Source Sans Pro', sans-serif !important;
+}
+
+/* Hero Section */
+.la-hero {
+  background-color: var(--primary-light);
+  padding: 70px 0;
+}
+
+.la-hero-content-new {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.hero-text-section {
+  flex: 1;
+  max-width: 600px;
+}
+
+.hero-text-section h1 {
+  font-size: 40px;
+  font-weight: 800 !important;
+  margin-bottom: 20px;
+  color: var(--dark-text);
+  line-height: 1.2;
+  font-family: 'Poppins', sans-serif !important;
+  letter-spacing: -0.03em;
+}
+
+.highlight-blue {
+  color: var(--primary-color);
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.hero-text-section p {
+  font-size: 18px;
+  margin-bottom: 25px;
+  color: var(--medium-text);
+  line-height: 1.6;
+  font-weight: 400 !important;
+  font-family: 'Source Sans Pro', sans-serif !important;
+}
+
+.hero-stats {
+  margin-bottom: 30px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.star-rating {
+  color: #ffc107;
+  font-size: 18px;
+}
+
+.rating-text {
+  color: var(--medium-text);
+  font-size: 14px;
+}
+
+.hero-image-section {
+  flex: 0 0 350px;
+}
+
+.hero-images-container {
+  position: relative;
+  width: 350px;
+  height: 350px;
+  margin: 0 auto;
+}
+
+.hero-image-main {
+  position: absolute;
+  top: 0;
+  left: 50px;
+  z-index: 3;
+}
+
+.hero-image-large {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border: 4px solid white;
+}
+
+.hero-image-small {
+  position: absolute;
+  z-index: 2;
+}
+
+.hero-image-2 {
+  top: 50px;
+  right: 10px;
+}
+
+.hero-image-3 {
+  top: 200px;
+  left: 80px;
+}
+
+.hero-image-small-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border: 3px solid white;
+}
+
+.success-badge {
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+  background-color: #28a745;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 25px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  z-index: 4;
+}
+
+.badge-number {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.badge-text {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* Perfect For Section */
+.perfect-for-simple {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.perfect-for-item {
+  background-color: white;
+  padding: 30px 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.perfect-for-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.perfect-for-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-light);
+  border-radius: 50%;
+  color: var(--primary-color);
+}
+
+.perfect-for-icon svg {
+  width: 30px;
+  height: 30px;
+}
+
+.perfect-for-title {
+  font-size: 18px;
+  font-weight: 700 !important;
+  color: var(--dark-text);
+  margin-bottom: 10px;
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.perfect-for-desc {
+  font-size: 15px;
+  color: var(--medium-text);
+  line-height: 1.5;
+  font-family: 'Source Sans Pro', sans-serif !important;
+}
+
+/* Features Section */
+.la-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.la-feature-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+}
+
+.la-feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.la-feature-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+}
+
+.la-feature-icon svg {
+  width: 40px;
+  height: 40px;
+}
+
+.la-feature-title {
+  font-size: 20px;
+  font-weight: 700 !important;
+  margin-bottom: 15px;
+  color: var(--dark-text);
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.la-feature-description {
+  color: var(--medium-text);
+  margin: 0;
+  font-family: 'Source Sans Pro', sans-serif !important;
+}
+
+/* Timeline Section */
+.la-timeline {
+  max-width: 800px;
+  margin: 40px auto 0;
+  position: relative;
+}
+
+.la-timeline:before {
+  content: '';
+  position: absolute;
+  height: calc(100% - 50px);
+  width: 3px;
+  background-color: var(--primary-color);
+  left: 50%;
+  transform: translateX(-50%);
+  top: 25px;
+}
+
+.la-timeline-item {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 50px;
+}
+
+.la-timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.la-timeline-content {
+  width: 45%;
+  background-color: white;
+  padding: 25px;
+  border-radius: 6px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.la-timeline-item:nth-child(odd) .la-timeline-content {
+  margin-right: 55%;
+}
+
+.la-timeline-item:nth-child(even) .la-timeline-content {
+  margin-left: 55%;
+}
+
+.la-timeline-content:before {
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-color: white;
+  transform: rotate(45deg);
+  top: 20px;
+}
+
+.la-timeline-item:nth-child(odd) .la-timeline-content:before {
+  right: -7px;
+}
+
+.la-timeline-item:nth-child(even) .la-timeline-content:before {
+  left: -7px;
+}
+
+.la-timeline-dot {
+  width: 20px;
+  height: 20px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 25px;
+  border: 4px solid white;
+  z-index: 2;
+}
+
+.la-timeline-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+/* New Pricing Cards Grid */
+.pricing-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1000px;
+  margin: 0 auto 40px;
+}
+
+.pricing-card-new {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+  padding: 35px 25px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.pricing-card-new:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.pricing-card-new.featured {
+  border: 2px solid var(--primary-color);
+  transform: scale(1.05);
+  box-shadow: 0 8px 30px rgba(47, 134, 229, 0.15);
+}
+
+.best-value-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--primary-color);
+  color: white;
+  padding: 5px 20px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.plan-header {
+  text-align: center;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 25px;
+}
+
+.plan-name {
+  font-size: 24px;
+  font-weight: 700 !important;
+  color: var(--dark-text);
+  margin-bottom: 15px;
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.plan-price {
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.plan-price span {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--medium-text);
+}
+
+.plan-desc {
+  font-size: 14px;
+  color: var(--medium-text);
+  margin: 0;
+}
+
+.plan-features {
+  flex-grow: 1;
+  margin-bottom: 25px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.feature-item svg {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  color: #28a745;
+  margin-right: 10px;
+  margin-top: 2px;
+}
+
+.feature-item span {
+  font-size: 15px;
+  color: var(--medium-text);
+  line-height: 1.4;
+}
+
+.feature-item strong {
+  color: var(--dark-text);
+  font-weight: 600;
+}
+
+.plan-cta-btn {
+  display: block;
+  background-color: var(--primary-color);
+  color: white;
+  text-align: center;
+  padding: 12px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.plan-cta-btn:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.pricing-card-new.featured .plan-cta-btn {
+  background-color: var(--primary-dark);
+}
+
+.pricing-card-new.featured .plan-cta-btn:hover {
+  background-color: #164d8a;
+}
+
+/* Warning Box */
+.warning-box-centered {
+  max-width: 700px;
+  margin: 40px auto;
+  text-align: center;
+  padding: 25px;
+  border: 2px dashed #ff9800;
+  border-radius: 8px;
+  background-color: #fff8e1;
+}
+
+.warning-box-centered h4 {
+  margin-top: 0;
+  color: #e65100;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.warning-box-centered p {
+  margin-bottom: 0;
+  font-size: 15px;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Guarantee Section */
+.guarantee-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 30px 0;
+  font-size: 14px;
+  color: var(--medium-text);
+}
+
+.guarantee-section svg {
+  width: 20px;
+  height: 20px;
+  color: var(--primary-color);
+}
+
+/* Testimonials */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.testimonial-card {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.stars {
+  color: #ffc107;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.testimonial-card p {
+  font-size: 15px;
+  color: var(--medium-text);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.testimonial-author {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.testimonial-author strong {
+  font-size: 16px;
+  color: var(--dark-text);
+  font-weight: 600;
+}
+
+.testimonial-author span {
+  font-size: 14px;
+  color: var(--light-text);
+}
+
+/* Custom Quote Box */
+.custom-quote-box {
+  background-color: var(--primary-light);
+  border-radius: 8px;
+  padding: 30px;
+  max-width: 700px;
+  margin: 40px auto 0;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.custom-quote-box h3 {
+  font-size: 22px;
+  font-weight: 600 !important;
+  margin-bottom: 15px;
+  color: var(--dark-text);
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.custom-quote-box p {
+  font-size: 16px;
+  color: var(--medium-text);
+  margin-bottom: 20px;
+  font-family: 'Source Sans Pro', sans-serif !important;
+}
+
+/* Final CTA Box */
+.final-cta-box {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  background-color: white;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.final-cta-box h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--dark-text);
+  margin-bottom: 15px;
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.final-cta-box p {
+  font-size: 18px;
+  color: var(--medium-text);
+  margin-bottom: 30px;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.cta-subtext {
+  font-size: 14px !important;
+  color: var(--light-text) !important;
+  margin: 0 !important;
+}
+
+/* Button styles */
+.la-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.la-btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+}
+
+.la-btn-primary:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.la-btn-secondary {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+}
+
+.la-btn-secondary:hover {
+  background-color: var(--primary-color);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.la-btn-large {
+  padding: 14px 30px;
+  font-size: 18px;
+}
+
+/* FAQ Section */
+.faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 15px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.faq-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.faq-question:hover {
+  background-color: #f8f9fa;
+}
+
+.faq-question h4 {
+  font-size: 16px;
+  font-weight: 600 !important;
+  color: var(--dark-text);
+  margin: 0;
+  font-family: 'Poppins', sans-serif !important;
+  flex: 1;
+  padding-right: 15px;
+}
+
+.faq-toggle {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--primary-color);
+  transition: transform 0.3s ease;
+  min-width: 20px;
+  text-align: center;
+}
+
+.faq-item.active .faq-toggle {
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  padding: 0 25px;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.faq-item.active .faq-answer {
+  max-height: 200px;
+  padding: 0 25px 20px;
+}
+
+.faq-answer p {
+  font-size: 15px;
+  color: var(--medium-text);
+  line-height: 1.6;
+  margin: 0;
+  font-family: 'Source Sans Pro', sans-serif !important;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 992px) {
+  .la-hero-content-new {
+    flex-direction: column;
+    text-align: center;
+    gap: 40px;
+  }
+  
+  .hero-text-section {
+    max-width: none;
+  }
+  
+  .hero-image-section {
+    flex: none;
+  }
+  
+  .perfect-for-simple {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .la-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .pricing-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .pricing-card-new.featured {
+    transform: none;
+  }
+  
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .la-timeline:before {
+    left: 30px;
+  }
+  
+  .la-timeline-dot {
+    left: 30px;
+  }
+  
+  .la-timeline-content {
+    width: calc(100% - 80px);
+  }
+  
+  .la-timeline-item:nth-child(odd) .la-timeline-content,
+  .la-timeline-item:nth-child(even) .la-timeline-content {
+    margin-left: 60px;
+    margin-right: 0;
+  }
+  
+  .la-timeline-item:nth-child(odd) .la-timeline-content:before,
+  .la-timeline-item:nth-child(even) .la-timeline-content:before {
+    left: -7px;
+    right: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .la-features-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .la-section-header h2 {
+    font-size: 26px;
+  }
+  
+  .hero-text-section h1 {
+    font-size: 28px;
+  }
+  
+  .hero-text-section p {
+    font-size: 16px;
+  }
+  
+  .hero-images-container {
+    width: 280px;
+    height: 250px;
+  }
+  
+  .hero-image-large {
+    width: 160px;
+    height: 160px;
+  }
+  
+  .hero-image-small-img {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .cta-buttons {
+    flex-direction: column;
+  }
+  
+  .la-btn-large {
+    width: 100%;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // FAQ toggle functionality
+  const faqItems = document.querySelectorAll('.faq-item');
+  
+  faqItems.forEach(item => {
+    const question = item.querySelector('.faq-question');
+    
+    question.addEventListener('click', () => {
+      // Close all other FAQ items
+      faqItems.forEach(otherItem => {
+        if (otherItem !== item) {
+          otherItem.classList.remove('active');
+        }
+      });
+      
+      // Toggle current item
+      item.classList.toggle('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
+		</div>
+
+			</div>
+</article> </div> </div> </div> </div>  </main> <footer class="site-footer"> <div class="site-footer__main"> <section class="footer-column footer-about" aria-labelledby="footer-about-heading"> <h2 id="footer-about-heading" class="visually-hidden">About StateRequirement</h2> <a class="footer-logo" href="/" aria-label="StateRequirement home"> <img src="/wp-content/uploads/2021/08/Logo.png" width="331" height="48" alt="StateRequirement" loading="lazy"> </a> <p>
+Our goal at StateRequirement is to be the #1 professional licensing resource in the world.
+        All of our information is gathered from deep research of trusted governmental, educational
+        sources, and first-hand experience. Thank you for your support.
+</p> <p class="footer-social-label"><strong>Stay Connected:</strong></p> <nav class="footer-social" aria-label="Social links"> <a href="https://facebook.com/StateRequirement-103603827857090/" aria-label="Visit us on Facebook"> <img src="/wp-content/uploads/2021/08/FB.svg" alt="" width="32" height="32" loading="lazy"> </a> <a href="https://www.linkedin.com/company/staterequirement" aria-label="Visit us on LinkedIn"> <img src="/wp-content/uploads/2021/08/linked-in.svg" alt="" width="32" height="32" loading="lazy"> </a> <a href="https://startupsavant.com/startup-savant-podcast?utm_source=staterequirement.com&utm_medium=referral&utm_campaign=Footer+Button" aria-label="Listen to the Startup Savant Podcast">  <svg viewBox="0 0 20 20" width="32" height="32" aria-hidden="true" focusable="false"> <circle cx="10" cy="10" r="9.98" fill="#393939"></circle> <path transform="translate(5.184 4.496) scale(0.0215)" fill="#FFFFFF" d="M224 0C100.3 0 0 100.3 0 224c0 92.22 55.77 171.4 135.4 205.7c-3.48-20.75-6.17-41.59-6.998-58.15C80.08 340.1 48 285.8 48 224c0-97.05 78.95-176 176-176s176 78.95 176 176c0 61.79-32.08 116.1-80.39 147.6c-.834 16.5-3.541 37.37-7.035 58.17C392.2 395.4 448 316.2 448 224C448 100.3 347.7 0 224 0zM224 312c-32.88 0-64 8.625-64 43.75c0 33.13 12.88 104.3 20.62 132.8C185.8 507.6 205.1 512 224 512s38.25-4.375 43.38-23.38C275.1 459.9 288 388.8 288 355.8C288 320.6 256.9 312 224 312zM224 280c30.95 0 56-25.05 56-56S254.1 168 224 168S168 193 168 224S193 280 224 280zM368 224c0-79.53-64.47-144-144-144S80 144.5 80 224c0 44.83 20.92 84.38 53.04 110.8c4.857-12.65 14.13-25.88 32.05-35.04C165.1 299.7 165.4 299.7 165.6 299.7C142.9 282.1 128 254.9 128 224c0-53.02 42.98-96 96-96s96 42.98 96 96c0 30.92-14.87 58.13-37.57 75.68c.1309 .0254 .5078 .0488 .4746 .0742c17.93 9.16 27.19 22.38 32.05 35.04C347.1 308.4 368 268.8 368 224z"></path> </svg> </a> </nav> </section> <div class="footer-column"> <section class="footer-link-group"> <h2><a href="/insurance-licensing/">Insurance Licensing</a></h2> <ul> <li><a href="/insurance-licensing/how-to-become-an-insurance-agent/">How to Become an Insurance Agent</a></li><li><a href="/how-to-get-property-casualty-license/resources-property-casualty-license/">Property and Casualty License</a></li><li><a href="/become-a-life-insurance-agent/resources-life-health-license/">Life and Health License</a></li><li><a href="/insurance-license-exam/how-to-pass-the-insurance-exam/">How to Pass the Insurance Exam</a></li><li><a href="/insurance-licensing/best-insurance-courses/">Best Insurance Pre-License Courses</a></li><li><a href="https://jobs.staterequirement.com/">Insurance Jobs Board</a></li> </ul> </section> <section class="footer-link-group"> <h2><a href="/real-estate/">Real Estate Licensing</a></h2> <ul> <li><a href="/real-estate/how-to-become-a-real-estate-agent/">How to Become a Real Estate Agent</a></li><li><a href="/real-estate/how-to-pass-the-real-estate-exam/">How to Pass the Real Estate Exam</a></li><li><a href="/real-estate/real-estate-agent-broker-realtor/">Real Estate Agent vs Broker vs Realtor</a></li> </ul> </section> </div> <div class="footer-column"> <section class="footer-link-group"> <h2><a href="/securities-licensing/">Securities Licensing</a></h2> <ul> <li><a href="/securities-licensing/securities-industry-essentials-exam-sie/">What is the SIE</a></li><li><a href="/securities-licensing/pass-the-sie-exam/">How to Pass the SIE</a></li><li><a href="/securities-licensing/series-6-license/">Series 6 License</a></li><li><a href="/securities-licensing/series-7-license/">Series 7 License</a></li> </ul> </section> <section class="footer-link-group"> <h2><a href="/insurance-adjuster-licensing/">Adjuster Licensing</a></h2> <ul> <li><a href="/insurance-adjuster-licensing/how-to-become-an-insurance-adjuster/">How to Become an Insurance Adjuster</a></li><li><a href="/insurance-adjuster-licensing/how-to-pass-the-adjuster-exam/">How to Pass the Adjuster Exam</a></li><li><a href="/insurance-adjuster-licensing/what-is-an-insurance-adjuster/">What is an Insurance Adjuster</a></li> </ul> </section> </div> </div> <div class="site-footer__bottom"> <div class="site-footer__bottom-inner"> <p class="footer-family"> <span>© 2026 StateRequirement | StateRequirement is a part of</span> <a href="https://truic.com" aria-label="TRUiC"> <img src="/wp-content/uploads/2025/12/truic-website-with-text-color.webp" alt="TRUiC" loading="lazy"> </a> </p> <nav class="footer-legal" aria-label="Legal"> <a href="/about/">About</a> <a href="/terms-and-conditions/">Terms</a> <a href="/privacy-policy/">Privacy Policy</a> <a href="/contact/">Contact</a> </nav> </div> </div> </footer> <aside class="affiliate-disclosure-banner" data-affiliate-disclosure hidden aria-label="Affiliate disclosure"> <p>
+When readers purchase services discussed on our site, we often earn affiliate commissions that
+    support our work. We also use optional analytics and advertising cookies to understand visits
+    and measure campaigns. <a href="/affiliate-disclosure/">Learn More</a> </p> <button class="affiliate-disclosure-ok" type="button" data-affiliate-disclosure-ok>OK</button> <button class="affiliate-disclosure-close" type="button" aria-label="Continue without optional cookies" data-affiliate-disclosure-close> <span aria-hidden="true">×</span> </button> </aside> <script type="module">(()=>{let e=`sr-affiliate-disclosure-v1`,t=`sr-cookie-consent-v2`,n=document.querySelector(`[data-affiliate-disclosure]`),r=!1,i=null;try{r=localStorage.getItem(e)===`acknowledged`;let n=localStorage.getItem(t);if(n===`accept`||n===`decline`)i=n;else{let e=localStorage.getItem(`sr-cookie-consent-v1`);(e===`accept`||e===`decline`)&&(i=e,localStorage.setItem(t,e))}localStorage.removeItem(`sr-cookie-notice-v1`)}catch{}(!r||!i)&&n&&(n.hidden=!1);let a=r=>{try{localStorage.setItem(e,`acknowledged`),localStorage.setItem(t,r)}catch{}window.dispatchEvent(new CustomEvent(`sr:tracking-consent`,{detail:{choice:r}})),n&&(n.hidden=!0)};document.querySelector(`[data-affiliate-disclosure-ok]`)?.addEventListener(`click`,()=>a(`accept`)),document.querySelector(`[data-affiliate-disclosure-close]`)?.addEventListener(`click`,()=>a(`decline`))})();</script> <script>
+  (() => {
+    const YOUTUBE_ALLOW =
+      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+
+    /*
+     * The migrated CSS hides these while they still advertise a pending source:
+     *   .perfmatters-lazy[data-src] { display: none !important }
+     * so `data-src` must be REMOVED, not just copied to `src`, or the iframe stays
+     * invisible. That rule also rules out gating on IntersectionObserver: a display:none
+     * element has no layout box, never reports as intersecting, and would never be
+     * promoted - the element is hidden until promoted, and promoted only once visible.
+     *
+     * Promote eagerly instead. The laziness is preserved by the markup's own
+     * loading="lazy", which defers the network fetch natively and needs no JavaScript.
+     */
+    const promote = (/** @type {HTMLIFrameElement} */ el) => {
+      const source = el.dataset.src;
+      if (!source || el.getAttribute("src")) return;
+      el.setAttribute("src", source);
+      el.removeAttribute("data-src");
+      el.classList.remove("perfmatters-lazy");
+    };
+
+    const lazyFrames = /** @type {NodeListOf<HTMLIFrameElement>} */ (
+      document.querySelectorAll("iframe[data-src]:not([src])")
+    );
+    for (const frame of lazyFrames) promote(frame);
+
+    // The name is dictated by the inline onclick attributes already in the markup.
+    if (typeof window.perfmattersLazyLoadYouTube !== "function") {
+      window.perfmattersLazyLoadYouTube = (/** @type {HTMLElement} */ container) => {
+        const source = container?.dataset?.src;
+        if (!source) return;
+        const query = container.dataset.query || "";
+        const separator = source.includes("?") ? "&" : "?";
+        const params = query ? `${query}&autoplay=1` : "autoplay=1";
+
+        const frame = document.createElement("iframe");
+        frame.setAttribute("src", `${source}${separator}${params}`);
+        frame.setAttribute("title", "YouTube video player");
+        frame.setAttribute("frameborder", "0");
+        frame.setAttribute("allow", YOUTUBE_ALLOW);
+        frame.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+        frame.setAttribute("allowfullscreen", "");
+        frame.style.width = "100%";
+        frame.style.aspectRatio = "16 / 9";
+        frame.style.border = "0";
+
+        container.replaceChildren(frame);
+        container.classList.add("perfmatters-lazy-youtube-loaded");
+      };
+    }
+
+    // The preview divs ship with onclick but no role or tabindex, so they were
+    // unreachable by keyboard on WordPress too. Cheap to fix while we are here.
+    const previews = /** @type {NodeListOf<HTMLElement>} */ (
+      document.querySelectorAll(".perfmatters-lazy-youtube")
+    );
+    for (const preview of previews) {
+      if (!preview.hasAttribute("tabindex")) preview.setAttribute("tabindex", "0");
+      if (!preview.hasAttribute("role")) preview.setAttribute("role", "button");
+      if (!preview.hasAttribute("aria-label")) {
+        preview.setAttribute("aria-label", "Play video");
+      }
+      preview.addEventListener("keydown", (/** @type {KeyboardEvent} */ event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        window.perfmattersLazyLoadYouTube(preview);
+      });
+    }
+  })();
+</script> <script type="module" src="/_astro/LegacyCarousel.astro_astro_type_script_index_0_lang.fJ7DE8lz.js"></script> </body> </html>

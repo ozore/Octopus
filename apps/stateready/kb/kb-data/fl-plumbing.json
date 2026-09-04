@@ -1,0 +1,654 @@
+{
+  "record_id": "fl.plumbing",
+  "schema_version": "1.0.0",
+  "state": "FL",
+  "state_name": "Florida",
+  "trade": "plumbing",
+  "jurisdiction_model": {
+    "level": "state_and_local",
+    "summary": {
+      "value": "Two tiers. A CERTIFIED contractor (occupation code beginning C) may contract anywhere in Florida without meeting local competency requirements. A REGISTERED contractor (code beginning R) may contract only in the cities and counties their registration names. Same trade, same board, completely different geographic scope and a different renewal year.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+      "source_title": "Construction Industry — Florida DBPR / CILB",
+      "source_kind": "board_page",
+      "evidence": "Registered contractors may contract only in such jurisdictions.",
+      "last_verified": "2026-09-03",
+      "verified_by": [
+        "po-stateready-pass-a",
+        "po-stateready-pass-b"
+      ]
+    },
+    "local_layer_note": "Florida's plumbing scope is written to override local licensing for the named work: a plumbing contractor may do sanitary and storm drainage, venting, water supply, septic tanks and wells 'without obtaining any additional local regulatory license, certificate, or registration'. That is a rare and valuable pre-emption and belongs at the top of a Florida plumbing playbook."
+  },
+  "boards": [
+    {
+      "board_id": "fl.cilb",
+      "name": "Florida Department of Business and Professional Regulation — Construction Industry Licensing Board",
+      "url": "https://www2.myfloridalicense.com/construction-industry/",
+      "scope": "Plumbing contractor (CF certified / RF registered) among other construction trades",
+      "phone": "850.487.1395"
+    }
+  ],
+  "licence_types": [
+    {
+      "licence_type_id": "fl.plumbing.certified_plumbing_contractor",
+      "name": "Certified Plumbing Contractor (CF)",
+      "level": "contractor",
+      "issuer_level": "state",
+      "board_id": "fl.cilb",
+      "who_must_hold": {
+        "value": "A contractor installing, maintaining, repairing, altering, extending or designing plumbing anywhere in Florida.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+        "source_title": "Construction Industry — Florida DBPR / CILB",
+        "source_kind": "board_page",
+        "evidence": "a contractor whose contracting business consists of the execution of contracts requiring the experience, financial means, knowledge, and skill to install, maintain, repair, alter, extend",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "scope_note": {
+        "value": "Sanitary and storm drainage, venting systems, public or private water supply systems, septic tanks, drainage and supply wells — without any additional local licence, certificate or registration.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+        "source_title": "Construction Industry — Florida DBPR / CILB",
+        "source_kind": "board_page",
+        "evidence": "without obtaining any additional local regulatory license, certificate, or registration",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1042&clientCode=0604&XACT_DEFN_ID=18295",
+          "source_title": "Certified Plumbing Contractor as an Individual – Active (CILB 5-M) checklist",
+          "source_kind": "board_page",
+          "evidence": "must first take and pass a state certification examination",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "experience": {
+        "requirement": {
+          "value": "Four years of experience, or a combination of college and experience.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1042&clientCode=0604&XACT_DEFN_ID=18295",
+          "source_title": "Certified Plumbing Contractor as an Individual – Active (CILB 5-M) checklist",
+          "source_kind": "board_page",
+          "evidence": "Applicants are required to have four years of experience or a combination of college and experience.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "alternatives": {
+          "value": "Military experience may be counted.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1042&clientCode=0604&XACT_DEFN_ID=18295",
+          "source_title": "Certified Plumbing Contractor as an Individual – Active (CILB 5-M) checklist",
+          "source_kind": "board_page",
+          "evidence": "Experience gained in the military may be used toward the requirements for licensure.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "application_fee": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "Not published on the checklist page; see fl.hvac for the two attempts made and abandoned.",
+        "source_url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1042&clientCode=0604&XACT_DEFN_ID=18295"
+      },
+      "renewal": {
+        "cycle": {
+          "value": 24,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+          "source_title": "Construction Industry — Florida DBPR / CILB",
+          "source_kind": "board_page",
+          "evidence": "Licenses expire August 31st every even year.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": 205,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+          "source_title": "Construction Industry — Florida DBPR / CILB",
+          "source_kind": "board_page",
+          "evidence": "$205 (+$50 per qualified business)",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "expiry_rule": {
+          "value": "fixed_date_parity:08-31:even",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+          "source_title": "Construction Industry — Florida DBPR / CILB",
+          "source_kind": "board_page",
+          "evidence": "Licenses expire August 31st every even year.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+          "source_title": "Construction Industry — Florida DBPR / CILB",
+          "source_kind": "board_page",
+          "evidence": "Complete the continuing education requirement",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "hours": {
+          "value": 14,
+          "unit": "hours",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+          "source_title": "Construction Industry — Florida DBPR / CILB",
+          "source_kind": "board_page",
+          "evidence": "14 hours of CE",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "period": {
+          "value": 24,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+          "source_title": "Construction Industry — Florida DBPR / CILB",
+          "source_kind": "board_page",
+          "evidence": "Licenses expire August 31st every even year.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "subject_breakdown": {
+          "value": [
+            {
+              "hours": 1,
+              "subject": "specialized or advanced module"
+            },
+            {
+              "hours": 1,
+              "subject": "workplace safety"
+            },
+            {
+              "hours": 1,
+              "subject": "business practices"
+            },
+            {
+              "hours": 1,
+              "subject": "workers' compensation"
+            },
+            {
+              "hours": 1,
+              "subject": "laws and rules"
+            },
+            {
+              "hours": 9,
+              "subject": "any board-approved construction-related instruction"
+            }
+          ],
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+          "source_title": "Construction Industry — Florida DBPR / CILB",
+          "source_kind": "board_page",
+          "evidence": "minimum of 1 hour specialized or advanced module, 1 hour workplace safety, 1 hour business practices, 1 hour workers' compensation, 1 hour laws and rules",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "Florida's 14 hours are six separate mandates, not a total. A licence holder who takes 14 hours of general construction CE has still failed to renew. The rules engine must therefore track CE by SUBJECT, not by an hours counter."
+        },
+        "approved_provider_rule": {
+          "value": "Board-approved provider and board-approved course.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+          "source_title": "Construction Industry — Florida DBPR / CILB",
+          "source_kind": "board_page",
+          "evidence": "The Board must approve the provider before they can begin offering courses for continuing education credit",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No bond in the current CILB financial responsibility sheet.",
+          "source_url": "https://www2.myfloridalicense.com/pro/cilb/documents/Financial%20Responsibility_and_Stability_Requirements_for_Contractor_Applicants.pdf"
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see bond.required"
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": 100000,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.flrules.org/gateway/readFile.asp?sid=0&tid=4819074&type=1&file=61G4-15.003.doc",
+          "source_title": "Rule 61G4-15.003 F.A.C. Public Liability Insurance (adopted text)",
+          "source_kind": "administrative_rule",
+          "evidence": "Plumbing Contractor 100,000 25,000",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "property_damage": {
+          "value": 25000,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.flrules.org/gateway/readFile.asp?sid=0&tid=4819074&type=1&file=61G4-15.003.doc",
+          "source_title": "Rule 61G4-15.003 F.A.C. Public Liability Insurance (adopted text)",
+          "source_kind": "administrative_rule",
+          "evidence": "Plumbing Contractor 100,000 25,000",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "workers_compensation": {
+          "value": "Coverage or an exemption within 30 days of licence issuance.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1042&clientCode=0604&XACT_DEFN_ID=18295",
+          "source_title": "Certified Plumbing Contractor as an Individual – Active (CILB 5-M) checklist",
+          "source_kind": "board_page",
+          "evidence": "obtain an exemption from workers compensation insurance within 30 days of issuance of their license",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "financial_responsibility": {
+          "value": "FICO 660 or higher, no unsatisfied liens or judgments; below 660, a 14-hour board-approved Financial Responsibility course.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/pro/cilb/documents/Financial%20Responsibility_and_Stability_Requirements_for_Contractor_Applicants.pdf",
+          "source_title": "Financial Responsibility and Stability Requirements for Contractor Applicants — CILB",
+          "source_kind": "board_pdf",
+          "evidence": "Applicant has a 660 FICO derived credit score or higher",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      }
+    },
+    {
+      "licence_type_id": "fl.plumbing.registered_plumbing_contractor",
+      "name": "Registered Plumbing Contractor (RF)",
+      "level": "contractor",
+      "issuer_level": "local",
+      "board_id": "fl.cilb",
+      "who_must_hold": {
+        "value": "A plumbing contractor who met a local jurisdiction's competency requirements and registered for that jurisdiction only.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+        "source_title": "Construction Industry — Florida DBPR / CILB",
+        "source_kind": "board_page",
+        "evidence": "Registered contractors may contract only in such jurisdictions.",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "scope_note": {
+        "value": "Plumbing scope, limited to the named jurisdictions.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+        "source_title": "Construction Industry — Florida DBPR / CILB",
+        "source_kind": "board_page",
+        "evidence": "Registered contractors are designated by an occupation code which begins with the letter",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "exam": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Local competency; not a DBPR exam."
+        }
+      },
+      "experience": {
+        "requirement": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Set by the local jurisdiction."
+        }
+      },
+      "application_fee": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "Not published on the checklist page."
+      },
+      "renewal": {
+        "cycle": {
+          "value": 24,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+          "source_title": "Construction Industry — Florida DBPR / CILB",
+          "source_kind": "board_page",
+          "evidence": "Licenses expire August 31st every odd year.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": 205,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+          "source_title": "Construction Industry — Florida DBPR / CILB",
+          "source_kind": "board_page",
+          "evidence": "$205 (+$50 per qualified business)",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "expiry_rule": {
+          "value": "fixed_date_parity:08-31:odd",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+          "source_title": "Construction Industry — Florida DBPR / CILB",
+          "source_kind": "board_page",
+          "evidence": "Licenses expire August 31st every odd year.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+          "source_title": "Construction Industry — Florida DBPR / CILB",
+          "source_kind": "board_page",
+          "evidence": "Complete the continuing education requirement",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "hours": {
+          "value": 14,
+          "unit": "hours",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+          "source_title": "Construction Industry — Florida DBPR / CILB",
+          "source_kind": "board_page",
+          "evidence": "14 hours of CE",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "period": {
+          "value": 24,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+          "source_title": "Construction Industry — Florida DBPR / CILB",
+          "source_kind": "board_page",
+          "evidence": "Licenses expire August 31st every odd year.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "approved_provider_rule": {
+          "value": "Board-approved provider and course.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+          "source_title": "Construction Industry — Florida DBPR / CILB",
+          "source_kind": "board_page",
+          "evidence": "The Board must approve the provider before they can begin offering courses for continuing education credit",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Local jurisdictions may impose one."
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see bond.required"
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": 100000,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.flrules.org/gateway/readFile.asp?sid=0&tid=4819074&type=1&file=61G4-15.003.doc",
+          "source_title": "Rule 61G4-15.003 F.A.C. Public Liability Insurance (adopted text)",
+          "source_kind": "administrative_rule",
+          "evidence": "Plumbing Contractor 100,000 25,000",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      }
+    }
+  ],
+  "reciprocity": [],
+  "reciprocity_statement": {
+    "value": null,
+    "status": "unknown",
+    "confidence": "low",
+    "note": "Same gap as fl.hvac: the CILB's 'Reciprocity and Substantially Equivalent Exams' and 'Endorsement' documents were not fetched.",
+    "source_url": "https://www2.myfloridalicense.com/construction-industry/"
+  },
+  "business_entity": {
+    "qualifying_individual_rule": {
+      "value": "An individual licence qualifies a business; each additional qualified business costs $50 at renewal.",
+      "status": "verified",
+      "confidence": "medium",
+      "source_url": "https://www2.myfloridalicense.com/construction-industry/",
+      "source_title": "Construction Industry — Florida DBPR / CILB",
+      "source_kind": "board_page",
+      "evidence": "$205 (+$50 per qualified business)",
+      "last_verified": "2026-09-03",
+      "verified_by": [
+        "po-stateready-pass-a",
+        "po-stateready-pass-b"
+      ]
+    },
+    "entity_registration": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "Not read in this pass."
+    },
+    "per_location_rule": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "Not stated."
+    },
+    "change_notification_deadline": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "Not read in this pass."
+    }
+  },
+  "typical_timeline": {
+    "value": null,
+    "status": "unknown",
+    "confidence": "low",
+    "note": "No processing time published; only the five-day FDLE fingerprint window.",
+    "source_url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1042&clientCode=0604&XACT_DEFN_ID=18295"
+  },
+  "coverage_notes": [
+    "Specialty plumbing categories and the Underground Utility and Excavation Contractor licence, which overlaps plumbing scope in Florida, are not modelled.",
+    "The registered (R) tier is modelled at state level only; the local competency requirements are out of launch scope."
+  ],
+  "disclaimer_profile": "local_layer_warning",
+  "provenance": {
+    "created_at": "2026-09-03",
+    "pass_a": {
+      "agent_id": "po-stateready-pass-a",
+      "date": "2026-09-03",
+      "method": "fetched each source URL with curl (desktop UA), read the rendered text, recorded each value with a verbatim evidence fragment"
+    },
+    "pass_b": {
+      "agent_id": "po-stateready-pass-b",
+      "date": "2026-09-03",
+      "method": "kb-scripts/verify_pass_b.py re-fetches every source_url independently of the pass-A cache and asserts the evidence fragment is still literally present; a value whose evidence cannot be found is a disagreement and is demoted to UNVERIFIED",
+      "agreements": 29,
+      "disagreements": 0,
+      "disagreement_detail": [],
+      "unreachable": 0,
+      "agreement_rate_pct": 100.0
+    },
+    "sources": [
+      {
+        "source_id": "fl.dbpr.construction",
+        "url": "https://www2.myfloridalicense.com/construction-industry/",
+        "title": "Construction Industry — Florida DBPR / CILB",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 358177,
+        "content_sha256": "af081cc6a90eb63f8c0bab2a478ebd4d61091a8a949150c0118599cb45c451d7"
+      },
+      {
+        "source_id": "fl.dbpr.cilb_plumb_checklist",
+        "url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1042&clientCode=0604&XACT_DEFN_ID=18295",
+        "title": "Certified Plumbing Contractor as an Individual – Active (CILB 5-M) checklist",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 31226,
+        "content_sha256": "a0eb2e4de44a92caaf7d276d86ff1d8cabf0fb9a9cbc832675f53c14369daece"
+      },
+      {
+        "source_id": "fl.dbpr.fin_resp",
+        "url": "https://www2.myfloridalicense.com/pro/cilb/documents/Financial%20Responsibility_and_Stability_Requirements_for_Contractor_Applicants.pdf",
+        "title": "Financial Responsibility and Stability Requirements for Contractor Applicants — CILB",
+        "kind": "board_pdf",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 105380,
+        "content_sha256": "43f37aa3e905f21f33184ac7656b0b5d47dfe7ed8298a039de1b6a6dd492016f"
+      },
+      {
+        "source_id": "fl.far.61g4_15_003",
+        "url": "https://www.flrules.org/gateway/readFile.asp?sid=0&tid=4819074&type=1&file=61G4-15.003.doc",
+        "title": "Rule 61G4-15.003 F.A.C. Public Liability Insurance (adopted text)",
+        "kind": "administrative_rule",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 38912,
+        "content_sha256": "fa4f9fc5f46d6da8929f8a7adbb29e24c699e56352ae2bf2b690f41259a511b9"
+      }
+    ],
+    "publishable": true
+  }
+}

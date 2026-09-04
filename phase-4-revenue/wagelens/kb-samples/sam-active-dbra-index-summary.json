@@ -1,0 +1,114 @@
+{
+ "_meta": {
+  "fetched_at": "2026-09-03",
+  "endpoint": "https://sam.gov/api/prod/sgs/v1/search/?index=dbra&page={p}&size=2000&mode=search&is_active=true",
+  "headers": {
+   "Accept": "application/hal+json"
+  },
+  "api_key_required": false,
+  "requests": 3,
+  "wall_clock_seconds": 3
+ },
+ "active_dba_determinations": 4235,
+ "states_and_territories": 54,
+ "distinct_state_county_pairs": 3088,
+ "construction_types": {
+  "Heavy": 926,
+  "Building": 1615,
+  "Residential": 984,
+  "Highway": 833
+ },
+ "revision_number_distribution": {
+  "1": 3377,
+  "2": 748,
+  "3": 67,
+  "4": 21,
+  "5": 13,
+  "6": 9
+ },
+ "state_counts": {
+  "AK": 5,
+  "AL": 167,
+  "AR": 172,
+  "AS": 1,
+  "AZ": 49,
+  "CA": 28,
+  "CM": 1,
+  "CO": 30,
+  "CT": 24,
+  "DC": 3,
+  "DE": 11,
+  "FL": 229,
+  "GA": 188,
+  "GU": 5,
+  "HI": 1,
+  "IA": 80,
+  "ID": 94,
+  "IL": 70,
+  "IN": 41,
+  "KS": 150,
+  "KY": 106,
+  "LA": 53,
+  "MA": 24,
+  "MD": 66,
+  "ME": 48,
+  "MI": 157,
+  "MN": 123,
+  "MO": 65,
+  "MS": 143,
+  "MT": 79,
+  "NC": 97,
+  "ND": 46,
+  "NE": 82,
+  "NH": 32,
+  "NJ": 65,
+  "NM": 49,
+  "NV": 47,
+  "OK": 55,
+  "OR": 74,
+  "PA": 110,
+  "PR": 40,
+  "RI": 4,
+  "SC": 66,
+  "SD": 31,
+  "TN": 120,
+  "TX": 290,
+  "UT": 83,
+  "VA": 187,
+  "VI": 8,
+  "VT": 48,
+  "WA": 176,
+  "WI": 76,
+  "WV": 224,
+  "WY": 12
+ },
+ "county_type_combinations": 12185,
+ "combinations_with_more_than_one_determination": 1483,
+ "example_ambiguous_combinations": {
+  "OR/14431/Heavy": [
+   "OR20260052",
+   "OR20260081"
+  ],
+  "OR/14515/Heavy": [
+   "OR20260053",
+   "OR20260081"
+  ],
+  "OR/14517/Heavy": [
+   "OR20260054",
+   "OR20260081"
+  ],
+  "OR/14435/Heavy": [
+   "OR20260055",
+   "OR20260081"
+  ],
+  "OR/14437/Heavy": [
+   "OR20260056",
+   "OR20260081"
+  ],
+  "OR/14442/Heavy": [
+   "OR20260057",
+   "OR20260081"
+  ]
+ },
+ "AMBIGUITY_FINDING": "12.17% of (state, county, construction type) combinations map to MORE THAN ONE active determination. The product cannot assume a unique answer; it must present the candidates and let the user pick the one named in their contract."
+}

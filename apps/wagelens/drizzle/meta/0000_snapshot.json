@@ -1,0 +1,2783 @@
+{
+  "id": "0c15cb30-4562-4ccc-972d-950488f7bec7",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.kb_classifications": {
+      "name": "kb_classifications",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "wd_id": {
+          "name": "wd_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rate_group_id": {
+          "name": "rate_group_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "line_no": {
+          "name": "line_no",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "classification_label": {
+          "name": "classification_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "search_label": {
+          "name": "search_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trade_family": {
+          "name": "trade_family",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "base_rate": {
+          "name": "base_rate",
+          "type": "numeric(8, 2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fringe_rate": {
+          "name": "fringe_rate",
+          "type": "numeric(8, 2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "qualifier": {
+          "name": "qualifier",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "footnote_text": {
+          "name": "footnote_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "wd_number": {
+          "name": "wd_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "modification_number": {
+          "name": "modification_number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "publication_date": {
+          "name": "publication_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source_url": {
+          "name": "source_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "last_verified": {
+          "name": "last_verified",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "kb_classifications_line_idx": {
+          "name": "kb_classifications_line_idx",
+          "columns": [
+            {
+              "expression": "wd_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "line_no",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "kb_classifications_search_idx": {
+          "name": "kb_classifications_search_idx",
+          "columns": [
+            {
+              "expression": "wd_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "search_label",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "kb_classifications_wd_id_kb_wage_determinations_id_fk": {
+          "name": "kb_classifications_wd_id_kb_wage_determinations_id_fk",
+          "tableFrom": "kb_classifications",
+          "tableTo": "kb_wage_determinations",
+          "columnsFrom": [
+            "wd_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "kb_classifications_rate_group_id_kb_rate_groups_id_fk": {
+          "name": "kb_classifications_rate_group_id_kb_rate_groups_id_fk",
+          "tableFrom": "kb_classifications",
+          "tableTo": "kb_rate_groups",
+          "columnsFrom": [
+            "rate_group_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "kb_classifications_base_rate_positive": {
+          "name": "kb_classifications_base_rate_positive",
+          "value": "\"kb_classifications\".\"base_rate\" > 0"
+        },
+        "kb_classifications_fringe_non_negative": {
+          "name": "kb_classifications_fringe_non_negative",
+          "value": "\"kb_classifications\".\"fringe_rate\" >= 0"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.kb_counties": {
+      "name": "kb_counties",
+      "schema": "",
+      "columns": {
+        "state_code": {
+          "name": "state_code",
+          "type": "char(2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sam_county_code": {
+          "name": "sam_county_code",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "county_name": {
+          "name": "county_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fips_county_code": {
+          "name": "fips_county_code",
+          "type": "char(5)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source_url": {
+          "name": "source_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "last_verified": {
+          "name": "last_verified",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "kb_counties_state_slug_idx": {
+          "name": "kb_counties_state_slug_idx",
+          "columns": [
+            {
+              "expression": "state_code",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "slug",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "kb_counties_state_code_sam_county_code_county_name_pk": {
+          "name": "kb_counties_state_code_sam_county_code_county_name_pk",
+          "columns": [
+            "state_code",
+            "sam_county_code",
+            "county_name"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.kb_ingest_runs": {
+      "name": "kb_ingest_runs",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "started_at": {
+          "name": "started_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "finished_at": {
+          "name": "finished_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "kind": {
+          "name": "kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "index_records_seen": {
+          "name": "index_records_seen",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "determinations_new": {
+          "name": "determinations_new",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "determinations_changed": {
+          "name": "determinations_changed",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "classifications_written": {
+          "name": "classifications_written",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parse_coverage": {
+          "name": "parse_coverage",
+          "type": "numeric(6, 4)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "failure_reason": {
+          "name": "failure_reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "detail": {
+          "name": "detail",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.kb_rate_groups": {
+      "name": "kb_rate_groups",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "wd_id": {
+          "name": "wd_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "identifier": {
+          "name": "identifier",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kind": {
+          "name": "kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "effective_date": {
+          "name": "effective_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "kb_rate_groups_identity_idx": {
+          "name": "kb_rate_groups_identity_idx",
+          "columns": [
+            {
+              "expression": "wd_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "identifier",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "effective_date",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "kb_rate_groups_wd_id_kb_wage_determinations_id_fk": {
+          "name": "kb_rate_groups_wd_id_kb_wage_determinations_id_fk",
+          "tableFrom": "kb_rate_groups",
+          "tableTo": "kb_wage_determinations",
+          "columnsFrom": [
+            "wd_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.kb_wage_determinations": {
+      "name": "kb_wage_determinations",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "wd_number": {
+          "name": "wd_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "modification_number": {
+          "name": "modification_number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "state_code": {
+          "name": "state_code",
+          "type": "char(2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "construction_types": {
+          "name": "construction_types",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "publication_date": {
+          "name": "publication_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_standard": {
+          "name": "is_standard",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "document_text": {
+          "name": "document_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "document_sha256": {
+          "name": "document_sha256",
+          "type": "char(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "parser_version": {
+          "name": "parser_version",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source_url": {
+          "name": "source_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "public_url": {
+          "name": "public_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fetched_at": {
+          "name": "fetched_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "last_verified": {
+          "name": "last_verified",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "superseded_by": {
+          "name": "superseded_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "kb_wd_number_mod_idx": {
+          "name": "kb_wd_number_mod_idx",
+          "columns": [
+            {
+              "expression": "wd_number",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "modification_number",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "kb_wd_active_idx": {
+          "name": "kb_wd_active_idx",
+          "columns": [
+            {
+              "expression": "state_code",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "is_active",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "kb_wd_last_verified_idx": {
+          "name": "kb_wd_last_verified_idx",
+          "columns": [
+            {
+              "expression": "last_verified",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "kb_wage_determinations_superseded_by_kb_wage_determinations_id_fk": {
+          "name": "kb_wage_determinations_superseded_by_kb_wage_determinations_id_fk",
+          "tableFrom": "kb_wage_determinations",
+          "tableTo": "kb_wage_determinations",
+          "columnsFrom": [
+            "superseded_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.kb_wd_counties": {
+      "name": "kb_wd_counties",
+      "schema": "",
+      "columns": {
+        "wd_id": {
+          "name": "wd_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "state_code": {
+          "name": "state_code",
+          "type": "char(2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sam_county_code": {
+          "name": "sam_county_code",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "county_name": {
+          "name": "county_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "kb_wd_counties_lookup_idx": {
+          "name": "kb_wd_counties_lookup_idx",
+          "columns": [
+            {
+              "expression": "state_code",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "sam_county_code",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "kb_wd_counties_wd_id_kb_wage_determinations_id_fk": {
+          "name": "kb_wd_counties_wd_id_kb_wage_determinations_id_fk",
+          "tableFrom": "kb_wd_counties",
+          "tableTo": "kb_wage_determinations",
+          "columnsFrom": [
+            "wd_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "kb_wd_counties_wd_id_sam_county_code_county_name_pk": {
+          "name": "kb_wd_counties_wd_id_sam_county_code_county_name_pk",
+          "columns": [
+            "wd_id",
+            "sam_county_code",
+            "county_name"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.kb_wd_modifications": {
+      "name": "kb_wd_modifications",
+      "schema": "",
+      "columns": {
+        "wd_number": {
+          "name": "wd_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "modification_number": {
+          "name": "modification_number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "publication_date": {
+          "name": "publication_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "text_held": {
+          "name": "text_held",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "history_source_url": {
+          "name": "history_source_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "history_fetched_at": {
+          "name": "history_fetched_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "kb_wd_modifications_number_idx": {
+          "name": "kb_wd_modifications_number_idx",
+          "columns": [
+            {
+              "expression": "wd_number",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "kb_wd_modifications_wd_number_modification_number_pk": {
+          "name": "kb_wd_modifications_wd_number_modification_number_pk",
+          "columns": [
+            "wd_number",
+            "modification_number"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.disclaimer_acknowledgements": {
+      "name": "disclaimer_acknowledgements",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "org_id": {
+          "name": "org_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "disclaimer_version": {
+          "name": "disclaimer_version",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "acknowledged_at": {
+          "name": "acknowledged_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "disclaimer_ack_identity_idx": {
+          "name": "disclaimer_ack_identity_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "disclaimer_version",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "disclaimer_acknowledgements_org_id_organisations_id_fk": {
+          "name": "disclaimer_acknowledgements_org_id_organisations_id_fk",
+          "tableFrom": "disclaimer_acknowledgements",
+          "tableTo": "organisations",
+          "columnsFrom": [
+            "org_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "disclaimer_acknowledgements_user_id_users_id_fk": {
+          "name": "disclaimer_acknowledgements_user_id_users_id_fk",
+          "tableFrom": "disclaimer_acknowledgements",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.document_share_links": {
+      "name": "document_share_links",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "document_id": {
+          "name": "document_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token_hash": {
+          "name": "token_hash",
+          "type": "char(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_by_user_id": {
+          "name": "created_by_user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "accessed_count": {
+          "name": "accessed_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "last_accessed_at": {
+          "name": "last_accessed_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "revoked_at": {
+          "name": "revoked_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "revoked_by_user_id": {
+          "name": "revoked_by_user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "document_share_links_document_idx": {
+          "name": "document_share_links_document_idx",
+          "columns": [
+            {
+              "expression": "document_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "document_share_links_document_id_documents_id_fk": {
+          "name": "document_share_links_document_id_documents_id_fk",
+          "tableFrom": "document_share_links",
+          "tableTo": "documents",
+          "columnsFrom": [
+            "document_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "document_share_links_created_by_user_id_users_id_fk": {
+          "name": "document_share_links_created_by_user_id_users_id_fk",
+          "tableFrom": "document_share_links",
+          "tableTo": "users",
+          "columnsFrom": [
+            "created_by_user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "document_share_links_revoked_by_user_id_users_id_fk": {
+          "name": "document_share_links_revoked_by_user_id_users_id_fk",
+          "tableFrom": "document_share_links",
+          "tableTo": "users",
+          "columnsFrom": [
+            "revoked_by_user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "document_share_links_token_hash_unique": {
+          "name": "document_share_links_token_hash_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "token_hash"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.documents": {
+      "name": "documents",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "payroll_id": {
+          "name": "payroll_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kind": {
+          "name": "kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "storage_key": {
+          "name": "storage_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "byte_size": {
+          "name": "byte_size",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sha256": {
+          "name": "sha256",
+          "type": "char(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "page_count": {
+          "name": "page_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        },
+        "wd_number": {
+          "name": "wd_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "wd_modification_number": {
+          "name": "wd_modification_number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "wd_publication_date": {
+          "name": "wd_publication_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "form_revision": {
+          "name": "form_revision",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'WH-347 Rev. January 2025'"
+        },
+        "omb_control_number": {
+          "name": "omb_control_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'1235-0008'"
+        },
+        "generator_version": {
+          "name": "generator_version",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "generated_at": {
+          "name": "generated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "documents_identity_idx": {
+          "name": "documents_identity_idx",
+          "columns": [
+            {
+              "expression": "payroll_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "kind",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "generator_version",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "documents_payroll_idx": {
+          "name": "documents_payroll_idx",
+          "columns": [
+            {
+              "expression": "payroll_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "documents_payroll_id_payrolls_id_fk": {
+          "name": "documents_payroll_id_payrolls_id_fk",
+          "tableFrom": "documents",
+          "tableTo": "payrolls",
+          "columnsFrom": [
+            "payroll_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.payroll_lines": {
+      "name": "payroll_lines",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "payroll_id": {
+          "name": "payroll_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "worker_id": {
+          "name": "worker_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "worker_entry_no": {
+          "name": "worker_entry_no",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "last_name": {
+          "name": "last_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "first_name": {
+          "name": "first_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "middle_initial": {
+          "name": "middle_initial",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "identifying_no_last4": {
+          "name": "identifying_no_last4",
+          "type": "char(4)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "worker_status": {
+          "name": "worker_status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'J'"
+        },
+        "classification_label": {
+          "name": "classification_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kb_classification_id": {
+          "name": "kb_classification_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "hours_st": {
+          "name": "hours_st",
+          "type": "numeric(5, 2)[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "hours_ot": {
+          "name": "hours_ot",
+          "type": "numeric(5, 2)[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "total_hours_st": {
+          "name": "total_hours_st",
+          "type": "numeric(6, 2)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'0'"
+        },
+        "total_hours_ot": {
+          "name": "total_hours_ot",
+          "type": "numeric(6, 2)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'0'"
+        },
+        "rate_st": {
+          "name": "rate_st",
+          "type": "numeric(8, 2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rate_ot": {
+          "name": "rate_ot",
+          "type": "numeric(8, 2)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'0'"
+        },
+        "fringe_credit_hourly": {
+          "name": "fringe_credit_hourly",
+          "type": "numeric(8, 2)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'0'"
+        },
+        "payment_in_lieu_hourly": {
+          "name": "payment_in_lieu_hourly",
+          "type": "numeric(8, 2)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'0'"
+        },
+        "gross_project": {
+          "name": "gross_project",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'0'"
+        },
+        "gross_all_work": {
+          "name": "gross_all_work",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'0'"
+        },
+        "ded_tax_withholdings": {
+          "name": "ded_tax_withholdings",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'0'"
+        },
+        "ded_fica": {
+          "name": "ded_fica",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'0'"
+        },
+        "ded_other": {
+          "name": "ded_other",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'0'"
+        },
+        "ded_other_note": {
+          "name": "ded_other_note",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ded_total": {
+          "name": "ded_total",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'0'"
+        },
+        "net_pay": {
+          "name": "net_pay",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'0'"
+        },
+        "wd_base_rate": {
+          "name": "wd_base_rate",
+          "type": "numeric(8, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "wd_fringe_rate": {
+          "name": "wd_fringe_rate",
+          "type": "numeric(8, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sort_order": {
+          "name": "sort_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        }
+      },
+      "indexes": {
+        "payroll_lines_entry_idx": {
+          "name": "payroll_lines_entry_idx",
+          "columns": [
+            {
+              "expression": "payroll_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "worker_entry_no",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payroll_lines_order_idx": {
+          "name": "payroll_lines_order_idx",
+          "columns": [
+            {
+              "expression": "payroll_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "sort_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "payroll_lines_payroll_id_payrolls_id_fk": {
+          "name": "payroll_lines_payroll_id_payrolls_id_fk",
+          "tableFrom": "payroll_lines",
+          "tableTo": "payrolls",
+          "columnsFrom": [
+            "payroll_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payroll_lines_worker_id_workers_id_fk": {
+          "name": "payroll_lines_worker_id_workers_id_fk",
+          "tableFrom": "payroll_lines",
+          "tableTo": "workers",
+          "columnsFrom": [
+            "worker_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "payroll_lines_kb_classification_id_kb_classifications_id_fk": {
+          "name": "payroll_lines_kb_classification_id_kb_classifications_id_fk",
+          "tableFrom": "payroll_lines",
+          "tableTo": "kb_classifications",
+          "columnsFrom": [
+            "kb_classification_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.payrolls": {
+      "name": "payrolls",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "project_id": {
+          "name": "project_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "filer_organisation_id": {
+          "name": "filer_organisation_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "payroll_number": {
+          "name": "payroll_number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "week_ending_date": {
+          "name": "week_ending_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_final": {
+          "name": "is_final",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "no_work_performed": {
+          "name": "no_work_performed",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'draft'"
+        },
+        "wd_number": {
+          "name": "wd_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "wd_modification_number": {
+          "name": "wd_modification_number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "certifying_official_name": {
+          "name": "certifying_official_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "certifying_official_title": {
+          "name": "certifying_official_title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "certifying_official_phone": {
+          "name": "certifying_official_phone",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "certifying_official_email": {
+          "name": "certifying_official_email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "additional_remarks": {
+          "name": "additional_remarks",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "certified_at": {
+          "name": "certified_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "certified_by_user_id": {
+          "name": "certified_by_user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "superseded_by_payroll_id": {
+          "name": "superseded_by_payroll_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "submission_status": {
+          "name": "submission_status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'not_sent'"
+        },
+        "submitted_at": {
+          "name": "submitted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "submission_recipient": {
+          "name": "submission_recipient",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "submission_status_note": {
+          "name": "submission_status_note",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "payrolls_number_idx": {
+          "name": "payrolls_number_idx",
+          "columns": [
+            {
+              "expression": "project_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "filer_organisation_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "payroll_number",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "payrolls_project_week_idx": {
+          "name": "payrolls_project_week_idx",
+          "columns": [
+            {
+              "expression": "project_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "week_ending_date",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "payrolls_project_id_projects_id_fk": {
+          "name": "payrolls_project_id_projects_id_fk",
+          "tableFrom": "payrolls",
+          "tableTo": "projects",
+          "columnsFrom": [
+            "project_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payrolls_filer_organisation_id_organisations_id_fk": {
+          "name": "payrolls_filer_organisation_id_organisations_id_fk",
+          "tableFrom": "payrolls",
+          "tableTo": "organisations",
+          "columnsFrom": [
+            "filer_organisation_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payrolls_certified_by_user_id_users_id_fk": {
+          "name": "payrolls_certified_by_user_id_users_id_fk",
+          "tableFrom": "payrolls",
+          "tableTo": "users",
+          "columnsFrom": [
+            "certified_by_user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "payrolls_superseded_by_payroll_id_payrolls_id_fk": {
+          "name": "payrolls_superseded_by_payroll_id_payrolls_id_fk",
+          "tableFrom": "payrolls",
+          "tableTo": "payrolls",
+          "columnsFrom": [
+            "superseded_by_payroll_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.project_wd_pin_history": {
+      "name": "project_wd_pin_history",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "project_id": {
+          "name": "project_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "wd_number": {
+          "name": "wd_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "wd_modification_number": {
+          "name": "wd_modification_number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pinned_at": {
+          "name": "pinned_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "unpinned_at": {
+          "name": "unpinned_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "changed_by_user_id": {
+          "name": "changed_by_user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reason": {
+          "name": "reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'initial'"
+        }
+      },
+      "indexes": {
+        "project_pin_history_project_idx": {
+          "name": "project_pin_history_project_idx",
+          "columns": [
+            {
+              "expression": "project_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "pinned_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "project_wd_pin_history_project_id_projects_id_fk": {
+          "name": "project_wd_pin_history_project_id_projects_id_fk",
+          "tableFrom": "project_wd_pin_history",
+          "tableTo": "projects",
+          "columnsFrom": [
+            "project_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "project_wd_pin_history_changed_by_user_id_users_id_fk": {
+          "name": "project_wd_pin_history_changed_by_user_id_users_id_fk",
+          "tableFrom": "project_wd_pin_history",
+          "tableTo": "users",
+          "columnsFrom": [
+            "changed_by_user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.projects": {
+      "name": "projects",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "org_id": {
+          "name": "org_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "project_or_contract_no": {
+          "name": "project_or_contract_no",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "location_description": {
+          "name": "location_description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "our_role": {
+          "name": "our_role",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'sub'"
+        },
+        "prime_contractor_name": {
+          "name": "prime_contractor_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "awarding_agency": {
+          "name": "awarding_agency",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "wd_id": {
+          "name": "wd_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "wd_number": {
+          "name": "wd_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "wd_modification_number": {
+          "name": "wd_modification_number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "wd_pinned_at": {
+          "name": "wd_pinned_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "wd_pinned_by_user_id": {
+          "name": "wd_pinned_by_user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "wd_pin_method": {
+          "name": "wd_pin_method",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'entered_number'"
+        },
+        "wd_pinned_superseded": {
+          "name": "wd_pinned_superseded",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "state_code": {
+          "name": "state_code",
+          "type": "char(2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sam_county_code": {
+          "name": "sam_county_code",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "county_name": {
+          "name": "county_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "construction_type": {
+          "name": "construction_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'active'"
+        },
+        "contract_award_date": {
+          "name": "contract_award_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "projects_org_status_idx": {
+          "name": "projects_org_status_idx",
+          "columns": [
+            {
+              "expression": "org_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "projects_wd_idx": {
+          "name": "projects_wd_idx",
+          "columns": [
+            {
+              "expression": "wd_number",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "wd_modification_number",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "projects_org_id_organisations_id_fk": {
+          "name": "projects_org_id_organisations_id_fk",
+          "tableFrom": "projects",
+          "tableTo": "organisations",
+          "columnsFrom": [
+            "org_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "projects_wd_id_kb_wage_determinations_id_fk": {
+          "name": "projects_wd_id_kb_wage_determinations_id_fk",
+          "tableFrom": "projects",
+          "tableTo": "kb_wage_determinations",
+          "columnsFrom": [
+            "wd_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "projects_wd_pinned_by_user_id_users_id_fk": {
+          "name": "projects_wd_pinned_by_user_id_users_id_fk",
+          "tableFrom": "projects",
+          "tableTo": "users",
+          "columnsFrom": [
+            "wd_pinned_by_user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.wd_change_alerts": {
+      "name": "wd_change_alerts",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "project_id": {
+          "name": "project_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "wd_number": {
+          "name": "wd_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "from_modification": {
+          "name": "from_modification",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "to_modification": {
+          "name": "to_modification",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "diff": {
+          "name": "diff",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "affected_worker_count": {
+          "name": "affected_worker_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending'"
+        },
+        "email_sent_at": {
+          "name": "email_sent_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "email_opened_at": {
+          "name": "email_opened_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "resolved_at": {
+          "name": "resolved_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "resolved_by_user_id": {
+          "name": "resolved_by_user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "wd_change_alerts_identity_idx": {
+          "name": "wd_change_alerts_identity_idx",
+          "columns": [
+            {
+              "expression": "project_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "wd_number",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "to_modification",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "wd_change_alerts_project_idx": {
+          "name": "wd_change_alerts_project_idx",
+          "columns": [
+            {
+              "expression": "project_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "wd_change_alerts_project_id_projects_id_fk": {
+          "name": "wd_change_alerts_project_id_projects_id_fk",
+          "tableFrom": "wd_change_alerts",
+          "tableTo": "projects",
+          "columnsFrom": [
+            "project_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "wd_change_alerts_resolved_by_user_id_users_id_fk": {
+          "name": "wd_change_alerts_resolved_by_user_id_users_id_fk",
+          "tableFrom": "wd_change_alerts",
+          "tableTo": "users",
+          "columnsFrom": [
+            "resolved_by_user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.wd_watches": {
+      "name": "wd_watches",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "wd_number": {
+          "name": "wd_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending'"
+        },
+        "consent_text_version": {
+          "name": "consent_text_version",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "consented_at": {
+          "name": "consented_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "created_ip_hash": {
+          "name": "created_ip_hash",
+          "type": "char(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_user_agent_hash": {
+          "name": "created_user_agent_hash",
+          "type": "char(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "confirm_token_hash": {
+          "name": "confirm_token_hash",
+          "type": "char(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "confirm_expires_at": {
+          "name": "confirm_expires_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "confirmed_at": {
+          "name": "confirmed_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "confirmed_ip_hash": {
+          "name": "confirmed_ip_hash",
+          "type": "char(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "unsubscribe_token_hash": {
+          "name": "unsubscribe_token_hash",
+          "type": "char(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "unsubscribed_at": {
+          "name": "unsubscribed_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "unsubscribe_scope": {
+          "name": "unsubscribe_scope",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "last_alert_sent_at": {
+          "name": "last_alert_sent_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "alerts_sent_count": {
+          "name": "alerts_sent_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "bounced_at": {
+          "name": "bounced_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "wd_watches_identity_idx": {
+          "name": "wd_watches_identity_idx",
+          "columns": [
+            {
+              "expression": "email",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "wd_number",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "wd_watches_wd_idx": {
+          "name": "wd_watches_wd_idx",
+          "columns": [
+            {
+              "expression": "wd_number",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "wd_watches_expiry_idx": {
+          "name": "wd_watches_expiry_idx",
+          "columns": [
+            {
+              "expression": "expires_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "wd_watches_confirm_token_hash_unique": {
+          "name": "wd_watches_confirm_token_hash_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "confirm_token_hash"
+          ]
+        },
+        "wd_watches_unsubscribe_token_hash_unique": {
+          "name": "wd_watches_unsubscribe_token_hash_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "unsubscribe_token_hash"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.worker_classifications": {
+      "name": "worker_classifications",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "project_id": {
+          "name": "project_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "worker_id": {
+          "name": "worker_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source": {
+          "name": "source",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'wage_determination'"
+        },
+        "kb_classification_id": {
+          "name": "kb_classification_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "classification_label": {
+          "name": "classification_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "base_rate": {
+          "name": "base_rate",
+          "type": "numeric(8, 2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fringe_rate": {
+          "name": "fringe_rate",
+          "type": "numeric(8, 2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "wd_number": {
+          "name": "wd_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "wd_modification_number": {
+          "name": "wd_modification_number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "mapped_at": {
+          "name": "mapped_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "mapped_by_user_id": {
+          "name": "mapped_by_user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "unmapped_at": {
+          "name": "unmapped_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "worker_classifications_project_idx": {
+          "name": "worker_classifications_project_idx",
+          "columns": [
+            {
+              "expression": "project_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "worker_classifications_worker_idx": {
+          "name": "worker_classifications_worker_idx",
+          "columns": [
+            {
+              "expression": "worker_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "worker_classifications_project_id_projects_id_fk": {
+          "name": "worker_classifications_project_id_projects_id_fk",
+          "tableFrom": "worker_classifications",
+          "tableTo": "projects",
+          "columnsFrom": [
+            "project_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "worker_classifications_worker_id_workers_id_fk": {
+          "name": "worker_classifications_worker_id_workers_id_fk",
+          "tableFrom": "worker_classifications",
+          "tableTo": "workers",
+          "columnsFrom": [
+            "worker_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "worker_classifications_kb_classification_id_kb_classifications_id_fk": {
+          "name": "worker_classifications_kb_classification_id_kb_classifications_id_fk",
+          "tableFrom": "worker_classifications",
+          "tableTo": "kb_classifications",
+          "columnsFrom": [
+            "kb_classification_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "worker_classifications_mapped_by_user_id_users_id_fk": {
+          "name": "worker_classifications_mapped_by_user_id_users_id_fk",
+          "tableFrom": "worker_classifications",
+          "tableTo": "users",
+          "columnsFrom": [
+            "mapped_by_user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.workers": {
+      "name": "workers",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "org_id": {
+          "name": "org_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "first_name": {
+          "name": "first_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "last_name": {
+          "name": "last_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "middle_initial": {
+          "name": "middle_initial",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "identifying_no_last4": {
+          "name": "identifying_no_last4",
+          "type": "char(4)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "default_status": {
+          "name": "default_status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'J'"
+        },
+        "apprenticeship_program_id": {
+          "name": "apprenticeship_program_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "registered_classification": {
+          "name": "registered_classification",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "archived_at": {
+          "name": "archived_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "workers_org_idx": {
+          "name": "workers_org_idx",
+          "columns": [
+            {
+              "expression": "org_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "workers_org_id_organisations_id_fk": {
+          "name": "workers_org_id_organisations_id_fk",
+          "tableFrom": "workers",
+          "tableTo": "organisations",
+          "columnsFrom": [
+            "org_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

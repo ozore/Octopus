@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "echo 'repo root: nothing to install'",
+  "buildCommand": "echo 'repo root: static index only; apps deploy from apps/<app> with their own Root Directory'",
+  "outputDirectory": "public"
+}

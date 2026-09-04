@@ -1,0 +1,26 @@
+{
+  "_comment": "The allowlist of hosts kb-data/ may cite. A TLD test is not good enough: Florida's own licensing portal is myfloridalicense.com, a .com, while thousands of contractor-licence lead-generation sites are .org. Adding a host here is a deliberate human act with a reason recorded, and validate.py gate G5 rejects any source outside the list.",
+  "hosts": {
+    "www.tdlr.texas.gov": "Texas Department of Licensing and Regulation, the licensing agency itself.",
+    "tsbpe.texas.gov": "Texas State Board of Plumbing Examiners, the licensing agency itself.",
+    "www.tsbpe.texas.gov": "Texas State Board of Plumbing Examiners (www alias).",
+    "www2.myfloridalicense.com": "Florida DBPR's own licensing portal. A .com operated by the State of Florida; every page carries the DBPR masthead and the Tallahassee address.",
+    "www.myfloridalicense.com": "Florida DBPR licensing portal, application-checklist host.",
+    "www.flrules.org": "Florida Department of State, Division of Library and Information Services — the official publisher of the Florida Administrative Code.",
+    "nclicensing.org": "North Carolina State Board of Examiners of Plumbing, Heating and Fire Sprinkler Contractors, the board itself.",
+    "www.ncbeec.org": "North Carolina State Board of Examiners of Electrical Contractors, the board itself.",
+    "www.ncleg.gov": "North Carolina General Assembly, the official publisher of the General Statutes.",
+    "data.bls.gov": "US Bureau of Labor Statistics open data API.",
+    "com.ohio.gov": "Ohio Department of Commerce, Division of Industrial Compliance — the agency that hosts the Ohio Construction Industry Licensing Board (OCILB), which is itself the licensing board for HVAC, refrigeration, plumbing, hydronics and electrical contractors. Added by wave-2 B5.",
+    "codes.ohio.gov": "Ohio Legislative Service Commission, the official publisher of the Ohio Revised Code. Tier B: used for ORC chapter 4740 only where the board does not restate the rule on its own pages. Added by wave-2 B5.",
+    "www.michigan.gov": "Michigan Department of Licensing and Regulatory Affairs (LARA), Bureau of Construction Codes — the licensing agency itself for mechanical, plumbing and electrical licences. Added by wave-2 B5.",
+    "www.azleg.gov": "Arizona State Legislature, the official publisher of the Arizona Revised Statutes. Tier B, and for Arizona it is the ONLY reachable authority: roc.az.gov, azroc.gov, azsos.gov and apps.azsos.gov each returned a Cloudflare interstitial to every automated client on 2026-09-04 (two attempts each, urllib and curl). Added by wave-2 B5.",
+    "consumered.georgia.gov": "Consumer Ed, published by the Georgia Attorney General's Consumer Protection Division. An official State of Georgia publication but NOT the licensing board. It is on this list only because sos.ga.gov, sos.georgia.gov, rules.sos.ga.gov and verify.sos.ga.gov each returned a Cloudflare interstitial to every automated client on 2026-09-04 (two attempts each, urllib and curl). Every value taken from it is recorded at confidence 'medium' with a note naming the publisher, and it backs only the question of which board regulates which trade — never a fee, an hour count or a date. Delete this host the day the Secretary of State's own pages can be fetched. Added by wave-2 B5."
+  },
+  "rejected": {
+    "licenseroadmap.com": "vendor content marketing; the phase-3 identity agent established it repeats a competitor's own pricing page, so it is not independent.",
+    "rocketcert.com": "exam-prep vendor; accurate or not, it is not the source of a rule.",
+    "staterequirement.com": "affiliate content site.",
+    "contractorlicensehq.com": "affiliate content site."
+  }
+}

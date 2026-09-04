@@ -1,0 +1,1286 @@
+JOANNA WIEBE
+THE CONVERSION
+MARKETER’S 
+GUIDE TO
+LANDING PAGE
+COPYWRITING
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+2
+EDITOR’S NOTE
+C
+opy is so pivotal to the success or failure of your landing page that 
+it’s easy to take it for granted. No matter how valuable your offer or 
+beautiful your design, it’s the actual words on the page that will ultimately 
+persuade prospects to click, or drive them to bounce. 
+Because words are so personal, so specific to your unique offer and audience, 
+I thought finding credible copywriting advice that goes beyond the basics 
+was a fool’s errand. Until I saw Joanna Wiebe speak. In her charming keynote 
+at the Call to Action conference in Vancouver, Joanna introduced several 
+deceptively simple but extremely actionable principles that have since 
+become mantras around the Unbounce office. Joining forces with her on 
+this ebook was a no-brainer. 
+What you’re about to read is an advanced guide for professional marketers 
+who are looking to get more out of their online marketing campaigns. 
+If you’re sending traffic to dedicated landing pages and know you could 
+be converting better with strategic copy improvements, look no further. If 
+you’re just getting started with landing page optimization and want to get a 
+leg up on the competition, we’ve included links throughout the book to the 
+Conversion Marketing Glossary where you’ll find definitions of key terms 
+and concepts so you can follow along. 
+The beauty of conversion rate optimization is that it never stops. Y ou 
+can always make your pages more relevant, more persuasive and more 
+delightful. The same goes for becoming a better writer. The area where 
+those two ideals intersect – conversion-centered copywriting – is what this 
+ebook is all about. We hope you find it useful.  
+—  Dan Levy 
+Content Strategist, Unbounce 
+The advanced tips and tactics outlined in 
+this ebook are meant to be tested on your 
+own landing pages. 
+With Unbounce, you can quickly build 
+landing pages for each of your marketing 
+campaigns and then test the crap out of 
+your headlines, your body copy and your 
+call to action buttons. 
+Unbounce landing pages can be used in 
+your pay-per-click, email, social media 
+and content marketing campaigns to 
+persuade and convert prospects better 
+than your homepage ever could. 
+With Unbounce, you can...
+• Build, publish and test landing pages 
+without relying on developers.
+• Optimize your campaigns for mobile by 
+using responsive templates or starting 
+from scratch.
+• Dynamically replace your landing page 
+copy to match your ads.
+TEST EVERYTHING 
+IN THIS EBOOK
+TRY UNBOUNCE FREE 
+ FOR 30 DAYS
+DO IT IN UNBOUNCE
+TABLE OF CONTENTS
+PART 1. THE 4 FOUNDATIONAL PRINCIPLES OF   
+WRITING HIGHER-CONVERTING LANDING PAGES
+Start with the Page Goal and Work Backward 
+Every Part of Your Marketing Campaign Has One Job
+Awareness Dictates Page Length 
+Stop Trying to Write 
+PART 2. THE 5 CRITICAL COPY ELEMENTS ON  
+HIGH-CONVERTING LANDING PAGES
+PART 3. LANDING PAGE TEARDOWNS
+FINAL THOUGHTS ON BETTER COPYWRITING
+ABOUT THE AUTHOR
+A Click-Worthy Call to Action (CTA) 
+A Message-Matched Unique Selling Proposition (MMUSP) 
+The Most Powerful Benefits, Results and/or Outcomes
+Ye Olde Offer 
+Social Proof That Actually Proves Something Good
+30
+3 3 
+40
+42
+44
+07
+1 2 
+17
+25
+05
+28
+48
+54
+55
+PART  1
+THE 4 FOUNDATIONAL  
+PRINCIPLES OF WRITING  
+HIGHER-CONVERTING   
+LANDING PAGES
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+6
+C
+OPY IS YOUR ONLINE SALESPERSON. When it comes to  
+your landing page, your copy needs to convince visitors to do the one 
+thing that you most want them to do on your page. Which means the success 
+– or failure – of each and every landing page you create is riding largely on 
+your copy. 
+How do you write really stellar landing page copy? Not waste-of-time fluff. 
+Not rambling warm-up copy. How do you write copy that actually gets 
+through to visitors?
+In this ebook, I’ll walk you through the essentials of writing better landing 
+page copy, starting with the following four foundational principles. 
+What you’re about to read is informed by more than 10 years of hands-on 
+experience in copywriting, UX and A/B testing – so it’s not just a guess, and 
+it’s not just a few tricks that have worked for one client in one industry. 
+These are the strategies and techniques that could dramatically transform 
+your ho-hum copy into the stuff conversion legends are made of. So print 
+this ebook out and put a copy on the desk of every marketer you know. 
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+7
+1. START WITH THE PAGE GOAL 
+AND WORK BACKWARD
+Every landing page should have one goal. Only one goal. Not one primary 
+goal with three supporting goals and a few bonus calls to action sprinkled 
+in here and there. One goal.
+Before you write a page – before you even think of the URL for it – you 
+need to decide on the single goal of the page. If you have stakeholders 
+in your business who will be signing off on the page copy, you 
+need to ensure they know what the page goal is from the outset.  
+The goal could be to get visitors to: 
+• Opt in for your newsletter.
+• Opt in for a consult, a webinar, an ebook or other bait.
+• Watch an embedded video.
+• Submit a question or comment.
+• Share on social media.
+• Invite a friend.
+• Start a trial.
+• Pay for your solution.
+Single-goal landing pages not only minimize the paradox of choice for your 
+visitors, but they’re also much easier for you or your copywriter to write 
+because they’re so focused. 
+Let’s say the goal for your retargeting landing page is to get returning visitors 
+to opt in for the live webinar you host every Wednesday afternoon. Y our 
+copy only needs to engage your visitor in a conversation that will convince 
+them to attend your webinar next week. 
+They don’t need to know about your business, your products, your VC 
+funding history, your career opportunities, your latest blog post. They don’t 
+need to be bothered with comment fields or buttons to tweet out your page. 
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+8
+They don’t need to hear about your free weekly newsletter or how to get 
+sweet offers from you. 
+They only need to be presented with copy that will make it easy and desirable 
+for them to sign up for your webinar next week. That copy would likely 
+include:
+• The value proposition for the webinar.
+• A quick summary of the webinar topic.
+• At least one very intriguing question that will be answered in the first 5 minutes 
+of the webinar.
+• Details about the webinar, like the date, start time, length and host(s).
+• Anxiety reducers about the webinar, such as the fact that a recording will be 
+made available for X period of time to those who’ve registered.
+Then, make it easy to register. 
+Now, this foundational principle isn’t just about having one page goal. It’s 
+about starting with that goal and “working backward” – versus starting with 
+a headline and trying to move visitors toward the goal. 
+The goal is what matters. So start there, and work backward through the 
+sequence of objections and anxieties that are most likely to get in the way 
+of conversion, all the way up to the point where you’ve found the benefit or 
+value prop to message in your headline. This is what I mean: 
+PRO TIP
+I call this  
+The Prism Principle:  
+When writing your 
+close, think of your 
+offer as a prism, and 
+shine a light through 
+it. Let yourself “see” 
+a range of colorful 
+outcomes of taking 
+your business up on 
+the offer. Write those 
+in short bullets near 
+your call to action.
+PAGE GOAL
+PRIMARY
+OBJECTION
+PRIMARY
+BENEFIT
+PRIMARY
+ANXIETY
+COUNTER-
+OBJECTION
+SECONDARY
+OBJECTION
+SECONDARY
+OBJECTION
+SECONDARY
+BENEFIT
+START HERE
+THEN FIGURE OUT THIS
+THEN THIS
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+9
+So here’s what that might look like if you were to write a landing page to, 
+say, download an ebook on writing landing page copy. 
+Y ou might then write a headline that will lead to your page goal while also 
+connecting with your prospect in a way that is for more meaningful than, 
+“Download This Free Copywriting Ebook.”
+Here’s what this looks like on a landing page for Unbounce’s Ultimate Guide 
+to PPC Landing Pages. Y ou’ll notice that the objections and anxieties aren’t 
+necessarily addressed in the order I laid out in the chart above, but you get 
+the idea:
+CTA
+HERO COPY
+WHAT’S THE EBOOK 
+ABOUT? WHAT’S  
+INSIDE?
+WHAT’S THE 
+BIGGEST PAIN THE 
+COPYWRITING 
+SOLVES?
+WHAT’S A 
+DELIGHTFUL 
+OUTCOME OF 
+WRITING COPY?
+HOW LONG IS IT?
+DO I HAVE TIME  
+FOR IT?
+WHO WROTE IT?
+DOWNLOAD
+EBOOK
+WHY IS SHE THE 
+RIGHT PERSON TO 
+WRITE ABOUT COPY?
+AM I GOING TO HAVE 
+TO SURRENDER  
+MY FIRSTBORN  
+TO GET IT?
+WHO ELSE THINKS 
+IT’S AWESOME?  
+WHY?
+BODY COPY
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+10
+Everything on your page should fall naturally out of your page goal. Start 
+with the call to action, and work backward. Don’t start by dreaming up a 
+headline and then trying to fill in the page with stuff that might make people 
+want to complete the page goal. Start with the goal.
+How long is it?
+What is the biggest pain 
+this book solves?
+What is the ebook about?
+What’s inside?
+Am I going to have to surrender 
+my first-born to get it? 
+(Nope, just an email address!)
+Who wrote it?  
+Why is he the right person?
+“ Every landing page should have one goal. Only one goal. ”
+�  TWEET THIS QUOTE
+WHY YOU NEED A DEDICATED LANDING PAGE 
+FOR EVERY CAMPAIGN
+Imagine you’re on a tropical vacation. Y ou arrived at your resort late 
+last night. Y ou’re feeling a little groggy from the jetlag, but the sun 
+is shining. So you decide to go to the sea for a swim. Y ou follow the 
+signs for seaside. But when you get to the seaside... No white sandy 
+beach. No palm trees. Only a stinky little harbor full of fishing boats. 
+Y ou’d be disappointed, wouldn’t you? 
+This is exactly what happens online when your landing page doesn’t 
+live up to your promise. 
+What did you promise in your email? 
+Which wording did you use? 
+As soon as you divert from your message or use a different tone of 
+voice, your reader starts to feel uncertain. His resistance to your 
+sales message increases because you’ve not lived up to your promise 
+so far. 
+Y our landing page has to match the promise, the tone of voice, the 
+words of your upstream message - whether it’s an email, PPC ad, or 
+social traffic.
+— Henneke
+HENNEKE DUISTERMAAT
+Irreverent copywriter and marketer at ENCHANTINGMARKETING.COM
+EXPERT INSIGHT
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+12
+2. EVERY PART OF YOUR MARKETING 
+CAMPAIGN HAS ONE JOB 
+Y ou’ve heard that the headline is the most important copy you’ll write for 
+your landing page. Marketers put a lot of stock in – and pressure on – our 
+headlines. For the past ten or so years, content marketers have blogged 
+relentlessly about how to write headlines, which has resulted in a massive 
+accumulation of expectations placed on those six to twelve little words at 
+the top of your page. Y ou may expect your headline to do all of this:
+• Grab visitors’ attention
+• Match the language on the call to action that drove visitors to the page
+• Help you rank for a keyword phrase
+• Get visitors to read the next line on the page
+• Express your value proposition
+• Summarize the content on the page
+• Convince people to sign up or buy
+That’s crazy. No headline could do all of the above. 
+Y our headline has one job.  
+Y our subhead has one job.  
+Y our body copy has one job.  
+Y our form has one job.  
+Y our button has one job.  
+Y our confirmation message has one job.
+Think of the elements on your page as workers on an assembly line. Every 
+worker has her own job for which she is responsible. Every job must be done 
+well to keep the conveyor belt going; if one job along the line isn’t done well, 
+it makes it impossible for the other workers down the line to do their job. 
+Here are the jobs to consider when writing conversion copy:
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+13
+Headline Keep arriving visitors on the page
+Subhead Move visitors to the body copy
+Body copy Directly support the page goal
+Social proof T urn naysayers into believers
+Form headline Relieve anxiety about completing the page goal
+Form Get filled out
+Button Get clicked
+ 
+Can each element do more than the work they’re responsible for? Sure. 
+But if you make them responsible for jobs that should be done further 
+down the line, you set them up for failure. Although a headline can turn 
+naysayers into believers, be careful not to expect every headline to do so. 
+Now let’s zoom out from our landing page in isolation and look at landing 
+pages in the ecosystem of interactions that they’re actually a part of. 
+In this ecosystem, every element has one job, too, with dependencies 
+between the elements. 
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+14
+PPC AD
+LANDING PAGE 
+HEADLINE
+LANDING PAGE 
+BODY
+LANDING PAGE 
+FORM
+SALES PAGE  
+BODY
+LANDING PAGE 
+CTA
+SALES PAGE  
+CTA
+EMAIL  
+SUBJECT LINE
+CART HEADLINE
+EMAIL BODY
+CART BODY
+EMAIL CTA
+CART FORM
+SALES PAGE 
+HEADLINE
+CART CTA
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+15
+Y our PPC ad has to get clicked. The landing page headline then has to keep 
+that visitor; to do so, it will need to reflect the message that compelled 
+the visitor to click in the first place while also making it appear worth your 
+visitor’s while to stay on the page. 
+From there, every element continues to do its individual job as part of the 
+bigger team. 
+Let’s imagine that all the elements do their job… until the email subject line, 
+which fails to entice people to open the email. The email goes unopened. 
+Now all the elements that came before will have done their work for nothing, 
+and all the elements that follow will miss out on the chance to do their jobs. 
+Every element on your page is a worker trying to do one thing. This may feel 
+like oversimplifying the actual work of your copy and content, but you’ve 
+tried it your way. Y ou’ve tried making one element do three jobs. How’s 
+that working for you? T ry it this way instead. Suspend disbelief and see how 
+much easier it becomes to write your pages and pinpoint problem areas. 
+This approach can also lead to more A/B test ideas, cleaner tests and 
+clearer success metrics for your tests. For example, if you hypothesize 
+that your headline is failing to keep visitors on the page, you can develop 
+new copy variations designed to do that job better and set goals in keeping 
+with engagement and bounce.
+PRO TIP
+Have you tried  
+“The Open Loop”?  
+If you’re driving to a 
+landing page from 
+an ad or an email, 
+write your ad or email 
+in such a way that 
+visitors are given 
+the first half of an 
+important or intriguing 
+piece of information 
+in that ad or email, 
+with the promise of 
+“closing the loop”  
+with the second half 
+on the landing page.  
+(Then be sure to  
+close it on the  
+landing page!) 
+“ Every element on your page is a worker trying to do one thing. ”
+�  TWEET THIS QUOTE
+NEIL FLINCHBAUGH
+Certified Conversion Copywriter
+THE CONVERTING POWER OF LANDING PAGES
+If landing pages were superheroes, their superpower would 
+be their laser focus. So when writing a landing page headline, 
+make sure to take advantage of this superpower by speaking 
+to that page’s traffic segment as directly as you can. Think 
+about who will be landing on that page, where they’re coming 
+from, and what they’re looking for. Let them know as quickly 
+and clearly as you can that they’re in the right place and that 
+this page has what they want. 
+It’s no match for x-ray vision, but it can cut down your bounce 
+rate and boost your conversions to help make you a hero of 
+sorts for your company.
+— Neil
+EXPERT INSIGHT
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+17
+3. AWARENESS DICTATES 
+PAGE LENGTH 
+“How long should a page be?” This is a question I hear a lot. As in, all the 
+time. As in, it may be the most commonly asked question in the copywriting 
+world. The long copy vs short copy debate has raged for decades. 
+Page length – or how much copy and content you include on a page – is 
+dictated by the level of awareness your prospect has when s/he arrives on 
+your landing page. There are five stages of awareness, as described by many 
+a copywriter, from the legendary copywriter and author of Breakthrough 
+Advertising Gene Schwartz to Copyblogger’s Brian Clark to yours truly:
+1. Most Aware: Visitors know and trust your brand
+2. Product Aware: Visitors know you offer solutions they may need but they 
+have yet to choose your product
+3. Solution Aware: Visitors know solutions exist for their pain but don’t know 
+about yours
+4. Pain Aware: Visitors are aware of their problem but not of any solutions
+5. Unaware: People who are not necessarily in need at this point 
+Understanding how aware your visitors are when they arrive on your landing 
+page can help you better understand what’s motivating them and how much 
+you need to say to convince them to choose you. Those who are Most 
+Aware need a smidgen of copy – largely focused on your offer – but those 
+who are only Pain Aware will require a lot of education from you to get to a 
+point of trusting and choosing you. 
+It is because awareness levels vary so greatly among your prospects that 
+you need to craft multiple targeted landing pages. I recommend starting 
+by writing a landing page for those who are Pain Aware and then cutting 
+sections out to create a page for Solution Aware, repeating that process to 
+create a page for Product Aware, and finally creating a shorter version of 
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+18
+that page to serve Most Aware. 
+When people are Unaware, they are unlikely to land on your landing page 
+because, well, they don’t even feel pains you could solve, so how did they 
+get to your page? Out of curiosity? 
+It’s highly unlikely that the Unaware would arrive on your page; at most, they 
+might accidentally land there after following a link – but that makes them a 
+very weak lead and not necessarily worth optimizing for. So let’s focus on 
+the other four stages and see some examples of pages written for those. 
+NOTE
+The following landing page examples are the actual pages on which I landed when 
+searching keyword phrases. They are not necessarily outstanding landing pages; 
+some of them look a lot more like homepages with too many links distracting 
+from the one goal of the page. But they speak well to the concept of stages of 
+awareness. 
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+19
+PAIN AWARE
+After searching “what to do if you think you have depression,” I landed 
+on this page, the entry point to a symptom checklist for those who think 
+they may suffer from depression. This page is deceptively short; in fact, it’s 
+the beginning of a lengthy, multi-step online interview to determine the 
+likelihood that the visitor suffers from depression. What’s clear: it’s designed 
+for those who are aware of their pain (literal pain) but not of solutions to 
+that pain.
+
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+20
+SOLUTION AWARE
+The landing page for “top divorce attorneys in NJ,” this page is just long 
+enough to a) help the Solution Aware visitor understand that Weinberger 
+offers the solution they seek before b) moving her from Solution to Product 
+Aware with succinct copy about their brand: why to choose them, who’s on 
+the team, and what they know about divorce in New Jersey. 
+PRO TIP
+If you’re a local 
+business, make the 
+name of the city or 
+state/province you 
+serve prominent. 
+When people want 
+an orthodontist in 
+Portland, Oregon, that 
+location is critical. And 
+if you have a phone 
+number for folks to 
+call, make it prominent 
+if you’re going to show 
+it at all. When split-
+testing your Unbounce 
+landing page, make 
+sure to use a unique, 
+traceable phone 
+number for each 
+variation.
+
+21
+PRODUCT AWARE
+I landed on this page after searching 
+for “electric car Chevy Volt.”
+Here Chevy’s marketers join the 
+conversation already happening in 
+the visitor’s mind, with the headline 
+“Electricity travels” and the subhead 
+“How far can electricity take you?”.
+The page is lengthy, but every  
+message on the page is intended 
+to move me from Product Aware to 
+Most Aware. 
+My one complaint: the offer appears 
+at the top of the page, which may 
+be too soon for visitors that are not 
+Most Aware. “Build Y our Volt” could 
+be a more appropriate offer here.
+PRO TIP
+Add captions to your 
+images! A photo of a 
+hotel room on your 
+hotel’s landing page 
+is more likely to act as 
+a message for visitors 
+if you write clearly on 
+or under that photo 
+what’s important 
+about the photo.
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+22
+MOST AWARE
+After searching “Buy Nest thermostat,” I was served with this landing page, 
+which leads with the price and a clear call to action to purchase a Nest  
+Learning Thermostat. All the messaging thereafter is intended to help Most 
+Aware prospects overcome their most likely objections: do I really want this, 
+can I afford it, and can I install it? These are objections a Solution Aware 
+person wouldn’t have.
+
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+23
+ 
+HOW TO UNCOVER YOUR VISITORS’ 
+STATE OF AWARENESS 
+Put a Qualaroo or Disco pop-up survey on your landing page, and ask one or both 
+of these questions of your visitors:
+How familiar are you with [insert brand name]?
+   Very familiar (I’ve been to this site many times) 
+   Familiar 
+   Not very familiar (I’ve never been to this site before)
+What’s happening in your life that brought you here today? 
+[short text field]
+The first question will quickly help you plot your visitors on the awareness spectrum. 
+The second question, however, is my very favorite because you can learn about 
+awareness as well as referral sources and options for opt-in bait.
+You may learn that the majority of your visitors arrived to your page after clicking 
+a link on Twitter, possibly indicating lower-end awareness; so informed, you could 
+then tweak your page to be an opt-in page introducing a longer drip campaign 
+designed to educate them about their pains, your solutions and why you’re the 
+one to solve their pains. 
+You may learn that some of your visitors are sick and tired of using your competitor 
+or the incumbent solution, or that they’re being referred in by an online course, 
+possibly indicating Solution or Product Awareness; with that assumption, you 
+could offer a sample chapter from your ebook, a free trial of your solution or a 
+consultation.  
+In addition to using an on-page survey, use a combo of your analytics and AdWords. 
+Here’s a quick cheat sheet for understanding stages of awareness based on how 
+people arrived on your page. 
+ 
+ 
+PRO TIP
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+24
+Most Aware
+Visitors arriving direct. 
+Visitors arriving after searching for your brand name + a 
+word like “sale,” “coupon,” “new release,” etc.
+Product Aware
+Visitors arriving after searching for your brand name.
+Visitors arriving via a partner, JV or affiliate site. 
+Visitors arriving via email. 
+Solution Aware
+Visitors arriving via your blog. 
+Visitors arriving via referrals from another blog. 
+Pain Aware Visitors arriving via unbranded long-tail keyword phrases.
+ 
+Informed by how much your visitors know about themselves and about you, you 
+can then write landing pages targeted to various states or stages of awareness.
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+25
+4. STOP TRYING TO WRITE
+T ake a look at these three headlines:
+ 
+Which do you think outperformed the Control: B or C? 
+Headline C offered an abysmal (and not confident) 64% drop while Headline 
+B brought in a statistically confident 103% lift in clicks on the page.
+The Control was written by the fine folks at Keep&Share. Headline B was 
+swiped from a testimonial. And Headline C was written by yours truly. 
+T o clarify: the headlines that were written by non-customers tanked in 
+comparison to the headline swiped from real customer language. 
+HEADLINE A
+HEADLINE B
+HEADLINE C
+Collaborate & Share & Store – Online
+Keep&Share Makes it Easy
+Eliminate Up to 99% Of Your Paper Files
+Store files securely online. Access them easily. And collaborate with 
+your staff & customers in a single, private location.
+The Only Small Business Collaboration Suite 
+That Works The Way You Do
+You can customize your calendar, file folders, and to-do lists
+in ways that other business softwares can’t match.
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+26
+This is not a fluke result. Repeatedly, the best-performing messages are 
+those that are swiped directly from:
+• Testimonials
+• Customer reviews of your product or service
+• Support emails
+• Surveys
+• Anywhere your prospects are talking about solutions like yours
+When you stop trying to write and start listening to your customers, your 
+copy writes itself. That’s because your best messages are not waiting inside 
+your head for you to find them. They’re not sitting untapped in your CEO’s 
+brain. They can’t be discovered swapping ideas around a boardroom table. 
+Listen to your prospects and customers. Listen to the words they use, the 
+underlying message and the frequency with which they talk about X. Only 
+then can you fill your landing page with copy that’s more likely to convert.
+“ When you stop trying to write and start listening 
+to your customers, your copy writes itself. ”
+�  TWEET THIS QUOTE
+THE #1 MISTAKE SMALL BUSINESSES MAKE WITH 
+THEIR LANDING PAGE COPY
+One thing I still see a lot of businesses doing on landing pages 
+is focusing on their product rather than your problem. They’ll 
+lead with telling us “How awesome this widget is” (and it’s 
+always “awesome”) but go really soft on WHY that matters to 
+the prospect. 
+Don’t get too focused on the fact your software widget does 
+X, Y and Z because that’s what excites YOU. Remember that 
+your customers are still people with problems to be solved. 
+T ry entering the conversation already going on in their head 
+- explain how your widget solves their problem – and they’ll 
+think twice about closing that page.
+— Peter
+PETER MICHAELS
+Certified Conversion Copywriter and creator of Rock & Roll Copy
+EXPERT INSIGHTEXPERT INSIGHT
+
+PART  1
+THE 4 FOUNDATIONAL  
+PRINCIPLES OF WRITING  
+HIGHER-CONVERTING   
+LANDING PAGES
+THE 5 CRITICAL  
+COPY ELEMENTS ON  
+HIGH-CONVERTING  
+LANDING PAGES
+PART  2
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+29
+I
+’ll be the first to admit it: It’s super-unrealistic to try to force every landing 
+page to adopt five and only five components. The elements you need on 
+your page will vary by industry, solution, audience and awareness levels, 
+among other things. 
+For example, if you’re selling on your page, you’ll need to overcome objections 
+around your price and neutralize anxieties about the purchasing experience 
+– doubly so if you’re selling a big-ticket solution. This could require video 
+demos, an explainer video, high-res screenshots, money-back guarantees, 
+security iconography – any number of types of content we’re not covering 
+here.
+That said, the highest-converting landing pages have at least the following 
+five elements in common. Use them as a starting point. And split-test the 
+addition and subtraction of elements.
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+30
+1. A CLICK-WORTHY  
+CALL TO ACTION (CTA)
+It may seem odd to start with the “endpoint,” but you need to think of your 
+call to action first when writing a page, as I mentioned earlier. 
+This is not because your call to action should be the first element to appear 
+on your page. (In most cases, it shouldn’t.) It’s because all the copy on your 
+landing page should be building toward and supporting the call to action. 
+Let’s agree now on a few things:
+1. Every landing page should have one goal, and that one goal is reflected  
+in the CTA.
+2. You should have a maximum of one CTA per landing page.
+3. That one CTA can be repeated on the page – such as at the mid-point and the 
+very bottom – as long as both CTAs are supporting the one goal of the page.
+4. Passive calls to action – like Twitter and Facebook icons, or like site navigation 
+– are still calls to action and, as such, shouldn’t be on the page unless  
+there is only one of them and it is the primary CTA.
+Cool? Agreed? Okay, with that in mind, how do you write CTAs that people 
+actually want to click? 
+1. MINIMIZE ANXIETIES
+Think of your landing page button as a closed door. Essentially, that’s what 
+it is. Y our visitors are on a page they know, and a button invites them to 
+leave that page in order to enter a new, foreign space that could be loaded 
+with complications they can’t anticipate.
+When you’re writing your CTA, keep the anxiety of your visitors in mind. 
+They’re worried about:
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+31
+• What’s really on the other side
+• If they’ll be surprised by what follows
+• If the potential benefit of clicking is worth the risk
+On a lead-gen page for an Australian health insurance company, we tested 
+the following two buttons against each other:
+Which is worth the risk of clicking?
+Which one helps me understand what’s actually going to follow?
+In our test, we found that the button wording “Show me my quotes” out -
+performed the copy “Get my quotes” by 10.3%. All it took was tweaking the 
+button copy to minimize the risk associated with clicking the button.  “Get 
+my quotes” is ambiguous. What do I have to do to get them? Will I have to 
+pay? On the other hand, “Show me my quotes” assures me my quotes are 
+going to be displayed right after I click the button. No sweat. 
+2. DON’T INTRODUCE WORK
+Buttons often lead users to new experiences – and those experiences are, 
+quite often, rife with WORK. With labor. Not backbreaking labor, but labor 
+nonetheless. 
+Buttons lead to checkouts. Buttons lead to the next page in a multi-page 
+form. Buttons lead to scary, unknown places that, from time to time, create 
+new work. 
+Do your buttons suggest work? 
+T ake a look at the following two buttons we tested:
+
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+32
+Which of those buttons suggests that work is about to follow? 
+When we tested them, we found that the button “Add It to WordPress Now” 
+decreased CTR by 15%. Why? It introduces work that people may not be 
+ready for yet. Sure, whichever button they click, they’ll still have to do the 
+work that follows… but people do not want to be reminded of the work that 
+must be done. 
+(And, FYI, not only did the “Add It to Wordpress Now” button lead to lower 
+clicks, but it also resulted in fewer completed signups than did “T ry It Free 
+Now.”)
+Finally, if you have an opt-in form of any kind on your landing page, it 
+is part of your call to action. The fewer fields you have on your form, the 
+more sign-ups you’ll get; however, the more fields you have on your form, 
+the more likely those leads are qualified. 
+The point is not to have one field or three fields. It’s to ensure that you ask 
+people to complete only as much work as you think is fair in exchange for 
+the offering… and, when you do so, you make completing the form highly 
+desirable, with a low-anxiety, low-effort button to finish it off. 
+PRO TIP
+Try repeating the 
+verb-phrase from 
+your headline in your 
+CTA. We saw a 24% 
+increase in clicks on a 
+landing page button 
+when that button  
+copy matched the 
+headline copy.
+
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+33
+2. A MESSAGE-MATCHED UNIQUE 
+SELLING PROPOSITION (MMUSP)
+A unique selling proposition, or value proposition, is a specific, succinct 
+statement describing what’s uniquely desirable about your product 
+or service. We can get all academic about it, but it’s really just telling 
+your visitor what amazing thing they’re going to get from you.  
+And telling them fast.
+Y our homepage should lead with your brand or product USP. 
+But your email, social and PPC landing pages are different. Y ou still need to 
+lead with your USP. Y ou just need to do so while matching the messages 
+written in and the expectations set by the email, tweet or PPC ad that  
+brought your visitor to the page. 
+With that in mind, we’re boldly creating a new abbreviation: MMUSP.  
+Just rolls off the tongue, doesn’t it? Lovely sounding acronym.
+Y our MMUSP should appear in your landing page’s hero (or topmost) 
+section, usually in:     
+• The headline
+• The subhead
+That means that the copy in the hero section of your page should both:
+1. Match the message of the call to action that drove visitors.
+2. Describe what’s uniquely desirable about your offering.
+That does not, however, mean that your USP must itself be  
+message-matched. Rather, almost as soon as the visitor arrives on your 
+page, they must see both the expected message reflected in the hero copy 
+and the USP. So if I search “lose weight” and click this ad:
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+34
+ 
+…then I should see the following on the landing page for the ad: 
+ 
+MM How to lose weight fast
+USP A highly desirable outcome, offer or solution related to the MM
+ 
+But here’s what I see where I land: 
+ 
+It’s the home page. One of the reasons why this “landing page” is problem-
+atic is because I don’t see the message I expected to see and, although the 
+headline expresses the hint of a USP, I’m not clear on whether professional 
+weight loss coaching is something unique to Outshine, something I can get 
+nowhere else.
+
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+35
+Now, with message matching, you don’t have to match the words verba-
+tim. (Exact message matching could hurt conversion if the phrasing is awk-
+ward.) But you should do your best to incorporate the message that com-
+pelled your visitor to click in the first place. 
+So here’s what I’d write in the hero section:
+ 
+MM How to lose weight fast
+USP The “ideal protein” protocol combined with professional weight loss 
+coaching (this appears to be what’s uniquely desirable about Outshine)
+ 
+This could result in a landing page with the following MMUSP:
+
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+36
+In another example, check out the following email from Listrak:
+If I click the call to action “Personalization is the Key to Post-Holiday Cam-
+paigns,” I should expect to land on a page where I see:
+ 
+MM Personalization is the key to post-holiday campaigns
+USP A highly desirable outcome, offer or solution related to the MM
+ 
+Here’s what I actually see on the landing page:
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+37
+Message matching is great… but the headline and intro copy are failing 
+to express the whitepaper’s USP. Here’s what the visitor needs to see, at 
+minimum:
+ 
+MM Personalization is the key to post-holiday campaigns
+USP
+We have data that no one else has, and if you get access to that data – 
+which you can do by downloading this whitepaper – you can use it to 
+keep making money after the holidays have ended
+ 
+That could result in the following landing page with MMUSP:
+
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+38
+Match the expectations your visitor brings to the page, by specifically 
+stating what fantastic, high-value X they’re going to get from you. And then 
+enhance their experience and make them want to stick around so you can 
+engage them.
+“…BUT MY OPT-IN BAIT DOESN’T HAVE A VALUE PROPOSITION”
+Y our brand, your solutions and everything you offer – from your newsletter 
+to your T witter account – should have a USP. Everything in marketing exists 
+to bring value to your customer.
+What will people get – that they want – by signing up for a consultation or 
+for your newsletter? 
+If you don’t know what’s uniquely desirable about your newsletter, how 
+could your prospect know?
+PRO TIP
+A powerful phrase to 
+try in your headline is 
+“even if.” For example, 
+“We’ll help you settle 
+with the IRS out of 
+court even if you owe 
+thousands of dollars 
+and are too worried to 
+sleep.” That’s far more 
+compelling than,  
+“We’ll help you settle 
+with the IRS out of 
+court.” 
+Poor message match is what makes the vast 
+majority of paid marketing campaigns a colossal 
+waste of money. 
+Unbounce is the only landing page builder with 
+Dynamic T ext Replacement, which automatically 
+changes the copy on your landing page to match 
+your ad or keyword.
+This will lead to:
+• Increased conversion rates
+• Improved campaign ROI
+• More relevant landing pages with perfect message 
+match.
+THE KEY TO PERFECT 
+MESSAGE MATCH 
+START A 30-DAY FREE  
+TRIAL OF UNBOUNCE
+DO IT IN UNBOUNCE
+Improve PPC Campaign ROI
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+40
+3. THE MOST POWERFUL BENEFITS, 
+RESULTS AND/OR OUTCOMES
+Benefits, results and outcomes are the foundation of your landing page’s 
+body copy. But because remarkably little guidance exists online to help 
+marketers write body copy, we often see pages that are packed full of every 
+benefit a prospect could possibly want (with a whole lotta feature love added 
+to the mix). 
+As a result, a ton of landing pages suffer from TMI, like this one:
+The above reads like a checklist… without the benefit of actually being a 
+checklist a user might use to make a decision. 
+T o write your body copy, let’s go back to two of the foundational principles 
+from the first chapter:
+1. Awareness dictates page length.
+2. Start with your goal and work backward.
+PRO TIP
+The most-clicked 
+buttons are not 
+necessarily orange. 
+Rather, they’re a  
+color that is in  
+direct contrast  
+to the rest of  
+the page.
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+41
+So you only need as many benefits, outcomes and/ or results as are 
+necessary to move the visitor – in her current state of awareness – toward 
+the call to action on the page. 
+Synerion.ca does a great job of listing out the most powerful benefits and 
+results associated with using their software:
+Because the benefits are powerful – with the ROI of Synerion being 
+particularly intriguing – visitors to Synerion’s page are more likely to be 
+willing to request a free demo. 
+
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+42
+4. YE OLDE OFFER
+The introduction of your offer is the beginning of the close. This is the 
+part of the page where you start pulling out all the copywriter tricks to  
+close the sale.
+Remember: Even with a free offering, you’re still “selling” your visitor on 
+exchanging something they value (like access to their inbox) with something 
+they must value more (like your free consultation). 
+The more you want people to give you, the better your offer needs to be. 
+Let’s take a look at a page that presents the offer very well, and I’ll list out 
+everything it’s doing right from a copy perspective.
+
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+43
+1. The offer’s headline isn’t just an action to take – the benefit is messaged clearly.
+2. The subhead clarifies the offer, packing highly desirable outcomes into it.
+3. The perception of value for a free course is enhanced by messaging the 
+“ingredients” of the offer – that is, the “leading marketing experts” teaching 
+the course. 
+4. With just two fields and a dropdown to complete, Unbounce has not only 
+followed the old sales rule of making it easy but also done so without 
+compromising on collecting good lead info.
+5. The button copy isn’t afraid to use more than three words in order to reiterate 
+the offer and create a sense of immediacy. 
+6. Supporting microcopy (e.g., privacy policy) is visually muted, reducing the 
+risk that it will introduce anxieties and stop the conversion. 
+7. No captcha (Those pesky tests used to determine if you’re human).
+T o get even more eyes on the offer, directional cues (in this case, arrows) 
+point at it. And it stands out on the page like the focal point it ought to be. 
+My one and only quibble with this page is that the offer appears so early on 
+the page, and quite a lot of the messaging that ought to precede the offer 
+follows it. 
+“ The more you want people to give you, 
+the better your offer needs to be.”
+�  TWEET THIS QUOTE
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+44
+5. SOCIAL PROOF THAT ACTUALLY 
+PROVES SOMETHING GOOD
+If you’ve read Robert Cialdini’s excellent Influence: The Psychology of 
+Persuasion, you’ll recall that he opens the chapter titled “Social Proof” with 
+a discussion of the effectiveness of canned laughter on TV shows. That we 
+laugh more at less funny stuff when a laugh-track is running expresses the 
+idea behind social proof: “One means we use to determine what is correct 
+is to find out what other people think is correct” (Cialdini). 
+Customer testimonials, influencer testimonials, embedded tweets,  
+Facebook likes, short case studies and data about users all nudge your 
+landing page visitors closer to converting. Or, at least, they ought to.
+The problem is that a lot of would-be social proof is not really pushing 
+people toward the page goal. It’s tapping into herd behavior – or the idea 
+that people will move in the direction of the crowd – more than it’s tapping 
+into the persuasive power of social proof. 
+What do I mean by that? Simply that many marketers are putting 
+“testimonials” on their page as if to tick the Include Testimonials checkbox 
+instead of the Persuade with Social Proof checkbox. 
+GREAT TESTIMONIALS REPLACE COPY
+Here’s an illustrative example from a Freshdesk (2014) landing page:
+
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+45
+That testimonial is a marketing message – but it’s far more powerful 
+than regular marketing copy because you’re not the one saying it.  
+Y our customer is. Y our customer with a face and a name and a business.
+Additionally, to ensure credibility, testimonials need to be phrased in 
+believable and natural language, unlike this one:
+Now, “natural language” doesn’t mean informal language, necessarily. It 
+means natural language for the speaker and audience. So if you’re using a 
+testimonial from the CEO of a Fortune 500 company, that language is likely 
+to sound slightly contrived and jargon-y, but that’s good for authenticity. 
+Because effective social proof is so rare, we’ve decided to end this chapter by 
+asking two copywriting experts to explain what they look for in convincing 
+testimonials.
+
+EXPERT INSIGHT
+DEMIAN FARNWORTH
+Chief Copywriter, Copyblogger Media
+THE 3 ELEMENTS THAT MAKE TESTIMONIALS SO 
+CONVINCING
+Persuasive testimonials do at least three things. First, they 
+mention a specific benefit your product offers. Second, they 
+substantiate a claim you’ve made. Third, they favorably 
+compare your product to a competitor.
+Now, you don’t have to find a testimonial that does all 
+three. If you do, great. More than likely what you will find is 
+half a dozen testimonials that each mention a specific (but 
+different) benefit, a handful that each substantiate one of your 
+meaningful claims, and one or two that compare your product 
+to a competitor.
+This motley catalog of testimonials not only builds credibility, 
+but allows you to tap into the widest audience possible.
+— Demian
+
+KATHRYN ARAGON
+Editor, The Daily Egg | Publisher, C4 Report | Award-winning Copywriter & Consultant
+EXPERT INSIGHTS
+SOCIAL PROOF AND HUMAN NATURE
+Social proof, at its core, leverages people’s desire to belong. 
+People start in a state of unbelief. They want to see proof that 
+your claims are true. But when they see testimonials from 
+industry leaders, a Facebook app with likes from their friends, 
+and a line that says two million people already use the product, 
+suddenly their skepticism disappears. After all, they don’t 
+want to be the only person not using it.
+Combined with sales copy that effectively overcomes 
+objections, a strong testimonial can easily be the tipping point 
+that moves people to action.
+— Kathryn
+
+PART  1
+THE 4 FOUNDATIONAL  
+PRINCIPLES OF WRITING  
+HIGHER-CONVERTING   
+LANDING PAGES
+PART  3
+LANDING PAGES
+TEARDOWNS
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+49
+I
+f you’re familiar with Unbounce you might have seen an episode  
+of Page Fights, where conversion experts tear apart the landing pages  
+of brave marketers in front of a live online audience. In that spirit, 
+we decided to include a few copy-oriented landing page critiques.   
+ 
+In this chapter, I’ll take a close look at three real-life landing pages and note 
+the top 10 things I would immediately test on each page. Please keep in 
+mind that these teardowns are done with love – with the goal of making us 
+all better copywriters and smarter marketers.
+Now, let’s get ready to rumble...
+Email Landing Page: Infusionsoft
+1. Are you paying for each word you write? Is there a 
+reward internally for the person who uses the fewest 
+words to express the value of a solution? T ake the 
+time to explain to your prospect what exactly “get 
+connected” and “trigger follow-up” looks like. This 
+copy is far too vague and abstracted to promote 
+conversion. 
+2. T ell me why! Even for those who are Product Aware, 
+you need to say more to create the desire to take 
+action. 
+3. This call to action – though very smart in many ways 
+– appears prematurely. It’s not clear if a person 
+needs to be using the full app to get something out 
+of the mobile version, if it’s necessary to pay for real 
+functionality, and why I should choose the mobile 
+app instead of viewing the web app in my device’s 
+browser. 
+4. Add captions! Why is this screen worth sharing? If 
+it’s just that it looks nice, caption this with something 
+about design – unless your prospects don’t care about 
+design, in which case you’d better have a different 
+caption up your sleeve. 
+5. No. Secondary. Links. 
+6. What on earth is that? The icon I’m supposed to look 
+for on my phone? What’s it doing here, scrunched up 
+in the corner like this?
+7. This is where a meaningful benefit and anxiety 
+reducer ought to go. Even better? Insert a testimonial 
+expressing the benefit, and use your great rating in 
+the App Store as credible social proof. 
+8. Seriously? That’s the best call to action you’ve got 
+for this video? A girl on her phone in a park-like 
+setting… with “Watch the Video”? There are feature 
+films starring Will Ferrell I haven’t seen yet – hilarious 
+movies waiting for me on my phone or computer – 
+so, if I’m going to hit play on something, why should 
+it be your video? (Hint: The answer is not, “Because 
+it’s only 2 minutes.”)
+9. This is not going to become a trending hashtag. 
+#marketingwakeupcall
+10. This copy comes off as very condescending. Props 
+to you for trying to show a little personality, but the 
+tone and the underlying message is off-putting. Plus, 
+if there’s a whole world out there, why the hell should 
+I waste my time on my phone with your app?
+4
+1
+2
+8
+9
+3
+5
+10
+6
+7
+PPC Landing Page: SysAid
+1. These vertical lines look totally nuts. And there’s 
+nothing “friendly” about this headline. Write this, 
+and everything, in human language – because even 
+IT people speak like humans. Oh, and how about a 
+single benefit, not just whatever random tagline you 
+thought you’d throw down? This isn’t spaghetti; you 
+can’t throw everything at your visitor and hope it 
+sticks. 
+2. Don’t lead with your brand name. Lead with the 
+benefit of the solution. Obviously. 
+3. Move these anxiety-reducers closer to the CTA, 
+where they might actually do some good work. 
+4. Do you really need these fields? Y ou’re going to chase 
+a good number of prospects away. Only include fields 
+like this if you’re doing so to ensure quality leads. 
+5. Nobody wants to start a free trial! What’s the best, 
+most tangible outcome of using your solution? Make 
+that your button copy, and then mirror it in the 
+subhead above this form. 
+6. What on earth is this link doing here? Y ou were doing 
+so well with the lack of distractions. But now – right 
+near the call to action – you wanna drive people away 
+to learn about pricing? They haven’t even tried your 
+product yet! Do you want them to try it or see how 
+much it costs? Decide and write accordingly.
+7. Just about the world’s worst testimonial. Needs a 
+photo. Needs to not sound like a junior copywriter 
+thought it up and added a “realistic sounding” name 
+to it.  
+8. Introduce these logos with a crosshead that explains 
+why your visitor should care. This is good social proof 
+gone bad. If you’ve got major influencers using your 
+solution, write a crosshead that says so, dammit!
+9. “Everything I need” to do what? Everything I need is 
+water, shelter, food, heat. Do those come standard 
+with this solution?
+10. What the hell am I looking at? Looks like an Excel 
+spreadsheet minus the familiarity. Caption it and tell 
+visitors what’s awesome about it – because it’s way 
+too hard to tell at a glance.
+4
+5
+41
+2
+8
+9
+10
+3 6
+7
+ 
+Email Landing Page: Master of Malt  
+1. No navigation on a landing page 
+2. No breadcrumb on a landing page. I mean, this is 
+an email landing page – so it’s un-bloody-likely that 
+I’ve visited any of those pages. If you’re just trying  
+to give me more things to click on this page, see the 
+next point. 
+3. No unnecessarily links! Come on. This email 
+campaign cannot be going well with an unfocused 
+“landing page” like this. If you wanted your 
+subscribers to go wherever they felt like on your 
+site, why did you even send out an email driving  
+to this page? 
+4. I’m beginning to notice a trend here. Y ou have no 
+idea what people coming to your site want, do you? 
+Perhaps consider a landing page that is just a big ol’ 
+search field. After all, you’re leaving your visitors’ 
+success entirely up to them anyway. At least be 
+honest about it. 
+5. So would you like me to pre-order this product… or 
+leave a review? Or, wait, I forgot – you have no clue 
+what you want me to do. When I say, “page goal,” 
+does it sound like I’m speaking another language?
+6. Oh, brother. I’m not even going to comment on yet 
+another set of distracting targets. 
+7. Why should I pre-order? Are there limited  
+quantities? Is that the only way to guarantee I’ll get 
+this in time for the holiday season? Do they sell out 
+every year? Use button copy and “click triggers” to 
+spike your visitor’s interest at this critical point of 
+conversion. 
+8. Create meaning for your visitor here. What does 
+that mean for them? That they can expect to receive 
+their order before November’s up? The despatch 
+date is not nearly as important as ensuring that your 
+shopper knows she’ll get this item in time for the 
+event at which she’d like to share them. 
+9. Outside of the exterior shot of the item, the possible 
+contents of this ‘mystery’ gift are likely to be high 
+on your visitor’s list of must-see before ordering. 
+This is a place where images trump copy: don’t tell 
+me what’s inside; show me. Y es, showing will take 
+up more room, but if you pull all of those extraneous 
+links off, you’ll have plenty o’ room!
+10. This is all great stuff, but it’s lost at the bottom of the 
+page. Why not put it closer to the button?
+8
+6
+9
+10
+7
+1 2
+5
+3
+4
+
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+54
+FINAL THOUGHTS ON 
+BETTER COPYWRITING
+Chances are extraordinarily good that if your pages aren’t performing 
+optimally right now, it’s because you’re making one of the following mistakes 
+with your copy:
+1.  You’re saying too much or too little
+2. You’re saying nothing whatsoever
+3. You’re talking to the wrong people
+4. You’re talking about yourself
+Marketers have a tendency to try to abstract their messages to the point 
+that everything can be said in two to six commonly used words, which 
+somehow gives us the comforting sense that we’ve created a polished 
+marketing message. As if that’s the goal.  
+Let me leave you with this: polish doesn’t convert. 
+If you want prospects to land on your pages, absorb your messages and act 
+the way you’d like them to, you need to try to say something different in 
+memorable ways. Say what your competitors wouldn’t dare say. Unbounce 
+makes it incredibly easy to split-test copy across your landing pages, so 
+give it a shot. 
+No matter how many tactics, techniques and principles you read, if you say 
+too much or too little, say nothing at all, talk to the wrong people or talk 
+about yourself, your copy will fail, and your conversion rate will tank. 
+On the flipside, if you listen to your prospects, write in their language, write 
+toward the page goal – making it their goal – and let a little love into your 
+copy, you could see incredible conversion lift… using only your words. Which 
+just so happen to be free and unlimited.
+JOANNA WIEBE
+THE CONVERSION  MARKETER’S  GUIDE TO LANDING PAGE  COPYWRITING
+55
+Joanna Wiebe is the original conversion copywriter and 
+the creator of Copy Hackers, where startups learn to 
+convert like mofos. 
+Y ou’ve likely read her copy on the landing pages or in 
+the emails of MetaLab, Crazy Egg, Neil Patel, Indochino, 
+T esco, Invision, Intuit and MadMimi, among others, and 
+her popular copywriting ebook series may be on your 
+Kindle at this very moment. (So go read it!) 
+Oh, and to throw in a little more social proof – in case 
+you think she’s a weird little hermit – here are some of 
+the conferences she’s been invited to speak at: Inbound, 
+Copyblogger’s Authority Intensive, Problogger Event, 
+HeroConf… and Unbounce’s very own Call to Action 
+Conference.
+�  @copyhackers
+✉  joanna@copyhackers.com
+🔗  copyhackers.com
+🔗  trydisco.com
+Joanna lives in Victoria, BC with her cat Lily and partner 
+in life and crime Lance.
+Now that you know how to write smart, 
+relevant, delightful, convert-like-crazy 
+copy, it’s time to get to work.
+Sign up for a free 30-day trial of Unbounce 
+so you can:
+• Build and publish an unlimited number of 
+landing pages quickly and easily.
+• Test different variations of your headline, 
+body and CTA copy.
+• Optimize your pages for mobile visitors 
+and different stages of awareness.
+• Watch your conversion rates soar.
+START WRITING  
+(AND TESTING) 
+LANDING PAGE COPY 
+THAT CONVERTS
+BUILD A HIGH-CONVERTING 
+LANDING PAGE NOW
+DO IT IN UNBOUNCE

@@ -1,0 +1,41 @@
+{
+  "app": "wagelens",
+  "date": "2026-09-08",
+  "org_id": "accm-nh-corp-20f872",
+  "name": "Accm & Nh Corp.",
+  "segment": "MWBE/SBE certified construction firm",
+  "sequence": "plain-intro",
+  "step": 1,
+  "step_file": "01-initial.md",
+  "route_type": "mailbox",
+  "to": "office@accmcorp.com",
+  "form_url": "",
+  "from_name": "[SENDER NAME PLACEHOLDER - set OUTBOUND_FROM_NAME]",
+  "from_address": "[SENDER ADDRESS PLACEHOLDER - set OUTBOUND_FROM_ADDRESS]",
+  "reply_to": "[SENDER ADDRESS PLACEHOLDER - set OUTBOUND_FROM_ADDRESS]",
+  "subject": "How Accm & Nh Corp. handles certified payroll",
+  "text": "Hello,\n\nI saw your SBE certification in New Jersey, which is why I am writing to\nyou and not to a list.\n\nI am building WageLens: it works out the Davis-Bacon wage determination\nand classification for each worker on a federally funded job, and\nproduces the weekly WH-347 from that.\n\nCertified firms usually end up on federally assisted work as a\nsubcontractor, which is where the weekly filing starts.\n\nTwo things you should know before deciding whether to reply: WageLens is\nnew, and I have no results to quote, so I am not going to quote any.\n\nWhat I would find useful is fifteen minutes on how you do it today: who\nworks out the classification, what happens when an audit letter arrives,\nand what you would not give up. If that is not a good use of your time,\na no closes it and I will not chase.\n\n--\nWageLens, a TheVillage company\nTheVillage - [PHYSICAL ADDRESS PLACEHOLDER - set OUTBOUND_POSTAL_ADDRESS]\n\nYou are getting this one-off business email at an address published on your\norganisation's own website. Reply STOP and I will delete your details and not\ncontact you again, through this or any other channel.\nUnsubscribe: [UNSUBSCRIBE URL PLACEHOLDER - set OUTBOUND_UNSUBSCRIBE_URL]\n",
+  "html": "<!doctype html>\n<html lang=\"en\">\n<head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"></head>\n<body style=\"margin:0;padding:0;background:#ffffff;\">\n<div style=\"max-width:600px;margin:0 auto;padding:20px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#1a1a1a;\">\n<p style=\"margin:0 0 14px 0;\">Hello,</p>\n<p style=\"margin:0 0 14px 0;\">I saw your SBE certification in New Jersey, which is why I am writing to you and not to a list.</p>\n<p style=\"margin:0 0 14px 0;\">I am building WageLens: it works out the Davis-Bacon wage determination and classification for each worker on a federally funded job, and produces the weekly WH-347 from that.</p>\n<p style=\"margin:0 0 14px 0;\">Certified firms usually end up on federally assisted work as a subcontractor, which is where the weekly filing starts.</p>\n<p style=\"margin:0 0 14px 0;\">Two things you should know before deciding whether to reply: WageLens is new, and I have no results to quote, so I am not going to quote any.</p>\n<p style=\"margin:0 0 14px 0;\">What I would find useful is fifteen minutes on how you do it today: who works out the classification, what happens when an audit letter arrives, and what you would not give up. If that is not a good use of your time, a no closes it and I will not chase.</p>\n<hr style=\"border:none;border-top:1px solid #dddddd;margin:22px 0 12px 0;\">\n<div style=\"font-size:12px;line-height:1.5;color:#666666;\"><p style=\"margin:0 0 14px 0;\">--<br>WageLens, a TheVillage company<br>TheVillage - [PHYSICAL ADDRESS PLACEHOLDER - set OUTBOUND_POSTAL_ADDRESS]</p>\n<p style=\"margin:0 0 14px 0;\">You are getting this one-off business email at an address published on your<br>organisation&#x27;s own website. Reply STOP and I will delete your details and not<br>contact you again, through this or any other channel.<br>Unsubscribe: [UNSUBSCRIBE URL PLACEHOLDER - set OUTBOUND_UNSUBSCRIBE_URL]</p></div>\n</div>\n</body>\n</html>\n",
+  "postal_address": "[PHYSICAL ADDRESS PLACEHOLDER - set OUTBOUND_POSTAL_ADDRESS]",
+  "unsubscribe_url": "[UNSUBSCRIBE URL PLACEHOLDER - set OUTBOUND_UNSUBSCRIBE_URL]",
+  "send_at_local": "2026-09-08 09:00",
+  "send_at_utc": "2026-09-08 13:00Z",
+  "timezone": "EDT",
+  "personalisation": {
+    "location": "Medford, New Jersey",
+    "city": "Medford",
+    "state": "New Jersey",
+    "segment": "MWBE/SBE certified construction firm",
+    "certification": "your SBE certification in New Jersey",
+    "opening": "I saw your SBE certification in New Jersey"
+  },
+  "generated_at": "2026-09-03T20:21:56Z",
+  "checks": {
+    "blocking": [
+      "from_address_missing",
+      "postal_address_missing",
+      "unsubscribe_url_missing"
+    ],
+    "warnings": []
+  }
+}

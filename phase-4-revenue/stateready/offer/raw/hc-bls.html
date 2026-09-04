@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="/favicon.ico" type="image/x-icon" rel="icon"/><link href="/favicon.ico" type="image/x-icon" rel="shortcut icon"/><link rel="stylesheet" href="/css/styles.css"/>
+</head>
+<body>
+<div id="container">
+    
+    <div class="mainNav">
+    <div class="mainNav-top"></div>
+    <div class="mainNav-bottom">
+        <div class="mainNav-container container">
+            <div class="mainNav-logo">
+                <a href="/" class="logoImg mainNav-logoImg">Harbor Compliance</a>
+            </div>
+            <div class="mainNav-topNav">
+                
+<ul class="dropNav topNav topNav-tophat">
+                <li>
+                <a href="/users/login" class="topNav-link">
+                    <span class="topNav-title">Login</span><span class="fa fa-lock topNav-icon"></span>
+                </a>
+            </li>
+            <li class="topNav-cart">
+        <a href="/cart" class="topNav-link">
+            <span class="topNav-title">Cart</span>
+            <i class="fa fa-shopping-cart topNav-icon"></i>
+            <span class="badge topNav-badge" title="Count of items in shopping cart" id="cartItemsCountTopHatBadge" style="display: none;"></span>
+        </a>
+    </li>
+
+    <li class="topNav-mobileMenu">
+        <a class="mobileMenu-collapse topNav-link collapsed js-collapseMobileNav" data-bs-toggle="collapse" href="#js-collapseMobileNav" aria-expanded="false">
+            <span class="mobileMenu-title">Menu</span>
+            <i class="mobileMenu-Icon"></i>
+        </a>
+    </li>
+
+    <li class="d-none d-sm-block">
+        <a href="/contact" class="topNav-link">
+            <span class="topNav-title">Contact Us</span>
+        </a>
+    </li>
+</ul>
+
+<div id="loginModal" class="modal fade user-modal" role="dialog" tabindex="-1" aria-labelledby="loginModal"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div id="loginModalContent" class="modal-content">
+            <!--/modal/ajax/login-->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><div id="logoutModal" class="modal fade user-modal" role="dialog" tabindex="-1" aria-labelledby="logoutModal"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--/modal/ajax/login-->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+<script>
+    //    $('#logoutModal').modal('show')
+</script>
+<div id="registerModal" class="modal fade user-modal" role="dialog" tabindex="-1" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div id="registerModalContent" class="modal-content">
+            <!--/modal/ajax/login-->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div id="forgotPasswordModal" class="modal fade user-modal" role="dialog" tabindex="-1" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div id="forgotPasswordModalContent" class="modal-content">
+            <!--/modal/ajax/login-->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+            </div>
+
+            <div class="mainNav-nav d-none d-sm-block">
+                <ul class="dropNav mainNav-menu">
+                    <li class="dropNav-container">
+                        <div class="dropdown-toggle">
+                            Software<span class="fa fa-angle-down"></span>
+                        </div>
+
+                        <div class="dropNav-menu solutionsNav">
+                            <div class="solutionsNav-top">
+                                <h4>
+                                    Compliance Software
+                                </h4>
+                                <p>
+                                    Oversee licenses, track renewals, access documents,
+                                    and more from a single interface.
+                                </p>
+                                <a href="/software" class="btn btn-primary">
+                                    Software Overview <i class="fa fa-angle-right"></i>
+                                </a>
+                            </div>
+                            <div class="solutionsNav-bottom">
+                                <div class="solutionsNav-label">
+                                    Software Features
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <a href="/entity-manager-software" class="solutionsNav-link">
+                                            Entity Manager
+                                        </a>
+                                        <a href="/license-manager-software" class="solutionsNav-link">
+                                            License Manager
+                                        </a>
+                                        <a href="/records-manager-software" class="solutionsNav-link">
+                                            Records Manager
+                                        </a>
+                                        <a href="/tax-manager-software" class="solutionsNav-link">
+                                            Tax Manager
+                                        </a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="/dynamic-fundraising-disclosures" class="solutionsNav-link">
+                                            Dynamic Disclosures&reg;
+                                        </a>
+                                        <a href="/registered-agent-service" class="solutionsNav-link">
+                                            Registered Agent Service
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="dropNav-container">
+                        <div class="dropdown-toggle">
+                            Services<span class="fa fa-angle-down"></span>
+                        </div>
+
+                        <div class="dropNav-menu solutionsNav">
+                            <div class="solutionsNav-top">
+                                <h4>
+                                    Compliance Services
+                                </h4>
+                                <p>
+                                    Full service compliance solutions for organizations throughout their entire
+                                    lifecycles.
+                                </p>
+                                <a href="/business-compliance" class="btn btn-primary">
+                                    Services Overview <i class="fa fa-angle-right"></i>
+                                </a>
+                            </div>
+                            <div class="solutionsNav-bottom">
+                                <div class="solutionsNav-bottom-section">
+                                    <div class="solutionsNav-label">
+                                        Most Popular
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <a href="/annual-report" class="solutionsNav-link">
+                                                Annual Report
+                                            </a>
+                                            <a href="/business-licensing-service" class="solutionsNav-link">
+                                                Business License
+                                            </a>
+                                            <a href="/fundraising-registration" class="solutionsNav-link">
+                                                Charitable Registration
+                                            </a>
+                                            <a href="/foreign-qualification" class="solutionsNav-link">
+                                                Foreign Qualification
+                                            </a>
+                                            <a href="/incorporation" class="solutionsNav-link">
+                                                Incorporation
+                                            </a>
+                                        </div>
+                                        <div class="col-6">
+                                            <a href="/limited-liability-company" class="solutionsNav-link">
+                                                LLC Formation
+                                            </a>
+                                            <a href="/nonprofit" class="solutionsNav-link">
+                                                Nonprofit Formation
+                                            </a>
+                                            <a href="/registered-agent-service" class="solutionsNav-link">
+                                                Registered Agent
+                                            </a>
+                                            <a href="/virtual-address-service" class="solutionsNav-link">
+                                                Virtual Address
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="solutionsNav-bottom-section">
+                                    <div class="solutionsNav-label">
+                                        Other
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <a href="/corporate-amendment" class="solutionsNav-link">
+                                                Amendment
+                                            </a>
+                                            <a href="/beneficial-ownership-information-reporting-service" class="solutionsNav-link">
+                                                Beneficial Ownership Information (BOI)
+                                            </a>
+                                            <a href="/certificate-of-good-standing" class="solutionsNav-link">
+                                                Certificate of Good Standing
+                                            </a>
+                                            <a href="/certified-copies" class="solutionsNav-link">
+                                                Certified Copies
+                                            </a>
+                                            <a href="/certificate-of-withdrawal" class="solutionsNav-link">
+                                                Dissolution and Withdrawal
+                                            </a>
+                                            <a href="/doing-business-as" class="solutionsNav-link">
+                                                Doing Business As (DBA)
+                                            </a>
+                                            <a href="/drop-off-filing" class="solutionsNav-link">
+                                                Drop-off Filing
+                                            </a>
+                                        </div>
+                                        <div class="col-6">
+                                            <a href="/ein-online" class="solutionsNav-link">
+                                                Employer Identification Number (EIN)
+                                            </a>
+                                            <a href="/initial-report" class="solutionsNav-link">
+                                                Initial Report
+                                            </a>
+                                            <a href="/entity-name-reservation" class="solutionsNav-link">
+                                                Name Reservation
+                                            </a>
+                                            <a href="/payroll-tax-registration" class="solutionsNav-link">
+                                                Payroll Tax Registration
+                                            </a>
+                                            <a href="/legal-notices-in-newspapers" class="solutionsNav-link">
+                                                Publishing
+                                            </a>
+                                            <a href="/reinstate-llc-corporation" class="solutionsNav-link">
+                                                Reinstatement
+                                            </a>
+                                            <a href="/sales-and-use-tax-registration" class="solutionsNav-link">
+                                                Sales and Use Tax Registration
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="dropNav-container">
+                        <div class="dropdown-toggle">
+                            Industries<span class="fa fa-angle-down"></span>
+                        </div>
+
+                        <div class="dropNav-menu">
+                            <div class="solutionsNav-bottom">
+                                <div class="solutionsNav-bottom-section">
+                                    <a href="/services-for-accounting-firms"
+                                       class="solutionsNav-link">
+                                        Accounting Firms
+                                    </a>
+                                    <a href="/compliance-solutions-engineering-architecture-firms"
+                                       class="solutionsNav-link">
+                                        Architecture
+                                    </a>
+                                    <a href="/compliance-solutions-construction-firms" class="solutionsNav-link">
+                                        Construction
+                                    </a>
+                                    <a href="/compliance-solutions-engineering-architecture-firms"
+                                       class="solutionsNav-link">
+                                        Engineering
+                                    </a>
+                                    <a href="/services-for-law-firms" class="solutionsNav-link">
+                                        Law Firms
+                                    </a>
+                                    <a href="/nonprofit-compliance" class="solutionsNav-link">
+                                        Nonprofit
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="dropNav-container">
+                        <div class="dropdown-toggle">
+                            Partner<span class="fa fa-angle-down"></span>
+                        </div>
+
+                        <div class="dropNav-menu">
+                            <div class="solutionsNav-bottom">
+                                <div class="solutionsNav-bottom-section">
+                                    <a href="https://landing.harborcompliance.com/partner-program" class="solutionsNav-link">
+                                        Partner With Us
+                                    </a>
+                                    <a href="https://landing.harborcompliance.com/partner-directory" class="solutionsNav-link">
+                                        HCA Partner Marketplace
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="/information-center">Information Center</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="mainNav-mobileNav collapse" id="js-collapseMobileNav">
+    <div class="mobileNav">
+        <div class="mobileNavMenu">
+            <div class="mobileNavMenu-link collapsed" data-bs-toggle="collapse" href="#js-mobileMenuSoftware">
+                Software
+                <i class="fa fa-angle-down float-end"></i>
+            </div>
+
+            <ul class="mobileNavMenu-list collapse" id="js-mobileMenuSoftware">
+                <li>
+                    <a href="/software">Software Overview</a>
+                </li>
+                <li class="mobileNavMenu-divider"></li>
+                <li>
+                    <a href="/entity-manager-software">Entity Manager</a>
+                </li>
+                <li>
+                    <a href="/license-manager-software">License Manager</a>
+                </li>
+                <li>
+                    <a href="/records-manager-software">Records Manager</a>
+                </li>
+                <li>
+                    <a href="/tax-manager-software">Tax Manager</a>
+                </li>
+                <li>
+                    <a href="/dynamic-fundraising-disclosures">Dynamic Disclosures&reg;</a>
+                </li>
+                <li>
+                    <a href="/registered-agent-service">Registered Agent Service</a>
+                </li>
+            </ul>
+
+            <div class="mobileNavMenu-link collapsed" data-bs-toggle="collapse" href="#js-mobileMenuServices">
+                Services
+                <i class="fa fa-angle-down float-end"></i>
+            </div>
+
+            <ul class="mobileNavMenu-list collapse" id="js-mobileMenuServices">
+                <li>
+                    <a href="/business-compliance">Services Overview</a>
+                </li>
+                <li class="mobileNavMenu-divider"></li>
+                <li>
+                    <div class="solutionsNav-label">Most Popular</div>
+                </li>
+                <li>
+                    <a href="/annual-report">Annual Report</a>
+                </li>
+                <li>
+                    <a href="/business-licensing-service">Business License</a>
+                </li>
+                <li>
+                    <a href="/fundraising-registration">Charitable Registration</a>
+                </li>
+                <li>
+                    <a href="/foreign-qualification">Foreign Qualification</a>
+                </li>
+                <li>
+                    <a href="/incorporation">Incorporation</a>
+                </li>
+                <li>
+                    <a href="/limited-liability-company">LLC Formation</a>
+                </li>
+                <li>
+                    <a href="/nonprofit">Nonprofit Formation</a>
+                </li>
+                <li>
+                    <a href="/registered-agent-service">Registered Agent</a>
+                </li>
+                <li>
+                    <a href="/virtual-address-service">Virtual Address</a>
+                </li>
+                <li>
+                    <div class="solutionsNav-label">Other</div>
+                </li>
+                <li>
+                    <a href="/corporate-amendment">Amendment</a>
+                </li>
+                <li>
+                    <a href="/beneficial-ownership-information-reporting-service">Beneficial Ownership Information (BOI)</a>
+                </li>
+                <li>
+                    <a href="/certificate-of-good-standing">Certificate of Good Standing</a>
+                </li>
+                <li>
+                    <a href="/certified-copies">Certified Copies</a>
+                </li>
+                <li>
+                    <a href="/certificate-of-withdrawal">Dissolution and Withdrawal</a>
+                </li>
+                <li>
+                    <a href="/doing-business-as">Doing Business As (DBA)</a>
+                </li>
+                <li>
+                    <a href="/drop-off-filing">Drop-off Filing</a>
+                </li>
+                <li>
+                    <a href="/ein-online">Employer Identification Number (EIN)</a>
+                </li>
+                <li>
+                    <a href="/initial-report">Initial Report</a>
+                </li>
+                <li>
+                    <a href="/entity-name-reservation">Name Reservation</a>
+                </li>
+                <li>
+                    <a href="/payroll-tax-registration">Payroll Tax Registration</a>
+                </li>
+                <li>
+                    <a href="/legal-notices-in-newspapers">Publishing</a>
+                </li>
+                <li>
+                    <a href="/reinstate-llc-corporation">Reinstatement</a>
+                </li>
+                <li>
+                    <a href="/sales-and-use-tax-registration">Sales and Use Tax Registration</a>
+                </li>
+            </ul>
+
+            <div class="mobileNavMenu-link collapsed" data-bs-toggle="collapse" href="#js-mobileMenuSolutions">
+                Industries
+                <i class="fa fa-angle-down float-end"></i>
+            </div>
+
+            <ul class="mobileNavMenu-list collapse" id="js-mobileMenuSolutions">
+                <li>
+                    <a href="/services-for-accounting-firms">Accounting Firms</a>
+                </li>
+                <li>
+                    <a href="/compliance-solutions-engineering-architecture-firms">Architecture</a>
+                </li>
+                <li>
+                    <a href="/compliance-solutions-construction-firms">Construction</a>
+                </li>
+                <li>
+                    <a href="/compliance-solutions-engineering-architecture-firms">Engineering</a>
+                </li>
+                <li>
+                    <a href="/services-for-law-firms">Law Firms</a>
+                </li>
+                <li>
+                    <a href="/nonprofit-compliance">Nonprofit</a>
+                </li>
+            </ul>
+
+            <div class="mobileNavMenu-link collapsed" data-bs-toggle="collapse" href="#js-mobileMenuPartner">
+                Partner
+                <i class="fa fa-angle-down float-end"></i>
+            </div>
+
+            <ul class="mobileNavMenu-list collapse" id="js-mobileMenuPartner">
+                <li>
+                    <a href="https://landing.harborcompliance.com/partner-program">Partner With Us</a>
+                </li>
+                <li>
+                    <a href="https://landing.harborcompliance.com/partner-directory">HCA Partner Marketplace</a>
+                </li>
+            </ul>
+
+            <a href="/information" class="mobileNavMenu-link">Information Center</a>
+
+            <a href="/contact" class="mobileNavMenu-link">Contact Us</a>
+        </div>
+    </div>
+</div>
+    <div id="content">
+        <div class="container">
+                        
+    <div class="error404">
+        <div class="error404-message">
+            <h1 class="error404-header">The page you are looking for does not exist.</h1>
+            <p class="error404-subheader lead">Please <a href="/contact">contact us</a> for help or try one of these links:</p>
+        </div>
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="error404-box-business">
+                            <h2 class="error404-box-header">Business Services</h2>
+                            <a href="/limited-liability-company" class="error404-box-link">Form an LLC</a>
+                            <a href="/foreign-qualification" class="error404-box-link">Expand to Another State</a>
+                            <a href="/incorporation" class="error404-box-link">Incorporate</a>
+                            <a href="/business-licensing-service" class="error404-box-link">Business Licensing</a>
+                            <a href='/registered-agent-service' class="error404-box-link">Registered Agent</a>
+                            <a href="/annual-report" class="error404-box-link">Annual Reports</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="error404-box-business">
+                            <h2 class="error404-box-header">Nonprofit Services</h2>
+                            <a href="/nonprofit" class="error404-box-link">Start a 501(c) Nonprofit</a>
+                            <a href="/fundraising-registration" class="error404-box-link">Fundraising Compliance</a>
+                            <a href='/registered-agent-service' class="error404-box-link">Registered Agent</a>
+                            <a href="/foreign-qualification" class="error404-box-link">Expand to Another State</a>
+                            <a href="/annual-report" class="error404-box-link">Annual Reports</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+<div class="footer" itemscope itemtype="http://schema.org/Organization">
+    <div class="footer__subscribe container">
+        <div>
+            <div class="footer__subscribeHeader">Are You Compliant?</div>
+            <div class="footer__subscribeSubHeader">Answer just a few questions and our software searches public databases to detect your status and gaps.</div>
+        </div>
+        <div>
+            <span class="hs-cta-wrapper" id="hs-cta-wrapper-7713d932-10de-4811-9031-7eaaf0590d67">
+    <span class="hs-cta-node hs-cta-7713d932-10de-4811-9031-7eaaf0590d67" id="hs-cta-7713d932-10de-4811-9031-7eaaf0590d67">
+        <!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]-->
+        <a href="https://cta-redirect.hubspot.com/cta/redirect/560178/7713d932-10de-4811-9031-7eaaf0590d67" >
+            <img class="hs-cta-img" id="hs-cta-img-7713d932-10de-4811-9031-7eaaf0590d67" style="border-width:0px;"
+                 src="https://no-cache.hubspot.com/cta/default/560178/7713d932-10de-4811-9031-7eaaf0590d67.png"
+                 alt="Get Your FREE Harbor Compliance Score"/>
+        </a>
+    </span>
+    <script charset="utf-8" src="https://js.hscta.net/cta/current.js"></script>
+    <script type="text/javascript"> hbspt.cta.load(560178, '7713d932-10de-4811-9031-7eaaf0590d67', {"useNewLoader":"true","region":"na1"}); </script>
+</span>
+        </div>
+    </div>
+
+    <div class="footer__nav container" id="js-collapseNavFooter">
+        <div class="footer__section footer__logo">
+            <meta itemprop="logo"                    content="https://i.harborcompliance.com/images/logo/harborcompliance.svg"></meta>
+            <a href="https://www.harborcompliance.com" itemprop="url" class="logoImg-white"></a>
+        </div>
+        <div class="footer__section js-collapseMenu">
+            <a class="footer__title collapsed" data-bs-toggle="collapse" href="#js-footerMenuResources" data-bs-parent="#js-collapseNavFooter">
+                <span>Resources</span>
+                <i class="fa fa-chevron-down float-end"></i>
+            </a>
+            <ul class="footer__menu collapse" id="js-footerMenuResources">
+                <li><a href="/information-center" class="footer__link">Information Center</a></li>
+                <li><a href="https://help.harborcompliance.com/" class="footer__link">Help Center</a></li>
+                <li><a href="https://landing.harborcompliance.com/partner-directory" class="footer__link">HCA Partner Marketplace</a></li>
+                <li><a href="/blog" class="footer__link">Blog</a></li>
+                <li><a href="/blog/category/company-news" class="footer__link">News</a></li>
+            </ul>
+        </div>
+        <div class="footer__section js-collapseMenu">
+            <a class="footer__title collapsed" data-bs-toggle="collapse" href="#js-footerMenuCompany" data-bs-parent="#js-collapseNavFooter">
+                <span>Company</span>
+                <i class="fa fa-chevron-down float-end"></i>
+            </a>
+            <ul class="footer__menu collapse" id="js-footerMenuCompany">
+                <li><a href="/about" class="footer__link">About Us</a></li>
+                <li><a href="/contact" class="footer__link">Contact Us</a></li>
+                <li><a href="/testimonials" class="footer__link">Testimonials</a></li>
+                <li><a href="/careers" class="footer__link">Careers</a></li>
+                <li><a href="https://landing.harborcompliance.com/partner-program" class="footer__link">Partner With Us</a></li>
+                <li><a href="https://developers.harborcompliance.com/" class="footer__link">Developers & API</a></li>
+            </ul>
+        </div>
+        <div class="footer__section js-collapseMenu">
+            <a class="footer__title collapsed" data-bs-toggle="collapse" href="#js-footerMenuSolutions" data-bs-parent="#js-collapseNavFooter">
+                <span>Solutions</span>
+                <i class="fa fa-chevron-down float-end"></i>
+            </a>
+            <ul class="footer__menu collapse" id="js-footerMenuSolutions">
+                <li><a href="/software" class="footer__link">Software</a></li>
+                <li><a href="/business-compliance" class="footer__link">Services</a></li>
+                <li><a href="/industries" class="footer__link">Industries</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer__socialVerifications container">
+        <div class="footer__social">
+            <a itemprop="sameAs" href="https://www.facebook.com/HarborCompliance"><i class="fa fa-facebook facebook"></i></a>
+            <a itemprop="sameAs" href="https://twitter.com/HarborComply"><i class="fa fa-twitter twitter"></i></a>
+            <a itemprop="sameAs" href="https://www.linkedin.com/company/harbor-compliance"><i class="fa fa-linkedin linkedin"></i></a>
+        </div>
+        <div class="footer__verifications">
+            <div class="footer__verificationsItem">
+                <img data-src="https://i.harborcompliance.com/images/trust/aicpa-soc.svg" class="lazy img-fluid" width="55" height="55" alt="AICPA SOC 2 certified"/>            </div>
+
+            <a class="footer__verificationsItem" target="_blank" rel="noopener" title="Harbor Compliance BBB Business Review"
+               href="http://www.bbb.org/washington-dc-eastern-pa/business-reviews/business-consultants/harbor-business-compliance-corporation-in-lancaster-pa-235994535/#bbbonlineclick">
+                <img data-src="https://i.harborcompliance.com/images/trust/footer-bbb.png" class="lazy img-fluid" alt="Better Business Bureau logo" width="100" height="55"/>            </a>
+
+            <div class="footer__verificationsItem" id="DigiCertClickID_4K4xZy6Z"></div>
+
+            <a class="footer__verificationsItem" target="_blank" rel="noopener"
+               href="https://sealserver.trustwave.com/cert.php?customerId=97487d60188e4672a05fceb14e3f7dab&size=105x54&style=">
+                <img data-src="https://i.harborcompliance.com/images/trust/footer-trustwave.png" class="lazy img-fluid" alt="Trustwave logo" title="This site is protected by Trustwave&#039;s Trusted Commerce program" width="100" height="55"/>            </a>
+        </div>
+    </div>
+    <div class="footer__legal container">
+        <div class="footer__legalDisclaimer">
+            <p>&copy; 2012 - 2026 Harbor Compliance LLC. All Rights Reserved.</p>
+            <p>Harbor Compliance does not provide tax, financial, or legal advice. Use of our services does not create an attorney-client relationship. Harbor Compliance is not acting as your attorney and does not review information you provide to us for legal accuracy or sufficiency. Access to our website is subject to our <a href="/terms-of-service">Terms of Service</a> and <a href="/terms-of-use">Terms of Use</a>.</p>
+        </div>
+        <div class="footer__legalPolicies">
+            <a href="/terms-of-service">Terms of Service</a>
+            <a href="/terms-of-use">Terms of Use</a>
+            <a href="/privacy-policy">Privacy Policy</a>
+            <a href="/secure-shopping">Secure Shopping</a>
+        </div>
+    </div>
+</div>
+
+
+
+    <script>
+        //create without "var" so it can be deleted after consumed by HCApp
+        isEmployee = false;
+        isProduction = true;
+        user = [];
+        hasTrackingConsent = false;
+    </script>
+<script src="https://i.harborcompliance.com/_js/default.v1788285798.js"></script><script src="//js.hsforms.net/forms/v2.js"></script>
+
+<div id="FilingFeesModal" class="modal fade user-modal" role="dialog" tabindex="-1" aria-labelledby="Modal"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Filing Fees</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-inner">
+                    <div class="users form">
+                        <p>
+                            Filing fees depend on your individual situation. We do our best to calculate your filing fees
+                            upfront and collect those fees today so we can get started. Your specialist will determine your
+                            exact filing fees and invoice additional fees if required.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<script src="https://i.harborcompliance.com/_js/nav-collapse.v1788285819.js"></script><script>var __dcid = __dcid || [];__dcid.push(["DigiCertClickID_Z5dwVYcW", "15", "l", "black", "Z5dwVYcW"]);(function(){var cid=document.createElement("script");cid.async=true;cid.src="//seal.digicert.com/seals/cascade/seal.min.js";var s = document.getElementsByTagName("script");var ls = s[(s.length - 1)];ls.parentNode.insertBefore(cid, ls.nextSibling);}());</script><script src="https://i.harborcompliance.com/_js/hubspot-utm-tracking.v1788285820.js"></script>
+<!-- HubSpot identity enrichment: consent only -->
+
+<!-- No consent: prevent HubSpot from setting tracking cookies -->
+<script type="text/javascript">
+    window._hsq = window._hsq || [];
+    window._hsq.push(['doNotTrack']);
+</script>
+
+<!-- HubSpot portal script: always load so CTAs function regardless of consent state.
+     doNotTrack above prevents cookies/analytics when consent is absent. -->
+<script
+    type="text/javascript"
+    id="hs-script-loader"
+    async
+    defer
+    src="https://js.hs-scripts.com/560178.js">
+</script>
+
+</body>
+</html>

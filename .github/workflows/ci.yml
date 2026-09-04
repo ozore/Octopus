@@ -99,3 +99,114 @@ jobs:
       # not a deploy step.
       - name: next build
         run: npm run build
+
+  # ---------------------------------------------------------------------------
+  # The phase-4 workspaces: packages/platform (shared) and apps/* (the three
+  # revenue apps, scaffolded from apps/_template).
+  #
+  # A SECOND JOB, NOT A SECOND STEP IN THE FIRST. `app/` is standalone by
+  # design (PLAN.md A8): its own lockfile, its own dependency graph, its own
+  # gate. Adding the workspaces to the job above would make a template change
+  # able to fail Clausewright's lane, and a Clausewright change able to fail
+  # this one. Two jobs, two lockfiles, one workflow.
+  #
+  # Same two guarantees as the job above: no network, no keys. The suite runs
+  # ADAPTER_MODE=mock and DATABASE_DRIVER=pglite (vitest.base.ts), and the only
+  # "secrets" here are the offline test values the mock adapters verify against.
+  workspaces:
+    name: workspaces — typecheck → unit → next build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      # The ROOT lockfile installs every workspace (apps/*, packages/*). It
+      # never touches app/, which is not a workspace.
+      - run: npm ci
+
+      - name: typecheck (all workspaces)
+        run: npm run typecheck
+
+      - name: unit — packages/platform
+        run: npm test --workspace packages/platform
+
+      - name: unit — apps/_template
+        run: npm test --workspace apps/_template
+
+      # WageLens. Its suite carries the gates the knowledge base's own document
+      # says must fail the BUILD rather than the run (KNOWLEDGE_BASE §7): G7 (no
+      # column can hold a full identifying number or a home address) and G8 (no
+      # rate renders without its determination, modification and source), plus
+      # the CI greps WL-11 V4/V5/V8 and WL-09 V16a specify. Every test runs on
+      # PGlite against committed SAM.gov fixtures — no network, no keys.
+      - name: unit — apps/wagelens
+        run: npm test --workspace apps/wagelens
+
+      # Certly. The suite carries the gates its own review made mechanical:
+      # the M5 comparison engine's golden tests and its purity scan (it must
+      # make no model call and touch no clock), the vocabulary greps that keep
+      # "covered" out of every status surface and keep exactly ONE disclaimer
+      # text in the repo, and the identity check that fails if the app's copy of
+      # design-system.css has drifted from the signed file in
+      # phase-4-revenue/certly. PGlite, committed PDF fixtures, no network, no
+      # keys — the Anthropic adapter is not part of this lane.
+      - name: unit — apps/certly
+        run: npm test --workspace apps/certly
+
+      # StateReady. The suite carries the gates its own documents make
+      # mechanical: the rules engine's 69-case golden set over the committed
+      # kb-data/ (every record, every licence type, three issue dates) checked
+      # against an independent reading of specs/05's rule table; the thirteen
+      # knowledge-base gates ported from kb-scripts/validate.py, asserted to
+      # agree with the Python's own numbers (9 records, 0 failures, 3 G7
+      # warnings); the normalisation-parity fixtures that keep the app's drift
+      # hash identical to the Python's, without which the drift queue fills with
+      # noise on day one; the copy check that fails if kb/, ontology/ or
+      # design-system.css has drifted from phase-4-revenue/stateready; the
+      # tenancy walk; and the content greps that keep the disclaimer free of a
+      # cadence claim and every surface free of the un-shipped Alert Guarantee.
+      # PGlite, committed fixtures, an injected fetcher — no network, no keys.
+      - name: unit — apps/stateready
+        run: npm test --workspace apps/stateready
+
+      # The bundle can differ from what tsc and vitest see: a server-only import
+      # reached from a client component typechecks, passes vitest and fails the
+      # build. The build is a gate, not a deploy step.
+      - name: next build — apps/_template
+        run: npm run build --workspace apps/_template
+
+      # `npm run build` in apps/wagelens also runs scripts/check-design-system.mjs,
+      # which fails if the app's copy of the identity stylesheet has drifted from
+      # phase-4-revenue/wagelens/design-system.css.
+      - name: next build — apps/wagelens
+        run: npm run build --workspace apps/wagelens
+
+      # `npm run build` in apps/certly runs `identity:check` first (a prebuild
+      # script), which fails if src/styles/design-system.css has drifted from
+      # phase-4-revenue/certly/design-system.css — the file identity/contrast.py
+      # certifies. A copy with no equality check is a fork waiting to happen.
+      - name: next build — apps/certly
+        run: npm run build --workspace apps/certly
+
+      # StateReady. `next build` is the gate that catches what tsc and vitest
+      # cannot: the knowledge base is imported as JSON modules into the RSC
+      # graph, so a record that stops parsing, or a server-only import reached
+      # from a client component, fails here and nowhere earlier.
+      #
+      # `prebuild` runs scripts/check-legal-address.mjs first, which REFUSES to
+      # build without a real COMPANY_ADDRESS (specs/12 §Edge cases, founder
+      # prerequisite P10: a missing legal address in a CAN-SPAM footer is a
+      # launch blocker, not a TODO). The value below is the same offline shape
+      # vitest.config.ts and playwright.config.ts use; the deploy gets the real
+      # one from Vercel, and a deploy without one fails exactly here.
+      - name: next build — apps/stateready
+        env:
+          COMPANY_ADDRESS: 1 Example Street, Wilmington DE
+        run: npm run build --workspace apps/stateready

@@ -1,0 +1,672 @@
+{
+  "fixture": "story-county-ia-coi.pdf",
+  "golden_id": "G5",
+  "labelled_by": "agent:certly-b1-m4",
+  "labelled_on": "2026-09-04",
+  "reviewed_by": "agent:certly-b1-m4-second-pass",
+  "notes": "specs/03 A4's fixture, and the only genuinely ISSUED certificate in the corpus. Five pages: the ACORD 25 on page 1 and three endorsements behind it — RSCG 03 03 09 21 (blanket additional insured, pages 2-3), CG 24 04 12 19 (waiver of subrogation, page 4) and CG 20 01 12 19 (primary and non-contributory, page 5). ADDL INSD and SUBR WVD are printed as the letter Y, not as ticks. The description of operations names RSCG0303, CG2001 and CG2404, all three hedged with 'where required by written contract', so all three are conditional. The same three forms appear again as attached endorsement pages, which is a different context and therefore a separate mention. PERSONAL DATA (kb-samples MANIFEST rule 4, which left C2 UNVERIFIED for the labeller to settle): the CONTACT NAME, PHONE, FAX and E-MAIL boxes are all empty, and the producer is a company with a licence number. The AUTHORIZED REPRESENTATIVE box carries an ink signature that reads as a person's name; it is an image, it is not extracted as a value, and the name is listed in redacted-names.json so that no output, prompt, help article or marketing string can carry it. The fixture is kept. The automobile block is empty apart from a stray '4077887933' printed in its type column; the number is not a policy number, a date or a limit, and it is not labelled as one.",
+  "expected": {
+    "schema_version": "coi.v1",
+    "document_kind": "acord_25",
+    "form_edition": "2016/03",
+    "certificate_date": {
+      "value": "2023-12-08",
+      "raw": "12/8/2023",
+      "page": 1,
+      "source_text": "12/8/2023",
+      "confidence": 1.0
+    },
+    "producer": {
+      "name": {
+        "value": "Insurance Office of America, Inc.",
+        "raw": "Insurance Office of America, Inc.",
+        "page": 1,
+        "source_text": "Insurance Office of America, Inc.",
+        "confidence": 1.0
+      },
+      "address": {
+        "value": "1855 West State Road 434, Longwood FL 32750",
+        "raw": "1855 West State Road 434\nLongwood FL 32750",
+        "page": 1,
+        "source_text": "1855 West State Road 434",
+        "confidence": 1.0
+      },
+      "contact_name": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      },
+      "phone": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      },
+      "fax": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      },
+      "email": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      }
+    },
+    "insured": {
+      "name": {
+        "value": "USA Triathlon of Colorado",
+        "raw": "USA Triathlon of Colorado",
+        "page": 1,
+        "source_text": "USA Triathlon of Colorado",
+        "confidence": 1.0
+      },
+      "address": {
+        "value": "5825 Delmonico Dr, Colorado Springs CO 80919",
+        "raw": "5825 Delmonico Dr\nColorado Springs CO 80919",
+        "page": 1,
+        "source_text": "5825 Delmonico Dr",
+        "confidence": 1.0
+      }
+    },
+    "insurers": [
+      {
+        "letter": "A",
+        "name": {
+          "value": "United States Fire Insurance Company",
+          "raw": "United States Fire Insurance Company",
+          "page": 1,
+          "source_text": "United States Fire Insurance Company",
+          "confidence": 1.0
+        },
+        "naic": {
+          "value": "21113",
+          "raw": "21113",
+          "page": 1,
+          "source_text": "21113",
+          "confidence": 1.0
+        }
+      },
+      {
+        "letter": "B",
+        "name": {
+          "value": "Accredited Surety & Cas Co Inc",
+          "raw": "Accredited Surety & Cas Co Inc",
+          "page": 1,
+          "source_text": "Accredited Surety & Cas Co Inc",
+          "confidence": 1.0
+        },
+        "naic": {
+          "value": "26379",
+          "raw": "26379",
+          "page": 1,
+          "source_text": "26379",
+          "confidence": 1.0
+        }
+      },
+      {
+        "letter": "C",
+        "name": {
+          "value": "HDI Global Specialty SE",
+          "raw": "HDI Global Specialty SE",
+          "page": 1,
+          "source_text": "HDI Global Specialty SE",
+          "confidence": 1.0
+        },
+        "naic": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        }
+      }
+    ],
+    "coverages": [
+      {
+        "insr_letter": {
+          "value": "B",
+          "raw": "B",
+          "page": 1,
+          "source_text": "B",
+          "confidence": 1.0
+        },
+        "type": "general_liability",
+        "type_label_raw": {
+          "value": "COMMERCIAL GENERAL LIABILITY",
+          "raw": "COMMERCIAL GENERAL LIABILITY",
+          "page": 1,
+          "source_text": "COMMERCIAL GENERAL LIABILITY",
+          "confidence": 1.0
+        },
+        "addl_insd": {
+          "value": "Y",
+          "raw": "Y",
+          "page": 1,
+          "source_text": "Y",
+          "confidence": 1.0
+        },
+        "subr_wvd": {
+          "value": "Y",
+          "raw": "Y",
+          "page": 1,
+          "source_text": "Y",
+          "confidence": 1.0
+        },
+        "policy_number": {
+          "value": "1-TRE-CO-17-01338730-00",
+          "raw": "1-TRE-CO-17-01338730-00",
+          "page": 1,
+          "source_text": "1-TRE-CO-17-01338730-00",
+          "confidence": 1.0
+        },
+        "policy_eff": {
+          "value": "2024-01-01",
+          "raw": "1/1/2024",
+          "page": 1,
+          "source_text": "1/1/2024",
+          "confidence": 1.0
+        },
+        "policy_exp": {
+          "value": "2025-01-01",
+          "raw": "1/1/2025",
+          "page": 1,
+          "source_text": "1/1/2025",
+          "confidence": 1.0
+        },
+        "form_basis": {
+          "value": "occurrence",
+          "raw": "X",
+          "page": 1,
+          "source_text": "X",
+          "confidence": 1.0
+        },
+        "aggregate_applies_per": {
+          "value": null,
+          "raw": "Event",
+          "page": 1,
+          "source_text": "Event",
+          "confidence": 1.0
+        },
+        "wc_officer_excluded": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "limits": [
+          {
+            "label": "each_occurrence",
+            "label_raw": {
+              "value": "EACH OCCURRENCE",
+              "raw": "EACH OCCURRENCE",
+              "page": 1,
+              "source_text": "EACH OCCURRENCE",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 2000000,
+              "raw": "2,000,000",
+              "page": 1,
+              "source_text": "2,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "damage_to_rented_premises",
+            "label_raw": {
+              "value": "DAMAGE TO RENTED PREMISES (Ea occurrence)",
+              "raw": "DAMAGE TO RENTED PREMISES (Ea occurrence)",
+              "page": 1,
+              "source_text": "DAMAGE TO RENTED PREMISES (Ea occurrence)",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 2000000,
+              "raw": "2,000,000",
+              "page": 1,
+              "source_text": "2,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "med_exp",
+            "label_raw": {
+              "value": "MED EXP (Any one person)",
+              "raw": "MED EXP (Any one person)",
+              "page": 1,
+              "source_text": "MED EXP (Any one person)",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 5000,
+              "raw": "5,000",
+              "page": 1,
+              "source_text": "5,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "personal_and_adv_injury",
+            "label_raw": {
+              "value": "PERSONAL & ADV INJURY",
+              "raw": "PERSONAL & ADV INJURY",
+              "page": 1,
+              "source_text": "PERSONAL & ADV INJURY",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 2000000,
+              "raw": "2,000,000",
+              "page": 1,
+              "source_text": "2,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "general_aggregate",
+            "label_raw": {
+              "value": "GENERAL AGGREGATE",
+              "raw": "GENERAL AGGREGATE",
+              "page": 1,
+              "source_text": "GENERAL AGGREGATE",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 4000000,
+              "raw": "4,000,000",
+              "page": 1,
+              "source_text": "4,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "products_comp_op_agg",
+            "label_raw": {
+              "value": "PRODUCTS - COMP/OP AGG",
+              "raw": "PRODUCTS - COMP/OP AGG",
+              "page": 1,
+              "source_text": "PRODUCTS - COMP/OP AGG",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 2000000,
+              "raw": "2,000,000",
+              "page": 1,
+              "source_text": "2,000,000",
+              "confidence": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "insr_letter": {
+          "value": "B",
+          "raw": "B",
+          "page": 1,
+          "source_text": "B",
+          "confidence": 1.0
+        },
+        "type": "excess_liability",
+        "type_label_raw": {
+          "value": "EXCESS LIAB",
+          "raw": "EXCESS LIAB",
+          "page": 1,
+          "source_text": "EXCESS LIAB",
+          "confidence": 1.0
+        },
+        "addl_insd": {
+          "value": "Y",
+          "raw": "Y",
+          "page": 1,
+          "source_text": "Y",
+          "confidence": 1.0
+        },
+        "subr_wvd": {
+          "value": "Y",
+          "raw": "Y",
+          "page": 1,
+          "source_text": "Y",
+          "confidence": 1.0
+        },
+        "policy_number": {
+          "value": "1-TRE-CO-17-01338731-00",
+          "raw": "1-TRE-CO-17-01338731-00",
+          "page": 1,
+          "source_text": "1-TRE-CO-17-01338731-00",
+          "confidence": 1.0
+        },
+        "policy_eff": {
+          "value": "2024-01-01",
+          "raw": "1/1/2024",
+          "page": 1,
+          "source_text": "1/1/2024",
+          "confidence": 1.0
+        },
+        "policy_exp": {
+          "value": "2025-01-01",
+          "raw": "1/1/2025",
+          "page": 1,
+          "source_text": "1/1/2025",
+          "confidence": 1.0
+        },
+        "form_basis": {
+          "value": "occurrence",
+          "raw": "X",
+          "page": 1,
+          "source_text": "X",
+          "confidence": 1.0
+        },
+        "aggregate_applies_per": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "wc_officer_excluded": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "limits": [
+          {
+            "label": "umbrella_each_occurrence",
+            "label_raw": {
+              "value": "EACH OCCURRENCE",
+              "raw": "EACH OCCURRENCE",
+              "page": 1,
+              "source_text": "EACH OCCURRENCE",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 3000000,
+              "raw": "3,000,000",
+              "page": 1,
+              "source_text": "3,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "umbrella_aggregate",
+            "label_raw": {
+              "value": "AGGREGATE",
+              "raw": "AGGREGATE",
+              "page": 1,
+              "source_text": "AGGREGATE",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 3000000,
+              "raw": "3,000,000",
+              "page": 1,
+              "source_text": "3,000,000",
+              "confidence": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "insr_letter": {
+          "value": "A",
+          "raw": "A",
+          "page": 1,
+          "source_text": "A",
+          "confidence": 1.0
+        },
+        "type": "other",
+        "type_label_raw": {
+          "value": "Participant Accident",
+          "raw": "Participant Accident",
+          "page": 1,
+          "source_text": "Participant Accident",
+          "confidence": 1.0
+        },
+        "addl_insd": {
+          "value": "Y",
+          "raw": "Y",
+          "page": 1,
+          "source_text": "Y",
+          "confidence": 1.0
+        },
+        "subr_wvd": {
+          "value": "Y",
+          "raw": "Y",
+          "page": 1,
+          "source_text": "Y",
+          "confidence": 1.0
+        },
+        "policy_number": {
+          "value": "US1929881",
+          "raw": "US1929881",
+          "page": 1,
+          "source_text": "US1929881",
+          "confidence": 1.0
+        },
+        "policy_eff": {
+          "value": "2024-01-01",
+          "raw": "1/1/2024",
+          "page": 1,
+          "source_text": "1/1/2024",
+          "confidence": 1.0
+        },
+        "policy_exp": {
+          "value": "2025-01-01",
+          "raw": "1/1/2025",
+          "page": 1,
+          "source_text": "1/1/2025",
+          "confidence": 1.0
+        },
+        "form_basis": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "aggregate_applies_per": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "wc_officer_excluded": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "limits": [
+          {
+            "label": "other",
+            "label_raw": {
+              "value": "Accident Medical",
+              "raw": "Accident Medical",
+              "page": 1,
+              "source_text": "Accident Medical",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 25000,
+              "raw": "25,000",
+              "page": 1,
+              "source_text": "25,000",
+              "confidence": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "insr_letter": {
+          "value": "C",
+          "raw": "C",
+          "page": 1,
+          "source_text": "C",
+          "confidence": 1.0
+        },
+        "type": "other",
+        "type_label_raw": {
+          "value": "Excess Liability (xo $3mm Lead)",
+          "raw": "Excess Liability (xo $3mm Lead)",
+          "page": 1,
+          "source_text": "Excess Liability (xo $3mm Lead)",
+          "confidence": 1.0
+        },
+        "addl_insd": {
+          "value": "Y",
+          "raw": "Y",
+          "page": 1,
+          "source_text": "Y",
+          "confidence": 1.0
+        },
+        "subr_wvd": {
+          "value": "Y",
+          "raw": "Y",
+          "page": 1,
+          "source_text": "Y",
+          "confidence": 1.0
+        },
+        "policy_number": {
+          "value": "HDHX003701136",
+          "raw": "HDHX003701136",
+          "page": 1,
+          "source_text": "HDHX003701136",
+          "confidence": 1.0
+        },
+        "policy_eff": {
+          "value": "2024-01-01",
+          "raw": "1/1/2024",
+          "page": 1,
+          "source_text": "1/1/2024",
+          "confidence": 1.0
+        },
+        "policy_exp": {
+          "value": "2025-01-01",
+          "raw": "1/1/2025",
+          "page": 1,
+          "source_text": "1/1/2025",
+          "confidence": 1.0
+        },
+        "form_basis": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "aggregate_applies_per": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "wc_officer_excluded": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "limits": [
+          {
+            "label": "other",
+            "label_raw": {
+              "value": "Occ/Agg",
+              "raw": "Occ/Agg",
+              "page": 1,
+              "source_text": "Occ/Agg",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 2000000,
+              "raw": "2,000,000",
+              "page": 1,
+              "source_text": "2,000,000",
+              "confidence": 1.0
+            }
+          }
+        ]
+      }
+    ],
+    "description_of_operations": {
+      "value": "Coverage applies to the USA Triathlon sanctioned or approved event specified on this certificate.\n\nThe certificate holder is an additional insured, where required by written contract or  agreement, but only with respect to the operations of the named insured,\nand subject to the provisions and limitations of form RSCG0303 - Additional Insured - Blanket when required by written contract, but only with respect to the\nUSAT sanctioned or approved event specified on this certificate.\n\nThe General Liability policy is primary as per Form CG2001 and the General Liability policy contains CG2404: Waiver of Transfer of Rights of Recovery Against\nothers to US, but only as required by written contract or agreement executed by the named insured prior to an occurrence resulting in a loss or a claim.",
+      "raw": "Coverage applies to the USA Triathlon sanctioned or approved event specified on this certificate.\n\nThe certificate holder is an additional insured, where required by written contract or  agreement, but only with respect to the operations of the named insured,\nand subject to the provisions and limitations of form RSCG0303 - Additional Insured - Blanket when required by written contract, but only with respect to the\nUSAT sanctioned or approved event specified on this certificate.\n\nThe General Liability policy is primary as per Form CG2001 and the General Liability policy contains CG2404: Waiver of Transfer of Rights of Recovery Against\nothers to US, but only as required by written contract or agreement executed by the named insured prior to an occurrence resulting in a loss or a claim.",
+      "page": 1,
+      "source_text": "form RSCG0303 - Additional Insured - Blanket",
+      "confidence": 1.0
+    },
+    "endorsement_forms_mentioned": [
+      {
+        "form_number": "RSCG0303",
+        "edition": null,
+        "context": "description_of_operations",
+        "conditional": true
+      },
+      {
+        "form_number": "CG2001",
+        "edition": null,
+        "context": "description_of_operations",
+        "conditional": true
+      },
+      {
+        "form_number": "CG2404",
+        "edition": null,
+        "context": "description_of_operations",
+        "conditional": true
+      },
+      {
+        "form_number": "RSCG 03 03",
+        "edition": "09 21",
+        "context": "attached_endorsement_page",
+        "conditional": false
+      },
+      {
+        "form_number": "CG 24 04",
+        "edition": "12 19",
+        "context": "attached_endorsement_page",
+        "conditional": false
+      },
+      {
+        "form_number": "CG 20 01",
+        "edition": "12 19",
+        "context": "attached_endorsement_page",
+        "conditional": false
+      }
+    ],
+    "certificate_holder": {
+      "value": "Story County Iowa, 900 6th Street, Nevada IA 50201",
+      "raw": "Story County Iowa\n900 6th Street\nNevada IA 50201",
+      "page": 1,
+      "source_text": "900 6th Street",
+      "confidence": 1.0
+    },
+    "authorized_representative_present": {
+      "value": true,
+      "raw": null,
+      "page": 1,
+      "source_text": null,
+      "confidence": 1.0
+    },
+    "acord_101_attached": {
+      "value": false,
+      "raw": null,
+      "page": null,
+      "source_text": null,
+      "confidence": 1.0
+    },
+    "notes": "Pages 2-5 are the three endorsements the description of operations names. Certificate number 743487773."
+  }
+}

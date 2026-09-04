@@ -1,0 +1,1540 @@
+{
+ "_embedded": {
+  "dictionaries": [
+   {
+    "elements": [
+     {
+      "elementId": "14794",
+      "value": "Bastrop",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14795",
+      "value": "Blanco",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14796",
+      "value": "Burleson",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14797",
+      "value": "Burnet",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14798",
+      "value": "Caldwell",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14799",
+      "value": "Fayette",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14800",
+      "value": "Hays",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14801",
+      "value": "Lampasas",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14802",
+      "value": "Lee",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14803",
+      "value": "Llano",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14804",
+      "value": "Mason",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14805",
+      "value": "Milam",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14806",
+      "value": "San Saba",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14807",
+      "value": "Travis",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14808",
+      "value": "Williamson",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14814",
+      "value": "Angelina",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14815",
+      "value": "Hardin",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14816",
+      "value": "Jasper",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14817",
+      "value": "Jefferson",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14818",
+      "value": "Nacogdoches",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14819",
+      "value": "Newton",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14820",
+      "value": "Orange",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14821",
+      "value": "Polk",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14822",
+      "value": "Sabine",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14823",
+      "value": "San Augustine",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14824",
+      "value": "Shelby",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14825",
+      "value": "Tyler",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14826",
+      "value": "Aransas",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14827",
+      "value": "Bee",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14828",
+      "value": "Calhoun",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14829",
+      "value": "Goliad",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14830",
+      "value": "Jim Wells",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14831",
+      "value": "Kleberg",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14832",
+      "value": "Live Oak",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14833",
+      "value": "Nueces",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14834",
+      "value": "Refugio",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14835",
+      "value": "San Patricio",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14836",
+      "value": "Victoria",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14837",
+      "value": "Collin",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14838",
+      "value": "Cooke",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14839",
+      "value": "Dallas",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14840",
+      "value": "Delta",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14841",
+      "value": "Denton",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14842",
+      "value": "Ellis",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14843",
+      "value": "Fannin",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14844",
+      "value": "Grayson",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14845",
+      "value": "Henderson",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14846",
+      "value": "Hopkins",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14847",
+      "value": "Hunt",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14848",
+      "value": "Kaufman",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14849",
+      "value": "Lamar",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14850",
+      "value": "Navarro",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14851",
+      "value": "Rains",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14852",
+      "value": "Rockwall",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14853",
+      "value": "Smith",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14854",
+      "value": "Van Zandt",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14855",
+      "value": "Wood",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14865",
+      "value": "Culberson",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14866",
+      "value": "El Paso",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14867",
+      "value": "Hudspeth",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14868",
+      "value": "Erath",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14869",
+      "value": "Hood",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14870",
+      "value": "Jack",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14871",
+      "value": "Johnson",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14872",
+      "value": "Montague",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14873",
+      "value": "Palo Pinto",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14874",
+      "value": "Parker",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14875",
+      "value": "Somervell",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14876",
+      "value": "Tarrant",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14877",
+      "value": "Wise",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14878",
+      "value": "Austin",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14879",
+      "value": "Brazoria",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14880",
+      "value": "Chambers",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14881",
+      "value": "Colorado",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14882",
+      "value": "Fort Bend",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14883",
+      "value": "Galveston",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14884",
+      "value": "Grimes",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14885",
+      "value": "Harris",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14886",
+      "value": "Houston",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14887",
+      "value": "Jackson",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14888",
+      "value": "Lavaca",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14889",
+      "value": "Liberty",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14890",
+      "value": "Madison",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14891",
+      "value": "Matagorda",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14892",
+      "value": "Montgomery",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14893",
+      "value": "San Jacinto",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14894",
+      "value": "Trinity",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14895",
+      "value": "Walker",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14896",
+      "value": "Waller",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14897",
+      "value": "Washington",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14898",
+      "value": "Wharton",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14907",
+      "value": "Andrews",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14908",
+      "value": "Armstrong",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14909",
+      "value": "Bailey",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14910",
+      "value": "Borden",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14911",
+      "value": "Brewster",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14912",
+      "value": "Briscoe",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14913",
+      "value": "Brown",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14914",
+      "value": "Callahan",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14915",
+      "value": "Carson",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14916",
+      "value": "Castro",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14917",
+      "value": "Childress",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14918",
+      "value": "Cochran",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14919",
+      "value": "Coke",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14920",
+      "value": "Coleman",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14921",
+      "value": "Collingsworth",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14922",
+      "value": "Comanche",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14923",
+      "value": "Concho",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14924",
+      "value": "Cottle",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14925",
+      "value": "Crane",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14926",
+      "value": "Crockett",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14927",
+      "value": "Crosby",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14928",
+      "value": "Dallam",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14929",
+      "value": "Dawson",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14930",
+      "value": "Deaf Smith",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14931",
+      "value": "Dickens",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14932",
+      "value": "Donley",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14933",
+      "value": "Eastland",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14934",
+      "value": "Ector",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14935",
+      "value": "Fisher",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14936",
+      "value": "Floyd",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14937",
+      "value": "Foard",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14938",
+      "value": "Gaines",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14939",
+      "value": "Garza",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14940",
+      "value": "Glasscock",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14941",
+      "value": "Gray",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14942",
+      "value": "Hale",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14943",
+      "value": "Hall",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14944",
+      "value": "Hansford",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14945",
+      "value": "Hardeman",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14946",
+      "value": "Hartley",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14947",
+      "value": "Haskell",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14948",
+      "value": "Hemphill",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14949",
+      "value": "Hockley",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14950",
+      "value": "Howard",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14951",
+      "value": "Hutchinson",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14952",
+      "value": "Irion",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14953",
+      "value": "Jeff Davis",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14954",
+      "value": "Jones",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14955",
+      "value": "Kent",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14956",
+      "value": "Kimble",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14957",
+      "value": "King",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14958",
+      "value": "Knox",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14959",
+      "value": "Lamb",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14960",
+      "value": "Lipscomb",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14961",
+      "value": "Loving",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14962",
+      "value": "Lubbock",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14963",
+      "value": "Lynn",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14964",
+      "value": "Martin",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14965",
+      "value": "McCulloch",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14966",
+      "value": "Menard",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14967",
+      "value": "Midland",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14968",
+      "value": "Mitchell",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14969",
+      "value": "Moore",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14970",
+      "value": "Motley",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14971",
+      "value": "Nolan",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14972",
+      "value": "Ochiltree",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14973",
+      "value": "Oldham",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14974",
+      "value": "Parmer",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14975",
+      "value": "Pecos",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14976",
+      "value": "Potter",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14977",
+      "value": "Presidio",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14978",
+      "value": "Randall",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14979",
+      "value": "Reagan",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14980",
+      "value": "Reeves",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14981",
+      "value": "Roberts",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14982",
+      "value": "Runnels",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14983",
+      "value": "Schleicher",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14984",
+      "value": "Scurry",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14985",
+      "value": "Shackelford",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14986",
+      "value": "Sherman",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14987",
+      "value": "Stephens",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14988",
+      "value": "Sterling",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14989",
+      "value": "Stonewall",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14990",
+      "value": "Sutton",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14991",
+      "value": "Swisher",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14992",
+      "value": "Taylor",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14993",
+      "value": "Terrell",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14994",
+      "value": "Terry",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14995",
+      "value": "Throckmorton",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14996",
+      "value": "Tom Green",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14997",
+      "value": "Upton",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14998",
+      "value": "Ward",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "14999",
+      "value": "Wheeler",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15000",
+      "value": "Winkler",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15001",
+      "value": "Yoakum",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15002",
+      "value": "Young",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15003",
+      "value": "Brooks",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15004",
+      "value": "Cameron",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15005",
+      "value": "Dimmit",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15006",
+      "value": "Duval",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15007",
+      "value": "Frio",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15008",
+      "value": "Hidalgo",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15009",
+      "value": "Jim Hogg",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15010",
+      "value": "Kenedy",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15011",
+      "value": "La Salle",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15012",
+      "value": "Maverick",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15013",
+      "value": "Starr",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15014",
+      "value": "Webb",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15015",
+      "value": "Willacy",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15016",
+      "value": "Zapata",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15017",
+      "value": "Zavala",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15018",
+      "value": "Atascosa",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15019",
+      "value": "Bandera",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15020",
+      "value": "Bexar",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15021",
+      "value": "Comal",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15022",
+      "value": "De Witt",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15023",
+      "value": "Edwards",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15024",
+      "value": "Gillespie",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15025",
+      "value": "Gonzales",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15026",
+      "value": "Guadalupe",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15027",
+      "value": "Karnes",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15028",
+      "value": "Kendall",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15029",
+      "value": "Kerr",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15030",
+      "value": "Kinney",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15388",
+      "value": "Bowie",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15389",
+      "value": "Camp",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15390",
+      "value": "Cass",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15391",
+      "value": "Cherokee",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15392",
+      "value": "Franklin",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15393",
+      "value": "Gregg",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15394",
+      "value": "Harrison",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15395",
+      "value": "Marion",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15396",
+      "value": "Morris",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15397",
+      "value": "Panola",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15398",
+      "value": "Red River",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15399",
+      "value": "Rusk",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15400",
+      "value": "Titus",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "15401",
+      "value": "Upshur",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16821",
+      "value": "McMullen",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16822",
+      "value": "Medina",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16823",
+      "value": "Real",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16824",
+      "value": "Uvalde",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16825",
+      "value": "Val Verde",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16826",
+      "value": "Wilson",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16827",
+      "value": "Anderson",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16828",
+      "value": "Bell",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16829",
+      "value": "Bosque",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16830",
+      "value": "Brazos",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16831",
+      "value": "Coryell",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16832",
+      "value": "Falls",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16833",
+      "value": "Freestone",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16834",
+      "value": "Hamilton",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16835",
+      "value": "Hill",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16836",
+      "value": "Leon",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16837",
+      "value": "Limestone",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16838",
+      "value": "McLennan",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16839",
+      "value": "Mills",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16840",
+      "value": "Robertson",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16850",
+      "value": "Archer",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16851",
+      "value": "Baylor",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16852",
+      "value": "Clay",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16853",
+      "value": "Wichita",
+      "description": null,
+      "elements": null
+     },
+     {
+      "elementId": "16854",
+      "value": "Wilbarger",
+      "description": null,
+      "elements": null
+     }
+    ],
+    "id": "wdCounties"
+   }
+  ]
+ },
+ "_links": {
+  "self": {
+   "href": "https://26wdolapplicationprod.apps.prod-iae.bsp.gsa.gov/wdol/v1/dictionaries/wdCounties?state=TX"
+  }
+ }
+}

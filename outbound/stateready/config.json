@@ -1,0 +1,28 @@
+{
+  "display_name": "StateReady",
+  "signature": "StateReady, a TheVillage Company",
+  "prospect_dirs": ["stateready"],
+  "daily_cap_new": 20,
+  "daily_cap_total": 60,
+  "min_gap_days": 4,
+  "partner_min_gap_days": 14,
+  "partner_max_step": 3,
+  "send_window": "09:00-11:00",
+  "default_sequence": "plain-intro",
+  "sequence_map": {
+    "licence expediting": "partner-expediter",
+    "franchise": "godfather-franchise",
+    "specialty multi-state": "godfather-multistate",
+    "fast-growing independent": "godfather-multistate",
+    "platform": "godfather-platform",
+    "pe sponsor": "partner-intro",
+    "trade association": "partner-intro",
+    "exam prep": "partner-intro",
+    "surety": "partner-intro",
+    "field service software": "partner-intro"
+  },
+  "mailbox_started_on": null,
+  "warmup_schedule": [5, 10, 20],
+  "bounce_stop_loss_pct": 3.0,
+  "complaint_stop_loss_pct": 0.1
+}

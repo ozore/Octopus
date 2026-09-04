@@ -1,0 +1,890 @@
+{
+  "record_id": "tx.hvac",
+  "schema_version": "1.0.0",
+  "state": "TX",
+  "state_name": "Texas",
+  "trade": "hvac",
+  "jurisdiction_model": {
+    "level": "state_only",
+    "summary": {
+      "value": "A single TDLR Air Conditioning and Refrigeration contractor licence covers the whole state. No separate municipal contractor licence is named on the board's pages.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://www.tdlr.texas.gov/acr/",
+      "source_title": "Air Conditioning and Refrigeration Contractors Homepage — TDLR",
+      "source_kind": "board_page",
+      "evidence": "Contractors who install, repair, or maintain systems related to air conditioning, refrigeration, or heating must have a TDLR license",
+      "last_verified": "2026-09-03",
+      "verified_by": [
+        "po-stateready-pass-a",
+        "po-stateready-pass-b"
+      ]
+    },
+    "local_layer_note": "TDLR publishes a knowledge-base page titled 'Out-of-State and Municipal Licenses' which was not read in this pass; municipalities issue permits and may register contractors even where they do not license them. Treat 'state_only' as 'the licence is issued by the state', never as 'no city will ask you for anything'."
+  },
+  "boards": [
+    {
+      "board_id": "tx.tdlr",
+      "name": "Texas Department of Licensing and Regulation — Air Conditioning and Refrigeration Contractors",
+      "url": "https://www.tdlr.texas.gov/acr/",
+      "scope": "HVAC/refrigeration contractor licences and technician registrations, statewide",
+      "phone": "(800) 803-9202"
+    }
+  ],
+  "licence_types": [
+    {
+      "licence_type_id": "tx.hvac.acr_contractor_class_a",
+      "name": "Air Conditioning and Refrigeration Contractor — Class A",
+      "level": "contractor",
+      "issuer_level": "state",
+      "board_id": "tx.tdlr",
+      "who_must_hold": {
+        "value": "Any person contracting to install, repair or maintain air conditioning, refrigeration or heating systems; each permanent company location must employ a licensed ACR contractor.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.tdlr.texas.gov/acr/",
+        "source_title": "Air Conditioning and Refrigeration Contractors Homepage — TDLR",
+        "source_kind": "board_page",
+        "evidence": "ACR companies must employ an ACR contractor in each permanent location",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "scope_note": {
+        "value": "Any size unit.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+        "source_title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+        "source_kind": "board_page",
+        "evidence": "The Class A license allows you to work on any size unit.",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+          "source_title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "TDLR will approve your eligibility to take the licensing exam",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": 74,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-renew.htm",
+          "source_title": "Renew an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "pay the examination fee of $74",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "The $74 figure is printed in the class-upgrade section of the renewal page. It is the ACR examination fee, but the initial-application page does not repeat it, so confidence is medium, not high."
+        },
+        "note": "All application requirements including the exam must be completed within one year of filing."
+      },
+      "experience": {
+        "requirement": {
+          "value": "48 months of practical ACR work under a licensed ACR contractor within the past 72 months.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+          "source_title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "at least 48 months of practical experience in air-conditioning and refrigeration-related work",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "alternatives": {
+          "value": "Technician certification held for 12 months plus 36 months of practical experience within the past 48 months; or a degree/diploma/certification in ACR, a mechanical-engineering degree or licence, military ACR training, or employment by an industrial operation.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+          "source_title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "You have held a technician certification for the past 12 months",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "application_fee": {
+        "value": 115,
+        "unit": "USD",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+        "source_title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+        "source_kind": "board_page",
+        "evidence": "along with the fee of $115",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "renewal": {
+        "cycle": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+          "source_title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "Licenses are valid for a period of 1 year from the date of issue.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": 65,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-renew.htm",
+          "source_title": "Renew an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "along with the renewal fee of $65",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "expiry_rule": {
+          "value": "anniversary",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+          "source_title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "Licenses are valid for a period of 1 year from the date of issue.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "Expiry = issue date + 12 months, per licence. The rules engine derives it from the licence's own issue date; there is no state-wide common expiry date."
+        },
+        "grace_period": {
+          "value": "None for practising. Late renewal is possible but the licence is not valid meanwhile.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-renew.htm",
+          "source_title": "Renew an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "You may not engage in air conditioning and refrigeration contracting if your license has expired.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "late_fee": {
+          "value": "1.5x the renewal fee if expired 90 days or less; 2x if expired more than 90 days and under 18 months; 2x with executive-director approval from 18 months to 3 years.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-renew.htm",
+          "source_title": "Renew an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "a renewal fee that is equal to 1-1/2 times the normally required renewal fee",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/acrce.htm",
+          "source_title": "Air Conditioning and Refrigeration Continuing Education — TDLR",
+          "source_kind": "board_page",
+          "evidence": "you must complete 8 hours of continuing education",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "hours": {
+          "value": 8,
+          "unit": "hours",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/acrce.htm",
+          "source_title": "Air Conditioning and Refrigeration Continuing Education — TDLR",
+          "source_kind": "board_page",
+          "evidence": "you must complete 8 hours of continuing education",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "period": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-renew.htm",
+          "source_title": "Renew an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "must complete 8 hours of approved continuing education coursework each year",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "Tied to the licence term, which is 12 months. Courses must be completed before expiry."
+        },
+        "subject_breakdown": {
+          "value": [
+            {
+              "hours": 1,
+              "subject": "Texas state law and rules regulating licensee conduct"
+            }
+          ],
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/acrce.htm",
+          "source_title": "Air Conditioning and Refrigeration Continuing Education — TDLR",
+          "source_kind": "board_page",
+          "evidence": "including one hour of instruction in Texas state law and rules",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "approved_provider_rule": {
+          "value": "Department-approved providers only; a repeated course does not count twice.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/acrce.htm",
+          "source_title": "Air Conditioning and Refrigeration Continuing Education — TDLR",
+          "source_kind": "board_page",
+          "evidence": "Only courses approved by the department will be accepted.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "carryover": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No carry-over provision appears on the TDLR ACR continuing-education page. Absence of a statement, not a statement of absence.",
+          "source_url": "https://www.tdlr.texas.gov/acr/acrce.htm"
+        },
+        "delivery_constraint": {
+          "value": "Online courses are available from providers that offer them; no classroom minimum is stated.",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.tdlr.texas.gov/acr/acrce.htm",
+          "source_title": "Air Conditioning and Refrigeration Continuing Education — TDLR",
+          "source_kind": "board_page",
+          "evidence": "Some providers offer online courses for continuing education.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No bond requirement appears on the TDLR ACR apply, renew, CE or reciprocity pages, all four of which were read in full. This is recorded as 'not established', NOT as 'no bond required' — the difference matters to a contractor bidding a job.",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm"
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see bond.required"
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": 300000,
+          "unit": "per_occurrence_usd",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+          "source_title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "Class A License | $300,000",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "Commercial general liability, per occurrence, property damage and bodily injury combined. Must be maintained at all times while the licence is active."
+        },
+        "aggregate": {
+          "value": 600000,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+          "source_title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "Aggregate for Property Damage and Bodily Injury",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "Read from the Class A row of the minimum-coverage table."
+        },
+        "property_damage": {
+          "value": 300000,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+          "source_title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "Aggregate for Products and Completed Operations",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "Products and completed operations aggregate, Class A row."
+        },
+        "workers_compensation": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The ACR pages do not state a workers'-compensation requirement (the TDLR electrician pages do). Not established rather than not required.",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm"
+        },
+        "financial_responsibility": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No credit or net-worth test appears on the TDLR ACR pages."
+        }
+      }
+    },
+    {
+      "licence_type_id": "tx.hvac.acr_contractor_class_b",
+      "name": "Air Conditioning and Refrigeration Contractor — Class B",
+      "level": "contractor",
+      "issuer_level": "state",
+      "board_id": "tx.tdlr",
+      "who_must_hold": {
+        "value": "As Class A, but the licence limits the size of system that may be worked on.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+        "source_title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+        "source_kind": "board_page",
+        "evidence": "The Class B license allows you to work on cooling systems of 25 tons and under",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "scope_note": {
+        "value": "Cooling systems of 25 tons and under; heating systems of 1.5 million BTU/h and under.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+        "source_title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+        "source_kind": "board_page",
+        "evidence": "cooling systems of 25 tons and under, and heating systems of 1.5 million BTUs/hour and under",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+          "source_title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "TDLR will approve your eligibility to take the licensing exam",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "experience": {
+        "requirement": {
+          "value": "Same as Class A.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+          "source_title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "To be eligible for licensure, you must meet one of the following experience requirements",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "application_fee": {
+        "value": 115,
+        "unit": "USD",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+        "source_title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+        "source_kind": "board_page",
+        "evidence": "along with the fee of $115",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "renewal": {
+        "cycle": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+          "source_title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "Licenses are valid for a period of 1 year from the date of issue.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": 65,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-renew.htm",
+          "source_title": "Renew an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "along with the renewal fee of $65",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "expiry_rule": {
+          "value": "anniversary",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+          "source_title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "Licenses are valid for a period of 1 year from the date of issue.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/acrce.htm",
+          "source_title": "Air Conditioning and Refrigeration Continuing Education — TDLR",
+          "source_kind": "board_page",
+          "evidence": "you must complete 8 hours of continuing education",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "hours": {
+          "value": 8,
+          "unit": "hours",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/acrce.htm",
+          "source_title": "Air Conditioning and Refrigeration Continuing Education — TDLR",
+          "source_kind": "board_page",
+          "evidence": "you must complete 8 hours of continuing education",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "period": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-renew.htm",
+          "source_title": "Renew an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "must complete 8 hours of approved continuing education coursework each year",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "approved_provider_rule": {
+          "value": "Department-approved providers only.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/acrce.htm",
+          "source_title": "Air Conditioning and Refrigeration Continuing Education — TDLR",
+          "source_kind": "board_page",
+          "evidence": "Only courses approved by the department will be accepted.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see Class A: no bond requirement found on the TDLR ACR pages"
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see bond.required"
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": 100000,
+          "unit": "per_occurrence_usd",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+          "source_title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "Class B License | $100,000",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "aggregate": {
+          "value": 200000,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+          "source_title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "Class B License | $100,000",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "Class B row of the minimum-coverage table: $100,000 per occurrence / $200,000 aggregate / $100,000 products and completed operations."
+        },
+        "property_damage": {
+          "value": 100000,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+          "source_title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+          "source_kind": "board_page",
+          "evidence": "Class B License | $100,000",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      }
+    }
+  ],
+  "reciprocity": [
+    {
+      "with_state": "GA",
+      "direction": "inbound",
+      "grants": {
+        "value": "Texas Class A, Environmental Air Conditioning",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.tdlr.texas.gov/acr/acrreciprocity.htm",
+        "source_title": "Licensing Reciprocity for Air Conditioning and Refrigeration — TDLR",
+        "source_kind": "board_page",
+        "evidence": "Holding this license in good standing will qualify you for a Texas Class A, Environmental Air Conditioning License.",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "requires_from": "Georgia Class II Conditioned Air unrestricted licence",
+      "conditions": {
+        "value": "Held for at least one year; no other Georgia licence is accepted.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.tdlr.texas.gov/acr/acrreciprocity.htm",
+        "source_title": "Licensing Reciprocity for Air Conditioning and Refrigeration — TDLR",
+        "source_kind": "board_page",
+        "evidence": "You must have held an out of state license for at least one year in order to reciprocate.",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.tdlr.texas.gov/acr/acrreciprocity.htm",
+        "source_title": "Licensing Reciprocity for Air Conditioning and Refrigeration — TDLR",
+        "source_kind": "board_page",
+        "evidence": "the licensing exam that you will take (if applicable)",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ],
+        "note": "The reciprocity page describes the exam as conditional ('if applicable') rather than stating a waiver in terms. Medium confidence; the expansion playbook flags it for human check."
+      }
+    },
+    {
+      "with_state": "SC",
+      "direction": "inbound",
+      "grants": {
+        "value": "Mapped by licence: SC Air Conditioning, Heating -> TX Class A Environmental Air Conditioning and Commercial Refrigeration; SC Air Conditioning -> TX Class A Commercial Refrigeration and Class B Environmental Air Conditioning; SC Mechanical Contractor, Refrigeration -> TX Class A Commercial Refrigeration; SC Air Conditioning and Heating (Packaged equipment) -> TX Class B Environmental Air Conditioning.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.tdlr.texas.gov/acr/acrreciprocity.htm",
+        "source_title": "Licensing Reciprocity for Air Conditioning and Refrigeration — TDLR",
+        "source_kind": "board_page",
+        "evidence": "Texas recognizes the following licensing equivalencies from South Carolina",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "requires_from": "South Carolina air conditioning / mechanical licence, per the mapping",
+      "conditions": {
+        "value": "Letter of good standing confirming a passed licensing exam in that state, plus the full Texas application and the $115 fee. A South Carolina heating licence does not qualify.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.tdlr.texas.gov/acr/acrreciprocity.htm",
+        "source_title": "Licensing Reciprocity for Air Conditioning and Refrigeration — TDLR",
+        "source_kind": "board_page",
+        "evidence": "A South Carolina heating license does not qualify in Texas.",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "waives_exam": {
+        "value": true,
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.tdlr.texas.gov/acr/acrreciprocity.htm",
+        "source_title": "Licensing Reciprocity for Air Conditioning and Refrigeration — TDLR",
+        "source_kind": "board_page",
+        "evidence": "The letter must also indicate that you have taken and passed a licensing exam in that state.",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      }
+    }
+  ],
+  "reciprocity_statement": {
+    "value": "Two agreements only: South Carolina and Georgia.",
+    "status": "verified",
+    "confidence": "high",
+    "source_url": "https://www.tdlr.texas.gov/acr/acrreciprocity.htm",
+    "source_title": "Licensing Reciprocity for Air Conditioning and Refrigeration — TDLR",
+    "source_kind": "board_page",
+    "evidence": "Texas currently has reciprocal licensing agreements with South Carolina and Georgia.",
+    "last_verified": "2026-09-03",
+    "verified_by": [
+      "po-stateready-pass-a",
+      "po-stateready-pass-b"
+    ]
+  },
+  "business_entity": {
+    "qualifying_individual_rule": {
+      "value": "Every permanent company location must employ a licensed ACR contractor.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://www.tdlr.texas.gov/acr/",
+      "source_title": "Air Conditioning and Refrigeration Contractors Homepage — TDLR",
+      "source_kind": "board_page",
+      "evidence": "ACR companies must employ an ACR contractor in each permanent location",
+      "last_verified": "2026-09-03",
+      "verified_by": [
+        "po-stateready-pass-a",
+        "po-stateready-pass-b"
+      ]
+    },
+    "per_location_rule": {
+      "value": "Per permanent location, not per company.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://www.tdlr.texas.gov/acr/",
+      "source_title": "Air Conditioning and Refrigeration Contractors Homepage — TDLR",
+      "source_kind": "board_page",
+      "evidence": "in each permanent location",
+      "last_verified": "2026-09-03",
+      "verified_by": [
+        "po-stateready-pass-a",
+        "po-stateready-pass-b"
+      ],
+      "note": "This is the field that turns a Texas branch opening into a licensing event. A roll-up that acquires a second Texas branch needs a second licensed ACR contractor there, not just a second address."
+    },
+    "entity_registration": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "Secretary-of-State registration requirements were not read in this pass; they are a Texas SOS matter, not a TDLR one."
+    },
+    "change_notification_deadline": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "No deadline for replacing a departed ACR contractor of record appears on the TDLR ACR pages read."
+    }
+  },
+  "typical_timeline": {
+    "value": null,
+    "status": "unknown",
+    "confidence": "low",
+    "note": "TDLR publishes no end-to-end processing time for an ACR contractor licence. The only published duration is the criminal-history review: 'a review can take from one to six weeks to complete'. Quoting that as the licence timeline would be wrong, so the field stays empty and the playbook says so.",
+    "source_url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm"
+  },
+  "coverage_notes": [
+    "Technician registration and technician certification (the credentials most of a Texas HVAC roster actually holds) are NOT populated in this record. Only the two contractor licence classes are. A customer tracking 40 Texas technicians will get renewal maths for their two contractor licences and nothing for the technicians until the wave-2 pass.",
+    "Endorsements (Environmental Air Conditioning, Commercial Refrigeration, Process Cooling/Heating) are described in the scope notes but are not modelled as separate trackable objects."
+  ],
+  "disclaimer_profile": "local_layer_warning",
+  "provenance": {
+    "created_at": "2026-09-03",
+    "pass_a": {
+      "agent_id": "po-stateready-pass-a",
+      "date": "2026-09-03",
+      "method": "fetched each source URL with curl (desktop UA), read the rendered text, recorded each value with a verbatim evidence fragment"
+    },
+    "pass_b": {
+      "agent_id": "po-stateready-pass-b",
+      "date": "2026-09-03",
+      "method": "kb-scripts/verify_pass_b.py re-fetches every source_url independently of the pass-A cache and asserts the evidence fragment is still literally present; a value whose evidence cannot be found is a disagreement and is demoted to UNVERIFIED",
+      "agreements": 46,
+      "disagreements": 0,
+      "disagreement_detail": [],
+      "unreachable": 0,
+      "agreement_rate_pct": 100.0
+    },
+    "sources": [
+      {
+        "source_id": "tx.tdlr.acr_home",
+        "url": "https://www.tdlr.texas.gov/acr/",
+        "title": "Air Conditioning and Refrigeration Contractors Homepage — TDLR",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 24997,
+        "content_sha256": "cf6cf7d803c745376a7f7a61dc9b4793f80cdc4719836419dacff4177e7fb4d7"
+      },
+      {
+        "source_id": "tx.tdlr.acr_apply",
+        "url": "https://www.tdlr.texas.gov/acr/contractor-apply.htm",
+        "title": "Apply for an Air Conditioning and Refrigeration Contractor License — TDLR",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 34128,
+        "content_sha256": "f4387d1bd36982cb04b39b2c06a3f3eb806534d37ae98b6f82882ca3bc7a408c"
+      },
+      {
+        "source_id": "tx.tdlr.acr_renew",
+        "url": "https://www.tdlr.texas.gov/acr/contractor-renew.htm",
+        "title": "Renew an Air Conditioning and Refrigeration Contractor License — TDLR",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 32141,
+        "content_sha256": "d02c39b79fc1799b350a02e6e344a8e6b477028ee3f4531356a3bb2a121e40fe"
+      },
+      {
+        "source_id": "tx.tdlr.acr_ce",
+        "url": "https://www.tdlr.texas.gov/acr/acrce.htm",
+        "title": "Air Conditioning and Refrigeration Continuing Education — TDLR",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 29067,
+        "content_sha256": "8baa615b9c0f3344b5cc252f3db555b5ce7bf65283738f6f903e300fda58fa92"
+      },
+      {
+        "source_id": "tx.tdlr.acr_reciprocity",
+        "url": "https://www.tdlr.texas.gov/acr/acrreciprocity.htm",
+        "title": "Licensing Reciprocity for Air Conditioning and Refrigeration — TDLR",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 34000,
+        "content_sha256": "0fd85c7350db5e224cd56789d84a4277519c486a9538dbcc0ce3c364b2abd572"
+      }
+    ],
+    "publishable": true
+  }
+}

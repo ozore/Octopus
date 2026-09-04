@@ -1,0 +1,40 @@
+{
+  "app": "stateready",
+  "date": "2026-09-08",
+  "org_id": "ati-restoration-69be3d",
+  "name": "ATI Restoration",
+  "segment": "restoration platform",
+  "sequence": "plain-intro",
+  "step": 1,
+  "step_file": "01-initial.md",
+  "route_type": "mailbox",
+  "to": "info@atirestoration.com",
+  "form_url": "",
+  "from_name": "[SENDER NAME PLACEHOLDER - set OUTBOUND_FROM_NAME]",
+  "from_address": "[SENDER ADDRESS PLACEHOLDER - set OUTBOUND_FROM_ADDRESS]",
+  "reply_to": "[SENDER ADDRESS PLACEHOLDER - set OUTBOUND_FROM_ADDRESS]",
+  "subject": "How ATI Restoration tracks trade licences by state",
+  "text": "Hello,\n\nI have you down as a restoration platform in Anaheim, California, which\nis why I am writing to you rather than to a list.\n\nI am building StateReady: it keeps one record of every contractor\nlicence, qualifying individual and renewal date you hold, per state, and\ntells you which one is about to lapse before a permit desk does.\n\nStraight with you: StateReady is new, I have no customer results to\nquote, and I am not going to quote any.\n\nWhat would help me is fifteen minutes on how you handle it today: where\nthe licence list lives, who watches the renewal dates, and what happens\nwhen an acquisition arrives with its own. If that is not worth your\ntime, a no closes it and I will not chase.\n\n--\nStateReady, a TheVillage company\nTheVillage - [PHYSICAL ADDRESS PLACEHOLDER - set OUTBOUND_POSTAL_ADDRESS]\n\nYou are getting this one-off business email at an address published on your\norganisation's own website. Reply STOP and I will delete your details and not\ncontact you again, through this or any other channel.\nUnsubscribe: [UNSUBSCRIBE URL PLACEHOLDER - set OUTBOUND_UNSUBSCRIBE_URL]\n",
+  "html": "<!doctype html>\n<html lang=\"en\">\n<head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"></head>\n<body style=\"margin:0;padding:0;background:#ffffff;\">\n<div style=\"max-width:600px;margin:0 auto;padding:20px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#1a1a1a;\">\n<p style=\"margin:0 0 14px 0;\">Hello,</p>\n<p style=\"margin:0 0 14px 0;\">I have you down as a restoration platform in Anaheim, California, which is why I am writing to you rather than to a list.</p>\n<p style=\"margin:0 0 14px 0;\">I am building StateReady: it keeps one record of every contractor licence, qualifying individual and renewal date you hold, per state, and tells you which one is about to lapse before a permit desk does.</p>\n<p style=\"margin:0 0 14px 0;\">Straight with you: StateReady is new, I have no customer results to quote, and I am not going to quote any.</p>\n<p style=\"margin:0 0 14px 0;\">What would help me is fifteen minutes on how you handle it today: where the licence list lives, who watches the renewal dates, and what happens when an acquisition arrives with its own. If that is not worth your time, a no closes it and I will not chase.</p>\n<hr style=\"border:none;border-top:1px solid #dddddd;margin:22px 0 12px 0;\">\n<div style=\"font-size:12px;line-height:1.5;color:#666666;\"><p style=\"margin:0 0 14px 0;\">--<br>StateReady, a TheVillage company<br>TheVillage - [PHYSICAL ADDRESS PLACEHOLDER - set OUTBOUND_POSTAL_ADDRESS]</p>\n<p style=\"margin:0 0 14px 0;\">You are getting this one-off business email at an address published on your<br>organisation&#x27;s own website. Reply STOP and I will delete your details and not<br>contact you again, through this or any other channel.<br>Unsubscribe: [UNSUBSCRIBE URL PLACEHOLDER - set OUTBOUND_UNSUBSCRIBE_URL]</p></div>\n</div>\n</body>\n</html>\n",
+  "postal_address": "[PHYSICAL ADDRESS PLACEHOLDER - set OUTBOUND_POSTAL_ADDRESS]",
+  "unsubscribe_url": "[UNSUBSCRIBE URL PLACEHOLDER - set OUTBOUND_UNSUBSCRIBE_URL]",
+  "send_at_local": "2026-09-08 09:00",
+  "send_at_utc": "2026-09-08 16:00Z",
+  "timezone": "PDT",
+  "personalisation": {
+    "location": "Anaheim, California",
+    "city": "Anaheim",
+    "state": "California",
+    "segment": "restoration platform",
+    "opening": "I have you down as a restoration platform in Anaheim, California"
+  },
+  "generated_at": "2026-09-03T20:21:56Z",
+  "checks": {
+    "blocking": [
+      "from_address_missing",
+      "postal_address_missing",
+      "unsubscribe_url_missing"
+    ],
+    "warnings": []
+  }
+}

@@ -1,0 +1,42 @@
+Domain availability sweep — Certly naming pass, 2026-09-03
+Resolver: https://dns.google/resolve (DoH JSON). `dig` is not installed in this environment and the
+system resolver answers 127.0.0.1 for every name, so DoH is the only trustworthy check here.
+Read the SOA Status field: 0 = registered, 3 = NXDOMAIN (free), 2 = SERVFAIL (registered, broken NS).
+The NS value tells you the kind of holder: namebrightdns / afternic / hugedomains / sedoparking /
+atom.com / squadhelp = parked for resale; cloudflare / vercel-dns / azure-dns / googledomains = in use.
+
+FREE ON 2026-09-03 (NXDOMAIN)
+  coverstamp.com            coverledge.com           coverbinder.com
+  thecertbinder.com         allgreenvendors.com      coverfile.io
+  coverfile.app             getcoverfile.com         usecoverfile.com
+  coverfileapp.com          certbinder.io            greenfile.io
+  greenfile.app             lapsewatch.com*          trycertly.com*
+  (* NS delegated but no A record — registered and unused, NOT free)
+
+REGISTERED, PARKED FOR RESALE (marketplace nameservers)
+  certline.com   nolapse.com    coverfile.com   coverproof.com  certloop.com
+  certflow.com   coverpost.com  covertrail.com  coverlane.com   covershelf.com
+  clerkly.com    certstack.com  certbench.com   coverant.com    certbook.com
+  certafy.com    certgreen.com  bindly.com      certwatch.com   coverkeeper.com
+  certkeeper.com certledger.com attestly.com    covergrid.com
+
+REGISTERED AND IN ACTIVE USE (or held on a real host)
+  certly.com (A=127.0.0.1, NS ns-serve.net, HTTP 502 — registered, dormant)
+  certly.io  certly.ai  certly.app  certly.co (redirects to a gambling page)  certly.net (Hostinger park)
+  certdesk.com  certlane.com  coverclerk.com  certclerk.com  coverwatch.com  certrail.com
+  coverledger.com  coverline.com  certwell.com  coverwell.com  bindwell.com  certera.com
+  endorsely.com  renewly.com  certbase.com  coverdesk.com  certfile.com  holdercheck.com
+  certdock.com  greenfile.com  greencert.com  coverstate.com  nogap.com  zerogap.com
+  gapless.com  certiq.com  covrly.com  certra.com  coverbook.com  holdwell.com
+  certstamp.com  keepcurrent.com  staycurrent.com  certcurrent.com  covercurrent.com
+  coverbench.com  certshelf.com  certledge.com  certpost.com  certwise.com  coverwise.com
+  certtrail.com  certrun.com  coverstack.com  certmark.com  covermark.com  theholder.com
+  certcheck.com  certhold.com (namecheap "failed-whois-verification" NS — suspended)
+  certgrid.com / certbinder.com / vendorgreen.com (SERVFAIL — registered, broken delegation)
+
+READING OF THE SWEEP
+  Every short English compound in this semantic field is taken; the realistic paths to a .com are
+  (a) buy a parked one from a marketplace, or (b) take a free `get<name>.com` / `<name>app.com`,
+  or (c) take `.io`/`.app` and buy the .com later. Per PLAN.md D3 no custom domain is needed before
+  launch (*.vercel.app now, a TheVillage sub-domain later), so the naming decision should be made on
+  brand strength and collision risk, not on which .com happens to be free this week.

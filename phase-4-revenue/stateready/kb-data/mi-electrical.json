@@ -1,0 +1,1417 @@
+{
+  "record_id": "mi.electrical",
+  "schema_version": "1.0.0",
+  "state": "MI",
+  "state_name": "Michigan",
+  "trade": "electrical",
+  "jurisdiction_model": {
+    "level": "state_and_local",
+    "summary": {
+      "value": "The Bureau of Construction Codes issues the state electrical licences, but the City of Detroit issues its own electrical licences and registrations locally and applicants living there are told to approach the city directly.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+      "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+      "source_kind": "board_page",
+      "evidence": "If you live in the City of Detroit, they issue their own licenses and registrations locally.",
+      "last_verified": "2026-09-04",
+      "verified_by": [
+        "kb-b5-pass-a",
+        "kb-b5-pass-b"
+      ]
+    },
+    "local_layer_note": "One local layer is established and it is named on the board's own page: 'If you live in the City of Detroit, they issue their own licenses and registrations locally.' That sentence appears on the ELECTRICAL page only. No equivalent statement was found for mechanical or plumbing, and no other Michigan municipality was named on any page read, so the rest of the local layer is not established. 'state_and_local' is recorded rather than 'state_only' because it fails in the safe direction — it tells the customer to check the city as well — not because a mechanical or plumbing local licence has been evidenced."
+  },
+  "boards": [
+    {
+      "board_id": "mi.lara_bcc",
+      "name": "Michigan Department of Licensing and Regulatory Affairs, Bureau of Construction Codes — Licensing Section",
+      "url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section",
+      "scope": "Mechanical, plumbing, electrical, boiler, elevator, code-official and residential-builder licences and registrations, statewide",
+      "licence_search_url": "https://aca-prod.accela.com/LARA/Login.aspx",
+      "phone": "517-241-9316"
+    }
+  ],
+  "licence_types": [
+    {
+      "licence_type_id": "mi.electrical.electrical_contractor",
+      "name": "Electrical Contractor",
+      "level": "contractor",
+      "issuer_level": "state",
+      "board_id": "mi.lara_bcc",
+      "who_must_hold": {
+        "value": "Anyone doing business as an electrician in Michigan.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+        "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+        "source_kind": "board_page",
+        "evidence": "This is required if you want to do business as an electrician.",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "scope_note": {
+        "value": "The bureau issues Electrical, Fire Alarm and Sign Specialty contractor licences on one form and renews them together; each needs its own qualifying individual.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+        "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+        "source_kind": "board_page",
+        "evidence": "There is no test required to be an Electrical Contractor, but you still have to apply for the license.",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "exam": {
+        "required": {
+          "value": false,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+          "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "There is no test required to be an Electrical Contractor, but you still have to apply for the license.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "A genuine and unusual finding: Michigan removed the examination for the Electrical, Fire Alarm and Sign contractor licences. The examination burden sits entirely on the Master Electrician the contractor licence depends on. A buyer who budgets exam prep for the company licence is budgeting for nothing; a buyer who assumes the company licence is therefore easy has missed that it cannot exist without a Michigan-resident master."
+        },
+        "name": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable: no examination is required for this licence.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information"
+        },
+        "provider": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable: no examination is required for this licence.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information"
+        },
+        "fee": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable: no examination is required for this licence.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information"
+        }
+      },
+      "experience": {
+        "requirement": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No experience requirement is published for the contractor licence itself; it sits on the Master Electrician licence the contractor must hold or employ.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information"
+        },
+        "alternatives": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see experience.requirement",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information"
+        }
+      },
+      "application_fee": {
+        "value": 300,
+        "unit": "USD",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.michigan.gov/lara/-/media/Project/Websites/lara/bcc-media/Licensing/lara_bcc_bcc974_app_for_electrical_fire_alarm_sign_contractor_examination_317-fillable.pdf",
+        "source_title": "Application for Electrical/Fire Alarm/Sign Contractor Examination and License (BCC-974) — Michigan LARA BCC",
+        "source_kind": "board_pdf",
+        "evidence": "Electrical Contractor $300.00 (104)",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "From the bureau's own form BCC-974, which prices the three contractor licences on one page: Electrical $300, Fire Alarm $300, Sign $200. Veterans are fee-exempt; fees are non-refundable."
+      },
+      "renewal": {
+        "cycle": {
+          "value": 36,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You must renew every three (3) years by 12/31.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Electrical/Fire Alarm/Sign Specialty Contractor' section of the bureau's renewal page. Three years, on 31 December — a different month from Michigan plumbing (30 April) and Michigan mechanical (31 August). One state, one bureau, three renewal dates."
+        },
+        "fee": {
+          "value": 300,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "It is $300 to renew your license.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Electrical/Fire Alarm/Sign Specialty Contractor' section of the bureau's renewal page. The bureau prints the same sentence for several licence types, so the reading depends on the section, not on the sentence."
+        },
+        "expiry_rule": {
+          "value": "fixed_date:12-31",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You must renew every three (3) years by 12/31.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "A fixed calendar date, but NOT a common one: the bureau says in terms that not all holders of this licence expire in the same year, so the month and day are fixed and the year comes from the licensee's own cycle. Renewal opens 90 days before expiry."
+        },
+        "grace_period": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No grace period is published for the contractor licence. The published consequence is a $50 late fee and a possible loss of the ability to pull permits. Recorded as not established.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "late_fee": {
+          "value": 50,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "you have to pay a $50.00 late fee",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Electrical/Fire Alarm/Sign Specialty Contractor' section of the bureau's renewal page."
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": false,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You are not required to do a code update to renew your contractor license.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "A positive finding, not a gap: the electrical contractor licence carries no continuing-education obligation at all, while the master and journey licences in the same bureau do carry the event-driven code update. A single 'Michigan CE' rule in a customer's spreadsheet is wrong for one of them."
+        },
+        "hours": {
+          "value": 0,
+          "unit": "hours",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You are not required to do a code update to renew your contractor license.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Zero because the bureau says the course is not required for this licence, not because nothing was found. The holder may still owe a code update on another licence they hold — the bureau's own page says so in terms."
+        },
+        "period": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable: no hours are required for this licence type.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "subject_breakdown": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable: no hours are required for this licence type.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "approved_provider_rule": {
+          "value": "Not applicable to this licence. Where a code update IS owed on another licence the holder has, courses and providers run through CE Broker.",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+          "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "you can contact CE Broker to find all approved courses and providers",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "The provider rule is quoted from the bureau's electrical page, which is where CE Broker is named; it is recorded here as the bureau-wide arrangement, not as a rule of this licence, which owes no hours."
+        },
+        "carryover": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable: no hours are required for this licence type.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "delivery_constraint": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable: no hours are required for this licence type.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No bond requirement appears on any page read (Licensing Section, renewals, electrical, and the BCC-974 application form). Recorded as NOT ESTABLISHED, not as 'no bond required'.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see bond.required"
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No liability-insurance minimum appears on any page read (Licensing Section, renewals, electrical, and the BCC-974 application form). Michigan differs from Ohio here, which publishes $500,000 on the face of its requirements page — but an absence is an absence, and it is recorded as not established rather than as 'none required'.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "property_damage": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "aggregate": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "workers_compensation": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No workers'-compensation requirement appears on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "financial_responsibility": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No credit or net-worth test appears on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        }
+      }
+    },
+    {
+      "licence_type_id": "mi.electrical.master_electrician",
+      "name": "Master Electrician",
+      "level": "master",
+      "issuer_level": "state",
+      "board_id": "mi.lara_bcc",
+      "who_must_hold": {
+        "value": "The individual an electrical contractor licence depends on: in charge of and responsible for Michigan code compliance of all installations of electrical wiring and equipment. If the contractor is based outside Michigan, the master they hire must live in Michigan.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+        "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+        "source_kind": "board_page",
+        "evidence": "The Master Electrician’s job is to be in charge of and responsible for Michigan code compliance",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "scope_note": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "No separate scope statement beyond the code-compliance responsibility.",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information"
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+          "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You must take and pass the master electrician exam by scoring at least 75%.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Pass mark 75%."
+        },
+        "name": {
+          "value": "Master Electrician examination",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+          "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You must take and pass the master electrician exam by scoring at least 75%.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "provider": {
+          "value": "PSI",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+          "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "Examinations are conducted by PSI.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "fee": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Examination fees are paid directly to PSI when scheduling; no amount is published by the bureau.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information"
+        },
+        "note": "Examinations are based on the 2023 National Electrical Code, the 2023 Michigan Electrical Code Rules Part 8, 1972 PA 230 and 2016 PA 407."
+      },
+      "experience": {
+        "requirement": {
+          "value": "4,000 hours as an electrical journey AND the journey licence held at least two years; at least 12,000 hours of experience over at least six years overall; minimum age 22.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+          "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You need have completed 4,000 hours as an electrical journey AND have held that license for at least 2 years.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "alternatives": {
+          "value": "A holder of a Michigan journey electrician licence does not have to prove experience for any period before that licence was issued.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+          "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "you do not need to show proof of experience for any time before you were issued your journey electrician license",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        }
+      },
+      "application_fee": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "No master electrician application fee is published on the pages read; form BCC-974 prices the CONTRACTOR licences and that figure is not carried across.",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information"
+      },
+      "renewal": {
+        "cycle": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You must renew every year by 12/31.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Master Electrician' section of the bureau's renewal page. Annual, on 31 December — while the electrical CONTRACTOR licence the master qualifies renews every three years on the same date. The company looks compliant for two of every three years while the person it rests on has an annual deadline."
+        },
+        "fee": {
+          "value": 50,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "It is $50.00 to renew your license.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Master Electrician' section of the bureau's renewal page. The bureau prints the same sentence for several licence types, so the reading depends on the section, not on the sentence."
+        },
+        "expiry_rule": {
+          "value": "fixed_date:12-31",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You must renew every year by 12/31.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "A fixed calendar date, but NOT a common one: the bureau says in terms that not all holders of this licence expire in the same year, so the month and day are fixed and the year comes from the licensee's own cycle. Renewal opens 90 days before expiry."
+        },
+        "grace_period": {
+          "value": "None for working. The bureau states that a licensee may not be on a job site without an active licence; a late fee applies after expiry.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You are not allowed to be on the job site without an active license.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "No working grace period, and the blast radius is larger than the licensee: a lapsed master cannot sign for the time of the apprentices and journeymen working under them, and the company's contractor licence goes on hold."
+        },
+        "late_fee": {
+          "value": 50,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "you have to pay a $50.00 late fee",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Master Electrician' section of the bureau's renewal page."
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You are only required to take a code update course within one year of new code being adopted.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Michigan has no recurring hour requirement for the master electrician licence. The only continuing education is a CODE UPDATE course, and it is event-driven: it is triggered by the adoption of a new code and 'does not happen every year'. Recorded as required=true because the obligation exists and is enforceable, with the trigger in this note; a customer who treats it as an annual hour count will buy training that is not due, and one who treats it as 'no CE' will miss the year a code lands."
+        },
+        "hours": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The bureau publishes no hour count for the code update course; hours are set per course by the approved provider. Not established rather than zero — the requirement exists, the number is not published on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "period": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not a period. The window is 'within one year of new code being adopted', which is an event plus one year, not a calendar window and not the licence term. No calendar_window: token is recorded because there is no month and day to record.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "subject_breakdown": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Code update only; no subject split is published.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "approved_provider_rule": {
+          "value": "Courses and providers are administered through CE Broker; a provider wanting to give a code update course applies through CE Broker for departmental approval.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+          "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "you can contact CE Broker to find all approved courses and providers",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "carryover": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No carry-over provision appears on the pages read; the requirement is event-driven rather than an accruing balance.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "delivery_constraint": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No delivery constraint is published: the bureau does not distinguish classroom from online for the code update course on the pages read. No min_classroom_fraction: token is recorded because no fraction is stated.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No bond requirement appears on any page read (Licensing Section, renewals and electrical). Recorded as NOT ESTABLISHED, not as 'no bond required'.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see bond.required"
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No liability-insurance minimum appears on any page read (Licensing Section, renewals and electrical). Michigan differs from Ohio here, which publishes $500,000 on the face of its requirements page — but an absence is an absence, and it is recorded as not established rather than as 'none required'.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "property_damage": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "aggregate": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "workers_compensation": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No workers'-compensation requirement appears on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "financial_responsibility": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No credit or net-worth test appears on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        }
+      }
+    },
+    {
+      "licence_type_id": "mi.electrical.journeyman_electrician",
+      "name": "Electrical Journeyman",
+      "level": "journeyman",
+      "issuer_level": "state",
+      "board_id": "mi.lara_bcc",
+      "who_must_hold": {
+        "value": "An electrician working at journey level; minimum age 20.",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+        "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+        "source_kind": "board_page",
+        "evidence": "You must be at least 20 years old.",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "Read from the Electrical Journeyman License section's own eligibility list; the bureau prints no 'who must hold' sentence for this rung."
+      },
+      "scope_note": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "No separate scope statement is published.",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information"
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+          "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You must take and pass the electrical journey exam by scoring at least 75%.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "name": {
+          "value": "Electrical journey examination",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+          "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You must take and pass the electrical journey exam by scoring at least 75%.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "provider": {
+          "value": "PSI",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+          "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "Examinations are conducted by PSI.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "fee": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Paid directly to PSI when scheduling; no amount is published by the bureau.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information"
+        }
+      },
+      "experience": {
+        "requirement": {
+          "value": "8,000 hours and four years as a registered electrical apprentice, in electrical construction or maintenance of buildings or electrical wiring or equipment, supervised by a Michigan journeyman or master.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+          "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You need to have completed 8,000 hours AND 4 years as an electrical apprentice.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "alternatives": {
+          "value": "Some credit may be earned for completing a recognised training or educational programme.",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+          "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You may be able to earn some credit for completing a recognized training or educational program.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "The bureau says credit 'may' be available and publishes no table, so the amount is not established."
+        }
+      },
+      "application_fee": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "No journeyman application fee is published on the pages read.",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information"
+      },
+      "renewal": {
+        "cycle": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You must renew every year by 12/31.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Electrical Journeyman' section of the bureau's renewal page. Annual, on 31 December. The bureau prints the same '$40.00 to renew' sentence for the journey plumber and the sign specialist, so the reading here comes from the Electrical Journeyman section."
+        },
+        "fee": {
+          "value": 40,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "It is $40.00 to renew your license.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Electrical Journeyman' section of the bureau's renewal page. The bureau prints the same sentence for several licence types, so the reading depends on the section, not on the sentence."
+        },
+        "expiry_rule": {
+          "value": "fixed_date:12-31",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You must renew every year by 12/31.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "A fixed calendar date, but NOT a common one: the bureau says in terms that not all holders of this licence expire in the same year, so the month and day are fixed and the year comes from the licensee's own cycle. Renewal opens 90 days before expiry."
+        },
+        "grace_period": {
+          "value": "None for working. The bureau states that a licensee may not be on a job site without an active licence; a late fee applies after expiry.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You are not allowed to be on the job site without an active license.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "No working grace period; the bureau warns that a lapse may lead to citations or enforcement action."
+        },
+        "late_fee": {
+          "value": 50,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "you have to pay a $50.00 late fee",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Electrical Journeyman' section of the bureau's renewal page."
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You are only required to take a code update course within one year of new code being adopted.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Michigan has no recurring hour requirement for the electrical journeyman licence. The only continuing education is a CODE UPDATE course, and it is event-driven: it is triggered by the adoption of a new code and 'does not happen every year'. Recorded as required=true because the obligation exists and is enforceable, with the trigger in this note; a customer who treats it as an annual hour count will buy training that is not due, and one who treats it as 'no CE' will miss the year a code lands."
+        },
+        "hours": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The bureau publishes no hour count for the code update course; hours are set per course by the approved provider. Not established rather than zero — the requirement exists, the number is not published on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "period": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not a period. The window is 'within one year of new code being adopted', which is an event plus one year, not a calendar window and not the licence term. No calendar_window: token is recorded because there is no month and day to record.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "subject_breakdown": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Code update only; no subject split is published.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "approved_provider_rule": {
+          "value": "Courses and providers are administered through CE Broker; a provider wanting to give a code update course applies through CE Broker for departmental approval.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+          "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "you can contact CE Broker to find all approved courses and providers",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "carryover": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No carry-over provision appears on the pages read; the requirement is event-driven rather than an accruing balance.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "delivery_constraint": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No delivery constraint is published: the bureau does not distinguish classroom from online for the code update course on the pages read. No min_classroom_fraction: token is recorded because no fraction is stated.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No bond requirement appears on any page read (Licensing Section, renewals and electrical). Recorded as NOT ESTABLISHED, not as 'no bond required'.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see bond.required"
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No liability-insurance minimum appears on any page read (Licensing Section, renewals and electrical). Michigan differs from Ohio here, which publishes $500,000 on the face of its requirements page — but an absence is an absence, and it is recorded as not established rather than as 'none required'.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "property_damage": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "aggregate": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "workers_compensation": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No workers'-compensation requirement appears on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "financial_responsibility": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No credit or net-worth test appears on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        }
+      }
+    },
+    {
+      "licence_type_id": "mi.electrical.electrical_apprentice",
+      "name": "Electrical Apprentice (registration)",
+      "level": "apprentice",
+      "issuer_level": "state",
+      "board_id": "mi.lara_bcc",
+      "who_must_hold": {
+        "value": "Anyone working as an electrical apprentice. They must be employed by a Master Electrician and an Electrical Contractor (often the same person) and enrolled in a related technical instruction programme.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+        "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+        "source_kind": "board_page",
+        "evidence": "You need to be enrolled in a related technical instruction (RTI) program.",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "scope_note": {
+        "value": "The related technical instruction requirement is statutory: MCL 339.5717(2) and (4), the latter requiring the board to approve any bona fide apprenticeship programme meeting US DOL standards.",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+        "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+        "source_kind": "board_page",
+        "evidence": "The department shall issue a certificate of registration to an individual who is seeking registration under this section",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "Quoted from the bureau's page, which reproduces MCL 339.5717(2); the statute itself was not fetched — legislature.mi.gov did not respond to either attempt on 2026-09-04."
+      },
+      "exam": {
+        "required": {
+          "value": false,
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+          "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You need to be enrolled in a related technical instruction (RTI) program.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Registration, not examination: the bureau's apprentice route lists employment and RTI enrolment and no examination step. Recorded at medium confidence from the absence of an examination step rather than from a sentence saying none is required."
+        },
+        "name": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information"
+        },
+        "provider": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information"
+        },
+        "fee": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information"
+        }
+      },
+      "experience": {
+        "requirement": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No prior experience is published as a condition of registering; the registration is how experience is accrued.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information"
+        },
+        "alternatives": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see experience.requirement",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information"
+        }
+      },
+      "application_fee": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "No apprentice application fee is published; the renewal fee is $15.",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+      },
+      "renewal": {
+        "cycle": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You must renew your registration every year by 8/31.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Electrical Apprentice' section of the bureau's renewal page. Annual, on 31 AUGUST — four months apart from every other Michigan electrical credential, which renew on 31 December. This is the single date most likely to be missed on a Michigan roster, and the late fee ($100) is more than six times the renewal fee ($15). Express Pay cannot be used; the apprentice must log in to Accela and give the employer's master/contractor licence numbers."
+        },
+        "fee": {
+          "value": 15,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "It is $15.00 to renew your license.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Electrical Apprentice' section of the bureau's renewal page. The bureau prints the same sentence for several licence types, so the reading depends on the section, not on the sentence."
+        },
+        "expiry_rule": {
+          "value": "fixed_date:08-31",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You must renew your registration every year by 8/31.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "A fixed calendar date, but NOT a common one: the bureau says in terms that not all holders of this licence expire in the same year, so the month and day are fixed and the year comes from the licensee's own cycle. Renewal opens 90 days before expiry."
+        },
+        "grace_period": {
+          "value": "None for working. The bureau states that a licensee may not be on a job site without an active licence; a late fee applies after expiry.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You are not allowed to be on the job site without an active license.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "No working grace period: the bureau says being on a job site with an expired apprentice registration is against the law."
+        },
+        "late_fee": {
+          "value": 100,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "you will have to pay $100 late fee",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Electrical Apprentice' section of the bureau's renewal page."
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": false,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You do not have to take a code update course to renew your apprentice registration.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "A positive finding, not a gap: the electrical apprentice registration carries no continuing-education obligation at all, while the master and journey licences in the same bureau do carry the event-driven code update. A single 'Michigan CE' rule in a customer's spreadsheet is wrong for one of them."
+        },
+        "hours": {
+          "value": 0,
+          "unit": "hours",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You do not have to take a code update course to renew your apprentice registration.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Zero because the bureau says the course is not required for this licence, not because nothing was found. The holder may still owe a code update on another licence they hold — the bureau's own page says so in terms."
+        },
+        "period": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable: no hours are required for this licence type.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "subject_breakdown": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable: no hours are required for this licence type.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "approved_provider_rule": {
+          "value": "Not applicable to this licence. Where a code update IS owed on another licence the holder has, courses and providers run through CE Broker.",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+          "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "you can contact CE Broker to find all approved courses and providers",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "The provider rule is quoted from the bureau's electrical page, which is where CE Broker is named; it is recorded here as the bureau-wide arrangement, not as a rule of this licence, which owes no hours."
+        },
+        "carryover": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable: no hours are required for this licence type.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "delivery_constraint": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable: no hours are required for this licence type.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No bond requirement appears on any page read (Licensing Section, renewals and electrical). Recorded as NOT ESTABLISHED, not as 'no bond required'.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see bond.required"
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No liability-insurance minimum appears on any page read (Licensing Section, renewals and electrical). Michigan differs from Ohio here, which publishes $500,000 on the face of its requirements page — but an absence is an absence, and it is recorded as not established rather than as 'none required'.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "property_damage": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "aggregate": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "workers_compensation": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No workers'-compensation requirement appears on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "financial_responsibility": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No credit or net-worth test appears on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        }
+      }
+    }
+  ],
+  "reciprocity": [],
+  "reciprocity_statement": {
+    "value": "The bureau states that Michigan holds no reciprocity with any other state or country. An out-of-state applicant must submit their licence plus that jurisdiction's written licensing requirements, detailing the hours, schooling and conditions that had to be met.",
+    "status": "verified",
+    "confidence": "high",
+    "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+    "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+    "source_kind": "board_page",
+    "evidence": "Michigan does not hold reciprocity with any other state/country.",
+    "last_verified": "2026-09-04",
+    "verified_by": [
+      "kb-b5-pass-a",
+      "kb-b5-pass-b"
+    ]
+  },
+  "business_entity": {
+    "qualifying_individual_rule": {
+      "value": "An electrical contractor licence requires an associated Master Electrician, who may be associated with only ONE electrical contractor at a time; without one the contractor's licence is put on hold. A contractor based outside Michigan must hire a master who lives in Michigan.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+      "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+      "source_kind": "board_page",
+      "evidence": "A Master Electrician can only associate with one Electrical Contractor at a time.",
+      "last_verified": "2026-09-04",
+      "verified_by": [
+        "kb-b5-pass-a",
+        "kb-b5-pass-b"
+      ],
+      "note": "This is the field that turns an acquisition into a licensing emergency, and Michigan states both halves of it: the master cannot be shared across two companies, and the company stops when the master does. The renewal page adds the second trigger — 'If the qualifying license lapses, your contractor license will be placed on hold until they renew, and you notify our office' — so the hold is not lifted by the master renewing; the company must also notify the bureau."
+    },
+    "entity_registration": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "No entity-registration requirement is published by the bureau for electrical contractors.",
+      "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information"
+    },
+    "per_location_rule": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "No per-location or per-branch rule is published for electrical contractors.",
+      "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information"
+    },
+    "change_notification_deadline": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "No deadline is published for naming a replacement Master Electrician. What IS published is the consequence: the contractor licence goes on hold until the qualifying licence is renewed AND the bureau is notified. An indefinite hold with no clock is worse for the customer than a deadline, and the absence is recorded rather than a figure borrowed from another state.",
+      "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+    }
+  },
+  "typical_timeline": {
+    "value": "Up to 3–5 weeks for the Licensing Section to process an application, reviewed in order of receipt.",
+    "status": "verified",
+    "confidence": "high",
+    "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section",
+    "source_title": "Bureau of Construction Codes — Licensing Section, Michigan LARA",
+    "source_kind": "board_page",
+    "evidence": "our processing time may be up to 3-5 weeks and applications are reviewed in order of receipt",
+    "last_verified": "2026-09-04",
+    "verified_by": [
+      "kb-b5-pass-a",
+      "kb-b5-pass-b"
+    ],
+    "note": "This is the bureau's own published figure for reviewing the application, not an end-to-end time to a licence in hand: it excludes scheduling and sitting the PSI examination, and for plumbing the separate hands-on practical, whose 2026 dates run monthly and are capped at 50–100 candidates and repeatedly 'at capacity'. Application fees are non-refundable and duplicate applications slow the queue."
+  },
+  "coverage_notes": [
+    "Michigan's local layer is modelled only where the bureau names it. The City of Detroit is named, on the electrical page. Every other Michigan municipality and county is not covered.",
+    "No bond position and no liability-insurance minimum could be established from any bureau page or application form read; both are left empty rather than guessed or borrowed from a neighbouring state.",
+    "PSI examination fees are set and collected by PSI, not by the bureau, and are not in this record. Since 14 June 2017 the bureau says in terms that examination fees should no longer be sent to the State of Michigan.",
+    "Michigan's Skilled Trades Regulation Act (2016 PA 407) and the Stille-DeRossett-Hale Act (1972 PA 230) are named on the bureau's pages but were NOT fetched: legislature.mi.gov did not respond to either attempt on 2026-09-04. Every statutory citation in this record is quoted as the bureau reproduces it, never from the statute itself.",
+    "Fire Alarm Specialty Technician, Fire Alarm Contractor, Sign Specialist and Sign Specialty Contractor are issued on the same forms and renewed on the same page as the electrical credentials, and are NOT modelled here. A customer whose roster includes fire-alarm technicians will get nothing for them.",
+    "The City of Detroit's own electrical licences and registrations are named by the bureau and are not covered: the record says the city issues them and stops there."
+  ],
+  "disclaimer_profile": "local_layer_warning",
+  "provenance": {
+    "created_at": "2026-09-04",
+    "pass_a": {
+      "agent_id": "kb-b5-pass-a",
+      "date": "2026-09-04",
+      "method": "fetched each source with kb-scripts/lib_kb.fetch (serial, 1.5 s spacing, two attempts, no retry on 403/404), read the normalised text in full, and recorded each value with a verbatim evidence fragment checked against the normalised page before writing"
+    },
+    "pass_b": {
+      "agent_id": "kb-b5-pass-b",
+      "date": "2026-09-04",
+      "method": "two checks. (1) kb-scripts/verify_pass_b.py re-fetches every source_url over the network, independently of the pass-A cache, and asserts the evidence fragment is still literally present. (2) a separate semantic re-read of every source, re-deriving each value from the page rather than from the record, recorded per value in kb-data/_verification/<record>.md. A disagreement in either check demotes the value.",
+      "agreements": 0,
+      "disagreements": 0,
+      "unreachable": 0,
+      "agreement_rate_pct": 0.0,
+      "disagreement_detail": []
+    },
+    "sources": [
+      {
+        "source_id": "mi.bcc.licensing",
+        "url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section",
+        "title": "Bureau of Construction Codes — Licensing Section, Michigan LARA",
+        "kind": "board_page",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "1512af669ad26a34b4ee5ecbc8c49df7342f24b756c6d9b3f5f1f3c08ff2de2c",
+        "http_status": 200,
+        "bytes": 476764
+      },
+      {
+        "source_id": "mi.bcc.renewals",
+        "url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+        "title": "License/Registration Renewals — Michigan LARA BCC",
+        "kind": "board_page",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "5d0d8ecd3dd6ee72694fdf2257e7c72e41f39ed9f95ee6d07a1b0f31bd1b9540",
+        "http_status": 200,
+        "bytes": 586892
+      },
+      {
+        "source_id": "mi.bcc.electrical",
+        "url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+        "title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+        "kind": "board_page",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "f7d2feceb6508af8ea40353670cc0422e9bea5cf04c905a2480f73dd1c68fb7c",
+        "http_status": 200,
+        "bytes": 476792
+      },
+      {
+        "source_id": "mi.bcc.electrical_app",
+        "url": "https://www.michigan.gov/lara/-/media/Project/Websites/lara/bcc-media/Licensing/lara_bcc_bcc974_app_for_electrical_fire_alarm_sign_contractor_examination_317-fillable.pdf",
+        "title": "Application for Electrical/Fire Alarm/Sign Contractor Examination and License (BCC-974) — Michigan LARA BCC",
+        "kind": "board_pdf",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "137aa43c376474c4bcc50f78854d8c7d1d2cfbe7237d53a4c082839f7dd959d5",
+        "http_status": 200,
+        "bytes": 225713
+      }
+    ],
+    "publishable": false
+  }
+}

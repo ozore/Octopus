@@ -1,0 +1,1408 @@
+{
+  "record_id": "mi.plumbing",
+  "schema_version": "1.0.0",
+  "state": "MI",
+  "state_name": "Michigan",
+  "trade": "plumbing",
+  "jurisdiction_model": {
+    "level": "state_and_local",
+    "summary": {
+      "value": "The Bureau of Construction Codes Licensing Section issues the state licences for this trade and reviews every application for compliance with the governing statutes.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section",
+      "source_title": "Bureau of Construction Codes — Licensing Section, Michigan LARA",
+      "source_kind": "board_page",
+      "evidence": "seeking licensure for Boiler, Electrical, Elevator, Mechanical, Plumbing, Inspector/Plan Reviewer, Residential Builder",
+      "last_verified": "2026-09-04",
+      "verified_by": [
+        "kb-b5-pass-a",
+        "kb-b5-pass-b"
+      ]
+    },
+    "local_layer_note": "One local layer is established and it is named on the board's own page: 'If you live in the City of Detroit, they issue their own licenses and registrations locally.' That sentence appears on the ELECTRICAL page only. No equivalent statement was found for mechanical or plumbing, and no other Michigan municipality was named on any page read, so the rest of the local layer is not established. 'state_and_local' is recorded rather than 'state_only' because it fails in the safe direction — it tells the customer to check the city as well — not because a mechanical or plumbing local licence has been evidenced."
+  },
+  "boards": [
+    {
+      "board_id": "mi.lara_bcc",
+      "name": "Michigan Department of Licensing and Regulatory Affairs, Bureau of Construction Codes — Licensing Section",
+      "url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section",
+      "scope": "Mechanical, plumbing, electrical, boiler, elevator, code-official and residential-builder licences and registrations, statewide",
+      "licence_search_url": "https://aca-prod.accela.com/LARA/Login.aspx",
+      "phone": "517-241-9316"
+    }
+  ],
+  "licence_types": [
+    {
+      "licence_type_id": "mi.plumbing.plumbing_contractor",
+      "name": "Plumbing Contractor",
+      "level": "contractor",
+      "issuer_level": "state",
+      "board_id": "mi.lara_bcc",
+      "who_must_hold": {
+        "value": "The business entity contracting for plumbing work. Only an individual who is a sole proprietor, a partner, an officer of a corporation or a member of an LLC may apply, and they must either hold a master plumber licence themselves or employ one as the company's representative.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information",
+        "source_title": "Plumbing Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+        "source_kind": "board_page",
+        "evidence": "The applicant must either hold a master plumber license or employ the holder of a master plumber license",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "scope_note": {
+        "value": "Statutory basis MCL 339.6111. The application requires five years of address and business history and the name, address and licence number of the representing master plumber.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information",
+        "source_title": "Plumbing Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+        "source_kind": "board_page",
+        "evidence": "Only an individual who is a sole proprietor, a partner in a partnership, an officer of a corporation",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information",
+          "source_title": "Plumbing Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "Must pass both the written and hands on practical skills portions of the examination on a single application.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "The plumbing page lists 'Must pay the examination fee and pass the examination' under the contractor licence, and the written/practical sentence quoted here is published under the JOURNEY plumber licence. Michigan's contractor examination requirement is therefore recorded at medium confidence — unlike electrical, where the bureau states in terms that no test is required of the contractor."
+        },
+        "name": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No examination title is published.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information"
+        },
+        "provider": {
+          "value": "PSI (written portion); the bureau itself for the hands-on practical",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information",
+          "source_title": "Plumbing Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "CONTACT PSI TO SCHEDULE WRITTEN PORTION AT 1-855-579-4635.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Michigan is the only state in this tranche with a HANDS-ON PRACTICAL examination. It runs one day a month at Lansing, Mason, Cadillac or St Ignace, is capped at 50–100 candidates, must be booked 30 days ahead by email, and the 2026 dates were 'at capacity' from February to September. That is the real Michigan plumbing timeline, and it is not in the bureau's 3–5 week processing figure."
+        },
+        "fee": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The bureau states an examination fee is payable but publishes no amount for plumbing on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information"
+        },
+        "note": "An application is valid for one year only and passing scores do NOT carry over to a new application."
+      },
+      "experience": {
+        "requirement": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No separate experience requirement is published for the contractor licence itself; the experience sits on the master plumber licence the contractor must hold or employ.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information"
+        },
+        "alternatives": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see experience.requirement",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information"
+        }
+      },
+      "application_fee": {
+        "value": 300,
+        "unit": "USD",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.michigan.gov/lara/-/media/Project/Websites/lara/bcc-media/BCC-Forms/Plumbing/bcc329_plumbing_examination_0317-fillable.pdf",
+        "source_title": "Application for Plumbing Examinations (BCC-329) — Michigan LARA BCC",
+        "source_kind": "board_pdf",
+        "evidence": "APPLICATION FEE DUE WITH PLUMBING CONTRACTOR APPLICATION $300.00",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "Non-refundable, payable with the application, from the bureau's own form BCC-329."
+      },
+      "renewal": {
+        "cycle": {
+          "value": 36,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You must renew every three (3) years by 4/30.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Plumbing Contractor' section of the bureau's renewal page. Three years, on 30 April, and not all plumbing contractors renew in the same year. A holder of BOTH the plumbing contractor and the qualifying master plumber licence renews both by entering the contractor number alone (it begins 80) — one transaction, two licences, and a customer who renews 'the master' separately has done nothing."
+        },
+        "fee": {
+          "value": 300,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "It is $300.00 to renew your license.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Plumbing Contractor' section of the bureau's renewal page. The bureau prints the same sentence for several licence types, so the reading depends on the section, not on the sentence."
+        },
+        "expiry_rule": {
+          "value": "fixed_date:04-30",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You must renew every three (3) years by 4/30.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "A fixed calendar date, but NOT a common one: the bureau says in terms that not all holders of this licence expire in the same year, so the month and day are fixed and the year comes from the licensee's own cycle. Renewal opens 90 days before expiry."
+        },
+        "grace_period": {
+          "value": "None for working. The bureau states that a licensee may not be on a job site without an active licence; a late fee applies after expiry.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You are not allowed to be on the job site without an active license.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "The bureau states plainly that a licensee may not be on a job site without an active licence, so there is no working grace period; a late fee is payable on a late renewal."
+        },
+        "late_fee": {
+          "value": 100,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "you have to pay a $100.00 late fee",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Plumbing Contractor' section of the bureau's renewal page."
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": false,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "Plumbing contractors are not required to take code update courses for this specific license",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "A positive finding, not a gap: the plumbing contractor licence carries no continuing-education obligation at all, while the master and journey licences in the same bureau do carry the event-driven code update. A single 'Michigan CE' rule in a customer's spreadsheet is wrong for one of them."
+        },
+        "hours": {
+          "value": 0,
+          "unit": "hours",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "Plumbing contractors are not required to take code update courses for this specific license",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Zero because the bureau says the course is not required for this licence, not because nothing was found. The holder may still owe a code update on another licence they hold — the bureau's own page says so in terms."
+        },
+        "period": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable: no hours are required for this licence type.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "subject_breakdown": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable: no hours are required for this licence type.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "approved_provider_rule": {
+          "value": "Not applicable to this licence. Where a code update IS owed on another licence the holder has, courses and providers run through CE Broker.",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+          "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "you can contact CE Broker to find all approved courses and providers",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "The provider rule is quoted from the bureau's electrical page, which is where CE Broker is named; it is recorded here as the bureau-wide arrangement, not as a rule of this licence, which owes no hours."
+        },
+        "carryover": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable: no hours are required for this licence type.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "delivery_constraint": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable: no hours are required for this licence type.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No bond requirement appears on any page read (Licensing Section, renewals, plumbing, and the BCC-329 application form). Recorded as NOT ESTABLISHED, not as 'no bond required'.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see bond.required"
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No liability-insurance minimum appears on any page read (Licensing Section, renewals, plumbing, and the BCC-329 application form). Michigan differs from Ohio here, which publishes $500,000 on the face of its requirements page — but an absence is an absence, and it is recorded as not established rather than as 'none required'.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "property_damage": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "aggregate": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "workers_compensation": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No workers'-compensation requirement appears on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "financial_responsibility": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No credit or net-worth test appears on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        }
+      }
+    },
+    {
+      "licence_type_id": "mi.plumbing.master_plumber",
+      "name": "Master Plumber",
+      "level": "master",
+      "issuer_level": "state",
+      "board_id": "mi.lara_bcc",
+      "who_must_hold": {
+        "value": "The individual who represents a plumbing contractor, and any plumber working at master level. A plumbing contractor licence will not be issued without one.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information",
+        "source_title": "Plumbing Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+        "source_kind": "board_page",
+        "evidence": "The contractor license will not be issued without master plumber representation.",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "scope_note": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "No separate scope statement is published for the master plumber licence.",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information"
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information",
+          "source_title": "Plumbing Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "Must pay the examination fee and pass the examination.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "name": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No examination title is published.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information"
+        },
+        "provider": {
+          "value": "PSI (written portion)",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information",
+          "source_title": "Plumbing Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "CONTACT PSI TO SCHEDULE WRITTEN PORTION AT 1-855-579-4635.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "PSI is named on the plumbing page for the written portion of the plumbing examinations generally; the page does not repeat it under the master plumber heading."
+        },
+        "fee": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "An examination fee is required but no amount is published on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information"
+        }
+      },
+      "experience": {
+        "requirement": {
+          "value": "4,000 hours as a journey plumber over not less than two years IMMEDIATELY PRECEDING the application.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information",
+          "source_title": "Plumbing Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "Must have 4,000 hours experience in work as a journey plumber over a period of not less than 2 years",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "The word immediately is load-bearing and the bureau flags it itself: any lapse in journey licensure in those two years does not meet the requirement, and a lapse of more than 60 days restarts the accrual from zero. A Michigan journey plumber who forgets a $40 renewal can lose two years of progress toward master."
+        },
+        "alternatives": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No substitute for the 4,000 hours is published.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information"
+        }
+      },
+      "application_fee": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "The bureau publishes no separate master plumber application fee on the pages read; form BCC-329 prices the plumbing CONTRACTOR application at $300 and that figure is not carried across.",
+        "source_url": "https://www.michigan.gov/lara/-/media/Project/Websites/lara/bcc-media/BCC-Forms/Plumbing/bcc329_plumbing_examination_0317-fillable.pdf"
+      },
+      "renewal": {
+        "cycle": {
+          "value": 36,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You must renew every three (3) years by 4/30.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Master Plumber' section of the bureau's renewal page. Three years, on 30 April, and not all master plumbers renew in the same year."
+        },
+        "fee": {
+          "value": 300,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "It is $300.00 to renew your license.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Master Plumber' section of the bureau's renewal page. The bureau prints the same sentence for several licence types, so the reading depends on the section, not on the sentence."
+        },
+        "expiry_rule": {
+          "value": "fixed_date:04-30",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You must renew every three (3) years by 4/30.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "A fixed calendar date, but NOT a common one: the bureau says in terms that not all holders of this licence expire in the same year, so the month and day are fixed and the year comes from the licensee's own cycle. Renewal opens 90 days before expiry."
+        },
+        "grace_period": {
+          "value": "None for working. The bureau states that a licensee may not be on a job site without an active licence; a late fee applies after expiry.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You are not allowed to be on the job site without an active license.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "No working grace period: the bureau says a licensee may not be on a job site without an active licence."
+        },
+        "late_fee": {
+          "value": 100,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "you have to pay a $100.00 late fee",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Master Plumber' section of the bureau's renewal page."
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You are only required to take a code update course within one year of new code being adopted.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Michigan has no recurring hour requirement for the master plumber licence. The only continuing education is a CODE UPDATE course, and it is event-driven: it is triggered by the adoption of a new code and 'does not happen every year'. Recorded as required=true because the obligation exists and is enforceable, with the trigger in this note; a customer who treats it as an annual hour count will buy training that is not due, and one who treats it as 'no CE' will miss the year a code lands."
+        },
+        "hours": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The bureau publishes no hour count for the code update course; hours are set per course by the approved provider. Not established rather than zero — the requirement exists, the number is not published on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "period": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not a period. The window is 'within one year of new code being adopted', which is an event plus one year, not a calendar window and not the licence term. No calendar_window: token is recorded because there is no month and day to record.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "subject_breakdown": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Code update only; no subject split is published.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "approved_provider_rule": {
+          "value": "Courses and providers are administered through CE Broker; a provider wanting to give a code update course applies through CE Broker for departmental approval.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+          "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "you can contact CE Broker to find all approved courses and providers",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "carryover": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No carry-over provision appears on the pages read; the requirement is event-driven rather than an accruing balance.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "delivery_constraint": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No delivery constraint is published: the bureau does not distinguish classroom from online for the code update course on the pages read. No min_classroom_fraction: token is recorded because no fraction is stated.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No bond requirement appears on any page read (Licensing Section, renewals and plumbing). Recorded as NOT ESTABLISHED, not as 'no bond required'.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see bond.required"
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No liability-insurance minimum appears on any page read (Licensing Section, renewals and plumbing). Michigan differs from Ohio here, which publishes $500,000 on the face of its requirements page — but an absence is an absence, and it is recorded as not established rather than as 'none required'.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "property_damage": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "aggregate": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "workers_compensation": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No workers'-compensation requirement appears on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "financial_responsibility": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No credit or net-worth test appears on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        }
+      }
+    },
+    {
+      "licence_type_id": "mi.plumbing.journey_plumber",
+      "name": "Journey Plumber",
+      "level": "journeyman",
+      "issuer_level": "state",
+      "board_id": "mi.lara_bcc",
+      "who_must_hold": {
+        "value": "A plumber working at journey level; supervises registered apprentices and is the rung the master licence is built on.",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information",
+        "source_title": "Plumbing Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+        "source_kind": "board_page",
+        "evidence": "Has not less than 6,000 hours experience attained over a period of not less than 3 years",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "Derived from the bureau's own pathway description rather than from a 'who must hold' sentence, which the page does not print."
+      },
+      "scope_note": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "No separate scope statement is published.",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information"
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information",
+          "source_title": "Plumbing Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "Must pass both the written and hands on practical skills portions of the examination on a single application.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "name": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No examination title is published.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information"
+        },
+        "provider": {
+          "value": "PSI (written portion); the bureau itself for the hands-on practical",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information",
+          "source_title": "Plumbing Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "CONTACT PSI TO SCHEDULE WRITTEN PORTION AT 1-855-579-4635.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "fee": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "An application/licence fee is payable at application; no examination amount is published.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information"
+        },
+        "note": "Both portions must be passed on a SINGLE application. An application is valid one year and passing scores do not carry over."
+      },
+      "experience": {
+        "requirement": {
+          "value": "6,000 hours over not less than three years as an actively registered plumbing apprentice, in the practical installation of plumbing, supervised by a licensed master or journey plumber.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information",
+          "source_title": "Plumbing Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "Has not less than 6,000 hours experience attained over a period of not less than 3 years",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "alternatives": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No substitute for the 6,000 hours is published.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information"
+        }
+      },
+      "application_fee": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "No journey plumber application fee is published on the pages read.",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information"
+      },
+      "renewal": {
+        "cycle": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You must renew every year by 4/30.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Journey Plumber' section of the bureau's renewal page. Annual, on 30 April. The bureau prints the same '$40.00 to renew' sentence for the electrical journeyman and the sign specialist, so the reading here comes from the Journey Plumber section."
+        },
+        "fee": {
+          "value": 40,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "It is $40.00 to renew your license.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Journey Plumber' section of the bureau's renewal page. The bureau prints the same sentence for several licence types, so the reading depends on the section, not on the sentence."
+        },
+        "expiry_rule": {
+          "value": "fixed_date:04-30",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You must renew every year by 4/30.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "A fixed calendar date, but NOT a common one: the bureau says in terms that not all holders of this licence expire in the same year, so the month and day are fixed and the year comes from the licensee's own cycle. Renewal opens 90 days before expiry."
+        },
+        "grace_period": {
+          "value": "None for working. The bureau states that a licensee may not be on a job site without an active licence; a late fee applies after expiry.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You are not allowed to be on the job site without an active license.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "No working grace period. The commercially important consequence is not the $100: a lapse of more than 60 days restarts the two-year accrual toward the master plumber licence."
+        },
+        "late_fee": {
+          "value": 100,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "you have to pay a $100.00 late fee",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Journey Plumber' section of the bureau's renewal page."
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You are only required to take a code update course within one year of new code being adopted.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Michigan has no recurring hour requirement for the journey plumber licence. The only continuing education is a CODE UPDATE course, and it is event-driven: it is triggered by the adoption of a new code and 'does not happen every year'. Recorded as required=true because the obligation exists and is enforceable, with the trigger in this note; a customer who treats it as an annual hour count will buy training that is not due, and one who treats it as 'no CE' will miss the year a code lands."
+        },
+        "hours": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The bureau publishes no hour count for the code update course; hours are set per course by the approved provider. Not established rather than zero — the requirement exists, the number is not published on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "period": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not a period. The window is 'within one year of new code being adopted', which is an event plus one year, not a calendar window and not the licence term. No calendar_window: token is recorded because there is no month and day to record.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "subject_breakdown": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Code update only; no subject split is published.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "approved_provider_rule": {
+          "value": "Courses and providers are administered through CE Broker; a provider wanting to give a code update course applies through CE Broker for departmental approval.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+          "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "you can contact CE Broker to find all approved courses and providers",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "carryover": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No carry-over provision appears on the pages read; the requirement is event-driven rather than an accruing balance.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "delivery_constraint": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No delivery constraint is published: the bureau does not distinguish classroom from online for the code update course on the pages read. No min_classroom_fraction: token is recorded because no fraction is stated.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No bond requirement appears on any page read (Licensing Section, renewals and plumbing). Recorded as NOT ESTABLISHED, not as 'no bond required'.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see bond.required"
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No liability-insurance minimum appears on any page read (Licensing Section, renewals and plumbing). Michigan differs from Ohio here, which publishes $500,000 on the face of its requirements page — but an absence is an absence, and it is recorded as not established rather than as 'none required'.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "property_damage": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "aggregate": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "workers_compensation": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No workers'-compensation requirement appears on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "financial_responsibility": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No credit or net-worth test appears on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        }
+      }
+    },
+    {
+      "licence_type_id": "mi.plumbing.apprentice_plumber",
+      "name": "Apprentice Plumber (registration)",
+      "level": "apprentice",
+      "issuer_level": "state",
+      "board_id": "mi.lara_bcc",
+      "who_must_hold": {
+        "value": "Anyone accruing plumbing hours toward the journey licence; the registration is what makes the hours count.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+        "source_title": "License/Registration Renewals — Michigan LARA BCC",
+        "source_kind": "board_page",
+        "evidence": "any time without an active apprentice registration DOES NOT count towards your time/hour requirements",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ]
+      },
+      "scope_note": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "No separate scope statement is published.",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information"
+      },
+      "exam": {
+        "required": {
+          "value": false,
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information",
+          "source_title": "Plumbing Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "Registration for Plumbing Apprentice",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "The bureau lists apprentice plumbers under REGISTRATION rather than examination and prints no examination requirement for them. Recorded at medium confidence from the absence of an examination step on the registration route, not from a sentence saying no examination is required."
+        },
+        "name": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information"
+        },
+        "provider": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information"
+        },
+        "fee": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information"
+        }
+      },
+      "experience": {
+        "requirement": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No prior experience is published as a condition of registering as an apprentice.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information"
+        },
+        "alternatives": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see experience.requirement",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information"
+        }
+      },
+      "application_fee": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "No apprentice application fee is published; the renewal fee is $15.",
+        "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+      },
+      "renewal": {
+        "cycle": {
+          "value": 12,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You must renew every year by 4/30.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Apprentice Plumber' section of the bureau's renewal page. Annual, on 30 April."
+        },
+        "fee": {
+          "value": 15,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "It is $15.00 to renew your license.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Apprentice Plumber' section of the bureau's renewal page. The bureau prints the same sentence for several licence types, so the reading depends on the section, not on the sentence."
+        },
+        "expiry_rule": {
+          "value": "fixed_date:04-30",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You must renew every year by 4/30.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "A fixed calendar date, but NOT a common one: the bureau says in terms that not all holders of this licence expire in the same year, so the month and day are fixed and the year comes from the licensee's own cycle. Renewal opens 90 days before expiry."
+        },
+        "grace_period": {
+          "value": "None for working. The bureau states that a licensee may not be on a job site without an active licence; a late fee applies after expiry.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You are not allowed to be on the job site without an active license.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "No working grace period, and the real cost of a lapse is the lost time: hours worked without an active registration do not count toward the journey licence at all."
+        },
+        "late_fee": {
+          "value": 20,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "you have to pay a $20.00 late fee",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Read from the 'Apprentice Plumber' section of the bureau's renewal page."
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": false,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You are not required to take code update courses.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "A positive finding, not a gap: the apprentice plumber registration carries no continuing-education obligation at all, while the master and journey licences in the same bureau do carry the event-driven code update. A single 'Michigan CE' rule in a customer's spreadsheet is wrong for one of them."
+        },
+        "hours": {
+          "value": 0,
+          "unit": "hours",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+          "source_title": "License/Registration Renewals — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "You are not required to take code update courses.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Zero because the bureau says the course is not required for this licence, not because nothing was found. The holder may still owe a code update on another licence they hold — the bureau's own page says so in terms."
+        },
+        "period": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable: no hours are required for this licence type.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "subject_breakdown": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable: no hours are required for this licence type.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "approved_provider_rule": {
+          "value": "Not applicable to this licence. Where a code update IS owed on another licence the holder has, courses and providers run through CE Broker.",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+          "source_title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+          "source_kind": "board_page",
+          "evidence": "you can contact CE Broker to find all approved courses and providers",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "The provider rule is quoted from the bureau's electrical page, which is where CE Broker is named; it is recorded here as the bureau-wide arrangement, not as a rule of this licence, which owes no hours."
+        },
+        "carryover": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable: no hours are required for this licence type.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        },
+        "delivery_constraint": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not applicable: no hours are required for this licence type.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No bond requirement appears on any page read (Licensing Section, renewals and plumbing). Recorded as NOT ESTABLISHED, not as 'no bond required'.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see bond.required"
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No liability-insurance minimum appears on any page read (Licensing Section, renewals and plumbing). Michigan differs from Ohio here, which publishes $500,000 on the face of its requirements page — but an absence is an absence, and it is recorded as not established rather than as 'none required'.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "property_damage": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "aggregate": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "workers_compensation": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No workers'-compensation requirement appears on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        },
+        "financial_responsibility": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No credit or net-worth test appears on the pages read.",
+          "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section"
+        }
+      }
+    }
+  ],
+  "reciprocity": [],
+  "reciprocity_statement": {
+    "value": null,
+    "status": "unknown",
+    "confidence": "low",
+    "note": "NOT established for this trade. The sentence 'Michigan does not hold reciprocity with any other state/country' is published on the bureau's ELECTRICAL page, under 'Out of State Applicants', and nowhere on the mechanical or plumbing pages. Generalising it to this trade would be exactly the cross-source attribution error that pass B exists to catch, so it is not generalised. The product must render 'not established', never 'none'.",
+    "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information"
+  },
+  "business_entity": {
+    "qualifying_individual_rule": {
+      "value": "A plumbing contractor must either hold a master plumber licence or employ one as its representative, and the contractor licence will not be issued without that representation.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information",
+      "source_title": "Plumbing Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+      "source_kind": "board_page",
+      "evidence": "The contractor license will not be issued without master plumber representation.",
+      "last_verified": "2026-09-04",
+      "verified_by": [
+        "kb-b5-pass-a",
+        "kb-b5-pass-b"
+      ]
+    },
+    "entity_registration": {
+      "value": "Only an individual who is a sole proprietor, a partner in a partnership, an officer of a corporation or a member of a limited liability company may apply for the plumbing contractor licence.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information",
+      "source_title": "Plumbing Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+      "source_kind": "board_page",
+      "evidence": "Only an individual who is a sole proprietor, a partner in a partnership, an officer of a corporation",
+      "last_verified": "2026-09-04",
+      "verified_by": [
+        "kb-b5-pass-a",
+        "kb-b5-pass-b"
+      ]
+    },
+    "per_location_rule": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "No per-location or per-branch rule is published for plumbing contractors.",
+      "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information"
+    },
+    "change_notification_deadline": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "No deadline is published for replacing a departed master plumber representative. The bureau publishes 'Change in Master Info' and 'Change in Contractor Info' forms but no time limit on the pages read. Contrast Ohio (90 days) and Arizona (15 days to notify, 60 to requalify), both of which publish one.",
+      "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals"
+    }
+  },
+  "typical_timeline": {
+    "value": "Up to 3–5 weeks for the Licensing Section to process an application, reviewed in order of receipt.",
+    "status": "verified",
+    "confidence": "high",
+    "source_url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section",
+    "source_title": "Bureau of Construction Codes — Licensing Section, Michigan LARA",
+    "source_kind": "board_page",
+    "evidence": "our processing time may be up to 3-5 weeks and applications are reviewed in order of receipt",
+    "last_verified": "2026-09-04",
+    "verified_by": [
+      "kb-b5-pass-a",
+      "kb-b5-pass-b"
+    ],
+    "note": "This is the bureau's own published figure for reviewing the application, not an end-to-end time to a licence in hand: it excludes scheduling and sitting the PSI examination, and for plumbing the separate hands-on practical, whose 2026 dates run monthly and are capped at 50–100 candidates and repeatedly 'at capacity'. Application fees are non-refundable and duplicate applications slow the queue."
+  },
+  "coverage_notes": [
+    "Michigan's local layer is modelled only where the bureau names it. The City of Detroit is named, on the electrical page. Every other Michigan municipality and county is not covered.",
+    "No bond position and no liability-insurance minimum could be established from any bureau page or application form read; both are left empty rather than guessed or borrowed from a neighbouring state.",
+    "PSI examination fees are set and collected by PSI, not by the bureau, and are not in this record. Since 14 June 2017 the bureau says in terms that examination fees should no longer be sent to the State of Michigan.",
+    "Michigan's Skilled Trades Regulation Act (2016 PA 407) and the Stille-DeRossett-Hale Act (1972 PA 230) are named on the bureau's pages but were NOT fetched: legislature.mi.gov did not respond to either attempt on 2026-09-04. Every statutory citation in this record is quoted as the bureau reproduces it, never from the statute itself.",
+    "The hands-on practical examination is a real Michigan bottleneck and it is described in the exam note, not modelled as a deadline: the 2026 sittings were at capacity from February to September, are capped at 50–100 candidates, run one day a month at four locations, and must be booked 30 days ahead. Any timeline built from the bureau's 3–5 week processing figure alone will be wrong for plumbing.",
+    "Michigan reciprocity is not established for plumbing. The bureau publishes its no-reciprocity statement on the electrical page only.",
+    "Plumbing apprentice ratios changed on 2 April 2025 and the bureau publishes an FAQ on them; the ratios are not modelled."
+  ],
+  "disclaimer_profile": "local_layer_warning",
+  "provenance": {
+    "created_at": "2026-09-04",
+    "pass_a": {
+      "agent_id": "kb-b5-pass-a",
+      "date": "2026-09-04",
+      "method": "fetched each source with kb-scripts/lib_kb.fetch (serial, 1.5 s spacing, two attempts, no retry on 403/404), read the normalised text in full, and recorded each value with a verbatim evidence fragment checked against the normalised page before writing"
+    },
+    "pass_b": {
+      "agent_id": "kb-b5-pass-b",
+      "date": "2026-09-04",
+      "method": "two checks. (1) kb-scripts/verify_pass_b.py re-fetches every source_url over the network, independently of the pass-A cache, and asserts the evidence fragment is still literally present. (2) a separate semantic re-read of every source, re-deriving each value from the page rather than from the record, recorded per value in kb-data/_verification/<record>.md. A disagreement in either check demotes the value.",
+      "agreements": 0,
+      "disagreements": 0,
+      "unreachable": 0,
+      "agreement_rate_pct": 0.0,
+      "disagreement_detail": []
+    },
+    "sources": [
+      {
+        "source_id": "mi.bcc.licensing",
+        "url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section",
+        "title": "Bureau of Construction Codes — Licensing Section, Michigan LARA",
+        "kind": "board_page",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "1512af669ad26a34b4ee5ecbc8c49df7342f24b756c6d9b3f5f1f3c08ff2de2c",
+        "http_status": 200,
+        "bytes": 476764
+      },
+      {
+        "source_id": "mi.bcc.renewals",
+        "url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/license-registration-renewals",
+        "title": "License/Registration Renewals — Michigan LARA BCC",
+        "kind": "board_page",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "5d0d8ecd3dd6ee72694fdf2257e7c72e41f39ed9f95ee6d07a1b0f31bd1b9540",
+        "http_status": 200,
+        "bytes": 586892
+      },
+      {
+        "source_id": "mi.bcc.plumbing",
+        "url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/plumbing-examination-licensing-registration-application-information",
+        "title": "Plumbing Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+        "kind": "board_page",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "bc3456d93c7bca22eaa7e3e6a3fbbcf35c5b3733287767f1c48e333f5308bfcf",
+        "http_status": 200,
+        "bytes": 475920
+      },
+      {
+        "source_id": "mi.bcc.plumbing_app",
+        "url": "https://www.michigan.gov/lara/-/media/Project/Websites/lara/bcc-media/BCC-Forms/Plumbing/bcc329_plumbing_examination_0317-fillable.pdf",
+        "title": "Application for Plumbing Examinations (BCC-329) — Michigan LARA BCC",
+        "kind": "board_pdf",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "197651592e5263fe029b17337c09467c3f82ec822a4e5ce4cd66799b5cdc708b",
+        "http_status": 200,
+        "bytes": 189253
+      },
+      {
+        "source_id": "mi.bcc.electrical",
+        "url": "https://www.michigan.gov/lara/bureau-list/bcc/sections/licensing-section/exam-lic/electrical-examination-licensing-registration-application-information",
+        "title": "Electrical Examination, Licensing/Registration & Application Information — Michigan LARA BCC",
+        "kind": "board_page",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "f7d2feceb6508af8ea40353670cc0422e9bea5cf04c905a2480f73dd1c68fb7c",
+        "http_status": 200,
+        "bytes": 476792
+      }
+    ],
+    "publishable": false
+  }
+}

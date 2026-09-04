@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WageLens / CraftWage — identity samples</title>
+<meta name="description" content="Tokens, component inventory and one realistic sample screen for the WageLens (CraftWage) design system.">
+
+<!-- The only external resource on this page. Every family has a fallback stack,
+     so the page is fully legible if Google Fonts is blocked. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400..700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<link rel="stylesheet" href="../design-system.css">
+
+<style>
+  /* Page furniture for this specimen sheet only. Nothing here is part of the
+     design system; the system is entirely in ../design-system.css. */
+  .sp-page { max-inline-size: 1200px; margin-inline: auto; padding: var(--wl-space-7) var(--wl-space-6) var(--wl-space-10); }
+  .sp-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--wl-space-6); flex-wrap: wrap; margin-block-end: var(--wl-space-7); }
+  .sp-sec { border-block-start: 2px solid var(--wl-rule-grid); padding-block-start: var(--wl-space-4); margin-block-start: var(--wl-space-9); }
+  .sp-sec > h2 { display: flex; align-items: baseline; gap: var(--wl-space-3); }
+  .sp-sec > h2 span { font-family: var(--wl-font-mono); font-size: var(--wl-text-xs); color: var(--wl-ink-3); font-weight: 400; }
+  .sp-note { font-size: var(--wl-text-sm); color: var(--wl-ink-2); max-inline-size: var(--wl-measure); margin-block: var(--wl-space-2) var(--wl-space-5); }
+  .sp-swatches { display: grid; gap: var(--wl-space-2); grid-template-columns: repeat(auto-fill, minmax(min(9.5rem,100%), 1fr)); }
+  .sp-sw { border: 1px solid var(--wl-rule-hairline); border-radius: var(--wl-radius-sm); overflow: hidden; background: var(--wl-surface); }
+  .sp-sw__chip { block-size: 46px; }
+  .sp-sw__meta { padding: var(--wl-space-2); display: grid; gap: 1px; }
+  .sp-sw__name { font-size: var(--wl-text-2xs); font-weight: 600; }
+  .sp-sw__hex, .sp-sw__ratio { font-family: var(--wl-font-mono); font-size: var(--wl-text-2xs); color: var(--wl-ink-3); }
+  .sp-demo { border: 1px dashed var(--wl-rule-grid); border-radius: var(--wl-radius-sm); padding: var(--wl-space-5); background: var(--wl-surface); }
+  .sp-label { font-family: var(--wl-font-mono); font-size: var(--wl-text-2xs); color: var(--wl-ink-3); text-transform: uppercase; letter-spacing: .06em; margin-block-end: var(--wl-space-2); }
+  .sp-scale-row { display: flex; align-items: baseline; gap: var(--wl-space-4); padding-block: var(--wl-space-2); border-block-end: 1px solid var(--wl-rule-hairline); }
+  .sp-scale-row code { flex: none; inline-size: 12rem; font-size: var(--wl-text-2xs); color: var(--wl-ink-3); }
+  .sp-space { display: flex; align-items: flex-end; gap: var(--wl-space-3); flex-wrap: wrap; }
+  .sp-space div { text-align: center; font-family: var(--wl-font-mono); font-size: 10px; color: var(--wl-ink-3); }
+  .sp-space i { display: block; background: var(--wl-brick-300); border-radius: 1px; margin-inline: auto; margin-block-end: 4px; }
+  .sp-toc a { display: block; font-size: var(--wl-text-sm); padding-block: 2px; }
+</style>
+</head>
+<body>
+
+<div class="sp-page">
+
+  <!-- ================= HEADER ================= -->
+  <header class="sp-head">
+    <div>
+      <a class="wl-wordmark" href="#top" aria-label="CraftWage home">
+        <span class="wl-wordmark__text">craftwag<em>e</em></span>
+        <span class="wl-wordmark__rule" aria-hidden="true"></span>
+      </a>
+      <p class="wl-lead" style="margin-block-start:var(--wl-space-3)">
+        Identity samples for <strong>WageLens</strong> (recommended name: <strong>CraftWage</strong>) —
+        the county-and-craft wage lookup that files your certified payroll.
+      </p>
+      <p class="wl-2xs wl-muted" style="margin-block-start:var(--wl-space-2)">
+        Implements <code>IDENTITY.md</code> · styled entirely by <code>../design-system.css</code> ·
+        contrast certified by <code>contrast.py</code> (72 pairs, all pass)
+      </p>
+    </div>
+    <div class="wl-stack-2" style="justify-items:end">
+      <div class="wl-row">
+        <span class="sp-label" style="margin:0">theme</span>
+        <button class="wl-btn wl-btn--secondary wl-btn--sm" type="button" data-set-theme="light">Light</button>
+        <button class="wl-btn wl-btn--secondary wl-btn--sm" type="button" data-set-theme="dark">Dark</button>
+        <button class="wl-btn wl-btn--ghost wl-btn--sm" type="button" data-set-theme="system">System</button>
+      </div>
+      <nav class="sp-toc" aria-label="Sections">
+        <a href="#colour">1 · Colour</a>
+        <a href="#type">2 · Typography</a>
+        <a href="#space">3 · Space &amp; form</a>
+        <a href="#components">4 · Components</a>
+        <a href="#screen">5 · Sample screen</a>
+        <a href="#doc">6 · The WH-347</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wl-alert wl-alert--info" role="note">
+    <span class="wl-alert__icon" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></svg>
+    </span>
+    <div>
+      <p class="wl-alert__title">Every name, project, worker, rate and determination number on this page is fictional.</p>
+      <p class="wl-alert__body">Nothing here refers to a real company, a real person or a real wage determination.
+      Figures are shaped to be arithmetically consistent so the grid can be judged as a working screen.</p>
+    </div>
+  </div>
+
+  <!-- ================= 1. COLOUR ================= -->
+  <section class="sp-sec" id="colour">
+    <h2>1 · Colour <span>IDENTITY.md §6</span></h2>
+    <p class="sp-note">
+      One neutral and four hues, each with exactly one job. <strong>Brick is the brand and only the
+      brand</strong> — wordmark, primary action, focus ring, active-tab rule. It never appears as a
+      status, which is what keeps the status system unambiguous. Ratios below are the certified
+      worst case from <code>contrast.py</code>.
+    </p>
+
+    <p class="sp-label">Graphite — the substrate (warm neutral, hue ≈ 30–40°)</p>
+    <div class="sp-swatches" style="margin-block-end:var(--wl-space-6)">
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#FFFFFF;border-block-end:1px solid var(--wl-rule-hairline)"></div><div class="sp-sw__meta"><span class="sp-sw__name">graphite-0</span><span class="sp-sw__hex">#FFFFFF</span><span class="sp-sw__ratio">surface</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#FBF9F5"></div><div class="sp-sw__meta"><span class="sp-sw__name">graphite-25</span><span class="sp-sw__hex">#FBF9F5</span><span class="sp-sw__ratio">canvas</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#F6F2EB"></div><div class="sp-sw__meta"><span class="sp-sw__name">graphite-50</span><span class="sp-sw__hex">#F6F2EB</span><span class="sp-sw__ratio">sunken</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#EDE8DF"></div><div class="sp-sw__meta"><span class="sp-sw__name">graphite-100</span><span class="sp-sw__hex">#EDE8DF</span><span class="sp-sw__ratio">draft pill</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#DED7CA"></div><div class="sp-sw__meta"><span class="sp-sw__name">graphite-200</span><span class="sp-sw__hex">#DED7CA</span><span class="sp-sw__ratio">hairline</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#C2B9A9"></div><div class="sp-sw__meta"><span class="sp-sw__name">graphite-300</span><span class="sp-sw__hex">#C2B9A9</span><span class="sp-sw__ratio">dark ink-3 · 9.10</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#918776"></div><div class="sp-sw__meta"><span class="sp-sw__name">graphite-400</span><span class="sp-sw__hex">#918776</span><span class="sp-sw__ratio">grid rule · 3.17</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#7A7166"></div><div class="sp-sw__meta"><span class="sp-sw__name">graphite-500</span><span class="sp-sw__hex">#7A7166</span><span class="sp-sw__ratio">dark rule · 3.69</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#5F574E"></div><div class="sp-sw__meta"><span class="sp-sw__name">graphite-600</span><span class="sp-sw__hex">#5F574E</span><span class="sp-sw__ratio">ink-3 · 6.36</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#453F38"></div><div class="sp-sw__meta"><span class="sp-sw__name">graphite-700</span><span class="sp-sw__hex">#453F38</span><span class="sp-sw__ratio">ink-2 · 9.88</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#2B2723"></div><div class="sp-sw__meta"><span class="sp-sw__name">graphite-800</span><span class="sp-sw__hex">#2B2723</span><span class="sp-sw__ratio">13.28</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#1B1815"></div><div class="sp-sw__meta"><span class="sp-sw__name">graphite-900</span><span class="sp-sw__hex">#1B1815</span><span class="sp-sw__ratio">ink · 15.84</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#12100E"></div><div class="sp-sw__meta"><span class="sp-sw__name">graphite-950</span><span class="sp-sw__hex">#12100E</span><span class="sp-sw__ratio">dark canvas</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#0B0A09"></div><div class="sp-sw__meta"><span class="sp-sw__name">graphite-1000</span><span class="sp-sw__hex">#0B0A09</span><span class="sp-sw__ratio">dark sunken</span></div></div>
+    </div>
+
+    <p class="sp-label">Brick — the brand hue (iron oxide, ≈ 18°). Never a status.</p>
+    <div class="sp-swatches" style="margin-block-end:var(--wl-space-6)">
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#FDF3EF"></div><div class="sp-sw__meta"><span class="sp-sw__name">brick-50</span><span class="sp-sw__hex">#FDF3EF</span><span class="sp-sw__ratio">selected row</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#FAE2D8"></div><div class="sp-sw__meta"><span class="sp-sw__name">brick-100</span><span class="sp-sw__hex">#FAE2D8</span><span class="sp-sw__ratio">band border</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#F3C0AC"></div><div class="sp-sw__meta"><span class="sp-sw__name">brick-200</span><span class="sp-sw__hex">#F3C0AC</span><span class="sp-sw__ratio">dark active</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#E7947A"></div><div class="sp-sw__meta"><span class="sp-sw__name">brick-300</span><span class="sp-sw__hex">#E7947A</span><span class="sp-sw__ratio">dark link · 7.50</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#D96A48"></div><div class="sp-sw__meta"><span class="sp-sw__name">brick-400</span><span class="sp-sw__hex">#D96A48</span><span class="sp-sw__ratio">dark fill · 5.75</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#C24E28"></div><div class="sp-sw__meta"><span class="sp-sw__name">brick-500</span><span class="sp-sw__hex">#C24E28</span><span class="sp-sw__ratio">wordmark</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#A63C1A"></div><div class="sp-sw__meta"><span class="sp-sw__name">brick-600</span><span class="sp-sw__hex">#A63C1A</span><span class="sp-sw__ratio">focus · 6.08</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#8A3115"></div><div class="sp-sw__meta"><span class="sp-sw__name">brick-700</span><span class="sp-sw__hex">#8A3115</span><span class="sp-sw__ratio">primary · 7.89</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#6B2510"></div><div class="sp-sw__meta"><span class="sp-sw__name">brick-800</span><span class="sp-sw__hex">#6B2510</span><span class="sp-sw__ratio">hover · 11.07</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#43170A"></div><div class="sp-sw__meta"><span class="sp-sw__name">brick-900</span><span class="sp-sw__hex">#43170A</span><span class="sp-sw__ratio">active</span></div></div>
+    </div>
+
+    <p class="sp-label">Status and provenance — one meaning each</p>
+    <div class="sp-swatches">
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#116634"></div><div class="sp-sw__meta"><span class="sp-sw__name">filed-600 (dot)</span><span class="sp-sw__hex">#116634</span><span class="sp-sw__ratio">6.35 on filed-50</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#0C4E28"></div><div class="sp-sw__meta"><span class="sp-sw__name">filed-700 (ink)</span><span class="sp-sw__hex">#0C4E28</span><span class="sp-sw__ratio">8.84 on filed-50</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#7A560A"></div><div class="sp-sw__meta"><span class="sp-sw__name">flag-600 (dot)</span><span class="sp-sw__hex">#7A560A</span><span class="sp-sw__ratio">6.00 on flag-50</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#5C4008"></div><div class="sp-sw__meta"><span class="sp-sw__name">flag-700 (ink)</span><span class="sp-sw__hex">#5C4008</span><span class="sp-sw__ratio">8.66 on flag-50</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#9C2A1E"></div><div class="sp-sw__meta"><span class="sp-sw__name">reject-600 (dot)</span><span class="sp-sw__hex">#9C2A1E</span><span class="sp-sw__ratio">6.64 on reject-50</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#771F16"></div><div class="sp-sw__meta"><span class="sp-sw__name">reject-700 (ink)</span><span class="sp-sw__hex">#771F16</span><span class="sp-sw__ratio">9.22 on reject-50</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#1B5183"></div><div class="sp-sw__meta"><span class="sp-sw__name">source-600 (dot)</span><span class="sp-sw__hex">#1B5183</span><span class="sp-sw__ratio">provenance</span></div></div>
+      <div class="sp-sw"><div class="sp-sw__chip" style="background:#143D63"></div><div class="sp-sw__meta"><span class="sp-sw__name">source-700 (ink)</span><span class="sp-sw__hex">#143D63</span><span class="sp-sw__ratio">9.80 on source-50</span></div></div>
+    </div>
+  </section>
+
+  <!-- ================= 2. TYPE ================= -->
+  <section class="sp-sec" id="type">
+    <h2>2 · Typography <span>IDENTITY.md §7</span></h2>
+    <p class="sp-note">
+      <strong>Public Sans</strong> (USWDS, SIL OFL) for the interface — the register of the artefact
+      without the costume. <strong>IBM Plex Mono</strong> for every figure and for the rendered
+      WH-347, because a payroll form is a typewriter artefact and its columns must align for free.
+      Base 15px, so a nine-column week fits a 1280px laptop.
+    </p>
+    <div class="sp-demo">
+      <div class="sp-scale-row"><code>--wl-text-3xl / 40</code><span style="font-size:var(--wl-text-3xl);font-weight:600;letter-spacing:-.025em">The rate, and where it came from</span></div>
+      <div class="sp-scale-row"><code>--wl-text-2xl / 30</code><span style="font-size:var(--wl-text-2xl);font-weight:600;letter-spacing:-.02em">Week ending 29 Aug 2026</span></div>
+      <div class="sp-scale-row"><code>--wl-text-xl / 24</code><span style="font-size:var(--wl-text-xl);font-weight:600">Certified payroll no. 12</span></div>
+      <div class="sp-scale-row"><code>--wl-text-lg / 20</code><span style="font-size:var(--wl-text-lg);font-weight:600">Workers on this project</span></div>
+      <div class="sp-scale-row"><code>--wl-text-md / 17</code><span style="font-size:var(--wl-text-md)">Lead paragraph and the rate readout.</span></div>
+      <div class="sp-scale-row"><code>--wl-text-base / 15</code><span>Body default. Weekly, for every week you do covered work.</span></div>
+      <div class="sp-scale-row"><code>--wl-text-sm / 13</code><span class="wl-sm">Grid cells and dense forms. ELECTRICIAN · Pierce County, WA</span></div>
+      <div class="sp-scale-row"><code>--wl-text-xs / 12</code><span class="wl-xs">Pills, chips, table meta.</span></div>
+      <div class="sp-scale-row" style="border:0"><code>--wl-text-2xs / 11</code><span class="wl-2xs">Column heads, read-on dates, the disclaimer.</span></div>
+      <p class="wl-mono" style="margin-block-start:var(--wl-space-5);font-size:var(--wl-text-md)">
+        0123456789 &nbsp; $54.12/28.90 &nbsp; $163.00/$420.00 &nbsp; WA20250012 Mod&nbsp;7
+      </p>
+      <p class="wl-2xs wl-muted">Tabular lining numerals on every figure. A grid whose digits shift width is a grid you cannot scan down a column.</p>
+    </div>
+  </section>
+
+  <!-- ================= 3. SPACE ================= -->
+  <section class="sp-sec" id="space">
+    <h2>3 · Space, radius, elevation <span>IDENTITY.md §8</span></h2>
+    <p class="sp-note">A 4px grid, tighter than a marketing system on purpose. Radii stay at 2–6px:
+      corners near 2px read as <em>form</em>; corners at 20px read as <em>consumer</em>. Panels and
+      tables carry a 1px rule, never a shadow.</p>
+    <div class="sp-demo wl-stack-6">
+      <div>
+        <p class="sp-label">Spacing scale</p>
+        <div class="sp-space">
+          <div><i style="width:4px;height:4px"></i>1 · 4</div>
+          <div><i style="width:8px;height:8px"></i>2 · 8</div>
+          <div><i style="width:12px;height:12px"></i>3 · 12</div>
+          <div><i style="width:16px;height:16px"></i>4 · 16</div>
+          <div><i style="width:20px;height:20px"></i>5 · 20</div>
+          <div><i style="width:24px;height:24px"></i>6 · 24</div>
+          <div><i style="width:32px;height:32px"></i>7 · 32</div>
+          <div><i style="width:40px;height:40px"></i>8 · 40</div>
+          <div><i style="width:56px;height:56px"></i>9 · 56</div>
+          <div><i style="width:80px;height:80px"></i>10 · 80</div>
+        </div>
+      </div>
+      <div>
+        <p class="sp-label">Radius</p>
+        <div class="wl-row">
+          <span class="wl-2xs wl-mono" style="padding:var(--wl-space-3);border:1px solid var(--wl-rule-grid);border-radius:var(--wl-radius-xs)">xs · 2px</span>
+          <span class="wl-2xs wl-mono" style="padding:var(--wl-space-3);border:1px solid var(--wl-rule-grid);border-radius:var(--wl-radius-sm)">sm · 4px</span>
+          <span class="wl-2xs wl-mono" style="padding:var(--wl-space-3);border:1px solid var(--wl-rule-grid);border-radius:var(--wl-radius-md)">md · 6px</span>
+          <span class="wl-2xs wl-mono" style="padding:var(--wl-space-3);border:1px solid var(--wl-rule-grid);border-radius:var(--wl-radius-lg)">lg · 10px (marketing only)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 4. COMPONENTS ================= -->
+  <section class="sp-sec" id="components">
+    <h2>4 · Component inventory <span>IDENTITY.md §11</span></h2>
+
+    <div class="wl-cols-2" style="align-items:start">
+
+      <div class="sp-demo">
+        <p class="sp-label">Buttons — one primary per screen</p>
+        <div class="wl-row" style="margin-block-end:var(--wl-space-3)">
+          <button class="wl-btn wl-btn--primary">Generate WH-347</button>
+          <button class="wl-btn wl-btn--secondary">Save draft</button>
+          <button class="wl-btn wl-btn--ghost">Add worker</button>
+        </div>
+        <div class="wl-row" style="margin-block-end:var(--wl-space-3)">
+          <button class="wl-btn wl-btn--primary wl-btn--sm">Small</button>
+          <button class="wl-btn wl-btn--primary wl-btn--lg">Sign and file</button>
+          <button class="wl-btn wl-btn--danger wl-btn--sm">Delete project</button>
+        </div>
+        <div class="wl-row">
+          <button class="wl-btn wl-btn--primary" disabled>Generating…</button>
+          <button class="wl-btn wl-btn--secondary" disabled>Disabled</button>
+        </div>
+        <p class="wl-2xs wl-muted" style="margin-block-start:var(--wl-space-3)">
+          Loading replaces the label with a word, never a bare spinner. Tab to any button to see the
+          two-tone focus ring — no single ink clears 3:1 against both the bone canvas and the brick fill.
+        </p>
+      </div>
+
+      <div class="sp-demo">
+        <p class="sp-label">Status pills — dot <em>and</em> word, always</p>
+        <div class="wl-row" style="margin-block-end:var(--wl-space-4)">
+          <span class="wl-pill wl-pill--filed">Filed</span>
+          <span class="wl-pill wl-pill--flag">Needs review</span>
+          <span class="wl-pill wl-pill--reject">Rejected</span>
+          <span class="wl-pill wl-pill--draft">Draft</span>
+          <span class="wl-pill wl-pill--none">Not started</span>
+        </div>
+        <p class="sp-label">Week strip — 52 weeks at a glance</p>
+        <div class="wl-week-strip">
+          <span class="wl-week-strip__cell wl-week-strip__cell--filed">1</span>
+          <span class="wl-week-strip__cell wl-week-strip__cell--filed">2</span>
+          <span class="wl-week-strip__cell wl-week-strip__cell--filed">3</span>
+          <span class="wl-week-strip__cell wl-week-strip__cell--reject">4</span>
+          <span class="wl-week-strip__cell wl-week-strip__cell--filed">5</span>
+          <span class="wl-week-strip__cell wl-week-strip__cell--filed">6</span>
+          <span class="wl-week-strip__cell wl-week-strip__cell--filed">7</span>
+          <span class="wl-week-strip__cell wl-week-strip__cell--flag">8</span>
+          <span class="wl-week-strip__cell wl-week-strip__cell--filed">9</span>
+          <span class="wl-week-strip__cell wl-week-strip__cell--filed">10</span>
+          <span class="wl-week-strip__cell wl-week-strip__cell--filed">11</span>
+          <span class="wl-week-strip__cell wl-week-strip__cell--now">12</span>
+          <span class="wl-week-strip__cell">13</span>
+          <span class="wl-week-strip__cell">14</span>
+        </div>
+        <p class="wl-2xs wl-muted" style="margin-block-start:var(--wl-space-3)">
+          Colour is never the only signal: each cell carries its week number and a tooltip, and the
+          current week takes the brick underline.
+        </p>
+      </div>
+
+      <div class="sp-demo">
+        <p class="sp-label">Fields</p>
+        <div class="wl-stack">
+          <div class="wl-field">
+            <label class="wl-field__label" for="s-proj">Project name <span class="wl-req" aria-hidden="true">*</span></label>
+            <input class="wl-input" id="s-proj" value="Bldg 4200 roof replacement">
+            <span class="wl-field__help">However it appears on the contract — the prime will match on it.</span>
+          </div>
+          <div class="wl-field">
+            <label class="wl-field__label" for="s-class">Work classification</label>
+            <input class="wl-input" id="s-class" value="ELECTRICIAN" list="s-class-list">
+            <datalist id="s-class-list">
+              <option value="ELECTRICIAN"></option>
+              <option value="LABORER, GROUP 2"></option>
+              <option value="CEMENT MASON"></option>
+            </datalist>
+            <span class="wl-field__help">Searches only the classifications on this project's determination. Not listed? Check conformance.</span>
+          </div>
+          <div class="wl-field wl-field--invalid">
+            <label class="wl-field__label" for="s-bad">Truck driver classification</label>
+            <input class="wl-input" id="s-bad" value="DRIVER — GROUP 1" aria-describedby="s-bad-err" aria-invalid="true">
+            <span class="wl-field__error" id="s-bad-err">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="margin-block-start:2px;flex:none"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.01"/></svg>
+              Not on WA20250012 Mod 7. Either pick a listed classification, or start a conformance request — the contracting officer files the SF-1444, not you.
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sp-demo">
+        <p class="sp-label">Rate field — two boxes, always</p>
+        <div class="wl-field">
+          <span class="wl-field__label" id="s-rate-lab">Rate of pay (including fringe benefits)</span>
+          <div class="wl-rate" role="group" aria-labelledby="s-rate-lab">
+            <span class="wl-rate__prefix">$</span>
+            <span class="wl-rate__part"><label class="wl-visually-hidden" for="s-base">Base hourly rate</label><input id="s-base" value="54.12" inputmode="decimal"></span>
+            <span class="wl-rate__sep">/</span>
+            <span class="wl-rate__part"><label class="wl-visually-hidden" for="s-fringe">Fringe</label><input id="s-fringe" value="28.90" inputmode="decimal"></span>
+          </div>
+          <p class="wl-rate__caption">Base rate, then fringe — the way the form prints it (<span class="wl-mono">$12.25/.40</span>, WH-347 instructions, column 6).</p>
+        </div>
+        <p class="wl-2xs wl-muted" style="margin-block-start:var(--wl-space-4)">
+          This component exists to make one specific compliance failure impossible. A buyer wrote in
+          public: <em>“I end up just lumping prevailing wage and fringe together as one rate.”</em>
+          Here they physically cannot.
+        </p>
+      </div>
+
+      <div class="sp-demo">
+        <p class="sp-label">Alerts</p>
+        <div class="wl-stack-2">
+          <div class="wl-alert wl-alert--warn" role="alert">
+            <span class="wl-alert__icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.01"/></svg></span>
+            <div><p class="wl-alert__title">Modification 8 was published on 1 Sep 2026</p>
+            <p class="wl-alert__body">Two classifications on this project changed. Review before you file week 12.</p></div>
+          </div>
+          <div class="wl-alert wl-alert--error" role="alert">
+            <span class="wl-alert__icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg></span>
+            <div><p class="wl-alert__title">The prime rejected week 4</p>
+            <p class="wl-alert__body">Reason given: “classification does not match the determination.” Fix the flagged row and resubmit.</p></div>
+          </div>
+          <div class="wl-alert wl-alert--success">
+            <span class="wl-alert__icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12.5l5 5L20 7"/></svg></span>
+            <div><p class="wl-alert__title">Week 11 is on file</p>
+            <p class="wl-alert__body">Sent 22 Aug 2026, 4:41&nbsp;pm. Retained until three years after the prime contract completes.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sp-demo">
+        <p class="sp-label">Provenance — the signature component</p>
+        <div class="wl-prov">
+          <span class="wl-prov__wd">General Decision WA20250012 · Modification 7</span>
+          <span class="wl-prov__meta">Pierce County, WA · Building construction</span>
+          <span class="wl-prov__meta">Effective 15 Aug 2026 · read by CraftWage 2 Sep 2026</span>
+          <span class="wl-prov__rate">$54.12 <small>base</small> &nbsp;/&nbsp; $28.90 <small>fringe</small></span>
+          <span class="wl-prov__foot">
+            <span class="wl-2xs">ELECTRICIAN</span>
+            <a class="wl-source" href="#doc">⧉ View the determination</a>
+          </span>
+        </div>
+        <div class="wl-row" style="margin-block-start:var(--wl-space-4)">
+          <a class="wl-source" href="#doc">⧉ WA20250012 · Mod 7</a>
+          <a class="wl-source wl-source--stale" href="#doc">⧉ IL20250044 · read 21 days ago · recheck</a>
+          <a class="wl-source wl-source--moved" href="#doc">⧉ VA20250107 · Mod 9 supersedes Mod 8</a>
+        </div>
+        <p class="wl-2xs wl-muted" style="margin-block-start:var(--wl-space-3)">
+          No rate is ever rendered outside this component. If the read date is over 7 days old the chip
+          flags; if the determination has moved, the rate is unusable until reconfirmed.
+        </p>
+      </div>
+
+      <div class="sp-demo">
+        <p class="sp-label">Tabs, stats, toolbar</p>
+        <div class="wl-tabs" role="tablist" style="margin-block-end:var(--wl-space-4)">
+          <button class="wl-tab" role="tab" aria-selected="true">This week</button>
+          <button class="wl-tab" role="tab" aria-selected="false">Workers</button>
+          <button class="wl-tab" role="tab" aria-selected="false">Submissions</button>
+          <button class="wl-tab" role="tab" aria-selected="false">Determination</button>
+        </div>
+        <div class="wl-cols-4" style="margin-block-end:var(--wl-space-4)">
+          <div class="wl-stat"><span class="wl-stat__label">Weeks filed</span><span class="wl-stat__value">11</span><span class="wl-stat__sub">of 12</span></div>
+          <div class="wl-stat"><span class="wl-stat__label">Workers</span><span class="wl-stat__value">4</span><span class="wl-stat__sub">on this project</span></div>
+          <div class="wl-stat"><span class="wl-stat__label">Open flags</span><span class="wl-stat__value">1</span><span class="wl-stat__sub">blocking</span></div>
+          <div class="wl-stat"><span class="wl-stat__label">Due</span><span class="wl-stat__value">Fri</span><span class="wl-stat__sub">4 Sep 2026</span></div>
+        </div>
+        <div class="wl-toolbar">
+          <span class="wl-xs wl-muted">Week ending</span>
+          <select class="wl-select" style="inline-size:auto"><option>29 Aug 2026</option><option>22 Aug 2026</option></select>
+          <span class="wl-toolbar__spacer"></span>
+          <button class="wl-btn wl-btn--secondary wl-btn--sm">Import payroll</button>
+          <button class="wl-btn wl-btn--primary wl-btn--sm">Generate WH-347</button>
+        </div>
+      </div>
+
+      <div class="sp-demo">
+        <p class="sp-label">Empty state</p>
+        <div class="wl-empty">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 5h16v14H4z"/><path d="M4 9h16M9 9v10"/></svg>
+          <p class="wl-empty__title">No projects yet</p>
+          <p>A project is one contract, in one county, under one wage determination. Add your first — about two minutes.</p>
+          <button class="wl-btn wl-btn--primary">Add a project</button>
+        </div>
+      </div>
+
+      <div class="sp-demo">
+        <p class="sp-label">Statement of Compliance — deliberately slow</p>
+        <div class="wl-signature">
+          <h3 style="font-size:var(--wl-text-md)">You are certifying three things</h3>
+          <ol class="wl-signature__certs">
+            <li>That this certified payroll contains the required information, that the basic records are being kept, and that both are correct and complete.</li>
+            <li>That every laborer and mechanic — including helpers and apprentices — was paid their full weekly wages, with no rebate and no deduction other than those permitted by 29&nbsp;CFR part&nbsp;3.</li>
+            <li>That everyone was paid at least the rate and fringe benefits for the <strong>classification of work actually performed</strong>, as specified in the wage determination in the contract.</li>
+          </ol>
+          <div class="wl-field">
+            <label class="wl-field__label" for="s-sign">Type your full name to sign</label>
+            <input class="wl-input" id="s-sign" placeholder="">
+          </div>
+          <label class="wl-row wl-sm" style="gap:var(--wl-space-2)">
+            <input type="checkbox"> I am the person who pays or supervises the payment of the people on this contract.
+          </label>
+          <p class="wl-signature__notice">
+            Falsifying any of these certifications may subject you to civil or criminal prosecution
+            under 18&nbsp;U.S.C.&nbsp;1001 and 31&nbsp;U.S.C.&nbsp;3729 — a fine, imprisonment of not
+            more than five years, or both.
+          </p>
+          <button class="wl-btn wl-btn--primary wl-btn--lg">Sign and file week 12</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= 5. SAMPLE SCREEN ================= -->
+  <section class="sp-sec" id="screen">
+    <h2>5 · Sample screen — a week of certified payroll <span>the centre of the product</span></h2>
+    <p class="sp-note">
+      This is the screen the subscription is bought for. Everything on it is fictional. Note the
+      things the identity is doing: the whole week is visible; every figure is tabular mono; the rate
+      is two numbers separated by a slash; the same worker appears twice because the day was split
+      across two classifications; the unresolved classification is an edge plus an icon plus a
+      message, never a red wash; and the determination is present on the screen, not in a settings
+      page.
+    </p>
+
+    <div class="wl-panel" style="overflow:hidden">
+      <!-- shell chrome -->
+      <div class="wl-topbar" style="border-radius:var(--wl-radius-md) var(--wl-radius-md) 0 0">
+        <a class="wl-wordmark wl-wordmark--sm" href="#top" aria-label="CraftWage">
+          <span class="wl-wordmark__text">craftwag<em>e</em></span>
+          <span class="wl-wordmark__rule" aria-hidden="true"></span>
+        </a>
+        <span class="wl-xs wl-muted">Ridgeline Mechanical LLC</span>
+        <span class="wl-toolbar__spacer"></span>
+        <span class="wl-pill wl-pill--flag">1 open flag</span>
+      </div>
+
+      <div class="wl-panel__body wl-stack-6">
+
+        <div class="wl-row wl-row--between" style="align-items:flex-start">
+          <div>
+            <h3 style="font-size:var(--wl-text-xl)">Bldg 4200 roof replacement</h3>
+            <p class="wl-sm wl-muted" style="margin-block-start:2px">
+              Pierce County, WA · Building construction · Contract W912XX-25-C-0000 ·
+              Prime: Northgate Constructors (fictional)
+            </p>
+            <div class="wl-row" style="margin-block-start:var(--wl-space-2)">
+              <a class="wl-source" href="#doc">⧉ WA20250012 · Mod 7</a>
+              <span class="wl-2xs wl-muted">read 2 Sep 2026</span>
+              <span class="wl-pill wl-pill--draft">Payroll no. 12 · draft</span>
+            </div>
+          </div>
+          <div class="wl-row">
+            <button class="wl-btn wl-btn--secondary wl-btn--sm">Import payroll</button>
+            <button class="wl-btn wl-btn--primary">Generate WH-347</button>
+          </div>
+        </div>
+
+        <div class="wl-alert wl-alert--warn" role="alert">
+          <span class="wl-alert__icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.01"/></svg></span>
+          <div>
+            <p class="wl-alert__title">One row can’t be filed yet</p>
+            <p class="wl-alert__body">“DRIVER — GROUP 1” is not a classification on WA20250012 Mod&nbsp;7.
+              Pick a listed classification, or start a conformance request — remember the contracting
+              officer files the SF-1444, and WHD answers within 30 days.</p>
+          </div>
+        </div>
+
+        <div class="wl-grid-wrap">
+          <table class="wl-grid">
+            <caption>Week ending Saturday 29 August 2026 · hours by day, straight time unless marked OT ·
+              deductions and net wages are per worker per week, so a worker split across two
+              classifications shares one deduction and one net figure</caption>
+            <thead>
+              <tr>
+                <th class="wl-sticky-1" scope="col" style="text-align:start">Worker</th>
+                <th class="wl-sticky-2" scope="col" style="text-align:start">Classification</th>
+                <th class="wl-grid__day" scope="col">Su<small>23</small></th>
+                <th class="wl-grid__day" scope="col">Mo<small>24</small></th>
+                <th class="wl-grid__day" scope="col">Tu<small>25</small></th>
+                <th class="wl-grid__day" scope="col">We<small>26</small></th>
+                <th class="wl-grid__day" scope="col">Th<small>27</small></th>
+                <th class="wl-grid__day" scope="col">Fr<small>28</small></th>
+                <th class="wl-grid__day" scope="col">Sa<small>29</small></th>
+                <th scope="col">ST</th>
+                <th scope="col">OT</th>
+                <th scope="col">Rate base / fringe</th>
+                <th scope="col">Gross</th>
+                <th scope="col">Deduct</th>
+                <th scope="col">Net</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="is-selected">
+                <th class="wl-sticky-1 wl-grid__worker" scope="row">A. Reyes <span class="wl-2xs wl-muted wl-mono">••••4192</span></th>
+                <td class="wl-sticky-2 wl-grid__class">ELECTRICIAN</td>
+                <td class="wl-num is-zero">—</td><td class="wl-num">8.0</td><td class="wl-num">8.0</td><td class="wl-num">8.0</td><td class="wl-num">8.0</td><td class="wl-num">8.0</td><td class="wl-num is-zero">—</td>
+                <td class="wl-num">40.0</td><td class="wl-num is-zero">—</td>
+                <td class="wl-num">54.12 / 28.90</td>
+                <td class="wl-num">3,320.80</td><td class="wl-num">812.14</td><td class="wl-num">2,508.66</td>
+              </tr>
+              <tr>
+                <th class="wl-sticky-1 wl-grid__worker" scope="row">D. Okafor <span class="wl-2xs wl-muted wl-mono">••••7731</span></th>
+                <td class="wl-sticky-2 wl-grid__class">ELECTRICIAN APPRENTICE · 3rd period (70%)</td>
+                <td class="wl-num is-zero">—</td><td class="wl-num">8.0</td><td class="wl-num">8.0</td><td class="wl-num">8.0</td><td class="wl-num is-ot">10.0</td><td class="wl-num">8.0</td><td class="wl-num is-zero">—</td>
+                <td class="wl-num">40.0</td><td class="wl-num is-ot">2.0</td>
+                <td class="wl-num">37.88 / 28.90</td>
+                <td class="wl-num">2,842.64</td><td class="wl-num">654.81</td><td class="wl-num">2,187.83</td>
+              </tr>
+              <tr>
+                <th class="wl-sticky-1 wl-grid__worker" scope="row">M. Beaulieu <span class="wl-2xs wl-muted wl-mono">••••2208</span></th>
+                <td class="wl-sticky-2 wl-grid__class">LABORER, GROUP 2</td>
+                <td class="wl-num is-zero">—</td><td class="wl-num">8.0</td><td class="wl-num">8.0</td><td class="wl-num">8.0</td><td class="wl-num">4.0</td><td class="wl-num">8.0</td><td class="wl-num is-zero">—</td>
+                <td class="wl-num">36.0</td><td class="wl-num is-zero">—</td>
+                <td class="wl-num">38.44 / 22.15</td>
+                <td class="wl-num">2,181.24</td>
+                <td class="wl-num" rowspan="2">670.15</td><td class="wl-num" rowspan="2">1,798.69</td>
+              </tr>
+              <tr>
+                <th class="wl-sticky-1 wl-grid__worker" scope="row"><span class="wl-2xs wl-muted">↳ same worker</span><br>M. Beaulieu <span class="wl-2xs wl-muted wl-mono">••••2208</span></th>
+                <td class="wl-sticky-2 wl-grid__class">CEMENT MASON</td>
+                <td class="wl-num is-zero">—</td><td class="wl-num is-zero">—</td><td class="wl-num is-zero">—</td><td class="wl-num is-zero">—</td><td class="wl-num">4.0</td><td class="wl-num is-zero">—</td><td class="wl-num is-zero">—</td>
+                <td class="wl-num">4.0</td><td class="wl-num is-zero">—</td>
+                <td class="wl-num">46.10 / 25.80</td>
+                <td class="wl-num">287.60</td>
+              </tr>
+              <tr>
+                <th class="wl-sticky-1 wl-grid__worker" scope="row">T. Whitfield <span class="wl-2xs wl-muted wl-mono">••••5560</span></th>
+                <td class="wl-sticky-2 wl-grid__class is-error">
+                  DRIVER — GROUP 1
+                  <span class="wl-2xs" style="display:block;font-weight:400">not on this determination</span>
+                </td>
+                <td class="wl-num is-zero">—</td><td class="wl-num">8.0</td><td class="wl-num">8.0</td><td class="wl-num">8.0</td><td class="wl-num">8.0</td><td class="wl-num">4.0</td><td class="wl-num is-zero">—</td>
+                <td class="wl-num">36.0</td><td class="wl-num is-zero">—</td>
+                <td class="wl-num is-error">— / —</td>
+                <td class="wl-num is-error">—</td><td class="wl-num is-zero">—</td><td class="wl-num is-zero">—</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th class="wl-sticky-1" scope="row">Totals</th>
+                <th class="wl-sticky-2"></th>
+                <th class="wl-num">—</th><th class="wl-num">32.0</th><th class="wl-num">32.0</th><th class="wl-num">32.0</th><th class="wl-num">34.0</th><th class="wl-num">28.0</th><th class="wl-num">—</th>
+                <th class="wl-num">156.0</th><th class="wl-num">2.0</th>
+                <th></th>
+                <th class="wl-num">8,632.28</th><th class="wl-num">2,137.10</th><th class="wl-num">6,495.18</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <div class="wl-row wl-row--between">
+          <p class="wl-2xs wl-muted">
+            <kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> move ·
+            <kbd>Enter</kbd> edit · <kbd>Tab</kbd> next cell ·
+            <kbd>Ctrl</kbd>+<kbd>D</kbd> fill down · <kbd>Ctrl</kbd>+<kbd>Enter</kbd> save week ·
+            <kbd>?</kbd> all shortcuts
+          </p>
+          <div class="wl-row">
+            <button class="wl-btn wl-btn--secondary wl-btn--sm">Save draft</button>
+            <button class="wl-btn wl-btn--primary wl-btn--sm" aria-disabled="true" disabled>Generate WH-347 · 1 flag to clear</button>
+          </div>
+        </div>
+
+        <p class="wl-disclaimer">
+          Rates shown come from General Decision WA20250012 Modification 7, read 2 September 2026.
+          CraftWage is not a law firm and this is not legal advice. Always verify against the wage
+          determination incorporated into your contract.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 6. DOCUMENT ================= -->
+  <section class="sp-sec" id="doc">
+    <h2>6 · The WH-347 preview <span>IDENTITY.md §11.6</span></h2>
+    <p class="sp-note">
+      The document looks like the document. Mono, ruled, the form's own nine columns and its own
+      notations — <span class="wl-mono">$54.12/28.90</span> for base and fringe,
+      <span class="wl-mono">$163.00/$420.00</span> for this-project over all-projects. <strong>In dark
+      mode this page stays white</strong>, deliberately: a preview must show what prints and what the
+      prime receives.
+    </p>
+
+    <div class="wl-doc-frame">
+      <div class="wl-doc-toolbar">
+        <span>Payroll no. <span class="wl-mono">12</span> · week ending <span class="wl-mono">29 Aug 2026</span> · draft</span>
+        <span class="wl-row">
+          <button class="wl-btn wl-btn--secondary wl-btn--sm">Print</button>
+          <button class="wl-btn wl-btn--secondary wl-btn--sm">Download PDF</button>
+          <button class="wl-btn wl-btn--ghost wl-btn--sm">What changed since last week</button>
+        </span>
+      </div>
+
+      <div class="wl-doc">
+        <h4>U.S. Department of Labor · Payroll (For Contractor's Optional Use) · Form WH-347</h4>
+        <p style="margin-block:6px 8px">
+          NAME OF CONTRACTOR ☒ &nbsp; OR SUBCONTRACTOR ☐ &nbsp; Ridgeline Mechanical LLC &nbsp;·&nbsp;
+          ADDRESS 000 Sample Rd, Tacoma WA<br>
+          PAYROLL NO. 12 &nbsp;·&nbsp; FOR WEEK ENDING 08/29/2026 &nbsp;·&nbsp;
+          PROJECT AND LOCATION Bldg 4200 roof replacement, Pierce County WA &nbsp;·&nbsp;
+          PROJECT OR CONTRACT NO. W912XX-25-C-0000
+        </p>
+        <div class="wl-scroll-x">
+        <table>
+          <thead>
+            <tr>
+              <th rowspan="2">(1) NAME AND<br>IDENTIFYING NO.</th>
+              <th rowspan="2">(2) NO. OF<br>W/H EXEMPT.</th>
+              <th rowspan="2">(3) WORK<br>CLASSIFICATION</th>
+              <th colspan="7">(4) DAY AND DATE — HOURS WORKED EACH DAY</th>
+              <th rowspan="2">(5)<br>TOTAL</th>
+              <th rowspan="2">(6) RATE OF PAY<br>(INCL. FRINGE)</th>
+              <th rowspan="2">(7) GROSS AMOUNT<br>EARNED</th>
+              <th rowspan="2">(8) TOTAL<br>DEDUCT.</th>
+              <th rowspan="2">(9) NET WAGES<br>PAID FOR WEEK</th>
+            </tr>
+            <tr>
+              <th>S 23</th><th>M 24</th><th>T 25</th><th>W 26</th><th>T 27</th><th>F 28</th><th>S 29</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>A. Reyes &nbsp;4192</td><td class="wl-num">2</td><td>ELECTRICIAN</td>
+              <td class="wl-num"></td><td class="wl-num">8</td><td class="wl-num">8</td><td class="wl-num">8</td><td class="wl-num">8</td><td class="wl-num">8</td><td class="wl-num"></td>
+              <td class="wl-num">40</td><td class="wl-num">54.12/28.90</td>
+              <td class="wl-num">3,320.80</td><td class="wl-num">812.14</td><td class="wl-num">2,508.66</td>
+            </tr>
+            <tr>
+              <td>D. Okafor &nbsp;7731</td><td class="wl-num">1</td><td>ELECTRICIAN APPR (3)</td>
+              <td class="wl-num"></td><td class="wl-num">8</td><td class="wl-num">8</td><td class="wl-num">8</td><td class="wl-num">8+2</td><td class="wl-num">8</td><td class="wl-num"></td>
+              <td class="wl-num">42</td><td class="wl-num">37.88/28.90</td>
+              <td class="wl-num">2,842.64</td><td class="wl-num">654.81</td><td class="wl-num">2,187.83</td>
+            </tr>
+            <tr>
+              <td>M. Beaulieu &nbsp;2208</td><td class="wl-num">3</td><td>LABORER, GROUP 2</td>
+              <td class="wl-num"></td><td class="wl-num">8</td><td class="wl-num">8</td><td class="wl-num">8</td><td class="wl-num">4</td><td class="wl-num">8</td><td class="wl-num"></td>
+              <td class="wl-num">36</td><td class="wl-num">38.44/22.15</td>
+              <td class="wl-num">2,181.24</td>
+              <td class="wl-num" rowspan="2">670.15</td><td class="wl-num" rowspan="2">1,798.69</td>
+            </tr>
+            <tr>
+              <td>M. Beaulieu &nbsp;2208</td><td class="wl-num">3</td><td>CEMENT MASON</td>
+              <td class="wl-num"></td><td class="wl-num"></td><td class="wl-num"></td><td class="wl-num"></td><td class="wl-num">4</td><td class="wl-num"></td><td class="wl-num"></td>
+              <td class="wl-num">4</td><td class="wl-num">46.10/25.80</td>
+              <td class="wl-num">287.60</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <p style="margin-block-start:6px;font-size:9px">
+          Column 4 shows overtime as “8+2”. Columns 8 and 9 are per worker per week, so they span the
+          two classification rows. Where a worker <em>also</em> earned wages on projects other than
+          this one, column 7 takes the form this-project/all-projects — DOL’s own example is
+          “$163.00/$420.00”. Nobody here worked off this project, so no slash appears.
+        </p>
+
+        <div class="wl-doc__cert">
+          <strong>STATEMENT OF COMPLIANCE</strong><br>
+          Date 09/04/2026. I, ____________________, do hereby state:<br>
+          (1) That I pay or supervise the payment of the persons employed by Ridgeline Mechanical LLC
+          on the Bldg 4200 roof replacement; that during the payroll period commencing on 23 Aug 2026
+          and ending 29 Aug 2026 all persons employed on said project have been paid the full weekly
+          wages earned…<br>
+          (4) ☒ (a) WHERE FRINGE BENEFITS ARE PAID TO APPROVED PLANS, FUNDS, OR PROGRAMS &nbsp;
+          ☐ (b) WHERE FRINGE BENEFITS ARE PAID IN CASH &nbsp; ☐ (c) EXCEPTIONS<br>
+          <span style="font-size:9px">The willful falsification of any of the above statements may subject the
+          contractor or subcontractor to civil or criminal prosecution. See Section 1001 of Title 18
+          and Section 3729 of Title 31 of the United States Code.</span>
+        </div>
+      </div>
+
+      <p class="wl-disclaimer">
+        Preview generated from the week above. Fictional data. CraftWage is not a law firm and this is
+        not legal advice. Form WH-347 is optional in form; the weekly submission it satisfies is not.
+      </p>
+    </div>
+  </section>
+
+  <footer class="sp-sec" style="color:var(--wl-ink-3)">
+    <p class="wl-2xs">
+      WageLens / CraftWage design system v1 · specimen generated 3 September 2026 ·
+      styled entirely by <code>../design-system.css</code> · contrast certified by
+      <code>contrast.py</code> · the only external resource on this page is Google Fonts.
+    </p>
+  </footer>
+</div>
+
+<script>
+  // Theme toggle. localStorage is wrapped because it throws in some contexts.
+  (function () {
+    var root = document.documentElement;
+    function read() { try { return localStorage.getItem('wl-theme'); } catch (e) { return null; } }
+    function write(v) { try { v ? localStorage.setItem('wl-theme', v) : localStorage.removeItem('wl-theme'); } catch (e) {} }
+    var saved = read();
+    if (saved === 'light' || saved === 'dark') root.setAttribute('data-theme', saved);
+    document.querySelectorAll('[data-set-theme]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var v = b.getAttribute('data-set-theme');
+        if (v === 'system') { root.removeAttribute('data-theme'); write(null); }
+        else { root.setAttribute('data-theme', v); write(v); }
+      });
+    });
+  })();
+</script>
+</body>
+</html>

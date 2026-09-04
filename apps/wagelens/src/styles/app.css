@@ -1,0 +1,180 @@
+/* ==========================================================================
+   WAGELENS — APP LAYER
+   Everything here is built from the SEMANTIC --wl-* tokens and nothing else.
+   No hex, no rgb, no named colour: this app's palette is PINNED by
+   phase-4-revenue/IDENTITY_ARBITRATION.md, so token discipline is what keeps a
+   future change cheap for the whole fleet (REVIEW.md build-order condition 2).
+
+   design-system.css owns the reset, the tokens, the base and the components.
+   This file adds ONLY what a product page needs and the system does not carry:
+   the public marketing shell, the lookup form, the classification table and a
+   handful of layout helpers. If something here grows into a pattern, it belongs
+   upstream in the identity fleet's file, not in a second system.
+   ========================================================================== */
+
+@layer wl.app {
+  /* -- Public / marketing shell ------------------------------------------ */
+  .wl-public {
+    display: flex;
+    flex-direction: column;
+    min-block-size: 100dvh;
+  }
+  .wl-public__bar {
+    block-size: var(--wl-topbar);
+    display: flex;
+    align-items: center;
+    gap: var(--wl-space-4);
+    padding-inline: var(--wl-space-7);
+    border-block-end: 1px solid var(--wl-rule-hairline);
+    background: var(--wl-surface);
+  }
+  .wl-public__bar nav {
+    display: flex;
+    align-items: center;
+    gap: var(--wl-space-4);
+    margin-inline-start: auto;
+    font-size: var(--wl-text-sm);
+  }
+  .wl-public__body {
+    inline-size: 100%;
+    max-inline-size: 68rem;
+    margin-inline: auto;
+    padding: var(--wl-space-7) var(--wl-space-6) var(--wl-space-9);
+    display: grid;
+    gap: var(--wl-space-7);
+    align-content: start;
+  }
+  .wl-public__foot {
+    margin-block-start: auto;
+    border-block-start: 1px solid var(--wl-rule-hairline);
+    background: var(--wl-surface);
+    padding: var(--wl-space-6) var(--wl-space-7);
+    font-size: var(--wl-text-xs);
+    color: var(--wl-ink-3);
+  }
+  .wl-public__foot a { color: var(--wl-ink-2); }
+
+  /* -- Hero -------------------------------------------------------------- */
+  .wl-hero h1 {
+    font-size: var(--wl-text-3xl);
+    max-inline-size: 22ch;
+  }
+  .wl-hero p { max-inline-size: var(--wl-measure); }
+
+  /* -- The lookup widget (WL-00) ----------------------------------------- */
+  .wl-lookup {
+    display: grid;
+    gap: var(--wl-space-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
+    align-items: end;
+  }
+  .wl-lookup__actions {
+    display: flex;
+    align-items: end;
+    gap: var(--wl-space-3);
+  }
+
+  /* -- The classification table (WL-00, WL-03) --------------------------- */
+  .wl-class-table { inline-size: 100%; }
+  .wl-class-table td.wl-num,
+  .wl-class-table th.wl-num { text-align: end; white-space: nowrap; }
+  .wl-class-table td:first-child { inline-size: 100%; }
+
+  /* -- Candidate list (the F3 case: several determinations, no default) --- */
+  .wl-candidates { display: grid; gap: var(--wl-space-4); }
+  .wl-candidate {
+    border: 1px solid var(--wl-rule-hairline);
+    border-inline-start: 3px solid var(--wl-source-dot);
+    border-radius: var(--wl-radius-sm);
+    background: var(--wl-surface);
+    padding: var(--wl-space-4) var(--wl-space-5);
+    display: grid;
+    gap: var(--wl-space-2);
+  }
+
+  /* -- Definition list used by the determination header ------------------ */
+  .wl-facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr));
+    gap: var(--wl-space-4);
+    margin: 0;
+  }
+  .wl-facts dt {
+    font-size: var(--wl-text-2xs);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--wl-ink-3);
+  }
+  .wl-facts dd {
+    margin: 2px 0 0;
+    font-size: var(--wl-text-sm);
+    color: var(--wl-ink);
+  }
+
+  /* -- Ledger row: the list primitive from identity/samples.html ---------- */
+  .wl-ledger { display: grid; }
+  .wl-ledger__row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--wl-space-3) var(--wl-space-5);
+    align-items: center;
+    min-block-size: var(--wl-row-h);
+    padding: var(--wl-space-3) var(--wl-space-4);
+    border-block-end: 1px solid var(--wl-rule-hairline);
+    text-decoration: none;
+  }
+  .wl-ledger__row:last-child { border-block-end: 0; }
+  .wl-ledger__row:nth-child(even) { background: var(--wl-row-stripe); }
+  a.wl-ledger__row:hover { background: var(--wl-surface-sunken); }
+  .wl-ledger__main { display: grid; gap: 2px; min-inline-size: 0; }
+  .wl-ledger__title { font-weight: 600; color: var(--wl-ink); }
+  .wl-ledger__meta {
+    font-size: var(--wl-text-xs);
+    color: var(--wl-ink-3);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--wl-space-2);
+    align-items: center;
+  }
+  .wl-ledger__side {
+    display: flex;
+    align-items: center;
+    gap: var(--wl-space-3);
+    justify-content: end;
+  }
+
+  /* -- The rail's product mark ------------------------------------------- */
+  .wl-mark {
+    display: grid;
+    gap: 2px;
+    padding-inline: var(--wl-space-3);
+    text-decoration: none;
+    color: var(--wl-ink);
+  }
+  .wl-mark__name {
+    font-weight: 700;
+    letter-spacing: -.01em;
+    font-size: var(--wl-text-md);
+  }
+  .wl-mark__rule {
+    block-size: 3px;
+    inline-size: 2.25rem;
+    background: var(--wl-brand-mark);
+    border-radius: var(--wl-radius-full);
+  }
+  .wl-mark__sub {
+    font-size: var(--wl-text-2xs);
+    color: var(--wl-ink-3);
+  }
+
+  /* -- Small helpers ------------------------------------------------------ */
+  .wl-mt-4 { margin-block-start: var(--wl-space-4); }
+  .wl-mt-6 { margin-block-start: var(--wl-space-6); }
+  .wl-spacer { margin-inline-start: auto; }
+  .wl-prose { max-inline-size: var(--wl-measure-help); }
+  .wl-prose h2 { margin-block-start: var(--wl-space-7); }
+  .wl-prose h3 { margin-block-start: var(--wl-space-6); }
+  .wl-prose ul { margin: var(--wl-space-3) 0; padding-inline-start: var(--wl-space-6); }
+  .wl-prose li + li { margin-block-start: var(--wl-space-2); }
+  .wl-prose li { list-style: disc; }
+}

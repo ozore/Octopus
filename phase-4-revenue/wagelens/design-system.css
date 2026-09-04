@@ -1,0 +1,984 @@
+/* ==========================================================================
+   WAGELENS / CRAFTWAGE — DESIGN SYSTEM v1
+   The county-and-craft wage lookup that files your certified payroll.
+
+   Spec:      /home/user/Octopus/phase-4-revenue/wagelens/IDENTITY.md
+   Persona:   /home/user/Octopus/phase-4-revenue/wagelens/PERSONA.md
+   Contrast:  /home/user/Octopus/phase-4-revenue/wagelens/identity/contrast.py
+              72 pairs, 39 light + 33 dark, all pass WCAG 2.1 AA.
+              Every hex below is duplicated in that script; if you change one,
+              change both and re-run it.
+
+   Governing principles (IDENTITY.md section 5):
+     P1 show the week   P2 provenance is a component   P3 never colour alone
+     P4 prevent at entry  P5 keyboard first  P6 opaque, never translucent
+     P7 the document looks like the document  P8 every state is designed
+
+   No build step. No framework. No imports except Google Fonts, which is
+   optional: every family has a metric-compatible fallback stack.
+
+   Next.js: import once in app/layout.tsx, and add to the <head>:
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400..700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+   ========================================================================== */
+
+@layer wl.reset, wl.tokens, wl.base, wl.components, wl.utilities;
+
+/* ==========================================================================
+   RESET (minimal — the host may already apply one)
+   ========================================================================== */
+@layer wl.reset {
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body, h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd, ol, ul { margin: 0; }
+  ol[class], ul[class] { padding: 0; list-style: none; }
+  img, svg, video, canvas { display: block; max-inline-size: 100%; height: auto; }
+  input, button, textarea, select { font: inherit; color: inherit; }
+  button { background: none; border: 0; }
+  :where(a) { color: inherit; }
+  table { border-collapse: collapse; border-spacing: 0; }
+}
+
+/* ==========================================================================
+   TOKENS — TIER 1: PRIMITIVES (IDENTITY.md section 6.2)
+   Components must NEVER reference these. Use the semantic tier below.
+   ========================================================================== */
+@layer wl.tokens {
+  :root {
+    /* -- Graphite: warm neutral, hue ~30-40, very low chroma -------------- */
+    --wl-graphite-0:    #FFFFFF;  /* card / table surface                    */
+    --wl-graphite-25:   #FBF9F5;  /* PAGE CANVAS, row stripe                 */
+    --wl-graphite-50:   #F6F2EB;  /* sunken: table head, inset panel         */
+    --wl-graphite-100:  #EDE8DF;  /* draft pill ground, disabled fill        */
+    --wl-graphite-200:  #DED7CA;  /* decorative hairline / dark 2nd ink      */
+    --wl-graphite-300:  #C2B9A9;  /* dark tertiary ink                       */
+    --wl-graphite-400:  #918776;  /* LIGHT field border + grid rule  3.17:1+ */
+    --wl-graphite-500:  #7A7166;  /* DARK  field border + grid rule  3.69:1+ */
+    --wl-graphite-600:  #5F574E;  /* light tertiary ink              6.36:1+ */
+    --wl-graphite-700:  #453F38;  /* light secondary ink             9.88:1+ */
+    --wl-graphite-800:  #2B2723;  /* dark surface-raised / light strong ink  */
+    --wl-graphite-900:  #1B1815;  /* LIGHT PRIMARY INK 15.84:1 / dark surface*/
+    --wl-graphite-950:  #12100E;  /* dark canvas                             */
+    --wl-graphite-1000: #0B0A09;  /* dark sunken / ink on brick buttons      */
+
+    /* -- Brick: THE BRAND HUE (iron oxide, ~18deg).
+          Brand + primary action + focus only. NEVER a status. ------------- */
+    --wl-brick-50:  #FDF3EF;
+    --wl-brick-100: #FAE2D8;
+    --wl-brick-200: #F3C0AC;
+    --wl-brick-300: #E7947A;      /* dark link / hover fill          7.50:1+ */
+    --wl-brick-400: #D96A48;      /* dark primary fill, focus        5.14:1+ */
+    --wl-brick-500: #C24E28;      /* wordmark accent (non-text)              */
+    --wl-brick-600: #A63C1A;      /* light focus ring, selected edge 5.86:1+ */
+    --wl-brick-700: #8A3115;      /* light primary fill, link        7.89:1+ */
+    --wl-brick-800: #6B2510;      /* light primary hover            11.07:1  */
+    --wl-brick-900: #43170A;      /* light primary active                    */
+
+    /* -- Filed green: on file / accepted / verified ----------------------- */
+    --wl-filed-50:  #E9F6EE;
+    --wl-filed-100: #CDEBDA;
+    --wl-filed-300: #5FBF87;
+    --wl-filed-400: #2F9E5F;
+    --wl-filed-600: #116634;
+    --wl-filed-700: #0C4E28;
+
+    /* -- Flag amber: needs review / incomplete / expiring ----------------- */
+    --wl-flag-50:  #FDF3D8;
+    --wl-flag-100: #F8E4AE;
+    --wl-flag-300: #D9A521;
+    --wl-flag-400: #B4820F;
+    --wl-flag-600: #7A560A;
+    --wl-flag-700: #5C4008;
+
+    /* -- Reject red: rejected / error / overdue --------------------------- */
+    --wl-reject-50:  #FDECEA;
+    --wl-reject-100: #F9D2CD;
+    --wl-reject-300: #E5766A;
+    --wl-reject-400: #CF4436;
+    --wl-reject-600: #9C2A1E;
+    --wl-reject-700: #771F16;
+
+    /* -- Source blue: PROVENANCE ONLY (wage determination citations) ------ */
+    --wl-source-50:  #E9F1F8;
+    --wl-source-100: #CFE0EF;
+    --wl-source-300: #6FA5D0;
+    --wl-source-400: #3D80B8;
+    --wl-source-600: #1B5183;
+    --wl-source-700: #143D63;
+
+    /* -- Type (IDENTITY.md section 7) ------------------------------------- */
+    --wl-font-ui: "Public Sans", ui-sans-serif, system-ui, -apple-system,
+                  "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --wl-font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", "Cascadia Mono",
+                    "Roboto Mono", Menlo, Consolas, monospace;
+
+    --wl-text-2xs:  0.6875rem;  /* 11 — column heads, dates, legal           */
+    --wl-text-xs:   0.75rem;    /* 12 — pills, chips, table meta             */
+    --wl-text-sm:   0.8125rem;  /* 13 — GRID CELLS, dense forms              */
+    --wl-text-base: 0.9375rem;  /* 15 — BODY DEFAULT                         */
+    --wl-text-md:   1.0625rem;  /* 17 — lead, rate readout                   */
+    --wl-text-lg:   1.25rem;    /* 20 — card + section titles                */
+    --wl-text-xl:   1.5rem;     /* 24 — screen headings                      */
+    --wl-text-2xl:  1.875rem;   /* 30 — page title                           */
+    --wl-text-3xl:  2.5rem;     /* 40 — landing hero only                    */
+
+    --wl-lh-tight: 1.25;
+    --wl-lh-snug:  1.4;
+    --wl-lh-base:  1.6;
+
+    --wl-measure: 72ch;
+    --wl-measure-help: 64ch;
+
+    /* -- Space: 4px grid (IDENTITY.md section 8.1) ------------------------ */
+    --wl-space-1:  0.25rem;   /*  4 */
+    --wl-space-2:  0.5rem;    /*  8 — grid cell padding */
+    --wl-space-3:  0.75rem;   /* 12 */
+    --wl-space-4:  1rem;      /* 16 — default gap */
+    --wl-space-5:  1.25rem;   /* 20 */
+    --wl-space-6:  1.5rem;    /* 24 — panel padding */
+    --wl-space-7:  2rem;      /* 32 */
+    --wl-space-8:  2.5rem;    /* 40 */
+    --wl-space-9:  3.5rem;    /* 56 */
+    --wl-space-10: 5rem;      /* 80 — marketing only */
+
+    /* -- Radius: small on purpose. This is a ruled document. -------------- */
+    --wl-radius-xs: 2px;
+    --wl-radius-sm: 4px;
+    --wl-radius-md: 6px;
+    --wl-radius-lg: 10px;
+    --wl-radius-full: 999rem;
+
+    /* -- Layout ----------------------------------------------------------- */
+    --wl-rail: 216px;
+    --wl-rail-collapsed: 56px;
+    --wl-topbar: 56px;
+    --wl-content-max: 1440px;
+    --wl-row-h: 44px;         /* generic tables, touch target              */
+    --wl-row-h-grid: 36px;    /* payroll grid — compact by design          */
+    --wl-tap-min: 44px;
+
+    /* -- Motion (IDENTITY.md section 9.4) --------------------------------- */
+    --wl-dur-1: 100ms;
+    --wl-dur-2: 160ms;
+    --wl-dur-3: 220ms;
+    --wl-ease: cubic-bezier(.2, 0, .2, 1);
+  }
+
+  /* ==========================================================================
+     TOKENS — TIER 2: SEMANTIC (IDENTITY.md section 6.3)
+     LIGHT is defined on bare :root so it is never conditional.
+     ========================================================================== */
+  :root {
+    --wl-canvas:          var(--wl-graphite-25);
+    --wl-surface:         var(--wl-graphite-0);
+    --wl-surface-raised:  var(--wl-graphite-0);
+    --wl-surface-sunken:  var(--wl-graphite-50);
+    --wl-row-stripe:      var(--wl-graphite-25);
+    --wl-fill-disabled:   var(--wl-graphite-100);
+
+    --wl-ink:             var(--wl-graphite-900);
+    --wl-ink-2:           var(--wl-graphite-700);
+    --wl-ink-3:           var(--wl-graphite-600);
+    --wl-ink-disabled:    var(--wl-graphite-400);
+
+    --wl-rule-hairline:   var(--wl-graphite-200);
+    --wl-rule-grid:       var(--wl-graphite-400);
+    --wl-border-field:    var(--wl-graphite-400);
+
+    --wl-brand:           var(--wl-brick-700);
+    --wl-brand-mark:      var(--wl-brick-500);
+    --wl-action-fill:     var(--wl-brick-700);
+    --wl-action-fill-h:   var(--wl-brick-800);
+    --wl-action-fill-a:   var(--wl-brick-900);
+    --wl-action-ink:      #FFFFFF;
+    --wl-selected-bg:     var(--wl-brick-50);
+    --wl-selected-edge:   var(--wl-brick-600);
+    --wl-focus:           var(--wl-brick-600);
+    --wl-focus-inner:     #FFFFFF;
+
+    --wl-filed-bg:    var(--wl-filed-50);
+    --wl-filed-bd:    var(--wl-filed-100);
+    --wl-filed-ink:   var(--wl-filed-700);
+    --wl-filed-dot:   var(--wl-filed-600);
+
+    --wl-flag-bg:     var(--wl-flag-50);
+    --wl-flag-bd:     var(--wl-flag-100);
+    --wl-flag-ink:    var(--wl-flag-700);
+    --wl-flag-dot:    var(--wl-flag-600);
+
+    --wl-reject-bg:   var(--wl-reject-50);
+    --wl-reject-bd:   var(--wl-reject-100);
+    --wl-reject-ink:  var(--wl-reject-700);
+    --wl-reject-dot:  var(--wl-reject-600);
+
+    --wl-source-bg:   var(--wl-source-50);
+    --wl-source-bd:   var(--wl-source-100);
+    --wl-source-ink:  var(--wl-source-700);
+    --wl-source-dot:  var(--wl-source-600);
+
+    --wl-elev-1: 0 1px 2px rgba(27, 24, 21, .06);
+    --wl-elev-2: 0 4px 12px rgba(27, 24, 21, .10);
+
+    /* Two-tone focus ring: no single ink clears 3:1 against BOTH the bone
+       canvas and the brick button, so one stroke always carries it. */
+    --wl-focus-ring: 0 0 0 2px var(--wl-focus-inner), 0 0 0 4px var(--wl-focus);
+
+    color-scheme: light;
+  }
+
+  /* -- DARK: system preference, unless an explicit light choice is stamped -- */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --wl-canvas:          var(--wl-graphite-950);
+      --wl-surface:         var(--wl-graphite-900);
+      --wl-surface-raised:  var(--wl-graphite-800);
+      --wl-surface-sunken:  var(--wl-graphite-1000);
+      --wl-row-stripe:      var(--wl-graphite-950);
+      --wl-fill-disabled:   var(--wl-graphite-800);
+
+      --wl-ink:             var(--wl-graphite-50);
+      --wl-ink-2:           var(--wl-graphite-200);
+      --wl-ink-3:           var(--wl-graphite-300);
+      --wl-ink-disabled:    var(--wl-graphite-500);
+
+      --wl-rule-hairline:   var(--wl-graphite-800);
+      --wl-rule-grid:       var(--wl-graphite-500);
+      --wl-border-field:    var(--wl-graphite-500);
+
+      --wl-brand:           var(--wl-brick-300);
+      --wl-brand-mark:      var(--wl-brick-400);
+      --wl-action-fill:     var(--wl-brick-400);
+      --wl-action-fill-h:   var(--wl-brick-300);
+      --wl-action-fill-a:   var(--wl-brick-200);
+      --wl-action-ink:      var(--wl-graphite-1000);
+      --wl-selected-bg:     #2C1A12;
+      --wl-selected-edge:   var(--wl-brick-400);
+      --wl-focus:           var(--wl-brick-400);
+      --wl-focus-inner:     var(--wl-graphite-1000);
+
+      --wl-filed-bg:  #14261C;  --wl-filed-bd: #1E3A2A;
+      --wl-filed-ink: var(--wl-filed-300);  --wl-filed-dot: var(--wl-filed-300);
+      --wl-flag-bg:   #2A2210;  --wl-flag-bd:  #40331A;
+      --wl-flag-ink:  var(--wl-flag-300);   --wl-flag-dot:  var(--wl-flag-300);
+      --wl-reject-bg: #2C1613;  --wl-reject-bd:#42201B;
+      --wl-reject-ink:var(--wl-reject-300); --wl-reject-dot:var(--wl-reject-300);
+      --wl-source-bg: #141F2B;  --wl-source-bd:#1D2E40;
+      --wl-source-ink:var(--wl-source-300); --wl-source-dot:var(--wl-source-300);
+
+      --wl-elev-1: 0 1px 2px rgba(0, 0, 0, .50);
+      --wl-elev-2: 0 6px 20px rgba(0, 0, 0, .55);
+
+      color-scheme: dark;
+    }
+  }
+
+  /* -- DARK: explicit choice wins in both directions --------------------- */
+  :root[data-theme="dark"] {
+    --wl-canvas:          var(--wl-graphite-950);
+    --wl-surface:         var(--wl-graphite-900);
+    --wl-surface-raised:  var(--wl-graphite-800);
+    --wl-surface-sunken:  var(--wl-graphite-1000);
+    --wl-row-stripe:      var(--wl-graphite-950);
+    --wl-fill-disabled:   var(--wl-graphite-800);
+
+    --wl-ink:             var(--wl-graphite-50);
+    --wl-ink-2:           var(--wl-graphite-200);
+    --wl-ink-3:           var(--wl-graphite-300);
+    --wl-ink-disabled:    var(--wl-graphite-500);
+
+    --wl-rule-hairline:   var(--wl-graphite-800);
+    --wl-rule-grid:       var(--wl-graphite-500);
+    --wl-border-field:    var(--wl-graphite-500);
+
+    --wl-brand:           var(--wl-brick-300);
+    --wl-brand-mark:      var(--wl-brick-400);
+    --wl-action-fill:     var(--wl-brick-400);
+    --wl-action-fill-h:   var(--wl-brick-300);
+    --wl-action-fill-a:   var(--wl-brick-200);
+    --wl-action-ink:      var(--wl-graphite-1000);
+    --wl-selected-bg:     #2C1A12;
+    --wl-selected-edge:   var(--wl-brick-400);
+    --wl-focus:           var(--wl-brick-400);
+    --wl-focus-inner:     var(--wl-graphite-1000);
+
+    --wl-filed-bg:  #14261C;  --wl-filed-bd: #1E3A2A;
+    --wl-filed-ink: var(--wl-filed-300);  --wl-filed-dot: var(--wl-filed-300);
+    --wl-flag-bg:   #2A2210;  --wl-flag-bd:  #40331A;
+    --wl-flag-ink:  var(--wl-flag-300);   --wl-flag-dot:  var(--wl-flag-300);
+    --wl-reject-bg: #2C1613;  --wl-reject-bd:#42201B;
+    --wl-reject-ink:var(--wl-reject-300); --wl-reject-dot:var(--wl-reject-300);
+    --wl-source-bg: #141F2B;  --wl-source-bd:#1D2E40;
+    --wl-source-ink:var(--wl-source-300); --wl-source-dot:var(--wl-source-300);
+
+    --wl-elev-1: 0 1px 2px rgba(0, 0, 0, .50);
+    --wl-elev-2: 0 6px 20px rgba(0, 0, 0, .55);
+
+    color-scheme: dark;
+  }
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+@layer wl.base {
+  html { font-size: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--wl-canvas);          /* never transparent (P6)        */
+    color: var(--wl-ink);
+    font-family: var(--wl-font-ui);
+    font-size: var(--wl-text-base);
+    line-height: var(--wl-lh-base);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: var(--wl-lh-tight); }
+  h1 { font-size: var(--wl-text-2xl); letter-spacing: -.02em; }
+  h2 { font-size: var(--wl-text-xl);  letter-spacing: -.015em; }
+  h3 { font-size: var(--wl-text-lg);  letter-spacing: -.01em; }
+  h4 { font-size: var(--wl-text-md);  letter-spacing: -.005em; }
+
+  p  { max-inline-size: var(--wl-measure); }
+  p + p { margin-block-start: var(--wl-space-4); }
+
+  a  { color: var(--wl-brand); text-decoration-thickness: 1px;
+       text-underline-offset: .15em; }
+  a:hover { text-decoration-thickness: 2px; }
+
+  small { font-size: var(--wl-text-xs); color: var(--wl-ink-3); }
+
+  code, kbd, samp, pre { font-family: var(--wl-font-mono); font-size: .95em; }
+
+  kbd {
+    font-size: var(--wl-text-2xs);
+    padding: 1px var(--wl-space-1);
+    border: 1px solid var(--wl-border-field);
+    border-block-end-width: 2px;
+    border-radius: var(--wl-radius-xs);
+    background: var(--wl-surface-sunken);
+    color: var(--wl-ink-2);
+  }
+
+  hr { border: 0; border-block-start: 1px solid var(--wl-rule-hairline);
+       margin-block: var(--wl-space-6); }
+
+  /* Every figure in this product is tabular. Non-negotiable: a grid whose
+     digits shift width is a grid you cannot scan down a column. */
+  .wl-num, td.wl-num, .wl-doc, .wl-grid td, .wl-grid tfoot th {
+    font-family: var(--wl-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  /* One focus treatment everywhere. Never removed without a replacement. */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: none;
+    box-shadow: var(--wl-focus-ring);
+    border-radius: var(--wl-radius-sm);
+  }
+
+  ::selection { background: var(--wl-brick-100); color: var(--wl-graphite-900); }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root { --wl-dur-1: 1ms; --wl-dur-2: 1ms; --wl-dur-3: 1ms; }
+    *, *::before, *::after {
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 1ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ==========================================================================
+   COMPONENTS
+   ========================================================================== */
+@layer wl.components {
+
+  /* -- Wordmark (IDENTITY.md 7.4) --------------------------------------- */
+  .wl-wordmark {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 3px;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    color: var(--wl-ink);
+    text-decoration: none;
+    line-height: 1;
+  }
+  .wl-wordmark__text { font-size: var(--wl-text-lg); }
+  .wl-wordmark__text em { font-style: normal; color: var(--wl-brand-mark); }
+  /* the chalk line — the only ornament this identity owns */
+  .wl-wordmark__rule { block-size: 2px; background: var(--wl-brand-mark); inline-size: 100%; }
+  .wl-wordmark--sm .wl-wordmark__text { font-size: var(--wl-text-base); }
+  .wl-wordmark--sm .wl-wordmark__rule { block-size: 1px; }
+
+  /* -- Buttons (11.1) ---------------------------------------------------- */
+  .wl-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: var(--wl-space-2);
+    min-block-size: 40px;
+    padding-inline: var(--wl-space-4);
+    border-radius: var(--wl-radius-sm);
+    font-size: var(--wl-text-base);
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+    border: 1px solid transparent;
+    text-decoration: none;
+    position: relative;
+    transition: background-color var(--wl-dur-1) var(--wl-ease),
+                border-color var(--wl-dur-1) var(--wl-ease),
+                color var(--wl-dur-1) var(--wl-ease);
+  }
+  /* ≥44px hit area regardless of visual height (10.7) */
+  .wl-btn::after {
+    content: ""; position: absolute; inset: 50% 0 auto 0;
+    block-size: var(--wl-tap-min); translate: 0 -50%;
+  }
+  .wl-btn--sm { min-block-size: 32px; padding-inline: var(--wl-space-3);
+                font-size: var(--wl-text-sm); }
+  .wl-btn--lg { min-block-size: 48px; padding-inline: var(--wl-space-6);
+                font-size: var(--wl-text-md); }
+
+  .wl-btn--primary {
+    background: var(--wl-action-fill);
+    color: var(--wl-action-ink);
+  }
+  .wl-btn--primary:hover  { background: var(--wl-action-fill-h); }
+  .wl-btn--primary:active { background: var(--wl-action-fill-a); }
+
+  .wl-btn--secondary {
+    background: var(--wl-surface);
+    color: var(--wl-ink);
+    border-color: var(--wl-border-field);
+  }
+  .wl-btn--secondary:hover { background: var(--wl-surface-sunken); }
+
+  .wl-btn--ghost { background: none; color: var(--wl-brand); }
+  .wl-btn--ghost:hover { background: var(--wl-selected-bg); }
+
+  .wl-btn--danger { background: var(--wl-reject-600); color: #FFFFFF; }
+  .wl-btn--danger:hover { background: var(--wl-reject-700); }
+
+  .wl-btn[disabled], .wl-btn[aria-disabled="true"] {
+    background: var(--wl-fill-disabled);
+    color: var(--wl-ink-disabled);
+    border-color: transparent;
+    cursor: not-allowed;
+  }
+
+  /* -- Fields (11.2) ----------------------------------------------------- */
+  .wl-field { display: flex; flex-direction: column; gap: var(--wl-space-1);
+              max-inline-size: 34rem; }
+  .wl-field__label {
+    font-size: var(--wl-text-xs); font-weight: 500; color: var(--wl-ink-2);
+    letter-spacing: .01em;
+  }
+  .wl-field__label .wl-req { color: var(--wl-reject-ink); margin-inline-start: 2px; }
+  .wl-field__help { font-size: var(--wl-text-2xs); color: var(--wl-ink-3);
+                    max-inline-size: var(--wl-measure-help); }
+  .wl-field__error {
+    font-size: var(--wl-text-2xs); color: var(--wl-reject-ink); font-weight: 500;
+    display: flex; gap: var(--wl-space-1); align-items: flex-start;
+  }
+
+  .wl-input, .wl-select, .wl-textarea {
+    inline-size: 100%;
+    min-block-size: 40px;
+    padding: var(--wl-space-2) var(--wl-space-3);
+    background: var(--wl-surface);
+    color: var(--wl-ink);
+    border: 1px solid var(--wl-border-field);
+    border-radius: var(--wl-radius-sm);
+    font-size: var(--wl-text-base);
+  }
+  .wl-textarea { min-block-size: 88px; resize: vertical; line-height: var(--wl-lh-snug); }
+  .wl-input[type="number"], .wl-input--num {
+    font-family: var(--wl-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    text-align: end;
+  }
+  .wl-input:disabled, .wl-select:disabled, .wl-textarea:disabled {
+    background: var(--wl-fill-disabled); color: var(--wl-ink-disabled);
+    cursor: not-allowed;
+  }
+  .wl-field--invalid .wl-input,
+  .wl-field--invalid .wl-select { border-color: var(--wl-reject-600); border-inline-start-width: 3px; }
+
+  /* Rate: TWO fields, always. Prevents PERSONA.md 7.4 error 1 structurally.
+     The buyer physically cannot type a combined rate. */
+  .wl-rate {
+    display: inline-flex; align-items: stretch;
+    border: 1px solid var(--wl-border-field);
+    border-radius: var(--wl-radius-sm);
+    background: var(--wl-surface);
+    overflow: hidden;
+  }
+  .wl-rate__part { display: flex; align-items: center; }
+  .wl-rate__prefix, .wl-rate__sep {
+    padding-inline: var(--wl-space-2);
+    color: var(--wl-ink-3);
+    font-family: var(--wl-font-mono);
+    font-size: var(--wl-text-sm);
+    background: var(--wl-surface-sunken);
+    display: flex; align-items: center;
+  }
+  .wl-rate input {
+    inline-size: 6.5ch; min-block-size: 38px; border: 0; background: none;
+    text-align: end; padding-inline: var(--wl-space-2);
+    font-family: var(--wl-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-size: var(--wl-text-sm);
+  }
+  .wl-rate input:focus-visible { box-shadow: none; background: var(--wl-selected-bg); }
+  .wl-rate:focus-within { box-shadow: var(--wl-focus-ring); }
+  .wl-rate__caption {
+    font-size: var(--wl-text-2xs); color: var(--wl-ink-3);
+    margin-block-start: var(--wl-space-1);
+  }
+
+  /* -- Status pill (11.4). Dot AND word, always (P3). -------------------- */
+  .wl-pill {
+    display: inline-flex; align-items: center; gap: var(--wl-space-1);
+    padding: 2px var(--wl-space-2);
+    border-radius: var(--wl-radius-xs);
+    font-size: var(--wl-text-2xs);
+    font-weight: 600;
+    letter-spacing: .04em;
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+  .wl-pill::before {
+    content: ""; inline-size: 6px; block-size: 6px; border-radius: 50%;
+    background: currentColor; flex: none;
+  }
+  .wl-pill--filed  { background: var(--wl-filed-bg);  color: var(--wl-filed-ink);  border-color: var(--wl-filed-bd); }
+  .wl-pill--flag   { background: var(--wl-flag-bg);   color: var(--wl-flag-ink);   border-color: var(--wl-flag-bd); }
+  .wl-pill--reject { background: var(--wl-reject-bg); color: var(--wl-reject-ink); border-color: var(--wl-reject-bd); }
+  .wl-pill--draft  { background: var(--wl-fill-disabled); color: var(--wl-ink-2); }
+  .wl-pill--none   { background: none; color: var(--wl-ink-3);
+                     border-color: var(--wl-rule-hairline); }
+  .wl-pill--none::before { background: none; box-shadow: inset 0 0 0 1px currentColor; }
+
+  /* -- Alert (11.5) ------------------------------------------------------ */
+  .wl-alert {
+    display: flex; gap: var(--wl-space-3);
+    padding: var(--wl-space-4);
+    border: 1px solid transparent;
+    border-inline-start-width: 3px;
+    border-radius: var(--wl-radius-sm);
+    font-size: var(--wl-text-sm);
+  }
+  .wl-alert__icon { flex: none; margin-block-start: 1px; }
+  .wl-alert__title { font-weight: 600; margin-block-end: 2px;
+                     font-size: var(--wl-text-base); }
+  .wl-alert__body { color: inherit; max-inline-size: var(--wl-measure); }
+  .wl-alert--info    { background: var(--wl-source-bg); color: var(--wl-source-ink);
+                       border-color: var(--wl-source-bd); border-inline-start-color: var(--wl-source-dot); }
+  .wl-alert--success { background: var(--wl-filed-bg);  color: var(--wl-filed-ink);
+                       border-color: var(--wl-filed-bd);  border-inline-start-color: var(--wl-filed-dot); }
+  .wl-alert--warn    { background: var(--wl-flag-bg);   color: var(--wl-flag-ink);
+                       border-color: var(--wl-flag-bd);   border-inline-start-color: var(--wl-flag-dot); }
+  .wl-alert--error   { background: var(--wl-reject-bg); color: var(--wl-reject-ink);
+                       border-color: var(--wl-reject-bd); border-inline-start-color: var(--wl-reject-dot); }
+
+  /* -- Panel (11.8) — border, never shadow ------------------------------- */
+  .wl-panel {
+    background: var(--wl-surface);
+    border: 1px solid var(--wl-rule-hairline);
+    border-radius: var(--wl-radius-md);
+  }
+  .wl-panel__head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: var(--wl-space-4);
+    padding: var(--wl-space-4) var(--wl-space-6);
+    border-block-end: 1px solid var(--wl-rule-hairline);
+  }
+  .wl-panel__title { font-size: var(--wl-text-md); font-weight: 600; }
+  .wl-panel__body { padding: var(--wl-space-6); }
+  .wl-panel__body--flush { padding: 0; }
+
+  /* -- Tabs (11.8) — the active tab carries the chalk line --------------- */
+  .wl-tabs { display: flex; gap: var(--wl-space-5);
+             border-block-end: 1px solid var(--wl-rule-hairline); }
+  .wl-tab {
+    padding: var(--wl-space-3) 0; min-block-size: var(--wl-tap-min);
+    font-size: var(--wl-text-base); font-weight: 500; color: var(--wl-ink-3);
+    border-block-end: 2px solid transparent; margin-block-end: -1px;
+    cursor: pointer; background: none;
+  }
+  .wl-tab:hover { color: var(--wl-ink); }
+  .wl-tab[aria-selected="true"] {
+    color: var(--wl-ink); font-weight: 600;
+    border-block-end-color: var(--wl-selected-edge);
+  }
+
+  /* -- Generic table (11.8) ---------------------------------------------- */
+  .wl-table-wrap { inline-size: 100%; overflow-x: auto; }
+  .wl-table { inline-size: 100%; font-size: var(--wl-text-sm); }
+  .wl-table caption {
+    text-align: start; padding: var(--wl-space-3) var(--wl-space-4);
+    font-size: var(--wl-text-xs); color: var(--wl-ink-3);
+  }
+  .wl-table th {
+    text-align: start; font-size: var(--wl-text-2xs); font-weight: 600;
+    letter-spacing: .05em; text-transform: uppercase; color: var(--wl-ink-3);
+    background: var(--wl-surface-sunken);
+    padding: var(--wl-space-2) var(--wl-space-3);
+    border-block-end: 1px solid var(--wl-rule-grid);
+    white-space: nowrap;
+  }
+  .wl-table td {
+    padding: var(--wl-space-2) var(--wl-space-3);
+    block-size: var(--wl-row-h);
+    border-block-end: 1px solid var(--wl-rule-hairline);
+    vertical-align: middle;
+  }
+  .wl-table tbody tr:nth-child(even) { background: var(--wl-row-stripe); }
+  .wl-table tbody tr:hover { background: var(--wl-surface-sunken); }
+  .wl-table .wl-num { text-align: end; }
+
+  /* -- THE PAYROLL GRID (11.3) — the centre of the product --------------- */
+  .wl-grid-wrap {
+    inline-size: 100%; overflow-x: auto;
+    border: 1px solid var(--wl-rule-hairline);
+    border-radius: var(--wl-radius-md);
+    background: var(--wl-surface);
+  }
+  .wl-grid { inline-size: 100%; min-inline-size: 964px; font-size: var(--wl-text-sm); }
+  .wl-grid caption {
+    text-align: start; padding: var(--wl-space-3) var(--wl-space-4);
+    font-size: var(--wl-text-xs); color: var(--wl-ink-3);
+    border-block-end: 1px solid var(--wl-rule-hairline);
+  }
+  .wl-grid th, .wl-grid td {
+    padding: var(--wl-space-1) var(--wl-space-2);
+    border-inline-end: 1px solid var(--wl-rule-grid);
+    block-size: var(--wl-row-h-grid);
+    white-space: nowrap;
+  }
+  .wl-grid thead th {
+    position: sticky; inset-block-start: 0; z-index: 2;
+    background: var(--wl-surface-sunken);
+    color: var(--wl-ink-3);
+    font-size: var(--wl-text-2xs); font-weight: 600;
+    letter-spacing: .05em; text-transform: uppercase;
+    text-align: center;
+    border-block-end: 1px solid var(--wl-rule-grid);
+  }
+  .wl-grid thead th.wl-grid__day small {
+    display: block; font-size: var(--wl-text-2xs); font-weight: 400;
+    letter-spacing: 0; text-transform: none; color: var(--wl-ink-3);
+  }
+  .wl-grid tbody td { border-block-end: 1px solid var(--wl-rule-hairline); }
+  .wl-grid tbody tr:nth-child(even) { background: var(--wl-row-stripe); }
+  .wl-grid td.wl-num, .wl-grid tfoot th.wl-num { text-align: end; }
+  .wl-grid .wl-grid__worker,
+  .wl-grid .wl-grid__class { text-align: start; white-space: normal; }
+  .wl-grid .wl-grid__worker { font-weight: 500; font-family: var(--wl-font-ui); }
+  .wl-grid .wl-grid__class  { font-family: var(--wl-font-ui);
+                              font-size: var(--wl-text-xs); color: var(--wl-ink-2); }
+  .wl-grid tfoot th {
+    background: var(--wl-surface-sunken);
+    border-block-start: 2px solid var(--wl-rule-grid);
+    font-weight: 600; text-align: end;
+    position: sticky; inset-block-end: 0; z-index: 2;
+  }
+  .wl-grid tfoot th:first-child { text-align: start; }
+
+  /* Sticky identity columns so the week can scroll under the names.
+     The ROW owns the background and the sticky cells inherit it — that is what
+     keeps stripe / selected / hover correct without a specificity war between
+     :nth-child and the state classes. */
+  .wl-grid tbody tr { background: var(--wl-surface); }
+  .wl-grid tbody tr:nth-child(even) { background: var(--wl-row-stripe); }
+  .wl-grid .wl-sticky-1, .wl-grid .wl-sticky-2 {
+    position: sticky; z-index: 1; background: inherit;
+  }
+  .wl-grid thead .wl-sticky-1, .wl-grid thead .wl-sticky-2,
+  .wl-grid tfoot .wl-sticky-1, .wl-grid tfoot .wl-sticky-2 { background: var(--wl-surface-sunken); z-index: 3; }
+  .wl-grid .wl-sticky-1 { inset-inline-start: 0; min-inline-size: 168px; }
+  .wl-grid .wl-sticky-2 { inset-inline-start: 168px; min-inline-size: 152px;
+                          border-inline-end: 1px solid var(--wl-rule-grid); }
+
+  /* row states — edge + icon + text, never colour alone */
+  .wl-grid tbody tr.is-selected { background: var(--wl-selected-bg); }
+  .wl-grid tbody tr.is-selected .wl-sticky-1 { box-shadow: inset 3px 0 0 var(--wl-selected-edge); }
+  .wl-grid td.is-error {
+    box-shadow: inset 2px 0 0 var(--wl-reject-dot);
+    background: var(--wl-reject-bg); color: var(--wl-reject-ink); font-weight: 600;
+  }
+  .wl-grid td.is-flag {
+    box-shadow: inset 2px 0 0 var(--wl-flag-dot);
+    background: var(--wl-flag-bg); color: var(--wl-flag-ink);
+  }
+  .wl-grid td.is-ot { color: var(--wl-ink); font-weight: 600; }
+  .wl-grid td.is-zero { color: var(--wl-ink-3); }
+
+  /* -- Source chip + provenance block (11.7) — the signature component --- */
+  .wl-source {
+    display: inline-flex; align-items: center; gap: var(--wl-space-1);
+    padding: 1px var(--wl-space-2);
+    border: 1px solid var(--wl-source-bd);
+    background: var(--wl-source-bg);
+    color: var(--wl-source-ink);
+    border-radius: var(--wl-radius-xs);
+    font-family: var(--wl-font-mono);
+    font-size: var(--wl-text-2xs);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .wl-source:hover { text-decoration: underline; }
+  .wl-source--stale { background: var(--wl-flag-bg); color: var(--wl-flag-ink);
+                      border-color: var(--wl-flag-bd); }
+  .wl-source--moved { background: var(--wl-reject-bg); color: var(--wl-reject-ink);
+                      border-color: var(--wl-reject-bd); }
+
+  .wl-prov {
+    border: 1px solid var(--wl-source-bd);
+    border-inline-start: 3px solid var(--wl-source-dot);
+    background: var(--wl-source-bg);
+    border-radius: var(--wl-radius-sm);
+    padding: var(--wl-space-3) var(--wl-space-4);
+    font-size: var(--wl-text-xs);
+    color: var(--wl-source-ink);
+    display: grid; gap: 2px;
+    max-inline-size: 34rem;
+  }
+  .wl-prov__wd { font-family: var(--wl-font-mono); font-weight: 600;
+                 font-size: var(--wl-text-sm); }
+  .wl-prov__meta { color: inherit; opacity: .9; }
+  .wl-prov__rate {
+    font-family: var(--wl-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-size: var(--wl-text-md); font-weight: 600;
+    color: var(--wl-ink);
+    margin-block-start: var(--wl-space-2);
+    padding-block-start: var(--wl-space-2);
+    border-block-start: 1px solid var(--wl-source-bd);
+  }
+  .wl-prov__rate small { color: var(--wl-ink-3); font-weight: 400;
+                         font-family: var(--wl-font-ui); }
+  .wl-prov__foot { display: flex; justify-content: space-between; gap: var(--wl-space-3);
+                   margin-block-start: var(--wl-space-1); }
+
+  /* -- Document preview (11.6) — the page STAYS WHITE in dark mode ------- */
+  .wl-doc-frame {
+    background: var(--wl-surface-sunken);
+    border: 1px solid var(--wl-rule-hairline);
+    border-radius: var(--wl-radius-md);
+    padding: var(--wl-space-4);
+  }
+  .wl-doc-toolbar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: var(--wl-space-3); margin-block-end: var(--wl-space-3);
+    font-size: var(--wl-text-xs); color: var(--wl-ink-3);
+  }
+  .wl-doc {
+    background: #FFFFFF;              /* deliberate: a preview shows print */
+    color: #1B1815;
+    border: 1px solid #918776;
+    padding: var(--wl-space-4);
+    font-family: var(--wl-font-mono);
+    font-size: var(--wl-text-2xs);
+    line-height: 1.35;
+    overflow-x: auto;
+  }
+  .wl-doc h4 { font-family: var(--wl-font-mono); font-size: var(--wl-text-xs);
+               text-transform: uppercase; letter-spacing: .08em; color: #453F38; }
+  .wl-doc table { inline-size: 100%; min-inline-size: 720px; }
+  .wl-doc th, .wl-doc td {
+    border: 1px solid #918776; padding: 3px 5px;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  .wl-doc th { background: #F6F2EB; font-weight: 600; text-align: center;
+               font-size: 9px; letter-spacing: .02em; }
+  .wl-doc td.wl-num { text-align: end; }
+  .wl-doc__cert { border: 1px solid #918776; padding: var(--wl-space-3);
+                  margin-block-start: var(--wl-space-3); background: #FBF9F5; }
+
+  /* -- Week strip (11.8) ------------------------------------------------- */
+  .wl-week-strip { display: flex; gap: 3px; flex-wrap: wrap; }
+  .wl-week-strip__cell {
+    inline-size: 22px; block-size: 26px;
+    border-radius: var(--wl-radius-xs);
+    border: 1px solid var(--wl-rule-hairline);
+    background: var(--wl-surface-sunken);
+    font-size: 9px; color: var(--wl-ink-3);
+    display: grid; place-items: center;
+    font-family: var(--wl-font-mono);
+  }
+  .wl-week-strip__cell--filed  { background: var(--wl-filed-bg);  border-color: var(--wl-filed-bd);  color: var(--wl-filed-ink); }
+  .wl-week-strip__cell--flag   { background: var(--wl-flag-bg);   border-color: var(--wl-flag-bd);   color: var(--wl-flag-ink); }
+  .wl-week-strip__cell--reject { background: var(--wl-reject-bg); border-color: var(--wl-reject-bd); color: var(--wl-reject-ink); }
+  .wl-week-strip__cell--now    { box-shadow: inset 0 -2px 0 var(--wl-selected-edge); font-weight: 600; color: var(--wl-ink); }
+
+  /* -- Stat (11.8) ------------------------------------------------------- */
+  .wl-stat { display: grid; gap: 2px; }
+  .wl-stat__label {
+    font-size: var(--wl-text-2xs); text-transform: uppercase; letter-spacing: .06em;
+    color: var(--wl-ink-3); font-weight: 600;
+  }
+  .wl-stat__value {
+    font-family: var(--wl-font-mono); font-weight: 700;
+    font-variant-numeric: tabular-nums lining-nums;
+    font-size: var(--wl-text-xl); color: var(--wl-ink); line-height: 1.1;
+  }
+  .wl-stat__sub { font-size: var(--wl-text-2xs); color: var(--wl-ink-3); }
+
+  /* -- Empty state (11.8) ------------------------------------------------ */
+  .wl-empty {
+    display: grid; justify-items: center; gap: var(--wl-space-3);
+    padding: var(--wl-space-9) var(--wl-space-6);
+    text-align: center; color: var(--wl-ink-3);
+  }
+  .wl-empty__title { font-size: var(--wl-text-md); font-weight: 600; color: var(--wl-ink); }
+  .wl-empty p { max-inline-size: 42ch; }
+
+  /* -- Toolbar (11.8) ---------------------------------------------------- */
+  .wl-toolbar {
+    display: flex; align-items: center; gap: var(--wl-space-3);
+    min-block-size: 48px; padding: var(--wl-space-2) var(--wl-space-4);
+    background: var(--wl-surface);
+    border: 1px solid var(--wl-rule-hairline);
+    border-radius: var(--wl-radius-md);
+    box-shadow: var(--wl-elev-1);
+    flex-wrap: wrap;
+  }
+  .wl-toolbar__spacer { margin-inline-start: auto; }
+
+  /* -- Signature block (11.8) — deliberately slow ------------------------ */
+  .wl-signature {
+    border: 1px solid var(--wl-rule-grid);
+    border-radius: var(--wl-radius-md);
+    background: var(--wl-surface);
+    padding: var(--wl-space-6);
+    display: grid; gap: var(--wl-space-4);
+    max-inline-size: 46rem;
+  }
+  .wl-signature__certs { display: grid; gap: var(--wl-space-2);
+                         font-size: var(--wl-text-sm); color: var(--wl-ink-2);
+                         counter-reset: wl-cert; padding: 0; list-style: none; }
+  .wl-signature__certs li { display: flex; gap: var(--wl-space-2);
+                            counter-increment: wl-cert; }
+  .wl-signature__certs li::before {
+    content: "(" counter(wl-cert) ")";
+    font-family: var(--wl-font-mono); color: var(--wl-ink-3); flex: none;
+  }
+  .wl-signature__notice {
+    font-size: var(--wl-text-2xs); color: var(--wl-ink-2);
+    background: var(--wl-surface-sunken);
+    border-inline-start: 3px solid var(--wl-rule-grid);
+    padding: var(--wl-space-3);
+  }
+
+  /* -- Disclaimer (11.8) — required on every rate and document ----------- */
+  .wl-disclaimer {
+    font-size: var(--wl-text-2xs);
+    color: var(--wl-ink-3);
+    border-block-start: 1px solid var(--wl-rule-hairline);
+    padding-block-start: var(--wl-space-2);
+    margin-block-start: var(--wl-space-3);
+    max-inline-size: var(--wl-measure);
+  }
+
+  /* -- App shell (8.2) --------------------------------------------------- */
+  .wl-shell { display: grid; grid-template-columns: var(--wl-rail) 1fr;
+              min-block-size: 100dvh; }
+  .wl-rail {
+    background: var(--wl-surface);
+    border-inline-end: 1px solid var(--wl-rule-hairline);
+    padding: var(--wl-space-4);
+    display: flex; flex-direction: column; gap: var(--wl-space-6);
+  }
+  .wl-nav { display: grid; gap: 2px; }
+  .wl-nav a {
+    display: flex; align-items: center; gap: var(--wl-space-2);
+    min-block-size: var(--wl-tap-min);
+    padding: var(--wl-space-2) var(--wl-space-3);
+    border-radius: var(--wl-radius-sm);
+    font-size: var(--wl-text-sm); font-weight: 500;
+    color: var(--wl-ink-2); text-decoration: none;
+  }
+  .wl-nav a:hover { background: var(--wl-surface-sunken); color: var(--wl-ink); }
+  .wl-nav a[aria-current="page"] {
+    background: var(--wl-selected-bg); color: var(--wl-ink); font-weight: 600;
+    box-shadow: inset 3px 0 0 var(--wl-selected-edge);
+  }
+  .wl-main { display: flex; flex-direction: column; min-inline-size: 0; }
+  .wl-topbar {
+    block-size: var(--wl-topbar);
+    display: flex; align-items: center; gap: var(--wl-space-4);
+    padding-inline: var(--wl-space-7);
+    border-block-end: 1px solid var(--wl-rule-hairline);
+    background: var(--wl-surface);
+  }
+  .wl-content {
+    padding: var(--wl-space-7);
+    max-inline-size: var(--wl-content-max);
+    inline-size: 100%;
+    display: grid; gap: var(--wl-space-7);
+    align-content: start;
+  }
+  @media (max-width: 1100px) { .wl-shell { grid-template-columns: var(--wl-rail-collapsed) 1fr; } }
+  @media (max-width: 780px) {
+    .wl-shell { grid-template-columns: 1fr; }
+    .wl-rail { flex-direction: row; align-items: center; overflow-x: auto;
+               border-inline-end: 0; border-block-end: 1px solid var(--wl-rule-hairline); }
+    .wl-nav { grid-auto-flow: column; }
+    .wl-content, .wl-topbar { padding-inline: var(--wl-space-4); }
+  }
+}
+
+/* ==========================================================================
+   UTILITIES
+   ========================================================================== */
+@layer wl.utilities {
+  .wl-stack   { display: grid; gap: var(--wl-space-4); }
+  .wl-stack-2 { display: grid; gap: var(--wl-space-2); }
+  .wl-stack-6 { display: grid; gap: var(--wl-space-6); }
+  .wl-row     { display: flex; align-items: center; gap: var(--wl-space-3); flex-wrap: wrap; }
+  .wl-row--between { justify-content: space-between; }
+  .wl-cols-2  { display: grid; gap: var(--wl-space-6);
+                grid-template-columns: repeat(auto-fit, minmax(min(20rem,100%), 1fr)); }
+  .wl-cols-4  { display: grid; gap: var(--wl-space-6);
+                grid-template-columns: repeat(auto-fit, minmax(min(9rem,100%), 1fr)); }
+  .wl-muted   { color: var(--wl-ink-3); }
+  .wl-strong  { font-weight: 600; }
+  .wl-mono    { font-family: var(--wl-font-mono);
+                font-variant-numeric: tabular-nums lining-nums; }
+  .wl-2xs { font-size: var(--wl-text-2xs); }
+  .wl-xs  { font-size: var(--wl-text-xs); }
+  .wl-sm  { font-size: var(--wl-text-sm); }
+  .wl-lead { font-size: var(--wl-text-md); color: var(--wl-ink-2);
+             max-inline-size: var(--wl-measure); }
+  .wl-visually-hidden {
+    position: absolute !important; inline-size: 1px; block-size: 1px;
+    padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%);
+    white-space: nowrap; border: 0;
+  }
+  .wl-scroll-x { overflow-x: auto; }
+}
+
+/* ==========================================================================
+   PRINT — always the light palette; the artefact is paper (12)
+   ========================================================================== */
+@media print {
+  :root, :root[data-theme="dark"] {
+    --wl-canvas: #FFFFFF; --wl-surface: #FFFFFF; --wl-surface-sunken: #F6F2EB;
+    --wl-surface-raised: #FFFFFF; --wl-row-stripe: #FFFFFF;
+    --wl-ink: #000000; --wl-ink-2: #1B1815; --wl-ink-3: #453F38;
+    --wl-rule-hairline: #918776; --wl-rule-grid: #000000;
+    --wl-border-field: #000000;
+    color-scheme: light;
+  }
+  .wl-rail, .wl-topbar, .wl-toolbar, .wl-doc-toolbar, .wl-tabs { display: none !important; }
+  .wl-shell { grid-template-columns: 1fr; }
+  .wl-content { padding: 0; }
+  .wl-panel, .wl-grid-wrap { border-color: #000; box-shadow: none; break-inside: avoid; }
+  .wl-disclaimer { display: block !important; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 9px; }
+}

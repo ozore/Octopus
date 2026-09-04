@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stateready.app/ontology/sourced_value.json",
+  "title": "SourcedValue",
+  "description": "The envelope every regulatory fact in the StateReady knowledge base travels in. A bare number never appears in kb-data/: it is always wrapped here, with the URL it came from, a verbatim evidence fragment that a drift check can search for, the date it was last opened, who verified it, and how confident we are. PLAN.md A10 and PIPELINE.md standing rule 4 are enforced by this schema, not by a convention.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "value",
+    "status",
+    "confidence"
+  ],
+  "properties": {
+    "value": {
+      "description": "The fact. null is a first-class, legitimate value: it means 'we did not find this at a public source'. It NEVER means zero, and it never means 'not required'. Absence of a requirement must be written as a value of 'not_found_in_sources_read' with a note listing the pages read.",
+      "type": [
+        "number",
+        "string",
+        "boolean",
+        "array",
+        "null"
+      ]
+    },
+    "unit": {
+      "description": "USD, hours, months, years, hours_per_year, per_occurrence_usd, ... Required whenever value is a number.",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "verified",
+        "unverified",
+        "unknown"
+      ],
+      "description": "verified = at least two verification passes agreed at the source. unverified = one pass only, or the passes disagreed; the app must render it with the UNVERIFIED badge. unknown = value is null; nothing may be rendered but the note."
+    },
+    "confidence": {
+      "enum": [
+        "high",
+        "medium",
+        "low"
+      ],
+      "description": "high = the value is printed on the board's own page in the form we recorded. medium = derived from the board's own page but requiring one inference (e.g. a fee table row applying to our licence class). low = from statute or rule text rather than the board's guidance, or a value whose wording is ambiguous. Anything below high forces needs_human_check on any expansion playbook that uses it."
+    },
+    "source_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "The exact page that was fetched. Not a search result, not a homepage, not a third-party summary. Required on EVERY value that has one — i.e. whenever value is not null — not only on verified ones. PLAN.md A10 applies to every value we show, and an unverified value is still shown (with a badge)."
+    },
+    "source_title": {
+      "type": "string"
+    },
+    "source_kind": {
+      "enum": [
+        "board_page",
+        "board_pdf",
+        "statute",
+        "administrative_rule",
+        "federal_statistics"
+      ],
+      "description": "board_page and board_pdf are Tier A. statute and administrative_rule are Tier B: authoritative but written for lawyers, so confidence drops to low unless the board repeats the value. Third-party guides are NOT an allowed kind; they may not appear in kb-data/ at all."
+    },
+    "evidence": {
+      "type": "string",
+      "maxLength": 240,
+      "description": "A verbatim fragment of the source, 25 words or fewer, that contains the value. Two jobs: a human reviewer can confirm the reading in one glance, and kb-scripts/verify_pass_b.py re-fetches source_url and asserts this string is still present. It is therefore also the finest-grained drift signal we have."
+    },
+    "last_verified": {
+      "type": "string",
+      "format": "date"
+    },
+    "verified_by": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0,
+      "description": "Agent ids of the verification passes that agreed. Two distinct ids are required for status 'verified' (gate G1 enforces distinctness; the schema enforces the count, so the schema is never weaker than the gate)."
+    },
+    "note": {
+      "type": "string",
+      "description": "Mandatory when value is null, and whenever status is not 'verified'. Says what was read and why the value is missing or unconfirmed. This text is what the product shows the customer in place of, or beside, the number."
+    }
+  },
+  "allOf": [
+    {
+      "$comment": "PLAN.md A10, enforced structurally: any value we can render at all carries the page it came from, the day we last opened it, and who opened it. Wave-1b m4: these three were required only under status='verified', so the demotion path in KNOWLEDGE_BASE.md 5.1 could produce a value with no URL and nothing would have caught it. Expressed as a positive type list rather than `not: {type: null}` because validate.py's schema subset does not implement `not` and would have silently skipped the branch.",
+      "if": {
+        "properties": {
+          "value": {
+            "type": [
+              "number",
+              "string",
+              "boolean",
+              "array"
+            ]
+          }
+        },
+        "required": [
+          "value"
+        ]
+      },
+      "then": {
+        "required": [
+          "source_url",
+          "evidence",
+          "last_verified",
+          "verified_by"
+        ]
+      }
+    },
+    {
+      "$comment": "A verified value needs two agreeing passes. Gate G1 already asserts two DISTINCT ids; this mirrors the count in the schema.",
+      "if": {
+        "properties": {
+          "status": {
+            "const": "verified"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "source_url",
+          "evidence",
+          "last_verified",
+          "verified_by"
+        ],
+        "properties": {
+          "verified_by": {
+            "minItems": 2
+          }
+        }
+      }
+    },
+    {
+      "$comment": "Anything not verified must say, in the customer's words, what was read and why it is not confirmed. Today there are zero unverified values; this is the branch that keeps the demotion path honest the first time one appears.",
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "unverified",
+              "unknown"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "note"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "value": {
+            "type": "null"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "note"
+        ],
+        "properties": {
+          "status": {
+            "const": "unknown"
+          }
+        }
+      }
+    }
+  ]
+}

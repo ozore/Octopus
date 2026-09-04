@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1788473898529,
+      "tag": "0000_certly_init",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1788473899000,
+      "tag": "0001_audit_immutability",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1788480732462,
+      "tag": "0002_b4_billing_onboarding_settings",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1788480733462,
+      "tag": "0003_b2_dashboard_index",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1788480915890,
+      "tag": "0004_b3_reminder_settings",
+      "breakpoints": true
+    }
+  ]
+}

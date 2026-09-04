@@ -1,0 +1,573 @@
+{
+  "fixture": "temecula-ca-sample-insurance-certificate.pdf",
+  "golden_id": "G6",
+  "labelled_by": "agent:certly-b1-m4",
+  "labelled_on": "2026-09-04",
+  "reviewed_by": "agent:certly-b1-m4-second-pass",
+  "notes": "Three pages: the ACORD 25 (2016/03) on page 1, ISO CG 20 37 04 13 (additional insured, products-completed operations) on page 2 and the carrier's own WC 99 04 10 C (Ed. 01-19) waiver of subrogation on page 3 — the 'WC 99 04 10 variant' this fixture exists for (KB §C.3: the ISO-shaped number is a carrier form, not an ISO form, and the accepts list has to hold both shapes). The description of operations names no form numbers at all, so both mentions come from the attached pages. ADDL INSD prints the letter Y on the general-liability row; SUBR WVD prints Y on the workers' compensation row only. The authorised-representative box carries an ink signature that no reader could resolve into a name, so no name is recorded. A line under the form footer reads 'THIS CERTIFICATE SUPERSEDES PREVIOUSLY ISSUED CERTIFICATE'.",
+  "expected": {
+    "schema_version": "coi.v1",
+    "document_kind": "acord_25",
+    "form_edition": "2016/03",
+    "certificate_date": {
+      "value": "2020-08-24",
+      "raw": "8/24/2020",
+      "page": 1,
+      "source_text": "8/24/2020",
+      "confidence": 1.0
+    },
+    "producer": {
+      "name": {
+        "value": "Clifford & Bradford Insurance Agency",
+        "raw": "Clifford & Bradford Insurance Agency",
+        "page": 1,
+        "source_text": "Clifford & Bradford Insurance Agency",
+        "confidence": 1.0
+      },
+      "address": {
+        "value": "1800 19th Street, Bakersfield CA 93301-4315",
+        "raw": "1800 19th Street\nBakersfield CA 93301-4315",
+        "page": 1,
+        "source_text": "1800 19th Street",
+        "confidence": 1.0
+      },
+      "contact_name": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      },
+      "phone": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      },
+      "fax": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      },
+      "email": {
+        "value": null,
+        "raw": null,
+        "page": null,
+        "source_text": null,
+        "confidence": 1.0
+      }
+    },
+    "insured": {
+      "name": {
+        "value": "ABC Company 12345",
+        "raw": "ABC Company 12345",
+        "page": 1,
+        "source_text": "ABC Company 12345",
+        "confidence": 1.0
+      },
+      "address": {
+        "value": "USA Street, Temecula, CA 92590",
+        "raw": "USA Street\nTemecula, CA 92590",
+        "page": 1,
+        "source_text": "USA Street",
+        "confidence": 1.0
+      }
+    },
+    "insurers": [
+      {
+        "letter": "A",
+        "name": {
+          "value": "United Financial Casualty Co.",
+          "raw": "United Financial Casualty Co.",
+          "page": 1,
+          "source_text": "United Financial Casualty Co.",
+          "confidence": 1.0
+        },
+        "naic": {
+          "value": "11770",
+          "raw": "11770",
+          "page": 1,
+          "source_text": "11770",
+          "confidence": 1.0
+        }
+      },
+      {
+        "letter": "B",
+        "name": {
+          "value": "West American Ins Co.",
+          "raw": "West American Ins Co.",
+          "page": 1,
+          "source_text": "West American Ins Co.",
+          "confidence": 1.0
+        },
+        "naic": {
+          "value": "44393",
+          "raw": "44393",
+          "page": 1,
+          "source_text": "44393",
+          "confidence": 1.0
+        }
+      },
+      {
+        "letter": "C",
+        "name": {
+          "value": "Oak River Insurance Company",
+          "raw": "Oak River Insurance Company",
+          "page": 1,
+          "source_text": "Oak River Insurance Company",
+          "confidence": 1.0
+        },
+        "naic": {
+          "value": "34630",
+          "raw": "34630",
+          "page": 1,
+          "source_text": "34630",
+          "confidence": 1.0
+        }
+      }
+    ],
+    "coverages": [
+      {
+        "insr_letter": {
+          "value": "B",
+          "raw": "B",
+          "page": 1,
+          "source_text": "B",
+          "confidence": 1.0
+        },
+        "type": "general_liability",
+        "type_label_raw": {
+          "value": "COMMERCIAL GENERAL LIABILITY",
+          "raw": "COMMERCIAL GENERAL LIABILITY",
+          "page": 1,
+          "source_text": "COMMERCIAL GENERAL LIABILITY",
+          "confidence": 1.0
+        },
+        "addl_insd": {
+          "value": "Y",
+          "raw": "Y",
+          "page": 1,
+          "source_text": "Y",
+          "confidence": 1.0
+        },
+        "subr_wvd": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "policy_number": {
+          "value": "GL-123456",
+          "raw": "GL-123456",
+          "page": 1,
+          "source_text": "GL-123456",
+          "confidence": 1.0
+        },
+        "policy_eff": {
+          "value": "2019-12-12",
+          "raw": "12/12/2019",
+          "page": 1,
+          "source_text": "12/12/2019",
+          "confidence": 1.0
+        },
+        "policy_exp": {
+          "value": "2020-12-12",
+          "raw": "12/12/2020",
+          "page": 1,
+          "source_text": "12/12/2020",
+          "confidence": 1.0
+        },
+        "form_basis": {
+          "value": "occurrence",
+          "raw": "X",
+          "page": 1,
+          "source_text": "X",
+          "confidence": 1.0
+        },
+        "aggregate_applies_per": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "wc_officer_excluded": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "limits": [
+          {
+            "label": "each_occurrence",
+            "label_raw": {
+              "value": "EACH OCCURRENCE",
+              "raw": "EACH OCCURRENCE",
+              "page": 1,
+              "source_text": "EACH OCCURRENCE",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1000000,
+              "raw": "1,000,000",
+              "page": 1,
+              "source_text": "1,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "damage_to_rented_premises",
+            "label_raw": {
+              "value": "DAMAGE TO RENTED PREMISES (Ea occurrence)",
+              "raw": "DAMAGE TO RENTED PREMISES (Ea occurrence)",
+              "page": 1,
+              "source_text": "DAMAGE TO RENTED PREMISES (Ea occurrence)",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 500000,
+              "raw": "500,000",
+              "page": 1,
+              "source_text": "500,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "med_exp",
+            "label_raw": {
+              "value": "MED EXP (Any one person)",
+              "raw": "MED EXP (Any one person)",
+              "page": 1,
+              "source_text": "MED EXP (Any one person)",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 5000,
+              "raw": "5,000",
+              "page": 1,
+              "source_text": "5,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "personal_and_adv_injury",
+            "label_raw": {
+              "value": "PERSONAL & ADV INJURY",
+              "raw": "PERSONAL & ADV INJURY",
+              "page": 1,
+              "source_text": "PERSONAL & ADV INJURY",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1000000,
+              "raw": "1,000,000",
+              "page": 1,
+              "source_text": "1,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "general_aggregate",
+            "label_raw": {
+              "value": "GENERAL AGGREGATE",
+              "raw": "GENERAL AGGREGATE",
+              "page": 1,
+              "source_text": "GENERAL AGGREGATE",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 2000000,
+              "raw": "2,000,000",
+              "page": 1,
+              "source_text": "2,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "products_comp_op_agg",
+            "label_raw": {
+              "value": "PRODUCTS - COMP/OP AGG",
+              "raw": "PRODUCTS - COMP/OP AGG",
+              "page": 1,
+              "source_text": "PRODUCTS - COMP/OP AGG",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 2000000,
+              "raw": "2,000,000",
+              "page": 1,
+              "source_text": "2,000,000",
+              "confidence": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "insr_letter": {
+          "value": "A",
+          "raw": "A",
+          "page": 1,
+          "source_text": "A",
+          "confidence": 1.0
+        },
+        "type": "automobile_liability",
+        "type_label_raw": {
+          "value": "AUTOMOBILE LIABILITY",
+          "raw": "AUTOMOBILE LIABILITY",
+          "page": 1,
+          "source_text": "AUTOMOBILE LIABILITY",
+          "confidence": 1.0
+        },
+        "addl_insd": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "subr_wvd": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "policy_number": {
+          "value": "AUTO7891011",
+          "raw": "AUTO7891011",
+          "page": 1,
+          "source_text": "AUTO7891011",
+          "confidence": 1.0
+        },
+        "policy_eff": {
+          "value": "2019-10-12",
+          "raw": "10/12/2019",
+          "page": 1,
+          "source_text": "10/12/2019",
+          "confidence": 1.0
+        },
+        "policy_exp": {
+          "value": "2020-10-12",
+          "raw": "10/12/2020",
+          "page": 1,
+          "source_text": "10/12/2020",
+          "confidence": 1.0
+        },
+        "form_basis": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "aggregate_applies_per": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "wc_officer_excluded": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "limits": [
+          {
+            "label": "combined_single_limit",
+            "label_raw": {
+              "value": "COMBINED SINGLE LIMIT (Ea accident)",
+              "raw": "COMBINED SINGLE LIMIT (Ea accident)",
+              "page": 1,
+              "source_text": "COMBINED SINGLE LIMIT (Ea accident)",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1000000,
+              "raw": "1,000,000",
+              "page": 1,
+              "source_text": "1,000,000",
+              "confidence": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "insr_letter": {
+          "value": "C",
+          "raw": "C",
+          "page": 1,
+          "source_text": "C",
+          "confidence": 1.0
+        },
+        "type": "workers_compensation",
+        "type_label_raw": {
+          "value": "WORKERS COMPENSATION AND EMPLOYERS' LIABILITY",
+          "raw": "WORKERS COMPENSATION AND EMPLOYERS' LIABILITY",
+          "page": 1,
+          "source_text": "WORKERS COMPENSATION AND EMPLOYERS' LIABILITY",
+          "confidence": 1.0
+        },
+        "addl_insd": {
+          "value": "N/A",
+          "raw": "N / A",
+          "page": 1,
+          "source_text": "N / A",
+          "confidence": 1.0
+        },
+        "subr_wvd": {
+          "value": "Y",
+          "raw": "Y",
+          "page": 1,
+          "source_text": "Y",
+          "confidence": 1.0
+        },
+        "policy_number": {
+          "value": "WC12131415",
+          "raw": "WC12131415",
+          "page": 1,
+          "source_text": "WC12131415",
+          "confidence": 1.0
+        },
+        "policy_eff": {
+          "value": "2020-08-01",
+          "raw": "8/1/2020",
+          "page": 1,
+          "source_text": "8/1/2020",
+          "confidence": 1.0
+        },
+        "policy_exp": {
+          "value": "2021-08-01",
+          "raw": "8/1/2021",
+          "page": 1,
+          "source_text": "8/1/2021",
+          "confidence": 1.0
+        },
+        "form_basis": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "aggregate_applies_per": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "wc_officer_excluded": {
+          "value": null,
+          "raw": null,
+          "page": null,
+          "source_text": null,
+          "confidence": 1.0
+        },
+        "limits": [
+          {
+            "label": "el_each_accident",
+            "label_raw": {
+              "value": "E.L. EACH ACCIDENT",
+              "raw": "E.L. EACH ACCIDENT",
+              "page": 1,
+              "source_text": "E.L. EACH ACCIDENT",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1000000,
+              "raw": "1,000,000",
+              "page": 1,
+              "source_text": "1,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "el_disease_ea_employee",
+            "label_raw": {
+              "value": "E.L. DISEASE - EA EMPLOYEE",
+              "raw": "E.L. DISEASE - EA EMPLOYEE",
+              "page": 1,
+              "source_text": "E.L. DISEASE - EA EMPLOYEE",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1000000,
+              "raw": "1,000,000",
+              "page": 1,
+              "source_text": "1,000,000",
+              "confidence": 1.0
+            }
+          },
+          {
+            "label": "el_disease_policy_limit",
+            "label_raw": {
+              "value": "E.L. DISEASE - POLICY LIMIT",
+              "raw": "E.L. DISEASE - POLICY LIMIT",
+              "page": 1,
+              "source_text": "E.L. DISEASE - POLICY LIMIT",
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1000000,
+              "raw": "1,000,000",
+              "page": 1,
+              "source_text": "1,000,000",
+              "confidence": 1.0
+            }
+          }
+        ]
+      }
+    ],
+    "description_of_operations": {
+      "value": "The City of Temecula, the Temecula Community Services District, the Redevelopment Agency of the City of Temecula, their officers, officials, employees and\nvolunteers are to be covered as insured’s, as respects:  liability arising out of activities performed by or on behalf of the Contractor; products and completed\noperations of the Contractor; premises owned, occupied or used by the Contractor; or automobiles owned, leased, hired or borrowed by the Contractor.  The\ncoverage shall contain no special limitations on the scope of protection afforded to the City of Temecula, the Temecula Community Services District, the\nRedevelopment Agency of the City of Temecula, their officers, officials, employees or volunteers.",
+      "raw": "The City of Temecula, the Temecula Community Services District, the Redevelopment Agency of the City of Temecula, their officers, officials, employees and\nvolunteers are to be covered as insured’s, as respects:  liability arising out of activities performed by or on behalf of the Contractor; products and completed\noperations of the Contractor; premises owned, occupied or used by the Contractor; or automobiles owned, leased, hired or borrowed by the Contractor.  The\ncoverage shall contain no special limitations on the scope of protection afforded to the City of Temecula, the Temecula Community Services District, the\nRedevelopment Agency of the City of Temecula, their officers, officials, employees or volunteers.",
+      "page": 1,
+      "source_text": "The City of Temecula, the Temecula Community Services District",
+      "confidence": 1.0
+    },
+    "endorsement_forms_mentioned": [
+      {
+        "form_number": "CG 20 37",
+        "edition": "04 13",
+        "context": "attached_endorsement_page",
+        "conditional": false
+      },
+      {
+        "form_number": "WC 99 04 10 C",
+        "edition": "01-19",
+        "context": "attached_endorsement_page",
+        "conditional": false
+      }
+    ],
+    "certificate_holder": {
+      "value": "CITY OF TEMECULA, 41000 MAIN STREET, TEMECULA, CA 92590",
+      "raw": "CITY OF TEMECULA\n41000 MAIN STREET\nTEMECULA, CA 92590",
+      "page": 1,
+      "source_text": "41000 MAIN STREET",
+      "confidence": 1.0
+    },
+    "authorized_representative_present": {
+      "value": true,
+      "raw": null,
+      "page": 1,
+      "source_text": null,
+      "confidence": 1.0
+    },
+    "acord_101_attached": {
+      "value": false,
+      "raw": null,
+      "page": null,
+      "source_text": null,
+      "confidence": 1.0
+    },
+    "notes": "Certificate number 1907915241. Pages 2 and 3 are the two endorsements."
+  }
+}

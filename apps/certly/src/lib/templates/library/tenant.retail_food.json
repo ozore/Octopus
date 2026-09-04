@@ -1,0 +1,77 @@
+{
+  "id": "tenant.retail_food",
+  "audience": "tenant",
+  "label": "Commercial landlord — retail food tenant",
+  "summary": "A food tenant carries cooking, slip and liquor exposure. These numbers are our inference from the baseline, not a sourced requirement.",
+  "confidence": "low",
+  "unverified": true,
+  "unverified_note": "Our suggestion — not from a published source. Lease insurance clauses are negotiated per lease and no standard form exists for food tenants. Paste your own lease clause instead of relying on this.",
+  "requirements": [
+    {
+      "kind": "limit",
+      "coverage": "general_liability",
+      "limit": "each_occurrence",
+      "min": 2000000
+    },
+    {
+      "kind": "limit",
+      "coverage": "general_liability",
+      "limit": "general_aggregate",
+      "min": 2000000
+    },
+    {
+      "kind": "coverage_present",
+      "coverage": "workers_compensation",
+      "note": "Statutory workers' compensation where the tenant has employees."
+    },
+    {
+      "kind": "limit",
+      "coverage": "umbrella_liability",
+      "limit": "umbrella_each_occurrence",
+      "min": 2000000
+    },
+    {
+      "kind": "coverage_present",
+      "coverage": "other",
+      "other_label": "Liquor Liability",
+      "severity": "advisory",
+      "note": "Required only where the tenant serves alcohol. Tracked as advisory so it appears in the report without marking a tenant red who does not serve."
+    },
+    {
+      "kind": "endorsement",
+      "endorsement": "additional_insured_ongoing",
+      "accepts": [
+        "CG 20 10",
+        "CG 20 33",
+        "CG 20 38",
+        "CG 20 26"
+      ]
+    },
+    {
+      "kind": "endorsement",
+      "endorsement": "waiver_of_subrogation_gl",
+      "accepts": [
+        "CG 24 04",
+        "CG 24 53"
+      ]
+    },
+    {
+      "kind": "endorsement",
+      "endorsement": "primary_non_contributory",
+      "accepts": [
+        "CG 20 01"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.lawinsider.com/clause/tenants-commercial-general-liability-insurance",
+      "title": "LawInsider — tenant's commercial general liability insurance clauses",
+      "last_verified": "2026-09-03",
+      "verified_by": [
+        "po-agent"
+      ],
+      "confidence": "medium"
+    }
+  ]
+}

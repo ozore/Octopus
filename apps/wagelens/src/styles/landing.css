@@ -1,0 +1,390 @@
+/* ==========================================================================
+   LANDING LAYER — `/` only (LANDING_SPEC.md).
+
+   Built from the SEMANTIC --wl-* tokens and nothing else: no hex, no rgb, no
+   named colour. This app's palette is PINNED by IDENTITY_ARBITRATION.md, so a
+   raw colour here would be a colour the fleet cannot re-theme.
+
+   MOTION. IDENTITY.md §9.4 owns the durations; every animation below is a
+   multiple of --wl-dur-1..3 through calc(), so the identity still owns the
+   tempo even where LANDING_SPEC §6 asks for a longer choreography than any
+   product interaction has. The last block in this file sets every one of them
+   to a single frame under `prefers-reduced-motion: reduce`, which is the
+   identity's own rule and the landing spec's build-checklist item.
+
+   Separate file rather than an addition to app.css: three sibling agents are
+   editing this app at the same time, and app.css is the file they would all
+   reach for. One landing, one stylesheet.
+   ========================================================================== */
+
+@layer wl.app {
+  /* Choreography durations, derived from the identity's motion tokens. */
+  .wl-land {
+    --wl-land-row: var(--wl-dur-2);                    /* 160ms  a rate row   */
+    --wl-land-step: calc(var(--wl-dur-1) * 0.4);       /*  40ms  row stagger  */
+    --wl-land-axis: calc(var(--wl-dur-3) * 3);         /* 660ms  V2 axis draw */
+    --wl-land-marker: calc(var(--wl-dur-1) * 0.8);     /*  80ms  V2 marker    */
+    --wl-land-cell: calc(var(--wl-dur-1) * 0.25);      /*  25ms  V3 cell step */
+    --wl-land-rise: var(--wl-dur-3);                   /* 220ms  V5 page two  */
+  }
+
+  /* -- Hero -------------------------------------------------------------- */
+  .wl-land__hero {
+    display: grid;
+    gap: var(--wl-space-7);
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    align-items: start;
+  }
+  .wl-land__hero h1 {
+    font-size: var(--wl-text-3xl);
+    line-height: var(--wl-lh-tight);
+    letter-spacing: -.025em;
+    max-inline-size: 18ch;
+    margin: 0;
+  }
+  .wl-land__sub {
+    font-size: var(--wl-text-md);
+    line-height: var(--wl-lh-base);
+    color: var(--wl-ink-2);
+    max-inline-size: 46ch;
+  }
+  .wl-land__micro { font-size: var(--wl-text-xs); color: var(--wl-ink-3); }
+  .wl-land__hero-actions { display: flex; flex-wrap: wrap; gap: var(--wl-space-3); align-items: center; }
+
+  /* -- Section furniture -------------------------------------------------- */
+  .wl-land__section { display: grid; gap: var(--wl-space-5); }
+  .wl-land__section > h2 {
+    font-size: var(--wl-text-xl);
+    letter-spacing: -.015em;
+    margin: 0;
+  }
+  .wl-land__lede { color: var(--wl-ink-2); max-inline-size: var(--wl-measure); }
+  .wl-land__rule {
+    block-size: 2px;
+    inline-size: 2.5rem;
+    background: var(--wl-brand-mark);
+    border-radius: var(--wl-radius-full);
+  }
+  .wl-land__note { font-size: var(--wl-text-xs); color: var(--wl-ink-3); }
+
+  /* -- V1 · the provenance card, and the widget around it ----------------- */
+  .wl-land__widget {
+    display: grid;
+    gap: var(--wl-space-4);
+    background: var(--wl-surface);
+    border: 1px solid var(--wl-rule-hairline);
+    border-radius: var(--wl-radius-md);
+    padding: var(--wl-space-5);
+    box-shadow: var(--wl-elev-1);
+  }
+  .wl-land__widget-title {
+    font-size: var(--wl-text-2xs);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-weight: 600;
+    color: var(--wl-ink-3);
+  }
+  .wl-land__result { display: grid; gap: var(--wl-space-4); min-block-size: 18rem; }
+  .wl-land__ratelist { display: grid; }
+  .wl-land__rateline {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--wl-space-3);
+    align-items: baseline;
+    padding-block: var(--wl-space-2);
+    border-block-end: 1px solid var(--wl-rule-hairline);
+    animation: wl-land-row var(--wl-land-row) var(--wl-ease) both;
+    animation-delay: calc(var(--wl-land-step) * var(--wl-i, 0));
+  }
+  .wl-land__rateline:last-child { border-block-end: 0; }
+  .wl-land__rateline dt {
+    font-size: var(--wl-text-sm);
+    color: var(--wl-ink);
+    min-inline-size: 0;
+  }
+  .wl-land__rateline dd {
+    margin: 0;
+    font-family: var(--wl-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-size: var(--wl-text-md);
+    color: var(--wl-ink);
+    background: var(--wl-surface-sunken);
+    padding: 2px var(--wl-space-2);
+    border-radius: var(--wl-radius-xs);
+    white-space: nowrap;
+  }
+  .wl-land__group {
+    font-size: var(--wl-text-2xs);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--wl-ink-3);
+    font-family: var(--wl-font-mono);
+    padding-block: var(--wl-space-2);
+    border-block-end: 1px solid var(--wl-rule-grid);
+  }
+  /* The receipt settles last: the number arrives, then its source. */
+  .wl-land__chip {
+    animation: wl-land-settle var(--wl-dur-3) var(--wl-ease) both;
+    animation-delay: calc(var(--wl-land-step) * var(--wl-rows, 8) + var(--wl-dur-3));
+  }
+
+  /* -- The modification picker — the one interaction the page exists for -- */
+  .wl-land__mods { display: flex; flex-wrap: wrap; gap: var(--wl-space-2); align-items: center; padding: 0; margin: 0; list-style: none; }
+  .wl-land__mods li { list-style: none; }
+
+  /* -- V2 · the determination timeline ------------------------------------ */
+  .wl-land__timeline { display: block; inline-size: 100%; }
+  .wl-land__timeline--tall { display: none; }
+  .wl-land__axis {
+    transform-origin: left center;
+    animation: wl-land-draw var(--wl-land-axis) var(--wl-ease) both;
+  }
+  .wl-land__axis--v { transform-origin: center top; }
+  .wl-land__marker {
+    animation: wl-land-pop var(--wl-dur-2) var(--wl-ease) both;
+    animation-delay: calc(var(--wl-land-axis) * 0.5 + var(--wl-land-marker) * var(--wl-i, 0));
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .wl-land__pin {
+    animation: wl-land-drop var(--wl-dur-3) var(--wl-ease) both;
+    animation-delay: calc(var(--wl-land-axis) + var(--wl-dur-2));
+    transform-box: fill-box;
+    transform-origin: center bottom;
+  }
+  .wl-land__bracket {
+    transform-origin: left center;
+    animation: wl-land-draw var(--wl-dur-3) var(--wl-ease) both;
+    animation-delay: calc(var(--wl-land-axis) + var(--wl-dur-3));
+  }
+  .wl-land__svg-label {
+    font-family: var(--wl-font-ui);
+    font-size: 11px;
+    fill: var(--wl-ink-3);
+  }
+  .wl-land__svg-label--mono { font-family: var(--wl-font-mono); fill: var(--wl-source-ink); }
+  .wl-land__svg-label--ink { fill: var(--wl-ink); font-weight: 600; }
+
+  /* -- V3 · the Friday wall ----------------------------------------------- */
+  .wl-land__wall { display: block; inline-size: 100%; }
+  .wl-land__wall--tall { display: none; }
+  .wl-land__cell {
+    animation: wl-land-fill var(--wl-dur-2) var(--wl-ease) both;
+    animation-delay: calc(var(--wl-land-cell) * var(--wl-i, 0));
+  }
+  .wl-land__cell--late {
+    animation: wl-land-fill var(--wl-dur-2) var(--wl-ease) both,
+               wl-land-resolve var(--wl-dur-3) var(--wl-ease) both;
+    animation-delay: calc(var(--wl-land-cell) * var(--wl-i, 0)),
+                     calc(var(--wl-land-cell) * 52 + var(--wl-dur-3));
+  }
+
+  /* -- V4 · the 55-minute ledger ------------------------------------------ */
+  .wl-land__ledger {
+    display: grid;
+    gap: var(--wl-space-5);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    background: var(--wl-surface);
+    border: 1px solid var(--wl-rule-hairline);
+    border-radius: var(--wl-radius-md);
+    padding: var(--wl-space-5);
+  }
+  .wl-land__ledger-inputs { display: grid; gap: var(--wl-space-3); align-content: start; }
+  .wl-land__ledger-outputs {
+    display: grid;
+    gap: var(--wl-space-4);
+    align-content: start;
+    background: var(--wl-surface-sunken);
+    border-radius: var(--wl-radius-sm);
+    padding: var(--wl-space-4);
+  }
+  .wl-land__figure {
+    font-family: var(--wl-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-weight: 700;
+    font-size: var(--wl-text-2xl);
+    line-height: 1.1;
+    color: var(--wl-ink);
+  }
+  .wl-land__burden {
+    background: var(--wl-source-bg);
+    border: 1px solid var(--wl-source-bd);
+    border-inline-start: 3px solid var(--wl-source-dot);
+    border-radius: var(--wl-radius-sm);
+    padding: var(--wl-space-3) var(--wl-space-4);
+    font-size: var(--wl-text-xs);
+    color: var(--wl-source-ink);
+    margin: 0;
+  }
+  .wl-land__burden a { color: var(--wl-source-ink); }
+
+  /* -- §4 · how it works --------------------------------------------------- */
+  .wl-land__steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--wl-space-6);
+  }
+  .wl-land__step { display: grid; gap: var(--wl-space-2); align-content: start; }
+  .wl-land__step-no {
+    font-family: var(--wl-font-mono);
+    font-size: var(--wl-text-2xs);
+    letter-spacing: .1em;
+    color: var(--wl-ink-3);
+  }
+  .wl-land__step h3 { font-size: var(--wl-text-md); margin: 0; color: var(--wl-ink); }
+  .wl-land__step p { margin: 0; color: var(--wl-ink-2); font-size: var(--wl-text-sm); }
+  .wl-land__friday {
+    font-size: var(--wl-text-md);
+    color: var(--wl-ink);
+    border-block-start: 1px solid var(--wl-rule-hairline);
+    padding-block-start: var(--wl-space-4);
+  }
+
+  /* -- V5 · the rendered WH-347 -------------------------------------------- */
+  .wl-land__doc-scroll { overflow-x: auto; }
+  .wl-land__callout { font-size: var(--wl-text-2xs); color: var(--wl-ink-2); display: flex; gap: var(--wl-space-2); align-items: center; }
+  .wl-land__callout svg { color: var(--wl-selected-edge); flex: none; }
+  .wl-land__page2 {
+    animation: wl-land-rise var(--wl-land-rise) var(--wl-ease) both;
+  }
+
+  /* -- Pricing ------------------------------------------------------------- */
+  .wl-land__prices {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
+    gap: var(--wl-space-4);
+    align-items: stretch;
+  }
+  .wl-land__price {
+    display: grid;
+    gap: var(--wl-space-3);
+    align-content: start;
+    background: var(--wl-surface);
+    border: 1px solid var(--wl-rule-hairline);
+    border-radius: var(--wl-radius-md);
+    padding: var(--wl-space-5);
+  }
+  /* Recommended is an EDGE, never a fill (LANDING_SPEC §8). */
+  .wl-land__price--recommended { border: 2px solid var(--wl-selected-edge); }
+  .wl-land__amount {
+    font-family: var(--wl-font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-weight: 700;
+    font-size: var(--wl-text-2xl);
+    color: var(--wl-ink);
+  }
+  .wl-land__price ul { margin: 0; padding-inline-start: var(--wl-space-5); font-size: var(--wl-text-xs); color: var(--wl-ink-2); }
+  .wl-land__price li { list-style: disc; margin-block-end: var(--wl-space-1); }
+  .wl-land__trial {
+    font-size: var(--wl-text-xs);
+    color: var(--wl-ink-2);
+    background: var(--wl-surface-sunken);
+    border-radius: var(--wl-radius-sm);
+    padding: var(--wl-space-3);
+    margin: 0;
+  }
+
+  /* -- FAQ, footer ---------------------------------------------------------- */
+  .wl-land__faq { display: grid; }
+  .wl-land__faq details {
+    border-block-end: 1px solid var(--wl-rule-hairline);
+    padding-block: var(--wl-space-3);
+  }
+  .wl-land__faq summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--wl-ink);
+    min-block-size: var(--wl-tap-min);
+    display: flex;
+    align-items: center;
+  }
+  .wl-land__faq p { color: var(--wl-ink-2); font-size: var(--wl-text-sm); max-inline-size: var(--wl-measure); }
+  .wl-land__foot { display: grid; gap: var(--wl-space-4); font-size: var(--wl-text-xs); color: var(--wl-ink-3); }
+  .wl-land__foot-links { display: flex; flex-wrap: wrap; gap: var(--wl-space-3); }
+  .wl-land__foot p { max-inline-size: var(--wl-measure); margin: 0; }
+
+  /* The zone the sticky bar lives in: it starts after V1 and ends at the
+     pricing block, which is the whole of §11's sticky-CTA rule expressed as a
+     containing block rather than as a scroll listener. */
+  .wl-land__zone { display: grid; gap: var(--wl-space-7); }
+
+  /* -- Sticky CTA: one bar, one label, no interstitial ---------------------- */
+  .wl-land__sticky {
+    position: sticky;
+    inset-block-end: 0;
+    z-index: 2;
+    display: flex;
+    gap: var(--wl-space-3);
+    align-items: center;
+    justify-content: space-between;
+    background: var(--wl-surface);
+    border-block-start: 1px solid var(--wl-rule-hairline);
+    box-shadow: var(--wl-elev-2);
+    padding: var(--wl-space-3) var(--wl-space-4);
+    border-radius: var(--wl-radius-md);
+  }
+
+  /* -- Keyframes ------------------------------------------------------------ */
+  @keyframes wl-land-row {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @keyframes wl-land-settle {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @keyframes wl-land-draw {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+  @keyframes wl-land-pop {
+    from { opacity: 0; transform: scale(.4); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes wl-land-drop {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @keyframes wl-land-fill {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes wl-land-resolve {
+    from { fill: var(--wl-flag-bg); stroke: var(--wl-flag-bd); }
+    to   { fill: var(--wl-filed-bg); stroke: var(--wl-filed-bd); }
+  }
+  @keyframes wl-land-rise {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* -- Mobile is the primary target, not an adaptation (LANDING_SPEC §11) --- */
+  @media (max-width: 860px) {
+    .wl-land__hero { grid-template-columns: minmax(0, 1fr); }
+    .wl-land__hero h1 { font-size: var(--wl-text-2xl); max-inline-size: none; }
+    .wl-land__hero-actions .wl-btn { inline-size: 100%; justify-content: center; }
+    .wl-land__steps { grid-template-columns: minmax(0, 1fr); }
+    .wl-land__ledger { grid-template-columns: minmax(0, 1fr); }
+    .wl-land__timeline { display: none; }
+    .wl-land__timeline--tall { display: block; }
+    .wl-land__wall { display: none; }
+    .wl-land__wall--tall { display: block; }
+  }
+
+  /* -- prefers-reduced-motion: the end state, immediately ------------------- */
+  @media (prefers-reduced-motion: reduce) {
+    .wl-land__rateline,
+    .wl-land__chip,
+    .wl-land__axis,
+    .wl-land__marker,
+    .wl-land__pin,
+    .wl-land__bracket,
+    .wl-land__cell,
+    .wl-land__cell--late,
+    .wl-land__page2 {
+      animation-duration: 1ms !important;
+      animation-delay: 0ms !important;
+      transform: none !important;
+    }
+  }
+}

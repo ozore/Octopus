@@ -1,0 +1,653 @@
+/* =============================================================================
+   StateReady — design system
+   Implements IDENTITY.md (2026-09-03). Framework-free. Importable from a
+   Next.js app with `import "../../design-system.css"` in the root layout.
+
+   Contract with IDENTITY.md and IDENTITY_ARBITRATION.md (2026-09-03):
+     - Two colour families only: the graphite board and its ink (all chrome),
+       and the readiness ramp (status only). No third hue. No blue anywhere.
+     - THE BOARD IS THE DEFAULT THEME. :root is the deep readiness board, the
+       surface the coordinator works on. The PAPER theme is the alternate and
+       is what every forwardable artefact uses: print, the bid PDF, the
+       shareable readiness link, the alert emails. Board for the operator,
+       paper for the forwarder.
+     - Typefaces are allocated by IDENTITY_ARBITRATION.md: Barlow, Barlow
+       Condensed and Overpass Mono belong to StateReady and to no sibling app.
+     - No translucency, no backdrop-filter. Every surface is opaque, so every
+       contrast pair is computable and is certified in identity/contrast.py.
+     - Colour is never the sole carrier of meaning: every status ships a glyph,
+       a hatch and a word.
+     - Every size, space and radius is in rem, so the whole UI scales with the
+       user's root font size (WCAG 1.4.4 / 1.4.10). px appears only on hairlines.
+
+   Sections
+     1  Fonts
+     2  Tokens — board (default)
+     3  Tokens — paper (system preference + explicit data-theme)
+     4  Reset and base
+     5  Typography
+     6  Layout: shell, grid, stack
+     7  Surfaces: card, sheet, banner, empty, disclaimer
+     8  Controls: button, field, tabs, chip, dot
+     9  Data: table, stat, meter, source line, feed, doc
+    10  The map (tile grid)
+    11  The runway (time axis)
+    12  Utilities
+    13  Motion, forced-colors, print
+   ============================================================================= */
+
+/* -------------------------------------------------- 1. Fonts (Google Fonts) */
+@import url("https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&family=Overpass+Mono:wght@400;500;600&display=swap");
+
+/* ------------------------------------- 2. Tokens — BOARD (the default theme) */
+:root {
+  color-scheme: dark;
+
+  /* ground and ink — deep graphite with a green cast, so the readiness ramp
+     is the only thing on screen with chroma in it */
+  --sr-ground:       #181D1A;
+  --sr-surface:      #212724;
+  --sr-sunken:       #0E1210;
+  --sr-line:         #333B37;
+  --sr-line-strong:  #7E8A84;
+  --sr-ink:          #ECF2EE;
+  --sr-ink-2:        #B9C4BE;
+  --sr-ink-3:        #8D9994;
+  --sr-on-ink:       #0E1210;
+
+  /* readiness ramp — the only saturated colour in the system.
+     Luminous signals on a deep board: ready 155deg, risk 31deg, lapsed 355deg */
+  --sr-ready:        #52D09C;
+  --sr-ready-fill:   #0F3226;
+  --sr-ready-edge:   #38976F;
+  --sr-risk:         #F0A85A;
+  --sr-risk-fill:    #37260D;
+  --sr-risk-edge:    #A0722C;
+  --sr-lapsed:       #F98A93;
+  --sr-lapsed-fill:  #3B1A20;
+  --sr-lapsed-edge:  #BB4E59;
+  --sr-unknown:      #8D9994;
+  --sr-unknown-fill: #232925;
+  --sr-unknown-edge: #7E8A84;
+
+  /* type — Barlow (American public/transport signage lineage), Barlow
+     Condensed for signage labels, Overpass Mono (Highway Gothic lineage)
+     for anything compared down a column */
+  --sr-font:         "Barlow", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --sr-font-display: "Barlow Condensed", "Barlow", "Roboto Condensed", "Arial Narrow", sans-serif;
+  --sr-font-mono:    "Overpass Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --sr-text-2xs:  0.6875rem;  /* 11 */
+  --sr-text-xs:   0.75rem;    /* 12 */
+  --sr-text-sm:   0.875rem;   /* 14 */
+  --sr-text-base: 1rem;       /* 16 — floor for prose */
+  --sr-text-lg:   1.125rem;   /* 18 */
+  --sr-text-xl:   1.375rem;   /* 22 */
+  --sr-text-2xl:  1.75rem;    /* 28 */
+  --sr-text-3xl:  2.25rem;    /* 36 — the one big number */
+  --sr-text-4xl:  3rem;       /* 48 — landing hero only */
+
+  --sr-leading-body:    1.5;
+  --sr-leading-heading: 1.25;
+  --sr-leading-number:  1.2;
+  --sr-measure:         68ch;
+  --sr-measure-wide:    88ch;
+
+  /* space — 4px base */
+  --sr-space-1: 0.25rem;  --sr-space-2: 0.5rem;   --sr-space-3: 0.75rem;
+  --sr-space-4: 1rem;     --sr-space-5: 1.5rem;   --sr-space-6: 2rem;
+  --sr-space-7: 3rem;     --sr-space-8: 4rem;     --sr-space-9: 6rem;
+
+  /* radius */
+  --sr-radius-sm: 0.375rem;  /* 6  — tiles, chips, inputs */
+  --sr-radius-md: 0.625rem;  /* 10 — cards, buttons */
+  --sr-radius-lg: 1rem;      /* 16 — sheets */
+
+  /* elevation — nothing that rests on the board casts a shadow. Cards are
+     separated by a value step plus a hairline. The only shadow in the system
+     belongs to the sheet, which is the one surface that floats. */
+  --sr-shadow-1: none;
+  --sr-shadow-2: none;
+  --sr-shadow-3: 0 12px 32px rgba(0, 0, 0, 0.55);
+
+  /* motion */
+  --sr-dur-1: 120ms;
+  --sr-dur-2: 180ms;
+  --sr-dur-3: 240ms;
+  --sr-ease:  cubic-bezier(0.2, 0, 0, 1);
+
+  /* geometry */
+  --sr-target-min: 2.75rem;   /* 44px — WCAG 2.5.5 */
+  --sr-row-h:      3rem;      /* 48px — the roomiest of the three fleet apps */
+  --sr-rail:       15rem;     /* 240px app rail */
+  --sr-content-max: 80rem;    /* 1280px */
+  --sr-tile:       2.5rem;    /* 40px map tile */
+  --sr-tile-gap:   0.25rem;
+}
+
+/* ------------- 3. Tokens — PAPER (the alternate; independently authored)
+   Paper is what leaves the building: print, the bid PDF, the shareable
+   readiness link, the alert emails. It is also what a viewer who has asked
+   their OS for a light interface gets. Hues are identical to the board's
+   (ready 155deg, risk 32deg, lapsed 353deg); only lightness moves, so a user
+   switching themes mid-task never has to re-learn the map.               */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="board"]):not([data-theme="dark"]) {
+    color-scheme: light;
+    --sr-ground:       #E9ECE8;
+    --sr-surface:      #FFFFFF;
+    --sr-sunken:       #DCE0DB;
+    --sr-line:         #CBD1CB;
+    --sr-line-strong:  #78827C;
+    --sr-ink:          #131714;
+    --sr-ink-2:        #454B47;
+    --sr-ink-3:        #5F6762;
+    --sr-on-ink:       #E9ECE8;
+    --sr-ready:        #146A46;
+    --sr-ready-fill:   #D4EBE0;
+    --sr-ready-edge:   #348D68;
+    --sr-risk:         #8A4E08;
+    --sr-risk-fill:    #F8E7CE;
+    --sr-risk-edge:    #A9701F;
+    --sr-lapsed:       #A81B2C;
+    --sr-lapsed-fill:  #F7DEDF;
+    --sr-lapsed-edge:  #BE454B;
+    --sr-unknown:      #5F6762;
+    --sr-unknown-fill: #E4E7E2;
+    --sr-unknown-edge: #78827C;
+    --sr-shadow-3: 0 12px 32px rgba(19, 23, 20, 0.18);
+  }
+}
+
+:root[data-theme="paper"], :root[data-theme="light"] {
+  color-scheme: light;
+  --sr-ground:       #E9ECE8;
+  --sr-surface:      #FFFFFF;
+  --sr-sunken:       #DCE0DB;
+  --sr-line:         #CBD1CB;
+  --sr-line-strong:  #78827C;
+  --sr-ink:          #131714;
+  --sr-ink-2:        #454B47;
+  --sr-ink-3:        #5F6762;
+  --sr-on-ink:       #E9ECE8;
+  --sr-ready:        #146A46;
+  --sr-ready-fill:   #D4EBE0;
+  --sr-ready-edge:   #348D68;
+  --sr-risk:         #8A4E08;
+  --sr-risk-fill:    #F8E7CE;
+  --sr-risk-edge:    #A9701F;
+  --sr-lapsed:       #A81B2C;
+  --sr-lapsed-fill:  #F7DEDF;
+  --sr-lapsed-edge:  #BE454B;
+  --sr-unknown:      #5F6762;
+  --sr-unknown-fill: #E4E7E2;
+  --sr-unknown-edge: #78827C;
+  --sr-shadow-3: 0 12px 32px rgba(19, 23, 20, 0.18);
+}
+
+/* ------------------------------------------------------ 4. Reset and base */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--sr-ground);   /* the board. never transparent. */
+  color: var(--sr-ink);
+  font-family: var(--sr-font);
+  font-size: var(--sr-text-base);
+  line-height: var(--sr-leading-body);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, svg, video { max-width: 100%; height: auto; }
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--sr-line);
+  margin: var(--sr-space-5) 0;
+}
+
+/* Focus: a 2px ink ring plus a 2px offset halo in the surface colour, so it
+   survives on paper, on a card and on any status fill. Never removed. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--sr-ink);
+  outline-offset: 2px;
+  border-radius: var(--sr-radius-sm);
+}
+
+::selection { background: var(--sr-ink); color: var(--sr-on-ink); }
+
+/* ---------------------------------------------------------- 5. Typography */
+h1, h2, h3, h4 {
+  margin: 0 0 var(--sr-space-3);
+  line-height: var(--sr-leading-heading);
+  font-weight: 700;
+  letter-spacing: -0.011em;
+}
+h1 { font-size: var(--sr-text-2xl); }
+h2 { font-size: var(--sr-text-xl); }
+h3 { font-size: var(--sr-text-lg); }
+h4 { font-size: var(--sr-text-base); }
+
+p { margin: 0 0 var(--sr-space-4); max-inline-size: var(--sr-measure); }
+
+a {
+  color: var(--sr-ink);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+a:hover { text-decoration-thickness: 2px; }
+
+code, kbd, samp, .sr-mono {
+  font-family: var(--sr-font-mono);
+  font-size: 0.9375em;
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-lead      { font-size: var(--sr-text-lg); color: var(--sr-ink-2); }
+.sr-meta      { font-size: var(--sr-text-xs); color: var(--sr-ink-3); }
+.sr-eyebrow   { font-family: var(--sr-font-display); font-size: var(--sr-text-sm); font-weight: 600;
+                letter-spacing: 0.12em; text-transform: uppercase; color: var(--sr-ink-3); }
+.sr-number    { font-family: var(--sr-font-mono); font-variant-numeric: tabular-nums; }
+
+/* --------------------------------------------------------- 6. Layout */
+/* The shell is a board, not a document: a full-width bar across the top and
+   the board beneath it. Neither sibling app is laid out this way — WageLens
+   and Certly both run a fixed left rail. IDENTITY_ARBITRATION.md 4.3. */
+.sr-shell        { display: grid; grid-template-rows: auto minmax(0, 1fr); min-block-size: 100vh; }
+.sr-bar,
+.sr-rail         { display: flex; align-items: center; gap: var(--sr-space-5); flex-wrap: wrap;
+                   border-block-end: 1px solid var(--sr-line);
+                   padding: var(--sr-space-3) var(--sr-space-5);
+                   background: var(--sr-surface); }
+.sr-bar__nav     { display: flex; align-items: center; gap: var(--sr-space-4); flex-wrap: wrap; }
+.sr-main         { padding: var(--sr-space-5) var(--sr-space-5) var(--sr-space-8); min-inline-size: 0; }
+.sr-container    { max-inline-size: var(--sr-content-max); margin-inline: auto; }
+
+.sr-grid         { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--sr-space-5); }
+.sr-col-4        { grid-column: span 4; }
+.sr-col-5        { grid-column: span 5; }
+.sr-col-6        { grid-column: span 6; }
+.sr-col-7        { grid-column: span 7; }
+.sr-col-8        { grid-column: span 8; }
+.sr-col-12       { grid-column: span 12; }
+
+.sr-stack > * + * { margin-block-start: var(--sr-space-4); }
+.sr-row          { display: flex; align-items: center; gap: var(--sr-space-3); flex-wrap: wrap; }
+.sr-row--between { justify-content: space-between; }
+.sr-spread       { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sr-space-4); }
+
+@media (max-width: 64rem) {
+  .sr-bar, .sr-rail { overflow-x: auto; }
+  .sr-col-4, .sr-col-5, .sr-col-6, .sr-col-7, .sr-col-8 { grid-column: span 12; }
+}
+@media (max-width: 40rem) {
+  .sr-main { padding: var(--sr-space-4) var(--sr-space-4) var(--sr-space-7); }
+}
+
+/* -------------------------------------------------------- 7. Surfaces */
+/* A card on the board is a value step plus a hairline. No shadow: see the
+   elevation tokens above and IDENTITY_ARBITRATION.md's shadow policy row. */
+.sr-card {
+  background: var(--sr-surface);
+  border: 1px solid var(--sr-line);
+  border-radius: var(--sr-radius-md);
+  box-shadow: var(--sr-shadow-2);
+  padding: var(--sr-space-5);
+}
+.sr-card__head { display: flex; align-items: flex-start; justify-content: space-between;
+                 gap: var(--sr-space-4); margin-block-end: var(--sr-space-4); }
+.sr-card__title { margin: 0; font-size: var(--sr-text-lg); }
+
+/* Licence card — status is carried by a left edge bar AND a chip in the header */
+.sr-card--licence { position: relative; padding-inline-start: calc(var(--sr-space-5) + 0.25rem); }
+.sr-card--licence::before {
+  content: ""; position: absolute; inset-block: -1px; inset-inline-start: -1px;
+  inline-size: 0.375rem;
+  border-start-start-radius: var(--sr-radius-md); border-end-start-radius: var(--sr-radius-md);
+  background: var(--sr-unknown-edge);
+}
+.sr-card--licence[data-status="ready"]::before  { background: var(--sr-ready-edge); }
+.sr-card--licence[data-status="risk"]::before   { background: var(--sr-risk-edge); }
+.sr-card--licence[data-status="lapsed"]::before { background: var(--sr-lapsed-edge); }
+
+.sr-dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--sr-space-2) var(--sr-space-4); margin: 0; }
+.sr-dl dt { font-size: var(--sr-text-xs); color: var(--sr-ink-3); }
+.sr-dl dd { margin: 0; font-size: var(--sr-text-sm); }
+
+.sr-sheet {
+  position: fixed; inset-block: 0; inset-inline-end: 0; inline-size: min(30rem, 100%);
+  background: var(--sr-surface); border-inline-start: 1px solid var(--sr-line);
+  box-shadow: var(--sr-shadow-3); padding: var(--sr-space-5); overflow-y: auto;
+  border-start-start-radius: var(--sr-radius-lg); border-end-start-radius: var(--sr-radius-lg);
+}
+
+.sr-banner {
+  display: flex; gap: var(--sr-space-3); align-items: flex-start;
+  border: 1px solid var(--sr-line-strong); border-radius: var(--sr-radius-md);
+  background: var(--sr-sunken); color: var(--sr-ink);
+  padding: var(--sr-space-3) var(--sr-space-4); font-size: var(--sr-text-sm);
+}
+.sr-banner[data-status="risk"]   { background: var(--sr-risk-fill);   border-color: var(--sr-risk-edge); }
+.sr-banner[data-status="lapsed"] { background: var(--sr-lapsed-fill); border-color: var(--sr-lapsed-edge); }
+.sr-banner[data-status="ready"]  { background: var(--sr-ready-fill);  border-color: var(--sr-ready-edge); }
+.sr-banner__glyph { font-weight: 700; }
+
+.sr-empty {
+  border: 1px dashed var(--sr-line-strong); border-radius: var(--sr-radius-md);
+  padding: var(--sr-space-6); text-align: center; color: var(--sr-ink-2);
+}
+.sr-empty h3 { margin-block-end: var(--sr-space-2); }
+
+.sr-disclaimer {
+  font-size: var(--sr-text-xs); color: var(--sr-ink-3);
+  border-block-start: 1px solid var(--sr-line);
+  padding-block-start: var(--sr-space-3); margin-block-start: var(--sr-space-6);
+  max-inline-size: var(--sr-measure);
+}
+
+/* -------------------------------------------------------- 8. Controls */
+.sr-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--sr-space-2);
+  min-block-size: var(--sr-target-min); padding: 0 var(--sr-space-4);
+  border-radius: var(--sr-radius-md); border: 1px solid transparent;
+  font: inherit; font-size: var(--sr-text-sm); font-weight: 500; line-height: 1;
+  cursor: pointer; text-decoration: none; white-space: nowrap;
+  transition: background-color var(--sr-dur-1) var(--sr-ease),
+              border-color var(--sr-dur-1) var(--sr-ease),
+              color var(--sr-dur-1) var(--sr-ease);
+}
+.sr-btn--primary   { background: var(--sr-ink); color: var(--sr-on-ink); border-color: var(--sr-ink); }
+.sr-btn--primary:hover   { background: var(--sr-ink-2); border-color: var(--sr-ink-2); }
+.sr-btn--secondary { background: var(--sr-surface); color: var(--sr-ink); border-color: var(--sr-line-strong); }
+.sr-btn--secondary:hover { background: var(--sr-sunken); }
+.sr-btn--ghost     { background: transparent; color: var(--sr-ink); border-color: transparent;
+                     text-decoration: underline; text-underline-offset: 0.18em; }
+.sr-btn--ghost:hover     { background: var(--sr-sunken); }
+.sr-btn--danger    { background: var(--sr-surface); color: var(--sr-lapsed); border-color: var(--sr-lapsed-edge); }
+.sr-btn--danger:hover    { background: var(--sr-lapsed-fill); }
+.sr-btn[disabled], .sr-btn[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
+
+.sr-field { display: block; margin-block-end: var(--sr-space-4); max-inline-size: 28rem; }
+.sr-field__label { display: block; font-size: var(--sr-text-sm); font-weight: 500; margin-block-end: var(--sr-space-1); }
+.sr-field__hint  { display: block; font-size: var(--sr-text-xs); color: var(--sr-ink-3); margin-block-start: var(--sr-space-1); }
+.sr-field__error { display: block; font-size: var(--sr-text-xs); color: var(--sr-lapsed); margin-block-start: var(--sr-space-1); font-weight: 500; }
+.sr-input, .sr-select, .sr-textarea {
+  inline-size: 100%; min-block-size: var(--sr-target-min);
+  padding: var(--sr-space-2) var(--sr-space-3);
+  background: var(--sr-surface); color: var(--sr-ink);
+  border: 1px solid var(--sr-line-strong); border-radius: var(--sr-radius-sm);
+  font: inherit; font-size: var(--sr-text-sm);
+}
+.sr-textarea { min-block-size: 6rem; padding-block: var(--sr-space-3); }
+.sr-input::placeholder, .sr-textarea::placeholder { color: var(--sr-ink-3); }
+.sr-input[aria-invalid="true"], .sr-textarea[aria-invalid="true"] { border-color: var(--sr-lapsed); border-width: 2px; }
+
+.sr-tabs { display: flex; gap: var(--sr-space-4); border-block-end: 1px solid var(--sr-line); margin-block-end: var(--sr-space-5); }
+.sr-tab {
+  appearance: none; background: none; border: 0; cursor: pointer; font: inherit;
+  font-size: var(--sr-text-sm); font-weight: 500; color: var(--sr-ink-3);
+  padding: var(--sr-space-3) 0; margin-block-end: -1px;
+  border-block-end: 2px solid transparent;
+}
+.sr-tab[aria-selected="true"] { color: var(--sr-ink); border-block-end-color: var(--sr-ink); }
+
+/* Status chip — colour + glyph + word, always all three */
+.sr-chip {
+  display: inline-flex; align-items: center; gap: var(--sr-space-2);
+  padding: 0.125rem var(--sr-space-2); border-radius: var(--sr-radius-sm);
+  font-size: var(--sr-text-xs); font-weight: 700; letter-spacing: 0.02em;
+  border: 1px solid var(--sr-unknown-edge); background: var(--sr-unknown-fill); color: var(--sr-ink);
+  white-space: nowrap;
+}
+.sr-chip[data-status="ready"]  { background: var(--sr-ready-fill);  border-color: var(--sr-ready-edge); }
+.sr-chip[data-status="risk"]   { background: var(--sr-risk-fill);   border-color: var(--sr-risk-edge); }
+.sr-chip[data-status="lapsed"] { background: var(--sr-lapsed-fill); border-color: var(--sr-lapsed-edge); }
+.sr-chip__glyph { font-weight: 700; line-height: 1; }
+
+.sr-dot {
+  display: inline-block; inline-size: 0.625rem; block-size: 0.625rem; border-radius: 50%;
+  background: var(--sr-unknown-fill); border: 2px solid var(--sr-unknown-edge);
+  vertical-align: -0.05em; flex: none;
+}
+.sr-dot[data-status="ready"]  { background: var(--sr-ready-fill);  border-color: var(--sr-ready-edge); }
+.sr-dot[data-status="risk"]   { background: var(--sr-risk-fill);   border-color: var(--sr-risk-edge); }
+.sr-dot[data-status="lapsed"] { background: var(--sr-lapsed-fill); border-color: var(--sr-lapsed-edge); }
+
+/* Status word on its own, where a chip would be too heavy (table cells, sentences).
+   Always paired with a dot or a glyph — the colour is reinforcement, never the signal. */
+.sr-status-text { font-weight: 500; color: var(--sr-unknown); }
+.sr-status-text[data-status="ready"]  { color: var(--sr-ready); }
+.sr-status-text[data-status="risk"]   { color: var(--sr-risk); }
+.sr-status-text[data-status="lapsed"] { color: var(--sr-lapsed); }
+
+/* Invisible hit-slop so small controls still clear 44px */
+.sr-hitslop { position: relative; }
+.sr-hitslop::after {
+  content: ""; position: absolute; inset: 50% 50% 50% 50%;
+  min-inline-size: var(--sr-target-min); min-block-size: var(--sr-target-min);
+  transform: translate(-50%, -50%);
+}
+
+/* ------------------------------------------------------------- 9. Data */
+.sr-table-wrap { overflow-x: auto; border: 1px solid var(--sr-line); border-radius: var(--sr-radius-md); background: var(--sr-surface); }
+.sr-table { inline-size: 100%; border-collapse: collapse; font-size: var(--sr-text-sm); max-inline-size: var(--sr-measure-wide); }
+.sr-table th, .sr-table td { text-align: start; padding: var(--sr-space-3) var(--sr-space-4); vertical-align: middle; }
+.sr-table thead th {
+  background: var(--sr-sunken); color: var(--sr-ink-2);
+  font-family: var(--sr-font-display);
+  font-size: var(--sr-text-sm); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  border-block-end: 1px solid var(--sr-line-strong); white-space: nowrap;
+}
+.sr-table tbody tr { border-block-end: 1px solid var(--sr-line); }
+.sr-table tbody tr:last-child { border-block-end: 0; }
+.sr-table tbody tr:hover { background: var(--sr-sunken); }
+.sr-table td { block-size: var(--sr-row-h); }   /* 48px — see IDENTITY.md 8.2 */
+.sr-table--compact td { padding-block: var(--sr-space-2); block-size: 2.25rem; }
+.sr-table .sr-num { font-family: var(--sr-font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.sr-stat { display: flex; flex-direction: column; gap: var(--sr-space-1); }
+.sr-stat__value { font-size: var(--sr-text-3xl); font-weight: 700; line-height: var(--sr-leading-number);
+                  font-family: var(--sr-font-mono); font-variant-numeric: tabular-nums; }
+.sr-stat__label { font-size: var(--sr-text-sm); color: var(--sr-ink-2); }
+.sr-stat[data-status="risk"]   .sr-stat__value { color: var(--sr-risk); }
+.sr-stat[data-status="lapsed"] .sr-stat__value { color: var(--sr-lapsed); }
+.sr-stat[data-status="ready"]  .sr-stat__value { color: var(--sr-ready); }
+
+/* CE meter — the numeric label is always visible; never a bare bar */
+.sr-meter { display: block; }
+.sr-meter__head { display: flex; justify-content: space-between; align-items: baseline;
+                  gap: var(--sr-space-3); font-size: var(--sr-text-sm); margin-block-end: var(--sr-space-2); }
+.sr-meter__value { font-family: var(--sr-font-mono); font-variant-numeric: tabular-nums; font-weight: 500; }
+.sr-meter__track { block-size: 0.625rem; border-radius: var(--sr-radius-sm);
+                   background: var(--sr-sunken); border: 1px solid var(--sr-line-strong); overflow: hidden; }
+.sr-meter__fill  { block-size: 100%; background: var(--sr-ready-edge); }
+.sr-meter[data-status="risk"]   .sr-meter__fill { background: var(--sr-risk-edge); }
+.sr-meter[data-status="lapsed"] .sr-meter__fill { background: var(--sr-lapsed-edge); }
+.sr-meter__rule { display: block; font-size: var(--sr-text-xs); color: var(--sr-ink-2); margin-block-start: var(--sr-space-2); }
+
+/* Provenance line — REQUIRED markup on any rendered rule (IDENTITY.md §9.10) */
+.sr-source {
+  display: flex; flex-wrap: wrap; gap: var(--sr-space-2) var(--sr-space-3); align-items: baseline;
+  font-size: var(--sr-text-xs); color: var(--sr-ink-3);
+  border-block-start: 1px dashed var(--sr-line); padding-block-start: var(--sr-space-2);
+  margin-block-start: var(--sr-space-3);
+}
+.sr-source a { color: var(--sr-ink-2); }
+.sr-source__conf { font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+.sr-source[data-confidence="unverified"] { color: var(--sr-risk); }
+.sr-source[data-confidence="unverified"] a { color: var(--sr-risk); }
+
+.sr-feed { list-style: none; margin: 0; padding: 0; }
+.sr-feed__item { display: grid; grid-template-columns: 5.5rem max-content minmax(0, 1fr);
+                 gap: var(--sr-space-3); align-items: baseline;
+                 padding: var(--sr-space-3) 0; border-block-end: 1px solid var(--sr-line); font-size: var(--sr-text-sm); }
+.sr-feed__item:last-child { border-block-end: 0; }
+.sr-feed__date  { font-family: var(--sr-font-mono); font-size: var(--sr-text-xs); color: var(--sr-ink-3); white-space: nowrap; }
+.sr-feed__state { font-weight: 700; font-size: var(--sr-text-xs); letter-spacing: 0.06em; }
+.sr-feed__what  { min-inline-size: 0; }
+@media (max-width: 40rem) {
+  .sr-feed__item { grid-template-columns: minmax(0, 1fr); gap: var(--sr-space-1); }
+}
+
+/* Expansion report document surface */
+.sr-doc { max-inline-size: var(--sr-measure); font-size: var(--sr-text-base); }
+.sr-doc h2 { margin-block-start: var(--sr-space-6); padding-block-end: var(--sr-space-2);
+             border-block-end: 1px solid var(--sr-line); }
+.sr-doc h2::before { content: attr(data-num) "  "; font-family: var(--sr-font-mono);
+                     font-size: var(--sr-text-sm); color: var(--sr-ink-3); }
+.sr-doc__req { border-inline-start: 3px solid var(--sr-line-strong); padding-inline-start: var(--sr-space-4);
+               margin-block: var(--sr-space-4); }
+
+.sr-skeleton { background: var(--sr-sunken); border-radius: var(--sr-radius-sm); block-size: 1em; }
+
+/* ------------------------------------------------- 10. The map (tile grid) */
+.sr-map { --sr-map-cols: 12; }
+.sr-map__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--sr-map-cols), var(--sr-tile));
+  grid-auto-rows: var(--sr-tile);
+  gap: var(--sr-tile-gap);
+  list-style: none; margin: 0; padding: 0;
+}
+.sr-tile {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  inline-size: var(--sr-tile); block-size: var(--sr-tile);
+  border-radius: var(--sr-radius-sm);
+  border: 1.5px solid var(--sr-unknown-edge);
+  background: var(--sr-unknown-fill); color: var(--sr-ink);
+  font: inherit; font-family: var(--sr-font-display);
+  font-size: var(--sr-text-sm); font-weight: 600; letter-spacing: 0.04em;
+  cursor: pointer; position: relative; padding: 0;
+  transition: transform var(--sr-dur-1) var(--sr-ease);
+}
+.sr-tile:hover { transform: translateY(-2px); }
+.sr-tile[data-status="ready"]  { background: var(--sr-ready-fill);  border-color: var(--sr-ready-edge); }
+.sr-tile[data-status="risk"]   { background: var(--sr-risk-fill);   border-color: var(--sr-risk-edge); }
+.sr-tile[data-status="lapsed"] { background: var(--sr-lapsed-fill); border-color: var(--sr-lapsed-edge); }
+/* states we do not operate in: drawn, hollow, dashed — expansion is visible as an absence */
+.sr-tile[data-status="none"] {
+  background: var(--sr-ground); border-style: dashed; border-color: var(--sr-line-strong);
+  color: var(--sr-ink-3); font-weight: 500; cursor: pointer;
+}
+.sr-tile[aria-pressed="true"], .sr-tile[data-selected="true"] {
+  outline: 2px solid var(--sr-ink); outline-offset: 2px;
+}
+.sr-tile__glyph { font-size: 0.625rem; line-height: 1; }
+.sr-tile__badge {
+  position: absolute; inset-block-start: -0.3rem; inset-inline-end: -0.3rem;
+  min-inline-size: 1.05rem; block-size: 1.05rem; padding-inline: 0.2rem;
+  display: grid; place-items: center; border-radius: 999px;
+  background: var(--sr-ink); color: var(--sr-on-ink);
+  font-family: var(--sr-font-mono); font-size: 0.625rem; font-weight: 500; line-height: 1;
+}
+.sr-map__legend { display: flex; flex-wrap: wrap; gap: var(--sr-space-3); margin-block-start: var(--sr-space-4); }
+.sr-map__legend-item { display: inline-flex; align-items: center; gap: var(--sr-space-2); font-size: var(--sr-text-xs); color: var(--sr-ink-2); }
+
+@media (max-width: 40rem) { .sr-map { --sr-tile: 1.75rem; } }
+
+/* ---------------------------------------------- 11. The runway (time axis) */
+.sr-runway { position: relative; }
+.sr-runway__scale {
+  position: relative; block-size: 1.5rem;
+  border-block-end: 1px solid var(--sr-line-strong);
+  margin-block-end: var(--sr-space-3);
+}
+.sr-runway__gate {
+  position: absolute; inset-block: 0; inline-size: 0;
+  border-inline-start: 1px solid var(--sr-line-strong);
+}
+.sr-runway__gate span {
+  position: absolute; inset-block-start: 0; inset-inline-start: 0.25rem;
+  font-family: var(--sr-font-mono); font-size: var(--sr-text-2xs); color: var(--sr-ink-3); white-space: nowrap;
+}
+.sr-runway__band { position: absolute; inset-block: 0; }
+.sr-runway__band[data-status="risk"]   { background: var(--sr-risk-fill); }
+.sr-runway__band[data-status="lapsed"] { background: var(--sr-lapsed-fill); }
+.sr-runway__lane {
+  position: relative; block-size: var(--sr-target-min);
+  display: flex; align-items: center; border-block-end: 1px solid var(--sr-line);
+}
+.sr-runway__lane:last-child { border-block-end: 0; }
+.sr-runway__label { font-family: var(--sr-font-display); font-size: var(--sr-text-sm); font-weight: 500;
+                    letter-spacing: 0.03em; text-transform: uppercase; color: var(--sr-ink-2);
+                    inline-size: 9rem; flex: none; padding-inline-end: var(--sr-space-3); }
+.sr-runway__track { position: relative; flex: 1 1 auto; block-size: 100%; }
+.sr-runway__marker {
+  position: absolute; inset-block-start: 50%; transform: translate(-50%, -50%);
+  inline-size: 0.75rem; block-size: 0.75rem; border-radius: 50%;
+  background: var(--sr-unknown-fill); border: 2px solid var(--sr-unknown-edge);
+}
+.sr-runway__marker[data-status="ready"]  { background: var(--sr-ready-fill);  border-color: var(--sr-ready-edge); }
+.sr-runway__marker[data-status="risk"]   { background: var(--sr-risk-fill);   border-color: var(--sr-risk-edge); }
+.sr-runway__marker[data-status="lapsed"] { background: var(--sr-lapsed-fill); border-color: var(--sr-lapsed-edge); }
+
+/* -------------------------------------------------------- 12. Utilities */
+.sr-visually-hidden {
+  position: absolute !important; inline-size: 1px; block-size: 1px;
+  padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+.sr-muted    { color: var(--sr-ink-3); }
+.sr-nowrap   { white-space: nowrap; }
+.sr-swatch   { inline-size: 3rem; block-size: 3rem; border-radius: var(--sr-radius-sm); border: 1px solid var(--sr-line-strong); }
+.sr-mb-0     { margin-block-end: 0; }
+.sr-mt-6     { margin-block-start: var(--sr-space-6); }
+
+/* -------------------------------- 13. Motion, forced colors, print */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;   /* never 0 — transitionend must still fire */
+    scroll-behavior: auto !important;
+  }
+  .sr-tile:hover { transform: none; }
+}
+
+@media (forced-colors: active) {
+  .sr-card, .sr-tile, .sr-chip, .sr-banner, .sr-table-wrap, .sr-input, .sr-btn {
+    background: Canvas; color: CanvasText; border-color: CanvasText;
+  }
+  .sr-btn--primary { background: Highlight; color: HighlightText; }
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible { outline-color: Highlight; }
+  /* status survives on glyph + hatch, since system colours override the fills */
+  .sr-tile[data-status="risk"],   .sr-chip[data-status="risk"]   { border-style: dashed; }
+  .sr-tile[data-status="lapsed"], .sr-chip[data-status="lapsed"] { border-width: 3px; }
+  .sr-tile[data-status="none"] { border-style: dotted; }
+}
+
+/* Print is the paper theme, forced. A bid package, an audit file and a board
+   packet all leave the building on paper; the board never prints. */
+@media print {
+  :root, :root[data-theme="board"], :root[data-theme="dark"] {
+    color-scheme: light;
+    --sr-ground: #FFFFFF; --sr-surface: #FFFFFF; --sr-sunken: #E9ECE8;
+    --sr-line: #CBD1CB; --sr-line-strong: #78827C;
+    --sr-ink: #131714; --sr-ink-2: #454B47; --sr-ink-3: #5F6762; --sr-on-ink: #FFFFFF;
+    --sr-ready: #146A46; --sr-ready-fill: #D4EBE0; --sr-ready-edge: #348D68;
+    --sr-risk: #8A4E08; --sr-risk-fill: #F8E7CE; --sr-risk-edge: #A9701F;
+    --sr-lapsed: #A81B2C; --sr-lapsed-fill: #F7DEDF; --sr-lapsed-edge: #BE454B;
+    --sr-unknown: #5F6762; --sr-unknown-fill: #E4E7E2; --sr-unknown-edge: #78827C;
+    --sr-shadow-2: none; --sr-shadow-3: none;
+  }
+  body { background: #FFFFFF; }
+  .sr-bar, .sr-rail, .sr-btn, .sr-tabs { display: none !important; }
+  .sr-card, .sr-table-wrap { box-shadow: none; break-inside: avoid; }
+  /* hatch, so a black-and-white bid package still separates the four statuses */
+  .sr-tile[data-status="risk"], .sr-chip[data-status="risk"] {
+    background-image: repeating-linear-gradient(45deg, rgba(0,0,0,.35) 0 1px, transparent 1px 4px);
+  }
+  .sr-tile[data-status="lapsed"], .sr-chip[data-status="lapsed"] {
+    background-image: repeating-linear-gradient(45deg, rgba(0,0,0,.45) 0 1px, transparent 1px 3px),
+                      repeating-linear-gradient(-45deg, rgba(0,0,0,.45) 0 1px, transparent 1px 3px);
+  }
+  .sr-tile[data-status="none"] {
+    background-image: radial-gradient(currentColor 0.5px, transparent 0.6px);
+    background-size: 4px 4px;
+  }
+  /* print the provenance URLs in full after each rule */
+  .sr-source a::after { content: " (" attr(href) ")"; font-size: 0.85em; word-break: break-all; }
+}

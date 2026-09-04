@@ -1,0 +1,48 @@
+/*
+ * design-system.css — THE IDENTITY SEAM.
+ *
+ * This file is a NEUTRAL PLACEHOLDER. When an app is scaffolded from this
+ * template, the Buyer & Identity fleet's `design-system.css` (from
+ * phase-4-revenue/<app>/identity/) replaces it wholesale, and nothing else in
+ * the template needs to change: every component below styles itself from these
+ * custom properties and from the small set of class names in app.css.
+ *
+ * Keep the VARIABLE NAMES when you replace the file; change the values.
+ */
+
+:root {
+  --colour-bg: #ffffff;
+  --colour-surface: #f7f7f8;
+  --colour-border: #e3e3e6;
+  --colour-text: #14141a;
+  --colour-muted: #5f6068;
+  --colour-accent: #1f3d99;
+  --colour-accent-text: #ffffff;
+  --colour-success: #0f7b4f;
+  --colour-warning: #8a5a00;
+  --colour-danger: #a01b1b;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius: 8px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+  --measure: 68ch;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --colour-bg: #101014;
+    --colour-surface: #17171d;
+    --colour-border: #2a2a33;
+    --colour-text: #f2f2f5;
+    --colour-muted: #a0a0ab;
+    --colour-accent: #7f9cff;
+    --colour-accent-text: #0b0b0f;
+  }
+}

@@ -1,0 +1,282 @@
+{
+  "app": "stateready",
+  "workbook": "customers",
+  "date": "2026-09-08",
+  "counts": {
+    "drafts": 20,
+    "mailbox": 12,
+    "form": 8,
+    "blocking": 20,
+    "warnings": 5,
+    "failed": 0
+  },
+  "blocking_reasons": [
+    "from_address_missing",
+    "postal_address_missing",
+    "unsubscribe_url_missing"
+  ],
+  "failures": [],
+  "drafts": [
+    {
+      "org_id": "1-800-water-damage-f91536",
+      "name": "1-800 WATER DAMAGE",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@1800waterdamage.com",
+      "subject": "How 1-800 WATER DAMAGE tracks trade licences by state",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "alloy-roofing-f563e7",
+      "name": "Alloy Roofing",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "marketing@alloyroofing.com",
+      "subject": "How Alloy Roofing tracks trade licences by state",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "astra-service-partners-88f515",
+      "name": "Astra Service Partners",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@astraservicepartners.com",
+      "subject": "How Astra Service Partners tracks trade licences by state",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "ati-restoration-69be3d",
+      "name": "ATI Restoration",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@atirestoration.com",
+      "subject": "How ATI Restoration tracks trade licences by state",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "crete-united-d4482e",
+      "name": "Crete United",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@creteunited.com",
+      "subject": "How Crete United tracks trade licences by state",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "firstcall-mechanical-group-87ebfd",
+      "name": "FirstCall Mechanical Group",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@firstcallgroup.com",
+      "subject": "How FirstCall Mechanical Group tracks trade licences by state",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "homex-47533c",
+      "name": "HomeX",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@homex.com",
+      "subject": "How HomeX tracks trade licences by state",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "legacy-restoration-95b73e",
+      "name": "Legacy Restoration",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@legacyusa.com",
+      "subject": "How Legacy Restoration tracks trade licences by state",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "skyline-roofing-partners-4b5ce3",
+      "name": "Skyline Roofing Partners",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@skylineroofingpartners.com",
+      "subject": "How Skyline Roofing Partners tracks trade licences by state",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "tecta-america-779a9e",
+      "name": "Tecta America",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@tectaamerica.com",
+      "subject": "How Tecta America tracks trade licences by state",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "vertex-service-partners-5689ed",
+      "name": "Vertex Service Partners",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "partnerships@vertexservicepartners.com",
+      "subject": "How Vertex Service Partners tracks trade licences by state",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "wrench-group-a9fa2e",
+      "name": "Wrench Group",
+      "step": 1,
+      "route_type": "mailbox",
+      "to": "info@wrenchgroup.com",
+      "subject": "How Wrench Group tracks trade licences by state",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "air-pros-usa-c0dcfa",
+      "name": "Air Pros USA",
+      "step": 1,
+      "route_type": "form",
+      "to": "https://airprosusa.com/mergers-and-acquisitions/",
+      "subject": "How Air Pros USA tracks trade licences by state",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "aire-serv-b6d0f4",
+      "name": "Aire Serv",
+      "step": 1,
+      "route_type": "form",
+      "to": "https://www.aireserv.com",
+      "subject": "How Aire Serv tracks trade licences by state",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "ally-services-5d1651",
+      "name": "Ally Services",
+      "step": 1,
+      "route_type": "form",
+      "to": "https://allyservicesgroup.com/",
+      "subject": "How Ally Services tracks trade licences by state",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "american-residential-services-ars-rescue-51049b",
+      "name": "American Residential Services (ARS / Rescue Rooter)",
+      "step": 1,
+      "route_type": "form",
+      "to": "https://www.ars.com/about-us",
+      "subject": "How American Residential Services (ARS / Rescue Rooter) tracks trade licences by state",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "any-hour-services-any-hour-group-71e63f",
+      "name": "Any Hour Services / Any Hour Group",
+      "step": 1,
+      "route_type": "form",
+      "to": "https://anyhourgroup.com/contact/",
+      "subject": "How Any Hour Services / Any Hour Group tracks trade licences by state",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "authority-brands-a8c11d",
+      "name": "Authority Brands",
+      "step": 1,
+      "route_type": "form",
+      "to": "https://www.authoritybrands.com/contact-us/",
+      "subject": "How Authority Brands tracks trade licences by state",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "benjamin-franklin-plumbing-b81d17",
+      "name": "Benjamin Franklin Plumbing",
+      "step": 1,
+      "route_type": "form",
+      "to": "https://www.benjaminfranklinplumbing.com",
+      "subject": "How Benjamin Franklin Plumbing tracks trade licences by state",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    },
+    {
+      "org_id": "blue-cardinal-home-services-group-7ad2c3",
+      "name": "Blue Cardinal Home Services Group",
+      "step": 1,
+      "route_type": "form",
+      "to": "https://www.bluecardinalhomeservices.com/",
+      "subject": "How Blue Cardinal Home Services Group tracks trade licences by state",
+      "blocking": [
+        "from_address_missing",
+        "postal_address_missing",
+        "unsubscribe_url_missing"
+      ]
+    }
+  ],
+  "generated_at": "2026-09-03T20:21:56Z"
+}

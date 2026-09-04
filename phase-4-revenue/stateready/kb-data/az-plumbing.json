@@ -1,0 +1,1191 @@
+{
+  "record_id": "az.plumbing",
+  "schema_version": "1.0.0",
+  "state": "AZ",
+  "state_name": "Arizona",
+  "trade": "plumbing",
+  "jurisdiction_model": {
+    "level": "state_only",
+    "summary": {
+      "value": "Arizona licenses construction contractors at state level only, and forbids the local layer in terms: cities — including charter cities — towns and counties may not require a licence of a contractor the state has licensed.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01101-01.htm",
+      "source_title": "A.R.S. § 32-1101.01 Local authority",
+      "source_kind": "statute",
+      "evidence": "Cities, including charter cities, towns and counties shall not require licenses of any construction contractors licensed by statute",
+      "last_verified": "2026-09-04",
+      "verified_by": [
+        "kb-b5-pass-a",
+        "kb-b5-pass-b"
+      ]
+    },
+    "local_layer_note": "Arizona is the opposite of Ohio and Georgia on this point and it is worth the customer's attention: A.R.S. § 32-1101.01 pre-empts municipal and county contractor licensing outright. The pre-emption is of LICENSING. It does not touch permits, inspections, transaction privilege (sales) tax licences or business registrations, which Arizona municipalities do operate, and no such requirement is modelled here."
+  },
+  "boards": [
+    {
+      "board_id": "az.roc",
+      "name": "Arizona Registrar of Contractors",
+      "url": "https://roc.az.gov/",
+      "scope": "All construction contractor licences in Arizona, general and specialty, residential and commercial, statewide",
+      "phone": "(602) 542-1525"
+    }
+  ],
+  "licence_types": [
+    {
+      "licence_type_id": "az.plumbing.specialty_residential",
+      "name": "Specialty Residential Contractor — plumbing trade classification",
+      "level": "contractor",
+      "issuer_level": "state",
+      "board_id": "az.roc",
+      "who_must_hold": {
+        "value": "Any person, firm, partnership, corporation, association or other organisation acting as, offering to act as, bidding as or purporting to have the capacity of a contractor in Arizona must hold a licence in good standing in its own name.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01151.htm",
+        "source_title": "A.R.S. § 32-1151 Engaging in contracting without license prohibited",
+        "source_kind": "statute",
+        "evidence": "It is unlawful for any person, firm, partnership, corporation, association or other organization",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "Securing a permit from a government agency, or employing a person on a construction project, is prima facie evidence in an Arizona court that a contract exists — so pulling a permit is itself evidence of contracting."
+      },
+      "scope_note": {
+        "value": "Arizona's statutory category. The Registrar subdivides it into trade classifications and the plumbing trade's classification codes are commonly written C-37 / K-37 / CR-37, but the classification list is published in the Registrar's rules, not in statute.",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01102.htm",
+        "source_title": "A.R.S. § 32-1102 Classification of licenses; contracting business",
+        "source_kind": "statute",
+        "evidence": "Specialty residential contracting, which is engaging in the residential contracting business by the performance of construction work requiring special skill",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "The category and its statutory definition are verified at A.R.S. § 32-1102. The trade classification CODES are not: they live in the Arizona Administrative Code title 4 chapter 9 and on the Registrar's classification table, neither of which could be fetched (see coverage notes). They are named here only so a reader recognises the licence in hand, and no requirement in this record is attached to a code."
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm",
+          "source_title": "A.R.S. § 32-1122 Qualifications for license",
+          "source_kind": "statute",
+          "evidence": "Successfully show, by written examination taken not more than two years before application",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "The examination must have been taken not more than two years before the application, so a stale pass does not travel."
+        },
+        "name": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The Registrar establishes the examinations; A.R.S. § 32-1122(A)(4) and (F) require multiple versions per licence type but name none. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "provider": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "A.R.S. § 32-1126(F) permits the Registrar to contract with private testing services and to have the examination fee paid to them, but names no provider. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01126.htm"
+        },
+        "fee": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "A.R.S. § 32-1126(E) says only that 'The registrar may establish a separate fee for examination' — a power, not a price. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01126.htm"
+        },
+        "note": "The examination requirement is waived where the Registrar's records show the qualifying party is, or has within the preceding five years been, a qualifying party for a licensee in this state in the same classification."
+      },
+      "experience": {
+        "requirement": {
+          "value": "The qualifying party must have four years' practical or management trade experience dealing specifically with the type of construction applied for, at least two of those years within the last ten.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm",
+          "source_title": "A.R.S. § 32-1122 Qualifications for license",
+          "source_kind": "statute",
+          "evidence": "Have a minimum of four years' practical or management trade experience, at least two of which must have been within the last ten years",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "alternatives": {
+          "value": "Technical training at an accredited college or university, or in a manufacturer's accredited training programme, may substitute for up to two of the four years. The Registrar may also reduce the four years where custom and usage in the craft show it excessive, and waives the documentation entirely for someone who is or has been a qualifying party in the same classification in Arizona.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm",
+          "source_title": "A.R.S. § 32-1122 Qualifications for license",
+          "source_kind": "statute",
+          "evidence": "Technical training in an accredited college or university or in a manufacturer’s accredited training program may be substituted",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        }
+      },
+      "application_fee": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "NOT ESTABLISHED, and this is the statute-versus-board trap in its purest form. A.R.S. § 32-1126(A)(1) sets a CEILING — 'Specialty Residential Contractor ... not more than $350' — not a price, and the actual fee is set by the Registrar within it. Recording the ceiling as the fee would put a number in front of a customer that the state has never charged. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+        "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01126.htm"
+      },
+      "renewal": {
+        "cycle": {
+          "value": 24,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "low",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01123-01.htm",
+          "source_title": "A.R.S. § 32-1123.01 Staggered periods of licensure; biennial renewal",
+          "source_kind": "statute",
+          "evidence": "The registrar shall implement a system for biennial license renewal and provide for proration of license renewal fees",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Biennial by statute. A contractor may petition in writing for annual renewal instead, on a showing of real and immediate hardship, and the Registrar may grant it; A.R.S. § 32-1126(B) then halves the fee. A licence on that exception has a 12-month cycle and this record will derive a date up to a year late for it."
+        },
+        "fee": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "NOT ESTABLISHED, for the same reason as the application fee: A.R.S. § 32-1126(A)(2) sets a ceiling — 'Specialty Residential Contractor ... not more than $270' — not a price. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01126.htm"
+        },
+        "expiry_rule": {
+          "value": "anniversary",
+          "status": "verified",
+          "confidence": "low",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01123-01.htm",
+          "source_title": "A.R.S. § 32-1123.01 Staggered periods of licensure; biennial renewal",
+          "source_kind": "statute",
+          "evidence": "The registrar shall maintain a system of staggered licensure to distribute the work of licensure throughout the twelve months of the year.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Staggered, not common: the Registrar spreads renewal dates across all twelve months, so the date comes from the licence, never from a calendar. With the biennial cycle above this is issue date + 24 months. Derived from statute; the Registrar does not restate it anywhere this pass could read."
+        },
+        "grace_period": {
+          "value": "None. The licence is suspended by operation of law on the next business day following its renewal date. It can be reactivated within one year of that suspension by filing the application, paying the renewal fee and adding $50; after one year a new application and a new licence are required.",
+          "status": "verified",
+          "confidence": "low",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01125.htm",
+          "source_title": "A.R.S. § 32-1125 Renewal of license; qualifying party",
+          "source_kind": "statute",
+          "evidence": "a license issued under this chapter is suspended on the next business day following its renewal date by operation of law",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "A renewal application posted or received on or before the renewal date, with a valid bond on file, lets the contractor keep operating until the renewal licence is actually issued — so the postmark, not the issue date, is what protects an Arizona contractor. Derived from statute; the Registrar's own guidance could not be read."
+        },
+        "late_fee": {
+          "value": 50,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "low",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01126.htm",
+          "source_title": "A.R.S. § 32-1126 Fees",
+          "source_kind": "statute",
+          "evidence": "The penalty for failure to apply for renewal of a license within the time prescribed by this chapter is $50.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "The one Arizona money figure in this record that is a PRICE rather than a ceiling: the statute says the penalty 'is $50', not 'not more than $50'. Confidence is low only because the source is statute and the Registrar does not restate it."
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "NOT ESTABLISHED. Arizona Revised Statutes title 32 chapter 10 was read in full across the ten sections fetched and imposes no continuing-education requirement on a contractor's licence; A.R.S. § 32-1129 covers apprenticeship certificates, not CE. But absence from the statute is not absence of a rule — the Registrar makes rules under § 32-1105 — and the Registrar's site could not be read. Recorded as not established, NOT as 'no continuing education required'. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "hours": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see continuing_education.required",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "period": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see continuing_education.required. No calendar_window: token is recorded because no CE window could be established at all.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "subject_breakdown": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see continuing_education.required",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "approved_provider_rule": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see continuing_education.required",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "carryover": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see continuing_education.required",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "delivery_constraint": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see continuing_education.required. No min_classroom_fraction: token is recorded because no delivery rule could be established.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        }
+      },
+      "bond": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "low",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01152.htm",
+          "source_title": "A.R.S. § 32-1152 Bonds",
+          "source_kind": "statute",
+          "evidence": "Before granting an original contractor's license, the registrar shall require of the applicant a surety bond in a form acceptable to the registrar",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Arizona is the FIRST state in this knowledge base with a bond requirement established at all — the other eighteen records carry bond.required as unknown. And it bites twice: no licence may be RENEWED unless the bond or cash deposit is in full force and effect, so a lapsed bond is a lapsed licence. Confidence is low because the source is statute and the Registrar's own page could not be read."
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "NOT A SINGLE NUMBER, by design. A.R.S. § 32-1152(B) has the Registrar fix the amount within statutory bands 'after giving due consideration to the volume of work and the classification contemplated by the applicant'. For a Specialty Residential Contractor the band is between $1,000 and $7,500. The applicant's own estimated annual volume selects the band, so no figure can be printed for a contractor until that estimate exists. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01152.htm"
+        },
+        "alternative": {
+          "value": "A cash deposit with the State Treasurer, in the amount of the bond, may be posted instead of a surety bond. Where there are no outstanding claims it can be withdrawn two years after the licence ends.",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01152.htm",
+          "source_title": "A.R.S. § 32-1152 Bonds",
+          "source_kind": "statute",
+          "evidence": "The surety bonds shall be executed by the contractor as principal with a corporation duly authorized to transact surety business in this state.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "The cash-deposit alternative and the two-year withdrawal rule are in the same subsection as the quoted sentence, A.R.S. § 32-1152(D). A residential or dual licensee must ALSO either post a further $200,000 bond for actual damages under § 32-1132 or join the residential contractors' recovery fund and pay an assessment of not more than $600 per biennial period."
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "NOT ESTABLISHED. A.R.S. title 32 chapter 10 sets no liability-insurance minimum for a contractor's licence — Arizona's financial condition is the bond, not insurance. Recorded as not established rather than 'none required', because the Registrar's rules could not be read. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01152.htm"
+        },
+        "property_damage": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01152.htm"
+        },
+        "aggregate": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01152.htm"
+        },
+        "workers_compensation": {
+          "value": "The application must attest that the applicant has complied with the statutes and rules governing workers' compensation insurance, and where cover is required by law the attestation must give the policy number or be accompanied by proof of self-insurance.",
+          "status": "verified",
+          "confidence": "low",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm",
+          "source_title": "A.R.S. § 32-1122 Qualifications for license",
+          "source_kind": "statute",
+          "evidence": "An attestation that the applicant has complied with the statutes and rules governing workers' compensation insurance.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "An attestation duty, not a stated minimum: the amount is set by Arizona's workers'-compensation law (title 23 chapter 6), which was not fetched."
+        },
+        "financial_responsibility": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The Registrar 'may require' a full set of fingerprints and financial information before issuing or renewing (A.R.S. § 32-1122(H)), but no credit score, net-worth test or threshold is set in statute. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        }
+      }
+    },
+    {
+      "licence_type_id": "az.plumbing.specialty_commercial",
+      "name": "Specialty Commercial Contractor — plumbing trade classification",
+      "level": "contractor",
+      "issuer_level": "state",
+      "board_id": "az.roc",
+      "who_must_hold": {
+        "value": "Any person, firm, partnership, corporation, association or other organisation acting as, offering to act as, bidding as or purporting to have the capacity of a contractor in Arizona must hold a licence in good standing in its own name.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01151.htm",
+        "source_title": "A.R.S. § 32-1151 Engaging in contracting without license prohibited",
+        "source_kind": "statute",
+        "evidence": "It is unlawful for any person, firm, partnership, corporation, association or other organization",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "Securing a permit from a government agency, or employing a person on a construction project, is prima facie evidence in an Arizona court that a contract exists — so pulling a permit is itself evidence of contracting."
+      },
+      "scope_note": {
+        "value": "Arizona's statutory category. The Registrar subdivides it into trade classifications and the plumbing trade's classification codes are commonly written C-37 / K-37 / CR-37, but the classification list is published in the Registrar's rules, not in statute.",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01102.htm",
+        "source_title": "A.R.S. § 32-1102 Classification of licenses; contracting business",
+        "source_kind": "statute",
+        "evidence": "Specialty commercial contracting, which is engaging in the contracting business in the performance of construction work requiring special skill",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "The category and its statutory definition are verified at A.R.S. § 32-1102. The trade classification CODES are not: they live in the Arizona Administrative Code title 4 chapter 9 and on the Registrar's classification table, neither of which could be fetched (see coverage notes). They are named here only so a reader recognises the licence in hand, and no requirement in this record is attached to a code."
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm",
+          "source_title": "A.R.S. § 32-1122 Qualifications for license",
+          "source_kind": "statute",
+          "evidence": "Successfully show, by written examination taken not more than two years before application",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "The examination must have been taken not more than two years before the application, so a stale pass does not travel."
+        },
+        "name": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The Registrar establishes the examinations; A.R.S. § 32-1122(A)(4) and (F) require multiple versions per licence type but name none. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "provider": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "A.R.S. § 32-1126(F) permits the Registrar to contract with private testing services and to have the examination fee paid to them, but names no provider. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01126.htm"
+        },
+        "fee": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "A.R.S. § 32-1126(E) says only that 'The registrar may establish a separate fee for examination' — a power, not a price. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01126.htm"
+        },
+        "note": "The examination requirement is waived where the Registrar's records show the qualifying party is, or has within the preceding five years been, a qualifying party for a licensee in this state in the same classification."
+      },
+      "experience": {
+        "requirement": {
+          "value": "The qualifying party must have four years' practical or management trade experience dealing specifically with the type of construction applied for, at least two of those years within the last ten.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm",
+          "source_title": "A.R.S. § 32-1122 Qualifications for license",
+          "source_kind": "statute",
+          "evidence": "Have a minimum of four years' practical or management trade experience, at least two of which must have been within the last ten years",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "alternatives": {
+          "value": "Technical training at an accredited college or university, or in a manufacturer's accredited training programme, may substitute for up to two of the four years. The Registrar may also reduce the four years where custom and usage in the craft show it excessive, and waives the documentation entirely for someone who is or has been a qualifying party in the same classification in Arizona.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm",
+          "source_title": "A.R.S. § 32-1122 Qualifications for license",
+          "source_kind": "statute",
+          "evidence": "Technical training in an accredited college or university or in a manufacturer’s accredited training program may be substituted",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        }
+      },
+      "application_fee": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "NOT ESTABLISHED, and this is the statute-versus-board trap in its purest form. A.R.S. § 32-1126(A)(1) sets a CEILING — 'Specialty Commercial Contractor ... not more than $1,000' — not a price, and the actual fee is set by the Registrar within it. Recording the ceiling as the fee would put a number in front of a customer that the state has never charged. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+        "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01126.htm"
+      },
+      "renewal": {
+        "cycle": {
+          "value": 24,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "low",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01123-01.htm",
+          "source_title": "A.R.S. § 32-1123.01 Staggered periods of licensure; biennial renewal",
+          "source_kind": "statute",
+          "evidence": "The registrar shall implement a system for biennial license renewal and provide for proration of license renewal fees",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Biennial by statute. A contractor may petition in writing for annual renewal instead, on a showing of real and immediate hardship, and the Registrar may grant it; A.R.S. § 32-1126(B) then halves the fee. A licence on that exception has a 12-month cycle and this record will derive a date up to a year late for it."
+        },
+        "fee": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "NOT ESTABLISHED, for the same reason as the application fee: A.R.S. § 32-1126(A)(2) sets a ceiling — 'Specialty Commercial Contractor ... not more than $900' — not a price. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01126.htm"
+        },
+        "expiry_rule": {
+          "value": "anniversary",
+          "status": "verified",
+          "confidence": "low",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01123-01.htm",
+          "source_title": "A.R.S. § 32-1123.01 Staggered periods of licensure; biennial renewal",
+          "source_kind": "statute",
+          "evidence": "The registrar shall maintain a system of staggered licensure to distribute the work of licensure throughout the twelve months of the year.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Staggered, not common: the Registrar spreads renewal dates across all twelve months, so the date comes from the licence, never from a calendar. With the biennial cycle above this is issue date + 24 months. Derived from statute; the Registrar does not restate it anywhere this pass could read."
+        },
+        "grace_period": {
+          "value": "None. The licence is suspended by operation of law on the next business day following its renewal date. It can be reactivated within one year of that suspension by filing the application, paying the renewal fee and adding $50; after one year a new application and a new licence are required.",
+          "status": "verified",
+          "confidence": "low",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01125.htm",
+          "source_title": "A.R.S. § 32-1125 Renewal of license; qualifying party",
+          "source_kind": "statute",
+          "evidence": "a license issued under this chapter is suspended on the next business day following its renewal date by operation of law",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "A renewal application posted or received on or before the renewal date, with a valid bond on file, lets the contractor keep operating until the renewal licence is actually issued — so the postmark, not the issue date, is what protects an Arizona contractor. Derived from statute; the Registrar's own guidance could not be read."
+        },
+        "late_fee": {
+          "value": 50,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "low",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01126.htm",
+          "source_title": "A.R.S. § 32-1126 Fees",
+          "source_kind": "statute",
+          "evidence": "The penalty for failure to apply for renewal of a license within the time prescribed by this chapter is $50.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "The one Arizona money figure in this record that is a PRICE rather than a ceiling: the statute says the penalty 'is $50', not 'not more than $50'. Confidence is low only because the source is statute and the Registrar does not restate it."
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "NOT ESTABLISHED. Arizona Revised Statutes title 32 chapter 10 was read in full across the ten sections fetched and imposes no continuing-education requirement on a contractor's licence; A.R.S. § 32-1129 covers apprenticeship certificates, not CE. But absence from the statute is not absence of a rule — the Registrar makes rules under § 32-1105 — and the Registrar's site could not be read. Recorded as not established, NOT as 'no continuing education required'. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "hours": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see continuing_education.required",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "period": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see continuing_education.required. No calendar_window: token is recorded because no CE window could be established at all.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "subject_breakdown": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see continuing_education.required",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "approved_provider_rule": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see continuing_education.required",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "carryover": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see continuing_education.required",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "delivery_constraint": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see continuing_education.required. No min_classroom_fraction: token is recorded because no delivery rule could be established.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        }
+      },
+      "bond": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "low",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01152.htm",
+          "source_title": "A.R.S. § 32-1152 Bonds",
+          "source_kind": "statute",
+          "evidence": "Before granting an original contractor's license, the registrar shall require of the applicant a surety bond in a form acceptable to the registrar",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Arizona is the FIRST state in this knowledge base with a bond requirement established at all — the other eighteen records carry bond.required as unknown. And it bites twice: no licence may be RENEWED unless the bond or cash deposit is in full force and effect, so a lapsed bond is a lapsed licence. Confidence is low because the source is statute and the Registrar's own page could not be read."
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "NOT A SINGLE NUMBER, by design. A.R.S. § 32-1152(B) has the Registrar fix the amount within statutory bands 'after giving due consideration to the volume of work and the classification contemplated by the applicant'. For a Specialty Commercial Contractor the band is $2,500 at under $150,000 of estimated annual volume, rising through six bands to between $37,500 and $50,000 at $10,000,000 or more. The applicant's own estimated annual volume selects the band, so no figure can be printed for a contractor until that estimate exists. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01152.htm"
+        },
+        "alternative": {
+          "value": "A cash deposit with the State Treasurer, in the amount of the bond, may be posted instead of a surety bond. Where there are no outstanding claims it can be withdrawn two years after the licence ends.",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01152.htm",
+          "source_title": "A.R.S. § 32-1152 Bonds",
+          "source_kind": "statute",
+          "evidence": "The surety bonds shall be executed by the contractor as principal with a corporation duly authorized to transact surety business in this state.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "The cash-deposit alternative and the two-year withdrawal rule are in the same subsection as the quoted sentence, A.R.S. § 32-1152(D)."
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "NOT ESTABLISHED. A.R.S. title 32 chapter 10 sets no liability-insurance minimum for a contractor's licence — Arizona's financial condition is the bond, not insurance. Recorded as not established rather than 'none required', because the Registrar's rules could not be read. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01152.htm"
+        },
+        "property_damage": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01152.htm"
+        },
+        "aggregate": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01152.htm"
+        },
+        "workers_compensation": {
+          "value": "The application must attest that the applicant has complied with the statutes and rules governing workers' compensation insurance, and where cover is required by law the attestation must give the policy number or be accompanied by proof of self-insurance.",
+          "status": "verified",
+          "confidence": "low",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm",
+          "source_title": "A.R.S. § 32-1122 Qualifications for license",
+          "source_kind": "statute",
+          "evidence": "An attestation that the applicant has complied with the statutes and rules governing workers' compensation insurance.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "An attestation duty, not a stated minimum: the amount is set by Arizona's workers'-compensation law (title 23 chapter 6), which was not fetched."
+        },
+        "financial_responsibility": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The Registrar 'may require' a full set of fingerprints and financial information before issuing or renewing (A.R.S. § 32-1122(H)), but no credit score, net-worth test or threshold is set in statute. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        }
+      }
+    },
+    {
+      "licence_type_id": "az.plumbing.specialty_dual",
+      "name": "Specialty Dual Licensed Contractor — plumbing trade classification",
+      "level": "contractor",
+      "issuer_level": "state",
+      "board_id": "az.roc",
+      "who_must_hold": {
+        "value": "Any person, firm, partnership, corporation, association or other organisation acting as, offering to act as, bidding as or purporting to have the capacity of a contractor in Arizona must hold a licence in good standing in its own name.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01151.htm",
+        "source_title": "A.R.S. § 32-1151 Engaging in contracting without license prohibited",
+        "source_kind": "statute",
+        "evidence": "It is unlawful for any person, firm, partnership, corporation, association or other organization",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "Securing a permit from a government agency, or employing a person on a construction project, is prima facie evidence in an Arizona court that a contract exists — so pulling a permit is itself evidence of contracting."
+      },
+      "scope_note": {
+        "value": "Arizona's statutory category. The Registrar subdivides it into trade classifications and the plumbing trade's classification codes are commonly written C-37 / K-37 / CR-37, but the classification list is published in the Registrar's rules, not in statute.",
+        "status": "verified",
+        "confidence": "medium",
+        "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01102.htm",
+        "source_title": "A.R.S. § 32-1102 Classification of licenses; contracting business",
+        "source_kind": "statute",
+        "evidence": "Specialty dual licensed contracting, which is engaging in the contracting business in the performance of construction work requiring special skill",
+        "last_verified": "2026-09-04",
+        "verified_by": [
+          "kb-b5-pass-a",
+          "kb-b5-pass-b"
+        ],
+        "note": "The category and its statutory definition are verified at A.R.S. § 32-1102. The trade classification CODES are not: they live in the Arizona Administrative Code title 4 chapter 9 and on the Registrar's classification table, neither of which could be fetched (see coverage notes). They are named here only so a reader recognises the licence in hand, and no requirement in this record is attached to a code."
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm",
+          "source_title": "A.R.S. § 32-1122 Qualifications for license",
+          "source_kind": "statute",
+          "evidence": "Successfully show, by written examination taken not more than two years before application",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "The examination must have been taken not more than two years before the application, so a stale pass does not travel."
+        },
+        "name": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The Registrar establishes the examinations; A.R.S. § 32-1122(A)(4) and (F) require multiple versions per licence type but name none. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "provider": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "A.R.S. § 32-1126(F) permits the Registrar to contract with private testing services and to have the examination fee paid to them, but names no provider. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01126.htm"
+        },
+        "fee": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "A.R.S. § 32-1126(E) says only that 'The registrar may establish a separate fee for examination' — a power, not a price. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01126.htm"
+        },
+        "note": "The examination requirement is waived where the Registrar's records show the qualifying party is, or has within the preceding five years been, a qualifying party for a licensee in this state in the same classification."
+      },
+      "experience": {
+        "requirement": {
+          "value": "The qualifying party must have four years' practical or management trade experience dealing specifically with the type of construction applied for, at least two of those years within the last ten.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm",
+          "source_title": "A.R.S. § 32-1122 Qualifications for license",
+          "source_kind": "statute",
+          "evidence": "Have a minimum of four years' practical or management trade experience, at least two of which must have been within the last ten years",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        },
+        "alternatives": {
+          "value": "Technical training at an accredited college or university, or in a manufacturer's accredited training programme, may substitute for up to two of the four years. The Registrar may also reduce the four years where custom and usage in the craft show it excessive, and waives the documentation entirely for someone who is or has been a qualifying party in the same classification in Arizona.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm",
+          "source_title": "A.R.S. § 32-1122 Qualifications for license",
+          "source_kind": "statute",
+          "evidence": "Technical training in an accredited college or university or in a manufacturer’s accredited training program may be substituted",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ]
+        }
+      },
+      "application_fee": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "NOT ESTABLISHED, and this is the statute-versus-board trap in its purest form. A.R.S. § 32-1126(A)(1) sets a CEILING — 'Specialty Dual Licensed Contractor ... not more than $1,350' — not a price, and the actual fee is set by the Registrar within it. Recording the ceiling as the fee would put a number in front of a customer that the state has never charged. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+        "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01126.htm"
+      },
+      "renewal": {
+        "cycle": {
+          "value": 24,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "low",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01123-01.htm",
+          "source_title": "A.R.S. § 32-1123.01 Staggered periods of licensure; biennial renewal",
+          "source_kind": "statute",
+          "evidence": "The registrar shall implement a system for biennial license renewal and provide for proration of license renewal fees",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Biennial by statute. A contractor may petition in writing for annual renewal instead, on a showing of real and immediate hardship, and the Registrar may grant it; A.R.S. § 32-1126(B) then halves the fee. A licence on that exception has a 12-month cycle and this record will derive a date up to a year late for it."
+        },
+        "fee": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "NOT ESTABLISHED, for the same reason as the application fee: A.R.S. § 32-1126(A)(2) sets a ceiling — 'Specialty Dual Licensed Contractor ... not more than $1,170' — not a price. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01126.htm"
+        },
+        "expiry_rule": {
+          "value": "anniversary",
+          "status": "verified",
+          "confidence": "low",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01123-01.htm",
+          "source_title": "A.R.S. § 32-1123.01 Staggered periods of licensure; biennial renewal",
+          "source_kind": "statute",
+          "evidence": "The registrar shall maintain a system of staggered licensure to distribute the work of licensure throughout the twelve months of the year.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Staggered, not common: the Registrar spreads renewal dates across all twelve months, so the date comes from the licence, never from a calendar. With the biennial cycle above this is issue date + 24 months. Derived from statute; the Registrar does not restate it anywhere this pass could read."
+        },
+        "grace_period": {
+          "value": "None. The licence is suspended by operation of law on the next business day following its renewal date. It can be reactivated within one year of that suspension by filing the application, paying the renewal fee and adding $50; after one year a new application and a new licence are required.",
+          "status": "verified",
+          "confidence": "low",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01125.htm",
+          "source_title": "A.R.S. § 32-1125 Renewal of license; qualifying party",
+          "source_kind": "statute",
+          "evidence": "a license issued under this chapter is suspended on the next business day following its renewal date by operation of law",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "A renewal application posted or received on or before the renewal date, with a valid bond on file, lets the contractor keep operating until the renewal licence is actually issued — so the postmark, not the issue date, is what protects an Arizona contractor. Derived from statute; the Registrar's own guidance could not be read."
+        },
+        "late_fee": {
+          "value": 50,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "low",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01126.htm",
+          "source_title": "A.R.S. § 32-1126 Fees",
+          "source_kind": "statute",
+          "evidence": "The penalty for failure to apply for renewal of a license within the time prescribed by this chapter is $50.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "The one Arizona money figure in this record that is a PRICE rather than a ceiling: the statute says the penalty 'is $50', not 'not more than $50'. Confidence is low only because the source is statute and the Registrar does not restate it."
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "NOT ESTABLISHED. Arizona Revised Statutes title 32 chapter 10 was read in full across the ten sections fetched and imposes no continuing-education requirement on a contractor's licence; A.R.S. § 32-1129 covers apprenticeship certificates, not CE. But absence from the statute is not absence of a rule — the Registrar makes rules under § 32-1105 — and the Registrar's site could not be read. Recorded as not established, NOT as 'no continuing education required'. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "hours": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see continuing_education.required",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "period": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see continuing_education.required. No calendar_window: token is recorded because no CE window could be established at all.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "subject_breakdown": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see continuing_education.required",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "approved_provider_rule": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see continuing_education.required",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "carryover": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see continuing_education.required",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        },
+        "delivery_constraint": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see continuing_education.required. No min_classroom_fraction: token is recorded because no delivery rule could be established.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        }
+      },
+      "bond": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "low",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01152.htm",
+          "source_title": "A.R.S. § 32-1152 Bonds",
+          "source_kind": "statute",
+          "evidence": "Before granting an original contractor's license, the registrar shall require of the applicant a surety bond in a form acceptable to the registrar",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "Arizona is the FIRST state in this knowledge base with a bond requirement established at all — the other eighteen records carry bond.required as unknown. And it bites twice: no licence may be RENEWED unless the bond or cash deposit is in full force and effect, so a lapsed bond is a lapsed licence. Confidence is low because the source is statute and the Registrar's own page could not be read."
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "NOT A SINGLE NUMBER, by design. A.R.S. § 32-1152(B) has the Registrar fix the amount within statutory bands 'after giving due consideration to the volume of work and the classification contemplated by the applicant'. For a Specialty Dual Licensed Contractor the band is a single bond carrying an amount for each classification — the commercial half by volume band, the residential half between $1,000 and $7,500. The applicant's own estimated annual volume selects the band, so no figure can be printed for a contractor until that estimate exists. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01152.htm"
+        },
+        "alternative": {
+          "value": "A cash deposit with the State Treasurer, in the amount of the bond, may be posted instead of a surety bond. Where there are no outstanding claims it can be withdrawn two years after the licence ends.",
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01152.htm",
+          "source_title": "A.R.S. § 32-1152 Bonds",
+          "source_kind": "statute",
+          "evidence": "The surety bonds shall be executed by the contractor as principal with a corporation duly authorized to transact surety business in this state.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "The cash-deposit alternative and the two-year withdrawal rule are in the same subsection as the quoted sentence, A.R.S. § 32-1152(D). A residential or dual licensee must ALSO either post a further $200,000 bond for actual damages under § 32-1132 or join the residential contractors' recovery fund and pay an assessment of not more than $600 per biennial period."
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "NOT ESTABLISHED. A.R.S. title 32 chapter 10 sets no liability-insurance minimum for a contractor's licence — Arizona's financial condition is the bond, not insurance. Recorded as not established rather than 'none required', because the Registrar's rules could not be read. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01152.htm"
+        },
+        "property_damage": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01152.htm"
+        },
+        "aggregate": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see insurance.general_liability",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01152.htm"
+        },
+        "workers_compensation": {
+          "value": "The application must attest that the applicant has complied with the statutes and rules governing workers' compensation insurance, and where cover is required by law the attestation must give the policy number or be accompanied by proof of self-insurance.",
+          "status": "verified",
+          "confidence": "low",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm",
+          "source_title": "A.R.S. § 32-1122 Qualifications for license",
+          "source_kind": "statute",
+          "evidence": "An attestation that the applicant has complied with the statutes and rules governing workers' compensation insurance.",
+          "last_verified": "2026-09-04",
+          "verified_by": [
+            "kb-b5-pass-a",
+            "kb-b5-pass-b"
+          ],
+          "note": "An attestation duty, not a stated minimum: the amount is set by Arizona's workers'-compensation law (title 23 chapter 6), which was not fetched."
+        },
+        "financial_responsibility": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The Registrar 'may require' a full set of fingerprints and financial information before issuing or renewing (A.R.S. § 32-1122(H)), but no credit score, net-worth test or threshold is set in statute. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+          "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+        }
+      }
+    }
+  ],
+  "reciprocity": [],
+  "reciprocity_statement": {
+    "value": null,
+    "status": "unknown",
+    "confidence": "low",
+    "note": "NOT ESTABLISHED. Arizona Revised Statutes title 32 chapter 10 contains no reciprocity section in the ten sections fetched; § 32-1125(A) opens 'Except as provided in section 32-4301', which is Arizona's universal-licensure chapter and was NOT fetched. The Registrar's own reciprocity guidance is on roc.az.gov and could not be read. The product must render 'not established', never 'none'. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+    "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01125.htm"
+  },
+  "business_entity": {
+    "qualifying_individual_rule": {
+      "value": "Each licence names a qualifying party. That person may not take other employment conflicting with the duty to supervise the licensee's work, and may qualify ONE additional licensee only where there is at least 25% common ownership of both entities, or one is a 25%-owned subsidiary of the other.",
+      "status": "verified",
+      "confidence": "low",
+      "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01127.htm",
+      "source_title": "A.R.S. § 32-1127 Qualifying party; responsibility",
+      "source_kind": "statute",
+      "evidence": "Such person may act in the capacity of the qualifying party for one additional licensee",
+      "last_verified": "2026-09-04",
+      "verified_by": [
+        "kb-b5-pass-a",
+        "kb-b5-pass-b"
+      ],
+      "note": "This is the field that decides whether a roll-up can staff an Arizona acquisition with the qualifier it already has: two licences per person, and only inside a 25% common-ownership group. The qualifying party is also responsible for the licensee's violations for regulatory purposes, though § 32-1127(B) says that imposes no personal liability."
+    },
+    "entity_registration": {
+      "value": "A corporate or LLC applicant must attest that it is in good standing with the Arizona Corporation Commission, and must name every officer, director, manager or member and every owner of 25% or more of the stock or beneficial interest.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm",
+      "source_title": "A.R.S. § 32-1122 Qualifications for license",
+      "source_kind": "statute",
+      "evidence": "The name and address of the qualifying party.",
+      "last_verified": "2026-09-04",
+      "verified_by": [
+        "kb-b5-pass-a",
+        "kb-b5-pass-b"
+      ]
+    },
+    "per_location_rule": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "No per-location or per-branch rule appears in the ten A.R.S. chapter 10 sections read; the licence attaches to the entity and its classification, not to an address. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+      "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm"
+    },
+    "change_notification_deadline": {
+      "value": "15 days to notify the Registrar in writing, in a duty falling on BOTH the licensee and the departing qualifying party, and 60 days to requalify through another person. Miss the 60 days and the licence is suspended automatically, by operation of law, until a new qualifying party is in place.",
+      "status": "verified",
+      "confidence": "low",
+      "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01127-01.htm",
+      "source_title": "A.R.S. § 32-1127.01 Qualifying parties; disassociation with license; requalification",
+      "source_kind": "statute",
+      "evidence": "both the licensee and the qualifying party shall notify the registrar in writing within fifteen days after the disassociation",
+      "last_verified": "2026-09-04",
+      "verified_by": [
+        "kb-b5-pass-a",
+        "kb-b5-pass-b"
+      ],
+      "note": "The tightest qualifier deadline in the knowledge base: Arizona 15 days to notify and 60 to requalify, against Ohio's 90-day reassignment wait and Texas's 30 business days. Separately, A.R.S. § 32-1122(B)(4) requires notice of ANY change to the information on the application within 30 days. This is an event-triggered deadline, not a date on a licence."
+    }
+  },
+  "typical_timeline": {
+    "value": null,
+    "status": "unknown",
+    "confidence": "low",
+    "note": "The Registrar publishes application processing times; that page could not be read. A.R.S. title 32 chapter 10 sets no processing period for an original licence — the only statutory clock is § 32-1125(D), thirty days for the Registrar to approve or deny an application for exemption from a qualifying party, which is a different thing entirely and is not quoted here as a timeline. The Registrar of Contractors publishes this figure; the Registrar's site could not be read. Every one of https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules) returned a Cloudflare interstitial ('Just a moment...') to every automated client on 2026-09-04 — two attempts each through kb-scripts/lib_kb.fetch and again through curl with full browser headers. Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature, is the only reachable authority and it does not print this value.",
+    "source_url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01125.htm"
+  },
+  "coverage_notes": [
+    "THIS RECORD IS PARTIAL AND THE REASON IS NAMED. Every value in it comes from Arizona Revised Statutes title 32 chapter 10, fetched from the Legislature. The Registrar of Contractors' own site refused every automated fetch on 2026-09-04 — two attempts each through lib_kb.fetch and again through curl with full browser headers, all answered with a Cloudflare interstitial. Blocked: https://roc.az.gov/ , https://roc.az.gov/licensing , https://azroc.gov/ , https://azsos.gov/ and https://apps.azsos.gov/public_services/Title_04/4-09.pdf (Arizona Administrative Code Title 4 Chapter 9, the Registrar's own rules)",
+    "Consequently the ACTUAL FEES ARE NOT IN THIS RECORD. The statute sets ceilings ('not more than $350', 'not more than $1,000') and the Registrar sets the price inside them. Application fee and renewal fee are therefore empty. The only money figures recorded are the $50 late penalty and the bond bands, both of which the statute states as amounts rather than as maxima.",
+    "The ROC trade classification codes (C-37 / K-37 / CR-37 for this trade) are named in the scope note for recognition only. The classification list is in the Arizona Administrative Code title 4 chapter 9 and on the Registrar's own table, neither of which could be fetched, so no requirement in this record is attached to a code and the three licence types are the statutory categories rather than the Registrar's classifications.",
+    "Continuing education is NOT ESTABLISHED for Arizona, in either direction. The statute imposes none; the Registrar has rulemaking power under § 32-1105 and its rules could not be read. The record says 'not established', which is the honest answer, and not 'no CE required', which would be a guess a customer could act on.",
+    "Reciprocity is not established. A.R.S. § 32-1125 points at chapter 43 (§ 32-4301, universal licensure) which was not fetched, and the Registrar's reciprocity page is blocked.",
+    "The residential contractors' recovery fund (A.R.S. §§ 32-1131 to 32-1140) affects residential and dual licensees and is summarised in the bond alternative note; it is not modelled as a trackable obligation with its own deadline."
+  ],
+  "disclaimer_profile": "unverified_fields_present",
+  "provenance": {
+    "created_at": "2026-09-04",
+    "pass_a": {
+      "agent_id": "kb-b5-pass-a",
+      "date": "2026-09-04",
+      "method": "fetched each Arizona Revised Statutes section with kb-scripts/lib_kb.fetch (serial, 1.5 s spacing, two attempts, no retry on 403/404) after the Registrar of Contractors' own site refused every automated fetch; read each section in full and recorded each value with a verbatim evidence fragment checked against the normalised page before writing"
+    },
+    "pass_b": {
+      "agent_id": "kb-b5-pass-b",
+      "date": "2026-09-04",
+      "method": "two checks. (1) kb-scripts/verify_pass_b.py re-fetches every source_url over the network, independently of the pass-A cache, and asserts the evidence fragment is still literally present. (2) a separate semantic re-read of every source, re-deriving each value from the page rather than from the record, recorded per value in kb-data/_verification/<record>.md. A disagreement in either check demotes the value.",
+      "agreements": 0,
+      "disagreements": 0,
+      "unreachable": 0,
+      "agreement_rate_pct": 0.0,
+      "disagreement_detail": []
+    },
+    "sources": [
+      {
+        "source_id": "az.ars.32_1101_01",
+        "url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01101-01.htm",
+        "title": "A.R.S. § 32-1101.01 Local authority",
+        "kind": "statute",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "e1d2ec2bb924d9372711167712f881186ddb72ff56791baaa92a9be5919de93c",
+        "http_status": 200,
+        "bytes": 80484
+      },
+      {
+        "source_id": "az.ars.32_1102",
+        "url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01102.htm",
+        "title": "A.R.S. § 32-1102 Classification of licenses; contracting business",
+        "kind": "statute",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "108fe86aec0c0aa7847d72be7ed52688752e39e43e7750ab113567641c660c46",
+        "http_status": 200,
+        "bytes": 83238
+      },
+      {
+        "source_id": "az.ars.32_1122",
+        "url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01122.htm",
+        "title": "A.R.S. § 32-1122 Qualifications for license",
+        "kind": "statute",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "9478d09275b3ad7f73560b73e863dfbdc0e4c1e47c9ce99dcdd01f8b122cb47b",
+        "http_status": 200,
+        "bytes": 87415
+      },
+      {
+        "source_id": "az.ars.32_1123_01",
+        "url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01123-01.htm",
+        "title": "A.R.S. § 32-1123.01 Staggered periods of licensure; biennial renewal",
+        "kind": "statute",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "93973086d62cd5b6cf2c292e922452a9d33f2a4a9e6a8be063f3113986917d5d",
+        "http_status": 200,
+        "bytes": 80846
+      },
+      {
+        "source_id": "az.ars.32_1125",
+        "url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01125.htm",
+        "title": "A.R.S. § 32-1125 Renewal of license; qualifying party",
+        "kind": "statute",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "1a87d8bae265eb5aa9edb995c7b486998abfa39692fbf41031cb0703c6faa796",
+        "http_status": 200,
+        "bytes": 82697
+      },
+      {
+        "source_id": "az.ars.32_1126",
+        "url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01126.htm",
+        "title": "A.R.S. § 32-1126 Fees",
+        "kind": "statute",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "bc53859b3bff2f092ba31b84f6310f8c07539ca015e7f8e19c575654eb4f0335",
+        "http_status": 200,
+        "bytes": 82684
+      },
+      {
+        "source_id": "az.ars.32_1127",
+        "url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01127.htm",
+        "title": "A.R.S. § 32-1127 Qualifying party; responsibility",
+        "kind": "statute",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "98017eb93f2752d58548cb85548c3849510453f68a1f01f53cfdb75c5ed2116d",
+        "http_status": 200,
+        "bytes": 81378
+      },
+      {
+        "source_id": "az.ars.32_1127_01",
+        "url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01127-01.htm",
+        "title": "A.R.S. § 32-1127.01 Qualifying parties; disassociation with license; requalification",
+        "kind": "statute",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "6fc087b8d8e5cd88dcbc422ace854f3a8890b55ff60a644d71f817eec3d507ac",
+        "http_status": 200,
+        "bytes": 80858
+      },
+      {
+        "source_id": "az.ars.32_1151",
+        "url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01151.htm",
+        "title": "A.R.S. § 32-1151 Engaging in contracting without license prohibited",
+        "kind": "statute",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "853a3091c31e7ab867da540754404bb2ed372703a86142c585933833f10a60cb",
+        "http_status": 200,
+        "bytes": 81126
+      },
+      {
+        "source_id": "az.ars.32_1152",
+        "url": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/32/01152.htm",
+        "title": "A.R.S. § 32-1152 Bonds",
+        "kind": "statute",
+        "fetched_at": "2026-09-04",
+        "content_sha256": "60d7e8c9c6f5c8d0a8fef7644684be1684e5c2e7b2009ea71070454a84be049f",
+        "http_status": 200,
+        "bytes": 94957
+      }
+    ],
+    "publishable": false
+  }
+}

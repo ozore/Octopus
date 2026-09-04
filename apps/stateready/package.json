@@ -1,0 +1,46 @@
+{
+  "name": "@octopus/stateready",
+  "version": "0.1.0",
+  "private": true,
+  "description": "StateReady \u2014 licence, CE and readiness tracking for multi-state HVAC, plumbing and electrical contractors. Scaffolded from apps/_template onto @octopus/platform.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "prebuild": "node scripts/check-legal-address.mjs",
+    "build": "next build",
+    "start": "next start -p ${PORT:-3000}",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx src/scripts/migrate.ts",
+    "stripe:setup": "tsx src/scripts/stripe-setup.ts",
+    "kb:check": "tsx src/scripts/kb-check.ts",
+    "kb:drift": "python3 ../../phase-4-revenue/stateready/kb-scripts/refresh_sources.py"
+  },
+  "dependencies": {
+    "@octopus/platform": "*",
+    "drizzle-orm": "^0.44.6",
+    "next": "^15.5.4",
+    "pdf-lib": "^1.17.1",
+    "postgres": "^3.4.7",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "zod": "^4.1.11"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.3.11",
+    "@playwright/test": "1.56.1",
+    "@types/node": "^22.18.6",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "drizzle-kit": "^0.31.5",
+    "playwright": "1.56.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}

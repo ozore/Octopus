@@ -1,0 +1,24 @@
+{
+  "name": "octopus-workspaces",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Phase-4 monorepo root: packages/platform (shared, headless) and apps/* (WageLens, Certly, StateReady, scaffolded from apps/_template). app/ (Clausewright) is deliberately NOT a workspace — it keeps its own lockfile and its own CI job.",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "test:e2e": "npm run test:e2e --workspace apps/_template"
+  },
+  "devDependencies": {
+    "@types/node": "^22.18.6",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}

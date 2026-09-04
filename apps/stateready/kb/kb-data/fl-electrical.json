@@ -1,0 +1,559 @@
+{
+  "record_id": "fl.electrical",
+  "schema_version": "1.0.0",
+  "state": "FL",
+  "state_name": "Florida",
+  "trade": "electrical",
+  "jurisdiction_model": {
+    "level": "state_and_local",
+    "summary": {
+      "value": "Certified (EC) contractors work statewide and may contract for all alarm systems and specialty categories. Registered (ER) contractors work only in the cities and counties their registration names AND may not contract for any alarm system at all.",
+      "status": "verified",
+      "confidence": "high",
+      "source_url": "https://www2.myfloridalicense.com/electrical-contractors/",
+      "source_title": "Electrical Contractors — Florida DBPR / ECLB",
+      "source_kind": "board_page",
+      "evidence": "MAY NOT contract for any alarm system",
+      "last_verified": "2026-09-03",
+      "verified_by": [
+        "po-stateready-pass-a",
+        "po-stateready-pass-b"
+      ]
+    },
+    "local_layer_note": "The alarm-work restriction on registered contractors is a scope cliff, not a geography one, and it catches low-voltage work that a mechanical or electrical roll-up often assumes is included."
+  },
+  "boards": [
+    {
+      "board_id": "fl.eclb",
+      "name": "Florida Department of Business and Professional Regulation — Electrical Contractors' Licensing Board",
+      "url": "https://www2.myfloridalicense.com/electrical-contractors/",
+      "scope": "Electrical contractors, alarm system contractors I and II, electrical and alarm specialty contractors",
+      "phone": "850.487.1395"
+    }
+  ],
+  "licence_types": [
+    {
+      "licence_type_id": "fl.electrical.certified_electrical_contractor",
+      "name": "Certified Electrical Contractor (EC)",
+      "level": "contractor",
+      "issuer_level": "state",
+      "board_id": "fl.eclb",
+      "who_must_hold": {
+        "value": "A person conducting business in the electrical trade who installs, repairs, alters, adds to or designs electrical wiring, fixtures, appliances, apparatus, raceways and conduit, including plant and substation installations, all alarm systems and specialty categories.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www2.myfloridalicense.com/electrical-contractors/",
+        "source_title": "Electrical Contractors — Florida DBPR / ECLB",
+        "source_kind": "board_page",
+        "evidence": "a person who conducts business in the electrical trade field and who has the experience and knowledge install, repair, alter",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "scope_note": {
+        "value": "Statewide, including ALL alarm systems and specialty categories.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www2.myfloridalicense.com/electrical-contractors/",
+        "source_title": "Electrical Contractors — Florida DBPR / ECLB",
+        "source_kind": "board_page",
+        "evidence": "including the electrical installations and systems within plants and substations and ALL alarm systems and specialty categories",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "exam": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1030&clientCode=0801&XACT_DEFN_ID=3657",
+          "source_title": "Certified Electrical Contractor – Initial (ECLB 1) checklist",
+          "source_kind": "board_page",
+          "evidence": "You must have passed both parts of the State of Florida Electrical Contractors exam",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "note": "Exam scores expire: they may not be more than three years old on the date of the licence application. A contractor who passed the exam and then delayed the expansion can be forced to re-sit."
+      },
+      "experience": {
+        "requirement": {
+          "value": "At least 40% of the qualifying work must be in three-phase services; the applicant must meet one of the experience routes set out in the application instructions.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1030&clientCode=0801&XACT_DEFN_ID=3657",
+          "source_title": "Certified Electrical Contractor – Initial (ECLB 1) checklist",
+          "source_kind": "board_page",
+          "evidence": "The required experience must include at least 40% of work that is in 3-phase services.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "The 40% three-phase test is the field most often missed by residential-heavy applicants. It is a composition test, not a duration test."
+        }
+      },
+      "application_fee": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "'Pay the required fee as provided in the application'; the amount is not on the checklist page.",
+        "source_url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1030&clientCode=0801&XACT_DEFN_ID=3657"
+      },
+      "renewal": {
+        "cycle": {
+          "value": 24,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/electrical-contractors/",
+          "source_title": "Electrical Contractors — Florida DBPR / ECLB",
+          "source_kind": "board_page",
+          "evidence": "Licenses expire August 31st every even year.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "fee": {
+          "value": 296,
+          "unit": "USD",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/electrical-contractors/",
+          "source_title": "Electrical Contractors — Florida DBPR / ECLB",
+          "source_kind": "board_page",
+          "evidence": "| $296",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "From the ECLB renewal-requirements table, Certified Electrical Contractor row. Note it is $91 higher than the CILB's $205 for HVAC and plumbing: electrical and mechanical licences in the same Florida branch do not cost the same to renew."
+        },
+        "expiry_rule": {
+          "value": "fixed_date_parity:08-31:even",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/electrical-contractors/",
+          "source_title": "Electrical Contractors — Florida DBPR / ECLB",
+          "source_kind": "board_page",
+          "evidence": "Licenses expire August 31st every even year.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/electrical-contractors/",
+          "source_title": "Electrical Contractors — Florida DBPR / ECLB",
+          "source_kind": "board_page",
+          "evidence": "Complete the continuing education requirement",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "hours": {
+          "value": 11,
+          "unit": "hours",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/electrical-contractors/",
+          "source_title": "Electrical Contractors — Florida DBPR / ECLB",
+          "source_kind": "board_page",
+          "evidence": "11 hours of Continuing Education must include",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "Eleven, not fourteen. An operations manager who standardises on 'Florida needs 14 hours' will over-buy for electricians and, worse, will miss the two extra false-alarm hours that apply to alarm work."
+        },
+        "period": {
+          "value": 24,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/electrical-contractors/",
+          "source_title": "Electrical Contractors — Florida DBPR / ECLB",
+          "source_kind": "board_page",
+          "evidence": "Licenses expire August 31st every even year.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "subject_breakdown": {
+          "value": [
+            {
+              "hours": 1,
+              "subject": "workers' compensation"
+            },
+            {
+              "hours": 1,
+              "subject": "workplace safety"
+            },
+            {
+              "hours": 1,
+              "subject": "business practices"
+            },
+            {
+              "hours": 1,
+              "subject": "Florida laws and rules"
+            },
+            {
+              "hours": 1,
+              "subject": "Florida Building Code advanced module"
+            },
+            {
+              "hours": 6,
+              "subject": "technical"
+            },
+            {
+              "hours": 2,
+              "subject": "false alarm prevention — additional, required only for certified electrical contractors who perform alarm work"
+            }
+          ],
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/electrical-contractors/",
+          "source_title": "Electrical Contractors — Florida DBPR / ECLB",
+          "source_kind": "board_page",
+          "evidence": "Additionally, 2 hours false alarm prevention is required for all certified electrical contractors who perform alarm work",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "The false-alarm hours are conditional on the work performed, not on the licence class. The rules engine needs a conditional CE rule keyed to a company attribute, which is why 'does this company do alarm work' is an onboarding question and not a nice-to-have."
+        },
+        "approved_provider_rule": {
+          "value": "Board-approved providers and courses; the ECLB runs its own provider and course approval applications (ECLB 11, ECLB 12).",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/electrical-contractors/",
+          "source_title": "Electrical Contractors — Florida DBPR / ECLB",
+          "source_kind": "board_page",
+          "evidence": "Continuing Education Provider Approval (ECLB 11)",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "No bond in the ECLB 1 checklist; the financial test is a net worth figure plus credit reports.",
+          "source_url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1030&clientCode=0801&XACT_DEFN_ID=3657"
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see bond.required"
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The ECLB 1 checklist does not state liability limits, and rule 61G4-15.003 is a CILB rule that does not list electrical contractors. The ECLB's own insurance rule (chapter 61G6) was not read. Left empty.",
+          "source_url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1030&clientCode=0801&XACT_DEFN_ID=3657"
+        },
+        "financial_responsibility": {
+          "value": "A personal credit report, plus a business credit report and a business financial statement showing a net worth of at least $10,000.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1030&clientCode=0801&XACT_DEFN_ID=3657",
+          "source_title": "Certified Electrical Contractor – Initial (ECLB 1) checklist",
+          "source_kind": "board_page",
+          "evidence": "Business Financial Statement showing a net worth of at least $10,000",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "A different test from the CILB's FICO 660 rule. Two Florida boards, two financial gates, one company."
+        }
+      }
+    },
+    {
+      "licence_type_id": "fl.electrical.registered_electrical_contractor",
+      "name": "Registered Electrical Contractor (ER)",
+      "level": "contractor",
+      "issuer_level": "local",
+      "board_id": "fl.eclb",
+      "who_must_hold": {
+        "value": "An electrical contractor who met a local jurisdiction's competency requirements and registered for that jurisdiction.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www2.myfloridalicense.com/electrical-contractors/",
+        "source_title": "Electrical Contractors — Florida DBPR / ECLB",
+        "source_kind": "board_page",
+        "evidence": "an electrical contractor who has registered with the department pursuant to fulfilling the competency requirements in the jurisdiction for which the registration is issued",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "scope_note": {
+        "value": "Only in the named cities and counties, and no alarm systems at all.",
+        "status": "verified",
+        "confidence": "high",
+        "source_url": "https://www2.myfloridalicense.com/electrical-contractors/",
+        "source_title": "Electrical Contractors — Florida DBPR / ECLB",
+        "source_kind": "board_page",
+        "evidence": "MAY NOT contract for any alarm system",
+        "last_verified": "2026-09-03",
+        "verified_by": [
+          "po-stateready-pass-a",
+          "po-stateready-pass-b"
+        ]
+      },
+      "exam": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Local competency requirement, not a state exam."
+        }
+      },
+      "experience": {
+        "requirement": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Set by the local jurisdiction."
+        }
+      },
+      "application_fee": {
+        "value": null,
+        "status": "unknown",
+        "confidence": "low",
+        "note": "Not published on the checklist page."
+      },
+      "renewal": {
+        "cycle": {
+          "value": 24,
+          "unit": "months",
+          "status": "verified",
+          "confidence": "low",
+          "source_url": "https://www2.myfloridalicense.com/electrical-contractors/",
+          "source_title": "Electrical Contractors — Florida DBPR / ECLB",
+          "source_kind": "board_page",
+          "evidence": "Licenses expire August 31st every even year.",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ],
+          "note": "The ECLB renewal table read in this pass lists expiry for the CERTIFIED classes. Whether Florida registered electrical contractors follow the CILB's odd-year pattern was not confirmed on an ECLB page. LOW confidence and flagged; do not derive an alert from it without a human check."
+        },
+        "fee": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Not listed for the registered class in the table read."
+        },
+        "expiry_rule": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see renewal.cycle: unresolved for the registered class."
+        }
+      },
+      "continuing_education": {
+        "required": {
+          "value": true,
+          "status": "verified",
+          "confidence": "medium",
+          "source_url": "https://www2.myfloridalicense.com/electrical-contractors/",
+          "source_title": "Electrical Contractors — Florida DBPR / ECLB",
+          "source_kind": "board_page",
+          "evidence": "Complete the continuing education requirement",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        },
+        "hours": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "The renewal table read lists hours by CERTIFIED class. The registered-class row was not captured. Left empty rather than assumed equal."
+        },
+        "period": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see hours"
+        },
+        "approved_provider_rule": {
+          "value": "Board-approved providers and courses.",
+          "status": "verified",
+          "confidence": "high",
+          "source_url": "https://www2.myfloridalicense.com/electrical-contractors/",
+          "source_title": "Electrical Contractors — Florida DBPR / ECLB",
+          "source_kind": "board_page",
+          "evidence": "Continuing Education Provider Approval (ECLB 11)",
+          "last_verified": "2026-09-03",
+          "verified_by": [
+            "po-stateready-pass-a",
+            "po-stateready-pass-b"
+          ]
+        }
+      },
+      "bond": {
+        "required": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "Local jurisdictions may impose one."
+        },
+        "amount": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "see bond.required"
+        }
+      },
+      "insurance": {
+        "general_liability": {
+          "value": null,
+          "status": "unknown",
+          "confidence": "low",
+          "note": "See the certified class: not established."
+        }
+      }
+    }
+  ],
+  "reciprocity": [],
+  "reciprocity_statement": {
+    "value": null,
+    "status": "unknown",
+    "confidence": "low",
+    "note": "No reciprocity page was read on the ECLB site in this pass. Note however that North Carolina's electrical board publishes a formal reciprocity agreement WITH Florida, so at least one direction exists; see nc.electrical.reciprocity. Asymmetry like this is exactly why direction is a required field.",
+    "source_url": "https://www2.myfloridalicense.com/electrical-contractors/"
+  },
+  "business_entity": {
+    "qualifying_individual_rule": {
+      "value": "The certified contractor qualifies the business; additional business entities are qualified on an ECLB 4 application.",
+      "status": "verified",
+      "confidence": "medium",
+      "source_url": "https://www2.myfloridalicense.com/electrical-contractors/",
+      "source_title": "Electrical Contractors — Florida DBPR / ECLB",
+      "source_kind": "board_page",
+      "evidence": "Qualifying an Additional Business Entity (ECLB 4)",
+      "last_verified": "2026-09-03",
+      "verified_by": [
+        "po-stateready-pass-a",
+        "po-stateready-pass-b"
+      ]
+    },
+    "entity_registration": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "Not read in this pass."
+    },
+    "per_location_rule": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "Not stated."
+    },
+    "change_notification_deadline": {
+      "value": null,
+      "status": "unknown",
+      "confidence": "low",
+      "note": "Not read in this pass."
+    }
+  },
+  "typical_timeline": {
+    "value": null,
+    "status": "unknown",
+    "confidence": "low",
+    "note": "Not published. The only time constraint stated is that exam scores may not be more than three years old at application.",
+    "source_url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1030&clientCode=0801&XACT_DEFN_ID=3657"
+  },
+  "coverage_notes": [
+    "Alarm System Contractor I and II and the registered specialty categories (elevator, utility line, low voltage, residential, fixtures, signs) are named on the source page and not modelled.",
+    "The registered (ER) class carries three low-confidence or empty renewal fields. Any Florida playbook that touches an ER licence must show the needs-human-check banner."
+  ],
+  "disclaimer_profile": "unverified_fields_present",
+  "provenance": {
+    "created_at": "2026-09-03",
+    "pass_a": {
+      "agent_id": "po-stateready-pass-a",
+      "date": "2026-09-03",
+      "method": "fetched each source URL with curl (desktop UA), read the rendered text, recorded each value with a verbatim evidence fragment"
+    },
+    "pass_b": {
+      "agent_id": "po-stateready-pass-b",
+      "date": "2026-09-03",
+      "method": "kb-scripts/verify_pass_b.py re-fetches every source_url independently of the pass-A cache and asserts the evidence fragment is still literally present; a value whose evidence cannot be found is a disagreement and is demoted to UNVERIFIED",
+      "agreements": 20,
+      "disagreements": 0,
+      "disagreement_detail": [],
+      "unreachable": 0,
+      "agreement_rate_pct": 100.0
+    },
+    "sources": [
+      {
+        "source_id": "fl.dbpr.electrical",
+        "url": "https://www2.myfloridalicense.com/electrical-contractors/",
+        "title": "Electrical Contractors — Florida DBPR / ECLB",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 220036,
+        "content_sha256": "616dcb5803ec971fee873f2ac71bc78b36595d906e47f773f44c02bcf8fac321"
+      },
+      {
+        "source_id": "fl.dbpr.eclb_initial",
+        "url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1030&clientCode=0801&XACT_DEFN_ID=3657",
+        "title": "Certified Electrical Contractor – Initial (ECLB 1) checklist",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 29185,
+        "content_sha256": "9bdb47db7336342181b0b6fbaf8ea6b3f039b3769fe4fec3f4956affcc70bdf5"
+      },
+      {
+        "source_id": "fl.dbpr.eclb_exam",
+        "url": "https://www.myfloridalicense.com/CheckListDetail.asp?SID=&xactCode=1010&clientCode=0801&XACT_DEFN_ID=3685",
+        "title": "Certified Electrical Contractor – Examination (ECLB 8) checklist",
+        "kind": "board_page",
+        "fetched_at": "2026-09-03",
+        "http_status": 200,
+        "bytes": 26561,
+        "content_sha256": "a56c214a802c52b18064729fa01d4ec97d3dadda5a36fbdbf075488df4858e74"
+      }
+    ],
+    "publishable": true
+  }
+}
