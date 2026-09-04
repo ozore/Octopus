@@ -1,15 +1,16 @@
 ---
-subject: the certificate of insurance on file for your vendors
+subject: the certificate on file for your landscaper
 delay_days: 0
 send_window: 09:00-11:00
 ---
 Hello,
 
-{{fact.opening}}, which is why this is going to you rather than to a list.
-{{#if fact.portfolio}}I also saw {{fact.portfolio}}.{{/if}}
+{{#if fact.segment}}I have you listed under {{fact.segment}}{{#if fact.location}} in {{fact.location}}{{/if}}, so this is going to you and not to a list.{{/if}}
+{{#if fact.portfolio}}I saw {{fact.portfolio}}.{{/if}}
 
-Every vendor or subcontractor who works for you hands over a certificate of
-insurance with its own renewal date, usually into a spreadsheet.
+Every landscaper, roofer and cleaner on your properties hands over a
+certificate of insurance with its own renewal date, usually into a
+spreadsheet.
 
 Every ACORD 25 says: "a statement on this certificate does not confer rights
 to the certificate holder in lieu of such endorsement(s)." A tick in the

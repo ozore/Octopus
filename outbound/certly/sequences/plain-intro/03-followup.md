@@ -1,17 +1,20 @@
 ---
-subject: Last useful thing, then I stop
-delay_days: 12
+subject: the expiry date is not the risk
+delay_days: 9
 send_window: 09:00-11:00
 ---
 Hello,
 
-One more worth keeping, then I will leave you alone.
+One more worth keeping.
 
-The expiry date on a certificate is not the risk. The risk is the cancellation
-that happens between renewals: the carrier notifies the policyholder, not you,
-and the certificate in your file still reads as valid. Anyone tracking only
-expiry dates is blind to it.
-{{#if fact.segment}}That is the failure mode I keep hearing about in {{fact.segment}}.{{/if}}
+The expiry date on a certificate is not the whole risk. The form says notice
+of cancellation "will be delivered in accordance with the policy
+provisions", which promises you nothing, and its footnote says limits shown
+"may have been reduced by paid claims". A certificate can read as valid
+while the policy behind it has changed.
 
-If insurance compliance belongs to somebody else at {{org.name}}, a redirect
-would be genuinely useful. If it is nobody's job, that is an answer too.
+A dated Gap Report tells you what each certificate evidences, against the
+requirement you set. Forward up to 25 and keep what comes back.
+If certificates belong to somebody else at {{org.name}}, a forward is just as good.
+
+{{sender.name}}
