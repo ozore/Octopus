@@ -1,0 +1,912 @@
+<title>Atlas Océan Plastique</title>
+<meta name="description" content="Douze idées de société logicielle et IA contre le plastique marin, chacune ancrée sur une réglementation datée, une cible captive et un prix.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#F4F7F9; --surface:#FFFFFF; --surface-2:#EAF0F3;
+  --ink:#0E2233; --ink-2:#44576A; --ink-3:#6E8290;
+  --kelp:#0F7C6E; --kelp-ink:#0B5F55; --kelp-soft:#DDF0EC;
+  --buoy:#C2401B; --buoy-soft:#FBE6DE;
+  --line:#D5DEE4; --line-2:#E6ECF0;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+  --shadow:0 1px 2px rgba(14,34,51,.06),0 8px 24px rgba(14,34,51,.06);
+  --display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0C1A24; --surface:#122431; --surface-2:#182E3D;
+    --ink:#E6EEF2; --ink-2:#A9BAC5; --ink-3:#8296A3;
+    --kelp:#2FB39F; --kelp-ink:#5FD0BF; --kelp-soft:#163A38;
+    --buoy:#FF8A66; --buoy-soft:#3D2118;
+    --line:#26394B; --line-2:#1E3140;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0C1A24; --surface:#122431; --surface-2:#182E3D;
+  --ink:#E6EEF2; --ink-2:#A9BAC5; --ink-3:#8296A3;
+  --kelp:#2FB39F; --kelp-ink:#5FD0BF; --kelp-soft:#163A38;
+  --buoy:#FF8A66; --buoy-soft:#3D2118;
+  --line:#26394B; --line-2:#1E3140;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--kelp-ink);text-decoration-thickness:1px;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--kelp);outline-offset:2px}
+h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:clamp(40px,6vw,72px);font-weight:800;line-height:1;letter-spacing:-.02em}
+h2{font-size:clamp(26px,3.2vw,36px);font-weight:700;letter-spacing:-.015em;line-height:1.15}
+h3{font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1.15}
+h4{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+p{margin:0}
+.mono{font-family:var(--mono);font-size:.86em}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--kelp-ink);font-weight:500}
+.date{font-family:var(--mono);font-weight:600;color:var(--buoy);white-space:nowrap}
+.ref{font-family:var(--mono);font-size:.82em;color:var(--ink-2);background:var(--surface-2);padding:1px 6px;border-radius:3px;white-space:nowrap}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* Hero */
+.hero{border-bottom:1px solid var(--line);background:var(--surface)}
+.hero-inner{max-width:1180px;margin:0 auto;padding:56px 32px 40px;display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:48px;align-items:end}
+.hero p.lead{font-size:20px;color:var(--ink-2);max-width:62ch;margin-top:20px}
+.hero-meta{display:grid;gap:10px;font-family:var(--mono);font-size:13px;color:var(--ink-2)}
+.hero-meta div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line-2);padding-bottom:8px}
+.hero-meta b{color:var(--ink);font-weight:600}
+.kpis{max-width:1180px;margin:0 auto;padding:0 32px 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{border-top:2px solid var(--kelp);padding-top:10px}
+.kpi .v{font-family:var(--display);font-size:34px;font-weight:800;line-height:1;letter-spacing:-.02em}
+.kpi .l{font-size:14px;color:var(--ink-2);margin-top:6px}
+
+/* Page grid */
+.page{max-width:1180px;margin:0 auto;padding:40px 32px 96px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:56px;align-items:start}
+nav.rail{position:sticky;top:24px;font-family:var(--display);font-size:14px}
+nav.rail .group{margin-bottom:22px}
+nav.rail .group-t{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+nav.rail a{display:flex;gap:10px;align-items:baseline;color:var(--ink-2);text-decoration:none;padding:5px 0;border-left:2px solid transparent;padding-left:10px;margin-left:-12px}
+nav.rail a:hover{color:var(--ink)}
+nav.rail a.on{color:var(--ink);border-left-color:var(--kelp)}
+nav.rail a .n{font-family:var(--mono);font-size:11px;color:var(--ink-3);min-width:18px}
+main{min-width:0}
+section.block{margin-bottom:72px}
+section.block > .eyebrow{margin-bottom:10px;display:block}
+section.block > h2{margin-bottom:22px}
+.prose{max-width:66ch}
+.prose p + p{margin-top:14px}
+.prose ul{padding-left:20px;margin:12px 0}
+.prose li{margin:6px 0}
+
+/* Synthèse */
+.reco{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:26px 0 8px}
+.reco a{display:block;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 18px 16px;box-shadow:var(--shadow)}
+.reco a:hover{border-color:var(--kelp)}
+.reco .k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--buoy);font-weight:600}
+.reco .t{font-family:var(--display);font-size:20px;font-weight:700;margin:6px 0 6px;letter-spacing:-.01em}
+.reco .d{font-size:14.5px;color:var(--ink-2)}
+.thesis{background:var(--kelp-soft);border-radius:10px;padding:22px 24px;margin:26px 0;max-width:72ch}
+.thesis p{font-family:var(--display);font-size:19px;font-weight:500;line-height:1.4;color:var(--kelp-ink)}
+:root[data-theme="dark"] .thesis p{color:var(--ink)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .thesis p{color:var(--ink)}}
+
+/* Timeline */
+.tl{position:relative;padding-left:26px;border-left:2px solid var(--line);margin-top:8px}
+.tl-y{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.01em;margin:26px 0 10px;position:relative}
+.tl-y:first-child{margin-top:0}
+.tl-y::before{content:"";position:absolute;left:-33px;top:9px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--ink-3)}
+.tl-e{display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;padding:7px 0;border-bottom:1px solid var(--line-2);font-size:15px;align-items:baseline}
+.tl-e .date{font-size:13px}
+.tl-e .t b{font-family:var(--display);font-weight:700}
+.tl-e .idx{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-left:6px;white-space:nowrap}
+.tl-e.past .date{color:var(--ink-3)}
+.tl-now{position:relative;margin:10px 0;padding:6px 10px;background:var(--buoy-soft);color:var(--buoy);font-family:var(--mono);font-size:12px;font-weight:600;border-radius:4px;display:inline-block}
+.tl-now::before{content:"";position:absolute;left:-33px;top:10px;width:12px;height:12px;border-radius:50%;background:var(--buoy)}
+
+/* Chart */
+.chart-wrap{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 20px 12px;box-shadow:var(--shadow);position:relative}
+.chart-wrap svg{width:100%;height:auto;display:block;font-family:var(--mono)}
+.legend{display:flex;flex-wrap:wrap;gap:18px;font-family:var(--mono);font-size:12px;color:var(--ink-2);margin:10px 4px 0}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;vertical-align:-1px;background:var(--c)}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-family:var(--mono);font-size:12px;padding:8px 10px;border-radius:6px;max-width:260px;line-height:1.4;opacity:0;transition:opacity .12s}
+.tip b{display:block;font-family:var(--display);font-size:14px;margin-bottom:3px}
+.chart-note{font-size:14px;color:var(--ink-2);margin-top:14px;max-width:70ch}
+
+/* Fiche */
+.fiche{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-bottom:34px;overflow:hidden}
+.fiche-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:20px;align-items:start;padding:26px 28px 18px;border-bottom:1px solid var(--line-2)}
+.fiche-head .big{font-family:var(--display);font-size:52px;font-weight:800;line-height:.9;letter-spacing:-.04em;color:var(--kelp);font-variant-numeric:tabular-nums}
+.fam{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:3px;margin-bottom:8px;color:#fff}
+.fam-mer{background:var(--s1)} .fam-peche{background:var(--s2)} .fam-amont{background:var(--s3)}
+.tagline{font-size:17px;color:var(--ink-2);margin-top:6px;font-style:italic}
+.score-badge{text-align:right;font-family:var(--display);font-weight:800;font-size:30px;line-height:1;letter-spacing:-.02em}
+.score-badge span{font-size:13px;color:var(--ink-3);font-weight:500;letter-spacing:0}
+.score-badge small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-top:6px;font-weight:500}
+.trigger{padding:16px 28px;background:var(--surface-2);font-size:15.5px;line-height:1.5;display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.trigger .lab{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--buoy);font-weight:600;white-space:nowrap}
+.fiche-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px 32px;padding:22px 28px 8px}
+.fiche-grid section.wide{grid-column:1/-1}
+.fiche-grid h4{margin-bottom:6px}
+.fiche-grid p,.fiche-grid li{font-size:15.5px}
+.fiche-grid ul{margin:4px 0 0;padding-left:18px}
+.fiche-grid li{margin:3px 0}
+.fiche-grid .kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:15px}
+.fiche-grid .kv dt{font-family:var(--mono);font-size:12px;color:var(--ink-3);padding-top:3px}
+.fiche-grid .kv dd{margin:0}
+.effort{display:inline-block;font-family:var(--mono);font-size:12px;padding:2px 8px;border-radius:3px;background:var(--surface-2);color:var(--ink-2);margin-bottom:6px}
+.scores{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;padding:18px 28px 22px;border-top:1px solid var(--line-2)}
+.sc{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em}
+.sc .bar{height:6px;background:var(--line-2);border-radius:3px;margin:6px 0 5px;overflow:hidden}
+.sc .bar i{display:block;height:100%;background:var(--kelp);width:calc(var(--v) * 20%)}
+.sc b{color:var(--ink);font-weight:600}
+.verdicts{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line-2)}
+.verdicts > div{padding:16px 20px;font-size:14px;border-right:1px solid var(--line-2)}
+.verdicts > div:last-child{border-right:0}
+.verdicts .who{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.verdicts .who b{color:var(--ink);font-weight:600;letter-spacing:0;font-family:var(--display);font-size:13px;text-transform:none;margin-left:6px}
+.verdicts p{color:var(--ink-2)}
+.pill{display:inline-block;font-family:var(--mono);font-size:11px;padding:1px 7px;border-radius:3px;font-weight:600;margin-right:6px}
+.pill-go{background:var(--kelp-soft);color:var(--kelp-ink)} .pill-if{background:#FFF3D6;color:#7A4E00} .pill-no{background:var(--buoy-soft);color:var(--buoy)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pill-if{background:#3A2E12;color:#F2C46B}}
+:root[data-theme="dark"] .pill-if{background:#3A2E12;color:#F2C46B}
+.fam-h{display:flex;align-items:center;gap:12px;margin:40px 0 18px}
+.fam-h .sw{width:14px;height:14px;border-radius:3px}
+.fam-h h3{font-size:20px}
+.fam-h p{color:var(--ink-2);font-size:15px}
+
+/* Table */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;min-width:900px;font-size:14px}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);font-weight:600;white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--line-2);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+td .nm{font-family:var(--display);font-weight:700}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:0}
+
+/* Misc blocks */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.card h3{font-size:18px;margin-bottom:6px}
+.card p{font-size:15px;color:var(--ink-2)}
+.q{border-left:3px solid var(--kelp);padding:4px 0 4px 18px;margin:18px 0}
+.q .qq{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.01em}
+.q .qw{font-size:15px;color:var(--ink-2);margin-top:6px}
+.q .qw b{color:var(--ink);font-weight:600}
+.src{columns:2;column-gap:32px;font-size:14px}
+.src li{break-inside:avoid;margin:0 0 8px;color:var(--ink-2)}
+.src li b{color:var(--ink);font-weight:600;font-family:var(--display)}
+.agents{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.agents div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:14px}
+.agents .a{font-family:var(--mono);font-size:12px;color:var(--kelp-ink);font-weight:600}
+.agents p{color:var(--ink-2);margin-top:4px}
+footer{border-top:1px solid var(--line);padding:28px 32px;font-family:var(--mono);font-size:12px;color:var(--ink-3);text-align:center}
+
+@media (max-width:980px){
+  .hero-inner{grid-template-columns:1fr;gap:28px}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .page{grid-template-columns:1fr;gap:24px;padding:24px 20px 72px}
+  nav.rail{position:static;display:flex;gap:18px;overflow-x:auto;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  nav.rail .group{margin:0;flex:0 0 auto}
+  nav.rail a{border-left:0;padding-left:0;margin-left:0;white-space:nowrap}
+  .reco,.verdicts,.agents{grid-template-columns:1fr}
+  .verdicts > div{border-right:0;border-bottom:1px solid var(--line-2)}
+  .fiche-grid,.grid2{grid-template-columns:1fr}
+  .scores{grid-template-columns:repeat(4,1fr)}
+  .src{columns:1}
+  .fiche-head{grid-template-columns:auto minmax(0,1fr)}
+  .score-badge{grid-column:1/-1;text-align:left}
+}
+</style>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow">Étude d'opportunités · septembre 2026</span>
+      <h1 style="margin-top:14px">Atlas Océan Plastique</h1>
+      <p class="lead">Douze idées de société logicielle et IA contre le plastique marin. Chacune part d'une obligation réglementaire datée, vise une population captive, et se vend à un prix. Aucune ne dépend d'un don.</p>
+    </div>
+    <div class="hero-meta">
+      <div><span>Commanditaire</span><b>Fondateur, projet Octopus</b></div>
+      <div><span>Méthode</span><b>9 agents de recherche, 3 critiques</b></div>
+      <div><span>Périmètre</span><b>UE, USA, Asie-Pacifique, IMO</b></div>
+      <div><span>Statut</span><b>Idéation, pas d'implémentation</b></div>
+    </div>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><div class="v">12</div><div class="l">idées détaillées, notées sur 7 axes et passées par trois critiques</div></div>
+    <div class="kpi"><div class="v">40+</div><div class="l">textes réglementaires cartographiés, dont 14 avec échéance ferme entre 2026 et 2030</div></div>
+    <div class="kpi"><div class="v">15</div><div class="l">mois avant l'échéance la plus exploitable : les obligations du règlement pellets au 17 décembre 2027</div></div>
+    <div class="kpi"><div class="v">~200</div><div class="l">sources primaires consultées (EUR-Lex, IMO, NOAA, EPA, presse maritime)</div></div>
+  </div>
+</header>
+
+<div class="page">
+<nav class="rail" aria-label="Sommaire">
+  <div class="group"><div class="group-t">Lecture</div>
+    <a href="#synthese">Synthèse</a>
+    <a href="#frise">Frise réglementaire</a>
+    <a href="#matrice">Matrice effort et attrait</a>
+  </div>
+  <div class="group"><div class="group-t">Les 12 idées</div>
+    <a href="#idee-1"><span class="n">01</span>DriftBox</a>
+    <a href="#idee-2"><span class="n">02</span>GearTrace</a>
+    <a href="#idee-3"><span class="n">03</span>PelletGuard</a>
+    <a href="#idee-4"><span class="n">04</span>TrueBlue Claims</a>
+    <a href="#idee-5"><span class="n">05</span>Plastic Credit Ratings</a>
+    <a href="#idee-6"><span class="n">06</span>HarbourTwin</a>
+    <a href="#idee-7"><span class="n">07</span>WasteDeck</a>
+    <a href="#idee-8"><span class="n">08</span>CleanScore</a>
+    <a href="#idee-9"><span class="n">09</span>RiverEye</a>
+    <a href="#idee-10"><span class="n">10</span>NurdleRisk</a>
+    <a href="#idee-11"><span class="n">11</span>DiveLedger</a>
+    <a href="#idee-12"><span class="n">12</span>EPR Atlas</a>
+  </div>
+  <div class="group"><div class="group-t">Décider</div>
+    <a href="#comparatif">Tableau comparatif</a>
+    <a href="#ecartees">Idées écartées</a>
+    <a href="#pieges">Pièges juridiques</a>
+    <a href="#questions">Questions au fondateur</a>
+    <a href="#methode">Méthode et sources</a>
+  </div>
+</nav>
+
+<main>
+
+<section class="block" id="synthese">
+  <span class="eyebrow">Synthèse</span>
+  <h2>Le plastique marin devient un problème de conformité. C'est là que se vend le logiciel, à condition de viser celui qui est réellement obligé.</h2>
+  <div class="prose">
+    <p>Le nettoyage physique de l'océan est un marché de dons et de robots à faible marge : Seabin, WasteShark, Jellyfishbot, Clearbot et BeBot se disputent des budgets municipaux avec du matériel à 15 000 à 40 000 € l'unité, et The Ocean Cleanup vit de mécénat. En revanche, entre 2024 et 2028, une vague de textes transforme le plastique marin en obligation de déclarer, tracer, prouver et payer : déclaration des conteneurs perdus (SOLAS, 1er janvier 2026), marquage et déclaration des engins de pêche perdus (règlement UE 2023/2842, 10 janvier 2026), règlement pellets (2025/2365, échéances 2027 et 2028), interdiction des allégations vertes non prouvées (directive 2024/825, 27 septembre 2026), surveillance des microplastiques dans les eaux urbaines (directive 2024/3019, 2027), capture totale des déchets pluviaux en Californie (2030).</p>
+    <p>Chaque obligation crée une population captive qui n'a aujourd'hui ni outil, ni donnée, ni preuve. Les briques techniques pour la servir sont en grande partie gratuites et matures : Copernicus Marine et OceanParcels pour la dérive, MARIDA et TACO pour la vision par ordinateur, le jumeau numérique européen EDITO pour les données. L'avantage ne viendra pas d'un algorithme inédit, mais de la donnée propriétaire accumulée en étant le premier registre de son obligation.</p>
+  </div>
+  <div class="thesis"><p>Thèse : construire le registre de référence d'une obligation nouvelle (conteneurs perdus, engins de pêche, pellets, allégations « océan »), y brancher un modèle de dérive ou de vision par ordinateur, puis revendre la donnée agrégée aux assureurs, aux marques et aux États.</p></div>
+  <div class="prose"><p>Trois idées sortent du lot au croisement de l'urgence réglementaire, du vide concurrentiel et de l'impact réel sur le plastique en mer :</p></div>
+  <div class="reco">
+    <a href="#idee-3"><div class="k">Recommandation 1 · consensus des trois critiques</div><div class="t">PelletGuard</div><div class="d">Conformité granulés plastiques. Règlement vérifié au JOUE, échéance ferme au 17 décembre 2027, certification tierce qui déclenche l'achat, secteur coopératif, aucun logiciel dédié. Vendre le SaaS documentaire via les certificateurs ; garder la vision par ordinateur pour un pilote.</div></a>
+    <a href="#idee-9"><div class="k">Recommandation 2 · la société d'IA</div><div class="t">RiverEye</div><div class="d">Points chauds fluviaux et conformité « capture des déchets ». Obligation californienne budgétée au 2 décembre 2030, pipeline open source hérité de Plastic Origins, donnée propriétaire à chaque caméra. Commencer par le logiciel d'inventaire et de reporting, pas par les caméras.</div></a>
+    <a href="#idee-2"><div class="k">Recommandation 3 · le plus fort impact océan</div><div class="t">GearTrace</div><div class="d">Registre des engins de pêche, déclaration de perte et dérive. Seule idée à 5/5 en impact, plus difficile : journal électronique homologué par État, données de pêche protégées, éco-organisme français encore à créer. Ne passe que si l'outil sert le pêcheur, comme en Norvège.</div></a>
+  </div>
+  <div class="prose" style="margin-top:22px"><p>Deux lectures s'opposent, et le rapport les assume. Sur le seul critère commercial, l'investisseur et l'expert maritime placent <a href="#idee-12">EPR Atlas</a> (conformité emballages) au niveau de PelletGuard : sanctions dures, acheteurs habitués, prix prouvés ; mais le marché est déjà occupé et le lien avec l'océan est indirect. Sur le mandat « océan », GearTrace prend sa place. <a href="#idee-1">DriftBox</a>, séduisant sur le papier, tombe sur deux faits vérifiés : l'État du pavillon alimente GISIS, et un armateur ne constituera pas volontairement une preuve opposable revendue à ses assureurs ; ne survit que la prédiction de dérive vendue aux États côtiers et aux sauveteurs. <a href="#idee-4">TrueBlue Claims</a> a la fenêtre la plus courte (trois semaines) et devient un module plutôt qu'une société. Chaque fiche porte les scores détaillés et les trois verdicts.</p></div>
+</section>
+
+<section class="block" id="frise">
+  <span class="eyebrow">Frise réglementaire</span>
+  <h2>Ce qui est déjà en vigueur, ce qui arrive, et quelle idée s'y accroche</h2>
+  <div class="prose" style="margin-bottom:22px"><p>Les dates ci-dessous viennent des textes officiels ou de la presse juridique spécialisée. Le numéro entre crochets renvoie à l'idée qui exploite l'échéance. Les dates en couleur bouée sont celles qui restent devant nous.</p></div>
+  <div class="tl">
+    <div class="tl-y">2024</div>
+    <div class="tl-e past"><span class="date">01/05/2024</span><div class="t"><b>MARPOL Annexe V</b> : registre des déchets obligatoire dès 100 UMS au lieu de 400. Des milliers de petits navires, ferries et yachts entrent dans l'obligation.<span class="idx">[07]</span></div></div>
+    <div class="tl-e past"><span class="date">31/12/2024</span><div class="t"><b>Directive (UE) 2019/904, art. 8</b> : la responsabilité élargie du producteur pour les engins de pêche doit être opérationnelle dans chaque État membre.<span class="idx">[02]</span></div></div>
+    <div class="tl-y">2025</div>
+    <div class="tl-e past"><span class="date">12/02/2025</span><div class="t"><b>Règlement d'exécution (UE) 2025/274</b> : marquage durable des engins passifs de pêche récréative.<span class="idx">[02]</span></div></div>
+    <div class="tl-e past"><span class="date">01/07/2025</span><div class="t"><b>Inde, PWM Rules</b> : QR code EPR obligatoire sur les emballages, dédouanement bloqué sans enregistrement CPCB.<span class="idx">[12]</span></div></div>
+    <div class="tl-e past"><span class="date">07/2025</span><div class="t"><b>X-Press Pearl</b> : la Cour suprême du Sri Lanka ordonne 1 milliard de dollars de compensation, contre un plafond de 25 millions invoqué par l'armateur.<span class="idx">[01] [10]</span></div></div>
+    <div class="tl-e past"><span class="date">05/08/2025</span><div class="t"><b>France, décret n° 2025-775</b> : filière REP des engins de pêche transposée, éco-organisme encore à désigner.<span class="idx">[02]</span></div></div>
+    <div class="tl-e past"><span class="date">16/12/2025</span><div class="t"><b>Règlement (UE) 2025/2365 pellets</b> en vigueur : plans de gestion des risques dès 5 t/an, certification tierce au-delà de 1 500 t/an.<span class="idx">[03] [10]</span></div></div>
+    <div class="tl-e past"><span class="date">26/12/2025</span><div class="t"><b>Save Our Seas 2.0 Amendments Act (PL 119-65)</b> : le programme NOAA Marine Debris réautorisé jusqu'en 2029, plus de 50 M$ par an mobilisables.<span class="idx">[02] [09]</span></div></div>
+    <div class="tl-y">2026</div>
+    <div class="tl-e past"><span class="date">01/01/2026</span><div class="t"><b>SOLAS V/31-32 et MARPOL Protocole I</b> : déclaration immédiate de tout conteneur perdu ou observé, transmission à l'OMI via GISIS.<span class="idx">[01] [10]</span></div></div>
+    <div class="tl-e past"><span class="date">10/01/2026</span><div class="t"><b>Règlement (UE) 2023/2842</b> : nouvelles règles de marquage, traçabilité et déclaration des engins perdus dans le journal électronique.<span class="idx">[02]</span></div></div>
+    <div class="tl-e past"><span class="date">01/05/2026</span><div class="t"><b>Californie SB 54</b> : règlement permanent, 5 741 producteurs, enregistrement au 1er juin.<span class="idx">[12]</span></div></div>
+    <div class="tl-e past"><span class="date">25/05/2026</span><div class="t"><b>Vietnam, décret 110/2026/ND-CP</b> : régime EPR consolidé.<span class="idx">[12]</span></div></div>
+    <div class="tl-e past"><span class="date">28/06/2026</span><div class="t"><b>Directive (UE) 2019/883</b> : rapport d'évaluation de la Commission sur les installations de réception portuaire.<span class="idx">[07]</span></div></div>
+    <div class="tl-e past"><span class="date">07/08/2026</span><div class="t"><b>Illinois HB 4418</b> : première loi anti-pellets des Grands Lacs, bonnes pratiques NPDES d'ici août 2027.<span class="idx">[03]</span></div></div>
+    <div class="tl-e past"><span class="date">12/08/2026</span><div class="t"><b>PPWR (UE) 2025/40</b> applicable ; la Commission demande aux États de ne pas sanctionner tant que les régimes nationaux ne sont pas prêts.<span class="idx">[12]</span></div></div>
+    <div class="tl-now">Aujourd'hui · 5 septembre 2026</div>
+    <div class="tl-e"><span class="date">27/09/2026</span><div class="t"><b>Directive (UE) 2024/825</b> : interdiction des allégations environnementales génériques non prouvées et des labels sans certification tierce.<span class="idx">[04] [05]</span></div></div>
+    <div class="tl-e"><span class="date">21/11/2026</span><div class="t"><b>Règlement (UE) 2024/1157</b> : interdiction d'exporter des déchets plastiques vers les pays non OCDE.<span class="idx">[écartée]</span></div></div>
+    <div class="tl-y">2027</div>
+    <div class="tl-e"><span class="date">01/01/2027</span><div class="t"><b>Californie SB 54</b> : interdiction de vente pour les producteurs non enregistrés ; premier versement au fonds de 5 milliards de dollars le 1er mars.<span class="idx">[12]</span></div></div>
+    <div class="tl-e"><span class="date">31/07/2027</span><div class="t"><b>Directive (UE) 2024/3019</b> : transposition du recast eaux urbaines résiduaires, surveillance des microplastiques y compris rejets pluviaux.<span class="idx">[09]</span></div></div>
+    <div class="tl-e"><span class="date">12/2027</span><div class="t"><b>Règlement pellets</b> : la majorité des obligations s'appliquent ; première certification des grands opérateurs.<span class="idx">[03]</span></div></div>
+    <div class="tl-y">2028</div>
+    <div class="tl-e"><span class="date">2028</span><div class="t"><b>Règlement (UE) 2023/2842</b> : journal de pêche électronique généralisé aux navires de moins de 12 m. <b>Philippines RA 11898</b> : 80 % de récupération. <b>Californie</b> : marquage complet des lignes de crabe au 1er novembre.<span class="idx">[02] [12]</span></div></div>
+    <div class="tl-e"><span class="date">17/12/2028</span><div class="t"><b>Règlement pellets</b> : conformité complète du transport maritime (38 % des mouvements de pellets dans l'UE).<span class="idx">[03] [10]</span></div></div>
+    <div class="tl-y">2030</div>
+    <div class="tl-e"><span class="date">02/12/2030</span><div class="t"><b>California Trash Amendments</b> : 100 % de capture des déchets flottants pour les permis MS4, industriels et chantiers.<span class="idx">[09]</span></div></div>
+    <div class="tl-e"><span class="date">2030</span><div class="t"><b>Zero Pollution Action Plan</b> : moins 50 % de déchets plastiques en mer, moins 30 % de microplastiques. <b>PPWR</b> : réemploi obligatoire transport et e-commerce. <b>IMO</b> : zéro rejet plastique des navires.<span class="idx">[06] [08]</span></div></div>
+  </div>
+</section>
+
+<section class="block" id="matrice">
+  <span class="eyebrow">Matrice</span>
+  <h2>Effort de développement contre attrait commercial</h2>
+  <div class="prose" style="margin-bottom:20px"><p>Le score additionne les sept notes de l'orchestrateur, corrigées après les verdicts des critiques. L'effort est le point médian de l'estimation de l'architecte technique en mois-ingénieur pour un MVP avec une équipe de deux à quatre personnes. La taille du disque suit le revenu annuel maximal estimé par client. Survolez un disque pour le détail.</p></div>
+  <div class="chart-wrap" id="bubble">
+    <svg viewBox="0 0 780 460" role="img" aria-label="Matrice effort contre attrait des douze idées"></svg>
+    <div class="legend">
+      <span style="--c:var(--s1)">Mer et navires</span>
+      <span style="--c:var(--s2)">Pêche et littoral</span>
+      <span style="--c:var(--s3)">Amont, marques et finance</span>
+    </div>
+    <div class="tip" id="tip"></div>
+  </div>
+  <p class="chart-note">Lecture : en haut à gauche, les idées où l'on vend vite avec peu de code (PelletGuard, EPR Atlas) ; à droite, les paris à forte donnée propriétaire (RiverEye, DriftBox, NurdleRisk). DiveLedger est facile mais petite : une porte d'entrée, pas une société. Les scores intègrent les corrections des trois critiques.</p>
+</section>
+
+<section class="block" id="fiches">
+  <span class="eyebrow">Les fiches</span>
+  <h2>Douze idées, un format : le déclencheur, le problème, la cible, le produit, le prix, l'effort, la concurrence, et pourquoi maintenant</h2>
+  <div class="prose"><p>Les notes vont de 1 à 5 sur sept axes : urgence réglementaire, cible captive, prix et volonté de payer, facilité technique (5 = facile), vide concurrentiel, rôle réel de l'IA et de la donnée, impact sur le plastique en mer. Sous chaque fiche, les verdicts des trois critiques : l'investisseur sceptique, l'expert du secteur maritime, et l'architecte technique.</p></div>
+
+  <div class="fam-h"><span class="sw" style="background:var(--s1)"></span><div><h3>Mer et navires</h3><p>Armateurs, ports, assureurs maritimes : des obligations internationales, des acteurs solvables, des budgets de conformité déjà votés.</p></div></div>
+
+  <article class="fiche" id="idee-1">
+    <header class="fiche-head">
+      <div class="big">01</div>
+      <div><span class="fam fam-mer">Mer et navires</span><h3>DriftBox</h3><p class="tagline">Le registre et le radar des conteneurs perdus en mer</p></div>
+      <div class="score-badge">25<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">01/01/2026</span><span class="ref">SOLAS Ch. V, règles V/31 et V/32 (MSC.550(108)) · MARPOL Protocole I (MEPC.384(81))</span><span>L'obligé est le capitaine (la compagnie seulement si le navire est abandonné) : il déclare sans délai aux navires voisins, à l'État côtier et à l'État du pavillon, et c'est l'État du pavillon qui alimente GISIS. Le volet MARPOL ne vise que les incidents impliquant des substances nuisibles. Aucun format ni outil harmonisé n'accompagne l'obligation, et la sanction dépend de chaque État du pavillon.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Les pertes de conteneurs ont bondi de 221 (2023) à 576 (2024) puis 1 478 (2025), souvent chargés de granulés ou de biens plastiques. Jusqu'en 2025, aucune déclaration uniforme : les statistiques du World Shipping Council sont annuelles et déclaratives. Après un sinistre, armateur, assureur et État côtier se disputent des années sur la position, le nombre et le contenu (X-Press Pearl : 1 milliard de dollars jugés en 2025, 1 million payé à l'échéance).</p></section>
+      <section><h4>La cible</h4><p>Les 12 P&amp;I clubs qui assurent 90 % du tonnage mondial et les assureurs cargo en premier : ils paient les sinistres et veulent des preuves. Les armateurs de porte-conteneurs ensuite, sachant qu'un armateur donné ne perd des conteneurs que tous les dix à vingt ans (environ 1 274 conteneurs par an pour quelques milliers de navires) : l'abonnement navire est un complément, pas le coeur du revenu. Enfin les autorités maritimes côtières qui reçoivent les signalements.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Rapport structuré depuis la passerelle ou l'agent, en liaison satellite dégradée : position, nombre, numéros de conteneurs, marchandises dangereuses, au format des règles V/31-32, diffusé aux navires voisins, au centre de secours de l'État côtier et à l'État du pavillon. Nuance vérifiée par le critique technique : c'est l'État du pavillon qui téléverse dans GISIS, pas le navire ; le produit lui fournit le jeu de données prêt à charger.</li>
+        <li>Radar de dérive : à partir de la position et de l'heure, simulation de trajectoire des conteneurs (flottants ou semi-immergés) avec les courants Copernicus Marine et le moteur OceanParcels, pour avertir les navires et cibler la récupération.</li>
+        <li>Dossier de preuve horodaté pour l'instruction du sinistre. Réserve forte de l'expert maritime : un armateur ne versera pas volontairement dans une base tierce, revendue à des assureurs, une pièce opposable dans un contentieux à un milliard de dollars ; le matériel de sinistre transite par les avocats. Le registre déclaratif est donc fragile ; le module de dérive et de récupération, vendu aux États côtiers, aux centres de secours et aux sociétés de sauvetage, est la partie qui tient.</li>
+        <li>Base agrégée en continu vendue aux assureurs : l'équivalent du rapport annuel WSC, mais vivant, par route, saison et compagnie.</li>
+        <li>V2 : place de marché de récupération (sociétés de salvage et ROV qualifiées par zone), commission sur mission.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Armateurs</dt><dd>500 à 2 000 € par navire et par an</dd><dt>P&amp;I et assureurs</dt><dd>licence data 20 000 à 100 000 € par an</dd><dt>Récupération</dt><dd>commission 8 à 12 % de la mission</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen · 6 à 9 mois-ingénieur</span><p>Base de données et API de déclaration, intégration AIS et GISIS, modèle de dérive réutilisé (OceanParcels, LOCATE, données Copernicus gratuites). Pas de hardware. Le vrai chantier est la certification du format par les administrations maritimes.</p></section>
+      <section><h4>Concurrence</h4><p>Aucun acteur dédié identifié. Loginno (balise sonar dans le conteneur) traite la détection matérielle, pas la couche réglementaire. Les Port Community Systems (Portbase, dbh) n'ont pas de module. Le WSC publie un rapport annuel, pas un outil.</p></section>
+      <section><h4>Pourquoi maintenant</h4><p>L'obligation est entrée en vigueur il y a huit mois et les premières déclarations se font par e-mail et formulaires nationaux. La hausse des pertes (détournements par le cap de Bonne-Espérance) et le précédent X-Press Pearl mettent le sujet sur la table des P&amp;I clubs en 2026.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+    </div>
+    <div class="verdicts"><div><div class="who">Investisseur sceptique<b>15/25</b></div><p><span class="pill pill-if">Go si</span> Go si un P&amp;I club signe une licence data avant tout développement. Un armateur vit l'événement une fois par décennie : l'abonnement navire est un formulaire, pas une société ; seule la base agrégée et la dérive valent 20 à 100 k€ par an aux assureurs.</p><p style="margin-top:8px">Test en 2 semaines : 6 gestionnaires de sinistres de P&amp;I clubs et 4 DPA d'armateurs ; critère : au moins 3 clubs citent une facture d'expertise externe supérieure à 20 k€ sur un sinistre récent.</p></div><div><div class="who">Expert maritime<b>10/25</b></div><p>Obligé : le capitaine ; GISIS alimenté par l'État du pavillon ; MEPC.384(81) ne vise que les substances nuisibles. Acceptabilité 1/5 : le secteur ne constituera pas une preuve opposable revendue à ses assureurs, et un pool de données entre transporteurs concurrents relève de l'article 101 TFUE. Ne survit que la dérive et la récupération vendues aux États côtiers et aux sauveteurs.</p></div><div><div class="who">Architecte technique<b>7 à 11 m-i · 80 à 150 k€</b></div><p>Faisabilité 4/5, dépendance 4/5 (risque), avantage IA 2/5. Point dur : pas de déclaration en un clic vers GISIS, et quelques dizaines d'événements par an font une base qui croît trop lentement. Dérisquage : rejouer MSC Zoe, Zim Kingston et X-Press Pearl avec OceanParcels et mesurer l'erreur de position à 24 et 72 h.</p></div></div>
+  </article>
+
+  <article class="fiche" id="idee-7">
+    <header class="fiche-head">
+      <div class="big">07</div>
+      <div><span class="fam fam-mer">Mer et navires</span><h3>WasteDeck</h3><p class="tagline">La conformité déchets des ports moyens et des petites flottes</p></div>
+      <div class="score-badge">20<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">01/05/2024</span><span class="ref">MARPOL Annexe V (MEPC.360(79)) · Directive (UE) 2019/883</span><span>Le registre des déchets à bord devient obligatoire dès 100 UMS, et un registre électronique doit être approuvé par l'État du pavillon. Côté ports : notification préalable, redevance indirecte, reçu de dépôt, 15 % d'inspections. Depuis le 15 août 2025, la notification passe par le guichet unique maritime national de chaque État (règlement EMSWe 2019/1239), gratuit pour le déclarant ; SafeSeaNet et THETIS-EU sont des systèmes entre autorités, hors de portée d'un acteur privé. L'évaluation de la directive était due le 28 juin 2026 ; sa publication reste à vérifier.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Une erreur documentaire dans le registre des déchets peut immobiliser le navire et coûter des amendes (les montants de 15 000 à 25 000 $ cités par la presse commerciale restent à re-sourcer). La transposition de la directive 2019/883 est hétérogène d'un État à l'autre, ce qui impose aux armateurs multi-ports des règles de déclaration et de facturation différentes à chaque escale. Les grandes compagnies (MSC Cruises) ont internalisé un logiciel ; les autres tiennent des tableurs.</p></section>
+      <section><h4>La cible</h4><p>Les quelque 500 ports du réseau TEN-T « comprehensive » sans système communautaire dédié, les agents maritimes, les cargos, ferries et navires de croisière de 100 à 400 UMS nouvellement obligés, et les sociétés de gestion de yachts et superyachts.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Côté port : calcul automatique de la redevance indirecte selon la grille du port, reçu de dépôt numérique, statistiques d'inspection. Le volet notification est désormais assuré par le guichet unique public : ce segment est mort-né selon l'expert maritime.</li>
+        <li>Côté navire : registre des déchets électronique sur tablette, validation des règles MARPOL avant signature, horodatage et position automatiques, export inviolable, alerte de non-conformité avant l'entrée au port.</li>
+        <li>Une seule donnée déclarée alimente les deux côtés, ce qui réduit les doubles saisies port-navire.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Ports</dt><dd>1 500 à 6 000 € par mois selon le trafic</dd><dt>Agents</dt><dd>2 à 5 € par notification</dd><dt>Navires</dt><dd>200 à 500 € par mois ; yachts 1 000 à 3 000 € par an</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen · 6 à 8 mois-ingénieur</span><p>Intégration au guichet unique maritime national de chaque État (règlement EMSWe 2019/1239, applicable depuis août 2025) et à THETIS-EU en lecture, règles MARPOL codifiées, application tablette hors ligne. Peu d'IA, et un coût d'intégration linéaire par pays : chaque guichet garde son accréditation et son interface.</p></section>
+      <section><h4>Concurrence</h4><p>Marché déjà occupé : Portbase (gratuit, Rotterdam et Amsterdam), dbh (JadeWeserPort), ABS Nautical Systems, cruisePAL, Brenock Ocean Guardian, MarineInspection. Positionnement possible sur les ports moyens et les petites flottes que les suites généralistes ignorent, mais la différenciation reste mince.</p></section>
+      <section><h4>Pourquoi maintenant</h4><p>L'abaissement du seuil à 100 UMS (mai 2024) crée une population nouvelle sans outil, et l'évaluation de juin 2026 de la directive 2019/883 ouvre une révision qui peut durcir les standards de notification.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:1"></i></div><b>1</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+    </div>
+    <div class="verdicts"><div><div class="who">Investisseur sceptique<b>16/25</b></div><p><span class="pill pill-if">Go si</span> Go si l'on coupe le volet ports (marché public, Portbase gratuit) et que l'on vend le registre électronique des déchets aux flottes de 100 à 400 UMS et aux gestionnaires de yachts : la seule sanction du dossier qui frappe l'acheteur lui-même, sur une population qui a bondi en 2024.</p><p style="margin-top:8px">Test en 2 semaines : 8 capitaines ou DPA de navires 100 à 400 UMS et 4 agents maritimes ; critère : 3 interlocuteurs citent une déficience de contrôle par l'État du port ou une amende réelle liée au registre.</p></div><div><div class="who">Expert maritime<b>10/25</b></div><p>Correction décisive : depuis le 15 août 2025 la notification passe par le guichet unique national (EMSWe), gratuit ; SafeSeaNet et THETIS-EU sont hors d'atteinte. Un registre électronique doit être approuvé par l'État du pavillon. Substitution 1/5 : la fonction vendue est assurée par une infrastructure publique obligatoire. Reste un module e-GRB pour petites flottes.</p></div><div><div class="who">Architecte technique<b>7 à 11 m-i · 70 à 140 k€</b></div><p>Avantage IA 1/5, dépendance 5/5. Coût d'intégration linéaire par pays : chaque guichet national garde son accréditation et son interface. Dérisquage : connecter un seul guichet en bac à sable et chronométrer l'accréditation ; au-delà de 2 mois-ingénieur par pays, le plan multi-pays est mort.</p></div></div>
+  </article>
+
+  <article class="fiche" id="idee-6">
+    <header class="fiche-head">
+      <div class="big">06</div>
+      <div><span class="fam fam-mer">Mer et navires</span><h3>HarbourTwin</h3><p class="tagline">Le logiciel au-dessus des robots de nettoyage de ports et de marinas</p></div>
+      <div class="score-badge">24<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">2026 à 2030</span><span class="ref">Directive (UE) 2019/883 · Pavillon Bleu · Clean Marina · Zero Pollution 2030</span><span>Pas d'obligation : la directive 2019/883 vise les déchets déposés à quai par les navires, pas le plan d'eau, et les labels (Pavillon Bleu à 700 à 1 500 € par an, Clean Marina dans 30 États américains, Blue Flag sur 5 216 sites) jugent la qualité de l'eau, le tri et l'éducation, pas des tonnages collectés. Le levier est le parc de robots installé sans aucune couche de données, et l'image du port.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Les ports et marinas ont acheté des robots (Jellyfishbot, une centaine d'unités à 25 000 € ; WasteShark dans plus de 30 pays ; Seabin ; BeBot à 40 000 €) qui produisent chacun des données de collecte isolées, dans des formats fermés. Personne ne sait où se concentrent les déchets dans le bassin, où placer le robot demain, ni comment prouver l'impact à l'auditeur du label ou aux élus qui ont voté le budget.</p></section>
+      <section><h4>La cible</h4><p>Autorités portuaires, marinas et leurs fédérations (10 000 à 25 000 marinas en Europe selon les sources, 12 000 aux États-Unis, plus de 30 000 dans le monde ; marché de la plaisance européenne à 17 à 18 milliards de dollars), villes portuaires. Canal : les fabricants de robots en marque blanche.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Jumeau numérique du bassin : agrégation des données de tous les robots, écumeurs et capteurs de qualité d'eau, quel que soit le fabricant ; carte des zones d'accumulation.</li>
+        <li>Prédiction hebdomadaire des zones d'accumulation par un modèle empirique appris sur l'historique de collecte croisé avec le vent et la marée, avec recommandation de positionnement des robots. Les modèles de courants gratuits (Copernicus, 2 à 3 km de maille) ne servent à rien dans un bassin de 500 m ; le modèle a donc besoin de plusieurs mois de tournées avant d'être utile.</li>
+        <li>Calcul automatique des indicateurs de label, rapport annuel exportable, affichage public « X kg retirés ce mois-ci » par QR code sur le quai.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Par site</dt><dd>500 à 3 000 € par mois selon le nombre de capteurs (à recalibrer : une marina qui paie 25 000 € son robot et 1 500 € son label ne mettra pas 6 000 à 36 000 € par an dans le tableau de bord ; vendre en marque blanche aux constructeurs est plus réaliste)</dd><dt>Fabricants</dt><dd>partage de revenus en marque blanche</dd><dt>Fédérations</dt><dd>licence par réseau (Ports Propres, Blue Flag)</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Faible à moyen · 4 à 6 mois-ingénieur</span><p>Connecteurs vers les API des fabricants (fermées ou inexistantes : un refus écrit d'IADYS et de RanMarine tue l'idée, d'où un repli obligatoire sur l'import de fichiers et la saisie de fin de tournée), tableau de bord cartographique, modèle d'accumulation empirique. Le modèle s'améliore avec chaque bassin connecté.</p></section>
+      <section><h4>Concurrence</h4><p>Aucun agrégateur neutre. Chaque fabricant vend ses propres données (Seabin annonce une plateforme d'impact, RanMarine un tableau de bord). Sinay est une plateforme maritime généraliste sans brique déchets.</p></section>
+      <section><h4>Pourquoi maintenant</h4><p>Le parc de robots atteint la masse critique et les labels durcissent leurs critères déchets. Vendre le logiciel plutôt que le robot évite le marché encombré du hardware tout en captant sa donnée.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:1"></i></div><b>1</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+    </div>
+    <div class="verdicts"><div><div class="who">Investisseur sceptique<b>10/25</b></div><p><span class="pill pill-no">No-go</span> No-go : aucun texte à date ferme, prix décorrélé (500 à 3 000 € par mois greffés sur un label à 700 à 1 500 € par an), et la matière première dépend d'API fermées détenues par des fabricants qui vendent déjà leur propre tableau de bord. Anti-moat.</p><p style="margin-top:8px">Test en 2 semaines : demander par écrit un accès API à IADYS, RanMarine et Poralu, et interroger 8 capitaineries Pavillon Bleu sur le coût de leur rapport annuel ; le premier volet est bloquant.</p></div><div><div class="who">Expert maritime<b>10/25</b></div><p>La directive 2019/883 ne porte pas sur le plan d'eau et les labels ne mesurent pas des tonnages : « indicateurs de label » survend. Le gardien de la porte (constructeur) est le concurrent. À traiter comme un module de dérive vendu en marque blanche aux constructeurs, pas comme une société.</p></div><div><div class="who">Architecte technique<b>4 à 7 m-i · 40 à 90 k€</b></div><p>Faisabilité 5/5, dépendance 4/5. Deux verrous : API fermées (contractuel, insoluble techniquement) et Copernicus inutilisable dans un bassin de 500 m ; le modèle empirique exige des mois de tournées. Dérisquage : 2 marinas pilotes, 8 semaines de journaux croisés vent et marée, contre la baseline « toujours le même coin ».</p></div></div>
+  </article>
+
+  <article class="fiche" id="idee-10">
+    <header class="fiche-head">
+      <div class="big">10</div>
+      <div><span class="fam fam-mer">Mer et navires</span><h3>NurdleRisk</h3><p class="tagline">Le score de risque « pollution plastique » pour les assureurs maritimes</p></div>
+      <div class="score-badge">24<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">07/2025</span><span class="ref">Jugement X-Press Pearl · SOLAS 2026 · Règlement pellets 2028</span><span>Un milliard de dollars jugés contre un fonds de limitation LLMC d'environ 25 millions, contesté : un écart de 40 fois qui révèle un risque non tarifé. La raison structurelle, absente des dossiers de recherche et ajoutée par l'expert : la convention HNS de 2010 n'est toujours pas en vigueur, il n'existe donc aucun régime international d'indemnisation pour un déversement de granulés. À partir de 2026, les déclarations SOLAS créent un flux de données sur les pertes, dont l'accès public via GISIS reste à vérifier.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Les P&amp;I clubs couvrent la perte de conteneurs et l'enlèvement d'épave, mais n'ont aucun modèle spécifique du risque « cargaison de pellets, route exposée, zone côtière sensible ». Le règlement pellets rend le transport maritime responsable en 2028 et les tribunaux (Sri Lanka) ne respectent plus les plafonds classiques. Les assureurs doivent revoir leurs modèles dans les 12 à 24 mois.</p></section>
+      <section><h4>La cible</h4><p>Les 12 P&amp;I clubs, les assureurs corps et facultés, les réassureurs et les courtiers maritimes. En V2, les ports et les fermes aquacoles pour des produits paramétriques (tempête déclenchant une indemnité sur les cages et engins).</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Score de risque par navire, route et cargaison croisant AIS, météo et état de mer, courants, historique des pertes (WSC, GISIS, DriftBox), zones protégées et sensibilité des côtes, présence de pellets dans le manifeste.</li>
+        <li>Module de tarification et de conditions (arrimage, routes) pour les souscripteurs ; scénarios de coût de nettoyage par zone.</li>
+        <li>Produits paramétriques : seuils de vent et de houle mesurés par satellite déclenchant une indemnité forfaitaire pour engins de pêche et cages aquacoles (l'ASC identifie les tempêtes comme première cause de perte de matériel).</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Assureurs</dt><dd>50 000 à 150 000 € par an</dd><dt>Par police</dt><dd>revenu par police tarifée avec le score</dd><dt>Paramétrique</dt><dd>part de prime, avec un porteur de risque partenaire</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen à élevé · 8 à 12 mois-ingénieur</span><p>Agrégation de données AIS (licences restrictives, 100 000 à 300 000 € par an selon l'expert), météo et courants gratuits, base d'événements. Quelques dizaines d'événements par an à queue lourde : aucun modèle appris n'est crédible avant des années ; un score expert transparent co-construit avec un club est la seule voie. La mise en commun de données de sinistres entre assureurs concurrents relève de l'article 101 TFUE depuis 2017.</p></section>
+      <section><h4>Concurrence</h4><p>Aucun acteur « risque nurdle » identifié. Les P&amp;I clubs publient de la doctrine (Gard, NorthStandard) sans outil. Les plateformes de risque maritime généralistes (Windward, Sinay) ne couvrent pas la pollution plastique.</p></section>
+      <section><h4>Pourquoi maintenant</h4><p>Le précédent X-Press Pearl (2025), la hausse des pertes de conteneurs (2025) et l'échéance maritime du règlement pellets (2028) se cumulent ; DriftBox fournirait la donnée que personne d'autre n'aura.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+    </div>
+    <div class="verdicts"><div><div class="who">Investisseur sceptique<b>10/25</b></div><p><span class="pill pill-no">No-go</span> No-go autonome : moins de 50 clients possibles au monde, cycle de vente assurantiel de 12 à 24 mois, et un modèle actuariel impossible avant 3 à 5 ans de données SOLAS. Idée juste, timing faux : la V2 de DriftBox.</p><p style="margin-top:8px">Test en 2 semaines : 6 souscripteurs de P&amp;I clubs et 2 courtiers ; critère : 2 clubs citent un achat de données ou de score externe déjà réalisé. Sinon la douleur est intellectuelle, pas budgétaire.</p></div><div><div class="who">Expert maritime<b>14/25</b></div><p>Il manque l'argument central : la convention HNS 2010 n'est pas en vigueur, d'où l'écart X-Press Pearl (fonds LLMC contesté, pas un plafond d'assurance). L'International Group réexamine son exposition, mais les 12 clubs co-développent plus qu'ils n'achètent ; Windward, Concirrus et Lloyd's List Intelligence ajouteraient une couche pellets en un trimestre. Article 101 TFUE sur les pools de sinistres.</p></div><div><div class="who">Architecte technique<b>9 à 14 m-i · 90 à 180 k€ + 25 à 100 k€ par an d'AIS</b></div><p>Faisabilité 2/5, dépendance 5/5 : la statistique ne suit pas (quelques dizaines d'événements par an, un seul de 640 conteneurs en 2025), la variable la plus prédictive (cargaison) n'est pas publique, et le produit se nourrit d'un DriftBox qui n'existe pas. Dérisquage : compter les événements 2011-2025 documentés ; sous 300, aucun modèle appris, donc score expert cosigné avec un club.</p></div></div>
+  </article>
+
+  <div class="fam-h"><span class="sw" style="background:var(--s2)"></span><div><h3>Pêche et littoral</h3><p>Pêcheurs, communes, plongeurs, rivières : là où le plastique entre et s'échoue, et où les obligations européennes de 2026 à 2030 créent un besoin de mesure.</p></div></div>
+
+  <article class="fiche" id="idee-2">
+    <header class="fiche-head">
+      <div class="big">02</div>
+      <div><span class="fam fam-peche">Pêche et littoral</span><h3>GearTrace</h3><p class="tagline">Le registre des engins de pêche, la déclaration de perte et la dérive</p></div>
+      <div class="score-badge">27<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">10/01/2026</span><span class="ref">Règlement (UE) 2023/2842 · Directive (UE) 2019/904 art. 8 · Règlement 2025/274</span><span>La déclaration de perte et le matériel de récupération à bord existent depuis 2010 (article 48 du règlement 1224/2009) ; le règlement 2023/2842 les porte dans le journal de pêche électronique et étend ce journal aux navires de moins de 12 m d'ici le 10 janvier 2028. Le journal électronique est fourni et homologué par chaque État membre : une application privée doit être agréée pays par pays. En parallèle, la REP des engins de pêche est obligatoire depuis le 31 décembre 2024, avec des barèmes nationaux (Suède : 6 000 SEK plus 10 SEK par kg, seul éco-organisme opérationnel identifié). En France, la filière fonctionne sur un accord volontaire entre l'État et les organisations professionnelles (décrets de juin et août 2025), sans éco-organisme agréé ; la Norvège a reporté à mars 2027.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Entre 500 000 et 1 million de tonnes d'engins entrent dans l'océan chaque année, presque toujours par accident : un filet coûte environ 10 000 € et le pêcheur n'a aucun intérêt à le perdre. Le règlement lui impose désormais de déclarer chaque perte dans un journal électronique que les navires de moins de 12 m, majoritaires en nombre, n'ont pas encore. Les administrations doivent organiser marquage, déclaration, récupération et REP avec des tableurs et des outils nationaux isolés.</p></section>
+      <section><h4>La cible</h4><p>Administrations des pêches (DPMA en France, Fiskeridirektoratet en Norvège), organisations de producteurs et criées, futurs éco-organismes REP (aucun agréé en France à ce jour : l'acheteur reste à créer), fabricants et importateurs d'engins vendant dans plusieurs États membres (quelques centaines d'acteurs : Hampidjan, Garware, Euronete, Le Drezen, Morgère). Le pêcheur souffre mais n'achète pas de logiciel ; l'outil ne passe que s'il lui sert : prouver sa perte, retrouver son filet, débloquer le financement REP, comme en Norvège. 68 863 navires de pêche actifs dans l'UE en 2024. En V2 : recycleurs (Nofir, 10 298 t collectées en 2025 ; Fil&amp;Fab, Plastix, Bureo), assureurs, et l'Asie via la circulaire IMO sur le marquage (MEPC 84, 2026) et la consigne coréenne étendue aux filets en 2026.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Application mobile hors ligne de déclaration de perte : position, photo, type d'engin, branchée sur le journal de pêche électronique et sur le registre des marquages.</li>
+        <li>Prédiction IA de dérive et de dépôt sur le fond (courants, vent, bathymétrie) pour cibler les campagnes de récupération, comme la campagne annuelle norvégienne (1 637 filets récupérés lors de la dernière). Point juridique décisif : les positions et journaux de pêche sont protégés par les articles 112 et 113 du règlement 1224/2009 et, pour les petites unités, par le RGPD ; toute carte de points chauds doit rester confidentielle et agrégée, sinon la profession bloque l'outil en une saison.</li>
+        <li>Module REP pour fabricants : calcul des éco-contributions par pays, déclarations automatiques aux éco-organismes, veille des barèmes.</li>
+        <li>Traçabilité port vers recycleur (pesée, lot, certificat de traitement) qui fournit la preuve d'audit aux éco-organismes ; V2 : primes de récupération financées par la REP et les marques acheteuses de nylon recyclé.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Administrations et OP</dt><dd>2 à 5 € par navire et par an (licence)</dd><dt>Éco-organismes</dt><dd>15 000 à 40 000 € par an</dd><dt>Fabricants</dt><dd>2 000 à 8 000 € par an ; 5 à 15 € par tonne tracée</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen · 6 à 9 mois-ingénieur</span><p>Base réglementaire multi-pays, application mobile hors ligne, modèle de dérive réutilisé (OceanParcels, Copernicus), intégration aux journaux électroniques nationaux. Pas de hardware en V1 ; capteur bas coût optionnel en V2.</p></section>
+      <section><h4>Concurrence</h4><p>GGGI Data Portal (gratuit, non réglementaire), Blue Ocean Gear (bouées connectées, hardware, États-Unis), applications nationales isolées. Aucun acteur ne combine conformité 2023/2842, REP et dérive.</p></section>
+      <section><h4>Pourquoi maintenant</h4><p>Deux textes viennent de devenir opérationnels (REP fin 2024, contrôle des pêches janvier 2026), les éco-organismes se créent en 2025-2026 sans système établi, et l'extension aux navires de moins de 12 m entre 2026 et 2028 multiplie la population à outiller.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+    </div>
+    <div class="verdicts"><div><div class="who">Investisseur sceptique<b>14/25</b></div><p><span class="pill pill-if">Go si</span> Go si un éco-organisme scandinave (Fiskekretsen, Nofir) ou une direction des pêches signe un pilote payant d'au moins 20 k€. La douleur est chez le pêcheur, qui ne paie pas ; le budget est chez l'administration (18 mois) ou un éco-organisme qui n'existe pas encore en France.</p><p style="margin-top:8px">Test en 2 semaines : 8 organisations de producteurs et criées, 3 fabricants via l'EFTTA, Fiskekretsen ; critère : au moins 2 acteurs montrent une dépense 2026 déjà engagée pour la conformité 2842.</p></div><div><div class="who">Expert maritime<b>16/25</b></div><p>Seule idée à 5/5 en impact océan. Corrections : la déclaration de perte date de 2010, le journal électronique est homologué par chaque État, aucun éco-organisme français agréé, données de pêche protégées (art. 112-113) et RGPD. La culture pêche refuse le contrôle mais accepte ce qui la sert : c'est le modèle norvégien. Si le mandat océan prime, cette idée remplace EPR Atlas dans le top 3.</p></div><div><div class="who">Architecte technique<b>7 à 10 m-i · 70 à 130 k€</b></div><p>Faisabilité 4/5, défendabilité 4/5 : un registre alimenté par une obligation est la meilleure donnée propriétaire. Point dur : l'accès au journal électronique (standard FLUX/ERS) est un guichet national, pas une API ; sans lui, double saisie et abandon. Dérisquage : bac à sable FLUX avec la DPMA ou un éditeur ERS, et test du modèle de dérive contre les campagnes norvégiennes.</p></div></div>
+  </article>
+
+  <article class="fiche" id="idee-8">
+    <header class="fiche-head">
+      <div class="big">08</div>
+      <div><span class="fam fam-peche">Pêche et littoral</span><h3>CleanScore</h3><p class="tagline">L'indice de propreté des plages pour communes, labels, hôtels et assureurs</p></div>
+      <div class="score-badge">24<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">2024 à 2027</span><span class="ref">DCSMM 2008/56/CE, descripteur 10 · seuil OSPAR 2023 · Pavillon Bleu, Blue Flag</span><span>Le bon état écologique est fixé à 20 déchets pour 100 m de côte ; la moyenne européenne est à 203 (JRC, 2025). L'obligation de suivi pèse sur l'État membre, pas sur la commune : celle-ci n'achète que si le label, le tourisme ou le budget de nettoyage le justifient. Le plan Zéro pollution vise moins 50 % de déchets en mer d'ici 2030.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Une commune paie 135 000 € par an pour 3 km de plage (Châtelaillon) ; les 90 communes de la côte ouest américaine dépensent plus de 520 millions de dollars par an. Le protocole officiel OSPAR (112 catégories, 251 pour la DCSMM) est hors de portée des petites communes, qui se rabattent sur des comptages citoyens non conformes. Les labels auditent une fois par an ; entre deux audits, personne ne mesure. Les touristes, eux, fuient : moins 22,5 millions de dollars par an sur le Skagerrak, 85 % des visiteurs dissuadés par deux gros déchets par mètre.</p></section>
+      <section><h4>La cible</h4><p>Communes et intercommunalités littorales (environ 5 000 dans l'UE), organismes de label (Teragir, FEE), hôtels et resorts (Green Key : 3 000 établissements à 2 000 à 5 000 € par an), et en V2 assureurs et plateformes de location saisonnière. Environ 400 appels d'offres « nettoyage plage » actifs en France : un marché de ramassage, pas encore de mesure. Aucune commune n'a d'obligation de rapportage DCSMM (l'État la porte, via l'OFB, l'Ifremer et le Cerema en France), et le rapportage officiel exige des relevés in situ : la télédétection n'est pas admise pour le descripteur 10.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Score de propreté normalisé par plage, mis à jour chaque semaine : drone à 20 à 40 m d'altitude plus vision par ordinateur (YOLO entraîné sur TACO et AquaTrash) plus ingestion des données citoyennes et officielles existantes (Marine Debris Tracker, TIDES, Surfrider, OSPAR, EMODnet), toutes gratuites et jamais agrégées. Le satellite Sentinel-2, à 10 m par pixel, ne voit pas les déchets de plage : il ne sert qu'aux accumulations flottantes denses au large.</li>
+        <li>Cartographie des zones prioritaires pour les tournées de nettoyage ; données de contexte pour les relevés officiels (sans prétendre les remplacer) ; dossier de label prêt à auditer. Attention aux licences des données citoyennes (souvent non commerciales ou à partage identique) et au survol des plages fréquentées, interdit en catégorie ouverte EASA.</li>
+        <li>API « propreté du littoral » par code postal pour les assureurs, l'immobilier et les hôtels (badge « plage propre à proximité »).</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Communes</dt><dd>3 000 à 8 000 € par an</dd><dt>Labels</dt><dd>licence par pays</dd><dt>API assureurs</dt><dd>10 000 à 50 000 € par an ; rapports 3 000 à 10 000 €</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen à élevé · 6 à 9 mois-ingénieur</span><p>Modèle de vision par ordinateur à entraîner sur l'imagerie drone (jeux publics disponibles, mais généralisation terrain difficile : éclairage, algues, bois flotté), pipeline multi-sources, base géospatiale. Le score n'a de valeur pour un label que s'il est démontré équivalent au comptage manuel OSPAR sur 100 m : c'est le premier test à faire. Contrainte annexe : le vol de drone sur plage fréquentée relève des catégories EASA A2 et A3.</p></section>
+      <section><h4>Concurrence</h4><p>Scidrones et le Coastal Marine Litter Observatory (pré-commercial), projets universitaires (Limerick). Les bases citoyennes sont ouvertes et gratuites : personne ne les vend structurées.</p></section>
+      <section><h4>Pourquoi maintenant</h4><p>Le seuil OSPAR est formellement adopté depuis 2023, les cycles DCSMM 2024-2027 demandent des données, et les projets drone-IA arrivent à maturité technique sans acteur commercial.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+    </div>
+    <div class="verdicts"><div><div class="who">Investisseur sceptique<b>11/25</b></div><p><span class="pill pill-no">No-go</span> No-go : la DCSMM n'oblige pas la commune, le seuil de 20 déchets n'est pas opposable au maire, et 3 à 8 k€ par an sur un cycle de marché public ne financent pas la technologie la plus lourde du lot. Au mieux un module vendu aux organismes de label.</p><p style="margin-top:8px">Test en 2 semaines : 10 communes littorales et 2 organismes de label ; critère : 3 communes montrent une ligne budgétaire « mesure » distincte du nettoyage. Pari du critique : zéro.</p></div><div><div class="who">Expert maritime<b>9/25</b></div><p>Deux erreurs structurantes : l'obligé est l'État (OFB, Ifremer, Cerema), et la télédétection n'est pas admise pour le descripteur 10 ; le rapportage exige des relevés in situ sur 100 m. Un classement public des plages est une menace politique pour les maires ; le sur-nettoyage détruit la laisse de mer. Survol de plages fréquentées interdit en catégorie ouverte EASA ; licences citoyennes souvent non commerciales.</p></div><div><div class="who">Architecte technique<b>7 à 11 m-i · 70 à 140 k€</b></div><p>Avantage IA 4/5, défendabilité 4/5 : le comptage automatisé remplace un protocole manuel coûteux et la série temporelle par plage se vend. À deux conditions : abandonner la promesse satellite et prouver l'équivalence au comptage OSPAR. Dérisquage : 10 plages, comptage manuel et vol drone le même jour, régression ; r² supérieur à 0,8 ou l'on ne vend qu'une carte de priorisation.</p></div></div>
+  </article>
+
+  <article class="fiche" id="idee-9">
+    <header class="fiche-head">
+      <div class="big">09</div>
+      <div><span class="fam fam-peche">Pêche et littoral</span><h3>RiverEye</h3><p class="tagline">La cartographie IA des points chauds fluviaux et la conformité « capture des déchets »</p></div>
+      <div class="score-badge">28<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">31/07/2027</span><span class="ref">Directive (UE) 2024/3019 · California Trash Amendments (02/12/2030) · Trash TMDL</span><span>Capture totale des déchets flottants pour tous les permis pluviaux californiens au 2 décembre 2030, contrôlée par le State Water Board : la meilleure obligation de la liste avec le PPWR. En Europe, la directive 2024/3019 impose une surveillance des microplastiques par méthode de laboratoire, pas un comptage vidéo : l'Europe est un marché de priorisation d'investissement pour les agences de l'eau, pas de conformité.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Plus de 1 000 rivières, surtout de petits cours d'eau urbains, portent 80 % du plastique qui atteint l'océan (Meijer, 2021). Les villes budgétisent sur les grands fleuves et n'ont aucune mesure continue sur les petits. Les solutions physiques coûtent cher (Interceptor à Los Angeles : 2,8 millions de dollars plus 650 000 par an ; Mr. Trash Wheel : 720 000 dollars) et chaque fournisseur d'avaloirs filtrants (EnviroPod, 75 000 unités ; Contech ; Osprey) rapporte dans son propre format. Le projet associatif Plastic Origins (Surfrider, IA embarquée sur smartphone, 8 pays) s'est arrêté en 2025 faute de passage à l'échelle industrielle.</p></section>
+      <section><h4>La cible</h4><p>Agences de l'eau et directions de l'eau des métropoles européennes, villes californiennes sous permis MS4 de phase I et II (échéance 2030), gestionnaires de bassins versants, et bailleurs (PROBLUE, 182 millions de dollars de portefeuille ; ADB, 5 milliards de dollars) qui exigent des indicateurs d'impact en Asie du Sud-Est.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Caméras fixes bas coût sur ponts et déversoirs d'orage, vision par ordinateur (comptage et classification des déchets flottants, en repartant du code ouvert de Plastic Origins et des jeux TACO et AquaTrash), carte des points chauds par sous-bassin, mise à jour en continu.</li>
+        <li>Inventaire cartographique des dispositifs de capture installés, quel que soit le fournisseur ; tournées de maintenance ; génération automatique des rapports de conformité (State Water Board, agences de l'eau).</li>
+        <li>Priorisation des investissements : où un dispositif à 50 000 € évite le plus de plastique, preuve chiffrée avant et après pour les élus.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Point de mesure</dt><dd>8 000 à 25 000 € par an (caméra, IA, hébergement)</dd><dt>Ville MS4</dt><dd>15 000 à 60 000 $ par an selon le réseau pluvial</dd><dt>Agence de l'eau</dt><dd>licence de bassin dès 150 000 € par an</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen · 6 à 9 mois-ingénieur</span><p>Modèle de vision affiné sur données locales (nuit, crue, reflets, débris végétaux après la pluie : la généralisation est le point dur), caméras 4G du commerce à 150 à 400 € le point, base géospatiale, moteur de règles de conformité. Chaque caméra installée enrichit un jeu de données que personne d'autre ne possède. À faire accepter : la méthode de référence californienne est une évaluation visuelle au sol, pas un comptage de flux.</p></section>
+      <section><h4>Concurrence</h4><p>The Ocean Cleanup (système de suivi fluvial propriétaire, non vendu à des tiers), Plastic Origins (arrêté), Fondation Tara (recherche), fournisseurs de dispositifs sans agrégateur. Aux États-Unis, les bureaux d'études du pluvial (Geosyntec, Tetra Tech) et les outils de gestion d'actifs (Esri, Cityworks) tiennent la place : se positionner comme leur fournisseur, pas contre eux. Verrouiller par contrat ce qui reste propriétaire face aux lois américaines d'accès aux documents publics.</p></section>
+      <section><h4>Pourquoi maintenant</h4><p>Une fenêtre de quatre à neuf ans (2027 à 2035 en Europe, 2030 en Californie) où les collectivités doivent investir et prouver, et un vide laissé par l'arrêt de Plastic Origins.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+    </div>
+    <div class="verdicts"><div><div class="who">Investisseur sceptique<b>15/25</b></div><p><span class="pill pill-if">Go si</span> Go si deux villes californiennes sous permis MS4 signent un pilote payant d'au moins 15 k$ avant tout déploiement matériel : commencer par le logiciel de reporting, pas par les caméras. Plastic Origins a prouvé que la technologie marche et que le modèle économique associatif ne marche pas.</p><p style="margin-top:8px">Test en 2 semaines : 10 responsables pluvial de villes de Los Angeles County, Long Beach, San Diego, Oakland et 2 fournisseurs de dispositifs ; critère : 4 villes citent une facture de consultant supérieure à 25 k$ par an sur le reporting.</p></div><div><div class="who">Expert maritime<b>18/25</b></div><p>Obligation californienne nette, contrôlée et budgétée ; l'amont fluvial est là où se joue le flux vers la mer, sur les petites rivières urbaines. Retirer l'accroche 2024/3019 (méthode de laboratoire) et vendre d'abord l'inventaire des dispositifs et la preuve d'entretien, pas les caméras. Se placer au-dessus des bureaux d'études et des outils de gestion d'actifs déjà installés.</p></div><div><div class="who">Architecte technique<b>6 à 10 m-i · 60 à 120 k€ + 0,3 à 0,6 k€ par point</b></div><p>Top technologique : seule idée où l'IA est indispensable (5/5), dépendance minimale (le produit fabrique sa donnée), défendabilité 5/5, pipeline Plastic Origins réutilisable. Point dur : fiabilité de nuit, en crue, avec les débris végétaux, et robustesse du point (4G, vandalisme). Dérisquage : 3 caméras sur un pont pendant 4 semaines avec un épisode pluvieux, 2 000 images annotées, précision par condition et coût complet par point.</p></div></div>
+  </article>
+
+  <article class="fiche" id="idee-11">
+    <header class="fiche-head">
+      <div class="big">11</div>
+      <div><span class="fam fam-peche">Pêche et littoral</span><h3>DiveLedger</h3><p class="tagline">La preuve d'impact des centres de plongée et des flottes de loisir</p></div>
+      <div class="score-badge">18<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">Pas d'obligation</span><span class="ref">PADI AWARE · Green Fins · aires marines protégées</span><span>Un marché mature qui cherche une différenciation : 6 600 centres PADI (220 nouveaux en 2025), 4 000 centres SSI, 23 millions de plongeurs actifs, 3,1 millions de certifications par an, mais un marché nord-américain en recul. Dive Against Debris a mobilisé 50 000 plongeurs et recensé 1 million d'objets sans jamais produire de reporting daté par centre.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Un centre qui sort ses clients ramasser des filets ne peut pas prouver son engagement de manière datée, chiffrée et vérifiable, ni pour son marketing, ni pour la concession d'une aire marine protégée, ni pour un label. Les données de collecte sous-marine partent dans un portail associatif et ne reviennent jamais.</p></section>
+      <section><h4>La cible</h4><p>Centres de plongée et resorts, réseaux PADI et SSI en marque blanche, gestionnaires d'aires marines protégées, agences de voyage responsables. Marché total estimé à environ 6 millions d'euros par an (10 000 centres à 600 €) : trop petit pour une société, utile comme porte d'entrée vers CleanScore.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Application de journal des sorties de nettoyage (site, profondeur, objets, photos), certificat et badge vérifiables par QR code pour le client final.</li>
+        <li>Statistiques par centre, région et pays ; API vers les labels (Green Fins, Blue Flag) et les agences de voyage pour le référencement.</li>
+        <li>La donnée sous-marine alimente l'indice CleanScore : le seul flux qui voit le fond, pas seulement la plage.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Centres</dt><dd>300 à 900 € par an, gratuit puis premium</dd><dt>Réseaux</dt><dd>licence en marque blanche</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Faible · 2 à 3 mois-ingénieur</span><p>Application, base de données, certificats. Aucune IA nécessaire.</p></section>
+      <section><h4>Concurrence</h4><p>PADI AWARE (gratuit), Clean Swell (gratuit) et surtout le Green Fins Hub (Reef-World et PNUE, 2022), qui offre déjà auto-évaluation, plan d'action et reconnaissance publique aux centres pour un coût nul. Aucun acteur commercial, ce qui s'explique par la taille du marché et par ces substituts.</p></section>
+      <section><h4>Pourquoi maintenant</h4><p>Les organismes de certification cherchent des relais de croissance « responsables » et les aires marines protégées multiplient leurs exigences de reporting pour les concessions.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:1"></i></div><b>1</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:1"></i></div><b>1</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+    </div>
+    <div class="verdicts"><div><div class="who">Investisseur sceptique<b>9/25</b></div><p><span class="pill pill-no">No-go</span> No-go : un marché de 6 M€ reconnu par les auteurs, zéro obligation, un client petit et saisonnier, et une dépendance existentielle à PADI qui peut internaliser le produit pour le prix de deux développeurs. Facile à faire, donc facile à copier.</p><p style="margin-top:8px">Test en 2 semaines : 15 centres PADI et SSI en Méditerranée, mer Rouge et Asie du Sud-Est ; critère : 5 centres déclarent une dépense annuelle réelle supérieure à 500 € pour un label environnemental.</p></div><div><div class="who">Expert maritime<b>10/25</b></div><p>Substitut gratuit décisif oublié : le Green Fins Hub (Reef-World et PNUE) fait déjà auto-évaluation, plan d'action et reconnaissance publique. Impact le plus faible des douze (1 million d'objets en quatorze ans). Acceptabilité excellente (4/5) : garder comme fonction d'acquisition gratuite d'une autre idée, jamais comme revenu.</p></div><div><div class="who">Architecte technique<b>2 à 4 m-i · 20 à 45 k€</b></div><p>Aucun contenu technique à défendre : réplicable en 3 mois, aucun avantage IA, aucune valeur de donnée. Dérisquage : prototyper le certificat QR sur 5 centres et mesurer le taux de scan par le client final ; s'il est nul, la valeur pour le centre est nulle.</p></div></div>
+  </article>
+
+  <div class="fam-h"><span class="sw" style="background:var(--s3)"></span><div><h3>Amont, marques et finance</h3><p>Industriels du plastique, marques et acheteurs de crédits : là où l'argent de la conformité est le plus abondant, et où la preuve devient une obligation.</p></div></div>
+
+  <article class="fiche" id="idee-3">
+    <header class="fiche-head">
+      <div class="big">03</div>
+      <div><span class="fam fam-amont">Amont, marques et finance</span><h3>PelletGuard</h3><p class="tagline">La conformité et la détection des pertes de granulés plastiques</p></div>
+      <div class="score-badge">28<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">12/2027</span><span class="ref">Règlement (UE) 2025/2365 (en vigueur 16/12/2025) · Illinois HB 4418 · EPA MSGP 2026</span><span>Plan de gestion des risques pour tout opérateur manipulant plus de 5 t de granulés par an ; certification par un tiers pour les entreprises moyennes et grandes exploitant une installation de plus de 1 500 t par an, auto-déclaration en dessous ; majorité des obligations au 17 décembre 2027, transport maritime au 17 décembre 2028. Aux États-Unis, l'Illinois impose des bonnes pratiques anti-pellets dans les permis pluviaux d'ici août 2027 ; le permis fédéral MSGP ne couvre que quatre États sans délégation, pas le Texas ni la Louisiane.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Entre 52 000 et 184 000 tonnes de granulés sont perdues chaque année dans l'UE, l'équivalent de 7 300 camions ; 38 % des mouvements de pellets européens passent par la mer. Jusqu'ici, la prévention reposait sur Operation Clean Sweep, un programme volontaire audité par SGS ou DNV. Le règlement en fait une obligation légale avec certification, registre des pertes et formation, pour une industrie peu digitalisée sur ce point. La proposition de 2023 prévoyait une amende plancher de 4 % du chiffre d'affaires ; le texte adopté renvoie aux sanctions nationales, à vérifier pays par pays.</p></section>
+      <section><h4>La cible</h4><p>Plasturgistes, producteurs de résine, logisticiens, nettoyeurs de citernes, transporteurs maritimes et terminaux portuaires manipulant des pellets : quelques milliers de sites dans l'UE, dénombrables via les registres douaniers et professionnels. Partenaires naturels : les certificateurs (SGS, DNV, DQS), qui auditent mais n'outillent pas le suivi entre deux audits.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Plan de gestion des risques par site : listes de contrôle par zone (déchargement, silos, quais), suivi des incidents, registre des pertes estimées, formation du personnel, échéancier de certification et dossier d'audit prêt à envoyer.</li>
+        <li>Module caméra IA, à présenter comme pilote de recherche et non comme promesse : détecter un granulé de 2 à 5 mm, translucide, sur béton mouillé, reste un problème ouvert. Le contournement réaliste détecte les événements proxy (big-bag éventré, raccord de citerne non conforme, absence de bac de rétention, déversement massif), ce qui est faisable et correspond à ce que l'auditeur veut voir.</li>
+        <li>Registre des certificats et score de risque par site, vendu en API aux acheteurs de résine et aux assureurs. À qualifier juridiquement avant tout lancement : un score nominatif expose au dénigrement et peut relever du règlement (UE) 2024/3005 sur les notations ESG, applicable depuis le 2 juillet 2026 (agrément ESMA). Les caméras filment des salariés : analyse d'impact RGPD et consultation du CSE, sans reconnaissance de visage.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>SaaS par site</dt><dd>3 000 à 10 000 € par an selon le tonnage</dd><dt>Caméra IA</dt><dd>200 à 500 € par mois et par site</dd><dt>API score</dt><dd>10 000 à 50 000 € par an par portefeuille</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Faible pour le SaaS · 3 à 5 mois-ingénieur</span><p>Base réglementaire et flux documentaire simples. Le module de vision (petits objets blancs translucides sur substrats variés) est nettement plus difficile et se dérisque avec un pilote sur deux sites avant de le vendre.</p></section>
+      <section><h4>Concurrence</h4><p>Aucun logiciel dédié identifié. Operation Clean Sweep (volontaire), certificateurs (audit seul), aucune base européenne des pertes de pellets, alors que Nurdle Patrol existe côté citoyen aux États-Unis.</p></section>
+      <section><h4>Pourquoi maintenant</h4><p>Règlement publié fin 2025, vague de mise en conformité entre 2026 et 2028, X-Press Pearl et MSC Zoe maintiennent la pression politique. Le premier entrant devient le registre de référence.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+    </div>
+    <div class="verdicts"><div><div class="who">Investisseur sceptique<b>19/25</b></div><p><span class="pill pill-go">Go</span> Go. Obligation vérifiée au JOUE, date ferme à 15 mois, certification tierce qui déclenche l'achat, cible dénombrable, prix dérisoire face à un échec d'audit. Conditions : verrouiller un canal certificateur (SGS, DNV, DQS) avant la première ligne de code, construire le registre des certificats dès la V1 (seul moat), sortir la vision du plan.</p><p style="margin-top:8px">Test en 2 semaines : 8 responsables HSE de sites de plus de 1 500 t, 2 nettoyeurs de citernes, 2 auditeurs OCS ; critère : 5 sites sur 8 avouent un tableur ou rien, et 3 citent une facture de conseil supérieure à 5 k€.</p></div><div><div class="who">Expert maritime<b>19/25</b></div><p>La fiche la plus juste sur les dates. Secteur coopératif (PlasticsEurope et EuPC portent Operation Clean Sweep), certificateurs comme canaux, impact réel sur le microplastique primaire. Réserves : la certification ne vise que les moyennes et grandes entreprises (marché « certifiable » plus petit), le score fournisseur relève peut-être du règlement notations ESG 2024/3005, et les suites EHS (Enablon, Sphera, Intelex) peuvent absorber le module.</p></div><div><div class="who">Architecte technique<b>SaaS 4 à 6 m-i · 40 à 70 k€</b></div><p>Faisabilité 3/5 avec la vision, 5/5 sans. Le SaaS est sain et peu dépendant ; la détection de granulés de 2 à 5 mm est un problème de recherche ouvert, sans jeu de données existant. Dérisquage : deux jours sur un site réel, 3 000 images, baseline de segmentation ; critère de sortie : rappel supérieur à 0,8 sur un déversement de 100 g à 5 m, sinon bascule sur les événements proxy.</p></div></div>
+  </article>
+
+  <article class="fiche" id="idee-4">
+    <header class="fiche-head">
+      <div class="big">04</div>
+      <div><span class="fam fam-amont">Amont, marques et finance</span><h3>TrueBlue Claims</h3><p class="tagline">La preuve des allégations « plastique océanique » des marques</p></div>
+      <div class="score-badge">26<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">27/09/2026</span><span class="ref">Directive (UE) 2024/825 « Empowering Consumers » · Green Claims retirée (06/2025)</span><span>Interdiction des allégations environnementales génériques non prouvées, des labels sans certification tierce ou publique, et des allégations de neutralité climatique fondées sur la compensation. Nuance de l'expert : « ocean plastic » est une allégation spécifique, déjà attaquable depuis 2005 au titre des pratiques trompeuses ; la nouveauté du 27 septembre porte sur les génériques et les labels. La directive qui devait organiser la vérification (Green Claims) a été retirée : les marques doivent se doter elles-mêmes de la preuve.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>« Ocean plastic », « ocean-bound », « recyclé marin » : ces mentions figurent sur des baskets, des lunettes, des bouteilles et des cosmétiques. Une étude de la Commission jugeait 53 % des allégations vagues ou infondées. Les fournisseurs (certification OBP, Oceanworks, #tide, Bureo) certifient une origine, mais aucun outil ne relie une référence produit à une preuve de collecte géolocalisée, corroborée et exportable pour un contrôle de la DGCCRF ou d'une autorité de consommation.</p></section>
+      <section><h4>La cible</h4><p>Directions juridiques et marketing des marques B2C vendant dans l'UE avec des allégations marines (mode, sport, cosmétique, boissons), et leurs fournisseurs de matière. Le fait déclencheur tombe dans trois semaines : la première vague de mise en conformité est passée, la seconde (contrôles, contentieux, campagnes 2027) reste à servir.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Scan par modèle de langage des sites, fiches produit, packagings et campagnes : repérage des allégations génériques et des formulations à risque, avec la règle applicable.</li>
+        <li>Dossier par lot : collecte géolocalisée dans la zone des 50 km de côte (définition du standard privé OBP, pas une définition légale), certificats OBP ou PCX rattachés, piste d'audit. L'imagerie satellite atteste qu'un site de collecte existe, sa distance à la côte et son évolution, pas un tonnage : le produit vend une détection de risque d'allégation documentée, pas une preuve absolue.</li>
+        <li>Export prêt pour l'autorité de contrôle ; audit ponctuel avant lancement de campagne.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Marques</dt><dd>15 000 à 60 000 € par an selon le nombre de références</dd><dt>Par lot</dt><dd>200 à 500 € par dossier de preuve</dd><dt>Audit</dt><dd>2 000 à 10 000 € par campagne</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen · 5 à 8 mois-ingénieur</span><p>Modèle de langage existant avec ajustement léger, base réglementaire (labels reconnus, décisions des autorités), corrélation géospatiale (Sentinel-2, Planet en option). Pas de hardware.</p></section>
+      <section><h4>Concurrence</h4><p>CleanHub (crédits, 499 € par mois), certification OBP (Control Union, tarifs opaques), cabinets d'avocats (conseil à l'heure). Aucun outil de preuve d'allégation spécialisé plastique marin.</p></section>
+      <section><h4>Pourquoi maintenant</h4><p>Échéance ferme dans trois semaines, incertitude sur la Green Claims Directive, premières décisions des autorités attendues en 2027. Deux risques : arriver après la vague d'achat de la mise en conformité initiale, et pousser les marques au silence (green hushing), ce qui assèche la demande de plastique collecté. Structurer l'offre en dossier de preuve, pas en avis juridique (activité réglementée en France).</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+    </div>
+    <div class="verdicts"><div><div class="who">Investisseur sceptique<b>14/25</b></div><p><span class="pill pill-no">No-go</span> No-go en tant que société : une fonctionnalité, pas une entreprise. L'échéance est à trois semaines, donc consommée ; quelques centaines de marques concernées dans l'UE ; le retrait de la Green Claims Directive supprime l'acte d'achat récurrent. À intégrer comme module de PelletGuard ou d'EPR Atlas.</p><p style="margin-top:8px">Test en 2 semaines : 10 directions juridiques de marques portant l'allégation et 2 fournisseurs OBP ; critère : 4 marques citent une facture d'avocat supérieure à 15 k€ et un sujet qui revient chaque année.</p></div><div><div class="who">Expert maritime<b>15/25</b></div><p>Dates justes, trois nuances : « ocean plastic » est une allégation spécifique attaquable depuis 2005, la zone des 50 km est un standard privé, et le contrôle relève des autorités de consommation via le réseau CPC avec un risque civil. La douleur s'achète en honoraires, pas en abonnement ; effet pervers : durcir la preuve pousse au green hushing et assèche la demande de plastique collecté.</p></div><div><div class="who">Architecte technique<b>5 à 8 m-i · 50 à 100 k€</b></div><p>Faisabilité 5/5, avantage IA 3/5, défendabilité 2/5. Point dur : le produit promet une preuve que la technologie ne fabrique pas ; Sentinel-2 atteste l'existence d'un site, pas un tonnage. Dérisquage : reconstituer de bout en bout le dossier de 3 marques réelles et faire qualifier par un avocat ce qui serait opposable devant la DGCCRF.</p></div></div>
+  </article>
+
+  <article class="fiche" id="idee-5">
+    <header class="fiche-head">
+      <div class="big">05</div>
+      <div><span class="fam fam-amont">Amont, marques et finance</span><h3>Plastic Credit Ratings</h3><p class="tagline">L'agence de notation indépendante des crédits plastique</p></div>
+      <div class="score-badge">23<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">2026 à 2028</span><span class="ref">Directive 2024/825 · CSRD et ESRS E2 (post Omnibus) · standards Verra, PCX, OBP</span><span>Un marché de crédits à 462 millions de dollars (2024), des projections de croissance de 23 % à 121 % par an selon les sources (signe d'un marché mal mesuré), aucun standard universel, des controverses publiques sur l'additionnalité, et une directive 2024/825 qui interdit les allégations de neutralité fondées sur la compensation (pour les gaz à effet de serre au sens strict ; « plastic neutral » reste attaquable par la voie générale des pratiques trompeuses).</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Verra vend des crédits de collecte à 200 à 600 dollars la tonne et de recyclage à 400 à 800 ; Plastic Bank à partir de 160 ; CleanHub est vérifié par TÜV SÜD, qui n'est pas indépendant des plateformes ; des enquêtes documentent des déchets envoyés en cimenterie. Un acheteur (Nestlé, PepsiCo, L'Oréal, Samsung sont cités) s'expose à une accusation de greenwashing dès qu'il communique. Le marché carbone a résolu ce problème avec des agences de notation (Sylvera, BeZero) ; le plastique n'en a pas.</p></section>
+      <section><h4>La cible</h4><p>Acheteurs corporate de crédits et leurs auditeurs, les quelque 5 000 grands groupes restant dans la CSRD après l'Omnibus (seuil relevé à 1 000 salariés et 450 millions d'euros), les standards et les courtiers en marque blanche.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Agrégation de tous les registres publics (Verra, PCX, OBP, CleanHub, Empower), détection des doubles comptages, score de crédibilité par projet : type de traitement réel, géolocalisation vérifiée par satellite, historique de controverses, additionnalité.</li>
+        <li>Rapport d'audit prêt pour la CSRD (ESRS E2) et pour la directive 2024/825.</li>
+        <li>Vérification indépendante à la tonne (photos horodatées, capteurs sur site, recoupement satellite des décharges via l'approche Global Plastic Watch).</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Acheteurs</dt><dd>15 000 à 60 000 € par an</dd><dt>À la tonne</dt><dd>2 à 5 $ par tonne vérifiée</dd><dt>Standards</dt><dd>licence 50 000 à 200 000 $ par an</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen · 5 à 8 mois-ingénieur</span><p>Agrégation de registres hétérogènes sans API (scrapers, lecture de PDF), moteur de scoring, satellite optionnel en V2. La difficulté est méthodologique et juridique plus que logicielle : une « note » vendue par abonnement dans l'UE peut exiger un agrément ESMA (règlement 2024/3005, applicable depuis le 2 juillet 2026) et une note négative nominative expose au dénigrement.</p></section>
+      <section><h4>Concurrence</h4><p>Aucun agrégateur indépendant identifié. TÜV SÜD vérifie pour CleanHub, Verra note ses propres projets. Les courtiers (ClearSky, ALLCOT) intermédient sans noter.</p></section>
+      <section><h4>Pourquoi maintenant</h4><p>La crise de confiance est publique, la directive 2024/825 s'applique dans trois semaines, et la CSRD se recentre sur les plus gros émetteurs de microplastiques (textile, cosmétique).</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+    </div>
+    <div class="verdicts"><div><div class="who">Investisseur sceptique<b>11/25</b></div><p><span class="pill pill-no">No-go</span> No-go : mauvais timing et marché trop petit. Un notateur capte 1 à 2 % d'un marché de 462 M$, soit 5 à 10 M$ mondiaux avant part de marché, sur un marché que la directive 2024/825 délégitime et sans obligation d'audit tiers.</p><p style="margin-top:8px">Test en 2 semaines : 8 acheteurs corporate de crédits 2025-2026 ; critère : 3 déclarent un budget en hausse et une dépense de due diligence externe déjà faite. Sinon abandon.</p></div><div><div class="who">Expert maritime<b>12/25</b></div><p>Erreur : l'interdiction fondée sur la compensation ne vise que la neutralité climatique ; ESRS E2 n'exige rien sur les crédits plastique ; le chiffre de 462 M$ est une estimation de cabinet. 30 à 80 acheteurs sérieux dans le monde. Piège majeur : le règlement 2024/3005 sur les notations ESG (agrément ESMA) et le dénigrement pour toute note négative. Sylvera et BeZero peuvent s'étendre au plastique en un trimestre.</p></div><div><div class="who">Architecte technique<b>5 à 8 m-i · 50 à 100 k€</b></div><p>Faisabilité 5/5 mais dépendance 5/5 : 100 % de la matière première vient de registres tiers sans API ni SLA, que leurs opérateurs peuvent fermer. Dérisquage : écrire les 5 scrapers et démontrer un cas réel de double comptage ; sans cas prouvé, pas de preuve d'existence du produit.</p></div></div>
+  </article>
+
+  <article class="fiche" id="idee-12">
+    <header class="fiche-head">
+      <div class="big">12</div>
+      <div><span class="fam fam-amont">Amont, marques et finance</span><h3>EPR Atlas</h3><p class="tagline">La conformité emballages plastique sur trois continents</p></div>
+      <div class="score-badge">22<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">01/01/2027</span><span class="ref">PPWR (UE) 2025/40 · Californie SB 54 · Inde PWM Rules · Philippines RA 11898 · Vietnam 110/2026</span><span>PPWR applicable depuis le 12 août 2026 (sanctions suspendues par la Commission) ; en Californie, 5 741 producteurs enregistrés, interdiction de vente au 1er janvier 2027 et fonds de 5 milliards de dollars ; en Inde, dédouanement bloqué sans enregistrement ; aux Philippines, 60 % de récupération en 2026 puis 80 % en 2028 ; sept États américains, le Royaume-Uni (taxe à 228,82 £ la tonne), Singapour, Malaisie, Thaïlande, Australie.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Une marque qui vend en Europe, aux États-Unis et en Asie doit suivre une dizaine de régimes avec des définitions différentes du contenu recyclé, des portails distincts (CPCB, NEC, VEP Fund, Circular Action Alliance) et des calendriers qui se chevauchent en 2026-2027. Les cabinets facturent à l'heure ; les process internes se font État par État.</p></section>
+      <section><h4>La cible</h4><p>Marques et distributeurs multi-pays (agroalimentaire, cosmétique, électronique), en particulier celles qui produisent en Asie. Le lien avec l'océan est indirect : c'est l'amont du flux, pas la mer.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Moteur de règles multi-juridictions alimenté par les données d'emballage (PLM, ERP) : calcul des éco-contributions et taxes, déclarations formatées par portail, alertes d'échéance.</li>
+        <li>Simulation coût de conformité contre contribution financière alternative (Vietnam), et éco-modulation (Royaume-Uni 2026/27, Malaisie).</li>
+        <li>Veille réglementaire résumée par modèle de langage sur les sept États américains, l'UE et l'Asie-Pacifique.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Marques</dt><dd>10 000 à 80 000 € par an selon juridictions et références</dd><dt>Par pays</dt><dd>5 000 à 15 000 € par an</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Faible à moyen · 4 à 6 mois-ingénieur</span><p>Base réglementaire à maintenir en continu (le vrai coût), moteur de règles, intégrations PLM. Peu d'IA au coeur.</p></section>
+      <section><h4>Concurrence</h4><p>Marché déjà actif : rePurpose Global (500 marques), Clearyst, Lappa, Recyda, Source Intelligence, Reverse Logistics Group, et les PRO eux-mêmes. La couverture Asie-Pacifique est le seul espace encore incomplet.</p></section>
+      <section><h4>Pourquoi maintenant</h4><p>Chevauchement inédit des échéances 2026-2027 sur trois continents, à caler sur février 2027 pour le PPWR (notification des sanctions) et sur le blocage douanier indien, la sanction la plus mordante. La Malaisie reste volontaire jusqu'en 2030 et la Thaïlande n'a qu'un projet de loi : des prospects, pas des obligés. La fenêtre se referme vite : les grandes marques internalisent déjà.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:1"></i></div><b>1</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+    </div>
+    <div class="verdicts"><div><div class="who">Investisseur sceptique<b>20/25</b></div><p><span class="pill pill-if">Go si</span> Go si le test confirme le trou Asie-Pacifique chez les clients des acteurs installés ; sinon on paie pour entrer dans un marché rouge, hors mission. Meilleure note brute : interdiction de vente en Californie au 1er janvier 2027, blocage douanier indien, budgets déjà votés, prix prouvés par rePurpose Global.</p><p style="margin-top:8px">Test en 2 semaines : 12 responsables conformité emballage de marques produisant en Asie ; critère : 5 utilisent déjà un outil payant et 4 disent qu'il ne couvre pas l'Asie. L'absence d'outil n'est pas la validation.</p></div><div><div class="who">Expert maritime<b>19/25</b></div><p>La mieux documentée. Nuances : urgence PPWR à caler sur février 2027, les 5 741 producteurs sont une estimation CalRecycle, Malaisie volontaire et Thaïlande en projet. Impact océan 2/5 : l'EPR agit là où la fuite est déjà faible, sauf en Asie. Marché occupé (rePurpose, Recyda, Lorax, Ecoveritas, Reconomy, Source Intelligence, Interzero, Landbell) plus les calculateurs gratuits des PRO. Si elle est classée en tête, le dire : meilleur business, faible lien océan.</p></div><div><div class="who">Architecte technique<b>6 à 10 m-i · 60 à 120 k€</b></div><p>Faisabilité 4/5. Le coût marginal par juridiction ne décroît pas : chaque pays apporte son modèle de données, son portail sans API et sa langue ; le produit se comporte comme un cabinet outillé. Dérisquage : modéliser PPWR, SB 54 et CPCB dans un schéma de règles unique ; si le schéma explose en cas particuliers, c'est un service, pas un SaaS.</p></div></div>
+  </article>
+</section>
+
+<section class="block" id="comparatif">
+  <span class="eyebrow">Comparatif</span>
+  <h2>Les douze idées côte à côte</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Idée</th><th>Déclencheur</th><th>Cible captive</th><th>Prix par client et par an</th><th>Effort MVP</th><th class="n">Score /35</th><th class="n">VC /25</th><th class="n">Secteur /25</th></tr></thead>
+    <tbody id="cmp-body">
+      <tr><td><span class="dot" style="background:var(--s3)"></span><span class="nm">03 PelletGuard</span></td><td>Règl. 2025/2365, 12/2027 et 17/12/2028</td><td>Quelques milliers de sites pellets UE</td><td>3 à 10 k€ par site ; caméra 2,4 à 6 k€</td><td>3 à 5 m-i (SaaS)</td><td class="n">28</td><td class="n">19</td><td class="n">19</td></tr>
+      <tr><td><span class="dot" style="background:var(--s2)"></span><span class="nm">09 RiverEye</span></td><td>Dir. 2024/3019, 31/07/2027 ; Californie 02/12/2030</td><td>Agences de l'eau, villes MS4, bailleurs</td><td>8 à 25 k€ par point ; 15 à 60 k$ par ville</td><td>6 à 9 m-i</td><td class="n">28</td><td class="n">15</td><td class="n">18</td></tr>
+      <tr><td><span class="dot" style="background:var(--s2)"></span><span class="nm">02 GearTrace</span></td><td>Règl. 2023/2842, 10/01/2026 ; REP 2019/904</td><td>68 863 navires UE, OP, éco-organismes, fabricants</td><td>2 à 5 € par navire ; 15 à 40 k€ par éco-organisme</td><td>6 à 9 m-i</td><td class="n">27</td><td class="n">14</td><td class="n">16</td></tr>
+      <tr><td><span class="dot" style="background:var(--s3)"></span><span class="nm">04 TrueBlue Claims</span></td><td>Dir. 2024/825, 27/09/2026</td><td>Marques B2C avec allégations marines</td><td>15 à 60 k€ par marque</td><td>5 à 8 m-i</td><td class="n">26</td><td class="n">14</td><td class="n">15</td></tr>
+      <tr><td><span class="dot" style="background:var(--s1)"></span><span class="nm">01 DriftBox</span></td><td>SOLAS V/31-32, 01/01/2026</td><td>Armateurs, 12 P&amp;I clubs, États côtiers</td><td>0,5 à 2 k€ par navire ; 20 à 100 k€ par assureur</td><td>6 à 9 m-i</td><td class="n">25</td><td class="n">15</td><td class="n">10</td></tr>
+      <tr><td><span class="dot" style="background:var(--s2)"></span><span class="nm">08 CleanScore</span></td><td>DCSMM D10, seuil 20/100 m ; labels</td><td>~5 000 communes littorales UE, hôtels</td><td>3 à 8 k€ par commune ; API 10 à 50 k€</td><td>6 à 9 m-i</td><td class="n">24</td><td class="n">11</td><td class="n">9</td></tr>
+      <tr><td><span class="dot" style="background:var(--s1)"></span><span class="nm">06 HarbourTwin</span></td><td>Labels, Dir. 2019/883, parc de robots</td><td>10 000 à 25 000 marinas UE, ports</td><td>6 à 36 k€ par site</td><td>4 à 6 m-i</td><td class="n">24</td><td class="n">10</td><td class="n">10</td></tr>
+      <tr><td><span class="dot" style="background:var(--s1)"></span><span class="nm">10 NurdleRisk</span></td><td>X-Press Pearl 2025 ; SOLAS 2026 ; pellets 2028</td><td>12 P&amp;I clubs, assureurs, réassureurs</td><td>50 à 150 k€ par assureur</td><td>8 à 12 m-i</td><td class="n">24</td><td class="n">10</td><td class="n">14</td></tr>
+      <tr><td><span class="dot" style="background:var(--s3)"></span><span class="nm">05 Plastic Credit Ratings</span></td><td>Dir. 2024/825 ; CSRD ; marché 462 M$</td><td>Acheteurs corporate, ~5 000 groupes CSRD</td><td>15 à 60 k€ par acheteur</td><td>5 à 8 m-i</td><td class="n">23</td><td class="n">11</td><td class="n">12</td></tr>
+      <tr><td><span class="dot" style="background:var(--s3)"></span><span class="nm">12 EPR Atlas</span></td><td>PPWR 08/2026 ; SB 54 01/01/2027 ; Asie</td><td>Marques multi-pays (5 741 en Californie)</td><td>10 à 80 k€ par marque</td><td>4 à 6 m-i</td><td class="n">22</td><td class="n">20</td><td class="n">19</td></tr>
+      <tr><td><span class="dot" style="background:var(--s1)"></span><span class="nm">07 WasteDeck</span></td><td>MARPOL V 100 UMS 05/2024 ; Dir. 2019/883</td><td>~500 ports TEN-T, navires 100 à 400 UMS, yachts</td><td>18 à 72 k€ par port ; 2,4 à 6 k€ par navire</td><td>6 à 8 m-i</td><td class="n">20</td><td class="n">16</td><td class="n">10</td></tr>
+      <tr><td><span class="dot" style="background:var(--s2)"></span><span class="nm">11 DiveLedger</span></td><td>Aucune obligation</td><td>10 600 centres PADI et SSI</td><td>0,3 à 0,9 k€ par centre</td><td>2 à 3 m-i</td><td class="n">18</td><td class="n">9</td><td class="n">10</td></tr>
+    </tbody>
+  </table></div>
+  <p class="chart-note">Score /35 : sept axes notés par l'orchestrateur. VC /25 et Secteur /25 : notes des critiques investisseur et expert maritime, sur leurs propres axes (voir les fiches). m-i : mois-ingénieur.</p>
+</section>
+
+<section class="block" id="ecartees">
+  <span class="eyebrow">Écartées ou fusionnées</span>
+  <h2>Ce que nous n'avons pas retenu, et pourquoi</h2>
+  <div class="grid2">
+    <div class="card"><h3>Robots de nettoyage</h3><p>Seabin, WasteShark, Jellyfishbot, Clearbot, BeBot : marché encombré, faible différenciation, capital intensif, ventes aux municipalités à cycle long. Nous vendons le logiciel au-dessus (HarbourTwin).</p></div>
+    <div class="card"><h3>Module ESRS E2/E4 microplastiques</h3><p>L'Omnibus 2025 a réduit le périmètre de la CSRD d'environ 90 % (seuil à 1 000 salariés et 450 M€) et exempte E4 pour 2026-2027. Marché captif trop réduit ; fusionné dans Plastic Credit Ratings.</p></div>
+    <div class="card"><h3>Copilote export de déchets (Bâle, règlement 2024/1157)</h3><p>Interdiction d'exporter du plastique hors OCDE au 21 novembre 2026 : date ferme, mais cible étroite (négociants) et lien océan indirect. À garder en veille comme module.</p></div>
+    <div class="card"><h3>Assurance paramétrique des engins et cages</h3><p>Nécessite un porteur de risque et des séries météo-sinistres ; intégrée comme V2 de NurdleRisk.</p></div>
+    <div class="card"><h3>Marketplace de primes de récupération d'engins</h3><p>Le financement (REP, Ghost Gear Fund canadien 15 M$ sur 2026-2029, NOAA) existe mais la donnée de localisation manque d'abord ; intégrée comme V2 de GearTrace.</p></div>
+    <div class="card"><h3>Traité mondial sur le plastique</h3><p>INC-5.2 à Genève (août 2025) s'est terminé sans accord ni date de reprise. Aucun levier fiable pour 2026-2028 ; les leviers nationaux et IMO, eux, avancent.</p></div>
+  </div>
+</section>
+
+<section class="block" id="pieges">
+  <span class="eyebrow">Transverse</span>
+  <h2>Six pièges juridiques que les dossiers de recherche avaient manqués</h2>
+  <div class="prose" style="margin-bottom:18px"><p>Relevés par l'expert maritime ; aucun n'est bloquant, tous conditionnent la conception du produit dès le premier jour.</p></div>
+  <div class="grid2">
+    <div class="card"><h3>Données de pêche</h3><p>Positions et journaux de pêche sont protégés par les articles 112 et 113 du règlement 1224/2009 ; pour une petite unité, navire plus patron est une donnée personnelle. Une carte publique de points chauds révèle les fonds de pêche. Concerne GearTrace.</p></div>
+    <div class="card"><h3>Notations ESG</h3><p>Le règlement (UE) 2024/3005, applicable depuis le 2 juillet 2026, soumet la fourniture de notations ESG dans l'UE à un agrément ESMA. Tout produit vendu comme un « score » ou une « note » doit être qualifié par un avocat. Concerne PelletGuard, Plastic Credit Ratings, NurdleRisk.</p></div>
+    <div class="card"><h3>Droit de la concurrence</h3><p>La mise en commun de données de sinistres entre assureurs concurrents n'est plus exemptée depuis 2017 (article 101 TFUE) ; même logique pour un pool de pertes entre transporteurs. Agréger, anonymiser, donner un accès non discriminatoire. Concerne DriftBox et NurdleRisk.</p></div>
+    <div class="card"><h3>Licences AIS et données citoyennes</h3><p>L'AIS satellite (Kpler, Spire, S&amp;P) interdit la redistribution et limite les produits dérivés : 100 000 à 300 000 € par an à budgéter. Les bases citoyennes (Surfrider, TIDES, OSPAR) sont sous licences souvent non commerciales ou à partage identique.</p></div>
+    <div class="card"><h3>Drones et caméras</h3><p>Le survol de rassemblements de personnes est interdit en catégorie ouverte EASA : une plage en été l'est. Les caméras sur quais et ponts filment des salariés et le public : analyse d'impact RGPD, consultation du CSE, anonymisation à la source.</p></div>
+    <div class="card"><h3>Documents publics américains</h3><p>Sous les public records laws, ce qui est livré à une collectivité devient largement communicable. Verrouiller par contrat ce qui reste propriétaire, sinon le référentiel devient public. Concerne RiverEye.</p></div>
+  </div>
+</section>
+
+<section class="block" id="questions">
+  <span class="eyebrow">Pour orienter la suite</span>
+  <h2>Huit questions au fondateur</h2>
+  <div class="prose"><p>Ces réponses changeraient le classement. Elles sont ordonnées par impact sur le choix.</p></div>
+  <div class="q"><div class="qq">1. Voulez-vous vendre à des administrations et des ports (cycles de 9 à 18 mois, marchés publics, gros contrats) ou à des entreprises privées (cycles courts, contrats plus petits) ?</div><div class="qw"><b>Change :</b> GearTrace, RiverEye et CleanScore vivent de la commande publique ; PelletGuard, TrueBlue Claims, Plastic Credit Ratings et EPR Atlas se vendent à des directions conformité privées.</div></div>
+  <div class="q"><div class="qq">2. Quel horizon de premier revenu : 6 mois, 12 mois, 24 mois ?</div><div class="qw"><b>Change :</b> à 6 mois, PelletGuard (SaaS documentaire) et EPR Atlas ; à 12 mois, DriftBox et GearTrace ; à 24 mois, RiverEye et NurdleRisk qui doivent d'abord accumuler de la donnée.</div></div>
+  <div class="q"><div class="qq">3. Quelle géographie de départ : France et UE, États-Unis (Californie), Asie du Sud-Est ?</div><div class="qw"><b>Change :</b> l'Europe porte les textes les plus datés (pêche, pellets, allégations) ; la Californie porte SB 54 et les Trash Amendments 2030 ; l'Asie porte les flottes de pêche (Indonésie, 1,1 million de navires) et les bailleurs (ADB, PROBLUE).</div></div>
+  <div class="q"><div class="qq">4. Souhaitez-vous que l'IA soit au coeur du produit (vision par ordinateur, modèles de dérive) ou un accélérateur d'un logiciel de conformité ?</div><div class="qw"><b>Change :</b> RiverEye et CleanScore sont des sociétés d'IA ; DriftBox, GearTrace et PelletGuard sont des registres avec un modèle en option. Les premières demandent un profil data science, les secondes un profil réglementaire.</div></div>
+  <div class="q"><div class="qq">5. Acceptez-vous un produit dont l'impact sur l'océan est indirect (marques, crédits, emballages) si le marché est plus solvable ?</div><div class="qw"><b>Change :</b> TrueBlue Claims, Plastic Credit Ratings et EPR Atlas ont les meilleurs acheteurs mais ne retirent pas un gramme de plastique de la mer directement.</div></div>
+  <div class="q"><div class="qq">6. Avez-vous, ou pouvez-vous obtenir, un accès privilégié à un réseau : criées et organisations de producteurs, un P&amp;I club, un port, une fédération de marinas, un plasturgiste ?</div><div class="qw"><b>Change :</b> chaque idée du haut du classement se gagne par un premier client de référence. Un accès existant vaut plus que le score.</div></div>
+  <div class="q"><div class="qq">7. Quel financement initial : autofinancement, subvention (Horizon Europe, Mission Océan, France 2030, NOAA), ou levée ?</div><div class="qw"><b>Change :</b> les idées à forte IA (RiverEye, CleanScore) se financent bien par subvention ; les registres de conformité peuvent s'autofinancer sur les premiers contrats.</div></div>
+  <div class="q"><div class="qq">8. Faut-il construire une société sur une seule idée, ou une plateforme qui en enchaîne deux (par exemple DriftBox puis NurdleRisk, ou GearTrace puis le recyclage) ?</div><div class="qw"><b>Change :</b> les paires DriftBox et NurdleRisk, GearTrace et recyclage, CleanScore et DiveLedger partagent la même donnée ; la première idée finance la seconde.</div></div>
+</section>
+
+<section class="block" id="methode">
+  <span class="eyebrow">Méthode et sources</span>
+  <h2>Comment ce rapport a été produit, et ce qu'il faut vérifier avant d'agir</h2>
+  <div class="prose" style="margin-bottom:22px"><p>Neuf agents de recherche ont travaillé en parallèle sur un brief commun, chacun dans son dossier avec un journal de ses succès et de ses erreurs. L'orchestrateur a consolidé douze idées, puis trois agents critiques les ont notées indépendamment. Les dossiers complets, la liste courte et les verdicts sont dans le dépôt, sous <span class="mono">ocean-plastic/</span>.</p></div>
+  <div class="agents">
+    <div><div class="a">reg-europe</div><p>18 textes UE, UK et Norvège, 12 fiches, populations captives.</p></div>
+    <div><div class="a">reg-usa</div><p>24 dispositifs fédéraux, d'État et canadiens ; recul fédéral 2025-2026 documenté.</p></div>
+    <div><div class="a">reg-asia</div><p>28 dispositifs Asie-Pacifique, IMO, Bâle, traité mondial, bailleurs.</p></div>
+    <div><div class="a">ports-shipping</div><p>Obligations des ports, 9 concurrents avec prix, pertes de conteneurs, pellets.</p></div>
+    <div><div class="a">fishing-aquaculture</div><p>Engins fantômes, REP par pays, recycleurs, coûts pour les pêcheurs.</p></div>
+    <div><div class="a">divers-tourism-coastal</div><p>Plongée, marinas, labels, coûts de nettoyage des plages, données citoyennes.</p></div>
+    <div><div class="a">tech-landscape</div><p>Satellite, vision, dérive, jumeau numérique, crédits, grille d'effort.</p></div>
+    <div><div class="a">brands-esg-finance</div><p>Allégations, CSRD post Omnibus, crédits plastique, assureurs.</p></div>
+    <div><div class="a">rivers-upstream</div><p>Rivières, eaux pluviales, pellets, Californie, bailleurs.</p></div>
+  </div>
+  <div class="prose" style="margin:26px 0 22px">
+    <p><b>Limites à connaître.</b> Le quota de recherche web de la session, partagé entre les agents, s'est épuisé en cours de route : plusieurs prix de concurrents (Planet, Kayrros, Contech, Blue Flag) et quelques chiffres de population (navires de pêche américains, sites pellets) sont marqués comme estimations dans les dossiers. Les dates des textes viennent d'EUR-Lex, de l'IMO et de la presse juridique, mais deux points divergent entre dossiers et ont été tranchés : le seuil de certification pellets est de 1 500 t par an (et non 1 000), et l'amende de 4 % du chiffre d'affaires figure dans la proposition de 2023, pas nécessairement dans le règlement adopté. Toute décision d'investissement doit repartir du Journal officiel.</p>
+  </div>
+  <h4 style="margin-bottom:12px">Textes et sources de référence</h4>
+  <ul class="src">
+    <li><b>SOLAS V/31-32, MARPOL Protocole I</b> : IMO, « Raft of shipping rules in force from 1 January 2026 » ; Gard, NorthStandard.</li>
+    <li><b>Règlement (UE) 2023/2842</b> contrôle des pêches : EUR-Lex 32023R2842 ; GOV.UK, règles du 10 janvier 2026.</li>
+    <li><b>Directive (UE) 2019/904</b> plastiques à usage unique, art. 8 REP engins : EUR-Lex 32019L0904 ; EFTTA ; décret français n° 2025-775.</li>
+    <li><b>Règlement (UE) 2025/2365</b> pellets : Conseil (22/09/2025), Hogan Lovells, Pack-Lab.</li>
+    <li><b>Directive (UE) 2024/825</b> Empowering Consumers : empcodirective.eu, Cooley, Latham &amp; Watkins (retrait Green Claims).</li>
+    <li><b>Directive (UE) 2019/883</b> installations de réception portuaire : EUR-Lex 32019L0883 ; EMSA ; MDPI Sustainability 2025.</li>
+    <li><b>MARPOL Annexe V, seuil 100 UMS</b> : Lloyd's Register Class News 10-24 ; Marine Public 2025.</li>
+    <li><b>Directive (UE) 2024/3019</b> eaux urbaines résiduaires : EUR-Lex 32024L3019.</li>
+    <li><b>DCSMM descripteur 10</b> : JRC (04/02/2025), OSPAR Beach Litter 2018-2023.</li>
+    <li><b>PPWR (UE) 2025/40</b> : EUR-Lex 32025R0040 ; Brussels Signal (08/2026).</li>
+    <li><b>CSRD, Omnibus I</b> : Norton Rose Fulbright, KPMG, EFRAG ESRS E2 et E4.</li>
+    <li><b>Californie SB 54</b> : CalRecycle, CalEPA, Holland &amp; Knight (05/2026) ; <b>Trash Amendments</b> : State Water Resources Control Board.</li>
+    <li><b>Illinois HB 4418</b> : Jenner &amp; Block (12/08/2026) ; <b>Plastic Pellet Free Waters Act</b> : congress.gov H.R.7543.</li>
+    <li><b>Save Our Seas 2.0 Amendments Act</b> : Public Law 119-65 ; NOAA Marine Debris Program.</li>
+    <li><b>Inde, Philippines, Vietnam, Corée, Japon</b> : ChemLinked, Manila Bulletin (08/2026), Tilleke &amp; Gibbins, NOAA repository, env.go.jp.</li>
+    <li><b>Conteneurs perdus</b> : World Shipping Council 2025 ; Container News ; X-Press Pearl : Mongabay, Reed Smith, Maritime Executive.</li>
+    <li><b>Engins fantômes</b> : FAO, GGGI, Global Seafood Advocate, Fiskeridirektoratet, Nofir (FiskerForum).</li>
+    <li><b>Technologies</b> : MARIDA (PLOS One), Frontiers 2026 MARIDA et MADOS, TACO (arXiv 2003.06975), OceanParcels et LOCATE (GMD 2024), Copernicus Marine, EDITO, Plastic Origins (GitHub Surfrider).</li>
+    <li><b>Crédits plastique</b> : Verra PWRS, Plastic Bank, CleanHub, The Walrus, Trellis, Eunomia.</li>
+    <li><b>Plongée et littoral</b> : PADI statistics 2024, DeeperBlue, NOAA Economic Loss, France 3 Régions (Châtelaillon, Pavillon Bleu), Dockmaster, Green Key.</li>
+    <li><b>Rivières</b> : Meijer et al. 2021 (Science Advances) ; The Ocean Cleanup ; EnviroPod ; PROBLUE ; Surfrider (fin de Plastic Origins).</li>
+  </ul>
+</section>
+
+</main>
+</div>
+<footer>Atlas Océan Plastique · étude d'idéation, septembre 2026 · aucune implémentation · chiffres et dates à revérifier au Journal officiel avant décision</footer>
+
+<script>
+(function(){
+  var data=[
+    {n:1,name:"DriftBox",fam:1,effort:9,attract:25,price:100,d:"SOLAS 2026 · registre des conteneurs perdus"},
+    {n:2,name:"GearTrace",fam:2,effort:8.5,attract:27,price:40,d:"Règl. 2023/2842 · engins de pêche"},
+    {n:3,name:"PelletGuard",fam:3,effort:5,attract:28,price:50,d:"Règl. pellets 2025/2365"},
+    {n:4,name:"TrueBlue Claims",fam:3,effort:6.5,attract:26,price:60,d:"Dir. 2024/825 · preuve d'allégation"},
+    {n:5,name:"Plastic Credit Ratings",fam:3,effort:6.5,attract:23,price:60,d:"Notation des crédits plastique"},
+    {n:6,name:"HarbourTwin",fam:1,effort:5.5,attract:24,price:36,d:"Jumeau numérique de port"},
+    {n:7,name:"WasteDeck",fam:1,effort:9,attract:20,price:72,d:"PRF et MARPOL Annexe V"},
+    {n:8,name:"CleanScore",fam:2,effort:9.3,attract:24,price:50,d:"Indice de propreté des plages"},
+    {n:9,name:"RiverEye",fam:2,effort:8,attract:28,price:150,d:"Points chauds fluviaux"},
+    {n:10,name:"NurdleRisk",fam:1,effort:11.5,attract:24,price:150,d:"Score de risque assureurs"},
+    {n:11,name:"DiveLedger",fam:2,effort:3,attract:18,price:0.9,d:"Preuve d'impact plongée"},
+    {n:12,name:"EPR Atlas",fam:3,effort:8,attract:22,price:80,d:"Conformité emballages multi-pays"}
+  ];
+  var svg=document.querySelector('#bubble svg');if(!svg)return;
+  var NS='http://www.w3.org/2000/svg';
+  var W=780,H=460,L=64,R=24,T=20,B=56;
+  var x0=1,x1=13,y0=16,y1=30;
+  function X(v){return L+(v-x0)/(x1-x0)*(W-L-R)}
+  function Y(v){return T+(1-(v-y0)/(y1-y0))*(H-T-B)}
+  function el(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e}
+  var g=el('g',{});svg.appendChild(g);
+  var ink3=getComputedStyle(document.documentElement).getPropertyValue('--ink-3').trim();
+  var line=getComputedStyle(document.documentElement).getPropertyValue('--line').trim();
+  var ink=getComputedStyle(document.documentElement).getPropertyValue('--ink').trim();
+  // grid
+  for(var v=2;v<=12;v+=2){g.appendChild(el('line',{x1:X(v),x2:X(v),y1:T,y2:H-B,stroke:line,'stroke-width':1}));
+    var t=el('text',{x:X(v),y:H-B+18,'text-anchor':'middle','font-size':11,fill:ink3});t.textContent=v;g.appendChild(t);}
+  for(var w=16;w<=30;w+=2){g.appendChild(el('line',{x1:L,x2:W-R,y1:Y(w),y2:Y(w),stroke:line,'stroke-width':1}));
+    var t2=el('text',{x:L-10,y:Y(w)+4,'text-anchor':'end','font-size':11,fill:ink3});t2.textContent=w;g.appendChild(t2);}
+  var ax=el('text',{x:(L+W-R)/2,y:H-14,'text-anchor':'middle','font-size':11,fill:ink3,'letter-spacing':'.08em'});ax.textContent='EFFORT MVP (MOIS-INGÉNIEUR, POINT MÉDIAN)';g.appendChild(ax);
+  var ay=el('text',{x:14,y:(T+H-B)/2,'text-anchor':'middle','font-size':11,fill:ink3,'letter-spacing':'.08em',transform:'rotate(-90 14 '+((T+H-B)/2)+')'});ay.textContent='SCORE ORCHESTRATEUR (7 AXES) /35';g.appendChild(ay);
+  var cols={1:'var(--s1)',2:'var(--s2)',3:'var(--s3)'};
+  var tip=document.getElementById('tip'),wrap=document.getElementById('bubble');
+  // sort so small circles draw last (on top)
+  data.slice().sort(function(a,b){return b.price-a.price}).forEach(function(d){
+    var r=6+Math.sqrt(d.price)*1.2;
+    var c=el('circle',{cx:X(d.effort),cy:Y(d.attract),r:r,fill:cols[d.fam],'fill-opacity':.78,stroke:'var(--surface)','stroke-width':2,tabindex:0});
+    var lab=el('text',{x:X(d.effort),y:Y(d.attract)+4,'text-anchor':'middle','font-size':11,'font-weight':600,fill:'#fff','pointer-events':'none'});
+    lab.textContent=String(d.n).padStart(2,'0');
+    var name=el('text',{x:X(d.effort)+r+5,y:Y(d.attract)+4,'font-size':11.5,fill:ink,'font-family':'Bricolage Grotesque, Helvetica Neue, Arial, sans-serif','font-weight':600,'pointer-events':'none'});
+    name.textContent=d.name;
+    if(d.n===9){name.setAttribute('y',Y(d.attract)-r-6);name.setAttribute('x',X(d.effort));name.setAttribute('text-anchor','middle');}
+    if(d.n===8){name.setAttribute('y',Y(d.attract)+r+13);name.setAttribute('x',X(d.effort));name.setAttribute('text-anchor','middle');}
+    if(d.n===6){name.setAttribute('x',X(d.effort)-r-5);name.setAttribute('text-anchor','end');}
+    if(d.n===3){name.setAttribute('x',X(d.effort)-r-5);name.setAttribute('text-anchor','end');}
+    if(d.n===5){name.setAttribute('x',X(d.effort)-r-5);name.setAttribute('text-anchor','end');}
+    function show(ev){tip.innerHTML='<b>'+String(d.n).padStart(2,'0')+' · '+d.name+'</b>'+d.d+'<br>Effort ~'+d.effort+' m-i · score '+d.attract+'/35<br>Revenu max estimé '+(d.price<1?(d.price*1000)+' €':d.price+' k€')+' par client et par an';
+      var bb=wrap.getBoundingClientRect(),pt=c.getBoundingClientRect();
+      tip.style.left=Math.min(pt.left-bb.left+r+12,bb.width-280)+'px';tip.style.top=(pt.top-bb.top-10)+'px';tip.style.opacity=1;}
+    function hide(){tip.style.opacity=0}
+    c.addEventListener('mouseenter',show);c.addEventListener('mousemove',show);c.addEventListener('mouseleave',hide);c.addEventListener('focus',show);c.addEventListener('blur',hide);
+    c.addEventListener('click',function(){location.hash='#idee-'+d.n});c.style.cursor='pointer';
+    g.appendChild(c);g.appendChild(lab);g.appendChild(name);
+  });
+  // rail highlight
+  var links=[].slice.call(document.querySelectorAll('nav.rail a'));
+  var map={};links.forEach(function(a){var id=a.getAttribute('href').slice(1);map[id]=a});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.remove('on')});var a=map[e.target.id];if(a)a.classList.add('on');}})},{rootMargin:'-20% 0px -70% 0px'});
+    Object.keys(map).forEach(function(id){var s=document.getElementById(id);if(s)io.observe(s)});
+  }
+})();
+</script>
