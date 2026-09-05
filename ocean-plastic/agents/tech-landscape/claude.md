@@ -1,0 +1,17 @@
+# Mémoire agent tech-landscape
+
+Démarrage : 2026-09-05. Objectif : cartographie techno + concurrentielle IA/data plastique marin.
+
+## Journal
+- Init dossier de travail + lecture BRIEF.md commun. OK.
+- Succès : recherches WebSearch sur MARIDA, Global Plastic Watch, Ocean Cleanup RMS, Plastic Origins, TACO, OceanParcels/Copernicus Marine, EDITO, EMODnet Chemistry, OSPAR, TIDES, Verra PWRS, Plastic Bank, CleanHub, Empower.eco, OBP certification, startups ocean tech, Katapult Ocean/1000 Ocean Startups — toutes ont donné des résultats exploitables avec sources.
+- Erreur/blocage : budget WebSearch de la SESSION (partagé entre tous les agents parallèles de l'orchestrateur) épuisé après ~15 requêtes de mon côté (limite globale 200 atteinte tous agents confondus). Leçon : basculer sur WebFetch (ciblé, URL connues) pour compléter au lieu de WebSearch. Ne pas retenter WebSearch.
+- Stratégie de repli : utiliser WebFetch sur les URLs déjà identifiées (pages pricing CleanHub, Verra fee schedule PDF, Copernicus Marine API help, OBP cert, GitHub Plastic Origins, arxiv reviews) pour extraire des détails précis sans consommer de budget WebSearch.
+- Succès : WebFetch a bien fonctionné pour CleanHub pricing (499€/mois x4 plans), Copernicus Marine API (gratuit, sans limite), Dealroom Blue Economy (chiffres VC 2025-2026), rePurpose Global (modèle SaaS EPR), Ocean Cleanup rivers (Interceptor, RMS), Circularise (SaaS traçabilité DPP).
+- Erreur : WebFetch sur Planet.com/pricing n'a renvoyé que le titre de page (contenu JS non rendu) — leçon : les pages de pricing en SPA JS ne sont pas extractibles par WebFetch, il faut chercher un article tiers qui cite les prix plutôt que la page officielle.
+- Erreur : WebFetch sur arxiv PDF 2210.06090 a échoué (fichier trop volumineux, >10MB) — leçon : pour les gros PDF arXiv, préférer la version HTML/abstract ou une source secondaire qui résume déjà le papier.
+- Non traité par manque de budget : benchmarks prix Planet/Kayrros/DNV/NAPA/Veson/Sweep/Greenly/Enablon (item 8 du brief), capteurs acoustiques/IoT engins fantômes (item 4), drones CLEAR/Ellipsis Earth/SeeMyLitter (item 2) — signalé explicitement dans findings.md comme gap de recherche.
+- Rédaction findings.md terminée (169 lignes) : 6 sections conformes au gabarit (a-f), 5 opportunités produit détaillées.
+
+## Résumé (5 lignes)
+Cartographie réalisée sur détection satellite (MARIDA/Sentinel-2, Global Plastic Watch), vision embarquée (TACO/YOLO, Ocean Cleanup RMS, Surfrider Plastic Origins), modèles de dérive (OceanParcels/Copernicus gratuit, EDITO), plateformes de données (EMODnet, OSPAR, TIDES) et traçabilité/crédits (Verra, Plastic Bank, CleanHub, Empower.eco, Circularise, OBP cert). Le fait le plus exploitable : aucun tiers de vérification indépendant n'existe pour les crédits plastiques malgré des controverses documentées (Plastic Bank/PCX), contrairement au marché carbone (Sylvera/BeZero) — gap net et analogie forte. Deuxième gap : Copernicus Marine + OceanParcels sont gratuits et matures mais aucun produit clé-en-main n'existe pour les gestionnaires de ports sans data scientists. Troisième gap : Global Plastic Watch (Minderoo) est gratuit mais n'a pas de version API entreprise pour la conformité réglementaire. Limite : budget WebSearch de session épuisé avant de traiter les benchmarks de prix satellite commercial (Planet/Kayrros) et SaaS ESG (Sweep/Greenly) — noté comme incomplet dans findings.md.
