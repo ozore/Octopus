@@ -27,3 +27,9 @@ Budget WebSearch : 12 max pour toute la mission. Répartition prévue :
 - 12/12 WebSearch utilisés (budget agent atteint). Reste du travail fait en WebFetch libre.
 - Specim IQ et FX50 : pas de prix public trouvé (marché B2B sur devis) — connu génériquement (Specim IQ ~30-40k$ estimation non sourcée cette session) à traiter avec prudence.
 - Aucun capteur commercial 6PPD-quinone / particules de pneus identifié — vrai vide technologique confirmé par 2 sources (USGS Oregon, ACS ES&T Water) : méthodes labo uniquement (SPE-HPLC-MS/MS, MIMS), capteurs terrain encore au stade recherche (host-guest fluorescence).
+
+## Fin de mission
+dossier.md rédigé (7 briques technologiques, tableau technos, tableau concurrents, 7 fiches détaillées,
+6 opportunités produit A-F, références). 12/12 WebSearch utilisés + ~14 WebFetch. Brique la plus mûre :
+sonar/ROV grand public (GhostVision 2026 = preuve de concept directe). Vide technologique le plus net :
+capteurs 6PPD-quinone/particules de pneus (aucun produit commercial, confirmé 2 sources indépendantes).

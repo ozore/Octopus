@@ -58,3 +58,8 @@ instruments/labos/accréditation. RiverEye (UWWTD 2024/3019, trash capture rivi�
 utilisent la même directive UE mais sous l'angle caméra terrain, pas mesure labo — pas de conflit direct.
 Terrain jugé libre pour proposer des opportunités produit côté labo/analytique/conformité.
 
+## Fin de mission
+dossier.md rédigé (a-f complets) : /home/user/Octopus/ocean-plastic-2/agents/microplastics-water/dossier.md
+6 opportunités produit livrées (au lieu de 4-6 demandé) : LabCompliance MP, UWWTD Microplastics Kit,
+TireWatch, FiberProof, AnalystAssist, VigilanceWatch UE.
+
