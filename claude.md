@@ -46,8 +46,26 @@ Une réponse non = pas une société (module, prestation, revenu de départ ou a
 - Les abonnements de surveillance d'artifact sont refusés dans cette session (403) : ne jamais prétendre
   surveiller.
 
-## Faits utiles pour une passe 4
-- Idée survivante : BenthicOS (segmentation de vidéo benthique pour bureaux d'études ; gabarits MPO
+
+## Règles ajoutées après la passe 4 (7 septembre 2026)
+- Première recherche de tout creusement : « qui vend déjà cela, et à qui ». Chercher le leader du marché par son nom
+  (Mysticetus, BMT du MSC, LIMS, PAMGuard 2026 ont tué quatre idées sur huit).
+- Un outil gratuit nommé dans la ligne du tri tue à la ligne ; il n'ouvre pas une enquête.
+- Une idée ne monte pas d'un étage (intuition, tri, creusement, rapport) tant que son angle repose sur une ligne
+  « supposée ». Relire les étiquettes du dossier source avant de promouvoir.
+- Interdire dans la phase intuition la recette « un agent lit les documents du client et rédige le rapport du
+  régulateur », sauf preuve qu'un modèle générique avec la grille publique échoue. Chercher le geste humain payé à
+  l'heure, pas le document.
+- Ne jamais vendre un gain de productivité à qui facture l'heure (cabinets, certificateurs, bureaux d'études), sauf
+  comme capacité supplémentaire.
+- Une règle découverte par un agent est diffusée aux autres agents de la même passe avant leurs verdicts.
+- Une seule relation par cabinet prospect : vérifier les conflits entre passes (Dynamic Ocean Consulting).
+- Vérifier qu'un acheteur nommé n'a pas déjà construit ou acheté la chose (Archipelago, Saltwater, Ai.Fish, RPS).
+- Un montant introuvable n'est pas neutre : l'idée ne passe pas Q1 tant qu'il manque.
+
+## Faits utiles pour une passe 5
+- Passe 4 : TaxoAssist survit en revenu de départ et actif (test à 2 000 $ avant tout appel ; EcoAnalysts, Idaho). Voir `ocean-4/juge/verdict.md`.
+- Idée survivante de la passe 3 : BenthicOS (segmentation de vidéo benthique pour bureaux d'études ; gabarits MPO
   aquaculture, compensation d'habitat, norme MMO). Premier test : Dynamic Ocean Consulting, Port Moody.
 - En réserve : VesselRisk, ReefInjury (prestation), corpus d'images froides (ex-DiveAtlas).
 - 33 idées écartées avec la question qui les tue : ne pas les regénérer sous un autre nom.
