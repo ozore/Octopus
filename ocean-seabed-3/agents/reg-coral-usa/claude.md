@@ -1,0 +1,40 @@
+# Mémoire agent reg-coral-usa
+
+## Plan
+Couvrir réglementation/programmes US pour récifs coralliens & habitats benthiques (FL, CA prioritaires; HI, PR, USVI, GU si utile) :
+1. Coral Reef Conservation Act (réautorisation 2022) + budgets NOAA CRCP 2024-2026
+2. NOAA Mission: Iconic Reefs (budget, prestataires)
+3. ESA coraux listés, critical habitat 2023-2026, Section 7 (ports/câbles/dragage)
+4. Florida Coral Reef Protection Act + Kristin Jacobs CRECA
+5. SCTLD (Stony Coral Tissue Loss Disease) réponse FL
+6. FKNMS Restoration Blueprint (règles 2025-2026, mouillages, dommages ancre, "coral reef injury" amendes)
+7. Biscayne NP, Dry Tortugas NP
+8. Californie : MPA Network decadal review 2023, MLPA, kelp restoration plan, herbiers, anchoring, CDFW/OPC funding
+9. BOEM éolien offshore (surveillance benthique, Morro Bay, Humboldt)
+10. USACE dragages (surveillance herbiers/coraux)
+11. Assurances/indemnités dommages récifs + comparaison Quintana Roo (Mexique)
+
+Budget : 12 WebSearch max, WebFetch libre. Compteur ci-dessous.
+
+## Compteur de recherches WebSearch
+0/12 utilisées au départ.
+
+## Journal (succès/erreurs/leçons)
+- (à remplir au fil de l'eau)
+
+## Résumé final (à écrire à la fin, <=15 lignes)
+
+## Journal détaillé
+- [Recherche 1/12] "NOAA Coral Reef Conservation Act reauthorization 2022 budget 2025 2026" -> SUCCES. CRCA réautorisée via P.L. 117-263 (2022, NDAA). CRCP ~33M$/an (2023, GAO). FY2025: transition cooperative agreements -> block grants non compétitifs.
+- [Recherche 2/12] "NOAA Mission Iconic Reefs budget contractors 2025" -> SUCCES. 7 sites FL Keys, ~3M sq ft, partenaires: Coral Restoration Foundation, Mote Marine Lab, Florida Aquarium, TNC, Reef Renewal, NMS Foundation. NOAA a versé 7M$ à Mote Marine Lab. Priorités 2022-2025 publiées.
+- [Recherche 3/12] "ESA coral critical habitat 2023 2024 Section 7 dredging" -> SUCCES. Vague de chaleur 2023-2024 a tué 89-100% coraux elkhorn sauvages/restaurés en Floride Keys. Critical habitat désigné (2023 Federal Register, effectif) pour Caribbean corals: FL ~1329 sq mi, PR ~1383 sq mi, St John/St Thomas ~121 sq mi, St Croix ~126 sq mi. Dragage Port Everglades suspendu 2026 après action Earthjustice (violation ESA). Nouvelle règle 2025 critical habitat 5 espèces coraux Indo-Pacifique (Federal Register 15/07/2025).
+- [Recherche 4/12] "FKNMS Restoration Blueprint final rule 2024 mooring anchoring" -> SUCCES. Règle finale publiée Federal Register 17/01/2025 (effective ensuite). Interdiction ancrage dans toutes les Sanctuary Preservation Areas (SPA) d'ici 2027, obligation bouées de mouillage après période transition 2 ans. Périmètre sanctuaire +20%. >500 bouées de mouillage existantes.
+- [Recherche 5/12] "Florida Coral Reef Protection Act Kristin Jacobs" -> SUCCES. CRPA adoptée 2009 (Monroe, Miami-Dade, Broward, Palm Beach, Martin). Kristin Jacobs Coral Aquatic Preserve établi 1 juillet 2024 (ex-SEFCRI/ECA), 105 miles St Lucie Inlet -> Biscayne NP. RIPR Program (Reef Injury Prevention and Response) gère réponse échouements/ancres/câbles. Premier projet restauration "management-led" à 2 sites d'échouement Fort Lauderdale.
+- [Recherche 6/12] "SCTLD FWC response budget 2024 2025" -> SUCCES partiel. Réponse depuis 2015 (FDEP), >100 projets recherche financés, ~100 chercheurs. Traitement pâte antibiotique (amoxicilline) sur lésions + "coupe-feu" à la meuleuse. Pas de chiffre budget précis 2024-2025 trouvé -> à noter "estimation" si besoin.
+- [Recherche 7/12] "California MPA decadal review 2023 kelp restoration funding" -> SUCCES. 124 MPA (16% eaux d'État), ~moitié no-take. Decadal Management Review publié janvier 2023 (Fish & Game Commission fév 2023), 28 recommandations prioritaires. OPC 2023-2025: jusqu'à 5,94M$ pour Kelp Research and Restoration, jusqu'à 2,25M$ pour Adaptive Management/Monitoring MPA Network.
+- [Recherche 8/12] "BOEM offshore wind benthic monitoring Morro Bay Humboldt" -> SUCCES partiel. ESA Section 7 concurrence letter + EFH response déc 2024 pour réactivation site characterization Morro Bay/Humboldt WEA. Jusqu'à 3 bouées metocean par WEA, ancrages = perturbation benthique évaluée (données PNNL 2019). PEIS programmatique éolien CA en cours.
+- [Recherche 9/12] "coral reef injury civil penalty NOAA restoration cost vessel grounding Florida" -> SUCCES. FL Statute 403.93345: pénalité civile 1000$/m² si dommage >10m² ; 225$ si <=1m². CRPA permet compensation (restauration, valeur d'usage perdue, coût évaluation dommages, coût suivi, frais d'application incluant avocats/experts).
+- [Recherche 10/12] "USACE dredging seagrass coral survey EFH permit monitoring" -> SUCCES partiel. USACE permits n'autorisent pas dragage/dégradation par sédimentation des récifs coralliens ni sites SAV (herbiers). PCN requis si travaux dans/à moins de 50 pieds d'un habitat SAV. EFH assessment obligatoire (Magnuson-Stevens 305(b)(2)). Pas de chiffre de coût de surveillance trouvé -> estimation nécessaire.
+- [Recherche 11/12] "Quintana Roo parametric coral reef insurance Florida comparison" -> SUCCES. Police lancée 2018 (Swiss Re + TNC), couvre 150 km² (58 sq mi) littoral Yucatan. Coût prime ~5M pesos (~230k$) saison 2020. Ouragan Delta (2020) a déclenché paiement de 850k$ utilisé pour restauration. Pas d'équivalent structuré en Floride trouvé (comparaison qualitative seulement).
+- [Recherche 12/12] "Florida legislature Coral Protection Restoration appropriation 2024 2025 budget" -> SUCCES MAJEUR. FY2024-25: 57M$ investis (restauration corail + protection côtière), total 2ème mandat DeSantis >114M$. FY2024-25 budget proposal: >11M$ pour FCR3 (Florida's Coral Reef Restoration and Recovery Initiative). Budget état 2024: 8M$. Depuis 2019: >50M$ cumulés. **FAIT CLE "pourquoi maintenant" (nov 2026 / budget 2026-27)**: legislature + DeSantis ONT COUPE TOUT LE FINANCEMENT de FCR3 dans le budget de cette année (2026) -> FCR3 absent de la proposition budgétaire du gouverneur, 0$ alloué par les législateurs. Source: WGCU/floridatrib sept 2026.
+-> 12/12 WebSearch utilisées. Passage à WebFetch (libre) pour approfondir les sources clés.
