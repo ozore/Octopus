@@ -4,8 +4,6 @@ Agent : c23-taxoassist. Passe de validation et creusement, 7 septembre 2026. Sou
 candidat 1 (copilote de tri/identification taxonomique benthique calé sur le NMBAQC — National Marine Biological
 Analytical Quality Control, le schéma britannique d'assurance qualité pour les analyses biologiques marines).
 
----
-
 ## 1. Trois angles différenciateurs
 
 1. **Protocole** : le score de confiance de l'outil est câblé nativement sur les paliers déjà publiés du BCSI
