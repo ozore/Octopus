@@ -1,0 +1,890 @@
+<title>Atlas Océan Plastique II</title>
+<meta name="description" content="Seconde passe : douze idées nouvelles de société logicielle et IA contre le plastique marin, calibrées pour un fondateur technique à Vancouver en bootstrap.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#F4F7F9; --surface:#FFFFFF; --surface-2:#EAF0F3;
+  --ink:#0E2233; --ink-2:#44576A; --ink-3:#6E8290;
+  --kelp:#0F7C6E; --kelp-ink:#0B5F55; --kelp-soft:#DDF0EC;
+  --buoy:#C2401B; --buoy-soft:#FBE6DE;
+  --line:#D5DEE4; --line-2:#E6ECF0;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+  --shadow:0 1px 2px rgba(14,34,51,.06),0 8px 24px rgba(14,34,51,.06);
+  --display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0C1A24; --surface:#122431; --surface-2:#182E3D;
+    --ink:#E6EEF2; --ink-2:#A9BAC5; --ink-3:#8296A3;
+    --kelp:#2FB39F; --kelp-ink:#5FD0BF; --kelp-soft:#163A38;
+    --buoy:#FF8A66; --buoy-soft:#3D2118;
+    --line:#26394B; --line-2:#1E3140;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0C1A24; --surface:#122431; --surface-2:#182E3D;
+  --ink:#E6EEF2; --ink-2:#A9BAC5; --ink-3:#8296A3;
+  --kelp:#2FB39F; --kelp-ink:#5FD0BF; --kelp-soft:#163A38;
+  --buoy:#FF8A66; --buoy-soft:#3D2118;
+  --line:#26394B; --line-2:#1E3140;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--kelp-ink);text-decoration-thickness:1px;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--kelp);outline-offset:2px}
+h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:clamp(40px,6vw,72px);font-weight:800;line-height:1;letter-spacing:-.02em}
+h2{font-size:clamp(26px,3.2vw,36px);font-weight:700;letter-spacing:-.015em;line-height:1.15}
+h3{font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1.15}
+h4{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+p{margin:0}
+.mono{font-family:var(--mono);font-size:.86em}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--kelp-ink);font-weight:500}
+.date{font-family:var(--mono);font-weight:600;color:var(--buoy);white-space:nowrap}
+.ref{font-family:var(--mono);font-size:.82em;color:var(--ink-2);background:var(--surface-2);padding:1px 6px;border-radius:3px;white-space:nowrap}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* Hero */
+.hero{border-bottom:1px solid var(--line);background:var(--surface)}
+.hero-inner{max-width:1180px;margin:0 auto;padding:56px 32px 40px;display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:48px;align-items:end}
+.hero p.lead{font-size:20px;color:var(--ink-2);max-width:62ch;margin-top:20px}
+.hero-meta{display:grid;gap:10px;font-family:var(--mono);font-size:13px;color:var(--ink-2)}
+.hero-meta div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line-2);padding-bottom:8px}
+.hero-meta b{color:var(--ink);font-weight:600}
+.kpis{max-width:1180px;margin:0 auto;padding:0 32px 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{border-top:2px solid var(--kelp);padding-top:10px}
+.kpi .v{font-family:var(--display);font-size:34px;font-weight:800;line-height:1;letter-spacing:-.02em}
+.kpi .l{font-size:14px;color:var(--ink-2);margin-top:6px}
+
+/* Page grid */
+.page{max-width:1180px;margin:0 auto;padding:40px 32px 96px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:56px;align-items:start}
+nav.rail{position:sticky;top:24px;font-family:var(--display);font-size:14px}
+nav.rail .group{margin-bottom:22px}
+nav.rail .group-t{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+nav.rail a{display:flex;gap:10px;align-items:baseline;color:var(--ink-2);text-decoration:none;padding:5px 0;border-left:2px solid transparent;padding-left:10px;margin-left:-12px}
+nav.rail a:hover{color:var(--ink)}
+nav.rail a.on{color:var(--ink);border-left-color:var(--kelp)}
+nav.rail a .n{font-family:var(--mono);font-size:11px;color:var(--ink-3);min-width:18px}
+main{min-width:0}
+section.block{margin-bottom:72px}
+section.block > .eyebrow{margin-bottom:10px;display:block}
+section.block > h2{margin-bottom:22px}
+.prose{max-width:66ch}
+.prose p + p{margin-top:14px}
+.prose ul{padding-left:20px;margin:12px 0}
+.prose li{margin:6px 0}
+
+/* Synthèse */
+.reco{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:26px 0 8px}
+.reco a{display:block;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 18px 16px;box-shadow:var(--shadow)}
+.reco a:hover{border-color:var(--kelp)}
+.reco .k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--buoy);font-weight:600}
+.reco .t{font-family:var(--display);font-size:20px;font-weight:700;margin:6px 0 6px;letter-spacing:-.01em}
+.reco .d{font-size:14.5px;color:var(--ink-2)}
+.thesis{background:var(--kelp-soft);border-radius:10px;padding:22px 24px;margin:26px 0;max-width:72ch}
+.thesis p{font-family:var(--display);font-size:19px;font-weight:500;line-height:1.4;color:var(--kelp-ink)}
+:root[data-theme="dark"] .thesis p{color:var(--ink)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .thesis p{color:var(--ink)}}
+
+/* Timeline */
+.tl{position:relative;padding-left:26px;border-left:2px solid var(--line);margin-top:8px}
+.tl-y{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.01em;margin:26px 0 10px;position:relative}
+.tl-y:first-child{margin-top:0}
+.tl-y::before{content:"";position:absolute;left:-33px;top:9px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--ink-3)}
+.tl-e{display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;padding:7px 0;border-bottom:1px solid var(--line-2);font-size:15px;align-items:baseline}
+.tl-e .date{font-size:13px}
+.tl-e .t b{font-family:var(--display);font-weight:700}
+.tl-e .idx{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-left:6px;white-space:nowrap}
+.tl-e.past .date{color:var(--ink-3)}
+.tl-now{position:relative;margin:10px 0;padding:6px 10px;background:var(--buoy-soft);color:var(--buoy);font-family:var(--mono);font-size:12px;font-weight:600;border-radius:4px;display:inline-block}
+.tl-now::before{content:"";position:absolute;left:-33px;top:10px;width:12px;height:12px;border-radius:50%;background:var(--buoy)}
+
+/* Chart */
+.chart-wrap{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 20px 12px;box-shadow:var(--shadow);position:relative}
+.chart-wrap svg{width:100%;height:auto;display:block;font-family:var(--mono)}
+.legend{display:flex;flex-wrap:wrap;gap:18px;font-family:var(--mono);font-size:12px;color:var(--ink-2);margin:10px 4px 0}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;vertical-align:-1px;background:var(--c)}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-family:var(--mono);font-size:12px;padding:8px 10px;border-radius:6px;max-width:260px;line-height:1.4;opacity:0;transition:opacity .12s}
+.tip b{display:block;font-family:var(--display);font-size:14px;margin-bottom:3px}
+.chart-note{font-size:14px;color:var(--ink-2);margin-top:14px;max-width:70ch}
+
+/* Fiche */
+.fiche{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-bottom:34px;overflow:hidden}
+.fiche-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:20px;align-items:start;padding:26px 28px 18px;border-bottom:1px solid var(--line-2)}
+.fiche-head .big{font-family:var(--display);font-size:52px;font-weight:800;line-height:.9;letter-spacing:-.04em;color:var(--kelp);font-variant-numeric:tabular-nums}
+.fam{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:3px;margin-bottom:8px;color:#fff}
+.fam-mer{background:var(--s1)} .fam-peche{background:var(--s2)} .fam-amont{background:var(--s3)}
+.tagline{font-size:17px;color:var(--ink-2);margin-top:6px;font-style:italic}
+.score-badge{text-align:right;font-family:var(--display);font-weight:800;font-size:30px;line-height:1;letter-spacing:-.02em}
+.score-badge span{font-size:13px;color:var(--ink-3);font-weight:500;letter-spacing:0}
+.score-badge small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-top:6px;font-weight:500}
+.trigger{padding:16px 28px;background:var(--surface-2);font-size:15.5px;line-height:1.5;display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.trigger .lab{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--buoy);font-weight:600;white-space:nowrap}
+.fiche-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px 32px;padding:22px 28px 8px}
+.fiche-grid section.wide{grid-column:1/-1}
+.fiche-grid h4{margin-bottom:6px}
+.fiche-grid p,.fiche-grid li{font-size:15.5px}
+.fiche-grid ul{margin:4px 0 0;padding-left:18px}
+.fiche-grid li{margin:3px 0}
+.fiche-grid .kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:15px}
+.fiche-grid .kv dt{font-family:var(--mono);font-size:12px;color:var(--ink-3);padding-top:3px}
+.fiche-grid .kv dd{margin:0}
+.effort{display:inline-block;font-family:var(--mono);font-size:12px;padding:2px 8px;border-radius:3px;background:var(--surface-2);color:var(--ink-2);margin-bottom:6px}
+.scores{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;padding:18px 28px 22px;border-top:1px solid var(--line-2)}
+.sc{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em}
+.sc .bar{height:6px;background:var(--line-2);border-radius:3px;margin:6px 0 5px;overflow:hidden}
+.sc .bar i{display:block;height:100%;background:var(--kelp);width:calc(var(--v) * 20%)}
+.sc b{color:var(--ink);font-weight:600}
+.verdicts{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line-2)}
+.verdicts > div{padding:16px 20px;font-size:14px;border-right:1px solid var(--line-2)}
+.verdicts > div:last-child{border-right:0}
+.verdicts .who{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.verdicts .who b{color:var(--ink);font-weight:600;letter-spacing:0;font-family:var(--display);font-size:13px;text-transform:none;margin-left:6px}
+.verdicts p{color:var(--ink-2)}
+.pill{display:inline-block;font-family:var(--mono);font-size:11px;padding:1px 7px;border-radius:3px;font-weight:600;margin-right:6px}
+.pill-go{background:var(--kelp-soft);color:var(--kelp-ink)} .pill-if{background:#FFF3D6;color:#7A4E00} .pill-no{background:var(--buoy-soft);color:var(--buoy)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pill-if{background:#3A2E12;color:#F2C46B}}
+:root[data-theme="dark"] .pill-if{background:#3A2E12;color:#F2C46B}
+.fam-h{display:flex;align-items:center;gap:12px;margin:40px 0 18px}
+.fam-h .sw{width:14px;height:14px;border-radius:3px}
+.fam-h h3{font-size:20px}
+.fam-h p{color:var(--ink-2);font-size:15px}
+
+/* Table */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;min-width:900px;font-size:14px}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);font-weight:600;white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--line-2);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+td .nm{font-family:var(--display);font-weight:700}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:0}
+
+/* Misc blocks */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.card h3{font-size:18px;margin-bottom:6px}
+.card p{font-size:15px;color:var(--ink-2)}
+.q{border-left:3px solid var(--kelp);padding:4px 0 4px 18px;margin:18px 0}
+.q .qq{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.01em}
+.q .qw{font-size:15px;color:var(--ink-2);margin-top:6px}
+.q .qw b{color:var(--ink);font-weight:600}
+.src{columns:2;column-gap:32px;font-size:14px}
+.src li{break-inside:avoid;margin:0 0 8px;color:var(--ink-2)}
+.src li b{color:var(--ink);font-weight:600;font-family:var(--display)}
+.agents{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.agents div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:14px}
+.agents .a{font-family:var(--mono);font-size:12px;color:var(--kelp-ink);font-weight:600}
+.agents p{color:var(--ink-2);margin-top:4px}
+footer{border-top:1px solid var(--line);padding:28px 32px;font-family:var(--mono);font-size:12px;color:var(--ink-3);text-align:center}
+
+@media (max-width:980px){
+  .hero-inner{grid-template-columns:1fr;gap:28px}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .page{grid-template-columns:1fr;gap:24px;padding:24px 20px 72px}
+  nav.rail{position:static;display:flex;gap:18px;overflow-x:auto;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  nav.rail .group{margin:0;flex:0 0 auto}
+  nav.rail a{border-left:0;padding-left:0;margin-left:0;white-space:nowrap}
+  .reco,.verdicts,.agents{grid-template-columns:1fr}
+  .verdicts > div{border-right:0;border-bottom:1px solid var(--line-2)}
+  .fiche-grid,.grid2{grid-template-columns:1fr}
+  .scores{grid-template-columns:repeat(4,1fr)}
+  .src{columns:1}
+  .fiche-head{grid-template-columns:auto minmax(0,1fr)}
+  .score-badge{grid-column:1/-1;text-align:left}
+}
+</style>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow">Étude d'opportunités · seconde passe · septembre 2026</span>
+      <h1 style="margin-top:14px">Atlas Océan Plastique II</h1>
+      <p class="lead">Douze idées nouvelles de société logicielle et IA contre le plastique marin, aucune reprise de la première passe. Calibrées pour un fondateur technique basé à Vancouver, plongeur, en bootstrap, qui veut un premier revenu vite et un produit qui construit sa barrière à l'entrée.</p>
+    </div>
+    <div class="hero-meta">
+      <div><span>Commanditaire</span><b>Fondateur, projet Octopus</b></div>
+      <div><span>Méthode</span><b>8 agents de recherche, 3 critiques</b></div>
+      <div><span>Terrains</span><b>Pacifique Nord-Ouest, Californie, Floride, Europe</b></div>
+      <div><span>Statut</span><b>Idéation, pas d'implémentation</b></div>
+    </div>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><div class="v">12</div><div class="l">idées nouvelles, notées sur 7 axes plus un axe « adéquation fondateur », passées par trois critiques</div></div>
+    <div class="kpi"><div class="v">9</div><div class="l">idées sur douze ont un premier client joignable à moins de trois heures de Vancouver</div></div>
+    <div class="kpi"><div class="v">2029</div><div class="l">fin des parcs en filet du saumon en Colombie-Britannique : la plus grosse échéance locale du dossier</div></div>
+    <div class="kpi"><div class="v">~120</div><div class="l">recherches web, budget plafonné par agent, complétées par les sources officielles (gc.ca, noaa.gov, fema.gov, eur-lex)</div></div>
+  </div>
+</header>
+
+<div class="page">
+<nav class="rail" aria-label="Sommaire">
+  <div class="group"><div class="group-t">Lecture</div>
+    <a href="#synthese">Synthèse</a>
+    <a href="#frise">Frise réglementaire</a>
+    <a href="#matrice">Matrice effort et attrait</a>
+  </div>
+  <div class="group"><div class="group-t">Les 12 idées</div>
+    <a href="#idee-1"><span class="n">01</span>GhostSonar</a>
+    <a href="#idee-2"><span class="n">02</span>GrantMRV</a>
+    <a href="#idee-3"><span class="n">03</span>NetPen Ledger</a>
+    <a href="#idee-10"><span class="n">10</span>PolyID</a>
+    <a href="#idee-4"><span class="n">04</span>FloatWatch</a>
+    <a href="#idee-5"><span class="n">05</span>VesselRisk</a>
+    <a href="#idee-6"><span class="n">06</span>StormDebris</a>
+    <a href="#idee-12"><span class="n">12</span>HullCycle</a>
+    <a href="#idee-7"><span class="n">07</span>MicroScreen</a>
+    <a href="#idee-8"><span class="n">08</span>TireWatch</a>
+    <a href="#idee-9"><span class="n">09</span>CoastalTrace</a>
+    <a href="#idee-11"><span class="n">11</span>FiberScore</a>
+  </div>
+  <div class="group"><div class="group-t">Décider</div>
+    <a href="#comparatif">Tableau comparatif</a>
+    <a href="#passe1">Face à la première passe</a>
+    <a href="#ecartees">Idées écartées</a>
+    <a href="#pieges">Pièges juridiques</a>
+    <a href="#plan">Plan à 30 jours</a>
+    <a href="#methode">Méthode et sources</a>
+  </div>
+</nav>
+
+<main>
+
+<section class="block" id="synthese">
+  <span class="eyebrow">Synthèse</span>
+  <h2>La première passe cherchait l'obligation la plus dure. Celle-ci cherche le premier client à trois heures de Vancouver.</h2>
+  <div class="prose">
+    <p>Vos réponses ont changé la question. Un fondateur seul, technique, en bootstrap sous 25 000 $ CAD, qui veut un revenu dans les six mois sans construire une application triviale, n'a pas besoin de la réglementation la plus contraignante du monde. Il a besoin d'une population qui paie déjà pour un problème mal outillé, d'un matériel du commerce qui rend la donnée accessible, et d'un modèle d'IA qui s'améliore à chaque client. Le Pacifique Nord-Ouest offre cela en abondance : le Fonds engins fantômes du MPO rouvre 15 millions de dollars sur 2026-2029, les parcs en filet du saumon doivent disparaître avant le 30 juin 2029, l'État de Washington sanctionne depuis 2024 les flotteurs en polystyrène nus, et le 6PPD-quinone des pneus tue le saumon coho dans 26 ruisseaux de Metro Vancouver.</p>
+    <p>Trois fils conducteurs traversent les douze idées. D'abord la détection avec du matériel grand public : sonar de pêche, drone, caméra microscope, scanner infrarouge, ce que l'IA transforme en instrument de mesure. Ensuite la preuve : dossiers de subvention, rapports FEMA, conformité de licence, chaîne de conservation pour un procès. Enfin la donnée accumulée, qui devient l'actif : cartes de fonds marins, spectres de plastique dégradé, séries de microplastiques, comptages par marque.</p>
+  </div>
+  <div class="thesis"><p>Thèse : vendre à ceux qui sont déjà financés pour retirer ou mesurer le plastique (bénéficiaires de subventions, agences, aquaculteurs en transition, distributeurs d'eau, marinas sous obligation) un outil de détection et de preuve construit sur du matériel du commerce, et transformer chaque mission en donnée propriétaire.</p></div>
+  <!--RECOS-->
+</section>
+
+<section class="block" id="frise">
+  <span class="eyebrow">Frise réglementaire</span>
+  <h2>Les échéances qui portent ces douze idées, de 2024 à 2035</h2>
+  <div class="prose" style="margin-bottom:22px"><p>Le numéro entre crochets renvoie à l'idée qui exploite l'échéance. Les dates en couleur bouée sont devant nous. Plusieurs leviers sont des programmes de subvention plutôt que des obligations : c'est indiqué, et c'est voulu, puisque ce sont des budgets déjà votés.</p></div>
+  <div class="tl">
+    <div class="tl-y">2019 à 2023</div>
+    <div class="tl-e past"><span class="date">30/07/2019</span><div class="t"><b>Canada, loi WAHVA</b> sur les épaves et bâtiments abandonnés : amendes jusqu'à 250 000 $ pour une entreprise, 6 M$ dans les cas graves.<span class="idx">[05]</span></div></div>
+    <div class="tl-e past"><span class="date">07/2019</span><div class="t"><b>France, filière REP APER</b> pour les bateaux de plaisance : 16 183 bateaux déconstruits depuis.<span class="idx">[12]</span></div></div>
+    <div class="tl-e past"><span class="date">27/05/2022</span><div class="t"><b>Californie SB 1422</b> : méthodes Raman et infrarouge révisées pour les microplastiques dans l'eau potable, 1 000 à 2 000 $ par échantillon.<span class="idx">[07]</span></div></div>
+    <div class="tl-e past"><span class="date">01/10/2023</span><div class="t"><b>Californie DTSC</b> : les pneus contenant du 6PPD deviennent produit prioritaire.<span class="idx">[08]</span></div></div>
+    <div class="tl-y">2024</div>
+    <div class="tl-e past"><span class="date">01/01/2024</span><div class="t"><b>Washington RCW 70A.245.130</b> : encapsulation obligatoire du polystyrène à toute construction ou réparation de quai, jusqu'à 10 000 $ par infraction.<span class="idx">[04]</span></div></div>
+    <div class="tl-e past"><span class="date">19/06/2024</span><div class="t"><b>Canada</b> : fin annoncée des parcs en filet ouverts du saumon en Colombie-Britannique ; 66 licences renouvelées jusqu'en 2029.<span class="idx">[03]</span></div></div>
+    <div class="tl-e past"><span class="date">23/09/2024</span><div class="t"><b>Californie contre ExxonMobil</b>, puis <b>comté de Los Angeles contre PepsiCo et Coca-Cola</b> (30/10) : nuisance publique, preuves fondées sur l'audit mondial Break Free From Plastic.<span class="idx">[09]</span></div></div>
+    <div class="tl-e past"><span class="date">10/2024</span><div class="t"><b>Ouragans Helene et Milton</b> : 590 M$ de débris remboursés par la FEMA en Floride, réconciliation encore ouverte en 2026.<span class="idx">[06]</span></div></div>
+    <div class="tl-y">2025</div>
+    <div class="tl-e past"><span class="date">01/01/2025</span><div class="t"><b>Directive (UE) 2024/3019</b> en vigueur : surveillance des microplastiques dans les stations de plus de 10 000 EH.<span class="idx">[07]</span></div></div>
+    <div class="tl-e past"><span class="date">2025</span><div class="t"><b>MPO, conditions de licence conchylicole</b> : flotteurs en mousse entièrement encapsulés, retrait immédiat de toute flottaison dégradée.<span class="idx">[04]</span></div></div>
+    <div class="tl-e past"><span class="date">11/2025</span><div class="t"><b>MPO, 6PPD-quinone</b> : 6 400 échantillons, dépassements létaux pour le coho dans 26 ruisseaux de Metro Vancouver, Squamish et l'île de Vancouver.<span class="idx">[08]</span></div></div>
+    <div class="tl-y">2026</div>
+    <div class="tl-e past"><span class="date">14/03/2026</span><div class="t"><b>Registre fédéral des plastiques</b> : phases 2 et 3 reportées à 2027 au plus tôt.<span class="idx">[contexte]</span></div></div>
+    <div class="tl-e past"><span class="date">29/03/2026</span><div class="t"><b>West Sound (îles San Juan)</b> : un ponton en polystyrène dérive ; les autorités répondent à plus de trois semaines.<span class="idx">[04]</span></div></div>
+    <div class="tl-e past"><span class="date">20/05/2026</span><div class="t"><b>Fonds engins fantômes du MPO</b> : appel à propositions, 15 M$ sur 2026-2029, candidatures le 29/06, décisions le 04/09.<span class="idx">[01] [02]</span></div></div>
+    <div class="tl-e past"><span class="date">16/06/2026</span><div class="t"><b>Ocean Protection Council</b> : 2,5 M$ pour un programme pilote de surveillance des microplastiques à l'échelle de la Californie.<span class="idx">[07]</span></div></div>
+    <div class="tl-e past"><span class="date">01/07/2026</span><div class="t"><b>EPA</b> : l'UCMR 6 exclut les microplastiques malgré sept États pétitionnaires ; le vide fédéral est confirmé. <b>Baltimore contre PepsiCo</b> rejeté en juillet.<span class="idx">[07] [09]</span></div></div>
+    <div class="tl-e past"><span class="date">21/08/2026</span><div class="t"><b>APER</b> : clôture de la consultation pour les prestataires de déconstruction 2027-2029.<span class="idx">[12]</span></div></div>
+    <div class="tl-now">Aujourd'hui · 6 septembre 2026</div>
+    <div class="tl-e"><span class="date">01/10/2026</span><div class="t"><b>DTSC</b> : rapport d'étape des fabricants de pneus sur les substituts au 6PPD ; analyses finales engagées depuis août.<span class="idx">[08]</span></div></div>
+    <div class="tl-e"><span class="date">10/2026</span><div class="t"><b>France, affichage environnemental textile</b> : score par défaut pénalisant sans mesure des microfibres (seuils à vérifier). <b>SB 1422 phase 2</b> sur l'eau traitée.<span class="idx">[11] [07]</span></div></div>
+    <div class="tl-e"><span class="date">21/10/2026</span><div class="t"><b>NFWF Hurricane Response Marine Debris Removal Fund</b> : dossiers complets, jusqu'à 11 M$.<span class="idx">[02] [06]</span></div></div>
+    <div class="tl-e"><span class="date">17/11/2026</span><div class="t"><b>EPA CCL 6</b> : première inscription des microplastiques comme groupe de contaminants prioritaires.<span class="idx">[07]</span></div></div>
+    <div class="tl-y">2027</div>
+    <div class="tl-e"><span class="date">02/07/2027</span><div class="t"><b>Commission européenne</b> : méthodologie de mesure des microplastiques pour les stations d'épuration, transposition de la directive au 31/07.<span class="idx">[07]</span></div></div>
+    <div class="tl-e"><span class="date">10/2027</span><div class="t"><b>Procès comté de Los Angeles contre PepsiCo et Coca-Cola.</b> Acte délégué ESPR textiles attendu fin 2027.<span class="idx">[09] [11]</span></div></div>
+    <div class="tl-y">2028 et 2029</div>
+    <div class="tl-e"><span class="date">06/2028</span><div class="t"><b>Washington Ecology</b> : règles 6PPD ; <b>Passeport numérique produit</b> textile à la mi-2028.<span class="idx">[08] [11]</span></div></div>
+    <div class="tl-e"><span class="date">30/06/2029</span><div class="t"><b>Colombie-Britannique</b> : interdiction totale des parcs en filet ouverts ; 65 à 85 sites à démanteler et à remettre en état.<span class="idx">[03]</span></div></div>
+    <div class="tl-e"><span class="date">10/2029</span><div class="t"><b>DTSC</b> : rapport final des alternatives au 6PPD (Stage 2).<span class="idx">[08]</span></div></div>
+    <div class="tl-y">2030 et au-delà</div>
+    <div class="tl-e"><span class="date">2030</span><div class="t"><b>Europe</b> : 30 000 bateaux de plaisance par an en fin de vie, 23 000 t de composites.<span class="idx">[12]</span></div></div>
+    <div class="tl-e"><span class="date">01/01/2035</span><div class="t"><b>Washington</b> : interdiction des pneus neufs contenant du 6PPD.<span class="idx">[08]</span></div></div>
+  </div>
+</section>
+
+<section class="block" id="matrice">
+  <span class="eyebrow">Matrice</span>
+  <h2>Effort de développement en solo contre score global</h2>
+  <div class="prose" style="margin-bottom:20px"><p>Le score additionne sept notes sur cinq : urgence, cible captive, prix, facilité technique, vide concurrentiel, rôle de l'IA et de la donnée, impact océan. L'effort est le point médian en mois-ingénieur pour un fondateur seul avec Claude. La taille du disque suit le revenu annuel maximal estimé par client. Survolez un disque pour le détail.</p></div>
+  <div class="chart-wrap" id="bubble">
+    <svg viewBox="0 0 780 460" role="img" aria-label="Matrice effort contre score des douze idées"></svg>
+    <div class="legend">
+      <span style="--c:var(--s1)">Fonds marins, engins et aquaculture</span>
+      <span style="--c:var(--s2)">Marinas, épaves et tempêtes</span>
+      <span style="--c:var(--s3)">Eau, microplastiques et preuves</span>
+    </div>
+    <div class="tip" id="tip"></div>
+  </div>
+  <p class="chart-note">Lecture : en haut à gauche, ce qu'un fondateur seul peut livrer et vendre en un semestre (FloatWatch, GhostSonar, NetPen Ledger) ; à droite, les paris à plus forte donnée propriétaire (PolyID, FiberScore, CoastalTrace, TireWatch). Les scores intègrent les corrections des trois critiques.</p>
+</section>
+
+<section class="block" id="fiches">
+  <span class="eyebrow">Les fiches</span>
+  <h2>Douze idées, un format : le déclencheur, le problème, la cible, le produit, le prix, l'effort, la concurrence, pourquoi maintenant, et le premier client depuis Vancouver</h2>
+  <div class="prose"><p>Les notes vont de 1 à 5 sur sept axes : urgence réglementaire ou budgétaire, cible captive, prix et volonté de payer, facilité technique en solo (5 = facile), vide concurrentiel, rôle réel de l'IA et de la donnée, impact sur le plastique en mer. Sous chaque fiche, les verdicts des trois critiques : l'investisseur, l'expert du secteur, et l'architecte technique.</p></div>
+
+  <div class="fam-h"><span class="sw" style="background:var(--s1)"></span><div><h3>Fonds marins, engins et aquaculture</h3><p>Ce qui gît au fond ou flotte dans les fermes : là où les subventions de retrait sont votées, où une échéance ferme approche, et où le plongeur que vous êtes a un avantage de terrain.</p></div></div>
+
+  <article class="fiche" id="idee-1">
+    <header class="fiche-head">
+      <div class="big">01</div>
+      <div><span class="fam fam-mer">Fonds marins et engins</span><h3>GhostSonar</h3><p class="tagline">La carte IA des engins fantômes et débris de fond, dessinée avec un sonar de pêche</p></div>
+      <div class="score-badge">27<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">20/05/2026</span><span class="ref">Fonds engins fantômes du MPO · NOAA MDP · VIMS TRAP · FWC trap retrieval</span><span>Le MPO rouvre 15 M$ CAD sur 2026-2029 (144 projets et 58,4 M$ depuis 2020) et la déclaration des engins perdus est une condition de permis depuis 2020. Aux États-Unis, la NOAA a financé 13 projets pour 26,4 M$ en 2025, VIMS 13 organisations pour 1,8 M$, et le sanctuaire des Keys lance en 2026 un suivi avant et après retrait. La technologie est prouvée : GhostVision (2026) détecte casiers et filets sur un sonar Garmin ou Humminbird.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Chaque organisme de récupération relève ses logs de sondeur et ses vidéos de ROV séparément, souvent sans base partagée, puis paie de la plongée commerciale à l'aveugle. Les dossiers de subvention manquent de données de priorisation et de preuve de tonnage. La Northwest Straits Foundation a retiré plus de 5 000 filets du Puget Sound ; en Colombie-Britannique, Emerald Sea Protection Society, Ocean Legacy et Rugged Coast travaillent sans outil commun.</p></section>
+      <section><h4>La cible</h4><p>15 à 25 organismes du Pacifique Nord-Ouest, les agences (MPO, WDFW), les 13 lauréats VIMS TRAP, les équipes de plongée sous permis en Floride (300 casiers retirés en 2025 dans les Keys), les comtés qui documentent des épaves pour la FWC. Et les clubs de plongée, que vous connaissez.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Import des logs de sonar latéral grand public (Garmin, Humminbird, Lowrance, Deeper à 200 à 1 500 $) et des vidéos de petits ROV (QYSEA, Chasing, BlueROV2 à 1 400 à 7 000 $), détection et classification (casier, filet, coque, moteur) par un modèle affiné sur les jeux ouverts AI4Shipwrecks et SeabedObjects-KLSG et sur l'architecture GhostVision.</li>
+        <li>Carte partagée des points chauds par bassin, avec prédiction de dépôt à partir des courants (Copernicus, HYCOM), de la bathymétrie (EMODnet, NOAA) et des pertes déclarées quand elles sont accessibles.</li>
+        <li>Rapport de ciblage et de tonnage formaté pour les dossiers de subvention (MPO, NOAA, GGGI) ; en Floride, fiche par objet documenté pour la FWC.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Organismes</dt><dd>100 à 500 $ par mois, gratuit pour les bénévoles</dd><dt>Ciblage</dt><dd>2 000 à 5 000 $ par cycle de subvention</dd><dt>Données</dt><dd>licence MPO ou NOAA 10 000 à 30 000 $ par an ; 150 à 400 $ par objet en Floride</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen · 4 à 6 mois-ingénieur</span><p>Brique la plus mûre de tout le mandat : datasets ouverts, architecture publiée, matériel dans toutes les boutiques de pêche. Le travail est l'ingestion des formats propriétaires de sondeurs et la constitution du jeu de données local. Aucun matériel propre.</p></section>
+      <section><h4>Concurrence</h4><p>Aucun logiciel packagé. GhostVision et Fish-Finders for Stewardship sont académiques ; le portail GGGI est déclaratif ; chaque ONG gère ses relevés en interne.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>L'appel du MPO vient de rendre ses décisions (4 septembre 2026) : les lauréats ont un budget et des rapports à produire, et le prochain cycle s'ouvre en 2027. Premier client : Emerald Sea Protection Society ou Ghost Diving BC, via vos clubs de plongée ; test possible dès cet automne avec un sondeur loué.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+    </div>
+    <!--VERDICT:1-->
+  </article>
+
+  <article class="fiche" id="idee-2">
+    <header class="fiche-head">
+      <div class="big">02</div>
+      <div><span class="fam fam-mer">Fonds marins et engins</span><h3>GrantMRV</h3><p class="tagline">Le carnet de terrain et le rapport automatique des bénéficiaires de subventions de retrait de débris</p></div>
+      <div class="score-badge">24<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">21/10/2026</span><span class="ref">MPO Ghost Gear Fund · NOAA MDP · NFWF Hurricane Fund · Transports Canada · FaSS UK</span><span>Les bailleurs exigent « un plan clair pour évaluer le succès » sans publier de métrique standard : MPO (dépenses avant le 31 mars de chaque exercice, suivi-évaluation éligible), NOAA (protocole MDMAP), NFWF (jusqu'à 11 M$, dossiers le 21 octobre 2026), FaSS britannique (£360 M sur douze ans). Les outils génériques coûtent 2 580 à 3 300 $ par an (Fulcrum, cinq utilisateurs minimum) et demandent des compétences SIG que ces structures n'ont pas.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Une coopérative de pêcheurs, une Première Nation ou une ONG côtière qui reçoit 50 000 à 500 000 $ documente ses tonnages, ses sites et ses destinations de recyclage dans un tableur, refait le rapport dans le format de chaque bailleur, et perd le renouvellement faute de preuve propre. Le Canada compte 144 projets financés depuis 2020 et 950 ports pour petits bateaux, dont Steveston.</p></section>
+      <section><h4>La cible</h4><p>50 à 80 organisations bénéficiaires en Amérique du Nord sur 2026-2028, les administrations portuaires locales, puis le Royaume-Uni et les bailleurs eux-mêmes (licence de données agrégées). Beaucoup de petits clients, comme vous le souhaitez.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Application hors ligne : photo, GPS, poids ou volume estimé par IA à partir de la photo et du type d'objet, taxonomie OSPAR ou MDMAP.</li>
+        <li>Un seul jeu de données, plusieurs rapports : gabarits MPO, NOAA, NFWF, Transports Canada, FaSS, générés automatiquement ; tableau de bord de campagne et portail bailleur.</li>
+        <li>Inventaire des flotteurs et quais à renouveler pour une administration portuaire, prêt pour sa prochaine demande.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Organisations</dt><dd>50 à 150 $ par mois</dd><dt>Ou</dt><dd>3 à 5 % du budget de suivi-évaluation de la subvention</dd><dt>Bailleurs</dt><dd>licence 10 000 à 30 000 $ par an</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Faible à moyen · 3 à 5 mois-ingénieur</span><p>Formulaires structurés et génération de documents ; classification d'image en V2. C'est la moins technique des douze : sa barrière est la spécialisation des gabarits et la base de données de tonnages accumulée.</p></section>
+      <section><h4>Concurrence</h4><p>Fulcrum, ArcGIS Survey123 et Field Maps (génériques, chers, sans gabarit bailleur) ; aucun outil spécialisé identifié.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>Deux vagues de bénéficiaires à équiper tout de suite : les décisions du MPO du 4 septembre 2026 et les dossiers NFWF du 21 octobre 2026. Premier client : Ocean Legacy ou T. Buck Suzuki Foundation (bénéficiaires 2020-2022) et Steveston Harbour Authority.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+    </div>
+    <!--VERDICT:2-->
+  </article>
+
+  <article class="fiche" id="idee-3">
+    <header class="fiche-head">
+      <div class="big">03</div>
+      <div><span class="fam fam-mer">Fonds marins et engins</span><h3>NetPen Ledger</h3><p class="tagline">La traçabilité du démantèlement des fermes de saumon en filet avant 2029</p></div>
+      <div class="score-badge">27<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">30/06/2029</span><span class="ref">Décision fédérale du 19/06/2024 · licences renouvelées jusqu'en 2029 · conditions de licence MPO</span><span>Interdiction totale des parcs en filet ouverts en Colombie-Britannique. 85 licences arrivaient à échéance le 30 juin 2024, 66 ont été renouvelées pour cinq ans ; Mowi (46 licences), Cermaq et Grieg doivent démanteler filets, cordages, flotteurs, cages et ancrages et prouver la remise en état des sites au MPO, à la province et aux Premières Nations. Le tonnage à retirer n'a jamais été publié.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Personne ne sait combien de tonnes de nylon, de polyéthylène et de polystyrène sortiront de l'eau d'ici 2029, ni où elles iront. Les recycleurs (Nofir a collecté 10 298 t en 2025 en Norvège, Bureo, Plastix) n'offrent pas de couche de preuve. Les certificateurs ASC et BAP auditent sans outiller. En Écosse, le gouvernement constate en mai 2026 l'absence de visibilité sur la fin de vie des engins d'aquaculture.</p></section>
+      <section><h4>La cible</h4><p>Les trois opérateurs, leurs sous-traitants de démontage (barges, plongeurs professionnels), le secrétariat de transition fédéral, les Premières Nations cogestionnaires : 65 à 85 sites, 10 à 15 clients directs. Extension : Norvège, Écosse, Chili. Peu de clients, forte valeur unitaire.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Inventaire d'actifs par site : photos et vidéos de drone, vision par ordinateur pour compter et classer panneaux de filet, flotteurs, ancrages, et estimer les masses.</li>
+        <li>Chaîne de traçabilité vers les recycleurs avec preuve de livraison et de traitement ; dossier de remise en état pour le MPO et la province ; tableau de bord multi-sites.</li>
+        <li>V2 : mesure des microplastiques émis par le lavage des filets, sujet de la future norme industrielle norvégienne (SINTEF, 2026).</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Par site</dt><dd>5 000 à 15 000 $ par démantèlement plus 300 à 800 $ CAD par mois</dd><dt>Par opérateur</dt><dd>1 000 à 3 000 $ par mois</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen · 4 à 7 mois-ingénieur</span><p>Application hors ligne, classification d'images légère, génération de documents ; pas d'API fédérale à intégrer. Le risque n'est pas technique mais commercial : trois acheteurs seulement.</p></section>
+      <section><h4>Concurrence</h4><p>Aucun outil dédié. Les grands opérateurs pourraient bricoler un suivi interne : il faut être là avant la première vague de démontage.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>Le plan de transition final se négocie en 2025-2026 et les premiers démantèlements commencent avant 2029. Premier client : Mowi Canada West ou Cermaq Canada, sièges en Colombie-Britannique, pilote sur un site en fin de licence.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+    </div>
+    <!--VERDICT:3-->
+  </article>
+
+  <article class="fiche" id="idee-10">
+    <header class="fiche-head">
+      <div class="big">10</div>
+      <div><span class="fam fam-mer">Fonds marins et engins</span><h3>PolyID</h3><p class="tagline">L'identification des polymères et l'indice de prix du plastique marin collecté</p></div>
+      <div class="score-badge">24<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">Pas d'obligation</span><span class="ref">Certifications OBP et RecyClass · Directive 2024/825 côté acheteurs · Ocean Legacy EPIC</span><span>Sur six acteurs testés (Ocean Legacy, Net Your Problem, Oceanworks, RecyClass, OBP), aucun ne publie un prix à la tonne : le marché du plastique marin recyclé n'a pas de découverte de prix. Le coût d'enfouissement évité (350 à 500 $/t) est connu, le prix de reprise ne l'est pas. Les scanners infrarouges du commerce sont calibrés pour des résines propres, pas pour le plastique dégradé par les UV, le sel et le biofouling.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Un dépôt trie à l'oeil, vend une matière mal qualifiée, n'accède pas aux acheteurs qui exigent une preuve de polymère et de provenance (OBP, RecyClass), et ne sait pas si le prix proposé est juste. Ocean Legacy exploite sept dépôts et un laboratoire de contrôle ; Net Your Problem a détourné 2,2 millions de livres de filets depuis 2018 dans huit États.</p></section>
+      <section><h4>La cible</h4><p>30 à 60 dépôts et collecteurs en Amérique du Nord, dont Ocean Legacy à Richmond et les coopératives de Steveston, les recycleurs européens (Plastix, Fil&amp;Fab), les ONG de nettoyage ; en V2 les acheteurs de matière et les bailleurs qui veulent savoir si les prix sont justes.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Scanner proche infrarouge portable du commerce (3 000 à 8 000 $) plus application avec un modèle de classification corrigé pour le plastique marin dégradé (PP, PE, nylon 6, PET) et un score de contamination ; la bibliothèque spectrale se construit avec vos clubs de plongée et les marinas de Vancouver.</li>
+        <li>Base de traçabilité par lot, dossier de certification OBP et RecyClass, export pour les preuves REP.</li>
+        <li>Indice de prix par polymère et par région, construit sur un panel « donne tes données, reçois l'indice », vendu aux collecteurs et aux bailleurs.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Dépôts</dt><dd>150 à 400 $ par mois plus le scanner</dd><dt>Indice</dt><dd>100 à 500 $ par mois</dd><dt>Certification</dt><dd>accompagnement 2 000 à 5 000 $ ; licence bailleurs 10 000 à 30 000 $ par an</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen à élevé · 6 à 9 mois-ingénieur</span><p>L'accès au matériel et la collecte de spectres de plastique marin réel sont le coeur du travail ; un capteur grand public (SCiO) donne un MVP moins précis. Le modèle s'améliore à chaque lot scanné : c'est l'actif.</p></section>
+      <section><h4>Concurrence</h4><p>trinamiX et Specim vendent le matériel sans bibliothèque marine ; aucun indice de prix dédié ; Oceanworks intermédie sans qualifier.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>Les certifications deviennent le ticket d'entrée vers les acheteurs premium que la directive 2024/825 oblige à prouver leurs allégations. Premier client : Ocean Legacy Foundation, à côté de Steveston.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+    </div>
+    <!--VERDICT:10-->
+  </article>
+
+  <div class="fam-h"><span class="sw" style="background:var(--s2)"></span><div><h3>Marinas, épaves et tempêtes</h3><p>Le plastique des infrastructures : flotteurs en polystyrène, coques abandonnées, débris d'ouragan. Des obligations d'État, des budgets sous tension, et des marinas à dix minutes de chez vous.</p></div></div>
+
+  <article class="fiche" id="idee-4">
+    <header class="fiche-head">
+      <div class="big">04</div>
+      <div><span class="fam fam-peche">Marinas et épaves</span><h3>FloatWatch</h3><p class="tagline">La détection et le registre de conformité des flotteurs en polystyrène</p></div>
+      <div class="score-badge">27<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">01/01/2024</span><span class="ref">Washington RCW 70A.245.130 (E2SSB 5022) · conditions de licence conchylicole MPO 2025</span><span>Dans l'État de Washington, tout quai, bloc flottant ou structure neuve ou réparée doit encapsuler sa mousse dans une coque rigide ; la mousse exposée ou seulement filmée est interdite, jusqu'à 10 000 $ par infraction. Au Canada, les licences conchylicoles 2025 exigent des flotteurs entièrement encapsulés et le retrait immédiat de toute flottaison dégradée. La Californie a laissé mourir en commission une loi identique (AB 2916, 16 mai 2024) et la reprendra probablement.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Le stock de quais installés avant 2024 se fragmente : à Kirkland, la mousse s'échoue depuis février 2025 sans remplacement ; à West Sound (îles San Juan), un ponton dérive en mars 2026 et les autorités proposent une intervention à plus de trois semaines, le polystyrène n'étant pas un produit pétrolier. À Baynes Sound, 38 t de débris ont été retirées, plus de 90 % d'origine conchylicole, malgré des conditions de licence explicites que les riverains jugent inappliquées. Steveston a dû fermer son mouillage en 2025 pour remplacer ses flotteurs.</p></section>
+      <section><h4>La cible</h4><p>Marinas et docks de Washington (quelques centaines à un millier de sites), les 104 ports pour petits bateaux du Pacifique, les fermes conchylicoles de Colombie-Britannique via leur association, les comtés et le département Ecology pour la couche de détection ; les marinas de Vancouver comme démonstrateurs, sans obligation mais avec un argument d'image.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Inspection par drone et caméra sous-marine du commerce, vision par ordinateur sur peu de classes (mousse exposée, dégradée, encapsulée) : cible visuellement distinctive, donc modèle simple.</li>
+        <li>Registre de conformité par ponton et par bail : photo horodatée, matériau, priorisation des remplacements, dossier pour l'inspection du comté ou du MPO.</li>
+        <li>Alerte de dérive et mise en relation avec des récupérateurs (le vide de protocole de West Sound) ; portail de plaintes riveraines qui désamorce les conflits.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Marinas</dt><dd>audit 500 à 2 000 $ puis 100 à 400 $ par mois</dd><dt>Conchyliculteurs</dt><dd>100 à 300 $ CAD par bail et par an</dd><dt>Comtés, États</dt><dd>licence 10 000 à 40 000 $ par an</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Faible à moyen · 3 à 5 mois-ingénieur</span><p>Le plus rapide des paris à vision par ordinateur : classes peu nombreuses, matériel à moins de 3 000 $, terrain à dix minutes. Attention au vol de drone au-dessus de propriétés et de personnes.</p></section>
+      <section><h4>Concurrence</h4><p>Aucune. Clean Marine BC et Clean Marina auditent tous les trois ans ; les fabricants de flotteurs (Candock, Bellingham Marine) vendent du matériel conforme sans suivi.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>Obligation en vigueur depuis deux ans sans outil de contrôle, incident médiatisé en 2026, relance californienne probable. Premier client : une marina de Vancouver ou Steveston Harbour Authority, puis Bellingham et les San Juan à trois heures de route.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+    </div>
+    <!--VERDICT:4-->
+  </article>
+
+  <article class="fiche" id="idee-5">
+    <header class="fiche-head">
+      <div class="big">05</div>
+      <div><span class="fam fam-peche">Marinas et épaves</span><h3>VesselRisk</h3><p class="tagline">Le registre transfrontalier et le score de risque des bateaux abandonnés</p></div>
+      <div class="score-badge">25<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">06/2027</span><span class="ref">Canada WAHVA (2019) · Washington DVRP · Californie SAVE · Floride §823.11 et FWC</span><span>La loi canadienne fixe des délais de 48 heures et 60 jours et des amendes jusqu'à 6 M$. Washington a 20,6 M$ pour 2025-2027 mais suspend ses remboursements hors fonds réservés jusqu'en juin 2027 et tient un inventaire des « vessels of concern ». La Californie distribue 2,75 M$ par an à 25 à 28 agences (SAVE). La Floride rembourse 100 % des retraits, premier arrivé premier servi, avec 4,9 M$ en 2026-2027 contre 20 M$ en 2022, et fait de l'abandon un délit puis un crime.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Les fonds publics ne couvrent plus les besoins et aucun outil ne priorise le risque avant qu'un bateau ne coule. Les agences repèrent à la main (impayés, gîte, dégradation visible) puis montent un dossier photo et GPS pour chaque subvention. Une coque en fibre de verre qui coule libère des années de microplastiques et d'hydrocarbures.</p></section>
+      <section><h4>La cible</h4><p>Marinas et administrations portuaires (nombreux petits clients, dont celles de Vancouver et Steveston), agences (Transports Canada, WA DNR, Oregon Marine Board, DBW Californie, 35 comtés côtiers de Floride), assureurs de plaisance en licence de données.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Score de risque d'abandon par navire : caméras de quai ou drone du commerce et détection de changement (gîte, ligne de flottaison, désordre), imagerie satellite, données d'immatriculation, signalements.</li>
+        <li>Registre cartographique partagé entre marinas et agences, avec historique.</li>
+        <li>Dossier de preuve prêt pour SAVE, DVRP, FWC et le Programme de bateaux abandonnés, généré à partir des mêmes données.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Marinas</dt><dd>100 à 500 $ par mois</dd><dt>Agences locales</dt><dd>2 000 à 8 000 $ par an ; licence régionale 20 000 à 60 000 $</dd><dt>Dossier</dt><dd>150 à 400 $ par bateau documenté</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen · 5 à 8 mois-ingénieur</span><p>Détection de changement sur images répétées, base géospatiale, gabarits par programme. Attention aux données personnelles des propriétaires et à l'imagerie de biens privés.</p></section>
+      <section><h4>Concurrence</h4><p>Aucun agrégateur transfrontalier ; inventaires internes des États non enrichis ; logiciels de gestion de marina (facturation, places) sans ce cas d'usage.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>Tension budgétaire documentée des deux côtés de la frontière en 2025-2026 et afflux d'épaves après chaque saison cyclonique. Premier client : marina de Vancouver ou Steveston en pilote, puis San Mateo County Harbor District (SAVE) à distance.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+    </div>
+    <!--VERDICT:5-->
+  </article>
+
+  <article class="fiche" id="idee-6">
+    <header class="fiche-head">
+      <div class="big">06</div>
+      <div><span class="fam fam-peche">Marinas et épaves</span><h3>StormDebris</h3><p class="tagline">La documentation rapide des débris marins après tempête, pour se faire rembourser</p></div>
+      <div class="score-badge">25<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">21/10/2026</span><span class="ref">FEMA Public Assistance catégorie A · FWC derelict vessel grant · NFWF Hurricane Response Fund</span><span>Après Helene et Milton (octobre 2024), la FEMA a obligé 590 M$ pour 31,67 millions de yards cubes de débris en Floride, et la réconciliation court encore. Le remboursement à 100 % exige tickets, SIG et photos avant et après ; les débris immergés (bateaux coulés, quais, casiers) sont les moins documentés, donc les moins remboursés. Le NFWF ouvre jusqu'à 11 M$ avec des dossiers au 21 octobre 2026. La saison 2026 est en cours.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Les grands contractants de retrait (AshBritt, CrowderGulf, DRC) et les cabinets de monitoring obligatoire (Tetra Tech, Rostan, Thompson, True North) documentent les débris terrestres avec des processus manuels. Ce qui est sous l'eau n'est ni compté ni remboursé, et les petits comtés du Golfe n'ont pas les moyens d'un monitoring robuste.</p></section>
+      <section><h4>La cible</h4><p>35 comtés côtiers de Floride (10 à 15 fortement touchés), les cabinets de monitoring en marque blanche (canal à distance), les ONG candidates au NFWF, puis les comtés de Californie et les marinas du Pacifique Nord-Ouest après tempête hivernale.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Relevé drone (RGB et thermique) et sonar du commerce dans les 24 à 48 heures ; vision par ordinateur affinée sur xBD (échelle de dommages à quatre niveaux) et sur une collecte propre de débris marins ; estimation des volumes.</li>
+        <li>Localisation et fiche par objet immergé (coque, moteur, quai, casier) avec sonar, partagée avec GhostSonar.</li>
+        <li>Rapport SIG géotagué conforme FEMA et FWC, suivi des tickets et réconciliation.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Mission</dt><dd>2 000 à 5 000 $ ; campagne de comté 5 000 à 15 000 $</dd><dt>Disponibilité</dt><dd>500 à 1 500 $ par mois en saison</dd><dt>Cabinets</dt><dd>revenu partagé en marque blanche</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen · 4 à 7 mois-ingénieur</span><p>xBD fournit une base solide ; la collecte de données de débris marins et le sonar sont l'effort additionnel. Le matériel se loue sur place en Floride via un sous-traitant.</p></section>
+      <section><h4>Concurrence</h4><p>Aucun acteur dédié aux débris immergés ; les cabinets de monitoring sont un canal, pas un concurrent.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>Le cycle Helene et Milton n'est pas soldé et la saison 2026 tourne. Premier client : un cabinet de monitoring déjà sous contrat avec un comté (liste publique de Pinellas County), vente à distance.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+    </div>
+    <!--VERDICT:6-->
+  </article>
+
+  <article class="fiche" id="idee-12">
+    <header class="fiche-head">
+      <div class="big">12</div>
+      <div><span class="fam fam-peche">Marinas et épaves</span><h3>HullCycle</h3><p class="tagline">La traçabilité de fin de vie des bateaux composites et la détection des coques abandonnées</p></div>
+      <div class="score-badge">22<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">2027 à 2030</span><span class="ref">Filière REP APER (France) · programmes de reprise VTIP (Californie, Washington) · gisement européen</span><span>APER a déconstruit 3 079 bateaux en 2025 (16 183 depuis 2019) dans 37 centres agréés et vient de clore, le 21 août 2026, la consultation qui choisit les prestataires 2027-2029. L'Europe compte 6,5 millions de bateaux de plaisance et 30 000 fins de vie par an dès 2030, 23 000 t de composites dont 67 % finissent en combustible de cimenterie. Aucune REP européenne n'existe encore.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>L'éco-organisme gère ses flux par appels d'offres classiques, sans outil de traçabilité ; le gisement caché de coques abandonnées dans les marinas et les zones intertidales n'est consolidé par personne ; les coques en fibre de verre se fragmentent en microplastiques.</p></section>
+      <section><h4>La cible</h4><p>APER et ses 37 centres, les collectivités et marinas (cartographie), puis les éco-organismes équivalents si l'Union généralise, et les programmes de reprise nord-américains.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Plateforme de déclaration, d'éco-contribution et de suivi des flux vers les centres (lot, pesée, destination matière).</li>
+        <li>Détection des coques abandonnées par imagerie drone et satellite et vision par ordinateur, brique partagée avec VesselRisk.</li>
+        <li>Tableau de bord des prestataires et des consultations.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Éco-organisme</dt><dd>15 000 à 40 000 € par an</dd><dt>Centres</dt><dd>2 000 à 5 000 € par an</dd><dt>Collectivités</dt><dd>cartographie 5 000 à 15 000 €</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen · 5 à 8 mois-ingénieur</span><p>Base réglementaire et pipeline de détection d'objets ; mutualisable avec VesselRisk.</p></section>
+      <section><h4>Concurrence</h4><p>Aucun logiciel dédié ; un seul acheteur institutionnel en France, ce qui limite le marché tant que l'Europe n'a pas suivi.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>La carte des prestataires 2027-2029 vient d'être redessinée : la brique numérique se vend maintenant ou dans trois ans. Premier client : preuve de concept sur les marinas de Vancouver et Steveston, puis APER à distance.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+    </div>
+    <!--VERDICT:12-->
+  </article>
+
+  <div class="fam-h"><span class="sw" style="background:var(--s3)"></span><div><h3>Eau, microplastiques et preuves</h3><p>Ce qui ne se voit pas à l'oeil nu : particules dans l'eau potable, 6PPD-quinone des pneus, fibres textiles, marques sur les déchets. Là où la mesure devient obligatoire et où le laboratoire coûte trop cher.</p></div></div>
+
+  <article class="fiche" id="idee-7">
+    <header class="fiche-head">
+      <div class="big">07</div>
+      <div><span class="fam fam-amont">Eau et microplastiques</span><h3>MicroScreen</h3><p class="tagline">Le dépistage bas coût des microplastiques et le copilote de conformité des distributeurs d'eau</p></div>
+      <div class="score-badge">27<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">Automne 2026</span><span class="ref">Californie SB 1422 · EPA CCL 6 · OPC 16/06/2026 · Directive (UE) 2024/3019 · Décision 2024/1441</span><span>La Californie impose des méthodes Raman et infrarouge à 1 000 à 2 000 $ par échantillon : Phase 1 achevée sur 30 distributeurs, Phase 2 sur l'eau traitée dès l'automne 2026. L'EPA inscrit les microplastiques à la CCL 6 (finalisation le 17 novembre 2026) mais refuse la surveillance obligatoire : sept États pétitionnaires avancent seuls. L'OPC finance 2,5 M$ de surveillance côtière. En Europe, les stations de plus de 10 000 EH devront mesurer les microplastiques ; la méthode arrive le 2 juillet 2027, un mois avant la transposition.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>L'analyse est manuelle, longue et sujette à contamination ; le temps d'analyste est le goulot documenté. Les instruments coûtent des dizaines de milliers de dollars. Entre le test grand public à 75 $ sans polymère (The Water Test) et le logiciel Purency qui suppose un FTIR déjà acheté, il n'existe rien pour un premier dépistage à bas coût. Les logiciels ouverts MP-VAT (Nile red, 95,8 % rapportés) et siMPle existent sans support ni intégration réglementaire.</p></section>
+      <section><h4>La cible</h4><p>Distributeurs d'eau de Californie (30 puis des centaines en Phase 2), laboratoires ELAP et universitaires (UBC, SFU), stations d'épuration européennes de plus de 10 000 EH (plusieurs milliers, chiffre à vérifier), conchyliculteurs, et le programme pilote de l'OPC comme brique technique.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Kit : caméra microscope USB (50 à 200 $), coloration Nile red, modèle de comptage et de dimensionnement ; service cloud à l'échantillon avec escalade vers un laboratoire FTIR partenaire pour l'identification des polymères.</li>
+        <li>Copilote SB 1422 : calendrier de prélèvement, chaîne de conservation, commande labo, rapport public au format du State Water Board ; puis la méthode européenne dès sa publication.</li>
+        <li>Module d'aide à l'analyste pour les laboratoires (pré-comptage, piste d'audit) ; la donnée multi-instruments accumulée est l'actif.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Dépistage</dt><dd>49 à 149 $ par échantillon</dd><dt>Laboratoires</dt><dd>500 à 2 000 $ par mois</dd><dt>Distributeurs</dt><dd>8 000 à 20 000 $ par an, kit 15 000 à 30 000 $</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen · 5 à 8 mois-ingénieur</span><p>Conditions de laboratoire contrôlées, donc plus simple que la détection en extérieur ; MP-VAT comme base. Le point dur est l'équivalence avec les méthodes normalisées, à prouver sur des échantillons partagés avec un labo accrédité.</p></section>
+      <section><h4>Concurrence</h4><p>Purency (dépend d'un FTIR), The Water Test (grand public), laboratoires sans couche logicielle, Eurofins et Measurlabs sur devis ; espace intermédiaire libre.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>Densité d'échéances inédite : Phase 2 et CCL 6 fin 2026, méthode européenne mi-2027. Premier client : laboratoire de la UBC ou petite agence d'eau du Grand Vancouver, puis un distributeur californien de Phase 2 à distance.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+    </div>
+    <!--VERDICT:7-->
+  </article>
+
+  <article class="fiche" id="idee-8">
+    <header class="fiche-head">
+      <div class="big">08</div>
+      <div><span class="fam fam-amont">Eau et microplastiques</span><h3>TireWatch</h3><p class="tagline">La surveillance et la priorisation du 6PPD-quinone des pneus dans les eaux pluviales, pour le saumon</p></div>
+      <div class="score-badge">26<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">01/10/2026</span><span class="ref">Californie DTSC (Priority Product) · Washington HB 2421 / SB 6119 · données MPO 11/2025</span><span>Les fabricants de pneus doivent rendre leurs analyses finales des 21 substituts au 6PPD (rapport d'étape le 1er octobre 2026, Stage 2 en 2029). Washington instaure une redevance de 5 $ par pneu, des règles Ecology d'ici juin 2028 et l'interdiction du 6PPD dans les pneus neufs en 2035. Le MPO a mesuré 6 400 échantillons sur 40 ruisseaux : dépassements létaux pour le coho dans 26 cours d'eau de Metro Vancouver, Squamish et l'île de Vancouver. Aucun capteur terrain commercial n'existe.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Les particules d'usure de pneus sont la première source de microplastiques par masse dans les eaux pluviales, et leur produit d'oxydation tue les saumons avant qu'ils ne fraient. Les municipalités ne savent pas où placer leurs ouvrages de biofiltration ; l'analyse LC-MS/MS coûte cher et reste confinée aux laboratoires universitaires ; les fabricants de pneus manquent de données de terrain pour leurs dossiers réglementaires.</p></section>
+      <section><h4>La cible</h4><p>Municipalités et districts d'eaux pluviales de Metro Vancouver, Washington et Oregon sous permis MS4 et sur bassins à saumon, agences de transport, fabricants de pneus en licence de données (une douzaine de grandes marques), Pacific Salmon Foundation et UBC comme partenaires de validation.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Capteurs de turbidité et de débit du commerce aux exutoires, échantillonnage automatique déclenché par les pics de pluie (moment où le 6PPD-quinone pic), envoi groupé vers un laboratoire LC-MS/MS partenaire.</li>
+        <li>Modèle IA de priorisation par bassin versant : trafic routier (données ouvertes), pluviométrie, proximité des frayères, proxies chimiques publiés par l'USGS ; recommandation de placement des ouvrages, suivi avant et après travaux.</li>
+        <li>Licence de données de terrain aux fabricants de pneus pour les dossiers DTSC et Ecology.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Par point</dt><dd>8 000 à 20 000 $ CAD par an (matériel, analyses, tableau de bord)</dd><dt>Municipalité</dt><dd>40 000 à 120 000 $ CAD par an</dd><dt>Fabricants</dt><dd>20 000 à 60 000 $ par an</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen · 5 à 8 mois-ingénieur</span><p>Pas de capteur propriétaire : matériel du commerce, logique de déclenchement, partenariat labo, modèle de priorisation. Le vide technologique (aucun capteur 6PPD-Q) est confirmé par l'USGS et la littérature 2025 : c'est ce qui rend l'approche logicielle défendable.</p></section>
+      <section><h4>Concurrence</h4><p>Aucune ; programmes de recherche (MPO, UBC, USGS) sans offre commerciale ; consultants ponctuels (Herrera, ESA).</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>Pression politique immédiate à Vancouver (mortalité du coho, étude UBC sur le gazon synthétique en mars 2026), échéances DTSC 2026 et Ecology 2028. Premier client : Ville de Vancouver ou Metro Vancouver, sans déplacement.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+    </div>
+    <!--VERDICT:8-->
+  </article>
+
+  <article class="fiche" id="idee-9">
+    <header class="fiche-head">
+      <div class="big">09</div>
+      <div><span class="fam fam-amont">Eau et microplastiques</span><h3>CoastalTrace</h3><p class="tagline">Les données de terrain de qualité juridique sur les déchets par marque</p></div>
+      <div class="score-badge">25<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">10/2027</span><span class="ref">Californie contre ExxonMobil · comté de Los Angeles contre PepsiCo et Coca-Cola · rejet de Baltimore (07/2026)</span><span>Les procès de nuisance publique s'appuient sur l'audit mondial Break Free From Plastic, sans donnée locale chiffrée ; la motion to dismiss de Los Angeles a été rejetée le 23 septembre 2025 et le procès est prévu en octobre 2027. Baltimore a été rejeté en juillet 2026 après que la Cour suprême du Maryland a restreint la doctrine : les prochaines actions devront être mieux étayées. Les éco-organismes (Recycle BC et ses 1 200 producteurs, Circular Action Alliance, Éco Entreprises Québec, Citeo) ont besoin d'études de gisement pour l'éco-modulation.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Les brand audits citoyens sont gratuits, ponctuels, sans chaîne de conservation ni couverture par juridiction, et leurs données sont verrouillées derrière un anti-bot. Les cabinets d'économie environnementale facturent à l'heure sans outil de collecte reproductible. Un comté qui envisage une action n'a pas de preuve locale.</p></section>
+      <section><h4>La cible</h4><p>Procureurs généraux et county counsels (une douzaine de juridictions actives ou candidates), cabinets et cliniques juridiques environnementales, éco-organismes nord-américains et européens, notateurs ESG en V2.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Protocole de collecte à chaîne de conservation : photo horodatée et géolocalisée, double vérification, échantillonnage statistique par plage et cours d'eau.</li>
+        <li>Application de terrain avec vision par ordinateur pour classer marque et type d'objet (TACO, YOLO), MVP en comptage assisté.</li>
+        <li>Base longitudinale par juridiction et rapport statistique prêt pour témoin expert, reliant volumes, marques et coûts de nettoyage documentés.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Contentieux</dt><dd>50 000 à 150 000 $ par dossier</dd><dt>Collectivités</dt><dd>10 000 à 30 000 $ par an pour se constituer une preuve</dd><dt>Éco-organismes</dt><dd>200 à 500 $ par campagne ; API 10 000 à 40 000 $ par an</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen · 5 à 8 mois-ingénieur</span><p>La reconnaissance de marque sur déchets dégradés est plus dure qu'un audit manuel ; commencer en comptage assisté. La valeur est la méthode probatoire et la série temporelle.</p></section>
+      <section><h4>Concurrence</h4><p>Break Free From Plastic (gratuit, non juridique), cabinets généralistes ; aucun acteur combinant application, chaîne de preuve et rapport d'expert.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>Fenêtre de discovery 2026-2027 et inflexion du rejet de Baltimore. Premier client : Recycle BC pour une étude de gisement côtier autour de Vancouver, puis un county counsel californien à distance.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+    </div>
+    <!--VERDICT:9-->
+  </article>
+
+  <article class="fiche" id="idee-11">
+    <header class="fiche-head">
+      <div class="big">11</div>
+      <div><span class="fam fam-amont">Eau et microplastiques</span><h3>FiberScore</h3><p class="tagline">La mesure et le reporting du relargage de microfibres textiles</p></div>
+      <div class="score-badge">25<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">10/2026</span><span class="ref">Affichage environnemental textile (ADEME, Ecobalyse) · ESPR textiles fin 2027 · DPP mi-2028 · ISO 4484</span><span>En France, les marques sans données mesurées de relargage se voient attribuer un score par défaut pénalisant dès octobre 2026 (seuils de chiffre d'affaires et de références cités par une seule source, à vérifier). L'acte délégué ESPR fixera des seuils et des méthodes fin 2027, et le Passeport numérique produit textile intégrera ces données mi-2028. ISO 4484 (2023) coexiste avec les protocoles TMC, Hohenstein et AATCC : une même collection est testée plusieurs fois. La loi AGEC sur les filtres de lave-linge attend toujours son décret.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Les microfibres synthétiques représentent une part majeure des microplastiques océaniques (ordre du tiers selon l'IUCN, à re-sourcer). Les tests se font dans des laboratoires généralistes, sans prix public, sans plateforme de centralisation, et les résultats ne se comparent pas d'un protocole à l'autre. Une marque moyenne n'a ni base de facteurs d'émission par tissu, ni export vers Ecobalyse.</p></section>
+      <section><h4>La cible</h4><p>Marques moyennes d'outdoor, de sport et de plongée vendant dans l'Union : Vancouver est un pôle mondial (Arc'teryx, Lululemon, MEC, marques de combinaisons), plus les fabricants de tissus techniques et les laboratoires partenaires.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Banc de test de lavage selon ISO 4484 avec matériel du commerce, caméra microscope et vision par ordinateur pour compter et mesurer les fibres, livré en marque blanche à des laboratoires.</li>
+        <li>SaaS multi-normes : extraction par modèle de langage des rapports PDF (SGS, Eurofins, Hohenstein), échelle commune, calcul du score attendu, export ADEME et DPP.</li>
+        <li>Base de facteurs d'émission par type de tissu, l'actif qui se vend aux fabricants de tissus.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Marques</dt><dd>3 000 à 8 000 € par an</dd><dt>Tests</dt><dd>500 à 1 500 € par référence</dd><dt>Fabricants de tissus</dt><dd>licence de la base</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen à élevé · 6 à 9 mois-ingénieur</span><p>Banc physique, vision, base réglementaire multi-pays. Le SaaS de centralisation peut se vendre seul en trois mois ; le banc vient ensuite.</p></section>
+      <section><h4>Concurrence</h4><p>Laboratoires généralistes (SGS, Eurofins, Hohenstein, Qalitex) sans plateforme ni base ; aucun acteur combiné.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>Fenêtre étroite avant octobre 2026 et avant que l'acte délégué de 2027 ne fige les méthodes. Premier client : une marque outdoor ou de plongée de Vancouver exportant vers l'Union, audit initial.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Impact océan<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+    </div>
+    <!--VERDICT:11-->
+  </article>
+</section>
+
+<section class="block" id="comparatif">
+  <span class="eyebrow">Comparatif</span>
+  <h2>Les douze idées côte à côte</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Idée</th><th>Déclencheur</th><th>Cible captive</th><th>Prix par client et par an</th><th>Effort solo</th><th>Premier client</th><th class="n">Score /35</th><th class="n">VC /30</th><th class="n">Secteur /25</th></tr></thead>
+    <tbody id="cmp-body">
+      <tr><td><span class="dot" style="background:var(--s1)"></span><span class="nm">01 GhostSonar</span></td><td>MPO GGF 15 M$ (2026-29), NOAA, VIMS, FWC</td><td>15-25 organismes PNW, agences, Floride</td><td>1,2 à 6 k$ ; ciblage 2 à 5 k$ ; data 10 à 30 k$</td><td>4 à 6 m-i</td><td>Emerald Sea, Ghost Diving BC</td><td class="n">27</td><td class="n" data-vc="1"></td><td class="n" data-oc="1"></td></tr>
+      <tr><td><span class="dot" style="background:var(--s1)"></span><span class="nm">02 GrantMRV</span></td><td>Rapports MPO, NOAA, NFWF (21/10/2026), FaSS</td><td>50-80 bénéficiaires, 950 ports</td><td>0,6 à 1,8 k$ ; 3 à 5 % du suivi-évaluation</td><td>3 à 5 m-i</td><td>Ocean Legacy, Steveston</td><td class="n">24</td><td class="n" data-vc="2"></td><td class="n" data-oc="2"></td></tr>
+      <tr><td><span class="dot" style="background:var(--s1)"></span><span class="nm">03 NetPen Ledger</span></td><td>Fin des parcs en filet C.-B., 30/06/2029</td><td>3 opérateurs, 65-85 sites</td><td>5 à 15 k$ par site ; 12 à 36 k$ par opérateur</td><td>4 à 7 m-i</td><td>Mowi, Cermaq</td><td class="n">27</td><td class="n" data-vc="3"></td><td class="n" data-oc="3"></td></tr>
+      <tr><td><span class="dot" style="background:var(--s2)"></span><span class="nm">04 FloatWatch</span></td><td>WA RCW 70A.245.130 (2024), licences MPO 2025</td><td>Marinas WA, 104 ports, conchyliculteurs</td><td>1,2 à 4,8 k$ ; audit 0,5 à 2 k$ ; État 10 à 40 k$</td><td>3 à 5 m-i</td><td>Marina de Vancouver, Steveston</td><td class="n">27</td><td class="n" data-vc="4"></td><td class="n" data-oc="4"></td></tr>
+      <tr><td><span class="dot" style="background:var(--s2)"></span><span class="nm">05 VesselRisk</span></td><td>WAHVA, DVRP, SAVE, FWC §823.11</td><td>Marinas, agences, 35 comtés FL</td><td>1,2 à 6 k$ ; agences 2 à 60 k$</td><td>5 à 8 m-i</td><td>Marina de Vancouver, SAVE</td><td class="n">25</td><td class="n" data-vc="5"></td><td class="n" data-oc="5"></td></tr>
+      <tr><td><span class="dot" style="background:var(--s2)"></span><span class="nm">06 StormDebris</span></td><td>FEMA PA, FWC, NFWF 21/10/2026</td><td>Comtés FL, cabinets de monitoring</td><td>2 à 15 k$ par mission ou campagne</td><td>4 à 7 m-i</td><td>Cabinet de monitoring FL</td><td class="n">25</td><td class="n" data-vc="6"></td><td class="n" data-oc="6"></td></tr>
+      <tr><td><span class="dot" style="background:var(--s2)"></span><span class="nm">12 HullCycle</span></td><td>APER 2027-29, UE 2030</td><td>APER, 37 centres, collectivités</td><td>15 à 40 k€ ; centres 2 à 5 k€</td><td>5 à 8 m-i</td><td>Marinas de Vancouver, puis APER</td><td class="n">22</td><td class="n" data-vc="12"></td><td class="n" data-oc="12"></td></tr>
+      <tr><td><span class="dot" style="background:var(--s3)"></span><span class="nm">07 MicroScreen</span></td><td>SB 1422 Phase 2, CCL 6, UE 2027</td><td>Distributeurs d'eau, labos, stations UE</td><td>49 à 149 $ par échantillon ; 6 à 24 k$ labos ; 8 à 20 k$ utilities</td><td>5 à 8 m-i</td><td>Labo UBC, agence d'eau locale</td><td class="n">27</td><td class="n" data-vc="7"></td><td class="n" data-oc="7"></td></tr>
+      <tr><td><span class="dot" style="background:var(--s3)"></span><span class="nm">08 TireWatch</span></td><td>DTSC 01/10/2026, WA 2028 et 2035, MPO</td><td>Municipalités PNW, fabricants de pneus</td><td>8 à 20 k$ par point ; 40 à 120 k$ ; pneus 20 à 60 k$</td><td>5 à 8 m-i</td><td>Ville de Vancouver, Metro Vancouver</td><td class="n">26</td><td class="n" data-vc="8"></td><td class="n" data-oc="8"></td></tr>
+      <tr><td><span class="dot" style="background:var(--s3)"></span><span class="nm">09 CoastalTrace</span></td><td>Procès CA et LA (10/2027), rejet Baltimore</td><td>Procureurs, éco-organismes</td><td>50 à 150 k$ par dossier ; 10 à 30 k$ ; PRO 0,2 à 0,5 k$</td><td>5 à 8 m-i</td><td>Recycle BC</td><td class="n">25</td><td class="n" data-vc="9"></td><td class="n" data-oc="9"></td></tr>
+      <tr><td><span class="dot" style="background:var(--s1)"></span><span class="nm">10 PolyID</span></td><td>Certifications OBP, RecyClass ; pas de prix public</td><td>30-60 dépôts, recycleurs</td><td>1,8 à 4,8 k$ ; indice 1,2 à 6 k$ ; certif. 2 à 5 k$</td><td>6 à 9 m-i</td><td>Ocean Legacy (Richmond)</td><td class="n">24</td><td class="n" data-vc="10"></td><td class="n" data-oc="10"></td></tr>
+      <tr><td><span class="dot" style="background:var(--s3)"></span><span class="nm">11 FiberScore</span></td><td>Affichage textile FR 10/2026, ESPR 2027, DPP 2028</td><td>Marques outdoor et plongée, tissus</td><td>3 à 8 k€ ; 0,5 à 1,5 k€ par test</td><td>6 à 9 m-i</td><td>Marque outdoor de Vancouver</td><td class="n">25</td><td class="n" data-vc="11"></td><td class="n" data-oc="11"></td></tr>
+    </tbody>
+  </table></div>
+  <p class="chart-note">Score /35 : sept axes notés par l'orchestrateur. VC /30 : investisseur, six axes dont l'adéquation fondateur. Secteur /25 : expert maritime, cinq axes. m-i : mois-ingénieur pour un fondateur seul avec Claude.</p>
+</section>
+
+<section class="block" id="passe1">
+  <span class="eyebrow">Face à la première passe</span>
+  <h2>Ce qui change entre les deux atlas</h2>
+  <div class="grid2">
+    <div class="card"><h3>Première passe : l'obligation la plus dure</h3><p>PelletGuard, RiverEye et GearTrace gagnaient sur la force du texte (règlement pellets, Trash Amendments 2030, contrôle des pêches) et sur des cibles européennes ou californiennes à cycle long. Aucune ne se testait depuis Vancouver en un trimestre, et deux demandaient une équipe.</p></div>
+    <div class="card"><h3>Seconde passe : le premier client joignable</h3><p>GhostSonar, FloatWatch, NetPen Ledger et TireWatch se testent avec un sondeur, un drone ou une bouteille d'échantillon à moins de trois heures de chez vous ; GrantMRV et MicroScreen se vendent à distance à des structures déjà financées. Le levier n'est plus seulement la sanction, c'est le budget déjà voté.</p></div>
+    <div class="card"><h3>Ce que les deux passes partagent</h3><p>La conviction que la donnée accumulée fait la barrière : carte des fonds (GhostSonar) comme registre des granulés (PelletGuard), série de microplastiques (MicroScreen) comme caméras de rivière (RiverEye). Et la même méthode : texte, date, obligé, prix, effort, trois critiques.</p></div>
+    <div class="card"><h3>Ce qui reste ouvert</h3><p>Les cibles publiques (agences, comtés) restent lentes dans les deux passes ; les idées de cette passe compensent par des clients privés financés par ces mêmes agences (bénéficiaires, opérateurs, marinas). La mesure des microfibres et des microplastiques dépend de méthodes que les régulateurs publient en 2026-2027 : à suivre de près.</p></div>
+  </div>
+</section>
+
+<section class="block" id="ecartees">
+  <span class="eyebrow">Écartées ou fusionnées</span>
+  <h2>Ce que nous avons vu et laissé de côté</h2>
+  <div class="grid2">
+    <div class="card"><h3>SargassumIQ</h3><p>Prévision d'échouage des sargasses pour la Floride et les Caraïbes : Miami-Dade dépense 35 M$ par an et 2026 est une année record, mais ce n'est pas du plastique.</p></div>
+    <div class="card"><h3>NurdleTrace Gulf</h3><p>Preuve probatoire des granulés près des sites pétrochimiques du Golfe : trop proche de PelletGuard, et la détection de granulés en extérieur reste un problème ouvert.</p></div>
+    <div class="card"><h3>Reporting REACH 2023/2055 et taxe plastique espagnole</h3><p>Conformité chimique et fiscale à date ferme (31 mai de chaque année pour l'ECHA), mais lien océan faible et logique d'EPR Atlas.</p></div>
+    <div class="card"><h3>Veilles par modèle de langage</h3><p>OceanGrantAtlas, GrantRadar, VigilanceWatch, 6PPD Alternatives Vault : rapides à construire, faciles à copier ; modules possibles de GrantMRV ou TireWatch.</p></div>
+    <div class="card"><h3>ShrinkLoop et NetWash IA</h3><p>Logistique du film d'hivernage (sans IA, saisonnier) et mesure des microplastiques du lavage des filets (mêmes trois clients que NetPen Ledger) : gardés en V2.</p></div>
+    <div class="card"><h3>ShellPoint Coastal</h3><p>Score assurantiel « débris et épaves » pour l'immobilier de Floride : le lien avec la tarification n'est pas sourcé.</p></div>
+  </div>
+</section>
+
+<!--PIEGES-->
+
+<section class="block" id="plan">
+  <span class="eyebrow">Passer à l'action</span>
+  <h2>Trente jours à Vancouver pour trancher entre trois idées</h2>
+  <div class="prose"><p>Pas de développement avant d'avoir entendu des clients. Chaque semaine cible une idée du haut du classement et un test que vous pouvez faire seul, avec moins de 1 000 $ de matériel loué ou emprunté.</p></div>
+  <div class="q"><div class="qq">Semaine 1 · GhostSonar : deux clubs de plongée, Emerald Sea Protection Society, Ocean Legacy</div><div class="qw"><b>Test :</b> louer un sondeur à sonar latéral, relever un site connu de casiers perdus avec un club, montrer la détection brute. <b>Question :</b> « Comment avez-vous choisi vos sites de récupération l'an dernier, et qu'avez-vous mis dans votre rapport au MPO ? » <b>Critère :</b> deux organismes acceptent de partager leurs logs et un accepte un pilote payant, même symbolique.</div></div>
+  <div class="q"><div class="qq">Semaine 2 · FloatWatch : trois marinas de Vancouver et Steveston Harbour Authority</div><div class="qw"><b>Test :</b> survol drone d'une marina avec autorisation, comptage manuel des flotteurs dégradés, rapport d'une page. <b>Question :</b> « Quand avez-vous remplacé vos flotteurs pour la dernière fois, combien cela a coûté, et qui vous a demandé de le faire ? » <b>Critère :</b> une marina achète l'audit à 500 $ et Steveston accepte un suivi.</div></div>
+  <div class="q"><div class="qq">Semaine 3 · NetPen Ledger et TireWatch : Mowi ou Cermaq, Ville de Vancouver, Pacific Salmon Foundation</div><div class="qw"><b>Test :</b> un entretien avec un responsable environnement d'opérateur et un avec un ingénieur eaux pluviales municipal. <b>Question :</b> « Qui documente aujourd'hui le démantèlement d'un site, et sous quel format ? » puis « Où placeriez-vous votre prochain ouvrage de biofiltration, et sur quelle donnée ? » <b>Critère :</b> une ligne budgétaire ou un pilote 2027 nommé.</div></div>
+  <div class="q"><div class="qq">Semaine 4 · MicroScreen : un laboratoire de la UBC et un distributeur d'eau californien à distance</div><div class="qw"><b>Test :</b> dix échantillons colorés au Nile red, photographiés avec une caméra microscope à 150 $, comptés par un premier modèle, comparés au comptage du laboratoire. <b>Question :</b> « Combien d'heures d'analyste par échantillon, et que feriez-vous d'un pré-comptage à 100 $ ? » <b>Critère :</b> corrélation supérieure à 0,8 sur dix échantillons et un labo prêt à payer un abonnement.</div></div>
+  <div class="prose" style="margin-top:22px"><p>À la fin du mois, gardez l'idée qui a produit un engagement écrit (pilote, bon de commande, lettre d'intention) et rangez les autres dans un tiroir daté. La société se construit sur une seule.</p></div>
+</section>
+
+<section class="block" id="methode">
+  <span class="eyebrow">Méthode et sources</span>
+  <h2>Comment ce second rapport a été produit, et ce qu'il faut vérifier avant d'agir</h2>
+  <div class="prose" style="margin-bottom:22px"><p>Huit agents de recherche ont travaillé en parallèle sur un brief commun qui décrit votre situation, avec un budget de douze recherches web chacun et des sources officielles en priorité. L'orchestrateur a consolidé douze idées en excluant les douze premières, puis trois agents critiques les ont notées, corrigées et confrontées à un axe « adéquation fondateur ». Dossiers, liste courte et verdicts sont dans le dépôt sous <span class="mono">ocean-plastic-2/</span>.</p></div>
+  <div class="agents">
+    <div><div class="a">canada-pnw</div><p>15 leviers fédéraux et provinciaux, WAHVA, MPO, aquaculture, Washington, Oregon, acteurs locaux.</p></div>
+    <div><div class="a">florida-gulf</div><p>FWC, §823.11, FEMA, contractants, NFWF, Keys, Nurdle Patrol, sargasses.</p></div>
+    <div><div class="a">california-usa</div><p>SB 1422, OPC, DTSC 6PPD, SAVE, contentieux, MDMAP, vide fédéral EPA, Alaska.</p></div>
+    <div><div class="a">europe-new</div><p>Microfibres textiles, REACH 2023/2055, APER, Méditerranée, UK, Norvège, Horizon Europe.</p></div>
+    <div><div class="a">tech-detection</div><p>Sonar grand public, ROV, microscopie, NIR, drones, capteurs 6PPD, grille d'effort solo.</p></div>
+    <div><div class="a">markets-mrv</div><p>Chaîne de valorisation, prix absents, exigences des bailleurs, acheteurs de données.</p></div>
+    <div><div class="a">aquaculture-marinas</div><p>Transition saumon 2029, Baynes Sound, SB 5022, AB 2916, ports pour petits bateaux, labels.</p></div>
+    <div><div class="a">microplastics-water</div><p>SB 1422, UE 2024/3019 et 2024/1441, CCL 6, 6PPD-quinone, marché de la mesure, laboratoires.</p></div>
+  </div>
+  <div class="prose" style="margin:26px 0 22px">
+    <p><b>Limites à connaître.</b> Plusieurs chiffres restent des estimations marquées dans les dossiers : tonnage des fermes à démanteler, nombre de marinas de Washington, de stations européennes de plus de 10 000 EH, de laboratoires ELAP, seuils de l'affichage environnemental textile (source unique). Plusieurs leviers sont des programmes de subvention, pas des obligations : le rapport le dit à chaque fois. Le décret français sur les filtres de lave-linge n'est pas publié. Toute décision d'investissement doit repartir des textes et des sites officiels cités.</p>
+  </div>
+  <h4 style="margin-bottom:12px">Textes et sources de référence</h4>
+  <ul class="src">
+    <li><b>Fonds engins fantômes du MPO</b> : canada.ca (20/05/2026), lignes directrices dfo-mpo.gc.ca, newswire (26 lauréats 2020-2022).</li>
+    <li><b>Transition aquaculture C.-B.</b> : canada.ca (19/06/2024), pac.dfo-mpo.gc.ca, Ha-Shilth-Sa (03/2024, 03/2026), FishFarmingExpert.</li>
+    <li><b>Conditions de licence conchylicole 2025</b> : pac.dfo-mpo.gc.ca ; Baynes Sound : CheckNews, CBC, National Observer, Campbell River Mirror.</li>
+    <li><b>WAHVA et Programme de bateaux abandonnés</b> : tc.canada.ca ; Radio-Canada (07/2021).</li>
+    <li><b>Washington</b> : ecology.wa.gov (docks and blocks, 6PPD), lawfilesext.leg.wa.gov (E2SSB 5022, HB 2421, SB 6119), dnr.wa.gov (DVRP), King5, Islands' Sounder (29/03/2026).</li>
+    <li><b>Californie</b> : waterboards.ca.gov (SB 1422), opc.ca.gov (16/06/2026), dtsc.ca.gov (6PPD), dbw.parks.ca.gov (SAVE), leginfo (AB 2916), oag.ca.gov, counsel.lacounty.gov.</li>
+    <li><b>Fédéral américain</b> : epa.gov (CCL 6, UCMR 6), Arnold &amp; Porter, Holland &amp; Knight ; marinedebris.noaa.gov (MDMAP, Alaska) ; nfwf.org.</li>
+    <li><b>Floride</b> : myfwc.com (derelict vessels, trap retrieval), flsenate.gov §823.11, fema.gov (fact sheet 074), pinellas.gov, gao.gov B-418693, marinesanctuary.org.</li>
+    <li><b>Contentieux</b> : climatecasechart.com, plasticslitigationtracker.org, The Daily Record (29/07/2026, Baltimore).</li>
+    <li><b>Europe</b> : eur-lex (2024/3019, 2024/1441, 2023/2055, 2019/1009), Légifrance (AGEC art. 79), Sénat (Q 08656), Bateaux.com et Polyvia (APER), SINTEF (2026), gov.scot (05/2026), Pew (12/2025).</li>
+    <li><b>Technologies</b> : GhostVision (MDPI JMSE 2026), AI4Shipwrecks (arXiv 2401.14546), Fish-Finders for Stewardship (UDel), MP-VAT (Science of the Total Environment), siMPle, xBD (arXiv 1911.09296), USGS Oregon (6PPD), ACS ES&amp;T Water 2025, Blue Robotics, QYSEA, Chasing.</li>
+    <li><b>Marchés</b> : oceanlegacy.ca, netyourproblem.com, oceanworks.co, obpcert.org, recyclass.eu, fulcrumapp.com, MarketsAndMarkets (analyse des microplastiques), Ocean Wise Impact Report 2025.</li>
+  </ul>
+</section>
+
+</main>
+</div>
+<footer>Atlas Océan Plastique II · seconde passe d'idéation, septembre 2026 · aucune implémentation · chiffres et dates à revérifier sur les sites officiels avant décision</footer>
+
+<script>
+(function(){
+  var data=[
+    {n:1,name:"GhostSonar",fam:1,effort:5,score:27,price:30,d:"Sonar grand public et IA · engins fantômes"},
+    {n:2,name:"GrantMRV",fam:1,effort:4,score:24,price:30,d:"Rapports automatiques pour bénéficiaires"},
+    {n:3,name:"NetPen Ledger",fam:1,effort:5.7,score:27,price:36,d:"Démantèlement des fermes de saumon 2029"},
+    {n:4,name:"FloatWatch",fam:2,effort:4,score:27,price:40,d:"Flotteurs en polystyrène · WA et MPO"},
+    {n:5,name:"VesselRisk",fam:2,effort:6.2,score:25,price:60,d:"Bateaux abandonnés · registre transfrontalier"},
+    {n:6,name:"StormDebris",fam:2,effort:5.5,score:25,price:15,d:"Débris après tempête · FEMA et FWC"},
+    {n:7,name:"MicroScreen",fam:3,effort:6.3,score:27,price:24,d:"Microplastiques · SB 1422 et UE 2027"},
+    {n:8,name:"TireWatch",fam:3,effort:7,score:26,price:120,d:"6PPD-quinone · eaux pluviales et saumon"},
+    {n:9,name:"CoastalTrace",fam:3,effort:6.8,score:25,price:150,d:"Preuves par marque · contentieux et PRO"},
+    {n:10,name:"PolyID",fam:1,effort:7.5,score:24,price:30,d:"Polymères et prix du plastique marin"},
+    {n:11,name:"FiberScore",fam:3,effort:7.8,score:25,price:8,d:"Microfibres textiles · France et ESPR"},
+    {n:12,name:"HullCycle",fam:2,effort:6.5,score:22,price:40,d:"Fin de vie des bateaux composites · APER"}
+  ];
+  var svg=document.querySelector('#bubble svg');if(!svg)return;
+  var NS='http://www.w3.org/2000/svg';
+  var W=780,H=460,L=64,R=24,T=20,B=56;
+  var x0=2,x1=10,y0=16,y1=30;
+  function X(v){return L+(v-x0)/(x1-x0)*(W-L-R)}
+  function Y(v){return T+(1-(v-y0)/(y1-y0))*(H-T-B)}
+  function el(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e}
+  var g=el('g',{});svg.appendChild(g);
+  var cs=getComputedStyle(document.documentElement);
+  var ink3=cs.getPropertyValue('--ink-3').trim(),line=cs.getPropertyValue('--line').trim(),ink=cs.getPropertyValue('--ink').trim();
+  for(var v=2;v<=10;v+=2){g.appendChild(el('line',{x1:X(v),x2:X(v),y1:T,y2:H-B,stroke:line,'stroke-width':1}));
+    var t=el('text',{x:X(v),y:H-B+18,'text-anchor':'middle','font-size':11,fill:ink3});t.textContent=v;g.appendChild(t);}
+  for(var w=16;w<=30;w+=2){g.appendChild(el('line',{x1:L,x2:W-R,y1:Y(w),y2:Y(w),stroke:line,'stroke-width':1}));
+    var t2=el('text',{x:L-10,y:Y(w)+4,'text-anchor':'end','font-size':11,fill:ink3});t2.textContent=w;g.appendChild(t2);}
+  var ax=el('text',{x:(L+W-R)/2,y:H-14,'text-anchor':'middle','font-size':11,fill:ink3,'letter-spacing':'.08em'});ax.textContent='EFFORT MVP EN SOLO (MOIS-INGÉNIEUR, POINT MÉDIAN)';g.appendChild(ax);
+  var ay=el('text',{x:14,y:(T+H-B)/2,'text-anchor':'middle','font-size':11,fill:ink3,'letter-spacing':'.08em',transform:'rotate(-90 14 '+((T+H-B)/2)+')'});ay.textContent='SCORE ORCHESTRATEUR (7 AXES) /35';g.appendChild(ay);
+  var cols={1:'var(--s1)',2:'var(--s2)',3:'var(--s3)'};
+  var tip=document.getElementById('tip'),wrap=document.getElementById('bubble');
+  var left={3:1,5:1,9:1,11:1}, below={2:1,6:1,12:1}, above={10:1};
+  data.slice().sort(function(a,b){return b.price-a.price}).forEach(function(d){
+    var r=6+Math.sqrt(d.price)*1.2;
+    var c=el('circle',{cx:X(d.effort),cy:Y(d.score),r:r,fill:cols[d.fam],'fill-opacity':.8,stroke:'var(--surface)','stroke-width':2,tabindex:0});
+    var lab=el('text',{x:X(d.effort),y:Y(d.score)+4,'text-anchor':'middle','font-size':10,'font-weight':600,fill:'#fff','pointer-events':'none'});
+    lab.textContent=String(d.n).padStart(2,'0');
+    var name=el('text',{x:X(d.effort)+r+5,y:Y(d.score)+4,'font-size':11.5,fill:ink,'font-family':'Bricolage Grotesque, Helvetica Neue, Arial, sans-serif','font-weight':600,'pointer-events':'none'});
+    name.textContent=d.name;
+    if(left[d.n]){name.setAttribute('x',X(d.effort)-r-5);name.setAttribute('text-anchor','end');}
+    if(below[d.n]){name.setAttribute('x',X(d.effort));name.setAttribute('y',Y(d.score)+r+13);name.setAttribute('text-anchor','middle');}
+    if(above[d.n]){name.setAttribute('x',X(d.effort));name.setAttribute('y',Y(d.score)-r-6);name.setAttribute('text-anchor','middle');}
+    function show(){tip.innerHTML='<b>'+String(d.n).padStart(2,'0')+' · '+d.name+'</b>'+d.d+'<br>Effort ~'+d.effort+' m-i · score '+d.score+'/35<br>Revenu max estimé '+d.price+' k$ par client et par an';
+      var bb=wrap.getBoundingClientRect(),pt=c.getBoundingClientRect();
+      tip.style.left=Math.min(pt.left-bb.left+r+12,bb.width-280)+'px';tip.style.top=(pt.top-bb.top-10)+'px';tip.style.opacity=1;}
+    function hide(){tip.style.opacity=0}
+    c.addEventListener('mouseenter',show);c.addEventListener('mousemove',show);c.addEventListener('mouseleave',hide);c.addEventListener('focus',show);c.addEventListener('blur',hide);
+    c.addEventListener('click',function(){location.hash='#idee-'+d.n});c.style.cursor='pointer';
+    g.appendChild(c);g.appendChild(lab);g.appendChild(name);
+  });
+  var links=[].slice.call(document.querySelectorAll('nav.rail a'));
+  var map={};links.forEach(function(a){var id=a.getAttribute('href').slice(1);map[id]=a});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.remove('on')});var a=map[e.target.id];if(a)a.classList.add('on');}})},{rootMargin:'-20% 0px -70% 0px'});
+    Object.keys(map).forEach(function(id){var s=document.getElementById(id);if(s)io.observe(s)});
+  }
+})();
+</script>
