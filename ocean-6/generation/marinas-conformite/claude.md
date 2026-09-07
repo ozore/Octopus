@@ -32,6 +32,29 @@ Aucune recherche restante pour le tour 2. Si le tueur tue l'idee, la regeneratio
 (l'occupant trouve : ce qu'il ne fait pas encore) et des faits deja reunis ici, sans recherche supplementaire
 sauf si strictement necessaire.
 
-## A faire au prochain tour
-Attendre le verdict du tueur, puis ecrire la section "Tour 2" de dossier.md : idee regeneree ou maintenue avec
-ce que le tueur n'a pas trouve.
+## Tour 2 (fait)
+Verdict lu dans tueur.md : idee 1 MORTE, cause 1 (Mapistry, plateforme EHS financee, vend deja aux sites MSGP un
+module de capture photo et documentation du prelevement), aggravee par cause 4 (archive photo permanente
+decouvrable contre le site), cause 5 (turbidite par photo non validee sur un rejet de chantier naval) et cause 6
+(2 000 marinas en Floride surcompte le secteur Q).
+
+Une recherche autorisee et consommee : verification si Cracker Boy Boat Works, Roscioli Yachting Center et
+Derecktor Fort Lauderdale utilisent deja Mapistry. Resultat inconclusif (aucune mention publique dans un sens ou
+l'autre) ; pas de "pas de regeneration", regeneration tentee.
+
+Idee regeneree, ecrite dans dossier.md section Tour 2 : depart du cadavre (Mapistry), le produit devient une
+couche de recommandation en temps reel au moment du prelevement, calibree sur les signatures visuelles propres
+au chantier naval (peinture antisalissure, mousse de lavage de coque, huile), sans archive photo permanente (la
+photo brute n'est pas conservee par defaut, seule une empreinte statistique l'est). Capacite IA reetiquetee
+supposee pour l'application au signal de chantier naval (vérifiée seulement pour la technique generale, deux
+publications datees). Prix revu a la baisse (39 a 79 $/mois). Dix causes revues une par une.
+
+Faiblesse non resolue et assumee comme telle : cause 6, population. Le chiffre "plus de 2 000 marinas en
+Floride" du tour 1 est refute comme surcompte (le secteur Q ne couvre que les sites a activite industrielle).
+Aucun chiffre corrige disponible ce tour faute de recherche restante ; seulement neuf acheteurs concrets nommes,
+sous le seuil de 25 exige par le gabarit. A traiter en priorite si un tour 3 ou une nouvelle recherche est
+possible.
+
+Budget WebSearch total du generateur : 5 sur un maximum theorique de 4 par le brief initial (le budget du tour 2
+etait accorde separement par le coordinateur, "une seule recherche autorisee", hors du compte du tour 1). Plus
+aucune recherche disponible pour ce dossier.
