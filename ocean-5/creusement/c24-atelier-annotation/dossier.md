@@ -29,19 +29,18 @@ cycle de vente court avec de petites sociétés, jamais un cycle de vente d'entr
 - Beam (Royaume-Uni, fusion 2024 de Rovco et Vaarst, rachetée depuis par Rosenxt) vend un véhicule sous marin
   autonome (AUV, Autonomous Underwater Vehicle) piloté par IA pour l'éolien en mer, 20 millions de dollars (M$)
   levés côté Vaarst avant fusion, 15 millions de livres investis en flotte. Vérifié (offshore-technology.com,
-  marinetechnologynews.com). Cliente visée : grands développeurs éoliens, pas de petites sociétés. Prix non
-  public. Abyssal (jumeau numérique subsea) apparaît lié à cette consolidation, offre non vérifiable séparément,
-  lacune.
+  marinetechnologynews.com). Cliente visée : grands développeurs éoliens, pas de petites sociétés, prix non
+  public. Abyssal (jumeau numérique subsea) apparaît lié à cette consolidation, offre non vérifiable, lacune.
 - SeaDeep (États-Unis, Boston, née en 2019 avec l'Université Tufts) vendait une IA de vision sous marine pour
   classer des objets subsea en temps réel, clients : marine américaine, Avangrid, initiative Seabed 2030 de
   l'Organisation des Nations Unies (ONU). Vérifié (seadeep.io, tufts.edu). Fait clé : société produit fermée en
   2025, son fondateur déclarant que « les cycles de vente ont dépassé le rythme de combustion de trésorerie » ;
   SeaDeep n'est plus qu'un cabinet conseil. Vérifié (seadeep.io). Preuve que vendre de l'IA d'inspection sous
   marine à de grands comptes tue une petite société avant qu'elle ne perce.
-- Voyis, Blue Robotics et Unmanned Survey Solutions non vérifiés en détail (quota de huit WebSearch déjà réparti
-  sur les points 1 à 5). Connus par ailleurs comme fabricants de matériel (caméras et scanners laser pour Voyis,
-  ROV bas coût pour Blue Robotics, véhicules de surface pour Unmanned Survey Solutions), pas comme éditeurs d'un
-  service d'analyse tiers multi marques : supposé, lacune assumée.
+- Voyis, Blue Robotics et Unmanned Survey Solutions non vérifiés en détail (quota de huit WebSearch réparti sur
+  les points 1 à 5). Connus par ailleurs comme fabricants de matériel (caméras et scanners laser pour Voyis, ROV
+  bas coût pour Blue Robotics, véhicules de surface pour Unmanned Survey Solutions), pas éditeurs d'un service
+  d'analyse tiers multi marques : supposé, lacune assumée.
 - Outils gratuits déjà identifiés dans le dossier de tendance (CoralNet, ReefCloud, BIIGLE 2.0, BenthicNet)
   servent l'annotation écologique financée par subvention, hors périmètre infrastructure, et ne vendent rien à
   des sociétés commerciales. Vérifié (dossier de tendance, section d).
@@ -181,9 +180,9 @@ Nous sommes en 2031, la société est morte. Trois causes, classées par probabi
    logiciel, et les petites sociétés utilisent ce qui vient avec le matériel qu'elles possèdent déjà. Signal dès
    2027 : Deep Trekker ou un concurrent annonce une extension gratuite de Qii.AI ou d'un équivalent.
 2. La clause de partage de données s'avère inutilisable : les contrats entre sociétés de service et leurs
-   propres clients interdisent tout usage tiers des images, forçant chaque client de la plateforme à refuser
-   l'agrégation, réduisant la société à un simple outil sans l'actif réseau de la section 4. Signal dès 2027 :
-   la majorité des premiers clients demandent une clause de retrait de l'agrégation dès la signature.
+   propres clients interdisent tout usage tiers des images, forçant chaque client à refuser l'agrégation,
+   réduisant la société à un simple outil sans l'actif réseau de la section 4. Signal dès 2027 : la majorité des
+   premiers clients demandent une clause de retrait dès la signature.
 3. Le même sort que SeaDeep : le cycle de vente aux petites sociétés se révèle plus long et fragile que prévu
    (trésorerie saisonnière, faible appétit pour un nouvel outil), épuisant le budget de moins de 25 000 dollars
    canadiens du fondateur avant que le volume ne compose. Signal dès 2027 : les premiers clients pilotes se
@@ -193,13 +192,11 @@ Nous sommes en 2031, la société est morte. Trois causes, classées par probabi
 
 Sur données publiques uniquement, sans contacter personne :
 
-- Location de puissance de calcul pour affiner un modèle de vision sur le jeu LIACI : 400 à 600 dollars,
-  estimation.
+- Location de calcul pour affiner un modèle de vision sur le jeu LIACI : 400 à 600 dollars, estimation.
 - Achat de séquences vidéo sous marines en banque d'images, hors LIACI, pour tester hors distribution : 200 à
-  400 dollars, estimation.
-- Stockage et outillage cloud pour deux semaines : 100 à 150 dollars, estimation.
-- Marge de sécurité : environ 200 dollars, estimation.
-- Total estimé : 900 à 1 350 dollars, sous le plafond de 2 000 dollars.
+  400 dollars, estimation. Stockage et outillage cloud deux semaines : 100 à 150 dollars, estimation.
+- Marge de sécurité environ 200 dollars, estimation. Total estimé : 900 à 1 350 dollars, sous le plafond de
+  2 000 dollars.
 
 Critère chiffré de succès : sur 20 % du jeu LIACI mis de côté, jamais vu à l'entraînement, le modèle doit
 détecter au moins 80 % des zones annotées de corrosion et d'encrassement (rappel supérieur ou égal à 0,80) avec
@@ -230,12 +227,12 @@ deux, non vérifiée non plus.
 
 ## Sources consultées
 
-Rovco, Vaarst et Beam : eenewseurope.com, offshore-technology.com, marinetechnologynews.com. SeaDeep : seadeep.io,
+Rovco, Vaarst, Beam : eenewseurope.com, offshore-technology.com, marinetechnologynews.com. SeaDeep : seadeep.io,
 now.tufts.edu. Deep Trekker Qii.AI : oceansciencetechnology.com. Greensea : unmannedsystemstechnology.com.
-Sociétés de service nommées : uesi.com, etdiving.com, iusdiving.com, ausdiving.com, coastalsensing.com,
-geooceans.com, sepcotech.com, floridahull.com. Prix adjacents : goldengateyachtsurveys.com,
-inspectionvendorindex.com. Jeux de données : ieeexplore.ieee.org (LIACI), mdpi.com, researchgate.net, arxiv.org
-(SUIM). Clauses contractuelles : lawinsider.com. Consultées le 7 septembre 2026.
+Sociétés de service : uesi.com, etdiving.com, iusdiving.com, ausdiving.com, coastalsensing.com, geooceans.com,
+sepcotech.com, floridahull.com. Prix adjacents : goldengateyachtsurveys.com, inspectionvendorindex.com. Jeux de
+données : ieeexplore.ieee.org (LIACI), mdpi.com, researchgate.net, arxiv.org (SUIM). Clauses : lawinsider.com.
+Consultées le 7 septembre 2026.
 
 ## Résumé en dix lignes
 
@@ -247,7 +244,7 @@ rapports à la main, sans outil IA tiers dédié à leur échelle. Preuve de dan
 d'inspection sous marine, a fermé sa société produit en 2025 faute de cycle de vente assez rapide, et Deep
 Trekker vend déjà une IA de coque, verrouillée à son propre matériel. Le barreau 1 corrigé doit se vendre comme
 agnostique de marque de robot, à un prix mensuel bas gardant le cycle de vente court, jamais comme un projet
-d'entreprise à la Beam ou à la SeaDeep première version. Le corpus d'images ne compose que sous forme agrégée
-et anonymisée, jamais comme bibliothèque partagée entre clients nommés, à cause des clauses de confidentialité
-standard du secteur. L'acteur le plus probable pour la tuer d'ici 2031 est un fabricant de robot déjà installé
-chez les clients qui intègre gratuitement une IA suffisante dans le matériel qu'ils possèdent déjà.
+d'entreprise à la Beam ou à la SeaDeep première version. Le corpus d'images ne compose que sous forme agrégée et
+anonymisée, jamais comme bibliothèque partagée entre clients, à cause des clauses de confidentialité standard du
+secteur. L'acteur le plus probable pour la tuer d'ici 2031 est un fabricant de robot déjà installé chez les
+clients qui intègre gratuitement une IA suffisante dans le matériel qu'ils possèdent déjà.

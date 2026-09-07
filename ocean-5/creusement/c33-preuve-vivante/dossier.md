@@ -15,35 +15,31 @@ Aucun acteur trouvé ne vend un service commercial de comptage de survie par vis
 formaté pour un permis américain précis, spécifique à l'huître ou au rivage vivant, à un tiers externe.
 Mais le terrain n'est pas vide :
 
-- Ecological Consulting Services Inc (ECS, cabinet privé de Pensacola, Floride) fait déjà le geste
-  manuel depuis plus de 15 ans : suivi des projets de restauration d'huîtres de Pensacola Bay, relevé
-  drone sous licence de l'Federal Aviation Administration (FAA), montage de rapports pour permis
-  (vérifié, ecologicalconsultingservices.com, consulté le 7 septembre 2026). C'est le concurrent le plus
-  probable si l'automatisation existe : un cabinet qui détient déjà la relation client et l'archive de
-  photos peut l'internaliser plus vite qu'un fondateur externe ne peut la vendre.
-- Ocean Consulting FL (cabinet privé, plus de 20 ans d'expérience en relevé environnemental côtier en
-  Floride, Caraïbes, Bahamas) fait un travail comparable (lu, oceanconsultingfl.com).
-- CoralNet (outil gratuit, Scripps Institution of Oceanography, financé par recherche publique) classe
-  la couverture corallienne par apprentissage automatique avec une corrélation de Pearson supérieure à
-  0,97 contre un analyste humain, sur le corail, pas sur l'huître ni le rivage vivant (vérifié, papier
-  ICCV 2021 « A New Deep Learning Engine for CoralNet », openaccess.thecvf.com). Aucune extension huître
-  ou rivage vivant identifiée cette session. Des outils académiques de détection de zostère par
-  apprentissage profond existent aussi (voir section 3), publiés en recherche, non commercialisés.
-- ReefCloud (Australian Institute of Marine Science, AIMS, agence publique australienne) et Restor
-  (plateforme mondiale de suivi de sites) restent, comme déjà établi dans le dossier de tendance, hors du
-  périmètre huître ou rivage vivant américain : ReefCloud vérifié sur le corail seulement ; Restor non
-  vérifié cette session, traité comme connaissance générale non confirmée.
-- Ecosystem Investment Partners (EIP) et EarthBalance, les deux sponsors de banques de compensation
-  cités par la mission, opèrent en Floride surtout des banques de zones humides d'eau douce (Boran
-  Ranch, Peace River, Horse Creek), suivi fait en interne par leurs propres écologistes (vérifié,
-  ecosystempartners.com et earthbalance.com). Aucune banque huître ou rivage vivant confirmée pour ces
-  deux sponsors précis cette session.
+- Ecological Consulting Services Inc (ECS, cabinet privé, Pensacola, Floride) fait déjà le geste manuel
+  depuis plus de 15 ans : suivi des restaurations d'huîtres de Pensacola Bay, relevé drone sous licence
+  Federal Aviation Administration (FAA), montage de rapports pour permis (vérifié,
+  ecologicalconsultingservices.com). C'est le concurrent le plus probable si l'automatisation existe : un
+  cabinet qui détient déjà la relation client et l'archive de photos peut l'internaliser plus vite qu'un
+  fondateur externe ne peut la vendre.
+- Ocean Consulting FL (cabinet privé, plus de 20 ans d'expérience côtière en Floride, Caraïbes, Bahamas)
+  fait un travail comparable (lu, oceanconsultingfl.com).
+- CoralNet (outil gratuit, Scripps Institution of Oceanography, recherche publique) classe la couverture
+  corallienne par apprentissage automatique avec une corrélation de Pearson supérieure à 0,97 contre un
+  humain, sur le corail, pas sur l'huître ni le rivage vivant (vérifié, ICCV 2021, openaccess.thecvf.com).
+  Aucune extension huître ou rivage vivant identifiée. Des outils académiques de détection de zostère par
+  apprentissage profond existent aussi (section 3), publiés en recherche, non commercialisés.
+- ReefCloud (AIMS, agence publique australienne) et Restor (plateforme mondiale de suivi de sites)
+  restent, comme déjà établi dans le dossier de tendance, hors du périmètre huître ou rivage vivant
+  américain : ReefCloud vérifié sur le corail seulement ; Restor non vérifié cette session.
+- Ecosystem Investment Partners (EIP) et EarthBalance, sponsors cités par la mission, opèrent en Floride
+  surtout des banques de zones humides d'eau douce (Boran Ranch, Peace River, Horse Creek), suivi fait en
+  interne par leurs écologistes (vérifié, ecosystempartners.com, earthbalance.com). Aucune banque huître
+  ou rivage vivant confirmée pour ces deux sponsors cette session.
 
-Conclusion de l'étape 1 : le barreau 1 n'est pas déjà vendu tel quel, mais le marché de vrais sponsors de
-banques de compensation dédiées à l'huître ou au rivage vivant en Floride est plus étroit que ce que le
-dossier de tendance supposait (voir section 2). Le risque principal n'est pas un concurrent qui vend
-déjà, c'est un cabinet généraliste comme ECS qui internalise l'automatisation avant qu'un acheteur externe
-n'ait de raison de payer un tiers.
+Conclusion de l'étape 1 : le barreau 1 n'est pas déjà vendu tel quel, mais le marché de sponsors de
+banques dédiées à l'huître ou au rivage vivant en Floride est plus étroit que supposé (section 2). Le
+risque principal n'est pas un concurrent qui vend déjà, c'est un cabinet généraliste comme ECS qui
+internalise l'automatisation avant qu'un acheteur externe n'ait de raison de payer un tiers.
 
 ## 2. Le client du barreau 1 : trois acheteurs, remplacement du port de Tampa Bay
 
@@ -52,33 +48,25 @@ comme premier client). Recherche de remplacement par trois entreprises privées,
 imposées (sponsor de banque de compensation, promoteur sous obligation, entreprise de restauration comme
 maître d'œuvre) :
 
-1. Entreprise de restauration comme maître d'œuvre, le candidat le plus solide : Ecological Consulting
-   Services Inc (ECS, Pensacola, Floride). Elle facture déjà, à l'heure ou au projet, le suivi manuel de
-   récifs d'huîtres et de rivages vivants pour ses clients (agences, promoteurs) depuis plus de 15 ans
-   (vérifié, ecologicalconsultingservices.com). L'interdit du fondateur écarte de vendre un simple gain
-   de productivité à qui facture l'heure, sauf comme capacité nouvelle qu'il revend : ici la raison
-   d'achat précise est que le rapport formaté et daté, produit plus vite et sur plus de sites avec la
-   même équipe, devient un argument commercial pour gagner plus de contrats de suivi, pas seulement pour
-   gagner du temps sur les contrats existants. Cette nuance doit être écrite dans l'offre commerciale.
-2. Sponsor de banque de compensation privé le plus proche trouvé en Floride : Mangrove Point Mitigation
-   Bank, banque estuarienne privée de 469 acres, crédits d'eau salée, présentée comme « projet de
-   restauration estuarienne de premier plan » (lu, floridamitigationbanking.org/members, contact nommé
-   Aaron Landry). C'est l'analogue le plus proche trouvé d'un sponsor de banque huître ou rivage vivant :
-   ses crédits sont en mangrove et eau salée, pas en huître au sens strict, ce qui est noté comme limite
-   honnête plutôt que comme correspondance exacte. Sur l'annuaire complet de la Florida Association of
-   Mitigation Bankers (FAMB), seules deux banques sur l'ensemble touchent au côtier ou à l'estuarien ;
-   aucune n'est purement huître ou rivage vivant (vérifié, floridamitigationbanking.org/members). Ce
-   constat, pas prévu au départ, réduit le nombre réel de sponsors de banques pertinents pour ce produit
-   précis en Floride.
-3. Promoteur privé sous obligation directe de permis : catégorie confirmée mais nom précis non trouvé
-   cette session. La Floride impose des conditions de rivage vivant dans l'Environmental Resource Permit
-   (ERP) de la Florida Department of Environmental Protection (FDEP, agence de l'État de Floride pour la
-   protection de l'environnement) pour des promoteurs privés riverains (mécanisme vérifié via le guide
-   d'évaluation de l'University of Florida, IFAS, publication SL481/SS694, ask.ifas.ufl.edu). Deux
-   requêtes distinctes et une tentative de récupération d'un plan de compensation précis (San Diego, pour
-   la zostère) n'ont pas donné de nom d'entreprise privée précis : lacune assumée. Le premier appel de
-   vente pour ce troisième acheteur devra commencer par une recherche de permis ERP publiés par comté en
-   Floride (FDEP publie ses permis), pas par une recherche web générale.
+1. Entreprise de restauration comme maître d'œuvre, candidat le plus solide : Ecological Consulting
+   Services Inc (ECS, Pensacola, Floride). Elle facture déjà, à l'heure ou au projet, le suivi manuel
+   d'huîtres et de rivages vivants pour ses clients depuis plus de 15 ans (vérifié,
+   ecologicalconsultingservices.com). L'interdit du fondateur écarte le gain de productivité vendu à qui
+   facture l'heure, sauf comme capacité nouvelle revendue : ici, un rapport plus rapide sur plus de sites
+   devient un argument commercial pour gagner plus de contrats, pas seulement pour gagner du temps sur
+   l'existant. Nuance à écrire dans l'offre.
+2. Sponsor de banque de compensation privé le plus proche trouvé : Mangrove Point Mitigation Bank, banque
+   estuarienne privée de 469 acres, crédits d'eau salée (lu, floridamitigationbanking.org/members,
+   contact nommé Aaron Landry). Ses crédits sont en mangrove et eau salée, pas en huître au sens strict,
+   limite honnête plutôt que correspondance exacte. Sur l'annuaire complet de la Florida Association of
+   Mitigation Bankers (FAMB), seules deux banques touchent au côtier ou à l'estuarien, aucune purement
+   huître ou rivage vivant (vérifié). Constat imprévu qui réduit le nombre de sponsors pertinents.
+3. Promoteur privé sous obligation de permis : catégorie confirmée, nom précis non trouvé cette session.
+   La Floride impose des conditions de rivage vivant dans l'Environmental Resource Permit (ERP) de la
+   Florida Department of Environmental Protection (FDEP, agence d'État), pour des promoteurs riverains
+   privés (mécanisme vérifié, University of Florida IFAS, publication SL481/SS694). Deux requêtes et une
+   tentative sur un plan précis (San Diego, zostère) n'ont pas donné de nom d'entreprise : lacune
+   assumée. Premier appel de vente à commencer par une recherche de permis ERP publiés par comté.
 
 Différence de contexte, Canada : le régime comparable (Pêches et Océans Canada, DFO, programme de
 protection du poisson et de son habitat, Fisheries and Fish Habitat Protection Program, FFHPP) impose au
@@ -171,53 +159,43 @@ obligation pluriannuelle atteint une masse critique (dizaines de sites, deux cad
 Incertain si le marché huître ou rivage vivant reste aussi étroit qu'observé en section 2 : preuve, annuaire
 FAMB, deux banques côtières sur l'ensemble des membres listés.
 
-1. Qui signe, avec quelle ligne budgétaire existante ? ECS et les cabinets comparables ont une ligne
+1. Qui signe, avec quelle ligne budgétaire existante ? ECS et cabinets comparables ont une ligne
    budgétaire réelle de suivi et de relevé drone déjà en place (technicien à 18 à 24 $US/h, lu, section b
-   du dossier de tendance) ; les sponsors de banques de compensation ont une ligne de suivi à long terme
-   déjà budgétée dans leur instrument de banque (vérifié en principe par le texte USACE cité en section
-   3, montant précis non trouvé pour un site huître ou rivage vivant spécifique).
+   du dossier de tendance) ; les sponsors de banques ont une ligne de suivi long terme budgétée dans leur
+   instrument de banque (vérifié en principe, texte USACE, section 3 ; montant précis non trouvé pour un
+   site huître ou rivage vivant).
 2. La preuve se retourne-t-elle contre lui ? Oui en partie, incertain en partie. Un comptage plus fin peut
-   révéler un site en échec plus tôt qu'un rapport annuel manuel ne l'aurait fait, ce qui pourrait forcer
-   une dépense de remédiation ou retarder la libération de la caution. Réponse de conception : le produit
-   est vendu d'abord comme outil d'alerte précoce interne au client, pas comme flux automatiquement
-   transmis au régulateur ; le client choisit quand et quoi soumettre officiellement, ce qui limite le
-   risque que la preuve se retourne contre lui, tout en gardant la valeur de détecter un problème plus tôt
-   que la méthode manuelle actuelle (supposé comme stratégie de mise en marché, pas encore testé auprès
-   d'un client réel).
+   révéler un échec plus tôt qu'un rapport manuel, forçant une remédiation ou retardant la caution.
+   Réponse de conception : vendre d'abord comme outil d'alerte interne, pas comme flux automatique vers
+   le régulateur ; le client choisit quand soumettre, ce qui limite le retournement tout en gardant la
+   valeur de détection précoce (supposé comme stratégie, non testé auprès d'un client réel).
 3. L'IA est elle le produit ? Oui : le comptage automatisé remplace un geste humain payé à l'heure
-   aujourd'hui (technicien plongeur, 18 à 24 $US/h, lu, section b du dossier de tendance), et le rend plus
-   fréquent qu'un budget de plongée ne le permettrait seul.
+   (technicien plongeur, 18 à 24 $US/h, lu), et le rend plus fréquent qu'un budget de plongée seul.
 4. Existe t il gratuit ou déjà acheté ? Non pour la combinaison précise (huître ou rivage vivant, formaté
-   permis américain, vendu à un tiers) ; oui pour des briques adjacentes gratuites (CoralNet sur le
-   corail). Voir section 1.
-5. Faisable seul depuis Vancouver ? Oui pour le pipeline logiciel (vérifié en faisabilité générale par les
-   précisions citées en section 3) ; incertain pour la vente initiale, qui suppose des échanges à distance
-   avec des cabinets et sponsors basés en Floride ou en Californie, sans plongée ni présence physique du
-   fondateur (compatible avec les interdits du fondateur, qui autorisent la vente à distance).
-6. Une phrase sans acronyme ? Oui, formulée en tête de ce dossier et dans le dossier de tendance.
+   permis américain, vendu à un tiers) ; oui pour des briques adjacentes gratuites (CoralNet, corail).
+5. Faisable seul depuis Vancouver ? Oui pour le pipeline logiciel (faisabilité générale, section 3) ;
+   incertain pour la vente initiale, à distance avec des cabinets et sponsors en Floride ou Californie,
+   sans plongée ni présence physique du fondateur (compatible avec les interdits du fondateur).
+6. Une phrase sans acronyme ? Oui, formulée en tête de ce dossier.
 7. Revient il chaque année avec ses propres données ? Oui, tant que l'obligation de suivi minimum de cinq
-   ans (vérifiée, USACE) reste en vigueur pour chaque site client, ce qui crée un revenu récurrent naturel
-   indépendant d'une nouvelle vente.
+   ans (vérifiée, USACE) reste en vigueur par site, revenu récurrent indépendant d'une nouvelle vente.
 
 ## 6. Pré-mortem : 2031, la société est morte
 
 Trois causes, classées par probabilité :
 
-1. La plus probable : un cabinet généraliste déjà en place, du type ECS, construit ou achète une capacité
-   d'automatisation en interne avant que l'outil externe n'ait gagné assez de clients, parce qu'il détient
-   déjà les archives de photos et la relation de confiance avec les sponsors. Signal avant coureur
-   observable dès 2027 : un cabinet de suivi côtier annonce publiquement un outil de comptage automatisé
-   ou un partenariat avec un fournisseur de vision par ordinateur.
-2. Deuxième cause : le marché des sponsors de banques huître ou rivage vivant reste trop étroit (comme
-   observé en section 2, deux banques côtières sur l'ensemble de l'annuaire FAMB) pour atteindre la masse
-   critique de sites nécessaire à un actif longitudinal difficile à répliquer. Signal avant coureur : à la
-   fin 2028, moins de cinq sites clients payants au total, malgré des démarches actives.
-3. Troisième cause : les régulateurs continuent d'accepter les rapports manuels moins coûteux comme
-   suffisants, et aucun sponsor ne paie assez cher pour une preuve plus rigoureuse que ce que la loi
-   exige déjà, en particulier si la libération de caution ne s'accélère pas réellement en pratique malgré
-   la règle des deux rapports consécutifs (vérifiée en texte, pas vérifiée en pratique réelle sur un cas
-   huître ou rivage vivant précis cette session). Signal avant coureur : premier client qui n'observe
-   aucune accélération mesurable de sa libération de caution après deux ans d'usage de l'outil.
+1. La plus probable : un cabinet généraliste déjà en place, type ECS, construit ou achète la capacité en
+   interne avant que l'outil externe n'ait gagné assez de clients, car il détient déjà l'archive de photos
+   et la relation de confiance. Signal avant coureur, dès 2027 : un cabinet de suivi côtier annonce un
+   outil de comptage automatisé ou un partenariat vision par ordinateur.
+2. Deuxième cause : le marché des sponsors huître ou rivage vivant reste trop étroit (section 2, deux
+   banques côtières sur l'annuaire FAMB) pour la masse critique nécessaire à un actif difficile à
+   répliquer. Signal avant coureur : fin 2028, moins de cinq sites clients payants au total.
+3. Troisième cause : les régulateurs continuent d'accepter les rapports manuels comme suffisants, et
+   aucun sponsor ne paie plus cher qu'exigé, surtout si la libération de caution ne s'accélère pas en
+   pratique malgré la règle des deux rapports consécutifs (vérifiée en texte, pas en pratique réelle sur
+   un cas huître ou rivage vivant cette session). Signal avant coureur : premier client sans accélération
+   mesurable de sa libération de caution après deux ans d'usage.
 
 ## 7. Test à moins de 2000 dollars, deux semaines, données publiques
 
@@ -227,37 +205,34 @@ sur au moins 50 images test, sans contacter aucun sponsor ni cabinet.
 
 Sources de données publiques identifiées : rapports de l'Oyster Integrated Mapping and Monitoring Program
 (OIMMP, FWC, archive.myfwc.com, rapport 2019, lu cette session) ; jeux de données académiques déjà publiés
-associés aux papiers cités en section 3 (détecteur de zostère sous marine, Frontiers 2023 ; étude
-zostère-huître japonaise, arxiv.org/pdf/1909.02747) ; rapports de suivi RIBITS pour des banques
-individuelles, dont l'existence de photos brutes annexées, et pas seulement de texte narratif, n'a pas été
-vérifiée cette session : lacune assumée, à vérifier en premier lieu au démarrage du test, avant tout achat
-de calcul.
+liés aux papiers de la section 3 (détecteur de zostère, Frontiers 2023 ; étude zostère-huître japonaise,
+arxiv.org/pdf/1909.02747) ; rapports RIBITS par banque, dont la présence de photos brutes annexées, et pas
+seulement de texte narratif, n'a pas été vérifiée cette session : lacune assumée, à vérifier en premier
+au démarrage du test, avant tout achat de calcul.
 
-Méthode : télécharger un jeu de photoquadrats académique déjà publié comme celui le mieux documenté
-(détecteur de zostère, méthode de classification de densité), réutiliser ou réentraîner légèrement un
-modèle de vision par ordinateur pré entraîné (budget de calcul cloud estimé sous 300 $US), comparer les
-comptages produits aux comptages humains déjà publiés dans le même papier. Coût total estimé sous 2000 $US
-en incluant du temps de calcul supplémentaire pour un deuxième jeu de données si le premier échoue
-(estimation). Si le critère de 85% est atteint sur ce jeu adjacent (zostère), le premier appel de vente
-suivant vise un client capable de fournir un petit lot de photos d'huîtres réelles pour calibration croisée,
-avant toute promesse commerciale ferme sur l'huître elle même.
+Méthode : télécharger le jeu de photoquadrats académique le mieux documenté (détecteur de zostère,
+classification de densité), réutiliser ou réentraîner légèrement un modèle de vision par ordinateur pré
+entraîné (calcul cloud estimé sous 300 $US), comparer aux comptages humains déjà publiés dans le même
+papier. Coût total estimé sous 2000 $US, calcul supplémentaire inclus pour un deuxième jeu si le premier
+échoue (estimation). Si le critère de 85% est atteint sur ce jeu adjacent (zostère), le premier appel de
+vente vise un client capable de fournir un petit lot de photos d'huîtres réelles pour calibration croisée,
+avant toute promesse ferme sur l'huître elle même.
 
 ## 8. Financement
 
 Revenu mensuel plausible, toutes des estimations : à 6 mois (fin 2027, un client type ECS ou banque
-estuarienne, contrat annuel de 10 000 à 20 000 $US) environ 800 à 1700 $US par mois en moyenne lissée ; à
-12 mois, deux à trois clients, 2500 à 5000 $US par mois ; à 24 mois, cinq à huit clients dont un premier
-assureur ou une extension européenne, 8000 à 15 000 $US par mois (toutes des estimations, fondées sur les
-prix de vente barreau 1 déjà estimés dans le dossier de tendance, 15 000 à 30 000 $US par site et par an).
+estuarienne, contrat annuel de 10 000 à 20 000 $US), environ 800 à 1700 $US par mois lissé ; à 12 mois,
+deux à trois clients, 2500 à 5000 $US par mois ; à 24 mois, cinq à huit clients dont un premier assureur
+ou une extension européenne, 8000 à 15 000 $US par mois (estimations fondées sur les prix barreau 1 du
+dossier de tendance, 15 000 à 30 000 $US par site et par an).
 
-Programme de subvention précis qui accélérerait le barreau 2 sans être condition de survie : le programme
-canadien Ocean Supercluster (Canada's Ocean Supercluster, initiative fédérale canadienne d'innovation
-océanique basée à Halifax) finance des projets d'innovation technologique océanique avec des cofinancements
-d'entreprise ; le crédit d'impôt fédéral canadien de la Recherche Scientifique et Développement
-Expérimental (RS et DE, connu aussi sous son sigle anglais SR and ED) est également applicable dès l'année
-un pour le développement du pipeline de vision par ordinateur, sans dépendre d'un octroi discrétionnaire
-(lu en principe, programmes déjà cités comme accélérateurs acceptés dans le brief du fondateur, montants
-spécifiques à ce projet non chiffrés cette session, faute de budget de recherche restant).
+Programme de subvention précis pour accélérer le barreau 2, sans être condition de survie : le Ocean
+Supercluster (Canada's Ocean Supercluster, initiative fédérale canadienne d'innovation océanique, Halifax)
+finance des projets d'innovation océanique avec cofinancement d'entreprise ; le crédit d'impôt fédéral
+canadien de la Recherche Scientifique et Développement Expérimental (RS et DE) est aussi applicable dès
+l'année un pour le pipeline de vision par ordinateur, sans octroi discrétionnaire (lu en principe,
+programmes déjà cités comme accélérateurs dans le brief du fondateur ; montants précis pour ce projet non
+chiffrés cette session).
 
 ---
 
