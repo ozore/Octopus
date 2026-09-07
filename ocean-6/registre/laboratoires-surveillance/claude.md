@@ -5,14 +5,14 @@ WebSearch utilisés : 8 sur 8 autorisés (quota atteint, toutes utilisées avant
 WebFetch utilisés librement ensuite : environ 12 appels, dont 5 échecs (403 ou 404) et 1 redirection suivie avec succès.
 
 ## Requêtes WebSearch qui ont marché (dans l'ordre)
-1. "LIMS pricing environmental laboratory LabWare Thermo SampleManager annual cost" — bon résultat direct.
-2. "ISO 17025 accreditation cost A2LA ANAB laboratory annual fee" — bon résultat, a mené vers le PDF APHL.
-3. "electronic monitoring fisheries video review analyst salary job posting" — pas de salaire mais bons intitulés de poste et liens vers Salary.com.
-4. "environmental laboratory technician salary job posting LIMS "water testing"" — très bon résultat chiffré (ZipRecruiter).
-5. "eDNA environmental sample analysis price per sample commercial laboratory" — bon résultat (Chase Ecology, PNNL).
-6. "electronic monitoring cost per day fishing vessel camera system review NOAA contract" — excellent résultat, plusieurs chiffres NOAA en une seule recherche.
-7. "fisheries observer cost per day contract price at-sea monitoring" — excellent résultat (taux scallop 2023 et 2026).
-8. "hydrographic survey technician salary job posting Hypack multibeam ROV pilot" — bon résultat, logiciels et salaire.
+1. "LIMS pricing environmental laboratory LabWare Thermo SampleManager annual cost" : bon résultat direct.
+2. "ISO 17025 accreditation cost A2LA ANAB laboratory annual fee" : bon résultat, a mené vers le PDF APHL.
+3. "electronic monitoring fisheries video review analyst salary job posting" : pas de salaire mais bons intitulés de poste et liens vers Salary.com.
+4. "environmental laboratory technician salary job posting LIMS "water testing"" : très bon résultat chiffré (ZipRecruiter).
+5. "eDNA environmental sample analysis price per sample commercial laboratory" : bon résultat (Chase Ecology, PNNL).
+6. "electronic monitoring cost per day fishing vessel camera system review NOAA contract" : excellent résultat, plusieurs chiffres NOAA en une seule recherche.
+7. "fisheries observer cost per day contract price at-sea monitoring" : excellent résultat (taux scallop 2023 et 2026).
+8. "hydrographic survey technician salary job posting Hypack multibeam ROV pilot" : bon résultat, logiciels et salaire.
 
 ## Sources mortes ou bloquées
 - portvancouver.com, jasco.com : bloqués par consigne du brief, non tentés.
