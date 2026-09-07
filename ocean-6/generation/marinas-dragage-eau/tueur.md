@@ -87,3 +87,76 @@ prédiction indépendante concurrente au bulletin.
 2. Navionics SonarChart Garmin Quickdraw crowdsourced marina shoaling depth trend.
 3. shellfish farm biotoxin risk forecast subscription service satellite probe oyster growers paid.
 4. harmful algal bloom forecast public shellfish biotoxin monitoring program UK Ireland free.
+
+## Tour 2
+
+Idée 2 (biotoxine) abandonnée par le générateur sans régénération, conformément à la section
+Tour 2 de dossier.md. Aucune recherche, aucune analyse consacrée ici, conformément à la
+consigne du coordinateur.
+
+### Idée 1, précisée : rapport trimestriel de tendance d'envasement à partir du sonar du bateau
+de service du chef de port
+
+VERDICT : VIVANTE (aucun opérateur nommé n'a été trouvé utilisant déjà SonarChart Live, Quickdraw
+ou un relevé de marina à la demande par drone ou petit sondeur comme substitut au produit visé ;
+la capacité technique tient pour l'usage précis revendiqué, avec une réserve documentée sur la
+précision pour un usage de calcul de volume).
+
+Recherches menées (2 sur 2 autorisées ce tour) :
+1. « Florida marina dockmaster boat sonar log survey siltation dredging free low cost
+   substitute » : aucun opérateur de marina de Floride trouvé utilisant déjà SonarChart Live,
+   Quickdraw ou un service de relevé par drone ou petit sondeur à la demande comme substitut
+   interne gratuit ou bon marché à un relevé de dragage. Seuls trouvés : des entreprises de
+   dragage (Palm Beach Dredging, Coastal Dredging, Southern Dredging) qui offrent parfois un
+   relevé de site gratuit, mais en amont d'un devis de chantier, pas en suivi périodique
+   découplé.
+2. « single beam recreational sonar accuracy centimeter siltation trend dredging decision
+   reliability » : trouvé. Les systèmes d'écho sondeur mono faisceau de qualité relevé peuvent
+   atteindre une précision centimétrique, mais seulement interfacés à un GPS RTK (Real Time
+   Kinematic, positionnement centimétrique en temps réel) ; les sondeurs mono faisceau à double
+   fréquence (200 kHz et 38 kHz) sont utilisés spécifiquement pour distinguer, dans les zones à
+   forte sédimentation, la couche de vase molle du fond dur sous jacent, un besoin pour le calcul
+   de volume de dragage (source : sciencedirect.com, ceehydrosystems.com, aspectsurveys.com,
+   consultées le 7 septembre 2026).
+
+Ce que cela change : un capteur sonar clipsable grand public sur le bateau du chef de port,
+mono fréquence et sans GPS RTK, ne fournit probablement pas la précision centimétrique absolue
+ni la distinction vase molle / fond dur des systèmes professionnels. Mais le produit décrit au
+point 3 du dossier vise une date prédite d'atteinte du tirant d'eau minimal, c'est à dire la
+profondeur utile au passage d'un bateau, pas le volume de sédiment à draguer : la lecture du
+sommet de la couche accumulée, répétée au même point dans le temps, correspond exactement à ce
+que le tirant d'eau nécessite, même sans distinguer le fond dur. La réserve documentée s'applique
+donc surtout au volet volume/permis (point 8 du dossier, preuve pour le régulateur), pas au coeur
+du produit (alerte de tirant d'eau). Aucune des deux recherches ne tue l'idée.
+
+Mécanisme (question 8), vérifié sans recherche : l'historique calibré par quai (mêmes points de
+mesure suivis dans le temps par le même bateau interne) tient comme argument de coût de départ
+en année 3 ; un concurrent sans cet historique devrait effectivement financer un relevé complet
+pour reprendre une tendance. Le mécanisme du dossier n'est pas affaibli par les deux recherches
+de ce tour.
+
+Population, vérifiée sans recherche : toujours « plusieurs centaines de marinas privées en
+Floride », sourcée uniquement sur la ligne #3 du registre qui dit elle même « comptage exact non
+trouvé ». Ce chiffre reste une estimation qualitative non chiffrée par une source tierce,
+faiblesse déjà notée au Tour 1 et non résolue à ce tour faute de recherche allouée à ce point.
+
+Dix causes, vérifiées sans recherche : inchangées par rapport au Tour 1 et à la précision du
+Tour 2 du générateur, sauf la cause 1 qui reste la plus proche de tuer l'idée si un tour futur
+trouve un nom précis (occupant de drone à la demande ajoutant un forfait, ou marina utilisant
+déjà en interne un outil grand public à cette fin), ce que les deux recherches de ce tour
+n'ont pas trouvé.
+
+Interdits du fondateur, vérifiés sans recherche : le bateau de service du chef de port
+(dockmaster) n'existe pas nécessairement dans toutes les petites marinas privées, mais les trois
+acheteurs nommés (Safe Harbor Marinas, Loggerhead Marina, Rybovich Marina) sont des chaînes ou
+sites de taille suffisante pour disposer couramment d'un bateau de service ou de pompage
+d'assainissement ; ce n'est pas un obstacle pour le barreau 1 nommé, seulement une limite
+potentielle à l'extension de la population aux plus petites marinas non staffées, déjà signalée
+au paragraphe population ci dessus. Aucun matériel posé à l'étranger ; le capteur est posé et
+retiré par le personnel de la marina en Floride, conforme aux interdits du fondateur.
+
+## Recherches effectuées ce tour (2 sur 2 autorisées)
+
+1. Florida marina dockmaster boat sonar log survey siltation dredging free low cost substitute.
+2. single beam recreational sonar accuracy centimeter siltation trend dredging decision
+   reliability.

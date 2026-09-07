@@ -26,3 +26,19 @@ Verdicts du tour 1 :
   dossier que ces pays ne sont pas couverts.
 
 Aucune question posée, conformément au brief.
+
+## Tour 2
+
+Idée 2 (biotoxine) abandonnée sans régénération par le générateur : notée, aucune recherche ni
+analyse consacrée, conformément à la demande du coordinateur.
+
+Idée 1 (tendance d'envasement, sonar du bateau de service du chef de port) : deux recherches
+supplémentaires (2 sur 2 autorisées ce tour). Aucun opérateur de marina de Floride trouvé
+utilisant déjà SonarChart Live, Quickdraw ou un relevé à la demande comme substitut interne. La
+précision centimétrique documentée des sondeurs mono faisceau exige un GPS RTK et, pour distinguer
+vase molle et fond dur, une double fréquence, absents d'un capteur clipsable grand public ; cette
+réserve touche surtout le volet volume/permis, pas le coeur du produit (tirant d'eau), donc pas de
+mise à mort. Mécanisme (question 8) et interdits vérifiés sans recherche, tiennent. Population
+toujours non chiffrée par une source tierce, faiblesse non résolue.
+
+Verdict Tour 2 : VIVANTE, mise à jour dans tueur.md.

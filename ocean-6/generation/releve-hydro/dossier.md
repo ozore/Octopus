@@ -148,3 +148,64 @@ cible et d'habitat pour un releve de dragage generique. C'est le trou retenu.
        existant.
     10. Barreau 1 public ou grand compte : non, trois acheteurs nommes sont des societes privees de releve
         (MBC Applied Environmental Sciences, Ocean Surveys Inc, TerraSond), aucune agence.
+
+## Tour 2
+
+### Verdict du tueur sur l'idee 1
+
+MORTE, cause 1. Le tueur a verifie SonarWiz de Chesapeake Technology, logiciel nomme par le brief lui meme parmi
+les logiciels deja payes, et non verifie par moi au tour 1. SonarWiz a, depuis la version 8.1.0, un module ATR
+(Automatic Target Recognition) fonde sur un reseau de neurones convolutif qui detecte et mesure des objets sur le
+sonar lateral, et un outil Seabed Characterization qui segmente l'image acoustique en classes de texture de fond,
+deja utilise dans une etude academique pour cartographier des herbiers. L'idee 1 (classification d'objets et
+d'habitat) est donc deja faite, dans le meme siege logiciel que la cible achete probablement deja.
+
+Piste ecartee du tueur : etiquetage expert et mise en forme reglementaire des sorties SonarWiz deja produites.
+Le coordinateur l'a explicitement classee cause 8 (monoculture "redige le rapport") sauf preuve qu'un modele
+generique avec la grille publique du regulateur echoue sur cette tache precise. Cette preuve n'a pas ete
+recherchee cette passe (budget d'une seule requete, utilisee ailleurs, voir ci dessous) : la piste n'est donc
+pas prise.
+
+### Verification des trois pistes de regeneration proposees
+
+Une seule requete web utilisee ce tour (budget total du dossier desormais a 4 sur 4).
+
+1. Le trou entre deux releves ("rien entre deux relevés") a la marina qui paie 6 500 $/jour de navire. Piste
+   ecartee sans recherche dediee : la surveillance entre deux releves complets par apport de sondes eparses
+   existe deja a large echelle par crowdsourcing grand public (Navionics SonarChart Live, Garmin Quickdraw
+   Community, programme de bathymetrie participative de l'Organisation hydrographique internationale, connu de
+   la memoire des occupants comme categorie active). De plus l'acheteur naturel d'un tel service est le
+   plaisancier ou la marina, pas la petite societe de releve privee imposee comme acheteur de ce lot : la piste
+   sort du barreau 1 autorise pour ce lot avant meme la question de l'occupant.
+
+2. Le traitement differe sous traite (ligne #19 laboratoires, "souvent sous traite a un bureau d'etudes"). Sans
+   la piste 1 du tueur (interdite sauf preuve), ce qui reste du traitement differe apres detection ATR et
+   segmentation de texture SonarWiz est justement l'etiquetage expert et la mise en forme reglementaire, donc la
+   meme cause 8. Aucune sous piste distincte trouvee dans le temps imparti.
+
+3. La donnee que personne ne tient en serie par site a travers plusieurs relevés d'entreprises differentes.
+   Requete faite : "bathymetric survey data archive continuity multiple survey companies marina dredge history
+   change detection software 2024 2025". Resultat : Esri ArcGIS Bathymetry est vendu explicitement pour
+   "maintenir une archive historique pour comparer les donnees de releve anciennes aux donnees modernes" et
+   visualiser des donnees multi temporelles et multi resolutions pour la detection de changement (source :
+   esri.com/en-us/arcgis/products/arcgis-bathymetry/overview). La NOAA NCEI (National Centers for Environmental
+   Information) tient deja l'archive nationale des releves hydrographiques (NOS) et une base de metadonnees de
+   releve (HSMDB), reference standard du secteur (source : ngdc.noaa.gov/mgg/bathymetry/hydro.html). Cause 1 :
+   cette piste est deja occupee par un outil deja vendu (ArcGIS Bathymetry) et une archive publique deja tenue
+   (NCEI), au moins pour toute donnee qui a ete numerisee et deposee. Une niche plus etroite existerait
+   peut-etre (numeriser les vieux rapports papier ou PDF d'un concurrent qui n'a jamais rejoint ArcGIS ni NCEI,
+   proprietaires des societes de releve qui se succedent sur un meme site), mais je n'ai pas de publication
+   datee verifiee cette passe pour l'IA specifique requise (extraction et georeferencement automatique de
+   sondes depuis un document scanne), faute de requete restante ; l'etiqueter "verifiee" serait la faute meme
+   que le tueur a sanctionnee au tour 1 (cause 5, capacite supposee promue en fait).
+
+### Conclusion : pas de regeneration
+
+Aucune des trois pistes ne tient de facon honnete avec le budget de recherche restant. Deux tombent sur la
+cause 1 (occupant deja finance : SonarWiz pour la piste initiale, ArcGIS Bathymetry et NCEI pour la piste de
+continuite multi entreprises), une tombe sur la cause 8 (monoculture "redige le rapport", interdite sans preuve
+que je n'ai pas produite), et une sort du barreau 1 impose a ce lot (l'acheteur du crowdsourcing entre deux
+releves n'est pas une petite societe de releve). La niche etroite de numerisation de rapports historiques non
+integres a ArcGIS ou NCEI reste possible mais non verifiee : je refuse de l'ecrire comme idee tant qu'elle n'a
+pas sa publication datee, pour ne pas repeter la cause 5. Ce lot se clot donc sur un resultat accepte de mort
+honnete plutot que sur une regeneration forcee.

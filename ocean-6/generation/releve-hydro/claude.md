@@ -49,3 +49,37 @@ identifierait, plutot que pour re-verifier ce qui est deja confirme ci-dessus.
 - La frontiere avec l'interdit "un agent lit les documents et redige le rapport du regulateur" a ete tenue en
   gardant le produit du cote de la vision par ordinateur sur image sonar (detection/segmentation), jamais de la
   redaction de texte reglementaire ; a reexpliquer clairement si le tueur la confond.
+
+## Tour 2
+
+Verdict tueur lu dans tueur.md (Tour 1) : idee 1 MORTE, cause 1, SonarWiz de Chesapeake Technology (module ATR,
+reconnaissance de cible par reseau de neurones sur sonar lateral depuis la version 8.1.0, et outil Seabed
+Characterization deja utilise pour cartographier des herbiers). Faute du tour 1 : SonarWiz etait nomme
+explicitement par le brief parmi les logiciels deja payes a verifier en priorite (meme rang que CARIS, QPS,
+EIVA) et n'a pas ete verifie avant d'ecrire.
+
+Consigne du coordinateur pour le tour 2 : la piste de regeneration du tueur (etiquetage expert et mise en forme
+reglementaire des sorties SonarWiz) est jugee cause 8 par avance et interdite sauf preuve qu'un modele generique
+avec la grille publique du regulateur echoue sur cette tache ; chercher ailleurs, budget d'une seule requete
+WebSearch pour tout le tour 2.
+
+Requete utilisee (1 sur 1 restante, 4 sur 4 au total pour le dossier) : "bathymetric survey data archive
+continuity multiple survey companies marina dredge history change detection software 2024 2025". Resultat :
+Esri ArcGIS Bathymetry se vend explicitement comme archive historique multi temporelle avec detection de
+changement (esri.com/en-us/arcgis/products/arcgis-bathymetry/overview) et NOAA NCEI tient deja l'archive
+nationale des releves hydrographiques et la base HSMDB (ngdc.noaa.gov/mgg/bathymetry/hydro.html). Cette piste
+(donnee non tenue en serie a travers plusieurs entreprises sur un meme site) retombe donc aussi sur la cause 1.
+
+Trois pistes suggerees par le coordinateur toutes examinees et ecartees :
+1. Rien entre deux releves a la marina : ecartee sans recherche dediee, deja occupee par le crowdsourcing grand
+   public (Navionics SonarChart Live, Garmin Quickdraw Community, bathymetrie participative OHI) et acheteur
+   hors barreau 1 impose (plaisancier/marina, pas societe de releve).
+2. Traitement differe sous traite : une fois la piste 1 du tueur retiree (cause 8), rien de distinct ne reste
+   verifie dans le temps imparti.
+3. Donnee non tenue en serie multi entreprises : occupee par ArcGIS Bathymetry et NCEI (cause 1), verifie cette
+   passe. Sous niche possible (numerisation de vieux rapports papier/PDF non integres a ArcGIS ni NCEI) laissee
+   de cote faute de publication datee verifiee, pour ne pas repeter la cause 5 deja sanctionnee au tour 1.
+
+Decision : pas de regeneration honnete possible avec le budget de recherche restant. Ecrit comme resultat
+accepte dans dossier.md, section Tour 2, avec le detail des trois pistes et leurs causes de mort respectives.
+Budget WebSearch du dossier desormais entierement consomme (4 sur 4).
