@@ -4,6 +4,20 @@
 Tour 1 fait pour les deux idées (A, Registre de coque ; B, Traceur des systèmes immergés). Verdict : VIVANTE pour
 les deux, aucun tueur nommé trouvé. Idée B nettement plus fragile (capacité non vérifiée, cause 5).
 
+Tour 2 fait sur l'idée fusionnée (A et B réunies en un seul Registre de coque, dossier détenu par le propriétaire).
+Verdict : VIVANTE, renforcée. Nouvelle Zélande (Craft Risk Management Standard, CRMS, depuis 2018) exige des
+propriétaires de plaisance en séjour long des rapports d'inspection de coque avec photos horodatées, exactement le
+livrable du produit ; Californie encadre aussi la plaisance mais de façon plus large (plan de gestion, pas de
+preuve photo horodatée explicite trouvée). Le Cawthron Institute publie l'échelle "Level of Fouling" (LOF, six
+rangs, pourcentage de couverture, calibrée sur plus de 180 bateaux de plaisance, notation hors de l'eau comparée à
+un pourcentage sous marin), ScienceDirect 2025 : combler le trou de capacité laissé ouvert au tour 1 pour le volet
+encrassement, occupant public le plus proche mais ce n'est qu'une échelle, pas un produit numérique concurrent.
+Deux points restent ouverts pour le tour 3 : qui, parmi les clients réels des experts, veut vraiment ce rapport
+(cause 3, la demande semble concentrée chez les propriétaires en projet de traversée vers la Californie ou la
+Nouvelle Zélande, pas chez le client de mise à sec ordinaire) ; et si "dossier détenu par le propriétaire" veut
+dire accès contrôlé sur la plateforme du fondateur (le verrou de la question 8 tient) ou copie portable exportable
+(le verrou s'affaiblit), le dossier ne tranche pas.
+
 ## Recherches faites (4 sur 4 disponibles, 2 par idée)
 - A1 : logiciels de rapport d'expertise déjà payés par l'acheteur (InspectX, Survey My Boat Pro, Boat Assessor,
   SurveySoft, GoCanvas). Aucun ne fait de vision par IA sur photo de coque.

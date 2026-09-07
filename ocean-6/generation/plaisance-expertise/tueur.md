@@ -86,4 +86,70 @@ service que personne n'a documentées.
 
 ## Tour 2
 
-(non atteint ce tour)
+### Idée A et B fusionnées : Registre de coque (encrassement, antisalissure, corrosion externe visible, dossier détenu par le propriétaire)
+
+VIVANTE, et nettement renforcée par les deux recherches de ce tour.
+
+Recherches faites (2 sur 2 autorisées) et trouvé :
+1. "California biofouling management plan recreational boater requirement, New Zealand CRMS biofouling clean hull
+   document proof" : les deux régimes visent bien la plaisance, pas seulement le commercial. Nouvelle Zélande, sous
+   sa norme Craft Risk Management Standard (CRMS) for Biofouling, en vigueur depuis 2018, classe les voiliers et
+   bateaux de plaisance en séjour long comme des navires soumis à obligation ; la preuve de conformité attendue par
+   l'agence MPI (Ministry for Primary Industries) inclut explicitement "des rapports d'inspection de coque et de
+   zones creuses récents, y compris des photographies ou vidéos horodatées", plus un certificat d'antisalissure.
+   C'est exactement le livrable que produit ce registre. La Californie encadre aussi la plaisance (article 4.8 du
+   code, State Lands Commission) mais de façon plus large, un plan de gestion du biofouling est exigé, la preuve
+   photographique horodatée n'est pas formulée aussi précisément que par la Nouvelle Zélande dans les sources
+   trouvées.
+2. "hull fouling rating scale photo dry dock published percent cover level of fouling" : le Cawthron Institute
+   (Nouvelle Zélande) publie la "Level of Fouling" (LOF), une échelle en six rangs (0 à 5) fondée sur le
+   pourcentage de surface couverte, calibrée sur plus de 180 bateaux de plaisance arrivant en Nouvelle Zélande en
+   comparant une notation "hors de l'eau" (dockside, le contexte exact d'une mise à sec) à un pourcentage
+   d'encrassement mesuré sous l'eau par plongeur. Publiée dans un article ScienceDirect 2025 sur la politique de
+   réduction du risque d'invasion marine par les bateaux de plaisance. C'est une échelle publique, précise, datée,
+   et spécifique à la plaisance et au contexte hors de l'eau, un complément direct aux trois publications déjà
+   citées au tour 1 pour la classification par vision.
+
+Causes de mort qui s'appliquent, mise à jour :
+- Cause 4 reformulée (preuve retournée contre le propriétaire) : le mécanisme de consentement du point 8 du
+  dossier tient mieux qu'anticipé au tour 1, parce que la Nouvelle Zélande veut justement que le propriétaire
+  produise, de façon volontaire et à son initiative, un historique photographique horodaté ; un dossier que le
+  propriétaire choisit de montrer est un atout pour lui à l'entrée d'un port à règles de biofouling, pas
+  seulement un risque face à un assureur. La cause 4 reste désamorcée par construction, confirmée par ce tour.
+- Cause 3, qui veut ce rapport : nuance que le dossier de ce tour ne traite pas encore. La demande solide et
+  vérifiée cette session vient d'un sous ensemble du bassin d'acheteurs, les propriétaires qui naviguent vers ou
+  depuis la Californie ou la Nouvelle Zélande et doivent produire une preuve d'entretien de coque ; rien dans les
+  sources trouvées n'indique qu'un client de mise à sec ordinaire en Amérique du Nord, sans projet de traversée,
+  demande de lui même un score chiffré plutôt que la note qualitative de l'expert qui suffit depuis toujours.
+  L'expert a un intérêt de marge à le vendre (point 7, confirmé au tour 1), mais "qui le veut" côté client est
+  probablement plus étroit que toute la population comptée au point 6, sans que ce soit un budget orphelin,
+  cause 3 au sens strict ne s'applique toujours pas.
+- Cause 7, question 8 par condition : ambiguïté à lever, pas résolue par ce tour faute de question posée au
+  dossier lui même. Le dossier dit le "dossier" détenu par le propriétaire via un code d'accès (point 8, tour 2) ;
+  si cela veut dire que la donnée vit uniquement sur la plateforme du fondateur et que le propriétaire contrôle
+  seulement qui la voit, le mécanisme de verrouillage du tour 1 (courbe prisonnière du format) tient intact. Si
+  cela veut dire que le propriétaire détient une copie portable exportable, le verrou s'affaiblit vers une
+  condition de réseau ou d'habitude plutôt qu'un mécanisme dur. Le dossier ne tranche pas explicitement entre les
+  deux lectures.
+
+Ce qui manque au dossier : préciser si "détenu par le propriétaire" veut dire accès contrôlé sur la plateforme du
+fondateur ou export portable complet, pour trancher la cause 7 ; documenter la proportion de clients réels avec un
+projet de traversée vers la Californie ou la Nouvelle Zélande dans le bassin de population compté au point 6, pour
+mesurer combien de la population de 1 000 experts SAMS sert des clients avec ce motif concret d'achat plutôt qu'un
+motif de marge côté expert seul.
+
+Interdits du fondateur : acheteur restent trois cabinets privés indépendants, ni public ni grand compte ni
+bénévole, inchangé. Océan et écologie restent au centre : l'encrassement biologique est le vecteur reconnu de
+transport d'espèces envahissantes entre plans d'eau, confirmé par les deux régimes réglementaires trouvés cette
+session, la Nouvelle Zélande cite l'échelle LOF du Cawthron Institute pour ce motif précis de biosécurité marine.
+
+Population : environ 1 000 experts SAMS (2019, SkiSafe recoupé), plus NAMS non chiffré, plus 440 postes salariés
+ouverts aux Etats Unis (ZipRecruiter, août 2026, ligne 10). Le seuil de 200 tient largement. Source datée de 2019
+pour SAMS reste la plus faible des trois, sept ans d'écart avec la date du dossier, non revérifiée par une
+recherche dédiée ce tour faute de budget restant.
+
+Verdict : VIVANTE, aucun tueur nommé, dossier renforcé par ce tour sur l'ancrage écologique et la capacité. Piste
+de régénération si besoin au tour 3, sans attendre une mort : faire correspondre le score chiffré du produit à
+l'échelle LOF publique (0 à 5, pourcentage de couverture) plutôt qu'une échelle propriétaire, pour que le rapport
+soit directement lisible et acceptable par les autorités néo zélandaises citées au point 1, et clarifier la
+portabilité du dossier détenu par le propriétaire pour verrouiller la réponse à la question 8.
