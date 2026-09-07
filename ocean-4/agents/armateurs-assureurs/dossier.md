@@ -133,3 +133,8 @@ Vérifié : montants EUA/FuelEU/scénarios ci-dessus. Supposé : que les outils 
   s'avère trop faible en validation.
 - Aucune vérification de terrain (entretien avec un armateur, un club P&I ou une société de
   classification) : toutes les sources sont secondaires et publiques.
+- Sources suggérées par le brief non consultées individuellement faute de budget : circulaires Skuld et
+  UK P&I Club (le dossier s'appuie surtout sur Gard, North Standard et Steamship Mutual) ; documents
+  primaires EMSA (European Maritime Safety Agency, agence européenne de sécurité maritime) et texte
+  officiel de l'amendement SOLAS/OMI — l'obligation 2026 sur les conteneurs est sourcée via le World
+  Shipping Council (reporting secondaire), pas via le document OMI original.

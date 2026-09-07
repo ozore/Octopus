@@ -38,3 +38,23 @@ Aucun échec total (0 reformulation nécessaire). Coût précis de la certificat
 ## Décisions
 - Quota WebSearch épuisé après la recherche 10. Passage à WebFetch (libre) pour approfondir : ECHO Vancouver, WSC/SOLAS conteneurs, OceanScore (EU ETS/FuelEU/CII), P&I biofouling (North Standard/Steamship Mutual), Gard baleines, Posidonia/ICOMIA.
 - 5 candidats retenus pour dossier.md (à trancher parmi 6-7 pistes) : (1) bruit sous-marin/ECHO Vancouver+notation classification, (2) collisions cétacés, (3) biofouling/espèces envahissantes, (4) pertes de conteneurs (nouveau mandat SOLAS 2026), (5) CII/EU ETS/FuelEU (optimisation + reporting MRV). Posidonia/mouillage sur habitats mis en réserve (6e piste, moins "armateur cargo" que yacht/plaisance) si un des 5 s'avère trop faible en 12 lignes.
+
+## Journal WebFetch (après épuisement du quota WebSearch)
+Succès : worldshipping.org (détail SOLAS/OMI conteneurs), oceanscore.com (détail Compliance Manager/Forecaster/Pooling Marketplace), steamshipmutual.com (biofouling, cas Fiordland NZ), gard.no (Rule 47 P&I non-couverture amendes NOAA, ~2000 lettres depuis 2018, jusqu'à 20 000 baleines/an), ocean.org/whales/wras (WRAS Ocean Wise : caméras infrarouge + hydrophones + IA de vérification), icomia.org (Posidonia, sanctions jusqu'à 150 000 €/personne), shipfinex.com (chiffres FuelEU détaillés : 300-400 €/t, scénario 2,1 M€/an, biocarburant 1,1 M€/an, rétrofit 1,5-5 M€ payback 18-24 mois).
+Échecs (HTTP 403, à éviter si repris) : portvancouver.com/sites/default/files/.../ECHO-Program-annual-report (PDF), dnv.us/services/underwater-noise-analysis-4705, sciencedirect.com/science/article/abs/pii/S0964569124004393, north-standard.com (article biofouling, 403 en fetch direct mais contenu déjà obtenu via résumé WebSearch), portvancouver.com/environment/healthy-ecosystem/echo (page principale ECHO, 403).
+Leçon : de nombreux sites maritimes/P&I bloquent le fetch direct (403) même quand ils apparaissent bien dans les résultats WebSearch — le résumé WebSearch reste alors la seule source, à noter comme moins fiable qu'une lecture intégrale (fait dans les lacunes du dossier).
+
+## Leçon de formatage importante
+Le brief impose "12 lignes maximum" par candidat au sens de LIGNES SOURCE du fichier, pas de paragraphes. Une première version du dossier avait des champs repliés manuellement sur plusieurs lignes physiques (~20 lignes/candidat) : non-conforme. Correction appliquée : chaque champ (Problème/Acheteur/Produit/IA/Données/Protocole/Existant/Retour annuel/Vérifié-Supposé) tient sur UNE seule ligne physique non repliée, ramenant chaque candidat à 11 lignes (titre + 9 champs + ligne vide). À refaire ainsi dès le départ la prochaine fois.
+
+## RÉSUMÉ FINAL (max 10 lignes)
+1. dossier.md livré dans agents/armateurs-assureurs/ avec (a) population, (b) 5 candidats en 11 lignes chacun, (c) références + lacunes.
+2. 10/10 WebSearch utilisées (quota épuisé) ; complété par ~12 WebFetch (dont 5 en échec HTTP 403, notés).
+3. 5 candidats : bruit sous-marin (ECHO Vancouver + notation SILENT), collisions cétacés (amendes NOAA non couvertes P&I), biofouling (CRMS NZ avril 2025, cas Fiordland), pertes de conteneurs (nouveau mandat OMI/SOLAS 1er janv. 2026), copilote carbone CII/EU ETS/FuelEU (pénalités 300-640 €/tCO2e, scénarios 1,1-2,3 M€/an).
+4. Tous les chiffres cités portent leur source ; chaque capacité IA est étiquetée vérifiée ou supposée.
+5. Aucun code écrit, aucun commit, écriture limitée à ce dossier.
+6. Piste 6 (mouillage sur posidonie, plaisance) documentée mais reléguée en lacune, jugée moins "armateur cargo".
+7. Lacune principale : tailles de population (nb navires/classificateurs/clubs P&I) non revérifiées, marquées estimation.
+8. Lacune méthode : plusieurs pages clés lues seulement via résumé WebSearch faute de WebFetch direct (403).
+9. Sujets du brief non creusés faute de budget : ballast, scrubbers, câbles sous-marins.
+10. Prochaine passe : vérifier coûts précis (essai SILENT, inspection ROV, formulaire OMI conteneurs) et confirmer tailles de population.
