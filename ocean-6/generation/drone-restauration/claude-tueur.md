@@ -50,8 +50,37 @@ classification (OpenDroneMap). Verdict : les deux idees restent VIVANTES sur la 
   la cause 9.
 
 ## Fichiers ecrits
-- /home/user/Octopus/ocean-6/generation/drone-restauration/tueur.md, section Tour 1.
+- /home/user/Octopus/ocean-6/generation/drone-restauration/tueur.md, sections Tour 1 et Tour 2.
 - /home/user/Octopus/ocean-6/generation/drone-restauration/claude-tueur.md (ce fichier).
 
 ## Blocages
 Aucun. Aucune question posee, conformement a la consigne.
+
+## Tour 2 (idee fusionnee Recouvrement)
+
+Lecture imposee : section Tour 2 de dossier.md (idee fusionnee, deux canaux : ligne ajoutee au sous traitant drone
+ou abonnement direct au cabinet). Rien d'autre relu.
+
+Recherches (2, comme demande) :
+1. "environmental consulting habitat mapping OR photo interpretation job posting delineation coastal wetland GIS
+   hourly" pour la cause 9. Trouve : des postes "wetland delineation specialist" a 34 a 44 $/heure existent et
+   utilisent deja l'interpretation d'imagerie aerienne en SIG. Preuve indirecte, pas le rapport exact demande, mais
+   suffisante pour faire passer la cause 9 de "suppose" a "probable" pour le seul canal abonnement.
+2. "approved consultant list mitigation monitoring drone orthomosaic Florida California coastal habitat" pour le
+   compte direct de cabinets. Pas d'annuaire officiel trouve, mais quatre cabinets supplementaires identifies de
+   facon incidente (Sequoia Ecological Consulting, Horner Environmental, AeroTech UAV, CSA Ocean Sciences), qui
+   rendent la borne basse de 25 cabinets du dossier plus credible sans la prouver directement.
+
+Sans recherche : l'actif "points de verification terrain" ne tient que si le fondateur produit ou controle lui meme
+ces releves ; si c'est le cabinet client qui va sur le terrain (plausible vu la recherche 1), il peut remettre ces
+points a un concurrent comme il remettrait l'orthomosaique brute, et le mecanisme de retention du point 8 du
+dossier s'effondre au meme titre que celui du tour 1. Cause 2 : la carte des occupants classe l'image environnementale
+deja occupee sous imagerie sous marine ou de plongee (BIIGLE, CoralNet, ReefCloud, FathomNet, BenthicNet, MERMAID),
+jamais aerienne, et l'idee reste ancree sur deux lignes de facture reelles, ce qui suffit au test formel de la
+cause 2 ; mais je ne peux pas comparer directement au verdict qui a deja tue "la segmentation d'images pour bureaux
+d'etudes" puisque ce dossier n'est pas nomme dans la memoire transmise et que la consigne interdit de le lire.
+
+Verdict : VIVANTE. Aucun occupant ni fait unique ne tue l'idee fusionnee. Recommandation principale du tour :
+prioriser le canal sous traitant (ligne 10) sur le canal abonnement direct (ex Memoire de site) tant que la cause 9
+n'est pas resolue pour ce dernier, et executer le test a 2 000 $ propose par le dossier pour trancher le transfert
+inter site (cause 5) avant d'engager un prix au $/acre a l'echelle.
