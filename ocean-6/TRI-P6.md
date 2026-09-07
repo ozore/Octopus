@@ -16,8 +16,8 @@
 | plaisance-expertise | Registre de coque (encrassement, antisalissure, corrosion, par numéro de coque, 2 à 4 $/pied) | vivante | vivante, renforcée | Nouvelle-Zélande exige déjà des photos de coque horodatées (CRMS 2018) ; échelle Cawthron publiée ; demande concentrée sur les traversées ; « détenu par le propriétaire » à préciser |
 | plaisance-expertise | Traceur des systèmes immergés | vivante, capacité supposée | fusionné dans Registre de coque | Capacité prises d'eau non prouvée |
 
-Bilan : 13 idées au tour 1, 7 vivantes après deux tours, 4 mortes, 2 fusions. Aucune resucée signalée par les tueurs
-(objectif de moins de 10 % atteint). 13 idées sur 13 nées d'une ligne à prix lu, occupant nommé avant le tri.
+Bilan : 12 idées au tour 1, 2 régénérées à partir d'un cadavre, 7 vivantes après deux tours, 4 mortes, 2 fusions. Aucune resucée signalée par les tueurs
+(objectif de moins de 10 % atteint). 12 idées sur 12 nées d'une ligne à prix lu, occupant nommé avant le tri.
 
 ## B. Seuils de la règle 6, appliqués aux sept vivantes
 Seuils : population d'au moins 25 acheteurs privés nommables ou 200 dans le monde ; contrat d'au moins 10 k$ par an ou

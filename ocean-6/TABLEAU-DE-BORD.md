@@ -2,12 +2,12 @@
 
 | Mesure | Passes 1 à 3 | Passe 4 | Passe 5 | Cible passe 6 | Passe 6 |
 |---|---|---|---|---|---|
-| Idées générées | 36 | 35 | 40 | 12 à 16 | 13 (tour 1), 7 vivantes après deux tours |
+| Idées générées | 36 | 35 | 40 | 12 à 16 | 12 (tour 1), 2 régénérées, 7 vivantes après deux tours |
 | Survivantes au tri | (pas de tri) | 8 | 6 | 5 | 4 creusées (5 idées, deux fusionnées en une fiche) |
 | Survivantes au juge (société, ou actif 3/5 et plus) | 1 puis 0 | 1 (3/5) | 0 (max 2/5) | au moins 1 à 3/5 | |
-| Idées avec prix lu à la naissance | 0 % | ~20 % | 0 % | 100 % | 13/13 |
+| Idées avec prix lu à la naissance | 0 % | ~20 % | 0 % | 100 % | 12/12 |
 | Idées avec occupant nommé avant le tri | faible | faible | faible | 100 % | 13/13 (tueurs, deux tours) |
-| Resucées d'idées mortes | non mesuré | 5 fusions | 18/40 | moins de 10 % | 0/13 signalées par les tueurs, à confirmer par le juge |
+| Resucées d'idées mortes | non mesuré | 5 fusions | 18/40 | moins de 10 % | 0/12 signalées par les tueurs, à confirmer par le juge |
 | Capacité supposée au cœur de l'angle, au creusement | fréquent | 3/8 | 5/6 | 0 | |
 | Cause numéro 1 du pré-mortem déjà réalisée, au creusement | non mesuré | non mesuré | 3/6 | 0 | |
 
