@@ -47,3 +47,19 @@ que de multiplier les tentatives (budget WebSearch déjà épuisé).
 ## Rédaction
 Passage à la rédaction du dossier.md avec les faits collectés. Lacunes marquées explicitement. Toutes les capacités
 matérielles portent "capacité vérifiée (source, date)" ou "capacité supposée" / "hypothèse non sourcée" selon les cas.
+
+## Clôture
+dossier.md rédigé (~370 lignes) avec les 6 sections requises (a-f). 12/12 WebSearch utilisés, ~20 WebFetch (environ
+12 réussis, 8 échecs 404/403/vide notés ci-dessus et dans la section "lacunes" du dossier). Toutes les capacités
+matérielles/logicielles étiquetées vérifiée/supposée/hypothèse non sourcée ; chiffres eDNA et quelques prix ROV
+secondaires marqués "estimation". Lacune majeure signalée explicitement : pas de preuve scientifique d'une détection
+SCTLD fiable par simple photo RGB (littérature = génomique/micro-CT uniquement) — à ne pas vendre comme diagnostic.
+Note de transparence ajoutée : "Vertical Oceans" semble être une aquaculture de crevettes (Singapour), pas un acteur
+benthique — possible erreur dans la liste de concurrents du brief.
+
+## Résumé final (voir aussi fin de dossier.md)
+5 opportunités retenues : ReefLens PNW (vision/CoralSCOP-RF-DETR sur photos de plongée existantes), SentinelWake
+(GFW API + polygones habitats pour alertes chalutage/mouillage), SplatReef (Gaussian splatting sous-marin comme
+preuve MRV pour crédits biodiversité), SoundReef Alert (hydrophones 50€ + IA soundscape), TrawlWatch Insurance
+Feed (licence de données B2B pour assureurs/certificateurs). Priorité 3-6 mois : ReefLens PNW et SentinelWake
+(barrière matérielle nulle, données/modèles ouverts déjà disponibles, accès terrain du fondateur déjà acquis).

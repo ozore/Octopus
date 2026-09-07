@@ -17,12 +17,23 @@ Couvrir réglementation/programmes US pour récifs coralliens & habitats benthiq
 Budget : 12 WebSearch max, WebFetch libre. Compteur ci-dessous.
 
 ## Compteur de recherches WebSearch
-0/12 utilisées au départ.
+12/12 utilisées (budget épuisé, voir journal détaillé plus bas).
 
 ## Journal (succès/erreurs/leçons)
 - (à remplir au fil de l'eau)
 
-## Résumé final (à écrire à la fin, <=15 lignes)
+## Résumé final (dossier.md terminé — 07/09/2026)
+
+Dossier complet publié : /home/user/Octopus/ocean-seabed-3/agents/reg-coral-usa/dossier.md
+Fait le plus fort : coupure à 0$ du financement FCR3 (Floride) en 2026 après 28,5M$ distribués à 14 organisations 2023-2025 — signal "pourquoi maintenant" daté du 06/09/2026, veille de rédaction.
+Top 5 opportunités retenues :
+1. SedimentWatch — monitoring satellite/IoT de panaches de dragage pour conformité Section 7 ESA/EFH (déclenché par contentieux Port Everglades 2025-2026).
+2. ReefPenalty — photogrammétrie + IA pour mesurer les dommages coralliens et calculer automatiquement le barème légal FL (403.93345, jusqu'à 250k$/incident) ; l'État a plus besoin de recettes de pénalités depuis la coupe FCR3.
+3. MooringSentry — caméras/AIS + IA pour détecter l'ancrage illégal dans les Sanctuary Preservation Areas du FKNMS avant l'échéance légale 2027.
+4. ReefFundOS — SaaS de veille/candidature aux financements pour les ~14-60 organisations de restauration coralliennes cherchant un financement de secours post-FCR3.
+5. Reef Resilience Trigger — couche data/IA de vérification pour répliquer aux USA le modèle d'assurance paramétrique de récif de Quintana Roo (Swiss Re/TNC), avec TNC comme pont de contact.
+Lacunes principales : budget SCTLD annuel précis, nombre d'incidents/an FL, détail plan kelp CA (opc.ca.gov bloqué), budget total Mission: Iconic Reefs.
+12/12 WebSearch utilisées ; ~13 WebFetch (2 PDF lus via pymupdf après échec du résumeur natif).
 
 ## Journal détaillé
 - [Recherche 1/12] "NOAA Coral Reef Conservation Act reauthorization 2022 budget 2025 2026" -> SUCCES. CRCA réautorisée via P.L. 117-263 (2022, NDAA). CRCP ~33M$/an (2023, GAO). FY2025: transition cooperative agreements -> block grants non compétitifs.
