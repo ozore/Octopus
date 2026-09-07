@@ -1,0 +1,694 @@
+<title>Atlas Océan IV</title>
+<meta name="description" content="Quatrième passe : 35 candidats sourcés par les acheteurs, 8 creusés sur leur angle différenciateur, jugés par un contre-vérificateur, pour un fondateur solo à Vancouver.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#F4F7F9; --surface:#FFFFFF; --surface-2:#EAF0F3;
+  --ink:#0E2233; --ink-2:#44576A; --ink-3:#6E8290;
+  --kelp:#0F7C6E; --kelp-ink:#0B5F55; --kelp-soft:#DDF0EC;
+  --buoy:#C2401B; --buoy-soft:#FBE6DE;
+  --line:#D5DEE4; --line-2:#E6ECF0;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+  --shadow:0 1px 2px rgba(14,34,51,.06),0 8px 24px rgba(14,34,51,.06);
+  --display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0C1A24; --surface:#122431; --surface-2:#182E3D;
+    --ink:#E6EEF2; --ink-2:#A9BAC5; --ink-3:#8296A3;
+    --kelp:#2FB39F; --kelp-ink:#5FD0BF; --kelp-soft:#163A38;
+    --buoy:#FF8A66; --buoy-soft:#3D2118;
+    --line:#26394B; --line-2:#1E3140;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0C1A24; --surface:#122431; --surface-2:#182E3D;
+  --ink:#E6EEF2; --ink-2:#A9BAC5; --ink-3:#8296A3;
+  --kelp:#2FB39F; --kelp-ink:#5FD0BF; --kelp-soft:#163A38;
+  --buoy:#FF8A66; --buoy-soft:#3D2118;
+  --line:#26394B; --line-2:#1E3140;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--kelp-ink);text-decoration-thickness:1px;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--kelp);outline-offset:2px}
+h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:clamp(40px,6vw,72px);font-weight:800;line-height:1;letter-spacing:-.02em}
+h2{font-size:clamp(26px,3.2vw,36px);font-weight:700;letter-spacing:-.015em;line-height:1.15}
+h3{font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1.15}
+h4{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+p{margin:0}
+.mono{font-family:var(--mono);font-size:.86em}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--kelp-ink);font-weight:500}
+.date{font-family:var(--mono);font-weight:600;color:var(--buoy);white-space:nowrap}
+.ref{font-family:var(--mono);font-size:.82em;color:var(--ink-2);background:var(--surface-2);padding:1px 6px;border-radius:3px;white-space:nowrap}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* Hero */
+.hero{border-bottom:1px solid var(--line);background:var(--surface)}
+.hero-inner{max-width:1180px;margin:0 auto;padding:56px 32px 40px;display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:48px;align-items:end}
+.hero p.lead{font-size:20px;color:var(--ink-2);max-width:62ch;margin-top:20px}
+.hero-meta{display:grid;gap:10px;font-family:var(--mono);font-size:13px;color:var(--ink-2)}
+.hero-meta div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line-2);padding-bottom:8px}
+.hero-meta b{color:var(--ink);font-weight:600}
+.kpis{max-width:1180px;margin:0 auto;padding:0 32px 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{border-top:2px solid var(--kelp);padding-top:10px}
+.kpi .v{font-family:var(--display);font-size:34px;font-weight:800;line-height:1;letter-spacing:-.02em}
+.kpi .l{font-size:14px;color:var(--ink-2);margin-top:6px}
+
+/* Page grid */
+.page{max-width:1180px;margin:0 auto;padding:40px 32px 96px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:56px;align-items:start}
+nav.rail{position:sticky;top:24px;font-family:var(--display);font-size:14px}
+nav.rail .group{margin-bottom:22px}
+nav.rail .group-t{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+nav.rail a{display:flex;gap:10px;align-items:baseline;color:var(--ink-2);text-decoration:none;padding:5px 0;border-left:2px solid transparent;padding-left:10px;margin-left:-12px}
+nav.rail a:hover{color:var(--ink)}
+nav.rail a.on{color:var(--ink);border-left-color:var(--kelp)}
+nav.rail a .n{font-family:var(--mono);font-size:11px;color:var(--ink-3);min-width:18px}
+main{min-width:0}
+section.block{margin-bottom:72px}
+section.block > .eyebrow{margin-bottom:10px;display:block}
+section.block > h2{margin-bottom:22px}
+.prose{max-width:66ch}
+.prose p + p{margin-top:14px}
+.prose ul{padding-left:20px;margin:12px 0}
+.prose li{margin:6px 0}
+
+/* Synthèse */
+.reco{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:26px 0 8px}
+.reco a{display:block;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 18px 16px;box-shadow:var(--shadow)}
+.reco a:hover{border-color:var(--kelp)}
+.reco .k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--buoy);font-weight:600}
+.reco .t{font-family:var(--display);font-size:20px;font-weight:700;margin:6px 0 6px;letter-spacing:-.01em}
+.reco .d{font-size:14.5px;color:var(--ink-2)}
+.thesis{background:var(--kelp-soft);border-radius:10px;padding:22px 24px;margin:26px 0;max-width:72ch}
+.thesis p{font-family:var(--display);font-size:19px;font-weight:500;line-height:1.4;color:var(--kelp-ink)}
+:root[data-theme="dark"] .thesis p{color:var(--ink)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .thesis p{color:var(--ink)}}
+
+/* Timeline */
+.tl{position:relative;padding-left:26px;border-left:2px solid var(--line);margin-top:8px}
+.tl-y{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.01em;margin:26px 0 10px;position:relative}
+.tl-y:first-child{margin-top:0}
+.tl-y::before{content:"";position:absolute;left:-33px;top:9px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--ink-3)}
+.tl-e{display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;padding:7px 0;border-bottom:1px solid var(--line-2);font-size:15px;align-items:baseline}
+.tl-e .date{font-size:13px}
+.tl-e .t b{font-family:var(--display);font-weight:700}
+.tl-e .idx{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-left:6px;white-space:nowrap}
+.tl-e.past .date{color:var(--ink-3)}
+.tl-now{position:relative;margin:10px 0;padding:6px 10px;background:var(--buoy-soft);color:var(--buoy);font-family:var(--mono);font-size:12px;font-weight:600;border-radius:4px;display:inline-block}
+.tl-now::before{content:"";position:absolute;left:-33px;top:10px;width:12px;height:12px;border-radius:50%;background:var(--buoy)}
+
+/* Chart */
+.chart-wrap{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 20px 12px;box-shadow:var(--shadow);position:relative}
+.chart-wrap svg{width:100%;height:auto;display:block;font-family:var(--mono)}
+.legend{display:flex;flex-wrap:wrap;gap:18px;font-family:var(--mono);font-size:12px;color:var(--ink-2);margin:10px 4px 0}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;vertical-align:-1px;background:var(--c)}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-family:var(--mono);font-size:12px;padding:8px 10px;border-radius:6px;max-width:260px;line-height:1.4;opacity:0;transition:opacity .12s}
+.tip b{display:block;font-family:var(--display);font-size:14px;margin-bottom:3px}
+.chart-note{font-size:14px;color:var(--ink-2);margin-top:14px;max-width:70ch}
+
+/* Fiche */
+.fiche{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-bottom:34px;overflow:hidden}
+.fiche-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:20px;align-items:start;padding:26px 28px 18px;border-bottom:1px solid var(--line-2)}
+.fiche-head .big{font-family:var(--display);font-size:52px;font-weight:800;line-height:.9;letter-spacing:-.04em;color:var(--kelp);font-variant-numeric:tabular-nums}
+.fam{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:3px;margin-bottom:8px;color:#fff}
+.fam-mer{background:var(--s1)} .fam-peche{background:var(--s2)} .fam-amont{background:var(--s3)}
+.tagline{font-size:17px;color:var(--ink-2);margin-top:6px;font-style:italic}
+.score-badge{text-align:right;font-family:var(--display);font-weight:800;font-size:30px;line-height:1;letter-spacing:-.02em}
+.score-badge span{font-size:13px;color:var(--ink-3);font-weight:500;letter-spacing:0}
+.score-badge small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-top:6px;font-weight:500}
+.trigger{padding:16px 28px;background:var(--surface-2);font-size:15.5px;line-height:1.5;display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.trigger .lab{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--buoy);font-weight:600;white-space:nowrap}
+.fiche-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px 32px;padding:22px 28px 8px}
+.fiche-grid section.wide{grid-column:1/-1}
+.fiche-grid h4{margin-bottom:6px}
+.fiche-grid p,.fiche-grid li{font-size:15.5px}
+.fiche-grid ul{margin:4px 0 0;padding-left:18px}
+.fiche-grid li{margin:3px 0}
+.fiche-grid .kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:15px}
+.fiche-grid .kv dt{font-family:var(--mono);font-size:12px;color:var(--ink-3);padding-top:3px}
+.fiche-grid .kv dd{margin:0}
+.effort{display:inline-block;font-family:var(--mono);font-size:12px;padding:2px 8px;border-radius:3px;background:var(--surface-2);color:var(--ink-2);margin-bottom:6px}
+.scores{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;padding:18px 28px 22px;border-top:1px solid var(--line-2)}
+.sc{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em}
+.sc .bar{height:6px;background:var(--line-2);border-radius:3px;margin:6px 0 5px;overflow:hidden}
+.sc .bar i{display:block;height:100%;background:var(--kelp);width:calc(var(--v) * 20%)}
+.sc b{color:var(--ink);font-weight:600}
+.verdicts{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line-2)}
+.verdicts > div{padding:16px 20px;font-size:14px;border-right:1px solid var(--line-2)}
+.verdicts > div:last-child{border-right:0}
+.verdicts .who{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.verdicts .who b{color:var(--ink);font-weight:600;letter-spacing:0;font-family:var(--display);font-size:13px;text-transform:none;margin-left:6px}
+.verdicts p{color:var(--ink-2)}
+.pill{display:inline-block;font-family:var(--mono);font-size:11px;padding:1px 7px;border-radius:3px;font-weight:600;margin-right:6px}
+.pill-go{background:var(--kelp-soft);color:var(--kelp-ink)} .pill-if{background:#FFF3D6;color:#7A4E00} .pill-no{background:var(--buoy-soft);color:var(--buoy)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pill-if{background:#3A2E12;color:#F2C46B}}
+:root[data-theme="dark"] .pill-if{background:#3A2E12;color:#F2C46B}
+.fam-h{display:flex;align-items:center;gap:12px;margin:40px 0 18px}
+.fam-h .sw{width:14px;height:14px;border-radius:3px}
+.fam-h h3{font-size:20px}
+.fam-h p{color:var(--ink-2);font-size:15px}
+
+/* Table */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;min-width:900px;font-size:14px}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);font-weight:600;white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--line-2);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+td .nm{font-family:var(--display);font-weight:700}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:0}
+
+/* Misc blocks */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.card h3{font-size:18px;margin-bottom:6px}
+.card p{font-size:15px;color:var(--ink-2)}
+.q{border-left:3px solid var(--kelp);padding:4px 0 4px 18px;margin:18px 0}
+.q .qq{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.01em}
+.q .qw{font-size:15px;color:var(--ink-2);margin-top:6px}
+.q .qw b{color:var(--ink);font-weight:600}
+.src{columns:2;column-gap:32px;font-size:14px}
+.src li{break-inside:avoid;margin:0 0 8px;color:var(--ink-2)}
+.src li b{color:var(--ink);font-weight:600;font-family:var(--display)}
+.agents{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.agents div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:14px}
+.agents .a{font-family:var(--mono);font-size:12px;color:var(--kelp-ink);font-weight:600}
+.agents p{color:var(--ink-2);margin-top:4px}
+footer{border-top:1px solid var(--line);padding:28px 32px;font-family:var(--mono);font-size:12px;color:var(--ink-3);text-align:center}
+
+@media (max-width:980px){
+  .hero-inner{grid-template-columns:1fr;gap:28px}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .page{grid-template-columns:1fr;gap:24px;padding:24px 20px 72px}
+  nav.rail{position:static;display:flex;gap:18px;overflow-x:auto;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  nav.rail .group{margin:0;flex:0 0 auto}
+  nav.rail a{border-left:0;padding-left:0;margin-left:0;white-space:nowrap}
+  .reco,.verdicts,.agents{grid-template-columns:1fr}
+  .verdicts > div{border-right:0;border-bottom:1px solid var(--line-2)}
+  .fiche-grid,.grid2{grid-template-columns:1fr}
+  .scores{grid-template-columns:repeat(4,1fr)}
+  .src{columns:1}
+  .fiche-head{grid-template-columns:auto minmax(0,1fr)}
+  .score-badge{grid-column:1/-1;text-align:left}
+}
+
+.chain{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+.chain>div{background:var(--surface-2,var(--surface));border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:13.5px;line-height:1.5}
+.chain .st{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:6px}
+@media(max-width:900px){.chain{grid-template-columns:1fr 1fr}}
+.tbl td.st{white-space:nowrap}
+.ok{color:var(--kelp);font-weight:600}.ko{color:var(--buoy);font-weight:600}.mi{color:var(--ink-3);font-weight:600}
+</style>
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow">Étude d'opportunités · quatrième passe · septembre 2026</span>
+      <h1 style="margin-top:14px">Atlas Océan IV</h1>
+      <p class="lead">Cette passe ne part plus des règlements mais des gens qui paient déjà : ports, armateurs, aquaculteurs, développeurs éoliens, agences, marinas, laboratoires, organismes de réponse aux pollutions. Trente-cinq candidats, huit creusés sur leur angle différenciateur, un juge qui a contre-vérifié chaque chaîne de raisonnement sur internet. Même fondateur : seul, technique, plongeur, à Vancouver, en bootstrap, avec l'IA comme co-développeur.</p>
+    </div>
+    <div class="hero-meta">
+      <div><span>Commanditaire</span><b>Fondateur, projet Octopus</b></div>
+      <div><span>Méthode</span><b>Intuition, validation, creusement, juge</b></div>
+      <div><span>Sources</span><b>Appels d'offres, offres d'emploi, tarifs, circulaires, données ouvertes</b></div>
+      <div><span>Statut</span><b>Idéation, pas d'implémentation</b></div>
+    </div>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><div class="v">35</div><div class="l">candidats en une ligne, issus de huit populations qui paient déjà quelqu'un à la main, sans lire les passes précédentes</div></div>
+    <div class="kpi"><div class="v">8</div><div class="l">idées creusées : trois angles différenciateurs chacune, confrontés à une source qui confirme et une qui contredit</div></div>
+    <div class="kpi"><div class="v"><!--KPI3V--></div><div class="l"><!--KPI3L--></div></div>
+    <div class="kpi"><div class="v">24/35</div><div class="l">candidats qui partagent la même recette, « un agent lit les données du client et rédige le rapport du régulateur » : la question du juge était de prouver qu'un modèle générique ne suffit pas</div></div>
+  </div>
+</header>
+
+<div class="page">
+<nav class="rail" aria-label="Sommaire">
+  <div class="group"><div class="group-t">Lecture</div>
+    <a href="#synthese">Synthèse</a>
+    <a href="#chaine">La chaîne de raisonnement</a>
+    <a href="#candidats">Les 35 candidats</a>
+    <a href="#matrice">Matrice angle et filtre</a>
+  </div>
+  <div class="group"><div class="group-t">Les 8 fiches</div>
+    <a href="#idee-1"><span class="n">01</span>PSO/PAM Layer</a>
+    <a href="#idee-4"><span class="n">04</span>Green Marine Copilot</a>
+    <a href="#idee-7"><span class="n">07</span>AcoustiCert</a>
+    <a href="#idee-12"><span class="n">12</span>EM Review</a>
+    <a href="#idee-13"><span class="n">13</span>AuditPrep</a>
+    <a href="#idee-22"><span class="n">22</span>PAM-Miner</a>
+    <a href="#idee-23"><span class="n">23</span>TaxoAssist</a>
+    <a href="#idee-25"><span class="n">25</span>MicroplasticLab</a>
+  </div>
+  <div class="group"><div class="group-t">Décider</div>
+    <a href="#comparatif">Tableau comparatif</a>
+    <a href="#ecartees">Les 27 écartés</a>
+    <a href="#pieges">Pièges</a>
+    <a href="#plan">Plan à 30 jours</a>
+    <a href="#methode">Méthode et sources</a>
+  </div>
+</nav>
+
+<main>
+
+<section class="block" id="synthese">
+  <span class="eyebrow">Synthèse</span>
+  <h2><!--SYNTH-H2--></h2>
+  <div class="prose">
+    <p>Les trois premières passes cherchaient l'obligation, puis le premier client, puis la mesure. Elles ont produit trente-six idées et une seule survivante, faible. Vos retours ont nommé les pièges : une obligation n'est pas un acheteur, une preuve qui accuse le client ne se vend pas, un module de reporting n'est pas de l'IA, « aucun concurrent » veut souvent dire « déjà gratuit », et les modèles ouverts ne font pas une barrière. Cette passe a donc inversé la méthode. Huit agents sont partis des acheteurs et de ce qu'ils paient déjà à la main, en lisant des appels d'offres, des offres d'emploi, des grilles tarifaires, des circulaires d'assureurs et des portails de données, sans jamais voir les idées précédentes. Quarante candidats bruts, trente-cinq après fusion, huit retenus par le filtre en sept questions, chacun creusé sur trois angles différenciateurs avec l'obligation de chercher ce qui le tue, puis un juge indépendant qui a refait ses propres recherches.</p>
+    <!--SYNTH-P2-->
+  </div>
+  <div class="thesis"><p><!--THESIS--></p></div>
+  <!--RECOS-->
+</section>
+
+<section class="block" id="chaine">
+  <span class="eyebrow">La chaîne de raisonnement</span>
+  <h2>Rêver documenté, valider terre-à-terre, creuser jusqu'à l'angle, puis faire juger</h2>
+  <div class="chain">
+    <div><span class="st">1 · Intuition</span>Huit agents, un par population qui paie. Consigne : inventivité, génie produit, utopie contrôlée, mais chaque problème sourcé (qui paie, combien, à la main) et chaque capacité étiquetée « vérifiée » ou « supposée ». Interdit de partir d'une liste de règlements ou d'idées existantes. Quarante candidats en douze lignes.</div>
+    <div><span class="st">2 · Validation</span>Le filtre en sept questions, appliqué avant toute fiche : qui signe, la preuve se retourne-t-elle contre lui, l'IA est-elle le produit, existe-t-il gratuit, faisable seul depuis Vancouver, tenable en une phrase, le client revient-il chaque année avec ses données. Trente-cinq lignes soumises au fondateur, huit retenues, vingt-sept écartées avec la question qui les tue.</div>
+    <div><span class="st">3 · Creusement</span>Un agent par idée retenue. Trois angles différenciateurs candidats, chacun confronté à une source qui le confirme et une qui le contredit, avec l'ordre de chercher activement le concurrent, l'outil gratuit ou le projet interne du client. Puis l'acheteur nommé, les six fonctionnalités dans l'ordre de vente, le prix, la faisabilité, le test à 2 000 $.</div>
+    <div><span class="st">4 · Juge</span>Un agent indépendant relit chaque chaîne, refait ses propres recherches, note les sept questions et la force de l'angle sur cinq, signale les faits promus de supposés à vérifiés, les concurrents minimisés, les acheteurs qui n'en sont pas, et repère toute répétition des erreurs des trente-six idées précédentes. Ses verdicts sont dans chaque fiche.</div>
+  </div>
+</section>
+
+<section class="block" id="candidats">
+  <span class="eyebrow">Les 35 candidats</span>
+  <h2>Ce que les huit populations ont fait remonter, et ce que le filtre en a fait</h2>
+  <div class="prose" style="margin-bottom:18px"><p>Une ligne par candidat : qui signe, ce qu'il fait à la main aujourd'hui, ce qui existe déjà, pourquoi il revient, et le verdict du tri. Q1 acheteur, Q2 preuve contre lui, Q3 l'IA est le produit, Q4 gratuit existant, Q5 faisable seul, Q6 phrase claire, Q7 retour annuel ; M signale une ressemblance avec une idée déjà tuée.</p></div>
+  <div class="tbl"><table>
+    <thead><tr><th>#</th><th>Candidat</th><th>Qui signe</th><th>À la main aujourd'hui</th><th>Existe déjà</th><th>Revient</th><th>Tri</th></tr></thead>
+    <tbody>
+      <tr><td>01</td><td><span class="nm">PileWatch : caméra thermique et IA pour observateurs de mammifères marins sur chantiers portuaires, avec rapport NMFS</span></td><td>Entrepreneurs de construction marine sous permis IHA (plus de 50 actifs) et leurs prestataires (A.I.S. Inc., Coastwise)</td><td>Observateurs humains 15 à 45 $/h, parfois 24 h/24 des mois, journal manuel</td><td>WhaleSpotter (70 systèmes), ThermalTracker-3D, Seiche</td><td>Chaque nouveau permis IHA</td><td class="st"><span class="ok">Retenu (fusionné avec 2)</span></td></tr>
+      <tr><td>02</td><td><span class="nm">OffshoreFusion : fusion des flux de tous les fournisseurs IA d'un parc éolien (mammifères, oiseaux, PAM) en un rapport JNCC ou BOEM</span></td><td>RWE (Kaskasi, 5 flux IA séparés), Ørsted, Vattenfall</td><td>Rapprochement manuel de logs de 5 fournisseurs</td><td>Ecodetect, Spoor, DeepSeaVision (détection seule)</td><td>Construction par phases plus suivi post-construction pluriannuel</td><td class="st"><span class="ok">Retenu (fusionné avec 1)</span></td></tr>
+      <tr><td>03</td><td><span class="nm">Trawl-Predict : prévision de présence des tortues et détection sonar pour cibler le chalutage de relocalisation avant dragage</span></td><td>Entrepreneurs de dragage sous contrat USACE, sud-est des États-Unis</td><td>Chalutiers à plus de 5 000 $/j, surveillance 24 h/24</td><td>Rien d'identifié</td><td>Dragage d'entretien annuel</td><td class="st"><span class="ko">Écarté</span> · Q5 Floride, sonar supposé</td></tr>
+      <tr><td>04</td><td><span class="nm">Green Marine Copilot : agent qui compile l'autoévaluation annuelle Green Marine à partir des documents du port</span></td><td>70 ports, 140 terminaux, 50 armateurs, 25 chantiers membres</td><td>Coordinateur environnement compile 12 indicateurs</td><td>Portail de déclaration Green Marine</td><td>Annuel, vérification externe biennale</td><td class="st"><span class="ok">Retenu</span></td></tr>
+      <tr><td>05</td><td><span class="nm">Quiet Fairway : la conformité acoustique type ECHO (AIS plus hydrophones, rapport par navire) pour les ports qui n'ont pas 3,2 M$</span></td><td>Autorités portuaires et estuariennes (appels d'offres Mersey et Écosse 2025), programme Quiet Sound</td><td>JASCO, SMRU en rapports sur mesure</td><td>JASCO, SMRU, Orcasound</td><td>Rapport saisonnier annuel</td><td class="st"><span class="ko">Écarté</span> · Q5 marché public</td></tr>
+      <tr><td>06</td><td><span class="nm">HullAudit : relecture IA des vidéos d'inspection de coque soumises aux régulateurs, priorisation des navires à risque</span></td><td>California State Lands Commission, Transports Canada (approbation du nettoyage en eau)</td><td>Relecture manuelle, forte variabilité entre experts</td><td>Vesselity, HullVAR (côté armateur)</td><td>Déclaration annuelle par navire</td><td class="st"><span class="ko">Écarté</span> · Q5 régulateur</td></tr>
+      <tr><td>07</td><td><span class="nm">AcoustiCert : attestation de niveau de bruit rayonné d'un navire à partir des hydrophones existants, sans essai en mer</span></td><td>Armateurs faisant escale à Vancouver (rabais EcoAction de 23 à 47 %)</td><td>Essai en mer par société de classification</td><td>Notations SILENT de DNV, Orcasound</td><td>Recertification après travaux, grille annuelle</td><td class="st"><span class="ok">Retenu</span></td></tr>
+      <tr><td>08</td><td><span class="nm">PreuveBaleine : dossier de preuve par traversée (vitesse, position, zones actives) contre les amendes NOAA non assurées</span></td><td>Armateurs côtes est et ouest des États-Unis</td><td>Rien, les amendes sont payées (2 000 lettres depuis 2018)</td><td>Whale Safe, Whale Alert (alerte, pas preuve)</td><td>Un dossier par voyage</td><td class="st"><span class="ko">Écarté</span> · Q2 preuve contre lui</td></tr>
+      <tr><td>09</td><td><span class="nm">FoulingScore : notation FR0 à FR5 du biofouling sur vidéo de plongeur et génération du Biofouling Record Book</span></td><td>Armateurs escales Nouvelle-Zélande (CRMS durci 04/2025) et Californie</td><td>Inspection plongeur, notation manuelle</td><td>Vesselity, HullVAR</td><td>Chaque escale à risque, chaque cale sèche</td><td class="st"><span class="ko">Écarté</span> · Q4 Vesselity</td></tr>
+      <tr><td>10</td><td><span class="nm">ContainerTrace : dossier de déclaration SOLAS de perte de conteneurs assemblé automatiquement (obligatoire depuis 01/01/2026)</span></td><td>Armateurs de porte-conteneurs</td><td>Déclaration manuelle nouvelle</td><td>Rien</td><td>Par incident (576 en 2024 dans le monde)</td><td class="st"><span class="ko">Écarté</span> · Q1 rare, Q7</td></tr>
+      <tr><td>11</td><td><span class="nm">ArbitrageCarbone : agent qui lit les chartes-parties et arbitre CII, EU ETS, FuelEU</span></td><td>Armateurs trafiquant vers l'UE (pénalités 2 M€/an par navire moyen)</td><td>Tableaux de bord et analystes</td><td>OceanScore, MarineAware, qaship</td><td>Annuel, seuils durcis chaque année</td><td class="st"><span class="ko">Écarté</span> · Q4 OceanScore, Q6</td></tr>
+      <tr><td>12</td><td><span class="nm">EM Review : relecture IA des vidéos de surveillance électronique des pêches (espèces, rejets, mammifères) au format MPO ou NOAA</span></td><td>Pêcheurs du Pacifique (paient 100 % depuis 2013), fournisseurs EM, 14 programmes NOAA</td><td>Revue vidéo humaine, poste de coût n°1</td><td>VIAME (gratuit), AI.Fish, Archipelago en interne</td><td>Chaque saison, condition de permis</td><td class="st"><span class="ok">Retenu</span></td></tr>
+      <tr><td>13</td><td><span class="nm">AuditPrep : copilote qui pré-cartographie journaux de ferme ou de navire contre les grilles ASC, MSC, BAP avant l'auditeur</span></td><td>2 640 fermes ASC, 600 pêcheries MSC, 2 300 fermes BAP ; certificateurs (BV, DNV, SCS)</td><td>Audit 15 à 120 k$, 12 à 18 mois</td><td>Rien d'IA</td><td>Audit de surveillance annuel sur 5 ans</td><td class="st"><span class="ok">Retenu</span></td></tr>
+      <tr><td>14</td><td><span class="nm">SeafoodTrace : recoupement documentaire douane, certificats de capture, ADN pour détecter la fraude avant dédouanement</span></td><td>Importateurs SIMP, 490 usines BAP</td><td>Recoupement manuel, tests ADN</td><td>Labos ADN, Trace Register, Wholechain</td><td>Par expédition</td><td class="st"><span class="ko">Écarté</span> · Q6 océan indirect, Q4</td></tr>
+      <tr><td>15</td><td><span class="nm">RopelessMap : prévision des fermetures dynamiques baleine noire et déconfliction des casiers sans bouée</span></td><td>Pêcheries de homard (LMA1), États, NFWF (26 M$ engagés dans le matériel)</td><td>Rien</td><td>Subventions matériel, alertes NOAA</td><td>Chaque saison</td><td class="st"><span class="ko">Écarté</span> · Q5 Nouvelle-Angleterre</td></tr>
+      <tr><td>16</td><td><span class="nm">LiceAudit : vérification tierce des comptages de poux et de mortalité à partir des caméras déjà en cage</span></td><td>Régulateurs, assureurs aquacoles</td><td>Déclarations du producteur</td><td>Aquabyte, Manolin, CageEye (vendus au producteur)</td><td>Chaque cycle de 18 à 24 mois</td><td class="st"><span class="ko">Écarté</span> · Q2 preuve contre le producteur</td></tr>
+      <tr><td>17</td><td><span class="nm">ROV-Integrity : rapport d'état des fondations et câbles (biofouling, corrosion) référencé aux clauses DNV, depuis la vidéo ROV</span></td><td>Équipes O&M des développeurs (postes ROV 156 k$/an, analystes 90 à 105 k$/an)</td><td>Revue vidéo manuelle contre DNV-RP-0416</td><td>Deeptrekker, SeaDeep, Vaarst</td><td>Ré-inspection périodique sur 25 ans</td><td class="st"><span class="ko">Écarté</span> · Q4 SeaDeep, Vaarst</td></tr>
+      <tr><td>18</td><td><span class="nm">CableDrift : prévision de l'exposition des câbles à partir des levés successifs, au format CBRA</span></td><td>Propriétaires de câbles, assureurs</td><td>Comparaison manuelle de deux levés</td><td>Indeximate (DAS), Cathie</td><td>Réévaluation annuelle, 25 ans</td><td class="st"><span class="ko">Écarté</span> · Q6, capacité supposée</td></tr>
+      <tr><td>19</td><td><span class="nm">DecomDossier : évaluation comparative retrait contre récif artificiel, rédigée depuis la vidéo ROV et les coûts</span></td><td>Majors pétrolières (retrait 22 M$ par plateforme en mer du Nord)</td><td>Consultants</td><td>Rien d'IA</td><td>Par actif, vague 2030-2040</td><td class="st"><span class="ko">Écarté</span> · Q5 grands comptes</td></tr>
+      <tr><td>20</td><td><span class="nm">AvianRate : tri de 600 000 vidéos de caméras multi-fournisseurs en taux d'évitement standardisé par portefeuille</span></td><td>Développeurs, Crown Estate (ORJIP)</td><td>Revue humaine (12 131 vidéos utiles sur 600 000)</td><td>Spoor (déjà chez RWE)</td><td>Suivi post-consentement pluriannuel</td><td class="st"><span class="ko">Écarté</span> · Q4 Spoor, Q1</td></tr>
+      <tr><td>21</td><td><span class="nm">BenthicClass : classification IA des habitats sur vidéo ROV selon JNCC et EUNIS, avec rapport</span></td><td>Développeurs éoliens, bureaux d'études</td><td>Annotation manuelle</td><td>BIIGLE, SeaDeep, BENTHIQ, FathomNet</td><td>Suivis pluriannuels</td><td class="st"><span class="ko">Écarté</span> · M, Q4 BIIGLE, SeaDeep</td></tr>
+      <tr><td>22</td><td><span class="nm">PAM-Miner : interrogation d'archives hydrophones (ONC, Boundary Pass) et rédaction de la section acoustique des suivis</span></td><td>Bureaux d'études des projets GNL, câbles, terminaux en C.-B.</td><td>Revue manuelle de milliers d'heures</td><td>PAMGuard (gratuit), JASCO</td><td>Années 1, 3, 5 des autorisations</td><td class="st"><span class="ok">Retenu</span></td></tr>
+      <tr><td>23</td><td><span class="nm">TaxoAssist : identification par photo des spécimens de macrofaune benthique, calée sur les ring tests NMBAQC</span></td><td>APEM, MESL, RSK (taxonomistes 38 à 70 k£, postes non pourvus)</td><td>Tri et identification à la loupe</td><td>Prototypes académiques (FishAI 62 %)</td><td>Ring tests biannuels, contrats pluriannuels</td><td class="st"><span class="ok">Retenu</span></td></tr>
+      <tr><td>24</td><td><span class="nm">EIA Copilot : rédaction des chapitres d'étude d'impact, traçage des engagements, réponses aux régulateurs</span></td><td>Tetra Tech (2,5 M£ Crown Estate), ERM, Ramboll, WSP</td><td>Rédaction manuelle</td><td>LLM génériques, guidance ISEP 2025</td><td>Par projet, cycles de questions</td><td class="st"><span class="ko">Écarté</span> · Q3 LLM générique, Q6</td></tr>
+      <tr><td>25</td><td><span class="nm">MicroplasticLab : classement des particules FTIR et LDIR toutes marques et certificat ISO 17025 automatique</span></td><td>Eurofins, Measurlabs, PolyGone (349 $/échantillon)</td><td>Comptage semi-manuel, certificat chronophage</td><td>Logiciels des fabricants (Agilent, Bruker)</td><td>Suivi de l'eau en extension</td><td class="st"><span class="ok">Retenu</span></td></tr>
+      <tr><td>26</td><td><span class="nm">WhaleWatch Log : attestation de conformité par sortie (distances DFO 100 à 1 000 m) depuis l'AIS obligatoire</span></td><td>28 membres PWWA, 30 Whale SENSE</td><td>Journal papier, mémoire du capitaine</td><td>WRAS, Whale Safe</td><td>Chaque saison, historique pour l'assureur</td><td class="st"><span class="ko">Écarté</span> · Q2, Q1 bénévoles</td></tr>
+      <tr><td>27</td><td><span class="nm">Posidonia Charter : copilote embarqué qui alerte le skipper loueur avant un mouillage interdit et archive la preuve</span></td><td>Loueurs de Méditerranée (cautions 2 500 à 5 000 €, assurance-caution 10 %)</td><td>Rien, litiges de caution</td><td>Donia (carte gratuite)</td><td>Chaque saison, chaque flotte</td><td class="st"><span class="ko">Écarté</span> · M, Q5 Méditerranée</td></tr>
+      <tr><td>28</td><td><span class="nm">ClaimPhoto : pré-expertise IA des photos de sinistre plaisance avant d'envoyer l'expert à 750 $ minimum</span></td><td>Assureurs et MGA plaisance</td><td>Expertise à chaque sinistre, semaines d'attente</td><td>IA sinistres auto et cargo</td><td>Chaque saison, chaque renouvellement</td><td class="st"><span class="ko">Écarté</span> · Q6 lien océan faible</td></tr>
+      <tr><td>29</td><td><span class="nm">Clean Marina Copilot : dossier CMAP pré-rempli depuis les photos et documents de la marina</span></td><td>Marinas (paient déjà Dockwa 150 à 2 000 $/mois)</td><td>Checklist à la main</td><td>Rien</td><td>Renouvellement tous les 5 ans</td><td class="st"><span class="ko">Écarté</span> · Q7 cinq ans, Q1</td></tr>
+      <tr><td>30</td><td><span class="nm">PlanRédac : rédaction et mise à jour des plans d'urgence FRP, VRP, Polmar</span></td><td>Raffineries, terminaux, stations d'épuration</td><td>Cabinets (Witt O'Brien's, Jensen Hughes)</td><td>Enablon, Intelex</td><td>Triennal plus chaque changement</td><td class="st"><span class="ko">Écarté</span> · Q3, Q4, Q6</td></tr>
+      <tr><td>31</td><td><span class="nm">Drill AAR : rapport après exercice obligatoire rédigé depuis vidéo, audio et journaux radio</span></td><td>WCMRC, ECRC, OSRO, titulaires de plans</td><td>SpillConsult et temps interne</td><td>Rien</td><td>Un exercice par an</td><td class="st"><span class="ko">Écarté</span> · Q1 petit marché</td></tr>
+      <tr><td>32</td><td><span class="nm">SlickWatch : détection continue de rejets et nappes (SAR, caméras de quai, AIS) jusqu'au rapport d'incident</span></td><td>OSRO, ports, terminaux</td><td>Survols, inspection visuelle</td><td>CleanSeaNet, OliOil</td><td>Abonnement</td><td class="st"><span class="ko">Écarté</span> · Q2 documente les rejets</td></tr>
+      <tr><td>33</td><td><span class="nm">EvidenceSAR : dossier de preuve pollution ou pêche illégale assemblé depuis satellite, AIS et courants</span></td><td>Garde-côtes, P&I</td><td>Opérateurs formés EMSA</td><td>CleanSeaNet, GFW, Skylight</td><td>Flux continu d'incidents</td><td class="st"><span class="ko">Écarté</span> · Q5 marché public</td></tr>
+      <tr><td>34</td><td><span class="nm">ClaimsCopilot : instruction assistée des réclamations d'indemnisation après marée noire</span></td><td>Secrétariat FIPOL (£5,9 M), SOPF Canada</td><td>40 807 réclamations actives à la main</td><td>Rien</td><td>Par sinistre, cycles de plusieurs années</td><td class="st"><span class="ko">Écarté</span> · Q1 deux acheteurs, Q5</td></tr>
+      <tr><td>35</td><td><span class="nm">OverflowAlert : prévision des débordements d'égouts et efflorescences, avis public rédigé dans le délai légal</span></td><td>Services d'eau sous décret (Kansas City 2,5 Md$, Houston 9 Md$), agences côtières</td><td>Rapport sous 24 h manuel</td><td>NOAA HAB, analytique réseau (Xylem)</td><td>Permis NPDES, chaque saison</td><td class="st"><span class="ko">Écarté</span> · Q5 marché public</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="block" id="matrice">
+  <span class="eyebrow">Matrice</span>
+  <h2>Force de l'angle différenciateur contre passage du filtre, selon le juge</h2>
+  <div class="prose" style="margin-bottom:20px"><p>En abscisse, la force de l'angle différenciateur notée par le juge, de 1 (un modèle générique avec un gabarit suffit) à 5 (personne ne le copie en un an). En ordonnée, le nombre de questions du filtre auxquelles le juge répond oui, sur sept. La taille du disque suit le revenu annuel estimé par client. Survolez un disque pour le détail.</p></div>
+  <div class="chart-wrap" id="bubble">
+    <svg viewBox="0 0 780 460" role="img" aria-label="Matrice angle différenciateur contre filtre des huit idées"></svg>
+    <div class="legend">
+      <span style="--c:var(--s1)">Chantiers, ports et armateurs</span>
+      <span style="--c:var(--s2)">Pêche et aquaculture</span>
+      <span style="--c:var(--s3)">Laboratoires et bureaux d'études</span>
+    </div>
+    <div class="tip" id="tip"></div>
+  </div>
+  <p class="chart-note"><!--CHARTNOTE--></p>
+</section>
+
+<section class="block" id="fiches">
+  <span class="eyebrow">Les fiches</span>
+  <h2>Huit idées creusées : l'acheteur, ce qu'il paie à la main, trois angles testés, l'angle retenu, et ce que le juge en dit</h2>
+  <div class="prose"><p>Chaque fiche suit la chaîne : d'où vient l'intuition, pourquoi elle a passé le filtre, quels angles ont été confrontés à des sources, lequel survit, et le verdict du juge après ses propres recherches. Les sept barres sont les sept questions du filtre selon le juge : plein pour oui, moitié pour incertain, vide pour non. Le badge est la force de l'angle différenciateur sur cinq.</p></div>
+
+  <div class="fam-h"><span class="sw" style="background:var(--s1)"></span><div><h3>Chantiers, ports et armateurs</h3><p>Ceux qui paient des observateurs à la journée, des coordinateurs à l'année et des essais en mer à la commande, parce qu'un permis ou une grille tarifaire l'exige.</p></div></div>
+
+  <article class="fiche" id="idee-1">
+    <header class="fiche-head">
+      <div class="big">01</div>
+      <div><span class="fam fam-mer">Chantiers et ports</span><h3>PSO/PAM Layer</h3><p class="tagline">Le rapport de conformité aux mammifères marins rédigé depuis les journaux de tous les capteurs d'un chantier, vendu aux prestataires d'observateurs</p></div>
+      <div class="score-badge"><!--BADGE:1--><span>/5</span><small>Angle, selon le juge</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Qui paie déjà</span><span class="date">50+ permis</span><span class="ref">50 CFR 217 à 219 (NMFS) · protocole JNCC · A.I.S. Inc., Coastwise, Seiche, RPS</span><span>Tout battage de pieux ou travaux bruyants en mer aux États-Unis exige une autorisation de dérangement (IHA) avec observateurs certifiés payés 200 à 700 $ par jour, parfois 24 h sur 24 pendant des mois, et un rapport de suivi qui doit contenir dates, positions, conditions, comptages par espèce, actions de mitigation et fiches brutes en annexe. Plus de 50 autorisations sont actives en permanence. Au Royaume-Uni, le protocole JNCC impose la même chaîne avec un formulaire Excel standardisé.</span></div>
+    <div class="fiche-grid">
+      <section><h4>D'où vient l'intuition</h4><p>Trois agents l'ont proposée séparément : ports (caméra thermique pour observateurs), énergie en mer (RWE fait tourner cinq flux IA séparés sur Kaskasi sans fusion) et bureaux d'études (RPS dessert 90 % des baux éoliens américains). Fusionnées en une seule idée vendue aux prestataires, pas aux développeurs.</p></section>
+      <section><h4>L'acheteur</h4><p>Les PME de sous-traitance d'observateurs (A.I.S. Inc. en Alaska, Texas et Massachusetts ; Coastwise Consulting, formateur reconnu NOAA, observateurs à 250 $ par jour embarqués 20 à 30 jours) sans département logiciel visible ; Seiche Ltd, qui vend du matériel PAM et s'appuie sur PAMGuard gratuit. RPS Group est plus risqué : il a déjà Neptune, une IA propriétaire avec Microsoft. Fonction qui signe 2 000 $ : responsable opérations ou projet, titre non trouvé.</p></section>
+      <section class="wide"><h4>Trois angles testés</h4><ul>
+        <li><b>Synthèse narrative multi-source traçable</b> : chaque phrase du rapport reliée à son journal de détection, sa fiche terrain, sa météo. Confirmé par le texte du règlement (contenu exigé multi-source). Contredit côté britannique : le formulaire de capture JNCC existe déjà. <b>Retenu</b>, pour la rédaction du rapport narratif après capture, pas pour remplacer la fiche terrain.</li>
+        <li><b>Corpus historique par site qui apprend du régulateur</b> : aucune base publique de rapports acceptés ou rejetés n'existe, le signal d'apprentissage est une hypothèse. Tombe.</li>
+        <li><b>Détection propriétaire qui remplace l'observateur</b> : commoditisée (WhaleSpotter, ThermalTracker-3D, Seiche RADES, RPS Neptune, PAMGuard) et l'observateur certifié reste obligatoire par la loi. Tombe.</li>
+      </ul></section>
+      <section><h4>Le produit, dans l'ordre de vente</h4><p>Ingestion des journaux déjà produits (détections PAM, fiches PSO, alertes caméra) ; alignement sur le gabarit du permis (IHA ou JNCC) ; brouillon narratif où chaque chiffre cite sa source ; signalement des trous (heures manquantes, espèces sans fiche) ; validation humaine obligatoire, le prestataire signe ; export et archive par site pour le cycle suivant.</p></section>
+      <section><h4>Prix et retour</h4><dl class="kv"><dt>Par rapport</dt><dd>sous le coût d'un jour d'observateur, 200 à 700 $ US</dd><dt>Retour</dt><dd>chaque chantier redemande un permis et un rapport ; l'historique par site reste dans l'outil</dd></dl></section>
+      <section><h4>Faisabilité seul</h4><p>Aucun matériel, aucun permis : le fondateur n'observe pas. Corpus d'entraînement public : les rapports PSO déjà soumis à la NOAA et publiés (domaine public), les formulaires JNCC. Blocage réel : les formats de journaux propriétaires (Neptune, RADES, PAMGuard) ne sont pas publics, il faut un partenaire.</p></section>
+      <section><h4>La preuve contre l'acheteur</h4><p>Un rapport erroné expose le prestataire au régulateur. Architecture : assistant de rédaction avec citation obligatoire, validation humaine finale, aucune décision de mitigation en temps réel.</p></section>
+      <section><h4>Test à 2 000 $</h4><p>Dix à vingt rapports PSO publics, reconstituer les journaux depuis les annexes, générer un brouillon, évaluation en aveugle par un ancien observateur freelance (500 à 1 000 $) contre le rapport réellement soumis. Critère : 80 % des champs obligatoires extraits sans erreur, en moins de dix minutes par rapport. Question au client : combien de vos rapports ont été retournés par NMFS ou JNCC l'an dernier, et sur quoi ?</p></section>
+    </div>
+    <div class="scores"><!--Q:1--></div>
+    <!--JUGE:1-->
+  </article>
+
+  <article class="fiche" id="idee-4">
+    <header class="fiche-head">
+      <div class="big">04</div>
+      <div><span class="fam fam-mer">Chantiers et ports</span><h3>Green Marine Copilot</h3><p class="tagline">L'autoévaluation annuelle Green Marine compilée depuis les documents du port, avec la mémoire de ce qui a été déclaré les années précédentes</p></div>
+      <div class="score-badge"><!--BADGE:4--><span>/5</span><small>Angle, selon le juge</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Qui paie déjà</span><span class="date">285 membres</span><span class="ref">Green Marine, politique de certification · 12 indicateurs, niveaux 1 à 5 · vérification externe biennale</span><span>Environ 70 ports, 140 terminaux, 50 armateurs et 25 chantiers nord-américains sont membres de Green Marine et doivent produire chaque année une autoévaluation sur douze indicateurs (espèces envahissantes, bruit sous-marin, rejets, eaux pluviales), progresser d'au moins un niveau par indicateur jusqu'au niveau 2, et se faire vérifier par un cabinet accrédité tous les deux ans. Des postes dédiés existent (Everport Terminal Services gère des bases multi-terminaux). Le tarif de la vérification externe est resté introuvable après trois recherches.</span></div>
+    <div class="fiche-grid">
+      <section><h4>D'où vient l'intuition</h4><p>L'agent ports a lu la grille publique et les guides d'autoévaluation : la spécification du produit existe déjà, écrite par le programme, et le retour est contractuel.</p></section>
+      <section><h4>L'acheteur</h4><p>Le coordinateur environnement ou durabilité d'un port, terminal ou armateur membre (titre observé : Sustainability and Environmental Compliance Manager, 72 à 149 k$ US par an, source secondaire). Il signe vraisemblablement 2 000 $ seul, sous le seuil d'appel d'offres. Jamais le vérificateur : la politique interdit à un cabinet d'avoir conseillé un membre dans les deux ans précédant sa vérification.</p></section>
+      <section class="wide"><h4>Trois angles testés</h4><ul>
+        <li><b>Gabarit tracé</b> : chaque niveau revendiqué relié à un extrait daté du document source. Confirmé par l'existence de la grille. Contredit : le marché ESG générique revendique déjà ce chaînage et 70 % de gain de temps ; un modèle générique avec le PDF de la grille produit un premier jet en une session. Ne tient pas seul.</li>
+        <li><b>Mémoire longitudinale par site</b> : l'outil garde d'une année sur l'autre les niveaux, les documents mappés, et signale l'indicateur le plus proche de la progression obligatoire. Aucun outil maritime ne le fait ; les plateformes ESG d'entreprise le font génériquement à 40 000 à 150 000 $ par an, hors de portée des PME portuaires. <b>Retenu</b>.</li>
+        <li><b>Position dans la chaîne</b> (vendu au membre, jamais au vérificateur) : vrai, nécessaire, mais c'est une condition d'architecture, pas un différenciateur.</li>
+      </ul></section>
+      <section><h4>Le produit, dans l'ordre de vente</h4><p>Import des documents opérationnels (carburant, incidents, dragage, soumissions antérieures) ; correspondance document vers indicateur avec extrait daté ; brouillon d'autoévaluation relu et signé par le dirigeant, jamais soumis automatiquement ; mémoire multi-année et recommandation de l'indicateur à faire progresser ; dossier de vérification biennale compilé ; aucune connexion automatique vers Green Marine.</p></section>
+      <section><h4>Prix et retour</h4><dl class="kv"><dt>Abonnement</dt><dd>3 000 à 6 000 $ CAD par site et par an</dd><dt>Année de vérification</dt><dd>plus 1 500 à 3 000 $</dd><dt>Retour</dt><dd>obligation annuelle, et l'historique mappé vit dans l'outil</dd></dl></section>
+      <section><h4>Faisabilité seul</h4><p>Produit purement documentaire, aucun matériel ni permis. Grille et guides publics. Blocage réel : convaincre un premier port de partager ses documents internes, dont les incidents.</p></section>
+      <section><h4>La preuve contre l'acheteur</h4><p>Un mappage plus complet peut faire remonter une non-conformité que le coordinateur aurait laissée implicite. Architecture : brouillon strictement contrôlé par le client, rien n'est transmis sans validation du dirigeant signataire.</p></section>
+      <section><h4>Test à 2 000 $</h4><p>Un port ou terminal moyen volontaire (hors Vancouver et Montréal, qui ont des postes dédiés), trois ans de soumissions et les journaux d'un seul indicateur, brouillon tracé en deux semaines. Critère : le coordinateur valide en moins de 30 minutes de relecture et accepte de payer la version complète ou de présenter l'outil à son vérificateur. Question au client : combien d'heures par an pour compiler, et combien payez-vous le vérificateur ?</p></section>
+    </div>
+    <div class="scores"><!--Q:4--></div>
+    <!--JUGE:4-->
+  </article>
+
+  <article class="fiche" id="idee-7">
+    <header class="fiche-head">
+      <div class="big">07</div>
+      <div><span class="fam fam-mer">Chantiers et ports</span><h3>AcoustiCert</h3><p class="tagline">Le bruit rayonné d'un navire suivi à chaque passage devant les hydrophones de Vancouver, pour l'armateur qui doit décider quand payer le vrai essai</p></div>
+      <div class="score-badge"><!--BADGE:7--><span>/5</span><small>Angle, selon le juge</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Qui paie déjà</span><span class="date">23 à 47 %</span><span class="ref">EcoAction (Port de Vancouver) · notations SILENT-E, UWN, URN · station de Boundary Pass (Transports Canada, JASCO)</span><span>Le Port de Vancouver réduit ses droits de 23 à 47 % pour les navires porteurs d'une notation de bruit d'une société de classification (ABS UWN, BV URN, DNV SILENT-E, LR UWN-L, RINA), obtenue par un essai en mer dédié dont le coût est resté introuvable. La station de Boundary Pass mesure déjà, automatiquement et gratuitement, le bruit de chaque navire sur 4 000 à 5 000 transits par an.</span></div>
+    <div class="fiche-grid">
+      <section><h4>D'où vient l'intuition</h4><p>L'agent armateurs a relié une grille tarifaire chiffrée à des hydrophones publics déjà en place : l'attestation par écoute passive remplacerait l'essai en mer.</p></section>
+      <section><h4>L'acheteur</h4><p>Le surintendant de flotte d'un armateur dont les navires transitent régulièrement par le détroit de Georgia, pour un rapport pilote sur un ou deux navires, signé sans comité. Jamais le port, qui n'accorde le rabais qu'aux notations de classification.</p></section>
+      <section class="wide"><h4>Trois angles testés</h4><ul>
+        <li><b>Substitut d'attestation</b> : réfuté. Le port liste nommément les seules notations acceptées ; aucune attestation tierce n'est mentionnée.</li>
+        <li><b>Surveillance de dérive entre deux essais officiels</b> : partiellement réfuté. Boundary Pass fait déjà l'attribution automatisée par navire ; JASCO, qui opère la station, vend aussi des mesures à la commande et publie sa propre notation A à D. Il reste la restitution continue, par flotte, à l'armateur, que ni Transports Canada ni JASCO ne semblent offrir. <b>Retenu, très rétréci</b>.</li>
+        <li><b>Export vers d'autres ports</b> : là où il n'y a pas de station d'écoute, il faut financer du matériel ; aucun autre port n'a été trouvé avec une grille similaire. Tombe.</li>
+      </ul></section>
+      <section><h4>Le produit, dans l'ordre de vente</h4><p>Liste IMO de la flotte et dates d'escale ; recoupement AIS et passages captés ; indice acoustique par transit sur l'échelle EcoAction, corrélation aux seuils réels non validée ; alerte de dérive (encrassement, hélice) ; le rapport n'est ni une notation ni accepté par le port, il sert à décider si l'essai ISO 17208 vaut la peine cette année.</p></section>
+      <section><h4>Prix et retour</h4><dl class="kv"><dt>Par navire</dt><dd>quelques centaines à 1 000 $ US par an, non validé</dd><dt>Retour</dt><dd>la dérive acoustique est une série temporelle par navire et par cycle de cale sèche</dd></dl></section>
+      <section><h4>Faisabilité seul</h4><p>Aucun matériel si les flux existent. Point qui peut tuer le projet : l'accès aux données brutes de Boundary Pass par un tiers commercial n'a pas pu être confirmé (portvancouver.com et jasco.com bloquent). La séparation de sources multi-navires reste un sujet de recherche 2022-2025, jamais déployé commercialement.</p></section>
+      <section><h4>La preuve contre l'acheteur</h4><p>Plus qu'avant : un indice de dérive négative, s'il fuit ou est demandé par un assureur, documente une non-conformité non déclarée. Rapport livré au seul client, jamais transmis.</p></section>
+      <section><h4>Test à 2 000 $</h4><p>Un navire dont les transits sont publiés par JASCO ou Transports Canada, recoupé avec son AIS sur 5 à 10 passages. Critère : coefficient de variation de l'indice sous 15 % à vitesse comparable, sans nettoyage manuel. Question au client : accepteriez-vous un service qui ne donne jamais le rabais, seulement l'aide à décider quand payer la vraie notation ?</p></section>
+    </div>
+    <div class="scores"><!--Q:7--></div>
+    <!--JUGE:7-->
+  </article>
+
+  <div class="fam-h"><span class="sw" style="background:var(--s2)"></span><div><h3>Pêche et aquaculture</h3><p>Ceux qui paient déjà la revue vidéo obligatoire et l'audit de certification, chaque saison et chaque année d'un cycle de cinq ans.</p></div></div>
+
+  <article class="fiche" id="idee-12">
+    <header class="fiche-head">
+      <div class="big">12</div>
+      <div><span class="fam fam-peche">Pêche</span><h3>EM Review</h3><p class="tagline">La relecture des vidéos de surveillance électronique des pêches, poste de coût numéro un des programmes, pour les fournisseurs et programmes qui n'ont pas encore d'IA</p></div>
+      <div class="score-badge"><!--BADGE:12--><span>/5</span><small>Angle, selon le juge</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Qui paie déjà</span><span class="date">14 programmes</span><span class="ref">NOAA EM (14 programmes régionaux) · MPO Pacifique (industrie payeuse depuis 2013) · Archipelago, Saltwater, Ai.Fish</span><span>La NOAA écrit que les plus gros coûts de la surveillance électronique sont la revue vidéo manuelle, la transmission et le stockage ; au Canada, les pêcheurs du Pacifique paient 100 % du programme à des fournisseurs privés certifiés, des dizaines de milliers de dollars par saison. Chaque saison de pêche redemande un rapport, condition de permis.</span></div>
+    <div class="fiche-grid">
+      <section><h4>D'où vient l'intuition</h4><p>Deux agents (aquaculture et pêche, agences et données) ont proposé la même chose depuis deux sources différentes : le coût dominant documenté par la NOAA et l'archive vidéo obligatoire sous-exploitée.</p></section>
+      <section><h4>L'acheteur</h4><p>Les trois acheteurs nommés au tri sont en réalité des concurrents : Archipelago (Victoria) a FishVue AI en production sur 300 à 500 navires, primé en 2026, financé à 581 500 $ CAD par l'Ocean Supercluster ; Saltwater a intégré de la détection IA dans O2Review ; Ai.Fish, financé par la NOAA, vend Catchvision aux navires et aux agences. Acheteur restant : un programme régional ou international sans fournisseur doté d'IA et sans compétence pour déployer VIAME.</p></section>
+      <section class="wide"><h4>Trois angles testés</h4><ul>
+        <li><b>Couche IA générique multi-fournisseur</b> : Catchvision est déjà générique et commercial. Tombe.</li>
+        <li><b>Génération du rapport réglementaire</b> : Catchvision génère des rapports téléchargeables, FishVue AI s'intègre à FishVue Interpret pour la documentation. Tombe.</li>
+        <li><b>Programmes non couverts</b> hors Alaska, Colombie-Britannique et côte Ouest : VIAME, gratuit, est fait pour eux mais exige une compétence de déploiement. <b>Survit, très affaibli</b>, comme niche.</li>
+      </ul></section>
+      <section><h4>Le produit, dans l'ordre de vente</h4><p>Ingestion de la vidéo brute ; détection d'espèces, comptage des prises et rejets, mammifères ; rapport au format MPO ou NOAA ; segments incertains signalés pour revue humaine ; archive par navire ; validation humaine avant soumission. Référence à battre : FishVue AI, 48 % de gain de temps mesuré, erreur 2,7 % contre 1,3 % en revue standard.</p></section>
+      <section><h4>Prix et retour</h4><dl class="kv"><dt>Modèle</dt><dd>par heure de vidéo ou par saison, sous le coût de la revue humaine</dd><dt>Retour</dt><dd>chaque saison ; l'accumulation locale est exactement ce que FishVue AI revendique déjà</dd></dl></section>
+      <section><h4>Faisabilité seul</h4><p>Aucune vidéo EM réelle n'est publique (propriété du fournisseur ou du régulateur) ; corpus de substitution FathomNet ou VIAME, sans vidéo de pont de bateau. Sans partenariat, la performance réelle n'est pas validable, contrairement à Archipelago et Ai.Fish.</p></section>
+      <section><h4>La preuve contre l'acheteur</h4><p>Un rejet non compté expose le pêcheur à une sanction. Même architecture que les produits existants : IA assistée, validation humaine, aucune décision automatique.</p></section>
+      <section><h4>Test à 2 000 $</h4><p>Classificateur sur corpus de substitution, précision d'au moins 90 %, en moins de 40 heures. Limite assumée : ne prouve rien sur la vidéo de pont réelle. Question au client : un petit fournisseur ou un programme hors côte Ouest paierait-il ce que ni FishVue, ni O2Review, ni Catchvision, ni VIAME ne couvrent ?</p></section>
+    </div>
+    <div class="scores"><!--Q:12--></div>
+    <!--JUGE:12-->
+  </article>
+
+  <article class="fiche" id="idee-13">
+    <header class="fiche-head">
+      <div class="big">13</div>
+      <div><span class="fam fam-peche">Aquaculture</span><h3>AuditPrep</h3><p class="tagline">Les journaux d'une ferme ou d'un navire pré-cartographiés contre les grilles ASC, MSC ou BAP avant l'auditeur, gardés privés</p></div>
+      <div class="score-badge"><!--BADGE:13--><span>/5</span><small>Angle, selon le juge</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Qui paie déjà</span><span class="date">5 500 sites</span><span class="ref">MSC (600 pêcheries, 25 indicateurs, seuils 60 et 80) · ASC (2 640 fermes) · BAP (2 300 fermes, Farm 3.1) · audits annuels sur 5 ans</span><span>Un audit MSC coûte 15 000 à 120 000 $ US (jusqu'à 250 000 selon d'autres prestataires) et une évaluation initiale prend 12 à 18 mois ; ASC et BAP ne publient pas de chiffre. Chaque site est audité chaque année du cycle de cinq ans. Un consultant de préparation GFSI, hors secteur marin, facture 2 500 à 12 000 $.</span></div>
+    <div class="fiche-grid">
+      <section><h4>D'où vient l'intuition</h4><p>Deux agents (aquaculture, bureaux d'études) ont proposé indépendamment un copilote de préparation d'audit ; les référentiels sont publics, détaillés et chiffrés, donc la spécification existe.</p></section>
+      <section><h4>L'acheteur</h4><p>Le responsable qualité ou durabilité d'un site aquacole moyen, certifié ou en voie de l'être, qui signe un pré-audit ponctuel sur son budget consultant sans comité. Pas les certificateurs (Bureau Veritas, DNV, SCS, Intertek) : ils facturent au temps, un outil qui accélère leur revue réduit leurs honoraires.</p></section>
+      <section class="wide"><h4>Trois angles testés</h4><ul>
+        <li><b>Gabarit réglementaire versionné et sourcé</b>, journal vers indicateur, tenu à jour à chaque révision de norme, avec citation exacte du passage. Aucun outil commercial trouvé (iAuditor, Intelex, EcoVadis ne couvrent pas ces référentiels). Contredit à moyen terme : MSC et ASC ont numérisé leur plateforme d'audit de chaîne de contrôle (2023), BAP a un portail Prism. <b>Retenu, fragile à moyen terme</b>.</li>
+        <li><b>Historique cumulé par site</b> : bon argument de rétention, pas un différenciateur d'entrée, tout logiciel à mémoire accumule.</li>
+        <li><b>Vendre aussi aux certificateurs</b> : désincitation économique directe. Tombe.</li>
+      </ul></section>
+      <section><h4>Le produit, dans l'ordre de vente</h4><p>Téléversement des journaux (traitements, mortalité, registres, PDF scannés, plusieurs langues) ; cartographie contre la grille cible, couvert, manquant, ambigu, indicateur par indicateur ; chaque case cite le passage source ; incohérences entre documents signalées ; rapport de pré-audit priorisé, interne au site ; mémoire des écarts d'un cycle à l'autre.</p></section>
+      <section><h4>Prix et retour</h4><dl class="kv"><dt>Pré-audit</dt><dd>quelques centaines à 1 500 $ US</dd><dt>Abonnement</dt><dd>annuel avec mémoire de cycle</dd><dt>Retour</dt><dd>audit de surveillance chaque année ; l'historique vit dans l'outil</dd></dl></section>
+      <section><h4>Faisabilité seul</h4><p>Référentiels publics, aucun matériel, aucun permis ; les journaux ne sont pas publics, il faut un site pilote et une clause de confidentialité. Vrai blocage : obtenir un premier site et faire accepter un pré-rapport tiers par un certificateur.</p></section>
+      <section><h4>La preuve contre l'acheteur</h4><p>Un rapport d'écarts précis prouve que le site savait. Architecture : rapport strictement privé, jamais transmis au certificateur, suppression possible du détail des écarts corrigés plutôt qu'un historique immuable.</p></section>
+      <section><h4>Test à 2 000 $</h4><p>Une ferme moyenne partage un à deux ans de journaux et sa dernière grille d'audit ; prototype sur 10 à 15 indicateurs. Critère : 80 % classés correctement selon un connaisseur du référentiel, coût API sous 200 $. Question au client : combien d'heures internes ou de consultant pour préparer votre dernier audit ?</p></section>
+    </div>
+    <div class="scores"><!--Q:13--></div>
+    <!--JUGE:13-->
+  </article>
+
+  <div class="fam-h"><span class="sw" style="background:var(--s3)"></span><div><h3>Laboratoires et bureaux d'études</h3><p>Ceux qui vendent des heures d'analyste, de taxonomiste et de bioacousticien, et que l'IA peut rendre plus rentables sans les contourner.</p></div></div>
+
+  <article class="fiche" id="idee-22">
+    <header class="fiche-head">
+      <div class="big">22</div>
+      <div><span class="fam fam-amont">Laboratoires</span><h3>PAM-Miner</h3><p class="tagline">La section acoustique d'un rapport de suivi rédigée depuis les journaux de détection déjà produits, vendue aux cabinets qui facturent l'heure de bioacousticien</p></div>
+      <div class="score-badge"><!--BADGE:22--><span>/5</span><small>Angle, selon le juge</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Qui paie déjà</span><span class="date">Années 1, 3, 5</span><span class="ref">Autorisations d'évaluation d'impact en C.-B. (Woodfibre, LNG Canada, Cedar LNG, RBT2) · PAMGuard · JASCO PAMlab · SMRU · Dynamic Ocean Consulting</span><span>Les projets de gaz naturel liquéfié, de câbles et de terminaux en Colombie-Britannique sont tenus à des suivis acoustiques pluriannuels. PAMGuard (gratuit) et JASCO PAMlab (payant) détectent déjà, mais JASCO écrit que des bioacousticiens revoient chaque détection pour la confirmer, et aucun des deux ne rédige la section de rapport. Journée d'observateur ou d'analyste : 200 à 700 $ US.</span></div>
+    <div class="fiche-grid">
+      <section><h4>D'où vient l'intuition</h4><p>L'agent agences et données a inventorié l'archive d'Ocean Networks Canada (Oceans 3.0, hydrophones NEPTUNE et VENUS) et la station de Boundary Pass : des milliers d'heures ouvertes, revues à la main.</p></section>
+      <section><h4>L'acheteur</h4><p>Le chargé de projet d'un cabinet sous-traitant de l'analyse acoustique (SMRU Consulting, Dynamic Ocean Consulting, JASCO) ou d'un généraliste sans bioacousticien (Tetra Tech, ERM, Ramboll, WSP), qui doit livrer la section acoustique. Il signe seul un test à 2 000 $ sur une fenêtre de rapport. Vendu comme outil interne à ces cabinets, jamais contre eux.</p></section>
+      <section class="wide"><h4>Trois angles testés</h4><ul>
+        <li><b>Couche de rédaction citée</b> depuis les journaux PAMGuard ou PAMlab : confirmé par JASCO elle-même (confirmation humaine distincte de la rédaction) ; contredit par le fait que JASCO et SMRU vendent déjà l'analyse et la rédaction en bloc. <b>Retenu</b>, restreint à la section post-hoc, pas à la surveillance de chantier en direct.</li>
+        <li><b>Archive partagée de la mer des Salish</b> revendue à plusieurs bureaux : les nœuds ONC ne couvrent pas Howe Sound ni le chenal Douglas, donc trois des quatre projets cités. Tombe hors du secteur Roberts Bank.</li>
+        <li><b>Sous-traitance à bas coût des généralistes</b> : Dynamic Ocean Consulting vend déjà le service complet avec présence humaine en Colombie-Britannique. Tombe.</li>
+      </ul></section>
+      <section><h4>Le produit, dans l'ordre de vente</h4><p>Chargement des journaux de détection pour une fenêtre et une zone ; croisement avec l'archive ONC et Boundary Pass quand le site s'y prête ; section rédigée citant chaque détection, sa source et son horodatage ; détections à faible confiance signalées, pas d'auto-publication ; comparaison avec les années précédentes du même site ; export au format attendu, supposé homogène, non confirmé faute d'un rapport réel lu.</p></section>
+      <section><h4>Prix et retour</h4><dl class="kv"><dt>Par site</dt><dd>facturé à la fenêtre de rapport, pas à l'heure d'analyste</dd><dt>Retour</dt><dd>suivi obligatoire années 1, 3 et 5 ; l'historique structuré coûte moins cher à comparer qu'à recommencer</dd></dl></section>
+      <section><h4>Faisabilité seul</h4><p>Données ONC affichées libres avec citation (page de politique inaccessible, à confirmer) ; licence de Boundary Pass non vérifiée. Aucun matériel. Blocage : obtenir les journaux d'un vrai projet, ce qui suppose la coopération d'un cabinet.</p></section>
+      <section><h4>La preuve contre l'acheteur</h4><p>Woodfibre LNG est en désaccord public avec Environnement Canada sur sa zone d'exclusion (7 km contre 125 m demandés) : un rapport plus précis peut formaliser des dépassements. Brouillon à validation humaine, facturé au cabinet, jamais déposé automatiquement.</p></section>
+      <section><h4>Test à 2 000 $</h4><p>Un jeu réel de détections PAMGuard sur 30 jours dans le secteur Boundary Pass, section générée, évaluée en aveugle par un bioacousticien indépendant contre un extrait publié de SMRU ou JASCO. Critère : 80 % des citations correctes, aucune détection inventée. Question au client : combien de temps pour transformer un journal en texte citable, et accepteriez-vous une facturation au site ?</p></section>
+    </div>
+    <div class="scores"><!--Q:22--></div>
+    <!--JUGE:22-->
+  </article>
+
+  <article class="fiche" id="idee-23">
+    <header class="fiche-head">
+      <div class="big">23</div>
+      <div><span class="fam fam-amont">Laboratoires</span><h3>TaxoAssist</h3><p class="tagline">Un taxon proposé pour chaque spécimen de macrofaune benthique photographié au tri, avec un score de confiance calé sur les ring tests, dont le corpus grandit avec le labo</p></div>
+      <div class="score-badge"><!--BADGE:23--><span>/5</span><small>Angle, selon le juge</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Qui paie déjà</span><span class="date">Ring tests biannuels</span><span class="ref">NMBAQC (BCSI, TDP) · APEM (2 500 échantillons marins par an) · MESL, RSK · postes non pourvus à 38 à 70 k£</span><span>Le tri et l'identification à l'espèce de la macrofaune des bennes et carottes sont manuels ; les postes de taxonomiste marin restent difficiles à pourvoir. Tout laboratoire faisant du suivi statutaire au Royaume-Uni passe des ring tests biannuels sous le schéma NMBAQC, dont les paliers (Bray-Curtis, politique de discrimination taxonomique) sont publiés.</span></div>
+    <div class="fiche-grid">
+      <section><h4>D'où vient l'intuition</h4><p>L'agent bureaux d'études a lu les offres d'emploi non pourvues et les bulletins NMBAQC : un travail cher, manuel, à protocole écrit, où les classifieurs d'avant 2024 plafonnaient (FishAI à 62,6 % sur 808 espèces).</p></section>
+      <section><h4>L'acheteur</h4><p>Le responsable qualité ou taxonomie d'APEM, MESL ou RSK, qui signe un bon de commande de 2 000 $ sans appel d'offres. Aucun tarif par échantillon public ; le temps de taxonomiste par échantillon est resté introuvable.</p></section>
+      <section class="wide"><h4>Trois angles testés</h4><ul>
+        <li><b>Protocole</b> : score câblé sur les paliers BCSI et TDP. Confirmé par leur publication ; contredit : le NMBAQC a déjà fait développer un Video Ring Test par Envision (2022), et rien ne dit qu'une identification assistée serait acceptée en soumission. Argument secondaire, jamais « conforme NMBAQC ».</li>
+        <li><b>Corpus</b> : aucune banque ouverte de photos de spécimens marins triés (SMarTaR-ID n'est qu'un cadre de 2019 ; BIODISCOVER est en eau douce ; Svalbard est in situ). Vide réel ; accès aux vouchers NMBAQC non vérifié. <b>Retenu, reformulé</b> : le corpus se construit avec le premier labo client, à partir de ses propres spécimens validés.</li>
+        <li><b>Position dans le geste du tri</b> : plausible, non vérifié, copiable par un LIMS mieux placé. Tombe.</li>
+      </ul></section>
+      <section><h4>Le produit, dans l'ordre de vente</h4><p>Photo de chaque spécimen trié sur un montage simple (caméra macro, éclairage, quelques centaines de dollars) ; taxon probable et liste courte avec score de confiance ; validation ou correction en un clic, chaque correction nourrit le corpus du labo ; tableau de cohérence interne avant un ring test, indicatif ; journal d'identification pour l'audit qualité ; bibliothèque propre au labo, réutilisable de site en site.</p></section>
+      <section><h4>Prix et retour</h4><dl class="kv"><dt>Abonnement</dt><dd>par poste de tri ou par volume</dd><dt>Retour</dt><dd>le corpus de référence local se perd en changeant d'outil ; ring tests biannuels</dd></dl></section>
+      <section><h4>Faisabilité seul</h4><p>Aucun permis, aucun spécimen manipulé par le fondateur ; le corpus de départ doit venir d'un labo pilote. Blocage : trouver un labo qui fournit des photos et une vérité terrain à un inconnu de Vancouver ; piste non explorée : la collection Scripps SIO-BIC, images publiques mises à jour chaque semaine.</p></section>
+      <section><h4>La preuve contre l'acheteur</h4><p>Une identification erronée dans un rapport officiel nuit à l'accréditation. IA au stade de suggestion, validation humaine, aucun envoi au NMBAQC, journal montrant que le taxonomiste a validé.</p></section>
+      <section><h4>Test à 2 000 $</h4><p>Un taxonomiste indépendant ou un labo universitaire, 100 spécimens déjà identifiés, 15 à 20 taxons courants. Critère : 80 % d'accord top-3 et un score de confiance qui baisse sur les erreurs. En dessous, ne pas approcher de labo commercial.</p></section>
+    </div>
+    <div class="scores"><!--Q:23--></div>
+    <!--JUGE:23-->
+  </article>
+
+  <article class="fiche" id="idee-25">
+    <header class="fiche-head">
+      <div class="big">25</div>
+      <div><span class="fam fam-amont">Laboratoires</span><h3>MicroplasticLab</h3><p class="tagline">Pour chaque particule classée par n'importe quel outil, un dossier de preuve et le certificat conforme à la méthode exigée, avec piste d'audit</p></div>
+      <div class="score-badge"><!--BADGE:25--><span>/5</span><small>Angle, selon le juge</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Qui paie déjà</span><span class="date">349 $ par échantillon</span><span class="ref">ISO 24187:2023 · SB 1422 (Californie, programme de test pluriannuel depuis 2023) · méthodologie JRC/UE (mars 2024, suivi Article 13 dès 2026) · ISO/IEC 17025</span><span>Les laboratoires accrédités (Eurofins, ALS, Measurlabs, PolyGone) facturent à partir de 349 $ US l'échantillon de microplastiques, plus 97 € de frais de dossier chez Measurlabs. Trois bases réglementaires distinctes et non harmonisées coexistent, et les audits de surveillance ISO/IEC 17025 sont périodiques.</span></div>
+    <div class="fiche-grid">
+      <section><h4>D'où vient l'intuition</h4><p>L'agent bureaux d'études a vu des logiciels d'instrument cloisonnés par marque et un certificat chronophage. L'intuition de départ, l'unification multi-marques, est morte au creusement : siMPle et Open Specy le font déjà gratuitement, et les formats d'échange existent.</p></section>
+      <section><h4>L'acheteur</h4><p>Le responsable qualité ou technique d'un laboratoire accrédité pratiquant les microplastiques (PolyGone, Measurlabs, Eurofins), qui répond des audits et signe 2 000 $ sans comité. Temps d'analyste par certificat non chiffré ; un article sectoriel de 2026 note que le temps de technicien est le poste dominant.</p></section>
+      <section class="wide"><h4>Trois angles testés</h4><ul>
+        <li><b>Unification vision multi-marques</b> : angle mort, résolu gratuitement par siMPle (Aalborg, AWI) et Open Specy (40 000 spectres ouverts), et Clarity importe déjà des spectres externes.</li>
+        <li><b>Couche certification et piste d'audit ISO/IEC 17025</b> : la norme ISO 24187 ne fournit aucun logiciel de rapport ; aucune fonction de certificat repérée dans Clarity, siMPle ou Open Specy. Contredit partiellement : la plupart des labos ont un LIMS générique qui gère certificats et traçabilité. <b>Retenu sous condition</b>.</li>
+        <li><b>Réconciliation multi-juridictions</b> (Californie, UE, ISO) : fragmentation réelle, mais reformater du texte est une tâche de modèle générique. Absorbé dans le second angle.</li>
+      </ul></section>
+      <section><h4>Le produit, dans l'ordre de vente</h4><p>Import de l'export instrument après classification, quelle qu'en soit la source ; chaque particule reliée à son image, son spectre et son score dans un dossier de preuve ; rapprochement avec les blancs et échantillons de contrôle exigés par l'accréditation ; certificat au format demandé (ISO 24187, Californie, JRC) avec piste d'audit ; jamais la classification elle-même.</p></section>
+      <section><h4>Prix et retour</h4><dl class="kv"><dt>Modèle</dt><dd>abonnement bas plus prix par certificat</dd><dt>Retour</dt><dd>programme de test pluriannuel en Californie, suivi UE dès 2026, audits périodiques ; chaque méthode révisée est un gabarit maintenu</dd></dl></section>
+      <section><h4>Faisabilité seul</h4><p>Aucun instrument, un portable suffit ; Open Specy pour valider l'ingestion, méthodes publiques sauf l'ISO (payante). Blocage : aucun jeu ouvert d'export complet avec blancs et contrôles ; partenariat labo à négocier avant tout test réel.</p></section>
+      <section><h4>La preuve contre l'acheteur</h4><p>Un certificat automatique erroné engage la responsabilité du labo signataire. L'IA propose le dossier et un projet de certificat avec score par particule ; un analyste qualifié signe.</p></section>
+      <section><h4>Test à 2 000 $</h4><p>Un lot réel classé sur deux instruments chez PolyGone ou Measurlabs, dossier de preuve assemblé, certificat généré au format ISO puis Californie. Critère : acceptable sans correction structurelle par le responsable qualité, temps d'assemblage sous 20 % du temps déclaré. Question au client : votre LIMS produit-il déjà ce certificat, et qu'est-ce qui vous fait encore perdre du temps ?</p></section>
+    </div>
+    <div class="scores"><!--Q:25--></div>
+    <!--JUGE:25-->
+  </article>
+</section>
+
+<section class="block" id="comparatif">
+  <span class="eyebrow">Comparatif</span>
+  <h2>Les huit idées côte à côte, selon le juge</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Idée</th><th>Qui signe</th><th>Ce qu'il paie à la main</th><th>Angle retenu</th><th>Ce qui existe déjà</th><th class="n">Filtre /7</th><th class="n">Angle /5</th><th>Verdict du juge</th></tr></thead>
+    <tbody id="cmp-body">
+<!--CMP-->
+    </tbody>
+  </table></div>
+  <p class="chart-note">Filtre /7 : nombre de questions du filtre auxquelles le juge répond oui (un incertain compte pour un demi). Angle /5 : force de l'angle différenciateur selon le juge. Verdict : société, revenu de départ, module, prestation ou non.</p>
+</section>
+
+<section class="block" id="ecartees">
+  <span class="eyebrow">Les 27 écartés</span>
+  <h2>Ce que le filtre a tué avant le creusement, et pourquoi</h2>
+  <div class="grid2">
+    <div class="card"><h3>Marché public ou grand compte à cycle long (Q5)</h3><p>Quiet Fairway (appels d'offres portuaires), HullAudit (régulateurs), DecomDossier (majors pétrolières), AvianRate (développeurs et Crown Estate, Spoor déjà en place), EvidenceSAR (garde-côtes), ClaimsCopilot (deux acheteurs dans le monde), OverflowAlert (services d'eau sous décret). Une société d'une personne à Vancouver ne répond ni à un appel d'offres TED ni à un référencement fournisseur de major.</p></div>
+    <div class="card"><h3>La preuve se retourne contre l'acheteur (Q2)</h3><p>PreuveBaleine (le dossier documente aussi l'excès de vitesse), LiceAudit (vérification tierce contre le producteur), WhaleWatch Log (le journal enregistre les infractions, et les opérateurs sont de petites entreprises), SlickWatch (documente les rejets du port ou du terminal qui paierait).</p></div>
+    <div class="card"><h3>Gratuit ou concurrent installé (Q4)</h3><p>FoulingScore (Vesselity, HullVAR), ArbitrageCarbone (OceanScore, MarineAware), ROV-Integrity (SeaDeep, Vaarst), BenthicClass (BIIGLE, SeaDeep, BENTHIQ, et la famille déjà jugée en passe 3), PileWatch seul (WhaleSpotter, ThermalTracker, fondu dans la fiche 01).</p></div>
+    <div class="card"><h3>Un modèle générique suffit, ou l'océan disparaît (Q3, Q6)</h3><p>ContainerTrace (576 incidents par an dans le monde), SeafoodTrace (fraude, traceurs existants), EIA Copilot (rédaction d'études d'impact, Copilot et ChatGPT), ClaimPhoto (sinistres plaisance), PlanRédac (plans d'urgence, Enablon, Intelex), Drill AAR (un exercice par an), Clean Marina Copilot (renouvellement tous les cinq ans, label volontaire).</p></div>
+    <div class="card"><h3>Terrain lointain ou capacité supposée (Q5)</h3><p>Trawl-Predict (Floride, sonar en eau turbide non démontré), RopelessMap (Nouvelle-Angleterre, deux ans de relation avec les pêcheries), CableDrift (prévision géophysique supposée, océan indirect), Posidonia Charter (Méditerranée, Donia gratuit, et ressemblance avec une idée tuée en passe 3).</p></div>
+    <div class="card"><h3>Ce que ces 27 disent du secteur</h3><p>Les acheteurs solvables de l'océan sont des régulateurs, des majors, des assureurs et des agences : tous à cycle long. Les acheteurs rapides sont des PME de service (observateurs, bureaux d'études, laboratoires, fournisseurs de surveillance) qui vendent des heures. C'est à elles que les huit retenus s'adressent, et c'est là que l'IA a un prix : l'heure qu'elle économise.</p></div>
+  </div>
+</section>
+
+<section class="block" id="pieges">
+  <span class="eyebrow">Pièges</span>
+  <h2>Ce que les huit creusements ont en commun, et ce qu'il faut concevoir avant la première ligne de code</h2>
+  <div class="grid2">
+<!--PIEGES-->
+  </div>
+</section>
+
+<section class="block" id="plan">
+  <span class="eyebrow">Passer à l'action</span>
+  <h2>Trente jours pour trancher, sans un seul courriel avant d'avoir quelque chose à montrer</h2>
+  <div class="prose"><p>Chaque test coûte moins de 2 000 $ et deux semaines, tourne sur des données publiques ou sur un jeu obtenu d'un seul partenaire, et se juge sur un critère chiffré. Vous avez dit ne pas contacter un client sans l'ombre de quelque chose de concret : le plan commence donc par ce qui se construit seul.</p></div>
+<!--PLAN-->
+</section>
+
+<section class="block" id="methode">
+  <span class="eyebrow">Méthode et sources</span>
+  <h2>Comment ce quatrième rapport a été produit, et ce qu'il faut vérifier avant d'agir</h2>
+  <div class="prose" style="margin-bottom:22px"><p>Huit agents d'intuition ont travaillé sur un brief qui décrit le fondateur et impose de partir des acheteurs (appels d'offres, offres d'emploi, grilles tarifaires, circulaires, portails de données), sans accès aux trente-six idées précédentes, avec dix recherches web chacun et l'obligation d'étiqueter chaque capacité. L'orchestrateur a fusionné cinq doublons, appliqué le filtre en sept questions, soumis trente-cinq lignes au fondateur, puis lancé huit agents de creusement (six recherches chacun) centrés sur l'angle différenciateur. Un juge a relu les huit chaînes avec ses propres recherches et la mémoire des erreurs des passes précédentes. Dossiers, tri, creusements et verdict sont dans le dépôt sous <span class="mono">ocean-4/</span>.</p></div>
+  <div class="agents">
+    <div><div class="a">ports-terminaux</div><p>Permis IHA et observateurs, chalutage de relocalisation, Green Marine, programme ECHO, biofouling côté régulateur.</p></div>
+    <div><div class="a">armateurs-assureurs</div><p>Notations de bruit et EcoAction, amendes NOAA, CRMS néo-zélandais, pertes de conteneurs SOLAS 2026, CII et FuelEU.</p></div>
+    <div><div class="a">aquaculture-peche</div><p>Surveillance électronique (NOAA, MPO), certifications ASC, MSC, BAP, fraude SIMP, baleine noire et casiers sans corde, poux de mer.</p></div>
+    <div><div class="a">energie-cables</div><p>Fusion multi-capteurs JNCC, inspections ROV et normes DNV, ensouillage des câbles, démantèlement, taux d'évitement des oiseaux.</p></div>
+    <div><div class="a">agences-donnees</div><p>ECHO et Quiet Sound, programmes EM, FathomNet et JNCC, CleanSeaNet et Global Fishing Watch, archives d'hydrophones d'Ocean Networks Canada.</p></div>
+    <div><div class="a">plaisance-croisiere</div><p>Observation des baleines, biofouling en Californie, mouillage sur posidonie pour loueurs, sinistres plaisance, Clean Marina.</p></div>
+    <div><div class="a">bureaux-labos</div><p>Taxonomie NMBAQC, études d'impact, conformité acoustique, microplastiques FTIR et LDIR, préparation d'audits.</p></div>
+    <div><div class="a">pollution-urgence</div><p>Plans d'urgence, rapports d'exercice, détection de nappes, réclamations FIPOL, débordements d'égouts et efflorescences.</p></div>
+  </div>
+  <h3 style="margin-top:28px">Limites à garder en tête</h3>
+  <ul class="prose">
+    <li>Les chiffres de dépense des acheteurs sont souvent des tarifs journaliers ou des salaires, pas des lignes budgétaires logicielles ; plusieurs montants clés sont restés introuvables (vérification Green Marine, essai de notation acoustique, temps de taxonomiste par échantillon, heure de revue vidéo).</li>
+    <li>Vingt-quatre des trente-cinq candidats reposent sur la même capacité, un agent qui rédige un rapport réglementaire depuis des données hétérogènes : le juge a dû trancher, idée par idée, si un modèle générique avec un gabarit suffit.</li>
+    <li>Aucune donnée client réelle n'a été manipulée : formats de journaux propriétaires, vidéos de surveillance, exports d'instruments et journaux de ferme ne sont pas publics, et chaque test suppose un partenaire.</li>
+    <li>Plusieurs pages officielles ont bloqué la collecte (Port de Vancouver, JASCO, politique de données d'ONC, PDF réglementaires) ; les faits concernés viennent de résumés ou de sources secondaires et sont signalés.</li>
+    <li>Huit fiches sur huit ont une preuve qui peut se retourner contre l'acheteur : la règle commune est un brouillon à validation humaine, jamais transmis automatiquement à un régulateur.</li>
+  </ul>
+  <h3 style="margin-top:28px">Sources principales</h3>
+  <ul class="prose">
+    <li><b>Réglementation et programmes</b> : eCFR 50 CFR 217 à 219, fisheries.noaa.gov (rapports PSO publiés, programmes EM), jncc.gov.uk (protocole et formulaires), green-marine.org (indicateurs, politique de certification), portvancouver.com et safety4sea.com (EcoAction), tc.canada.ca (Boundary Pass, biofouling), msc.org, asc-aqua.org, bapcertification.org, nmbaqcs.org, iso.org (24187), waterboards.ca.gov (SB 1422), joint-research-centre.ec.europa.eu.</li>
+    <li><b>Acheteurs et concurrents</b> : whalespotter.com, pnnl.gov (ThermalTracker-3D), rpsgroup.com (Neptune), seiche.com, pamguard.org, jasco.com (PAMlab, Boundary Pass), smruconsulting.com, dynamicoceanconsulting.com, archipelago.ca et oceansupercluster.ca (FishVue AI), saltwaterinc.com (O2Review), techpartnerships.noaa.gov (Ai.Fish, Catchvision), viametoolkit.org, vesselity.de, plastiverse.org (siMPle), openspecy.org, agilent.com (Clarity), measurlabs.com, polygonesystems.com, apemltd.com, envision.uk.com.</li>
+    <li><b>Données ouvertes</b> : oceannetworks.ca (Oceans 3.0), fathomnet.org, data.ifremer.fr, quietsound.org, globalfishingwatch.org, Open Specy (40 000 spectres), rapports PSO du domaine public fédéral américain.</li>
+    <li><b>Marché</b> : crewbase.pro (tarifs observateurs), ziprecruiter (salaires coordinateurs), glassdoor.co.uk (taxonomistes), technource.com et peoplemanagingpeople.com (prix des plateformes ESG), labmanager.com (temps d'analyste microplastiques), theglobeandmail.com et woodfibrelng.ca (litige acoustique).</li>
+  </ul>
+</section>
+
+</main>
+</div>
+<footer>Atlas Océan IV · quatrième passe d'idéation, septembre 2026 · aucune implémentation · chiffres et dates à revérifier sur les sites officiels avant décision</footer>
+
+<script>
+(function(){
+  var data=[
+    {n:1,name:"PSO/PAM Layer",fam:1,angle:3,q:4,price:20,d:"Rapport NMFS/JNCC depuis les journaux de capteurs · prestataires d'observateurs"},
+    {n:4,name:"Green Marine Copilot",fam:1,angle:3,q:5,price:6,d:"Autoévaluation annuelle avec mémoire par site · 285 membres"},
+    {n:7,name:"AcoustiCert",fam:1,angle:1,q:2,price:1,d:"Dérive acoustique par navire · Boundary Pass, Orcasound"},
+    {n:12,name:"EM Review",fam:2,angle:1,q:2,price:20,d:"Revue vidéo des pêches · Archipelago, Ai.Fish déjà en place"},
+    {n:13,name:"AuditPrep",fam:2,angle:3,q:5,price:2,d:"Journaux contre grilles ASC, MSC, BAP · privé au site"},
+    {n:22,name:"PAM-Miner",fam:3,angle:2,q:4,price:12,d:"Section acoustique rédigée depuis les détections · cabinets"},
+    {n:23,name:"TaxoAssist",fam:3,angle:3,q:4,price:8,d:"Identification de spécimens, corpus propre au labo"},
+    {n:25,name:"MicroplasticLab",fam:3,angle:2,q:4,price:10,d:"Dossier de preuve et certificat ISO 17025 par particule"}
+  ];
+  var svg=document.querySelector('#bubble svg');if(!svg)return;
+  var NS='http://www.w3.org/2000/svg';
+  var W=780,H=460,L=64,R=24,T=20,B=56;
+  var x0=0.5,x1=5.5,y0=0,y1=7.5;
+  function X(v){return L+(v-x0)/(x1-x0)*(W-L-R)}
+  function Y(v){return T+(1-(v-y0)/(y1-y0))*(H-T-B)}
+  function el(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e}
+  var g=el('g',{});svg.appendChild(g);
+  var cs=getComputedStyle(document.documentElement);
+  var ink3=cs.getPropertyValue('--ink-3').trim(),line=cs.getPropertyValue('--line').trim(),ink=cs.getPropertyValue('--ink').trim();
+  for(var v=1;v<=5;v+=1){g.appendChild(el('line',{x1:X(v),x2:X(v),y1:T,y2:H-B,stroke:line,'stroke-width':1}));
+    var t=el('text',{x:X(v),y:H-B+18,'text-anchor':'middle','font-size':11,fill:ink3});t.textContent=v;g.appendChild(t);}
+  for(var w=0;w<=7;w+=1){g.appendChild(el('line',{x1:L,x2:W-R,y1:Y(w),y2:Y(w),stroke:line,'stroke-width':1}));
+    var t2=el('text',{x:L-10,y:Y(w)+4,'text-anchor':'end','font-size':11,fill:ink3});t2.textContent=w;g.appendChild(t2);}
+  var ax=el('text',{x:(L+W-R)/2,y:H-14,'text-anchor':'middle','font-size':11,fill:ink3,'letter-spacing':'.08em'});ax.textContent='FORCE DE L\'ANGLE DIFFÉRENCIATEUR, SELON LE JUGE (1 À 5)';g.appendChild(ax);
+  var ay=el('text',{x:14,y:(T+H-B)/2,'text-anchor':'middle','font-size':11,fill:ink3,'letter-spacing':'.08em',transform:'rotate(-90 14 '+((T+H-B)/2)+')'});ay.textContent='QUESTIONS DU FILTRE PASSÉES, SUR 7';g.appendChild(ay);
+  var cols={1:'var(--s1)',2:'var(--s2)',3:'var(--s3)'};
+  var tip=document.getElementById('tip'),wrap=document.getElementById('bubble');
+  var left={}, below={}, above={};
+  data.slice().sort(function(a,b){return b.price-a.price}).forEach(function(d){
+    var r=6+Math.sqrt(d.price)*1.2;
+    var c=el('circle',{cx:X(d.angle),cy:Y(d.q),r:r,fill:cols[d.fam],'fill-opacity':.8,stroke:'var(--surface)','stroke-width':2,tabindex:0});
+    var lab=el('text',{x:X(d.angle),y:Y(d.q)+4,'text-anchor':'middle','font-size':10,'font-weight':600,fill:'#fff','pointer-events':'none'});
+    lab.textContent=String(d.n).padStart(2,'0');
+    var name=el('text',{x:X(d.angle)+r+5,y:Y(d.q)+4,'font-size':11.5,fill:ink,'font-family':'Bricolage Grotesque, Helvetica Neue, Arial, sans-serif','font-weight':600,'pointer-events':'none'});
+    name.textContent=d.name;
+    if(left[d.n]){name.setAttribute('x',X(d.angle)-r-5);name.setAttribute('text-anchor','end');}
+    if(below[d.n]){name.setAttribute('x',X(d.angle));name.setAttribute('y',Y(d.q)+r+13);name.setAttribute('text-anchor','middle');}
+    if(above[d.n]){name.setAttribute('x',X(d.angle));name.setAttribute('y',Y(d.q)-r-6);name.setAttribute('text-anchor','middle');}
+    function show(){tip.innerHTML='<b>'+String(d.n).padStart(2,'0')+' · '+d.name+'</b>'+d.d+'<br>Angle '+d.angle+'/5 · filtre '+d.q+'/7<br>Revenu estimé '+d.price+' k$ par client et par an';
+      var bb=wrap.getBoundingClientRect(),pt=c.getBoundingClientRect();
+      tip.style.left=Math.min(pt.left-bb.left+r+12,bb.width-280)+'px';tip.style.top=(pt.top-bb.top-10)+'px';tip.style.opacity=1;}
+    function hide(){tip.style.opacity=0}
+    c.addEventListener('mouseenter',show);c.addEventListener('mousemove',show);c.addEventListener('mouseleave',hide);c.addEventListener('focus',show);c.addEventListener('blur',hide);
+    c.addEventListener('click',function(){location.hash='#idee-'+d.n});c.style.cursor='pointer';
+    g.appendChild(c);g.appendChild(lab);g.appendChild(name);
+  });
+  var links=[].slice.call(document.querySelectorAll('nav.rail a'));
+  var map={};links.forEach(function(a){var id=a.getAttribute('href').slice(1);map[id]=a});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.remove('on')});var a=map[e.target.id];if(a)a.classList.add('on');}})},{rootMargin:'-20% 0px -70% 0px'});
+    Object.keys(map).forEach(function(id){var s=document.getElementById(id);if(s)io.observe(s)});
+  }
+})();
+</script>
