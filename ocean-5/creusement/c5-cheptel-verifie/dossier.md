@@ -1,0 +1,302 @@
+# Creusement : Cheptel Vérifié
+
+Date : 7 septembre 2026. Agent de creusement c5 cheptel verifie, passe 5, projet Octopus. Échelle reçue du dossier
+de tendance aquaculture (`ocean-5/agents/aquaculture/dossier.md`, section f, échelle 1) : une preuve vidéo
+horodatée et indépendante du nombre de poissons morts dans une cage, vendue à l'assureur de cheptel pour régler un
+sinistre en jours plutôt qu'en mois, puis un index de mortalité vérifié inter fermes comme référence de tarification.
+
+## 0. Verdict immédiat
+
+Aucun concurrent ne vend déjà exactement ce produit (section 1) : l'échelle survit à l'étape 1. Mais elle est
+fragilisée dès le premier barreau par un problème de consentement non résolu dans le dossier de tendance : les
+caméras de cage appartiennent à la ferme, pas à l'assureur ni au fondateur (section 4), et une preuve vendue à
+l'assureur peut se retourner contre la ferme qui doit pourtant l'installer et y consentir (section 5, version
+aquacole précise de l'interdiction du BRIEF section 5 sur les preuves qui se retournent contre l'acheteur, sauf
+qu'ici l'acheteur nommé à l'origine, l'assureur, n'est pas celui qui subit le retournement, c'est la ferme). Le
+barreau 1 corrigé (section 2) change donc d'acheteur : la ferme, pas l'assureur, et de posture : preuve qui
+protège la ferme plutôt qu'elle ne l'accuse.
+
+## 1. Qui vend déjà cela
+
+Les assureurs aquacoles ne traitent pas les sinistres de mortalité à vide : ils emploient déjà des experts humains.
+Sunderland Marine (assureur spécialisé aquacole basé au Royaume Uni, actif depuis 1986, assure des fermes dans
+plusieurs pays) confie ses réclamations de stock (mortalité, maladie) à une équipe interne d'anciens fermiers
+aquacoles et de biologistes marins ; vérifié (sunderlandmarine.com/service/aquaculture/claims/aquaculture stock
+claims). Miller Insurance (courtier Lloyd's spécialisé, Royaume Uni) et WTW (Willis Towers Watson, courtier
+mondial) mettent en avant des équipes spécialisées et un rôle d'accélérateur de règlement, sans mention de vidéo ;
+vérifié (miller insurance.com, wtwco.com). AXA XL utilise déjà, pour les gros sinistres de pou de mer, une
+évaluation des pertes assistée par satellite (source déjà citée dans le dossier de tendance, axaxl.com) : la
+tendance vers la donnée à distance existe, mais aucune source ne montre un outil vidéo indépendant vendu à un
+assureur pour la mortalité elle même. Aucune mention de caméra, vidéo ou télémétrie n'apparaît dans la documentation
+publique de claims de Sunderland Marine consultée directement (WebFetch, page FAQ, 2026) : négatif vérifié, pas
+seulement une lacune de recherche.
+
+Aquabyte, Manolin (déjà cités dans le dossier de tendance) vendent à la ferme, pas à l'assureur. Ace Aquatec
+(Royaume Uni, caméra 3D de biomasse) vend une caméra sous marine avec IA (intelligence artificielle) qui mesure
+poids et taille, sert d'indicateur précoce de maladie et de pou, mais aucun produit nommé de comptage de mortalité
+n'a été trouvé dans sa gamme publique ; vérifié (aceaquatec.com, thefishsite.com). Le texte de présentation
+d'Ace Aquatec note lui même que deux tiers des mortalités de saumon restent inexpliquées, preuve que même les
+fermes qui possèdent déjà des caméras de croissance ne comptent pas systématiquement leurs morts par vidéo
+aujourd'hui. Tidal (fabricant de caméras sous marines pour cages aquacoles) vend une caméra de nouvelle génération
+pour le comportement et la biomasse des poissons ; vérifié pour l'existence du produit (seafoodsource.com), mais
+aucune fonction de comptage de mortalité nommée trouvée : supposée absente, pas confirmée absente.
+
+Fait important qui change l'analyse technique : la brique de vision par ordinateur elle même est déjà publiée
+académiquement. MortCam (système décrit dans ScienceDirect, 2023) détecte et alerte la mortalité de poissons en
+système aquacole à recirculation d'eau (RAS, recirculating aquaculture system) avec un modèle YOLOv7 (You Only
+Look Once, famille de modèles de détection d'objets en temps réel) entraîné à classer chaque poisson vivant ou
+mort. Des papiers 2024 (DD IYOLOv8, amélioration de YOLOv8 pour la détection de poissons morts, doi
+10.3390/fishes9090356 ; une méthode YOLOv10 améliorée pour la détection sur grandes surfaces d'eau, arxiv
+2409.00388) confirment que le problème de détection est déjà résolu dans la littérature, en bassin ou en surface
+d'étang, pas encore documenté en cage ouverte en mer. Conséquence directe : la barrière n'est pas l'algorithme,
+elle est l'accès aux vraies caméras de cage et la confiance de la ferme (sections 4 et 5). L'échelle n'est donc pas
+tuée à l'étape 1, mais son avantage supposé (l'IA comme produit) est plus faible que ce que le dossier de tendance
+laissait entendre.
+
+## 2. Le client du barreau 1, corrigé
+
+Le dossier de tendance nommait AXA XL comme acheteur du barreau 1. AXA XL est un assureur mondial (filiale du
+groupe AXA) peu susceptible d'acheter un module pilote à une société d'une personne sans référence : trop gros,
+trop de cycles d'achat. Trois acheteurs de taille moyenne, nommés, remplacent AXA XL :
+
+1. Sunderland Marine (assureur spécialisé aquacole, Royaume Uni, depuis 1986) : paie déjà à l'heure une équipe
+   interne d'anciens fermiers et de biologistes marins pour vérifier chaque sinistre de stock sur place ; geste
+   manuel vérifié (sunderlandmarine.com/service/aquaculture/claims). Un module qui accélère le tri des dossiers
+   avant l'envoi d'un expert humain, plutôt que de le remplacer, est un gain de temps mesurable pour une petite
+   équipe de claims, sans menacer leur emploi.
+2. Convex Insurance (assureur ou réassureur spécialisé, marché Lloyd's ou Bermudes, ligne dédiée équin, bétail,
+   aquaculture) : plus jeune que Sunderland Marine, positionnement technologique affiché, motif précis
+   d'expérimenter un outil nouveau pour se différencier des acteurs établis ; vérifié pour l'existence de la ligne
+   aquaculture (convexin.com/underwriting/equine livestock aquaculture/aquaculture), raison d'achat supposée.
+3. Brown & Brown (courtier ou agent général américain, division aquaculture dédiée) : marché nord américain,
+   proche géographiquement du Pacifique Nord Ouest et de la Floride visés par le fondateur (BRIEF section 2) ;
+   vérifié pour l'existence de la division (us.bbrown.com/industries/marine/aquaculture insurance), raison d'achat
+   supposée par proximité de marché plutôt que documentée directement.
+
+Aucune mutuelle de producteurs aquacoles nommée n'a été trouvée pour le saumon industriel en Norvège, en Écosse ou
+au Canada dans le budget de recherche disponible : lacune. Un article académique (PMC, pmc.ncbi.nlm.nih.gov,
+article 6169256) décrit des pools d'assurance mutuelle pour la petite aquaculture dans des pays en développement,
+hors du marché ciblé par le fondateur.
+
+Raison précise pour laquelle un acheteur de taille moyenne achèterait à une société d'une personne : aucune des
+trois raisons ci dessus n'est forte à elle seule. C'est le signal le plus sérieux trouvé contre le barreau 1 tel
+que conçu à l'origine (vente directe à l'assureur) : un assureur qui vérifie déjà ses sinistres avec des experts
+humains n'a pas de ligne budgétaire ouverte pour un outil non éprouvé de mortalité par vidéo, et n'a aucun moyen
+de forcer une ferme à installer ou partager une caméra (section 4). D'où la correction retenue : au barreau 1, le
+client payeur devient la ferme elle même, pas l'assureur.
+
+Barreau 1 corrigé, mars 2027 : vendu à une ferme de saumon nommée déjà équipée de caméras de cage (par exemple un
+site Cermaq Norway ou une ferme écossaise abonnée à un fournisseur de caméra comme Imenco, Ace Aquatec ou Tidal),
+un service qui transforme le flux vidéo déjà installé par la ferme en dossier de sinistre horodaté et vérifiable,
+prêt à être transmis par la ferme elle même à son assureur au moment d'un épisode de mortalité, pour accélérer
+l'encaissement de sa propre indemnité. Prix estimé : 500 à 1 500 $ US par mois et par site (estimation, cohérent
+avec les fourchettes des autres échelles du dossier de tendance). Geste manuel remplacé : la compilation par un
+gestionnaire de ferme de photos, journaux papier et estimations de mortalité pour appuyer sa propre demande
+d'indemnisation, un travail aujourd'hui payé à l'heure de gestion de ferme, tarif horaire précis non trouvé
+(lacune déjà identifiée dans le dossier de tendance).
+
+## 3. Le produit : six fonctionnalités dans l'ordre de vente
+
+1. Ingestion du flux vidéo des caméras de cage déjà installées par la ferme (Imenco, Ace Aquatec, Tidal ou
+   équivalent), sans nouveau matériel à poser : condition de faisabilité solo depuis Vancouver.
+2. Horodatage et empreinte numérique (hachage cryptographique) de chaque segment vidéo au moment de l'ingestion,
+   pour rendre toute modification a posteriori détectable : c'est la brique qui rend la preuve indépendante de la
+   ferme, condition centrale de la vente à un assureur en aval.
+3. Détection et comptage automatique des poissons morts par un modèle de vision par ordinateur, entraîné à partir
+   des méthodes publiées (MortCam, DD IYOLOv8, YOLOv10 amélioré) et affiné avec les images propres à chaque site
+   une fois le pilote démarré.
+4. Génération d'un rapport de sinistre structuré : nombre de morts, date, comparaison au taux de mortalité de
+   référence de la cage, sans interprétation de la cause (la cause reste un jugement d'expert humain, pas de
+   l'IA), pour éviter que l'outil ne prétende remplacer l'expertise de Sunderland Marine plutôt que l'accélérer.
+5. Tableau de bord de suivi continu pour la ferme elle même (historique, alerte de sur mortalité) : c'est le motif
+   d'achat quotidien qui justifie l'abonnement mensuel en dehors des épisodes de sinistre.
+6. Export signé numériquement, transmis par la ferme (pas automatiquement par le fondateur) à son assureur ou
+   courtier, avec consentement documenté à chaque envoi : la ferme garde le contrôle de ce qui part, ce qui répond
+   directement au problème de consentement de la section 5.
+
+Pourquoi impossible en 2024 : les modèles de détection d'objets sous marins publiés qui atteignent une précision
+utilisable sur poisson mort en image dégradée (turbidité, poissons empilés) datent de 2023 à 2024 (MortCam,
+DD IYOLOv8) ; l'horodatage vérifiable combiné à la détection n'existait pas comme produit assemblé avant.
+
+Données existantes pour amorcer sans un seul courriel : le jeu de données vidéo public décrit dans un article de
+la revue Data (MDPI, doi 10.3390/data10120211), tourné dans un système RAS commercial au Mexique, plus de dix
+heures d'enregistrement sous marin réparties en 31 clips de 30 secondes avec images étiquetées et métadonnées de
+qualité d'eau ; les méthodes publiées de DD IYOLOv8 et de la détection YOLOv10 améliorée, dont le code est
+généralement documenté dans l'article ou son dépôt associé. Lacune sérieuse : aucun de ces jeux de données ne vient
+d'une vraie cage ouverte en mer, l'environnement réel du barreau 1 (eau trouble, courant, lumière naturelle
+variable), donc l'entraînement initial reste un point de départ, pas une preuve finale.
+
+## 4. L'actif qui compose, et le test adverse
+
+- Barreau 1 (2027) : un historique horodaté et vérifié sur un ou deux sites pilotes, qui n'existe nulle part
+  ailleurs, mais reste petit et non généralisable.
+- Barreau 2 (2028) : plusieurs fermes, toujours à l'initiative de la ferme, forment le début d'un index de
+  mortalité comparable entre sites, condition non garantie tant que le mode de vente reste ferme par ferme,
+  volontaire, sans levier contractuel pour forcer l'adoption.
+- Barreau 3 (2030) : si l'adoption a dépassé la poignée de pilotes, l'index agrégé et anonymisé devient vendable
+  à un réassureur ou un courtier (Convex Insurance, Brown & Brown) comme outil de tarification de portefeuille,
+  reprenant le plan original du dossier de tendance, mais désormais construit à partir du consentement des fermes,
+  pas d'un mandat de l'assureur.
+- Barreau 4 (2033) : un consortium d'assureurs aquacoles accepte le format comme pièce standard de règlement,
+  ce qui suppose que les fermes elles mêmes aient trouvé un avantage constant à fournir la preuve, année après
+  année, pas seulement lors d'un sinistre.
+- Barreau 5 (2036) : historique pluriannuel multi ferme multi assureur, actif qui compose parce qu'aucune donnée
+  rétroactive ne peut être reconstituée par un nouvel entrant, condition inchangée par rapport au dossier de
+  tendance.
+
+Test adverse : un concurrent avec 5 M$ US en 2031 est Aquabyte ou Manolin, déjà installés chez de nombreuses fermes
+avec une relation de confiance existante et un accès déjà consenti aux données de santé du cheptel. Ils ajoutent un
+module d'export de sinistre horodaté à leur produit déjà vendu, sans avoir à convaincre une ferme méfiante de
+donner accès à une caméra à un inconnu. Le concurrent échoue seulement si le fondateur a, d'ici là, verrouillé
+suffisamment de fermes avec un historique de plusieurs saisons que la ferme ne veut pas perdre en changeant de
+fournisseur (coût de changement construit par l'ancienneté des données, pas par la technologie).
+
+## 5. Question 8 et les sept questions
+
+- Question 8 (barreau 5 plus difficile à attaquer qu'en année 1) : incertain. L'actif visé (index pluriannuel
+  vérifié) est solide en théorie, non reconstructible en un an, mais son existence dépend d'un problème de
+  consentement non résolu (voir question 2), donc l'atteinte du barreau 5 lui même est incertaine, pas seulement
+  sa défendabilité une fois atteint.
+- 1. Qui signe, avec quelle ligne budgétaire existante : incertain pour l'assureur (aucune ligne budgétaire ouverte
+  identifiée, section 2) ; probable pour la ferme, sur son propre budget de gestion de sinistre et de conformité,
+  montant précis non trouvé (lacune).
+- 2. La preuve se retourne elle contre lui : oui, documenté. Une vidéo indépendante peut aussi bien accélérer un
+  paiement légitime que révéler une négligence de gestion (sur mortalité mal traitée, alerte ignorée) qui donnerait
+  à l'assureur un motif de réduire ou refuser l'indemnité, alors que le rapport déclaratif actuel laisse plus de
+  place à l'interprétation favorable à la ferme. C'est la version aquacole précise de l'interdiction du BRIEF
+  section 5 sur les preuves qui se retournent contre l'acheteur, ici contre la ferme plutôt que contre l'assureur
+  nommé à l'origine.
+- 3. L'IA est elle le produit : oui pour la détection automatique, mais l'algorithme lui même est déjà publié
+  (section 1) : l'avantage réel est l'intégration, l'horodatage vérifiable et la confiance accumulée, pas le
+  modèle de vision seul.
+- 4. Existe t il gratuit ou déjà acheté : non pour un produit assemblé vendu à un acheteur du secteur assurance ou
+  ferme (vérifié par recherche, section 1) ; partiellement oui pour la brique technique de base, déjà publiée
+  gratuitement dans la littérature académique.
+- 5. Faisable seul depuis Vancouver : oui pour le logiciel (le pipeline de vision par ordinateur peut s'écrire et
+  s'entraîner à distance, données publiques disponibles pour amorcer) ; non ou très incertain pour l'accès aux
+  vraies caméras norvégiennes ou écossaises sans présence locale ni relation de confiance déjà établie, un obstacle
+  que le dossier de tendance original ne traitait pas.
+- 6. Une phrase sans acronyme : oui, reformulée en section 0 et 2 : une preuve vidéo horodatée du nombre de
+  poissons morts dans une cage, vendue à la ferme pour qu'elle soit payée plus vite par son assurance.
+- 7. Revient il chaque année avec ses propres données : oui si adopté, chaque saison de production génère
+  naturellement une nouvelle tranche de vidéo et de mortalité, structure d'abonnement récurrent cohérente avec le
+  cycle biologique du saumon.
+
+## 6. Pré mortem : 2031, la société est morte
+
+1. (Probabilité la plus élevée) La ferme refuse ou révoque l'accès à sa caméra dès que la vérification indépendante
+   menace de jouer contre elle plutôt que pour elle, en l'absence de toute obligation légale ou contractuelle qui
+   l'y contraigne. Le secteur a un antécédent direct de méfiance envers la caméra comme outil de preuve : des
+   militants ont déjà filmé secrètement à l'intérieur de fermes écossaises (Sea Shepherd, 2019 ; blog Don Staniford
+   « Green Around the Gills », 2019) précisément parce que les fermiers ne montrent pas leurs images volontairement,
+   et ont utilisé ces images contre eux publiquement. Signal avant coureur observable dès 2027 : aucun pilote ne
+   dépasse deux ou trois fermes volontaires après la première année, et le taux de renouvellement chute après le
+   premier sinistre où la vidéo a été défavorable à la ferme.
+2. Aquabyte ou Manolin ajoute un module d'export de sinistre horodaté à son produit déjà installé chez de nombreux
+   clients, avec un accès déjà consenti aux caméras et une relation de confiance déjà établie, rendant l'outil
+   indépendant redondant avant que son index n'atteigne une masse critique. Signal avant coureur : annonce d'un
+   partenariat entre l'un de ces deux acteurs et un assureur ou courtier aquacole en 2027 ou 2028.
+3. Le rapport mensuel déclaratif déjà en place en Norvège et en Écosse (section suivante) suffit à la grande
+   majorité des sinistres non contestés, limitant le marché adressable réel aux seuls sinistres disputés, un
+   volume probablement trop faible (quelques cas par an et par pays) pour financer seul le développement du
+   pipeline. Signal avant coureur : moins de cinq sinistres réellement disputés identifiés par les fermes ou
+   courtiers pilotes en 2027.
+
+## 7. Obligation de déclaration de mortalité, pour situer le marché
+
+Norvège et Écosse : les fermes transmettent un rapport mensuel de mortalité au régulateur (rapports agrégés,
+déclaratifs, pas vérifiés par un tiers indépendant), en plus du comptage hebdomadaire de pou de mer au delà de 4
+degrés Celsius exigé par Mattilsynet (autorité norvégienne de sécurité alimentaire) ; vérifié par synthèse
+d'articles scientifiques (ScienceDirect, S0044848622010869 et S0167587725000972). En pratique de ferme, la
+mortalité est déjà suivie au jour le jour dans des systèmes de gestion électronique internes, mais seule
+l'agrégation mensuelle remonte au régulateur : la vérification indépendante et continue que vise l'échelle n'existe
+donc dans aucun des deux pays comme obligation, seulement comme déclaration volontaire de la ferme. Canada :
+aucune obligation de fréquence précise trouvée dans le budget de recherche disponible (lacune), mais un article de
+Scientific Reports (nature.com, s41598 024 83876 5) analyse les épisodes de mortalité du saumon d'élevage en
+Colombie Britannique à partir de données publiques, preuve qu'une forme de divulgation publique agrégée existe déjà
+côté canadien, source précise (fédérale ou provinciale) non identifiée dans cette recherche. Conséquence pour la
+thèse : la donnée déclarative mensuelle est déjà acceptée par les régulateurs des trois marchés visés, ce qui
+confirme que la vraie fenêtre commerciale de cette échelle est le règlement de sinistre d'assurance, pas le
+reporting réglementaire, et qu'elle reste étroite (section 6, cause 3).
+
+## 8. Test à moins de 2 000 $ et deux semaines
+
+Sur données publiques, sans contacter personne : télécharger le jeu de données vidéo public décrit dans l'article
+de la revue Data (MDPI, doi 10.3390/data10120211, système RAS commercial, Mexique, plus de dix heures de vidéo
+étiquetée) et reproduire, à partir des méthodes publiées de MortCam et DD IYOLOv8, un pipeline d'affinage
+(fine tuning) d'un modèle de détection d'objets ouvert (YOLOv8) pour distinguer poisson vivant et poisson mort sur
+image sous marine dégradée. Budget : location de calcul GPU en nuage, environ 150 à 400 $ US pour deux semaines
+(estimation), plus le temps du fondateur, largement sous 2 000 $. Critère chiffré de succès : atteindre au moins
+85 % de rappel et 80 % de précision sur la détection de poissons morts, sur un sous ensemble de test retenu à
+part, seuils choisis en dessous des 98 à 99 % annoncés par Ace Aquatec pour la biomasse en conditions favorables
+(thefishsite.com), parce que la tâche de détection de mortalité en image dégradée est plus difficile. Si le seuil
+n'est pas atteint avec les données publiques disponibles, ou si elles se révèlent trop différentes d'une vraie
+cage en mer ouverte pour généraliser, le test échoue et signale que la lacune de données de cage réelle (section
+3) est bloquante avant tout premier appel.
+
+Premier appel, seulement si le test passe : contacter l'équipe de souscription aquaculture de Sunderland Marine
+(acheteur le plus cohérent, section 2, déjà doté d'une équipe de claims technique susceptible de comprendre l'outil)
+avec les résultats du prototype, en proposant un pilote non exclusif avec deux ou trois fermes volontaires
+identifiées par Sunderland Marine elle même, positionné explicitement comme service à la ferme, pas comme outil de
+surveillance de l'assureur.
+
+## 9. Financement
+
+Revenu mensuel plausible, toutes estimations : à 6 mois, 0 $, phase de prototype technique et de test à 2 000 $,
+aucun client signé. À 12 mois, si un ou deux sites pilotes payants sont obtenus, 500 à 3 000 $ US par mois
+(estimation, très incertaine vu le problème de consentement de la section 5). À 24 mois, si l'extension à cinq à
+dix fermes réussit et qu'une première licence de données agrégées est vendue à un courtier ou réassureur, 5 000 à
+15 000 $ US par mois (estimation optimiste, conditionnelle à la résolution du problème de confiance).
+
+Programme de subvention cohérent avec le barreau 2 sans être condition de survie : le Programme d'aide à la
+recherche industrielle (PARI, Conseil national de recherches Canada, CNRC) offre des contributions non
+remboursables à des petites entreprises canadiennes pour de la recherche et développement technologique, avec un
+conseiller technico industriel dédié et un guichet permanent plutôt qu'un appel fermé ; montant typique de l'ordre
+de 15 000 à plus de 100 000 $ CAD selon l'ampleur du projet. Ce montant et ces modalités sont connus de manière
+générale mais n'ont pas été vérifiés par une recherche fraîche dans ce budget de creusement : étiqueté supposée,
+cohérent avec la mention explicite du PARI comme accélérateur accepté dans le BRIEF section 2.
+
+## Références
+
+Assurance et courtage : sunderlandmarine.com/service/aquaculture/claims (claims) et /faqs (WebFetch direct, 2026,
+aucune mention de caméra ou vidéo) ; miller insurance.com/sectors/bloodstock livestock aquaculture and exotic
+animals/aquaculture insurance ; wtwco.com/en us/solutions/services/aquaculture insurance ; axaxl.com/insurance/
+products/aquaculture insurance et /fast fast forward/articles/fish farming moves onshore ; convexin.com/
+underwriting/equine livestock aquaculture/aquaculture ; us.bbrown.com/industries/marine/aquaculture insurance ;
+pmc.ncbi.nlm.nih.gov/articles/PMC6169256 (mutuelles en petite aquaculture, hors marché visé).
+
+Caméras et vision par ordinateur en ferme : aceaquatec.com/our story ; thefishsite.com/articles/the importance of
+biomass introducing ace aquatecs 3d biomass camera ; aquaculturenorthamerica.com/ace aquatec releases new modules
+for ai powered underwater camera ; seafoodsource.com/news/processing equipment/tidal launches newest generation
+of underwater camera for aquaculture pens ; fishfarmingexpert.com/4k resolution cage cameras imenco aquaculture ;
+revlightsecurity.com/blog/best underwater cameras for aquaculture sites ; seashepherd.org/2019/06/17/wild salmon
+recorded for first time inside fish farms ; donstaniford.typepad.com/my blog/2019/10/the go pro camera never lies
+unlike salmon farmers.
+
+Détection de mortalité et données publiques : sciencedirect.com/science/article/pii/S0144860923000286 (MortCam) ;
+doi.org/10.3390/fishes9090356 (DD IYOLOv8) ; arxiv.org/pdf/2409.00388 (YOLOv10 amélioré) ; doi.org/10.3390/
+data10120211 (jeu de données vidéo public RAS, Mexique) ; academic.oup.com/icesjms/article/82/4/fsaf039/8105847.
+
+Obligations de déclaration : sciencedirect.com/science/article/pii/S016758772200232X et /S0167587725000972
+(fréquence Norvège, Écosse, Irlande) ; fishfarmingexpert.com/farmed salmon fish health mortality rate/norway
+farmed salmon mortality rate fell below 15 last year ; nature.com/articles/s41598 024 83876 5 (données publiques
+de mortalité, Colombie Britannique) ; nature.com/articles/s41598 024 54033 9 (mortalité massive, mondial).
+
+Lacunes : aucun tarif horaire précis pour le travail de gestion de sinistre en ferme ; aucune source primaire sur
+la fréquence exacte de déclaration de mortalité au Canada ; aucun jeu de données vidéo public d'une vraie cage en
+mer ouverte trouvé (seulement RAS et surface d'étang) ; montant du PARI non vérifié par recherche fraîche ; aucune
+mutuelle de producteurs nommée dans les marchés visés.
+
+## Résumé en dix lignes
+
+L'échelle Cheptel Vérifié est fragile, vivante seulement sous une forme corrigée. Aucun concurrent ne vend déjà
+la vérification vidéo indépendante de mortalité à un assureur ou à une ferme : l'étape 1 ne la tue pas. Mais la
+preuve technique existe déjà en public (MortCam, YOLO), donc l'avantage du fondateur n'est pas l'algorithme, c'est
+l'accès et la confiance. Le vice caché du dossier original : la preuve accuse potentiellement la ferme, or c'est
+la ferme qui possède la caméra et doit consentir à son usage, sans aucun levier pour l'y forcer. Barreau 1 corrigé
+: vendre à la ferme elle même, pas à l'assureur, comme service qui accélère son propre encaissement de sinistre,
+avec Sunderland Marine comme assureur pilote plutôt qu'AXA XL. Trois marchés (Norvège, Écosse, Canada) acceptent
+déjà un reporting mensuel déclaratif non vérifié, ce qui borne le marché réel aux sinistres disputés, un volume
+probablement étroit. Le test à 2 000 $ est faisable sur données publiques mais ne prouve que la technique, pas
+l'adoption. La cause de mort la plus probable en 2031 n'est pas un concurrent mieux financé : c'est la ferme
+elle même, qui retire son consentement dès que la vidéo indépendante cesse de jouer en sa faveur.
