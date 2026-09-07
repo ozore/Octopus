@@ -55,20 +55,17 @@ compétence pour déployer VIAME eux-mêmes. C'est un marché de niche, pas celu
 ## 3. Acheteur, terre à terre
 
 Les trois acheteurs nommés dans le mandat sont en réalité des concurrents, pas des clients probables : Archipelago
-Marine Research a lancé FishVue AI en production sur 300 à 500+ navires, a remporté le prix VIATEC 2026
-Innovation Excellence pour cet outil, et pilote un projet de 581 500 $ CAD cofinancé par Canada's Ocean
-Supercluster (148 500 $ CAD, Programme de la Stratégie pancanadienne en matière d'IA) avec l'Université de
-Victoria et deux associations de pêcheurs (vérifié, oceansupercluster.ca, WebFetch cette session) : dépense déjà
-engagée dans le développement interne, pas dans l'achat externe. Saltwater Inc. a déjà intégré un outil de
-détection IA (détection de personnes sur le pont) dans son logiciel O2Review, conçu explicitement pour accueillir
-des outils IA (vérifié, saltwaterinc.com, WebSearch cette session). Integrated Monitoring n'a été trouvé dans
-aucun résultat de recherche cette session (lacune, quota épuisé). Acheteur plus réaliste : un organisme de gestion
-des pêches régional ou international sans fournisseur EM doté d'IA propre, ou un plus petit fournisseur EM sans
-équipe de science des données. Fonction qui signerait un bon de commande de 2 000 $ : non identifiée, **question
-à poser au client**. Dépense actuelle documentée : NOAA situe le coût EM à environ un tiers du coût d'un
-observateur humain (jusqu'à 800 $US/jour), et la revue vidéo manuelle comme poste de coût dominant du programme
-EM (vérifié, dossiers sources et WebSearch cette session) ; chiffre exact du $/heure de revue vidéo introuvable
-dans le temps imparti (estimation, voir section 8).
+a lancé FishVue AI en production sur 300 à 500+ navires, a remporté le prix VIATEC 2026 Innovation Excellence, et
+pilote un projet de 581 500 $ CAD cofinancé par Canada's Ocean Supercluster (148 500 $ CAD, Stratégie
+pancanadienne en matière d'IA) avec l'Université de Victoria et deux associations de pêcheurs (vérifié,
+oceansupercluster.ca, WebFetch) : dépense déjà engagée en interne, pas dans l'achat externe. Saltwater Inc. a déjà
+intégré une détection IA (personnes sur le pont) dans O2Review, conçu pour accueillir des outils IA (vérifié,
+saltwaterinc.com, WebSearch). Integrated Monitoring introuvable cette session (lacune, quota épuisé). Acheteur
+plus réaliste : un organisme de gestion des pêches régional ou international sans fournisseur EM doté d'IA
+propre, ou un petit fournisseur EM sans équipe de science des données. Fonction qui signerait un bon de commande
+de 2 000 $ : non identifiée, **question à poser au client**. Dépense actuelle documentée : NOAA situe le coût EM
+à environ un tiers du coût d'un observateur humain (jusqu'à 800 $US/jour), revue vidéo manuelle en poste de coût
+dominant (vérifié, dossiers sources et WebSearch) ; $/heure exact introuvable (estimation, voir section 8).
 
 ## 4. Produit en 6 lignes, prix, retour annuel
 
