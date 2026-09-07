@@ -18,6 +18,13 @@ Ce que trois passes, 36 idées et cinq retours du fondateur ont établi. À copi
 6. Le produit tient-il en une phrase sans acronyme, que le client comprend ? « Vous payez X heures pour faire Y à la main, le logiciel le fait en Z. »
 7. Le client doit-il revenir chaque année avec ses propres données ? Série temporelle par site, obligation pluriannuelle, donnée que le client ne peut pas reconstituer ailleurs. Sans cela, l'idée est un revenu de départ, pas une société.
 
+## B bis. La question 8, posée en premier depuis la passe 5 (société à dix ans)
+8. En année cinq, la société est-elle plus difficile à attaquer qu'en année un ? Nommer l'actif qui compose (donnée
+   longitudinale par site, réseau, standard adopté par d'autres, flux encastré dans une obligation pluriannuelle) et
+   dire pourquoi un concurrent financé de 2031 ne le reconstruit pas en un an. Une idée sans actif qui compose est un
+   revenu de départ, jamais une société. Fondateur : revenu d'abord, subventions et levée acceptées dès l'année deux ;
+   écologique strict (ni pétrole, ni défense, ni extraction des fonds marins) ; pas militant ; type d'actif ouvert.
+
 ## C. Ce qui a été éliminé, pour ne pas le regénérer sous un autre nom
 - Tout ce qui se vend à des bénévoles, des clubs, des conservancies, des ONG de restauration sans budget d'État.
 - Tout ce qui documente la faute de son acheteur (rejets, pertes, panaches, dépassements) sans que la loi n'impose cette mesure précise.

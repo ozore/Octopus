@@ -69,3 +69,25 @@ Une réponse non = pas une société (module, prestation, revenu de départ ou a
   aquaculture, compensation d'habitat, norme MMO). Premier test : Dynamic Ocean Consulting, Port Moody.
 - En réserve : VesselRisk, ReefInjury (prestation), corpus d'images froides (ex-DiveAtlas).
 - 33 idées écartées avec la question qui les tue : ne pas les regénérer sous un autre nom.
+
+## Passe 5 : changement d'objectif (7 septembre 2026)
+Le fondateur veut une société à dix ans (2036), pas un revenu de départ. Réponses obtenues : subventions et levée de
+fonds acceptées à partir de l'année deux mais la société se nourrit d'abord de son revenu ; démarche écologique
+stricte (pas de pétrole, pas de défense, pas d'extraction des fonds marins comme client) ; pas militant, il vend à qui
+paie ; le type d'actif (donnée, réseau, standard, flux) est ouvert.
+
+### Question 8, posée AVANT les sept autres
+8. En année cinq, la société est-elle plus difficile à attaquer qu'en année un ? Quel actif a composé (donnée
+   longitudinale que personne ne détient, réseau, standard adopté par d'autres, flux encastré dans une obligation
+   pluriannuelle) et pourquoi un concurrent financé de 2031 ne le reconstruit pas en un an ? Sans réponse, l'idée est
+   un revenu, pas une société. Les sept questions restent des garde-fous appliqués ensuite.
+
+### Méthode de la passe 5 (`ocean-5/`)
+1. Dix agents de thèse de tendance (sonnet), un par force irréversible, sans accès aux passes précédentes : preuve
+   d'irréversibilité, qui paie aujourd'hui, qui paiera en 2031 et 2036, qui vend déjà (avant les idées), actifs qui
+   composent, 4 échelles barreau 1 (mars 2027) à barreau 5 (2036) avec pré-mortem 2031.
+2. Orchestrateur : Q8 puis filtre en sept questions sur les échelles, six retenues pour le fondateur.
+3. Creusement (sonnet) sur les six : concurrents nommés, client du barreau 1 nommé, prix, actif, test à 2 000 $.
+4. Juge (opus) : pré-mortem 2031 refait avec ses propres recherches, test « fondateur à dix ans », verdict société,
+   revenu ou non.
+5. Rapport HTML même design, publié, puis mémoire.
