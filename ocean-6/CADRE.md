@@ -153,3 +153,11 @@ eDNAtec, Jonah Ventures, OBIS PacMAN. Robots et inspection : QYSEA, Deep Trekker
 DeepSkyIQ, EyeROV, Vesselity, HullVAR. Données et risque : Global Fishing Watch, KelpWatch, Whale Report Alert
 System, Copernicus, EDITO, CoSMoS, ZestyAI, First Street, Cape (Moody's). Restauration : RES, Coral Vita, Coral
 Sample Registry, manuel d'huîtres TNC 2014, EASI.
+
+## 5. Après le premier cycle (verdict du 7 septembre 2026)
+Règles ajoutées, issues du juge : (8) le tueur lit les idées mortes, le générateur non ; (9) une négation sur un
+occupant ne vaut que prouvée par la lecture datée de ses pages, blog et cas clients ; (10) le seuil ne bouge pas,
+l'idée bouge : intermédiaire qui refacture, acheteur en portefeuille, ou module ; (11) le tri mesure les minutes de
+fondateur par client × clients nécessaires à 150 k$ ; (12) le prix lu est celui du travail visé, pas d'une cotisation
+voisine ; (13) le bon test d'un actif est « l'observation peut-elle être refaite », pas « le client peut-il partir ».
+Voir `TABLEAU-DE-BORD.md` pour les mesures et `juge/verdict.md` pour les preuves.

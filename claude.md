@@ -109,3 +109,18 @@ paie ; le type d'actif (donnée, réseau, standard, flux) est ouvert.
 - Tout barreau 1 de remplacement repasse les interdits du brief avant d'être écrit.
 - Une ou deux échelles par tendance, sourcées deux fois plus, jamais quatre.
 - Réserves fermées : corpus froid (ex-DiveAtlas), ColonyTrack, OffsetTrace. Ne pas rouvrir.
+
+## Règles ajoutées après la passe 6 (7 septembre 2026), voir `ocean-6/CADRE.md` et `ocean-6/juge/verdict.md`
+- Résultat : registre de 99 lignes à prix lu, 12 idées, 4 creusées, 1 à 3/5 (Registre de coque, revenu de départ et
+  actif réel), 0 société. Terrain chiffré : les acheteurs privés petits ou moyens de l'océan paient 200 à 3 000 $ par an.
+- Une négation sur un occupant (« X ne fait pas Y ») ne vaut que prouvée par la lecture datée de ses pages, de son
+  blog et de ses cas clients ; BioBase, Ecobot, ReefCloud ont tué trois dossiers sur quatre par une phrase que leur
+  propre site contredit.
+- Le tueur lit les cinquante idées mortes ; le générateur ne les lit pas. Trois familles reviennent à chaque passe :
+  encrassement de coque, suivi de compensation d'habitat, suivi de récif pour le tourisme.
+- Le seuil de 10 k$ par contrat ne s'abaisse pas : l'idée se déplace vers un intermédiaire qui refacture ou un
+  acheteur en portefeuille, ou se classe module. Mesurer les minutes de fondateur par client.
+- Le bon test d'un actif : l'observation peut-elle être refaite ? Une profondeur se remesure, une orthomosaïque se
+  reclasse, une vidéo se retraite ; une photo de coque de 2028 ne se rephotographie pas en 2031.
+- Une société de volume à petits tickets tient à trois conditions cumulées : intermédiaire qui facture, mise en route
+  à zéro minute de fondateur, érosion sous 10 % par perte d'un historique non reconstituable.

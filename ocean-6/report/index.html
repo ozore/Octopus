@@ -1,0 +1,656 @@
+<title>Atlas Océan VI</title>
+<meta name="description" content="Sixième passe : l'idéation retournée, un registre de dépenses à prix lu avant toute idée, des tueurs appariés, un juge fixe ; douze idées, quatre creusées, pour un fondateur solo à Vancouver.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#F4F7F9; --surface:#FFFFFF; --surface-2:#EAF0F3;
+  --ink:#0E2233; --ink-2:#44576A; --ink-3:#6E8290;
+  --kelp:#0F7C6E; --kelp-ink:#0B5F55; --kelp-soft:#DDF0EC;
+  --buoy:#C2401B; --buoy-soft:#FBE6DE;
+  --line:#D5DEE4; --line-2:#E6ECF0;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+  --shadow:0 1px 2px rgba(14,34,51,.06),0 8px 24px rgba(14,34,51,.06);
+  --display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0C1A24; --surface:#122431; --surface-2:#182E3D;
+    --ink:#E6EEF2; --ink-2:#A9BAC5; --ink-3:#8296A3;
+    --kelp:#2FB39F; --kelp-ink:#5FD0BF; --kelp-soft:#163A38;
+    --buoy:#FF8A66; --buoy-soft:#3D2118;
+    --line:#26394B; --line-2:#1E3140;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0C1A24; --surface:#122431; --surface-2:#182E3D;
+  --ink:#E6EEF2; --ink-2:#A9BAC5; --ink-3:#8296A3;
+  --kelp:#2FB39F; --kelp-ink:#5FD0BF; --kelp-soft:#163A38;
+  --buoy:#FF8A66; --buoy-soft:#3D2118;
+  --line:#26394B; --line-2:#1E3140;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--kelp-ink);text-decoration-thickness:1px;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--kelp);outline-offset:2px}
+h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:clamp(40px,6vw,72px);font-weight:800;line-height:1;letter-spacing:-.02em}
+h2{font-size:clamp(26px,3.2vw,36px);font-weight:700;letter-spacing:-.015em;line-height:1.15}
+h3{font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1.15}
+h4{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+p{margin:0}
+.mono{font-family:var(--mono);font-size:.86em}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--kelp-ink);font-weight:500}
+.date{font-family:var(--mono);font-weight:600;color:var(--buoy);white-space:nowrap}
+.ref{font-family:var(--mono);font-size:.82em;color:var(--ink-2);background:var(--surface-2);padding:1px 6px;border-radius:3px;white-space:nowrap}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* Hero */
+.hero{border-bottom:1px solid var(--line);background:var(--surface)}
+.hero-inner{max-width:1180px;margin:0 auto;padding:56px 32px 40px;display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:48px;align-items:end}
+.hero p.lead{font-size:20px;color:var(--ink-2);max-width:62ch;margin-top:20px}
+.hero-meta{display:grid;gap:10px;font-family:var(--mono);font-size:13px;color:var(--ink-2)}
+.hero-meta div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line-2);padding-bottom:8px}
+.hero-meta b{color:var(--ink);font-weight:600}
+.kpis{max-width:1180px;margin:0 auto;padding:0 32px 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{border-top:2px solid var(--kelp);padding-top:10px}
+.kpi .v{font-family:var(--display);font-size:34px;font-weight:800;line-height:1;letter-spacing:-.02em}
+.kpi .l{font-size:14px;color:var(--ink-2);margin-top:6px}
+
+/* Page grid */
+.page{max-width:1180px;margin:0 auto;padding:40px 32px 96px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:56px;align-items:start}
+nav.rail{position:sticky;top:24px;font-family:var(--display);font-size:14px}
+nav.rail .group{margin-bottom:22px}
+nav.rail .group-t{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+nav.rail a{display:flex;gap:10px;align-items:baseline;color:var(--ink-2);text-decoration:none;padding:5px 0;border-left:2px solid transparent;padding-left:10px;margin-left:-12px}
+nav.rail a:hover{color:var(--ink)}
+nav.rail a.on{color:var(--ink);border-left-color:var(--kelp)}
+nav.rail a .n{font-family:var(--mono);font-size:11px;color:var(--ink-3);min-width:18px}
+main{min-width:0}
+section.block{margin-bottom:72px}
+section.block > .eyebrow{margin-bottom:10px;display:block}
+section.block > h2{margin-bottom:22px}
+.prose{max-width:66ch}
+.prose p + p{margin-top:14px}
+.prose ul{padding-left:20px;margin:12px 0}
+.prose li{margin:6px 0}
+
+/* Synthèse */
+.reco{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:26px 0 8px}
+.reco a{display:block;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 18px 16px;box-shadow:var(--shadow)}
+.reco a:hover{border-color:var(--kelp)}
+.reco .k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--buoy);font-weight:600}
+.reco .t{font-family:var(--display);font-size:20px;font-weight:700;margin:6px 0 6px;letter-spacing:-.01em}
+.reco .d{font-size:14.5px;color:var(--ink-2)}
+.thesis{background:var(--kelp-soft);border-radius:10px;padding:22px 24px;margin:26px 0;max-width:72ch}
+.thesis p{font-family:var(--display);font-size:19px;font-weight:500;line-height:1.4;color:var(--kelp-ink)}
+:root[data-theme="dark"] .thesis p{color:var(--ink)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .thesis p{color:var(--ink)}}
+
+/* Timeline */
+.tl{position:relative;padding-left:26px;border-left:2px solid var(--line);margin-top:8px}
+.tl-y{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.01em;margin:26px 0 10px;position:relative}
+.tl-y:first-child{margin-top:0}
+.tl-y::before{content:"";position:absolute;left:-33px;top:9px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--ink-3)}
+.tl-e{display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;padding:7px 0;border-bottom:1px solid var(--line-2);font-size:15px;align-items:baseline}
+.tl-e .date{font-size:13px}
+.tl-e .t b{font-family:var(--display);font-weight:700}
+.tl-e .idx{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-left:6px;white-space:nowrap}
+.tl-e.past .date{color:var(--ink-3)}
+.tl-now{position:relative;margin:10px 0;padding:6px 10px;background:var(--buoy-soft);color:var(--buoy);font-family:var(--mono);font-size:12px;font-weight:600;border-radius:4px;display:inline-block}
+.tl-now::before{content:"";position:absolute;left:-33px;top:10px;width:12px;height:12px;border-radius:50%;background:var(--buoy)}
+
+/* Chart */
+.chart-wrap{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 20px 12px;box-shadow:var(--shadow);position:relative}
+.chart-wrap svg{width:100%;height:auto;display:block;font-family:var(--mono)}
+.legend{display:flex;flex-wrap:wrap;gap:18px;font-family:var(--mono);font-size:12px;color:var(--ink-2);margin:10px 4px 0}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;vertical-align:-1px;background:var(--c)}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-family:var(--mono);font-size:12px;padding:8px 10px;border-radius:6px;max-width:260px;line-height:1.4;opacity:0;transition:opacity .12s}
+.tip b{display:block;font-family:var(--display);font-size:14px;margin-bottom:3px}
+.chart-note{font-size:14px;color:var(--ink-2);margin-top:14px;max-width:70ch}
+
+/* Fiche */
+.fiche{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-bottom:34px;overflow:hidden}
+.fiche-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:20px;align-items:start;padding:26px 28px 18px;border-bottom:1px solid var(--line-2)}
+.fiche-head .big{font-family:var(--display);font-size:52px;font-weight:800;line-height:.9;letter-spacing:-.04em;color:var(--kelp);font-variant-numeric:tabular-nums}
+.fam{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:3px;margin-bottom:8px;color:#fff}
+.fam-mer{background:var(--s1)} .fam-peche{background:var(--s2)} .fam-amont{background:var(--s3)}
+.tagline{font-size:17px;color:var(--ink-2);margin-top:6px;font-style:italic}
+.score-badge{text-align:right;font-family:var(--display);font-weight:800;font-size:30px;line-height:1;letter-spacing:-.02em}
+.score-badge span{font-size:13px;color:var(--ink-3);font-weight:500;letter-spacing:0}
+.score-badge small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-top:6px;font-weight:500}
+.trigger{padding:16px 28px;background:var(--surface-2);font-size:15.5px;line-height:1.5;display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.trigger .lab{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--buoy);font-weight:600;white-space:nowrap}
+.fiche-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px 32px;padding:22px 28px 8px}
+.fiche-grid section.wide{grid-column:1/-1}
+.fiche-grid h4{margin-bottom:6px}
+.fiche-grid p,.fiche-grid li{font-size:15.5px}
+.fiche-grid ul{margin:4px 0 0;padding-left:18px}
+.fiche-grid li{margin:3px 0}
+.fiche-grid .kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:15px}
+.fiche-grid .kv dt{font-family:var(--mono);font-size:12px;color:var(--ink-3);padding-top:3px}
+.fiche-grid .kv dd{margin:0}
+.effort{display:inline-block;font-family:var(--mono);font-size:12px;padding:2px 8px;border-radius:3px;background:var(--surface-2);color:var(--ink-2);margin-bottom:6px}
+.scores{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;padding:18px 28px 22px;border-top:1px solid var(--line-2)}
+.sc{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em}
+.sc .bar{height:6px;background:var(--line-2);border-radius:3px;margin:6px 0 5px;overflow:hidden}
+.sc .bar i{display:block;height:100%;background:var(--kelp);width:calc(var(--v) * 20%)}
+.sc b{color:var(--ink);font-weight:600}
+.verdicts{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line-2)}
+.verdicts > div{padding:16px 20px;font-size:14px;border-right:1px solid var(--line-2)}
+.verdicts > div:last-child{border-right:0}
+.verdicts .who{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.verdicts .who b{color:var(--ink);font-weight:600;letter-spacing:0;font-family:var(--display);font-size:13px;text-transform:none;margin-left:6px}
+.verdicts p{color:var(--ink-2)}
+.pill{display:inline-block;font-family:var(--mono);font-size:11px;padding:1px 7px;border-radius:3px;font-weight:600;margin-right:6px}
+.pill-go{background:var(--kelp-soft);color:var(--kelp-ink)} .pill-if{background:#FFF3D6;color:#7A4E00} .pill-no{background:var(--buoy-soft);color:var(--buoy)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pill-if{background:#3A2E12;color:#F2C46B}}
+:root[data-theme="dark"] .pill-if{background:#3A2E12;color:#F2C46B}
+.fam-h{display:flex;align-items:center;gap:12px;margin:40px 0 18px}
+.fam-h .sw{width:14px;height:14px;border-radius:3px}
+.fam-h h3{font-size:20px}
+.fam-h p{color:var(--ink-2);font-size:15px}
+
+/* Table */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;min-width:900px;font-size:14px}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);font-weight:600;white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--line-2);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+td .nm{font-family:var(--display);font-weight:700}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:0}
+
+/* Misc blocks */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.card h3{font-size:18px;margin-bottom:6px}
+.card p{font-size:15px;color:var(--ink-2)}
+.q{border-left:3px solid var(--kelp);padding:4px 0 4px 18px;margin:18px 0}
+.q .qq{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.01em}
+.q .qw{font-size:15px;color:var(--ink-2);margin-top:6px}
+.q .qw b{color:var(--ink);font-weight:600}
+.src{columns:2;column-gap:32px;font-size:14px}
+.src li{break-inside:avoid;margin:0 0 8px;color:var(--ink-2)}
+.src li b{color:var(--ink);font-weight:600;font-family:var(--display)}
+.agents{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.agents div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:14px}
+.agents .a{font-family:var(--mono);font-size:12px;color:var(--kelp-ink);font-weight:600}
+.agents p{color:var(--ink-2);margin-top:4px}
+footer{border-top:1px solid var(--line);padding:28px 32px;font-family:var(--mono);font-size:12px;color:var(--ink-3);text-align:center}
+
+@media (max-width:980px){
+  .hero-inner{grid-template-columns:1fr;gap:28px}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .page{grid-template-columns:1fr;gap:24px;padding:24px 20px 72px}
+  nav.rail{position:static;display:flex;gap:18px;overflow-x:auto;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  nav.rail .group{margin:0;flex:0 0 auto}
+  nav.rail a{border-left:0;padding-left:0;margin-left:0;white-space:nowrap}
+  .reco,.verdicts,.agents{grid-template-columns:1fr}
+  .verdicts > div{border-right:0;border-bottom:1px solid var(--line-2)}
+  .fiche-grid,.grid2{grid-template-columns:1fr}
+  .scores{grid-template-columns:repeat(4,1fr)}
+  .src{columns:1}
+  .fiche-head{grid-template-columns:auto minmax(0,1fr)}
+  .score-badge{grid-column:1/-1;text-align:left}
+}
+
+.chain{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+.chain>div{background:var(--surface-2,var(--surface));border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:13.5px;line-height:1.5}
+.chain .st{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:6px}
+@media(max-width:900px){.chain{grid-template-columns:1fr 1fr}}
+.tbl td.st{white-space:nowrap}
+.ok{color:var(--kelp);font-weight:600}.ko{color:var(--buoy);font-weight:600}.mi{color:var(--ink-3);font-weight:600}
+
+/* Passe 5 : échelles et barreaux */
+.ladder{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px}
+.rung{background:var(--surface-2);border:1px solid var(--line-2);border-radius:8px;padding:10px 12px;font-size:13.5px;line-height:1.45;position:relative}
+.rung .yr{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--kelp-ink);font-weight:600;display:block;margin-bottom:4px}
+.rung .as{display:block;margin-top:6px;font-size:12.5px;color:var(--ink-3)}
+.rung .as b{color:var(--ink-2);font-weight:600}
+.rung.dead{border-style:dashed;opacity:.75}
+@media(max-width:980px){.ladder{grid-template-columns:1fr 1fr}}
+.scores8{grid-template-columns:repeat(8,1fr)}
+.scores8 .sc:first-child{border-right:1px solid var(--line);padding-right:10px}
+.scores8 .sc:first-child b{color:var(--buoy)}
+@media(max-width:980px){.scores8{grid-template-columns:repeat(4,1fr)}}
+.fam-a{background:var(--s3)} .fam-b{background:var(--s2)} .fam-c{background:var(--s1)}
+.trend{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px}
+.trend .tn{font-family:var(--display);font-size:30px;font-weight:800;color:var(--ink-3);line-height:1;letter-spacing:-.03em}
+.trend h3{font-size:18px;margin-bottom:6px}
+.trend p{font-size:14.5px;color:var(--ink-2)}
+.trend p+p{margin-top:6px}
+.trend .st{display:inline-block;font-family:var(--mono);font-size:11px;padding:1px 7px;border-radius:3px;margin-bottom:6px;font-weight:600}
+.st-irr{background:var(--kelp-soft);color:var(--kelp-ink)} .st-part{background:#FFF3D6;color:#7A4E00}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .st-part{background:#3A2E12;color:#F2C46B}}
+:root[data-theme="dark"] .st-part{background:#3A2E12;color:#F2C46B}
+.trend .tally{font-family:var(--mono);font-size:12px;color:var(--ink-3);margin-top:8px}
+.pm{background:var(--buoy-soft);border-radius:8px;padding:12px 14px;font-size:14.5px}
+.pm .lab{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--buoy);font-weight:600;display:block;margin-bottom:4px}
+
+/* Passe 6 */
+.trigger .ref{white-space:normal;line-height:1.5}
+.reg{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.reg h3{font-size:17px;margin-bottom:4px}
+.reg .pop{font-size:13px;color:var(--ink-3);font-family:var(--mono);margin-bottom:8px}
+.reg ul{margin:0;padding-left:18px}
+.reg li{font-size:14px;color:var(--ink-2);margin:4px 0}
+.reg li b{color:var(--ink);font-weight:600}
+.tdb td.n{white-space:nowrap}
+.cap{display:inline-block;font-family:var(--mono);font-size:12px;padding:2px 8px;border-radius:3px;background:var(--buoy-soft);color:var(--buoy);font-weight:600;margin-bottom:6px}
+</style>
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow">Étude d'opportunités · sixième passe · septembre 2026</span>
+      <h1 style="margin-top:14px">Atlas Océan VI</h1>
+      <p class="lead">Cinq passes, cinquante idées creusées, zéro société : le filtre et le juge fonctionnaient, la naissance des idées non. Cette passe retourne l'idéation. Huit cartographes ont d'abord dressé un registre de ce que des acheteurs privés de l'océan paient déjà, avec le prix lu et la source, idéation interdite. Huit générateurs ont ensuite cherché le trou dans ces flux d'argent, chacun apparié à un tueur qui disposait de la carte des occupants et de deux tours pour les abattre. Le juge n'a pas changé d'un mot. Douze idées, sept vivantes après deux tours, quatre creusées, et un tableau de bord qui mesure l'idéation elle-même.</p>
+    </div>
+    <div class="hero-meta">
+      <div><span>Commanditaire</span><b>Fondateur, projet Octopus</b></div>
+      <div><span>Point de départ</span><b>Ce que l'acheteur paie déjà</b></div>
+      <div><span>Méthode</span><b>Registre, trous, tueurs, juge fixe</b></div>
+      <div><span>Statut</span><b>Idéation, pas d'implémentation</b></div>
+    </div>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><div class="v">99</div><div class="l">lignes de dépense à prix lu dans huit registres d'acheteurs privés, plus 60 lignes « à confirmer » tenues à part, avant qu'une seule idée soit écrite</div></div>
+    <div class="kpi"><div class="v">12</div><div class="l">idées nées chacune d'une ligne de dépense, toutes avec occupant nommé avant le tri, passées au tueur apparié en deux tours : 7 vivantes, 4 mortes, 2 régénérées</div></div>
+    <div class="kpi"><div class="v">4</div><div class="l">idées creusées, avec le compte de population et le plafond de revenu au barreau 3 comme première ligne du dossier</div></div>
+    <div class="kpi"><div class="v">1</div><div class="l">idée à 3 sur 5 après le juge, Registre de coque, revenu de départ et actif réel : la seule dont l'observation datée ne peut pas être refaite ; trois mortes sur des occupants que leurs propres sites nommaient</div></div>
+  </div>
+</header>
+
+<div class="page">
+<nav class="rail" aria-label="Sommaire">
+  <div class="group"><div class="group-t">Lecture</div>
+    <a href="#synthese">Synthèse</a>
+    <a href="#methode-6">L'idéation retournée</a>
+    <a href="#registre">Le registre des dépenses</a>
+    <a href="#idees">Les 12 idées et leurs tueurs</a>
+    <a href="#matrice">Matrice actif et filtre</a>
+  </div>
+  <div class="group"><div class="group-t">Les 4 fiches</div>
+    <a href="#idee-1"><span class="n">01</span>Envasement de marina</a>
+    <a href="#idee-2"><span class="n">02</span>Registre de coque</a>
+    <a href="#idee-3"><span class="n">03</span>Recouvrement</a>
+    <a href="#idee-4"><span class="n">04</span>Courbe de site</a>
+  </div>
+  <div class="group"><div class="group-t">Décider</div>
+    <a href="#comparatif">Tableau comparatif</a>
+    <a href="#ecartees">Les 8 écartées</a>
+    <a href="#tableau">Tableau de bord de l'idéation</a>
+    <a href="#plan">Plan à 30 jours</a>
+    <a href="#sources">Méthode et sources</a>
+  </div>
+</nav>
+
+<main>
+
+<section class="block" id="synthese">
+  <span class="eyebrow">Synthèse</span>
+  <h2>Douze idées nées d'un prix lu, une seule à 3 sur 5 : la passe a corrigé le point de départ, pas la vérification, et a chiffré le vrai plafond du terrain</h2>
+  <div class="prose">
+    <p>Vous avez demandé un cadre où le juge ne devient pas laxiste mais où l'idéation devient meilleure, par cycles mesurés. Cette passe en est le premier cycle. Trois changements ont été testés contre un juge figé : l'idéation interdite tant qu'un registre de dépenses à prix lu n'existe pas ; un tueur apparié à chaque générateur, avec la carte des occupants et deux tours ; la question 8 répondue par un mécanisme, jamais par une condition, et des seuils chiffrés au tri. Les tueurs ont abattu quatre idées sur douze avant tout creusement (bulletins gratuits du Cefas, SonarWiz, Mapistry, et une clause de propriété déguisée en mécanisme), en ont forcé deux à renaître de leur cadavre, et n'ont trouvé aucune resucée des cinquante idées mortes.</p>
+    <p>Le juge n'en retient aucune comme société à dix ans, et une comme revenu de départ avec un actif réel : le Registre de coque, une notation d'encrassement et d'antisalissure sur les photos de cale sèche que l'expert de plaisance prend déjà, détenue par le propriétaire, vendue à l'expert qui la refacture. C'est la première idée en six passes dont l'observation datée ne peut pas être refaite plus tard : une profondeur se remesure, une orthomosaïque se reclasse, une vidéo se retraite, une coque de 2028 ne se rephotographie pas en 2031. Les trois autres meurent sur des occupants que leurs propres sites nommaient : BioBase vend déjà l'accumulation de sédiment entre relevés datés à 499 $, port compris ; Ecobot, cité dans la mémoire remise aux agents, équipe gratuitement les cabinets et sponsors visés par Recouvrement ; ReefCloud sert déjà les opérateurs de tourisme, et l'adhésion Green Fins qui servait de prix lu est gratuite. Le tableau de bord dit le reste : le registre a rempli sa mesure (douze idées sur douze nées d'un prix lu) et a surtout chiffré le terrain, 200 à 3 000 $ par client et par an ; la question 8 par mécanisme a réussi (quatre sur quatre, contre zéro sur six en passe 5) ; le tueur apparié a manqué ses deux mesures, parce qu'on lui interdisait de lire les morts et qu'il concluait d'une absence de résultat au lieu de lire les pages de l'occupant ; et le seuil de ticket, qui avait disqualifié les sept vivantes, a été abaissé au lieu de déplacer les idées vers les canaux qui le font passer.</p>
+  </div>
+  <div class="thesis"><p>On ne meurt plus d'idées sans acheteur, on meurt de négations non vérifiées à la source. Le point de départ est corrigé ; la vérification ne l'est pas encore. Et la contrainte n'est plus la qualité des idées : c'est la taille des tickets qu'une personne seule peut atteindre, et le canal par lequel elle les atteint. Une société de volume à petits tickets tient à trois conditions cumulées : un intermédiaire qui facture, une mise en route à zéro minute de fondateur, une érosion sous 10 % parce que le client perd un historique qu'il ne peut pas reconstituer.</p></div>
+  <div class="reco">
+    <a href="#idee-2"><div class="k">À tester, sous trois conditions</div><div class="t">Registre de coque</div><div class="d">Actif 3 sur 5, revenu de départ. Test à 2 000 $ augmenté d'une comparaison à un modèle multimodal sans entraînement ; trois experts qui confirment par écrit refacturer le score et charger la deuxième mise à sec ; compte des experts hors Amérique du Nord et des traversées. Sans cela, 225 k$ reste un plafond de subsistance.</div></a>
+    <a href="#tableau"><div class="k">À concevoir avant tout</div><div class="t">La mise en route à zéro minute</div><div class="d">Aucune des quatre idées n'a de libre-service : toutes exigent un réglage par site, par bassin ou par cabinet. À petit ticket, le coût qui tue est la minute de fondateur, pas le prix. Le prochain tri mesure les minutes de fondateur par client, multipliées par le nombre de clients nécessaires à 150 k$.</div></a>
+    <a href="#tableau"><div class="k">Cycle suivant</div><div class="t">C4, C5, C6</div><div class="d">Le tueur lit les morts pendant que le générateur reste aveugle ; une négation ne vaut que prouvée par les pages de l'occupant ; le seuil de 10 k$ par contrat ne bouge pas, l'idée bouge vers un intermédiaire ou un portefeuille, ou se classe module.</div></a>
+  </div>
+</section>
+
+<section class="block" id="methode-6">
+  <span class="eyebrow">L'idéation retournée</span>
+  <h2>Sept règles de naissance d'une idée, et un juge qui ne bouge pas</h2>
+  <div class="prose"><p>Le diagnostic des cinq passes tenait en une phrase : les idées naissaient d'un problème imaginé, puis on cherchait l'acheteur, puis on découvrait l'occupant. L'ordre est inversé. Une idée n'a plus le droit d'exister sans trois pièces (prix lu, occupant nommé, population comptée), elle naît d'un trou dans un flux d'argent existant, et le tueur est dans la boucle, pas à la fin. La mémoire transmise aux agents est faite des dix causes de mort et de la carte des occupants, jamais des idées mortes, qui ancrent. Le juge garde sa rubrique de la passe 5 mot pour mot ; ce qui change d'un cycle à l'autre, ce sont trois règles d'idéation, chacune rattachée à une mesure.</p></div>
+  <div class="chain">
+    <div><span class="st">1 · Registre</span>Huit cartographes, une population d'acheteurs privés chacun (armateurs, ports et marinas, aquaculteurs, sous-traitants des énergies marines, bureaux d'études, laboratoires, assureurs, tourisme). Idéation interdite. Chaque ligne : qui paie, quoi, combien lu et la source, à qui, ce que l'outil ne fait pas, qui détient la donnée. Les lignes sans prix lu vont dans un second tableau.</div>
+    <div><span class="st">2 · Trous et tueurs</span>Vingt-huit lignes retenues en huit lots. Chaque générateur reçoit trois ou quatre lignes et propose une ou deux idées sur un gabarit strict, question 8 par mécanisme, dix causes vérifiées. Son tueur cherche d'abord le logiciel que l'acheteur paie déjà, puis le gratuit, puis la cause numéro 1 du pré-mortem. Une idée tuée est régénérée à partir du cadavre. Deux tours.</div>
+    <div><span class="st">3 · Tri par seuils</span>Population d'au moins 25 acheteurs nommables, contrat d'au moins 10 k$ par an, capacité datée, barreau 1 privé, cause numéro 1 vérifiée aujourd'hui. Constat : aucune vivante ne passe le seuil de ticket. Le seuil est remplacé par un plafond de revenu plausible au barreau 3, et quatre idées vont au creusement avec cette question en première ligne.</div>
+    <div><span class="st">4 · Juge fixe</span>Rubrique de la passe 5 inchangée : recherche « qui vend déjà », question 8 et sept garde-fous, pré-mortem refait, test fondateur, actif sur cinq. Il remplit en plus le tableau de bord de l'idéation et dit si chacun des trois changements a amélioré sa mesure. Ses trois changements pour le cycle suivant ferment la boucle.</div>
+  </div>
+</section>
+
+<section class="block" id="registre">
+  <span class="eyebrow">Le registre des dépenses</span>
+  <h2>Ce que huit populations d'acheteurs privés paient déjà, avec le prix lu</h2>
+  <div class="prose" style="margin-bottom:18px"><p>Le registre est le sol de la passe : s'il est estimé, tout ce qui suit meurt. Chaque carte donne la population, les lignes les plus solides (montant lu et source) et ce que l'outil ou le prestataire ne fait pas. Constat transversal : les logiciels de conformité maritime, de gestion de flotte, de certification et de traçabilité vendent tous sur devis, sans prix public ; les prix lus sont ceux des gestes manuels (salaires, tarifs journaliers, honoraires), des labels et des assurances.</p></div>
+  <div class="grid2">
+    <div class="reg"><h3>Armateurs et affréteurs</h3><div class="pop">flottes de 5 à 50 navires · population non comptée, proxys partiels</div><ul><li><b>Nettoyage de coque</b> : 5 500 à 25 000 $ par intervention, tous les 6 à 12 mois (grille Panama Ship Service). Retire l'encrassement, ne le prévient pas.</li><li><b>Gestionnaire de flotte</b> 75 509 $ par an, <b>coordinateur de conformité</b> 95 103 $ (ZipRecruiter) : le salarié coexiste avec le logiciel au lieu d'être remplacé.</li><li><b>Consommables des eaux de ballast</b> : 2 000 $ par an plus 3 600 à 12 500 $ par filtre (Ecochlor).</li><li>OceanScore, ZeroNorth, Navatom, BASSnet : aucun prix public ; un chiffre halluciné (180 000 $ de classification) détecté et écarté par l'agent.</li></ul></div>
+    <div class="reg"><h3>Ports privés, terminaux, marinas</h3><div class="pop">Floride, Californie, Europe, Pacifique Nord-Ouest · au moins 25 nommables, des centaines de marinas</div><ul><li><b>Plan d'eaux pluviales</b> 2 000 à 10 000 $ à un cabinet, <b>inspections</b> 200 à 500 $ chacune, <b>permis de rejet individuel</b> 10 000 à 25 000 $, puis 10 à 30 % par an (CivilSmart, RMA). Le cabinet produit les documents, pas les prélèvements.</li><li><b>Dragage d'entretien</b> 20 à 300 $ par mètre cube, <b>relevé bathymétrique</b> 6 500 $ par jour de navire ; permis et essais de sédiments à part.</li><li><b>Certification Clean Marina</b> 995 à 2 470 $ (AMI), <b>Green Marine</b> 4 584 à 19 633 $ par an.</li></ul></div>
+    <div class="reg"><h3>Aquaculteurs et transformateurs</h3><div class="pop">coquillages, algues, saumon, transformateurs · population non comptée, bornes partielles</div><ul><li><b>Plan HACCP</b> 3 000 à 12 000 $ initial puis 1 000 à 20 000 $ par an à un consultant ; les registres quotidiens restent manuels. <b>Assurance qualité</b> 23,19 $ de l'heure, responsable 86 159 $ par an.</li><li><b>Audit tiers de traçabilité à l'import</b> 10 000 $ par espèce (Federal Register).</li><li><b>Assurance récolte d'huîtres</b> USDA : 0,64 $ par huître, primes 97 à 2 536 $, vendue par des assureurs privés agréés.</li><li><b>Sondes de qualité d'eau</b> 1 495 £ ; l'analyse des biotoxines exigée par les autorités n'est pas couverte. ASC, BAP, MSC : devis seulement.</li></ul></div>
+    <div class="reg"><h3>Sous-traitants des énergies marines</h3><div class="pop">relevé, navires de service, inspection, observateurs, permis · au moins 25 nommables</div><ul><li><b>Releveurs</b> 150 à 1 400 $ par jour, <b>pilotes de ROV</b> 280 à 900 $ par jour, <b>observateurs</b> 200 à 700 $ par jour (crewbase.pro) ; le traitement différé des données est un poste distinct, souvent sous-traité.</li><li><b>Certification d'observateur</b> 395 $, <b>formation GWO</b> 1 846,74 $ par personne tous les deux ans.</li><li><b>Suivi de conformité post-permis</b> 3 000 à 8 000 $ par mois chez les cabinets (référentiel généraliste).</li><li>EIVA, QPS, CARIS, Hypack : exigés dans toute offre d'emploi, prix jamais publié.</li></ul></div>
+    <div class="reg"><h3>Bureaux d'études côtiers</h3><div class="pop">5 à 200 personnes, facturent l'heure · non chiffrés, Scandinavie vide</div><ul><li><b>Ecobot</b> 19 à 125 $ par mois par équipe (permis de zones humides) : pas de carte hors ligne ni d'analyse d'image.</li><li><b>Agisoft Metashape</b> 179 à 3 499 $ (photogrammétrie, aucune classification d'espèce), <b>prestation drone</b> 150 à 600 $ de l'heure ou 10 à 25 $ par acre.</li><li><b>Modélisation hydrodynamique</b> 31 à 112 $ de l'heure ; MIKE 21 payant, TELEMAC et Delft3D gratuits mais « plus d'heures expert ».</li><li><b>Analyste SIG marin</b> 74 027 $ par an, <b>plongeur commercial</b> 28,23 $ de l'heure ; licence ArcGIS professionnelle jamais publiée.</li></ul></div>
+    <div class="reg"><h3>Laboratoires et fournisseurs de surveillance</h3><div class="pop">analyse, observateurs, capteurs, petits ROV · plus de 30 entreprises nommées</div><ul><li><b>Observateur embarqué</b> 813,75 $ par jour (taux NOAA 2026), <b>surveillance électronique</b> jusqu'à 800 $ par jour, 187 à 326 $ par jour de mer en régime établi.</li><li><b>Technicien de laboratoire</b> 59 435 $ par an qui ressaisit la chaîne de traçabilité dans le LIMS ; <b>LabWare</b> à partir de 5 000 $ plus 50 000 $ de mise en œuvre.</li><li><b>Accréditation ISO 17025</b> 7 250 $ médian plus 12 715 $ de formation ; <b>analyse eDNA</b> à partir de 248 £ par échantillon.</li></ul></div>
+    <div class="reg"><h3>Assureurs, experts, classification</h3><div class="pop">experts NAMS et SAMS, courtiers plaisance, prêteurs · effectifs non chiffrés</div><ul><li><b>Expertise d'assurance plaisance</b> 24 à 28 $ par pied, <b>pré-achat</b> 28 à 35 $ par pied, <b>mise à sec</b> 10 à 20 $ par pied : rapport PDF non intégré, aucune série dans le temps.</li><li><b>Expert salarié</b> 76 000 à 117 000 $ par an, <b>ajusteur marine</b> 65 000 à 77 000 $ (Xactimate, Symbility exigés, prix non publié).</li><li><b>Accréditation NAMS</b> 200 $ puis 600 $ par an. Windward : environ 300 000 $ par utilisateur, fiche secteur public.</li></ul></div>
+    <div class="reg"><h3>Tourisme marin et plaisance</h3><div class="pop">centres de plongée, hôtels côtiers, loueurs, marinas · réseaux confirmés, effectifs non comptés</div><ul><li><b>Assurance DAN</b> pour centres de plongée 1 374 à 5 168 $ par an ; <b>Green Fins</b> 140 $ puis 60 $ par an ; <b>Travelife</b> 1 175 à 2 690 € par cycle de deux ans, sans suivi entre deux audits.</li><li><b>Dockwa</b> 169 à 249 $ par mois par module, sans module environnemental ; <b>Checkfront</b> 99 $ par mois plus 3 %, <b>FareHarbor</b> 6 % de commission.</li><li><b>Clean Marina</b> Californie 750 $ initial, 500 $ tous les cinq ans, sans suivi continu de l'eau.</li></ul></div>
+  </div>
+</section>
+
+<section class="block" id="idees">
+  <span class="eyebrow">Les 12 idées et leurs tueurs</span>
+  <h2>Ce que les trous ont donné, tour par tour</h2>
+  <div class="prose" style="margin-bottom:18px"><p>Une ligne par idée : le lot et la ligne de dépense d'origine, le verdict du tueur au tour 1 et au tour 2, et ce qui tue ou ce qui manque. Les quatre mortes le sont par un occupant nommé (cause 1) ou par une condition déguisée en mécanisme (cause 7). Aucune resucée des cinquante idées mortes n'a été signalée.</p></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Lot</th><th>Idée</th><th>Ligne d'origine (prix lu)</th><th>Tour 1</th><th>Tour 2</th><th>Ce qui tue, ou ce qui manque</th></tr></thead>
+    <tbody>
+      <tr><td>Dragage et eau</td><td><span class="nm">Envasement de marina</span></td><td>Relevé 6 500 $ par jour, dragage 20 à 300 $ par m³</td><td class="st"><span class="ok">vivante</span></td><td class="st"><span class="ok">vivante</span></td><td>SonarChart et Quickdraw gratuits mais inadaptés au bassin ; précision décimétrique non démontrée ; population non chiffrée</td></tr>
+      <tr><td>Dragage et eau</td><td><span class="nm">Signal de biotoxine</span></td><td>Sondes 1 495 £ sans analyse de biotoxines</td><td class="st"><span class="ko">morte, cause 1</span></td><td class="st"><span class="mi">abandonnée</span></td><td>Bulletins hebdomadaires gratuits du Cefas, de la FSA et du Marine Institute ; les fermetures se décident par zone, pas par concession</td></tr>
+      <tr><td>Modélisation</td><td><span class="nm">Modèle hydrodynamique loué par site</span></td><td>Modélisation 31 à 112 $ de l'heure</td><td class="st"><span class="ok">vivante</span></td><td class="st"><span class="ko">morte, cause 7</span></td><td>Deltares vend des cours, pas des modèles ; mais la propriété des mesures financées par le client est une condition déguisée, 20 à 40 k$ à faire payer avant la première facture</td></tr>
+      <tr><td>Huîtres</td><td><span class="nm">Carnet photo pour l'assurance récolte</span></td><td>Prime USDA 0,64 $ par huître</td><td class="st"><span class="ok">vivante</span></td><td class="st"><span class="ok">vivante</span></td><td>Achat discrétionnaire depuis la réforme de 2022 ; fermes assurées non chiffrées ; précision sur photo de terrain non publiée. Écartée au tri (ticket 180 à 360 $)</td></tr>
+      <tr><td>Plongée et hôtels</td><td><span class="nm">Journal de Récif</span></td><td>Green Fins 60 à 140 $, DAN 1 374 à 5 168 $</td><td class="st"><span class="ko">morte, cause 4</span></td><td class="st"><span class="ok">régénérée : Courbe de Récif</span></td><td>Le journal des pratiques accusait le centre ; amputé à la tendance écologique neutre, 150 à 250 $ par an ; 84 % de précision publiée sur vidéo de loisir</td></tr>
+      <tr><td>Plongée et hôtels</td><td><span class="nm">Carnet Côtier</span></td><td>Travelife 1 175 à 2 690 € par cycle</td><td class="st"><span class="ok">vivante</span></td><td class="st"><span class="ok">vivante</span></td><td>Blue Flag plage exige un suivi d'habitat par saison (critère 25, texte lu) ; Travelife et Blue Flag marina n'exigent rien</td></tr>
+      <tr><td>Relevé hydrographique</td><td><span class="nm">Classification sonar d'objets et d'habitat</span></td><td>Releveurs 400 à 1 400 $ par jour</td><td class="st"><span class="ko">morte, cause 1</span></td><td class="st"><span class="ko">pas de régénération</span></td><td>SonarWiz (reconnaissance de cibles, caractérisation du fond), ArcGIS Bathymetry, archives de la NOAA : trois pistes, trois occupants</td></tr>
+      <tr><td>Marinas et conformité</td><td><span class="nm">Examen visuel MSGP par photo</span></td><td>Inspections 200 à 500 $, conformité 10 à 30 % par an</td><td class="st"><span class="ko">morte, cause 1</span></td><td class="st"><span class="ok">régénérée : recommandation au prélèvement</span></td><td>Mapistry ; régénérée sans archive photo, 39 à 79 $ par mois, neuf acheteurs nommés. Écartée au tri (population, calibration à quatre points par an)</td></tr>
+      <tr><td>Drone et restauration</td><td><span class="nm">Recouvrement</span></td><td>Drone 150 à 600 $ de l'heure, Agisoft 179 à 3 499 $</td><td class="st"><span class="ok">vivante</span></td><td class="st"><span class="ok">vivante, fusionnée</span></td><td>Aucun occupant exact ; délinéation déjà facturée 34 à 44 $ de l'heure (cause 9 sur l'abonnement) ; transfert inter-sites supposé</td></tr>
+      <tr><td>Drone et restauration</td><td><span class="nm">Mémoire de site</span></td><td>idem</td><td class="st"><span class="ok">vivante</span></td><td class="st"><span class="mi">fusionnée</span></td><td>Même paysage, canal abonnement abandonné</td></tr>
+      <tr><td>Plaisance et expertise</td><td><span class="nm">Registre de coque</span></td><td>Mise à sec 10 à 20 $ par pied, expertise 24 à 35 $ par pied</td><td class="st"><span class="ok">vivante</span></td><td class="st"><span class="ok">vivante, renforcée</span></td><td>La Nouvelle-Zélande exige déjà des photos de coque horodatées (CRMS 2018) ; échelle Cawthron publiée ; « détenu par le propriétaire » à préciser</td></tr>
+      <tr><td>Plaisance et expertise</td><td><span class="nm">Traceur des systèmes immergés</span></td><td>idem</td><td class="st"><span class="mi">vivante, supposée</span></td><td class="st"><span class="mi">fusionné</span></td><td>Capacité sur prises d'eau jamais prouvée ; réduit à la corrosion externe visible</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="block" id="matrice">
+  <span class="eyebrow">Matrice</span>
+  <h2>Force de l'actif contre passage du filtre, selon le juge</h2>
+  <div class="prose" style="margin-bottom:20px"><p>En abscisse, la force de l'actif qui compose, notée par le juge de 1 à 5. En ordonnée, le nombre de questions auxquelles le juge répond oui, sur huit. La taille du disque suit le plafond de revenu plausible au barreau 3, tel que calculé par le creusement. Survolez un disque pour le détail.</p></div>
+  <div class="chart-wrap" id="bubble">
+    <svg viewBox="0 0 780 460" role="img" aria-label="Matrice force de l'actif contre filtre des quatre idées"></svg>
+    <div class="legend">
+      <span style="--c:var(--s2)">Marinas et plaisance</span>
+      <span style="--c:var(--s3)">Cabinets et sous-traitants</span>
+      <span style="--c:var(--s1)">Tourisme marin</span>
+    </div>
+    <div class="tip" id="tip"></div>
+  </div>
+  <p class="chart-note">Registre de coque est seule à 3 sur 5, avec sept questions et demie sur huit. Les trois autres sont à 1 : leur donnée se remesure, se reclasse ou se retraite, et un occupant gratuit ou à 499 $ fait déjà le mécanisme. Deux idées à 3 sur 5 en six passes (TaxoAssist, Registre de coque), aucune à 4.</p>
+</section>
+
+<section class="block" id="fiches">
+  <span class="eyebrow">Les fiches</span>
+  <h2>Quatre idées creusées : la ligne de dépense, le trou, l'acheteur, le plafond de revenu, l'actif par mécanisme, et ce que le juge en dit</h2>
+  <div class="prose"><p>Chaque fiche part de la ligne de dépense d'origine avec son prix lu, nomme ce que les tueurs ont trouvé et ce que le creusement a ajouté, corrige l'acheteur du barreau 1, donne le compte de population et le plafond de revenu au barreau 3, décrit l'actif par mécanisme, le pré-mortem et le test à 2 000 $. Les huit barres sont la question 8 puis les sept garde-fous selon le juge ; le badge est la force de l'actif sur cinq.</p></div>
+
+  <div class="fam-h"><span class="sw" style="background:var(--s2)"></span><div><h3>Marinas et plaisance</h3><p>Là où un bateau de service et un expert prennent déjà la mesure et la photo, sans que personne ne tienne la série dans le temps.</p></div></div>
+
+  <article class="fiche" id="idee-1">
+    <header class="fiche-head">
+      <div class="big">01</div>
+      <div><span class="fam fam-b">Marinas</span><h3>Envasement de marina</h3><p class="tagline">Une tendance trimestrielle d'envasement par quai, tirée des passages du sonar du bateau de service du chef de port, qui prédit la date où le tirant d'eau manque et prépare le dossier de dragage</p></div>
+      <div class="score-badge">1<span>/5</span><small>Actif, selon le juge</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Ligne de dépense</span><span class="date">6 500 $ / jour</span><span class="ref">Relevé bathymétrique par navire (Heartland Dredging) · dragage 20 à 300 $ par m³ (Coastal Dredging) · 1,0 M$ de reprise de dragage chez Safe Harbor (SEC, EX-99.4)</span><span>Les marinas privées de Floride paient un relevé complet avant chaque dragage et n'ont rien entre deux relevés : l'envasement se découvre par un échouage ou une plainte. Le dragage est une dépense d'investissement réactive, jamais un suivi. Trois chaînes concentrent 69 sites en Floride : Safe Harbor (19), Suntex (34, qui a absorbé Westrec en 2022), Loggerhead (16, propriété d'un REIT coté).</span></div>
+    <div class="fiche-grid">
+      <section><h4>Qui vend déjà</h4><p>Navionics SonarChart Live et Garmin Quickdraw font gratuitement le mécanisme technique pour la plaisance, mais exigent un bateau en mouvement et ne donnent ni date prédite ni document de permis. Le creusement a trouvé l'occupant le plus proche : BioBase EcoSound, 499 $ par plan d'eau, qui transforme les journaux d'un sondeur grand public en cartes, sans tendance datée ni usage marina. Dockwa et Molo tiennent déjà la facturation de chaque marina et pourraient ajouter le module.</p></section>
+      <section><h4>L'acheteur du barreau 1, corrigé</h4><p>Pas une marina isolée à 2 800 $ par an, mais un exploitant multi-sites en contrat de portefeuille : Safe Harbor (53 200 $ par an sur 19 sites), Suntex (95 200 $ sur 34), Loggerhead (44 800 $ sur 16). Raison d'acheter à une personne seule : aucun de leurs fournisseurs (dragueur, société de relevé) ne vend un signal trimestriel bon marché entre deux chantiers. Le personnel de la marina pose et dépose le capteur : rien n'est installé par le fondateur.</p></section>
+      <section class="wide"><h4>L'échelle, barreau par barreau</h4><div class="ladder">
+        <div class="rung"><span class="yr">2027 · barreau 1</span>Pilote sur quelques quais d'un seul site.<span class="as"><b>Actif :</b> premiers passages alignés sur les mêmes repères.</span></div>
+        <div class="rung"><span class="yr">2028 · barreau 2</span>Portefeuille sur les sites de Floride du même opérateur (16 à 34).<span class="as"><b>Actif :</b> un an de série par quai.</span></div>
+        <div class="rung"><span class="yr">2030 · barreau 3</span>Extension hors Floride chez Safe Harbor ou Suntex.<span class="as"><b>Actif :</b> historique qui oblige un concurrent à un relevé complet à 6 500 $ par jour.</span></div>
+        <div class="rung"><span class="yr">2033 · barreau 4</span>Point haut du risque : un occupant déjà installé ajoute le module.<span class="as"><b>Actif :</b> deux ou trois chaînes équipées, ou déplacement.</span></div>
+        <div class="rung"><span class="yr">2036 · barreau 5</span>Position d'actif installé, ou obsolescence face à des capteurs fixes sur pieux.<span class="as"><b>Plafond :</b> 126 à 252 k$ par an.</span></div>
+      </div></section>
+      <section><h4>Plafond de revenu au barreau 3</h4><p><span class="cap">sous 300 k$</span><br>300 marinas privées de Floride à besoin récurrent (estimation, non sourcée), adoption 15 à 30 % portée par les contrats de portefeuille : 45 à 90 bassins × 2 800 $ = 126 000 à 252 000 $ par an.</p></section>
+      <section><h4>Le produit, dans l'ordre de vente</h4><p>Téléversement du journal du capteur clipsable ; recalage des passages sur les mêmes repères par quai malgré la dérive d'un GPS ordinaire ; carte de tendance par quai (delta entre époques, vérifié sur relevés drone 2024 et 2025) ; date prédite d'atteinte du tirant d'eau minimal (supposée) ; alerte et priorisation ; export vers le dragueur en support du dossier de permis (suffisance réglementaire supposée).</p></section>
+      <section><h4>L'actif par mécanisme</h4><p>Personne ne détient aujourd'hui de série calibrée : les fournisseurs de relevé n'ont que des instantanés. La valeur tient à la continuité des mêmes points suivis par le même bateau. Partir en année trois coûte un nouveau relevé complet ou plusieurs trimestres d'attente avant qu'une tendance redevienne lisible.</p></section>
+      <section><h4>La réserve technique</h4><p>La précision décimétrique avec un sondeur grand public et un GPS ordinaire n'est démontrée par aucune source indépendante : la répétabilité de position des récepteurs grand public est un problème documenté, et le décimètre fiable suppose en général un GPS haute précision ou RTK. Le mécanisme de tendance est vérifié ; la précision revendiquée ne l'est pas.</p></section>
+      <section><div class="pm"><span class="lab">Pré-mortem 2031, selon le creusement</span>BioBase, ou un opérateur de relevé par drone déjà installé, ajoute la tendance datée et le dossier de permis à son offre, avec base installée immédiate. Signal dès 2027 : une mise à jour de BioBase mentionnant dragage ou comparaison de relevés. Vérifié non réalisé le 7 septembre 2026. Deuxième cause : la variance de position dépasse le signal réel d'un trimestre. Troisième : exigences de fournisseur (assurance, taille) d'un opérateur multi-sites.</div></section>
+      <section><h4>Test à 2 000 $</h4><p>Un sondeur grand public avec GPS ordinaire (moins de 500 $), dix passages répétés sur les mêmes points d'un plan d'eau accessible en deux semaines. Critère : variance de profondeur au même point sous 15 cm, le test passe ; au-dessus de 30 cm, la précision décimétrique échoue et le produit se replie sur une alerte au demi-mètre ou s'arrête. Premier appel, si le test passe : Loggerhead Marinas, le plus petit des trois, propriété d'un REIT coté.</p></section>
+    </div>
+    <div class="scores scores8"><div class="sc">Q8<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q1<div class="bar"><i style="--v:2.5"></i></div><b>incertain</b></div><div class="sc">Q2<div class="bar"><i style="--v:2.5"></i></div><b>incertain</b></div><div class="sc">Q3<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q4<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q5<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q6<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q7<div class="bar"><i style="--v:5"></i></div><b>oui</b></div></div>
+    <div class="verdicts"><div><div class="who">Juge<b>Ce qu'il a trouvé</b></div><p>Le blog de BioBase, que le creusement n'a pas lu après avoir trouvé le site. Sa catégorie « sediment mapping » contient un cas de port (Santa Cruz Harbor, janvier 2023, le capitaine de port cartographie les bancs de sable mouvants), un article sur la décision de dragage (2019), et le mécanisme exact : soustraire profondeur et volume entre deux relevés datés pour quantifier l'accumulation. Comparaison datée, sédimentation, port, dragage, abonnement : les cinq briques sont vendues à 499 $ sur le même matériel. La question 4 tombe. La question 3 aussi : une soustraction de grilles et une droite de tendance, que BioBase fait sans IA depuis 2017 ; le seul vrai travail d'IA, le recalage malgré la dérive GPS, est la capacité que le dossier étiquette lui-même incertaine.</p></div><div><div class="who">Juge<b>Pré-mortem refait, question 8, resucées</b></div><p>La cause numéro 1 n'est pas à surveiller, elle est réalisée : l'occupant existe, sert un port, il lui manque une ligne de projection. La société naît face à un produit dix fois moins cher que les 2 800 $ par bassin visés. Question 2 jamais posée : une série datée montrant un poste passé sous le tirant d'eau est une pièce opposable le jour où un bateau talonne, motif exact de la mort de FloatWatch (passe 2). Le portefeuille sur 16 à 34 sites reste la meilleure idée commerciale de la passe, mais elle appartient au canal, pas au produit.</p></div><div><div class="who">Juge<b>Verdict</b></div><p><span class="pill pill-no">Non</span></p><p style="margin-top:8px">La donnée est une série de profondeurs produite par le bateau du client, qu'il exporte et qu'un concurrent rejoue pour 499 $ : il n'y a pas de coût de sortie. Au mieux un format de rapport posé sur BioBase.</p></div></div>
+  </article>
+
+  <article class="fiche" id="idee-2">
+    <header class="fiche-head">
+      <div class="big">02</div>
+      <div><span class="fam fam-b">Plaisance</span><h3>Registre de coque</h3><p class="tagline">Une notation d'encrassement biologique, d'usure d'antisalissure et de corrosion visible à partir des photos de cale sèche que l'expert prend déjà, mémorisée par numéro de coque, détenue par le propriétaire</p></div>
+      <div class="score-badge">3<span>/5</span><small>Actif, selon le juge</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Ligne de dépense</span><span class="date">10 à 20 $ / pied</span><span class="ref">Mise à sec pour inspection (betterboat.com) · expertise d'assurance 24 à 28 $ par pied, pré-achat 28 à 35 $ (maritimesurveyors.com) · Craft Risk Management Standard, Nouvelle-Zélande, 2018</span><span>Chaque expertise plaisance produit des photos de coque immergée qui finissent dans un PDF, sans série par bateau. La Nouvelle-Zélande exige déjà des plaisanciers en séjour long des photos de coque horodatées ou un rapport d'inspection comme preuve d'entrée, et le Cawthron Institute publie une échelle d'encrassement à six rangs calibrée sur plus de 180 bateaux hors de l'eau, exactement le contexte de la cale sèche.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Qui vend déjà</h4><p>Les logiciels d'expertise (InspectX, Survey My Boat Pro, Boat Assessor, SurveySoft) mettent en forme le rapport sans analyse d'image. HullVAR et Vesselity font de la vision sur encrassement pour les flottes commerciales par ROV, pas pour l'expert de plaisance. Boat History Report se vend à n'importe qui contre le numéro de coque, sans consentement du propriétaire. Le carnet gratuit BFRB du gouvernement australien suffit à la conformité minimale de ce marché-là.</p></section>
+      <section><h4>L'acheteur du barreau 1, corrigé</h4><p>Le fondateur facture l'expert 8 à 12 $ par rapport ; l'expert répercute 2 à 4 $ par pied (60 à 160 $ sur un 30 à 40 pieds). Priorité aux experts basés en Nouvelle-Zélande et au port de départ des traversées du Pacifique (San Diego Marine Surveyors), où le client final a un motif réel ; Ocean Marine Surveyors et Suncoast restent des acheteurs par marge. Population : environ 1 000 experts SAMS (deux sources, 2019 et 2026), NAMS non chiffré, quelques centaines de plaisanciers entrant par an en Nouvelle-Zélande (chiffre daté de 2019).</p></section>
+      <section class="wide"><h4>L'échelle, barreau par barreau</h4><div class="ladder">
+        <div class="rung"><span class="yr">2027 · barreau 1</span>L'expert téléverse ses photos, obtient score et comparaison.<span class="as"><b>Actif :</b> la comparaison n'existe que dans l'outil.</span></div>
+        <div class="rung"><span class="yr">2028 · barreau 2</span>Le propriétaire détient l'accès par code ; l'expert suivant lit l'historique.<span class="as"><b>Actif :</b> la preuve d'entretien suivi, coûteuse à reconstituer à la vente.</span></div>
+        <div class="rung"><span class="yr">2030 · barreau 3</span>Score aligné sur l'échelle Cawthron, lisible par l'autorité néo-zélandaise ; clause d'agrégation anonymisée signée dès l'inscription.<span class="as"><b>Actif :</b> statistiques régionales, jamais le dossier individuel.</span></div>
+        <div class="rung"><span class="yr">2033 · barreau 4</span>Second produit : index régional d'encrassement, courbes par marque d'antisalissure, référence pour assureurs.<span class="as"><b>Actif :</b> base actuarielle d'usure de coque (supposée).</span></div>
+        <div class="rung"><span class="yr">2036 · barreau 5</span>Carnet d'entretien de coque comparable au carnet automobile, verrouillant chaque nouvelle mise à sec.<span class="as"><b>Plafond :</b> 225 k$ par an sur le seul ticket par rapport.</span></div>
+      </div></section>
+      <section><h4>Plafond de revenu au barreau 3</h4><p><span class="cap">sous 300 k$</span><br>1 200 experts nommables × 25 % d'adoption × 750 $ par an (75 rapports à 10 $) = 225 000 $ par an. Dépasser 300 k$ suppose 35 % d'adoption, l'expansion hors Amérique du Nord, ou le second produit du barreau 4.</p></section>
+      <section><h4>Le produit, dans l'ordre de vente</h4><p>Import des photos de cale sèche par numéro de coque ; score d'encrassement sur l'échelle Cawthron (vérifiée, ScienceDirect 2025, vision à 98 % de précision sur classification d'encrassement, 2025) ; score d'usure de l'antisalissure ; score de corrosion sur raccords (supposé, retiré de la promesse principale) ; comparaison à la mise à sec précédente ; export horodaté comme pièce de preuve CRMS ou Californie, transmis sur décision du propriétaire seul.</p></section>
+      <section><h4>L'actif par mécanisme</h4><p>Le dossier est détenu par le propriétaire via un code propre au bateau ; l'expert n'y accède qu'avec ce code ; rien n'est transmis sans décision explicite. Ce que garde le fondateur : par clause signée à l'inscription, les statistiques agrégées et anonymisées, jamais traçables à un numéro de coque. C'est la clause, pas une renégociation, qui permet l'actif du barreau 4.</p></section>
+      <section><div class="pm"><span class="lab">Pré-mortem 2031, selon le creusement</span>Cause première, déjà visible sur le papier en 2026 : un plafond de revenu structurellement bas. Signal dès 2027 : moins de 15 % des experts en essai gratuit paient au-delà du premier rapport. Deuxième : InspectX étend son assistant IA de la mise en forme de texte à l'analyse d'image, distribution déjà en place, coût de bascule nul. Troisième : le module corrosion échoue en usage réel et entraîne le produit par réputation.</div></section>
+      <section><h4>Test à 2 000 $</h4><p>Photos publiques de coques (sites de cabinets, annonces YachtWorld et boats.com), modèle de vision ajusté et calibré sur la grille Cawthron, sous 2 000 $ et deux semaines. Critère : sur 30 photos hors entraînement, score à moins d'un rang de l'évaluation visuelle du fondateur, moins de 10 secondes par photo. Premier appel, si le test passe : un expert néo-zélandais de l'annuaire SAMS, ou San Diego Marine Surveyors, pour un essai gratuit sur la prochaine mise à sec.</p></section>
+    </div>
+    <div class="scores scores8"><div class="sc">Q8<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q1<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q2<div class="bar"><i style="--v:2.5"></i></div><b>incertain</b></div><div class="sc">Q3<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q4<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q5<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q6<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q7<div class="bar"><i style="--v:5"></i></div><b>oui</b></div></div>
+    <div class="verdicts"><div><div class="who">Juge<b>Ce qu'il a trouvé</b></div><p>Le creusement a raison sur l'occupant, et c'est rare : la page de fonctionnalités d'InspectX, lue par le juge, ne mentionne ni IA, ni analyse de photo, ni notation d'état, ni historique par navire. Le créneau est vide. Ce qu'il a manqué fixe une date de péremption : un article de janvier 2026 (arXiv 2601.20196) montre que des modèles multimodaux notent l'échelle Level of Fouling sans entraînement, sur les jeux du ministère néo-zélandais ; le modèle n'est pas l'actif, InspectX peut le brancher en quelques semaines. Le Cawthron Institute déploie dès octobre 2026 une formation nationale des plongeurs inspecteurs à cette échelle : la preuve néo-zélandaise passe par le plongeur en eau, pas par la cale sèche.</p></div><div><div class="who">Juge<b>Pré-mortem refait, question 8, resucées</b></div><p>La seule vraie réponse par mécanisme des quatre : une photo de mise à sec de 2028 ne se rephotographie pas en 2031. Une profondeur se remesure, une orthomosaïque se reclasse, une vidéo se retraite ; l'observation datée d'une coque est non répétable. C'est le premier actif qui compose vraiment en six passes, avec un débit faible (une observation par bateau tous les un à trois ans). Question 2 incertaine, cause qui a déjà tué deux fois cette famille (FoulingScore, Passeport Encrassement) : le code d'accès détenu par le propriétaire est contractuel et non testé, et l'expert qui signe un score chiffré prend une exposition qu'une note qualitative ne lui donnait pas. Resucée partielle, non rédhibitoire : l'acheteur a changé (l'expert, pas l'armateur), le contexte aussi (cale sèche, échelle publique).</p></div><div><div class="who">Juge<b>Verdict</b></div><p><span class="pill pill-if">Revenu de départ et actif réel, pas société à dix ans en l'état</span></p><p style="margin-top:8px">Trois conditions : le test à 2 000 $ passe, augmenté d'une comparaison à un modèle multimodal sans entraînement (si le zéro entraînement égale le modèle ajusté, vendre le registre, pas le score) ; trois experts confirment par écrit qu'ils refacturent le score et chargeront la deuxième mise à sec du même bateau, seul geste qui crée l'actif ; compter les experts hors Amérique du Nord (IIMS) et les traversées, faute de quoi 225 k$ reste un plafond de subsistance.</p></div></div>
+  </article>
+
+  <div class="fam-h"><span class="sw" style="background:var(--s3)"></span><div><h3>Cabinets et sous-traitants</h3><p>Là où un survol drone est déjà payé et livré brut, et où le régulateur exige une validation terrain que personne ne vend.</p></div></div>
+
+  <article class="fiche" id="idee-3">
+    <header class="fiche-head">
+      <div class="big">03</div>
+      <div><span class="fam fam-a">Cabinets côtiers</span><h3>Recouvrement</h3><p class="tagline">Un calque de couverture d'habitat côtier (herbier, marais, varech, récif d'huîtres) classé par IA sur l'orthomosaïque drone déjà livrée, avec validation terrain et série par site, vendu en ligne ajoutée sur la facture du sous-traitant drone</p></div>
+      <div class="score-badge">1<span>/5</span><small>Actif, selon le juge</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Ligne de dépense</span><span class="date">10 à 25 $ / acre</span><span class="ref">Prestation drone 150 à 600 $ de l'heure ou 500 à 1 500 $ par jour · Agisoft Metashape 179 à 3 499 $ · délinéation d'habitat facturée 34 à 44 $ de l'heure · gabarit de rapport de suivi USACE (district de Saint Paul, 2024)</span><span>Les cabinets côtiers paient un survol et une photogrammétrie qui ne classent rien, puis un salarié qui délinée l'habitat à la main. Le corps des ingénieurs exige, dans ses rapports de suivi de compensation sur cinq à dix ans, des données végétales validées contre le terrain, jamais une classification automatique seule : la validation est ce qui se vend.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Qui vend déjà</h4><p>Personne ne livre les classes fines d'habitat côtier à l'échelle drone : Esri (Image Analyst, Living Atlas) fait de la couverture du sol générique à résolution satellite, Agisoft ne classe que sol, végétation et bâtiment, OpenDroneMap, Allen Coral Atlas, Global Mangrove Watch et KelpWatch sont mono-habitat ou sans classification. GeoNadir héberge des données, Droners.io vend des pilotes. Thomson Environmental garde un outil interne non revendu.</p></section>
+      <section><h4>L'acheteur du barreau 1, corrigé</h4><p>À la prestation, jamais en abonnement (cause 9 : la délinéation manuelle est déjà facturée à l'heure). Commanditaires : HANA Resources, UltraSystems Environmental, AquaTech Eco Consultants ; opérateurs purs à approcher en premier : AeroTech UAV (Floride) et Coastal Drone Service. Sept cabinets confirmés, cinq de plus trouvés sans usage drone confirmé ; population estimée 150 à 400 opérateurs et cabinets aux États-Unis, sans annuaire.</p></section>
+      <section class="wide"><h4>L'échelle, barreau par barreau</h4><div class="ladder">
+        <div class="rung"><span class="yr">2027 · barreau 1</span>Achats ponctuels de calques, aucun coût de sortie.<span class="as"><b>Actif :</b> aucun encore.</span></div>
+        <div class="rung"><span class="yr">2028 · barreau 2</span>Clients sous plan de suivi actif ; une à deux saisons de courbes de précision par site.<span class="as"><b>Actif :</b> modèle calibré et journal de calibrage exclus du livrable par clause.</span></div>
+        <div class="rung"><span class="yr">2030 · barreau 3</span>Trois ans de séries de précision ; rompre la méthode en cours de suivi USACE risque un rapport non comparable.<span class="as"><b>Plafond :</b> 48 à 198 k$ par an.</span></div>
+        <div class="rung"><span class="yr">2033 · barreau 4</span>Bibliothèque de modèles calibrés par site sur plusieurs États côtiers.<span class="as"><b>Actif :</b> le concurrent à 5 M$ doit refaire les mêmes campagnes de calibrage terrain.</span></div>
+        <div class="rung"><span class="yr">2036 · barreau 5</span>Le plus long historique de courbes de précision multi-sites, si Esri ou Agisoft n'a pas absorbé la fonction.<span class="as"><b>Actif :</b> sans valeur si l'éditeur installé l'ajoute.</span></div>
+      </div></section>
+      <section><h4>Plafond de revenu au barreau 3</h4><p><span class="cap">sous 300 k$</span><br>150 à 400 opérateurs et cabinets, adoption 15 %, 8 à 12 orthomosaïques par an à 275 $ : 48 400 à 198 000 $ par an. Le scénario haut (20 %, 15 vols) approche 300 k$ sans le dépasser nettement.</p></section>
+      <section><h4>Le produit, dans l'ordre de vente</h4><p>Import de l'orthomosaïque déjà livrée ; classification par habitat (vérifiée par habitat, une publication datée chacune : herbier Remote Sensing 2023, marais Drones 2024, varech 2024, huîtres OysterNet 2024) ; rapport de pourcentage de couverture et calque SIG ; validation contre les points de contrôle terrain du cabinet ; historique pluriannuel pour les clients sous plan de suivi ; calibrage léger lors d'un transfert géographique (supposé, testé à 2 000 $).</p></section>
+      <section><h4>L'actif par mécanisme</h4><p>Les points terrain sont produits par le cabinet, pas par le fondateur. Ce que le fondateur garde, par clause standard de produit du travail : le modèle calibré par site (poids, seuils propres à la turbidité et au marnage) et l'historique de la courbe de précision d'une année sur l'autre ; seuls le calque et le rapport de précision sont livrés. Un nouveau prestataire doit reconstituer sa propre courbe, ce qui prend une saison de terrain.</p></section>
+      <section><div class="pm"><span class="lab">Pré-mortem 2031, selon le creusement</span>Esri ou Agisoft ajoute les classes fines d'habitat côtier à un produit déjà installé chez les trois cabinets nommés. Signal dès 2027 : notes de version mentionnant la végétation de zone humide. Vérifié non réalisé trois fois. Deuxième : le transfert inter-sites ne tient pas sans réentraînement, cassant le tarif à l'acre. Troisième : moins de cinq clients récurrents après les premiers appels.</div></section>
+      <section><h4>Test à 2 000 $</h4><p>Appliquer un modèle publié pour un habitat (herbier, Remote Sensing 2023, ou le pipeline SeagrassFinder, arXiv 2024) à une orthomosaïque publique d'un site distinct (NOAA Digital Coast), sans réentraînement, et comparer aux annotations publiées. Critère : si la précision chute de plus de 15 points sur le site non vu, le produit devient un service de calibrage facturé plus cher ; sous 15 points, le tarif à l'acre tient. Calcul sous 200 $. Premier appel, si le test passe : AeroTech UAV ou Coastal Drone Service, calque gratuit sur une orthomosaïque qu'ils possèdent déjà.</p></section>
+    </div>
+    <div class="scores scores8"><div class="sc">Q8<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q1<div class="bar"><i style="--v:2.5"></i></div><b>incertain</b></div><div class="sc">Q2<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q3<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q4<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q5<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q6<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q7<div class="bar"><i style="--v:5"></i></div><b>oui</b></div></div>
+    <div class="verdicts"><div><div class="who">Juge<b>Ce qu'il a trouvé</b></div><p>Ecobot, nommé dans la mémoire remise aux agents, tueur de Preuve Vivante en passe 5, absent du creusement. Sa page produit vise mot pour mot les acheteurs du barreau 1 (cabinets sous contrat pluriannuel, sponsors de banques de compensation, exploitants) et livre déjà des stations photo alignées d'une année sur l'autre, le couvert végétal, le pourcentage herbacé, la composition spécifique, comparés aux critères de performance, en rapports au gabarit USACE, en bêta gratuite. Deuxième manque : les acheteurs nommés vendent déjà le livrable (Environmental Science Associates quantifie par drone les couverts pour ses rapports de conformité, mai 2026 ; AeroTech UAV, premier appel prévu, vend déjà des relevés de suivi de restauration). Troisième : la méthode est publiée gratuitement (EcoVision, 2026).</p></div><div><div class="who">Juge<b>Pré-mortem refait, question 8, resucées</b></div><p>La cause numéro 1 du dossier (Esri ou Agisoft absorbe la classification) est la mauvaise cause : la bonne est réalisée en 2026, l'éditeur qui tient le rapport réglementaire équipe le client gratuitement et les cabinets classent déjà en interne. Question 8 : non, le tueur l'avait dit ; l'orthomosaïque reste au client, les points terrain sont produits par son écologue, un concurrent reclasse tout l'historique en un lot, et la clause de produit du travail est une affirmation sans preuve d'acceptation. Resucée la plus nette de la passe : OffsetLedger (passe 3) plus Preuve Vivante (passe 5), la modalité passant de la vidéo sous-marine à l'orthomosaïque aérienne, même acheteur, même obligation, même livrable, même tueur.</p></div><div><div class="who">Juge<b>Verdict</b></div><p><span class="pill pill-no">Non, mort confirmé</span></p><p style="margin-top:8px">Le coût de sortie est un reclassement facturable, pas un verrou.</p></div></div>
+  </article>
+
+  <div class="fam-h"><span class="sw" style="background:var(--s1)"></span><div><h3>Tourisme marin</h3><p>Là où des milliers de plongées filment chaque jour ce que les labels demandent de prouver une fois par saison.</p></div></div>
+
+  <article class="fiche" id="idee-4">
+    <header class="fiche-head">
+      <div class="big">04</div>
+      <div><span class="fam fam-c">Plongée et hôtels</span><h3>Courbe de site</h3><p class="tagline">Une tendance datée de couverture corallienne et de blanchissement par site, tirée des vidéos de plongée déjà filmées, mutualisée entre opérateurs sans désigner de responsable, vendue aux centres de plongée pour Green Fins et aux hôtels pour Blue Flag</p></div>
+      <div class="score-badge">1<span>/5</span><small>Actif, selon le juge</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Ligne de dépense</span><span class="date">critère 25</span><span class="ref">Blue Flag Beach Criteria 2024 (texte lu) · Green Fins 140 puis 60 $ par an, environ 700 opérateurs · Travelife 1 175 à 2 690 € par cycle · DAN 1 374 à 5 168 $ par an · Mayfield et Dempsey, Oceans, décembre 2025</span><span>Le critère 25 des plages Blue Flag impose, quand un récif ou un herbier se trouve à moins de 500 mètres, un programme de suivi de sa santé au moins une fois par saison, avec Reef Check suggéré comme méthode. Ni Travelife ni Blue Flag marina n'exigent rien de tel. Une étude de décembre 2025 obtient 84 % d'exactitude de couverture corallienne sur des photos de plongeurs de loisir, via CoralNet.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Qui vend déjà, ou donne déjà</h4><p>Le tueur avait cherché Reef Support ; le creusement a trouvé deux occupants manqués. ReefCloud (Australian Institute of Marine Science) : gratuit, accès ouvert, couverture corallienne par IA à 80 à 90 %, sur relevés structurés, sans vidéo touristique ni paquet de label. CoralNet (UC San Diego) : gratuit, open source, l'outil même qu'utilise l'étude de référence. Le produit ne peut donc pas vendre la détection ; il vend l'indexation par site, l'horodatage, la courbe et le paquet de renouvellement.</p></section>
+      <section><h4>L'acheteur du barreau 1, corrigé</h4><p>Segment 1 : les membres du Green Fins Hub, environ 700 opérateurs dans 14 pays en 2026 (cible affichée de 30 000, sans date), pas les 6 600 centres PADI ; 150 à 250 $ par an, comparable réel : un abonnement de contenu marketing, pas une ligne de conformité. Segment 2 : plages à opérateur privé certifiées Blue Flag avec récif ou herbier à moins de 500 m, 350 à 800 € par an ; le texte primaire montre que le candidat Blue Flag peut être une municipalité, d'où un filtrage actif vers le privé. Exemples : Buddy Dive (Bonaire), Divetech (Grand Cayman), Grecotel (Grèce), non confirmés individuellement.</p></section>
+      <section class="wide"><h4>L'échelle, barreau par barreau</h4><div class="ladder">
+        <div class="rung"><span class="yr">2027 · amorçage</span>Indexation sur vidéos publiques, sans contrat.<span class="as"><b>Actif :</b> aucune série ne existe ailleurs.</span></div>
+        <div class="rung"><span class="yr">2028 · barreau 1</span>Contrat d'hébergement et d'indexation, pas de cession ; format de sortie Green Fins Hub et critère 25.<span class="as"><b>Actif :</b> la série indexée, verrou modéré (la vidéo brute reste au client).</span></div>
+        <div class="rung"><span class="yr">2030 · barreau 3</span>Plafond combiné sous 300 k$, sauf croissance du Green Fins Hub.<span class="as"><b>Actif :</b> courbes individuelles par client.</span></div>
+        <div class="rung"><span class="yr">2033 · barreau 4</span>Densité du pool par site conditionnée à plusieurs opérateurs abonnés sur le même site.<span class="as"><b>Actif :</b> masse critique non garantie.</span></div>
+        <div class="rung"><span class="yr">2036 · barreau 5</span>Existe si le paquet reste reconnu par les labels et si ni ReefCloud ni le Green Fins Hub n'ont internalisé la vidéo.<span class="as"><b>Plafond :</b> 28 à 140 k$ (segment 1), 125 k€ (segment 2).</span></div>
+      </div></section>
+      <section><h4>Plafond de revenu au barreau 3</h4><p><span class="cap">sous 300 k$</span><br>Segment 1 : 700 × 200 $ = 140 000 $ à 100 % d'adoption, 28 000 $ à 20 %. Segment 2 : 5 274 sites Blue Flag dont environ la moitié publics (hypothèse), sous-ensemble avec récif ou herbier, 10 % d'adoption à 500 € : 125 000 €. Combinés : un revenu de personne seule, pas de société financée.</p></section>
+      <section><h4>Le produit, dans l'ordre de vente</h4><p>Ingestion des vidéos déjà filmées ; extraction d'images et couverture corallienne et blanchissement (vérifié, 84 %, biais de sous-détection du blanchissement) ; indexation datée par site avec courbe pluriannuelle, strictement neutre ; export au format Green Fins Hub et dossier critère 25 ; archivage daté des photos de bouées et d'herbier sans notation ; tableau de bord et contenu marketing daté.</p></section>
+      <section><h4>L'actif par mécanisme, honnête</h4><p>Oui pour la courbe propre à chaque client, verrou modéré ; incertain pour la portion mutualisée, conditionnée à une masse critique par site que rien ne garantit. La différenciation entière tient à l'indexation et au paquet, qui deviendraient une fonctionnalité d'un acteur déjà gratuit ou institutionnel.</p></section>
+      <section><div class="pm"><span class="lab">Pré-mortem 2031, selon le creusement</span>ReefCloud ou le Green Fins Hub ajoute l'ingestion de vidéo touristique et un paquet de renouvellement. Signal dès 2027 : une annonce de module vidéo grand public. Vérifié non réalisé le 7 septembre 2026. Deuxième : stagnation du Green Fins Hub à 700 membres. Troisième : renouvellement sous 50 % à la première échéance, produit perçu comme doublon marketing.</div></section>
+      <section><h4>Test à 2 000 $</h4><p>15 à 20 vidéos publiques de centres et d'hôtels, images extraites, traitées par l'API CoralNet, comparées à l'annotation manuelle du fondateur (plongeur formé) sur 200 images. Critère : concordance supérieure à 75 % et une courbe datée lisible sur trois sites avec deux dates espacées de plus de six mois. Sous 500 $. Premier appel, si le test passe : un centre du Green Fins Hub à vidéos publiques abondantes, pilote gratuit contre retour sur l'utilité pour son dossier.</p></section>
+    </div>
+    <div class="scores scores8"><div class="sc">Q8<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q1<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q2<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q3<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q4<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q5<div class="bar"><i style="--v:2.5"></i></div><b>incertain</b></div><div class="sc">Q6<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q7<div class="bar"><i style="--v:2.5"></i></div><b>incertain</b></div></div>
+    <div class="verdicts"><div><div class="who">Juge<b>Ce qu'il a trouvé</b></div><p>ReefCloud sert déjà des opérateurs de tourisme : sa page accepte les images « d'un large éventail de programmes et de méthodes », et les opérateurs de la Tourism Reef Protection Initiative de la Grande Barrière l'utilisent sur des images collectées en sortie commerciale. La cause numéro 1 est réalisée en 2026. Plus grave : le prix lu n'existe peut-être pas. L'adhésion Green Fins est annoncée gratuite, sans coût d'entrée, et Green Fins « n'endosse aucune méthodologie » de suivi ; la ligne de dépense d'origine n'est pas une dépense, et les 150 à 250 $ visés ne s'appuient sur rien. La question 1 tombe : c'est DiveLedger (passe 1), tuée avec la phrase « centres de plongée, bénévoles, pas de budget ».</p></div><div><div class="who">Juge<b>Pré-mortem refait, question 8, resucées</b></div><p>Le produit ne meurt pas d'un concurrent futur : il naît entre deux gratuits déjà installés, CoralNet pour le moteur (que le test du dossier utilise lui-même) et ReefCloud pour la mise en courbe, chez un acheteur dont l'adhésion au label est gratuite. Le segment 2 est mieux fondé et mal ciblé : le meilleur travail de texte primaire de la passe (critère 25 des plages Blue Flag, absence d'exigence chez Travelife et les marinas) conduit à un acheteur qui peut être une municipalité, barreau 1 partiellement public. Question 8 : non, par aveu, la portion mutualisée qui différencie est conditionnée à une masse critique. Cinquième retour de la famille « vendre du suivi de récif au tourisme de récif » (DiveLedger, DiveAtlas, ReefInjury, ColonyTrack, GroundTruth).</p></div><div><div class="who">Juge<b>Verdict</b></div><p><span class="pill pill-no">Non, mort confirmé</span></p><p style="margin-top:8px">Segment 1 sans prix lu, segment 2 sans acheteur privé compté, différenciation conditionnelle.</p></div></div>
+  </article>
+</section>
+
+<section class="block" id="comparatif">
+  <span class="eyebrow">Comparatif</span>
+  <h2>Les quatre idées côte à côte, selon le juge</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Idée</th><th>Ligne d'origine</th><th>Acheteur du barreau 1</th><th>Ce qui existe déjà</th><th>Plafond au barreau 3</th><th>Cause de mort la plus probable</th><th class="n">Filtre /8</th><th class="n">Actif /5</th><th>Verdict du juge</th></tr></thead>
+    <tbody id="cmp-body">
+      <tr><td><span class="nm"><a href="#idee-1">01 · Envasement de marina</a></span></td><td>Relevé 6 500 $ par jour, dragage 20 à 300 $ par m³</td><td>Safe Harbor, Suntex, Loggerhead en portefeuille</td><td>BioBase (499 $ par plan d'eau, port compris), Navionics, Garmin, Dockwa et Molo</td><td class="n">126 à 252 k$</td><td>Déjà réalisée : BioBase vend le mécanisme ; la preuve de tirant d'eau insuffisant se retourne contre la marina</td><td class="n">4</td><td class="n">1</td><td><span class="pill pill-no">non</span></td></tr>
+      <tr><td><span class="nm"><a href="#idee-2">02 · Registre de coque</a></span></td><td>Mise à sec 10 à 20 $ par pied, expertise 24 à 35 $ par pied</td><td>Experts SAMS de Nouvelle-Zélande et de San Diego, via refacturation</td><td>InspectX (saisie, sans IA), carnet gratuit BFRB australien, Boat History Report</td><td class="n">225 k$, sous-compté</td><td>InspectX branche un modèle multimodal sans entraînement (arXiv, janvier 2026) ; plafond visible dès 2026</td><td class="n">7,5</td><td class="n">3</td><td><span class="pill pill-if">revenu de départ, actif réel</span></td></tr>
+      <tr><td><span class="nm"><a href="#idee-3">03 · Recouvrement</a></span></td><td>Drone 10 à 25 $ par acre, Agisoft 179 à 3 499 $</td><td>Sous-traitants drone et cabinets côtiers, à la prestation</td><td>Ecobot (bêta gratuite, mêmes acheteurs), ESA et AeroTech UAV qui vendent déjà le livrable, EcoVision publié</td><td class="n">48 à 198 k$</td><td>Déjà réalisée : l'éditeur du rapport réglementaire équipe gratuitement, les cabinets classent en interne ; resucée d'OffsetLedger et de Preuve Vivante</td><td class="n">5,5</td><td class="n">1</td><td><span class="pill pill-no">mort confirmé</span></td></tr>
+      <tr><td><span class="nm"><a href="#idee-4">04 · Courbe de site</a></span></td><td>Green Fins (annoncé gratuit), Blue Flag critère 25, Travelife</td><td>Centres du Green Fins Hub, plages privées Blue Flag</td><td>ReefCloud (gratuit, sert déjà le tourisme), CoralNet (gratuit, le moteur même du test)</td><td class="n">28 à 140 k$ plus 125 k€</td><td>Déjà réalisée : deux gratuits installés, prix lu inexistant ; cinquième retour de la famille « suivi de récif au tourisme »</td><td class="n">4</td><td class="n">1</td><td><span class="pill pill-no">mort confirmé</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="chart-note">Filtre /8 : nombre de questions (question 8 puis les sept garde-fous) auxquelles le juge répond oui, un incertain comptant pour un demi. Actif /5 : force de l'actif qui compose selon le juge. Plafond : revenu annuel plausible au barreau 3 selon le creusement, ticket × population × adoption.</p>
+</section>
+
+<section class="block" id="ecartees">
+  <span class="eyebrow">Les 8 écartées</span>
+  <h2>Ce que les tueurs et le tri ont écarté, et pourquoi</h2>
+  <div class="grid2">
+    <div class="card"><h3>Tuées par un occupant nommé (cause 1)</h3><p>Signal de biotoxine : les bulletins hebdomadaires du Cefas, de la FSA et du Marine Institute d'Irlande couvrent gratuitement les acheteurs nommés, et les fermetures se décident par zone classée, pas par concession. Classification sonar : SonarWiz vend déjà la reconnaissance automatique de cibles et la caractérisation du fond, et les deux pistes de repli (continuité de site, mise en forme réglementaire) tombent sur ArcGIS Bathymetry, les archives de la NOAA et la cause 8. Examen visuel MSGP : Mapistry vend déjà la capture photo de prélèvement aux sites sous permis.</p></div>
+    <div class="card"><h3>Tuée par une condition déguisée (cause 7)</h3><p>Modèle hydrodynamique loué par site : Deltares vend des cours, pas des modèles, et aucun tiers ne loue de modèle côtier calé ; mais hors des sites couverts par les marégraphes de la NOAA, le premier client devrait financer 20 à 40 k$ de campagne de mesures dont le fondateur deviendrait propriétaire, sans exclusivité, avant la première facture. Une condition présentée comme un mécanisme, et un gain de productivité vendu à qui facture l'heure.</p></div>
+    <div class="card"><h3>Tuée par la preuve contre le client (cause 4), puis régénérée</h3><p>Journal de Récif indexait les dégâts d'ancrage et de palmes sur les vidéos du centre : une preuve datée contre lui dès qu'un site est partagé. Régénéré en Courbe de Récif, tendance écologique neutre seulement, prix divisé par deux. C'est la boucle qui a fonctionné comme prévu : le cadavre a donné l'idée suivante.</p></div>
+    <div class="card"><h3>Écartées au tri par seuils</h3><p>Carnet d'huîtres pour l'assurance récolte : vivante aux deux tours, mais achat discrétionnaire depuis la réforme de 2022 qui permet l'auto-déclaration, ticket de 180 à 360 $ par an, fermes assurées non chiffrées, précision sur photo de terrain non publiée. Recommandation MSGP au prélèvement : régénérée sans archive photo, neuf acheteurs nommés, population du secteur introuvable, calibration à quatre prélèvements par an.</p></div>
+    <div class="card"><h3>Fusionnées</h3><p>Mémoire de site (abonnement aux cabinets) fusionnée dans Recouvrement, le canal abonnement tombant sous la cause 9 : la délinéation manuelle est déjà facturée 34 à 44 $ de l'heure. Traceur des systèmes immergés fusionné dans Registre de coque, la capacité sur prises d'eau et carburant n'ayant jamais été prouvée.</p></div>
+    <div class="card"><h3>Ce que ces 8 disent de la méthode</h3><p>Les quatre morts au tueur portent le nom d'un occupant ou d'une condition, jamais « pas de marché » : le registre a fait son travail. Les deux écartées au tri le sont par le ticket et la population, pas par une capacité supposée : le seuil a fait le sien. Ce que la boucle ne règle pas, c'est la taille : sept vivantes sur sept ont un ticket de 200 à 3 000 $ par an.</p></div>
+  </div>
+</section>
+
+<section class="block" id="tableau">
+  <span class="eyebrow">Tableau de bord de l'idéation</span>
+  <h2>Le juge ne bouge pas ; l'idéation est mesurée, et trois règles changent à chaque cycle</h2>
+  <div class="prose" style="margin-bottom:18px"><p>Chaque passe est une expérience sur le processus d'idéation. Le juge remplit la colonne de la passe, dit si chacun des trois changements testés a amélioré sa mesure, et propose les trois changements du cycle suivant. Un changement qui n'améliore pas sa mesure est retiré.</p></div>
+  <div class="tbl tdb"><table>
+    <thead><tr><th>Mesure</th><th class="n">Passes 1 à 3</th><th class="n">Passe 4</th><th class="n">Passe 5</th><th class="n">Cible passe 6</th><th class="n">Passe 6</th></tr></thead>
+    <tbody>
+      <tr><td>Idées générées</td><td class="n">36</td><td class="n">35</td><td class="n">40</td><td class="n">12 à 16</td><td>12 au tour 1, 2 régénérées, 7 vivantes après deux tours</td></tr>
+      <tr><td>Survivantes au tri</td><td class="n">sans objet</td><td class="n">8</td><td class="n">6</td><td class="n">5</td><td>4 creusements (5 idées, deux fusionnées)</td></tr>
+      <tr><td>Survivantes au juge (société, ou actif 3/5 et plus)</td><td class="n">1 puis 0</td><td class="n">1 (3/5)</td><td class="n">0 (max 2/5)</td><td class="n">au moins 1 à 3/5</td><td><b>1 à 3/5</b> (Registre de coque), aucune à 4/5</td></tr>
+      <tr><td>Idées avec prix lu à la naissance</td><td class="n">0 %</td><td class="n">environ 20 %</td><td class="n">0 %</td><td class="n">100 %</td><td>12/12 revendiquées, <b>11/12 tenues</b> (Green Fins annoncé gratuit)</td></tr>
+      <tr><td>Idées avec occupant nommé avant le tri</td><td class="n">faible</td><td class="n">faible</td><td class="n">faible</td><td class="n">100 %</td><td>12/12 nommés, <b>1/4 avec le bon occupant</b> au creusement</td></tr>
+      <tr><td>Resucées d'idées mortes</td><td class="n">non mesuré</td><td class="n">5 fusions</td><td class="n">18/40</td><td class="n">moins de 10 %</td><td>0 signalée par les tueurs ; <b>2 confirmées et 1 partielle sur 4</b> par le juge</td></tr>
+      <tr><td>Capacité supposée au cœur de l'angle, au creusement</td><td class="n">fréquent</td><td class="n">3/8</td><td class="n">5/6</td><td class="n">0</td><td><b>2/4</b> (précision sans RTK ; transfert inter-sites)</td></tr>
+      <tr><td>Cause numéro 1 du pré-mortem déjà réalisée, au creusement</td><td class="n">non mesuré</td><td class="n">non mesuré</td><td class="n">3/6</td><td class="n">0</td><td><b>4/4</b>, dont 3 non vues par l'agent et 1 avouée par le dossier</td></tr>
+    </tbody>
+  </table></div>
+  <div class="grid2" style="margin-top:22px">
+    <div class="card"><h3>C1 · Registre avant idéation : mesure atteinte, effet secondaire décisif</h3><p>Douze idées sur douze naissent d'une ligne de dépense, contre zéro en passe 5 ; la cause 3 (acheteur sans budget) disparaît sur trois idées sur quatre et passe une fois parce que la ligne retenue (Green Fins) était une cotisation voisine, pas le prix du travail. Effet non prévu : le registre a chiffré le vrai plafond du terrain, 200 à 3 000 $ par client et par an. Il n'a pas produit de meilleures idées, il a produit un meilleur diagnostic. Garder, avec une règle de plus : le prix lu est celui du travail visé.</p></div>
+    <div class="card"><h3>C2 · Tueur apparié à deux tours : mesure manquée deux fois</h3><p>Zéro resucée signalée, trois idées creusées sur quatre en sont : une impossibilité de construction, la règle interdisait aux tueurs de lire les morts. Trois occupants décisifs manqués sur quatre, dont deux nommés dans le seul fichier qu'ils avaient : les tueurs cherchent « qui vend ce produit », trouvent une absence et concluent, sans jamais vérifier une négation contre la source. Modifier, ne pas retirer : c'est le seul dispositif qui a tué quatre idées et forcé deux régénérations utiles.</p></div>
+    <div class="card"><h3>C3 · Question 8 par mécanisme et seuils : réussite, demi-réussite, contresens</h3><p>Question 8 : quatre dossiers sur quatre répondent par mécanisme, contre zéro sur six en passe 5, à garder tel quel. Capacités supposées : de 5 sur 6 à 2 sur 4, honnêtement étiquetées, deux modules retirés d'eux-mêmes. Pré-mortems déjà réalisés : 4 sur 4, pire qu'en passe 5, la vérification « aujourd'hui » faite sur une requête et non contre la source. Contresens : le seuil de 10 k$ a disqualifié les sept vivantes, et l'orchestrateur l'a abaissé. Un seuil que l'on abaisse quand rien ne passe n'est pas un seuil, c'est une préférence.</p></div>
+    <div class="card"><h3>C4 · Le tueur lit les morts, le générateur reste aveugle</h3><p>Le tueur reçoit les cinquante idées mortes avec leur cause et répond, pour chaque idée, de quelle morte c'est la reprise et ce qui a changé : l'acheteur, le canal, ou seulement la modalité. Le générateur continue de ne pas les lire. Mesure : resucées confirmées par le juge parmi les idées creusées, de 3 sur 4 à 0 ; resucées détectées avant le tri, de 0 à au moins autant que le juge en trouve.</p></div>
+    <div class="card"><h3>C5 · Une négation ne vaut que prouvée par la source</h3><p>Toute affirmation « l'occupant X ne fait pas Y » doit s'appuyer sur la lecture datée et citée de ses pages produit, de son journal de versions, de son blog et de ses cas clients, jamais sur l'absence de résultat d'une requête. Sans cette lecture, « non vérifié », et l'idée ne franchit pas le tri. Mesure : occupants décisifs manqués au juge, de 3 sur 4 à 0 ; causes numéro 1 déjà réalisées au creusement, de 4 sur 4 à 0.</p></div>
+    <div class="card"><h3>C6 · Le seuil ne bouge pas, l'idée bouge</h3><p>Le seuil de 10 k$ par contrat reste. Une idée en dessous est réorientée vers un intermédiaire qui refacture ou un acheteur en portefeuille, ou classée module. Nouveau test de distribution : minutes de fondateur pour recruter et mettre en route un client, multipliées par le nombre de clients nécessaires à 150 k$ de subsistance. Mesure : idées creusées sous 300 k$ de plafond, de 4 sur 4 à 0 ; première mesure de coût d'acquisition en minutes de fondateur.</p></div>
+  </div>
+</section>
+
+<section class="block" id="plan">
+  <span class="eyebrow">Passer à l'action</span>
+  <h2>Trente jours pour trancher, sans un seul courriel avant d'avoir quelque chose à montrer</h2>
+  <div class="prose"><p>Chaque test coûte moins de 2 000 $ et deux semaines, tourne sur des données ou du matériel publics, et se juge sur un critère chiffré. Le premier appel n'a lieu qu'après un test réussi, avec quelque chose de concret à montrer.</p></div>
+
+  <div class="q"><div class="qq">Jours 1 à 14 · Test Registre de coque, augmenté par le juge, moins de 2 000 $</div><div class="qw">Photos publiques de coques (sites de cabinets, annonces YachtWorld et boats.com), modèle de vision ajusté et calibré sur l'échelle Level of Fouling du Cawthron Institute. <b>Critère du creusement</b> : sur 30 photos hors entraînement, score à moins d'un rang de l'évaluation visuelle du fondateur, moins de 10 secondes par photo. <b>Ajout du juge</b> : comparer au même jeu un modèle multimodal sans entraînement (arXiv 2601.20196, janvier 2026). Si le zéro entraînement égale le modèle ajusté, le score n'est pas l'actif : vendre le registre, pas le score.</div></div>
+  <div class="q"><div class="qq">Jours 10 à 20 · Concevoir la mise en route à zéro minute</div><div class="qw">Avant tout appel, écrire le parcours d'un expert qui s'inscrit, charge dix photos et obtient un score sans une minute du fondateur : carte bancaire, aucun paramétrage, aucun calibrage par cabinet. Mesurer les minutes de fondateur par client sur le prototype ; multiplier par le nombre d'experts nécessaires à 150 k$ (environ 200 à 750 $ par an). Si le produit ne tient pas ce test, il reste une prestation.</div></div>
+  <div class="q"><div class="qq">Jours 15 à 30 · Trois experts par écrit, et le compte hors Amérique du Nord</div><div class="qw">Seulement si le test passe : un expert néo-zélandais de l'annuaire SAMS, San Diego Marine Surveyors, et un troisième, avec la démonstration sur leurs propres photos publiques. Une seule demande : confirmez-vous par écrit que vous refacturerez le score au client et que vous chargerez la deuxième mise à sec du même bateau ? Sans ce deuxième chargement, l'actif n'existe pas. En parallèle, compter les experts IIMS (International Institute of Marine Surveying) et les traversées annuelles vers la Nouvelle-Zélande, l'Australie et la Californie : le plafond de 225 k$ est sous-compté ou il ne l'est pas.</div></div>
+  <div class="q"><div class="qq">Cycle suivant · Passe 6, deuxième tour, avec C4, C5, C6</div><div class="qw">Le registre des dépenses reste (C1 gardé, prix du travail visé). Le tueur lit les cinquante morts (C4). Toute négation se prouve à la source (C5). Le seuil de 10 k$ ne bouge pas : chaque idée vivante à petit ticket est réorientée vers un intermédiaire qui refacture ou un acheteur en portefeuille, ou classée module (C6). Le juge garde sa rubrique. Trois mesures attendues : zéro resucée creusée, zéro occupant décisif manqué, zéro idée creusée sous 300 k$.</div></div>
+  <div class="q"><div class="qq">À ne pas faire</div><div class="qw">Relancer Envasement, Recouvrement ou Courbe de site sous un autre nom : leurs occupants sont nommés et leurs familles reviennent depuis la passe 1. Abaisser un seuil parce que rien ne passe. Écrire « l'occupant ne fait pas cela » sans avoir lu son blog. Contacter un client avant un test réussi.</div></div>
+</section>
+
+<section class="block" id="sources">
+  <span class="eyebrow">Méthode et sources</span>
+  <h2>Comment ce sixième rapport a été produit, et ce qu'il faut vérifier avant d'agir</h2>
+  <div class="prose" style="margin-bottom:22px"><p>Phase 0 : l'orchestrateur a compilé les dix causes de mort de cinquante idées et la carte des occupants, seule mémoire transmise. Phase 1 : huit cartographes (huit recherches chacun) ont dressé les registres, idéation interdite. Phase 2 : vingt-huit lignes en huit lots, huit générateurs (quatre recherches) appariés à huit tueurs (deux à trois recherches par idée et par tour), deux tours. Phase 3 : tri par seuils. Phase 4 : quatre creusements (huit recherches). Phase 5 : un juge opus avec la rubrique de la passe 5 inchangée, huit recherches, et l'évaluation des trois changements. Registres, lignes, générations, verdicts des tueurs, creusements et verdict du juge sont dans le dépôt sous <span class="mono">ocean-6/</span>.</p></div>
+  <div class="agents">
+    <div><div class="a">cartographes × 8</div><p>Armateurs, ports et marinas, aquaculteurs, énergies marines, bureaux d'études, laboratoires, assureurs, tourisme : 99 lignes à prix lu, 60 à confirmer.</p></div>
+    <div><div class="a">générateurs × 8</div><p>Une ou deux idées par lot, nées d'une ligne, question 8 par mécanisme, dix causes vérifiées, régénération à partir du cadavre.</p></div>
+    <div><div class="a">tueurs × 8</div><p>Première recherche : le logiciel que l'acheteur paie déjà ; puis le gratuit ; puis la cause numéro 1 aujourd'hui. Deux tours.</p></div>
+    <div><div class="a">creusement × 4</div><p>Population comptée, plafond de revenu en première ligne, acheteurs corrigés, actif par mécanisme, test à 2 000 $.</p></div>
+    <div><div class="a">juge</div><p>Rubrique figée, recherche indépendante, resucées vérifiées contre cinquante idées mortes, tableau de bord rempli, trois changements proposés.</p></div>
+    <div><div class="a">orchestrateur</div><p>Livre des morts, sélection des lignes, relais des verdicts entre tours, tri par seuils, rapport, mémoire.</p></div>
+  </div>
+  <h3 style="margin-top:28px">Limites à garder en tête</h3>
+  <ul class="prose">
+    <li>Les prix lus sont ceux des gestes manuels, des labels et des assurances ; les logiciels du secteur vendent tous sur devis, et aucun contrat privé de logiciel océan n'a pu être chiffré.</li>
+    <li>Les populations restent des bornes : aucun annuaire n'isole les marinas privées de Floride qui draguent, les cabinets côtiers équipés de drones, ni les experts NAMS ; le juge en tient compte.</li>
+    <li>Les capacités sont vérifiées sur des tâches voisines ou des publications de 2023 à 2025 ; la précision décimétrique d'un sondeur grand public avec GPS ordinaire n'est démontrée nulle part, et le transfert inter-sites des modèles de segmentation n'est pas publié.</li>
+    <li>Les acheteurs nommés sont des cibles plausibles identifiées par leur profil public ; aucun n'a été contacté, conformément à la règle du test avant l'appel.</li>
+    <li>Le quota de recherche a limité les cartographes à huit requêtes ; plusieurs sites officiels (USCG, NOAA, Indeed, Glassdoor) ont bloqué l'accès, ce qui explique une partie des lignes « à confirmer ».</li>
+  </ul>
+  <h3 style="margin-top:28px">Sources principales</h3>
+  <ul class="prose">
+    <li><b>Registres</b> : civilsmart.us et rmagreen.com (eaux pluviales, permis de rejet), coastaldredgingco.com et heartlanddredging.com, marinaassociation.org, green-marine.org, maritimesurveyors.com et namsglobal.org, dan.org, greenfins.net, travelifestaybetter.com, marinas.dockwa.com, checkfront.com, crewbase.pro, fisheries.noaa.gov (taux d'observateurs, surveillance électronique), ecobot.com, agisoft.com, ziprecruiter.com, itqlick.com, rma.usda.gov, federalregister.gov.</li>
+    <li><b>Occupants et tueurs</b> : biobasemaps.com, chesapeaketech.com (SonarWiz), mapistry.com, cefas.co.uk et marine.ie (biotoxines), deltares.nl, reefcloud.ai, coralnet.ucsd.edu, oceanfarmr.com, boathistoryreport.com, agriculture.gov.au (carnet BFRB), esri.com, agisoft.com, geonadir.com, droners.io.</li>
+    <li><b>Obligations et capacités</b> : mpi.govt.nz (Craft Risk Management Standard), sciencedirect.com (échelle Level of Fouling, Cawthron, 2025), blueflag.global et wessa.org.za (critères 2024, textes lus), travelifeauditors.com (norme 3.1, 2025), mdpi.com (Mayfield et Dempsey, Oceans, décembre 2025 ; Remote Sensing 2023 ; Drones 2024), arxiv.org (SeagrassFinder, 2024), usace.army.mil (gabarit de rapport de suivi, 2024), gpsworld.com et springer.com (répétabilité GNSS), sec.gov (EX-99.4, Safe Harbor).</li>
+    <li><b>Acheteurs</b> : safeharbor.com, suntex.com, loggerheadmarinas.com, marinaworld.com (fusion Suntex et Westrec), hanaresources.com, ultrasystems.com, padi.com/conservation/green-fins, euronews.com (sites Blue Flag 2026).</li>
+  </ul>
+</section>
+
+</main>
+</div>
+<footer>Atlas Océan VI · sixième passe d'idéation, septembre 2026 · aucune implémentation · chiffres et dates à revérifier sur les sites officiels avant décision</footer>
+
+<script>
+(function(){
+  var data=[
+    {n:1,name:"Envasement de marina",fam:1,a:0.82,q:4.2,price:16,d:"Tendance d'envasement par sonar grand public · BioBase le vend déjà à 499 $"},
+    {n:2,name:"Registre de coque",fam:1,a:3,q:7.5,price:19,d:"Notation d'encrassement sur photos de cale sèche · observation non répétable"},
+    {n:3,name:"Recouvrement",fam:2,a:1,q:5.5,price:10,d:"Calque d'habitat sur orthomosaïque · Ecobot équipe gratuitement les mêmes acheteurs"},
+    {n:4,name:"Courbe de site",fam:3,a:1.2,q:3.8,price:17,d:"Tendance de récif sur vidéos de plongée · ReefCloud et CoralNet gratuits, Green Fins gratuit"}
+  ];
+  var svg=document.querySelector('#bubble svg');if(!svg)return;
+  var NS='http://www.w3.org/2000/svg';
+  var W=780,H=460,L=64,R=24,T=20,B=56;
+  var x0=0.5,x1=5.5,y0=0,y1=8.5;
+  function X(v){return L+(v-x0)/(x1-x0)*(W-L-R)}
+  function Y(v){return T+(1-(v-y0)/(y1-y0))*(H-T-B)}
+  function el(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e}
+  var g=el('g',{});svg.appendChild(g);
+  var cs=getComputedStyle(document.documentElement);
+  var ink3=cs.getPropertyValue('--ink-3').trim(),line=cs.getPropertyValue('--line').trim(),ink=cs.getPropertyValue('--ink').trim();
+  for(var v=1;v<=5;v+=1){g.appendChild(el('line',{x1:X(v),x2:X(v),y1:T,y2:H-B,stroke:line,'stroke-width':1}));
+    var t=el('text',{x:X(v),y:H-B+18,'text-anchor':'middle','font-size':11,fill:ink3});t.textContent=v;g.appendChild(t);}
+  for(var w=0;w<=8;w+=1){g.appendChild(el('line',{x1:L,x2:W-R,y1:Y(w),y2:Y(w),stroke:line,'stroke-width':1}));
+    var t2=el('text',{x:L-10,y:Y(w)+4,'text-anchor':'end','font-size':11,fill:ink3});t2.textContent=w;g.appendChild(t2);}
+  var ax=el('text',{x:(L+W-R)/2,y:H-14,'text-anchor':'middle','font-size':11,fill:ink3,'letter-spacing':'.08em'});ax.textContent='FORCE DE L\'ACTIF QUI COMPOSE, SELON LE JUGE (1 À 5)';g.appendChild(ax);
+  var ay=el('text',{x:14,y:(T+H-B)/2,'text-anchor':'middle','font-size':11,fill:ink3,'letter-spacing':'.08em',transform:'rotate(-90 14 '+((T+H-B)/2)+')'});ay.textContent='QUESTIONS PASSÉES, SUR 8';g.appendChild(ay);
+  var cols={1:'var(--s2)',2:'var(--s3)',3:'var(--s1)'};
+  var tip=document.getElementById('tip'),wrap=document.getElementById('bubble');
+  var left={}, below={4:1}, above={1:1};
+  data.slice().sort(function(a,b){return b.price-a.price}).forEach(function(d){
+    var r=6+Math.sqrt(d.price)*1.2;
+    var c=el('circle',{cx:X(d.a),cy:Y(d.q),r:r,fill:cols[d.fam],'fill-opacity':.8,stroke:'var(--surface)','stroke-width':2,tabindex:0});
+    var lab=el('text',{x:X(d.a),y:Y(d.q)+4,'text-anchor':'middle','font-size':10,'font-weight':600,fill:'#fff','pointer-events':'none'});
+    lab.textContent=String(d.n).padStart(2,'0');
+    var name=el('text',{x:X(d.a)+r+5,y:Y(d.q)+4,'font-size':11.5,fill:ink,'font-family':'Bricolage Grotesque, Helvetica Neue, Arial, sans-serif','font-weight':600,'pointer-events':'none'});
+    name.textContent=d.name;
+    if(left[d.n]){name.setAttribute('x',X(d.a)-r-5);name.setAttribute('text-anchor','end');}
+    if(below[d.n]){name.setAttribute('x',X(d.a));name.setAttribute('y',Y(d.q)+r+13);name.setAttribute('text-anchor','middle');}
+    if(above[d.n]){name.setAttribute('x',X(d.a));name.setAttribute('y',Y(d.q)-r-6);name.setAttribute('text-anchor','middle');}
+    function show(){tip.innerHTML='<b>'+String(d.n).padStart(2,'0')+' · '+d.name+'</b>'+d.d+'<br>Actif '+d.a+'/5 · filtre '+d.q+'/8<br>Plafond au barreau 3 : environ '+d.price+' k$ par mois';
+      var bb=wrap.getBoundingClientRect(),pt=c.getBoundingClientRect();
+      tip.style.left=Math.min(pt.left-bb.left+r+12,bb.width-280)+'px';tip.style.top=(pt.top-bb.top-10)+'px';tip.style.opacity=1;}
+    function hide(){tip.style.opacity=0}
+    c.addEventListener('mouseenter',show);c.addEventListener('mousemove',show);c.addEventListener('mouseleave',hide);c.addEventListener('focus',show);c.addEventListener('blur',hide);
+    c.addEventListener('click',function(){location.hash='#idee-'+d.n});c.style.cursor='pointer';
+    g.appendChild(c);g.appendChild(lab);g.appendChild(name);
+  });
+  var links=[].slice.call(document.querySelectorAll('nav.rail a'));
+  var map={};links.forEach(function(a){var id=a.getAttribute('href').slice(1);map[id]=a});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.remove('on')});var a=map[e.target.id];if(a)a.classList.add('on');}})},{rootMargin:'-20% 0px -70% 0px'});
+    Object.keys(map).forEach(function(id){var s=document.getElementById(id);if(s)io.observe(s)});
+  }
+})();
+</script>
