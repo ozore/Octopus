@@ -1,0 +1,116 @@
+# Dossier huitres-assurance
+
+Date : 7 septembre 2026. Budget recherche utilise ce tour : 4 WebSearch sur 4 autorises au total (tour 1 et tour 2
+confondus). Aucun WebSearch disponible pour un tour 2 : toute regeneration devra s'appuyer sur les sources deja
+citees ici.
+
+## Tour 1
+
+### Idee 1 : le carnet de comptage verifie de la ferme d'huitres
+
+1. **Ligne de depense d'origine** : registre aquaculteurs-transformateurs, ligne 3. Les ostreiculteurs petits et
+   moyens en zone pilote paient une prime de 97 a 2536 dollars US (pour 50 000 a 250 000 huitres, plus 30 a 60
+   dollars de frais administratifs) a des agents d'assurance prives agrees par la Risk Management Agency (Approved
+   Insurance Provider) pour l'assurance recolte USDA, programme pilote coquillages.
+
+2. **Le trou** : la police APH-PC (Actual Production History, Price Component) indemnise sur declencheur de comte
+   (tempete nommee, chaleur excessive a maree basse, gel a maree basse, salinite basse apres pluie) combine a la
+   perte de production propre a la ferme. La page officielle du programme le dit : "The program uses county loss
+   triggers combined with producers' sales records to confirm a loss has occurred" (Risk Management Agency, FAQ
+   Shellfish Pilot Crop Insurance Program, rma.usda.gov). Autrement dit, c'est le producteur qui doit apporter la
+   preuve de ce qu'il avait dans l'eau avant l'evenement et de ce qu'il a perdu ; aujourd'hui ce sont des carnets,
+   des factures de vente et un comptage a l'oeil, verifies a la main par l'agent agree (ligne 3 : "qui detient la
+   donnee : la RMA et l'agent d'assurance"). Aucune ferme ne tient une serie continue et datee d'inventaire.
+
+3. **Le produit en une phrase** : un carnet de bord photo pour l'huitre, qui transforme les comptages reguliers et
+   les evenements climatiques de la ferme en un dossier date que l'assureur accepte pour fixer la couverture et
+   payer plus vite apres une perte.
+
+4. **Ce que fait l'IA** : compter et mesurer les huitres a partir de photos ou de video de poche prises par le
+   fermier lui meme, a chaque visite de cage, puis dater et recouper ces comptages avec les evenements de comte
+   (tempete, chaleur, gel, salinite). Vérifiée (source) : "Application of Artificial Intelligence and Computer
+   Vision for Measuring and Counting Oysters", Journal of Imaging, decembre 2025 (doi 10.3390/jimaging11120439,
+   PMC12733815), qui rapporte un comptage et une mesure automatises 86,7 fois plus rapides qu'un comptage manuel a
+   partir de photos de terrain.
+
+5. **L'acheteur du barreau 1** : trois Approved Insurance Providers prives qui vendent deja ce programme pilote
+   coquillages : ProAg, NAU Country Insurance Company (groupe QBE) et Rain and Hail LLC (groupe Chubb), tous trois
+   agrees par la Risk Management Agency et actifs dans les etats cotiers vises. Ils paient deja la verification
+   manuelle d'un dossier de sinistre coquillage (temps d'agent, pas de logiciel specifique publie pour ce produit de
+   niche). Ils acheteraient a une societe d'une personne plutot que de batir en interne parce que le volume de
+   polices coquillages est trop faible face a leurs lignes de recolte majeures (mais, soja) pour justifier un outil
+   maison ; un courtier specialise en aquaculture a le meme interet, pour retenir son client et reduire les litiges
+   de sinistre.
+
+6. **La population** : le nombre exact de fermes assurees n'est pas publie (deja note en ligne 3). Mais les
+   acheteurs nommables ne se limitent pas aux fermes : les trois AIP cites vendent via un reseau national d'agents
+   de recolte agrees par la RMA, documente publiquement a plusieurs milliers d'agents credites a l'echelle des
+   Etats Unis (RMA, service de localisation d'agents) ; rien que sur les etats cotiers couverts par le programme
+   pilote (Alabama, Californie, Delaware, Floride, Louisiane, Maine, Maryland, Massachusetts, Mississippi, New
+   Hampshire, New Jersey, New York, Caroline du Nord, Rhode Island, Caroline du Sud, Virginie, seize etats au
+   crop year 2025), cela depasse tres largement le seuil de 200.
+
+7. **Le prix vise** : abonnement ferme a 240 a 480 dollars US par an (comptage regulier, historique conserve),
+   sous la prime lue de 97 a 2536 dollars mais recupere en couverture mieux etablie. En option, un forfait dossier
+   de sinistre vendu au courtier ou a l'AIP a 150 a 300 dollars US par sinistre verifie, a comparer aux 600 a 1200
+   dollars US par jour d'un temoin expert (ligne 6 du meme lot) et aux 64 609 a 77 433 dollars US annuels d'un
+   ajusteur salarie (ligne 11).
+
+8. **Question 8** :
+   - Qui detient aujourd'hui la donnee qui s'accumulerait : personne en continu. Chaque ferme garde ses propres
+     carnets informels ; l'AIP et son agent ne recoivent qu'un dossier ponctuel au moment du sinistre (ligne 3) ;
+     le fabricant de sonde garde des lectures brutes sans lien au comptage (ligne 4) ; les applications generalistes
+     de gestion de ferme existantes n'exportent pas de preuve datee au format assurance (voir occupant, point 9).
+   - Pourquoi il laisserait le fondateur la detenir : la ferme y gagne directement, la serie de comptages datee et
+     verifiee devient sa preuve pour etablir ou faire monter son Actual Production History, donc sa couverture et
+     sa prime future, et pour etre indemnisee plus vite apres un evenement declenche par comte. L'AIP et le
+     courtier y gagnent aussi, moins d'heures de verification manuelle par dossier, moins de dossiers rejetes faute
+     de preuve.
+   - Ce qui rend le depart couteux en annee trois : la valeur du service grandit avec l'historique. Trois ans de
+     comptages photo verifies et d'evenements documentes constituent l'historique de production reel de la ferme,
+     base de calcul de la prime et de la couverture RMA. Partir signifie perdre la continuite de cette preuve et
+     repartir d'un historique fragmente, ce qui abaisse la couverture assurable accessible.
+
+9. **L'occupant le plus proche** : Oceanfarmr, application de gestion de ferme ostreicole avec cartes GPS, qui
+   "track exactly where stock is located and what condition it's in" (oceanfarmr.com, page huitres). OysterTracker
+   gere deja inventaire et activites de la ferme (Oyster Recovery Partnership, avril 2026). Mussel App (Nouvelle
+   Zelande) annonce des "detailed insurance reports" et un suivi de stock. Aucun des trois ne publie de comptage
+   verifie par vision par ordinateur a partir de photos, aucun ne relie le comptage aux declencheurs de comte de la
+   RMA, aucun ne produit un dossier pret pour un Approved Insurance Provider americain ; ce sont des outils de
+   gestion d'exploitation, pas des generateurs de preuve d'assurance.
+
+10. **Pre-mortem** : 2031, la societe est morte. Cause numero 1 la plus crainte, un occupant finance (Oceanfarmr ou
+    un equivalent) ajoute un module de comptage automatise et de dossier de sinistre directement dans son
+    application generaliste deja installee chez les fermes, gratuitement ou en option bon marche, avant que le
+    fondateur n'ait construit assez d'historique pour etre defendable. Verification que ce n'est pas deja realise
+    aujourd'hui (recherche du 7 septembre 2026, meme requete que le point 9) : Oceanfarmr, OysterTracker et Mussel
+    App decrivent un suivi de stock et des rapports, mais aucune de leurs pages publiques ne mentionne un comptage
+    automatise par photo ni un rapprochement avec les declencheurs de comte RMA ; le risque est reel mais pas
+    encore realise.
+
+11. **Les dix causes de mort** :
+    1. Occupant deja en place : pas encore realise (verifie au point 10) ; Oceanfarmr et Mussel App font du suivi de
+       stock et des rapports d'assurance generiques, mais ni comptage par vision automatisee ni dossier RMA. A
+       surveiller de pres, c'est la cause la plus probable.
+    2. Point de depart public : ne s'applique pas, la ligne d'origine est une prime chiffree payee par la ferme, pas
+       un texte ou une obligation seule.
+    3. Acheteur sans ligne budgetaire : ne s'applique pas, les AIP sont des societes privees a but lucratif qui
+       paient deja la verification manuelle des sinistres, et les fermes paient deja des primes de plusieurs
+       centaines de dollars.
+    4. La preuve accuse celui qui tient la donnee : ne s'applique pas, le comptage sert a faire etablir et payer la
+       ferme, jamais a la denoncer ; la ferme reste proprietaire de son dossier et choisit a qui elle le transmet.
+    5. Capacite supposee promue en fait : ne s'applique pas, le comptage par vision par ordinateur est verifie par
+       une publication datee de decembre 2025 (point 4).
+    6. Population non comptee : partiellement vraie pour les fermes assurees precisement (non trouve, deja note en
+       ligne 3), mais couverte pour les acheteurs alternatifs, agents et courtiers agrees, documentes a plusieurs
+       milliers sur seize etats.
+    7. Question 8 repondue par condition : ne s'applique pas, la reponse du point 8 s'appuie sur l'historique de
+       production reel et le cout de reconstitution, pas sur une masse critique.
+    8. Monoculture d'agents : ne s'applique pas, ce n'est ni un redacteur de rapport reglementaire, ni un standard
+       impose, ni un score vendu a un assureur qui n'a rien demande.
+    9. Gain de productivite vendu a qui facture l'heure : a surveiller si le produit est vendu en premier a l'AIP
+       comme un pur gain de temps d'agent ; le prix vise (point 7) le positionne d'abord comme un achat de la ferme
+       pour sa propre couverture, et pour l'AIP comme une capacite nouvelle (moins de litiges, meilleure retention)
+       plutot qu'une simple economie d'heures.
+    10. Barreau 1 public ou grand compte : ne s'applique pas, la RMA fixe le cadre reglementaire mais l'acheteur qui
+        paie reste l'AIP prive, le courtier prive ou la ferme elle meme, jamais un organisme public directement.
