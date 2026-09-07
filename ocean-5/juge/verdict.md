@@ -37,58 +37,45 @@ une affirmation, pas une preuve.
 
 ## 2. Échelle 33, Preuve Vivante (comptage de survie d'huîtres et de rivages vivants sur photo)
 
-**Ce que le creusement a manqué, en un mot : Ecobot.** Il a cherché « qui vend le comptage automatisé d'huîtres »,
-et personne ne le vend, c'est exact. Il n'a jamais cherché la catégorie réelle du produit : le logiciel de suivi de
-conformité de compensation écologique. Elle a un occupant financé. Ecobot (Asheville, Caroline du Nord, fondée en
-2018, 4,48 millions de dollars américains levés, 150 000 rapports réglementaires produits par ses clients au
-31 juillet 2024) vend la délimitation de zones humides et le permis au titre de l'article 404 du Clean Water Act aux
-grands cabinets AEC (architecture, ingénierie, construction), aux ministères des transports d'États et nommément à
-« the mitigation banking industry » (vérifié, ecobot.com, pitchbook.com, 7 septembre 2026). Pire : **Ecobot for
-Monitoring** est en bêta privée en 2026, gratuit jusqu'au lancement commercial, et sa page annonce mot pour mot les
-barreaux 1 à 4 de Preuve Vivante : photos à point fixe « aligned across decades », calculs automatiques contre les
-critères de succès du permis, suivi en temps réel des métriques « toward credit release » (donc de la libération de
-la caution), rapports au gabarit du régulateur, traçabilité des mesures correctives. Cibles nommées : consultants en
-contrat pluriannuel, **sponsors de banques de compensation à horizon de cinq à dix ans**, permittants internes,
-programmes de compensation par redevance (In Lieu Fee). Ce sont exactement les acheteurs du barreau 1 corrigé.
+**Ce que le creusement a manqué, en un mot : Ecobot.** Il a cherché « qui vend le comptage automatisé d'huîtres », et
+personne ne le vend. Il n'a jamais cherché la catégorie réelle du produit, le logiciel de suivi de conformité de
+compensation écologique, qui a un occupant financé : Ecobot (fondée en 2018, 4,48 millions de dollars américains
+levés, 150 000 rapports réglementaires produits par ses clients au 31 juillet 2024) vend le permis au titre de
+l'article 404 du Clean Water Act aux grands cabinets d'ingénierie, aux ministères des transports d'États et nommément
+à « the mitigation banking industry » (vérifié, ecobot.com, pitchbook.com). Pire : **Ecobot for Monitoring** est en
+bêta privée en 2026, gratuit jusqu'au lancement commercial, et annonce mot pour mot les barreaux 1 à 4 de Preuve
+Vivante : photos à point fixe « aligned across decades », calculs automatiques contre les critères de succès du
+permis, suivi en temps réel des métriques « toward credit release » (la libération de la caution), rapports au gabarit
+du régulateur. Cibles nommées : consultants en contrat pluriannuel, **sponsors de banques de compensation à horizon de
+cinq à dix ans**, permittants internes. Ce sont exactement les acheteurs du barreau 1 corrigé.
 
-Ecobot ne compte pas les huîtres. Ce qui reste en propre à l'échelle est donc **le compteur**, c'est-à-dire un module
-dans le flux de quelqu'un d'autre : erreur numéro 4 de `REVISION-36.md` (le module compté comme produit) et numéro 3
-(concurrent non cherché parce que la recherche était trop étroite). Le standard du barreau 4 est lui aussi déjà pris,
-et gratuit : le Oyster Habitat Restoration Monitoring and Assessment Handbook (Baggett et al., 2014, The Nature
-Conservancy) et sa feuille de métriques universelles sont republiés par la Florida Fish and Wildlife Conservation
-Commission (FWC) dans les ateliers du programme OIMMP (vérifié, conservationgateway.org, archive.myfwc.com). La
-capacité technique n'est ni rare ni récente : OysterNet (drone plus réseau de neurones convolutif sur récifs
-intertidaux), un détecteur YOLOv8 sur vidéo de robot sous-marin téléopéré dans le port de New York (exactitude
-87,7 %), un article de 2025 sur le comptage automatique d'huîtres, et des flux de travail par drone déjà employés par
-le département des ressources naturelles de Caroline du Sud (vérifié, isr.umd.edu, doi 10.3390/jimaging11120439,
-nerra.org). Le « impossible en 2024 » du dossier est faux. Ecological Consulting Services (Pensacola) n'a bien aucun
-outil, seulement le suivi d'huîtres et le drone sous licence de la Federal Aviation Administration (vérifié,
-ecologicalconsultingservices.com) : mais c'est un cabinet qui facture l'heure, interdit du brief, et « il revend une
-capacité nouvelle » est une phrase, pas une preuve d'achat.
+Ecobot ne compte pas les huîtres : ce qui reste en propre est **le compteur**, un module dans le flux de quelqu'un
+d'autre (erreurs 4 et 3 de `REVISION-36.md`). Le standard du barreau 4 est pris et gratuit : le Oyster Habitat
+Restoration Monitoring and Assessment Handbook (Baggett et al., 2014, The Nature Conservancy) et sa feuille de
+métriques universelles, republiés par la Florida Fish and Wildlife Conservation Commission (vérifié,
+conservationgateway.org, archive.myfwc.com). La capacité technique n'est ni rare ni récente : OysterNet sur drone, un
+détecteur YOLOv8 sur vidéo de robot sous-marin téléopéré dans le port de New York (exactitude 87,7 %), des flux par
+drone déjà employés par l'agence des ressources naturelles de Caroline du Sud (isr.umd.edu, doi
+10.3390/jimaging11120439, nerra.org) : le « impossible en 2024 » est faux. Ecological Consulting Services (Pensacola)
+n'a bien aucun outil (vérifié), mais c'est un cabinet qui facture l'heure, interdit du brief.
 
-**Taille du marché de sponsors privés.** RIBITS (Regulatory In lieu fee and Bank Information Tracking System,
-registre fédéral de l'United States Army Corps of Engineers, USACE) n'expose aucun total public par habitat (plus de
-1 800 sites de banques en 2013, en écrasante majorité d'eau douce). Deux mesures convergent : deux banques côtières
-ou estuariennes dans tout l'annuaire de la Florida Association of Mitigation Bankers, aucune purement huître ou
-rivage vivant ; et la compensation par crédits d'herbiers reste à l'état de projets de loi depuis 2022. La population
-est de quelques sponsors, plus des permittants ponctuels sous permis national NWP 54. **Ce n'est pas une population,
-c'est une file d'attente de dossiers.**
+**Marché de sponsors privés.** RIBITS (Regulatory In lieu fee and Bank Information Tracking System, registre fédéral
+de l'United States Army Corps of Engineers) n'expose aucun total par habitat (plus de 1 800 sites de banques en 2013,
+presque tous d'eau douce). Deux mesures convergent : deux banques côtières ou estuariennes dans tout l'annuaire de la
+Florida Association of Mitigation Bankers, aucune purement huître ou rivage vivant ; la compensation par crédits
+d'herbiers reste à l'état de projets de loi depuis 2022. Restent quelques sponsors et des permittants ponctuels sous
+permis national NWP 54. **Ce n'est pas une population, c'est une file d'attente de dossiers.** **Pré-mortem refait à
+ma main** : la société n'est pas morte, elle n'est jamais née comme société, quatre à huit dossiers par an facturés à
+des cabinets côtiers, exactement ReefInjury (idée 28, passe 3, classée « prestation »). **Test fondateur** : le mur
+est au barreau 3, structurel, car la règle héritée d'OffsetLedger (idée 34, passe 3) était « un rapport livré, jamais
+la base » : ou le fondateur livre et n'accumule rien, ou il exige la base et perd des clients dont ces données sont
+des pièces juridiques. **Resucée** : ScarMap (25), ReefInjury (28), OffsetLedger (34) transposé de la zone humide à
+l'huître, sur un marché dix fois plus étroit.
 
-**Pré-mortem 2031 refait à ma main.** La société n'est pas morte, elle n'est jamais née comme société : quatre à huit
-dossiers par an facturés à des cabinets côtiers, exactement ReefInjury (idée 28, passe 3, classée « prestation » pour
-ce motif), pendant qu'Ecobot sortait de bêta. Signal dès 2027 : Ecobot annonce son module « aquatic resources », déjà
-en cours sur sa page. **Test fondateur.** Le premier mur est au barreau 3 et il est structurel : l'actif est une base
-longitudinale, mais la règle héritée d'OffsetLedger (idée 34, passe 3) était « un rapport livré, jamais la base ».
-Ou le fondateur livre et n'accumule rien, ou il exige la base et perd des clients dont ces données sont des pièces
-juridiques. **Resucée** : ScarMap (25), ReefInjury (28), OffsetLedger (34) ; c'est OffsetLedger transposé de la zone
-humide à l'huître, sur un marché dix fois plus étroit.
-
-**Actif : 2 sur 5. Verdict : non comme société à dix ans.** Reste vendable : un compteur sur photoquadrat, en module
-ou en prestation. Trois conditions avant d'y mettre dix ans : (a) obtenir d'Ecobot par écrit qu'elle n'ajoutera pas
-de comptage d'image, ou lui vendre le module au lieu de la concurrencer ; (b) compter dans RIBITS les banques
-approuvées à crédits estuariens ou d'huîtres, et renoncer sous vingt-cinq ; (c) faire écrire par un sponsor que la
-base de survie appartient au fournisseur, pas au permittant.
-
+**Actif : 2 sur 5. Verdict : non comme société, oui comme module ou prestation.** Trois conditions avant d'y mettre
+dix ans : (a) obtenir d'Ecobot par écrit qu'elle n'ajoutera pas de comptage d'image, ou lui vendre le module ; (b)
+compter dans RIBITS les banques à crédits estuariens ou d'huîtres, et renoncer sous vingt-cinq ; (c) faire écrire par
+un sponsor que la base de survie appartient au fournisseur, pas au permittant.
 ---
 
 ## 3. Échelle 24, Atelier d'Annotation Partagé (analyse par IA des vidéos de petites sociétés de robots sous-marins)
@@ -238,32 +225,13 @@ pour ce motif exact. Une mort ne doit pas servir à réintroduire un interdit pa
 
 ## 8. Dix leçons de méthode pour l'orchestrateur
 
-1. La première recherche d'un creusement ne doit pas être « qui vend ce produit », mais « quel logiciel achète déjà
-   mon acheteur pour ce travail ». Preuve Vivante a cherché le comptage d'huîtres et a manqué Ecobot, qui vend la
-   conformité de suivi aux sponsors de banques et aux consultants depuis 2018.
-2. Un gratuit peut être un manuel, pas seulement un logiciel. Le handbook d'huîtres de The Nature Conservancy occupe
-   la case « standard » du barreau 4 depuis 2014 ; aucun agent n'a cherché s'il existait un standard avant de
-   promettre d'en créer un.
-3. « Partir des tendances » a produit 16 resucées sur 33 morts à la ligne, plus deux parmi les six creusées
-   (Lignée Corail = ColonyTrack, GroundTruth = DiveAtlas). Les tendances sont publiques, donc les idées qu'elles
-   suggèrent sont les mêmes à chaque passe. La mémoire des morts doit être distribuée aux agents sous forme de
-   règles anonymisées, sinon chaque passe repaie le même agent pour retuer la même idée.
-4. Une réponse conditionnelle à la question 8 (« oui si la masse critique est atteinte ») doit compter comme non
-   tant que la condition n'est pas chiffrée. Sur six dossiers, six réponses conditionnelles, zéro comptage de la
-   population d'acheteurs sous obligation.
-5. Compter la population d'acheteurs est un travail de dix minutes qui économise un agent entier. Deux banques
-   côtières dans l'annuaire professionnel de Floride suffisaient à classer Preuve Vivante en prestation avant le
-   creusement.
-6. Un pré-mortem daté 2031 dont la cause numéro 1 est déjà observable en 2026 n'est pas un pré-mortem, c'est un
-   constat de décès. Exiger des agents qu'ils cherchent leur cause de mort dans le présent, pas dans le futur
-   (Atelier, EchoBaseline, Lignée Corail : les trois causes numéro 1 sont déjà réalisées).
-7. L'étiquette « supposée » a de nouveau été lissée : « impossible en 2024 » est écrit dans cinq dossiers sur six
-   alors que les capacités citées sont publiées entre 2019 et 2023 et déjà employées par des agences d'État.
-   Interdire cette phrase sans une date de publication et une date d'usage opérationnel.
-8. Un barreau 1 de remplacement doit repasser les interdits du brief. GroundTruth a proposé un remplacement fondé
-   sur « le fondateur plonge », interdit explicite, et personne n'a relu.
-9. Le format « quatre échelles par tendance » force les agents à en écrire quatre. Trois des quatre familles jugées
-   ici tenaient en une seule idée par tendance. Demander une ou deux échelles, sourcées deux fois plus.
-10. Quatre passes ont produit une candidate à 3 sur 5 (TaxoAssist) et zéro société. Le problème n'est plus le filtre,
-    il est le point de départ : tant que le point de départ est une force publique, l'idée qui en sort est publique
-    aussi. La cinquième passe devrait partir d'un acheteur nommé qui a déjà payé le fondateur, ou s'arrêter.
+1. Première recherche d'un creusement : non pas « qui vend ce produit », mais « quel logiciel mon acheteur paie déjà pour ce travail » (Ecobot manqué).
+2. Un gratuit peut être un manuel : le handbook d'huîtres de The Nature Conservancy occupe la case « standard » depuis 2014, personne n'a cherché.
+3. Partir des tendances a produit 16 resucées sur 33 morts à la ligne, plus 2 sur 6 creusées : les tendances publiques donnent des idées publiques.
+4. Une réponse conditionnelle à la question 8 (« oui si masse critique ») compte comme non tant que la condition n'est pas chiffrée : six sur six.
+5. Compter la population d'acheteurs prend dix minutes et économise un agent : deux banques côtières en Floride suffisaient à classer 33 en prestation.
+6. Un pré-mortem daté 2031 dont la cause numéro 1 est déjà observable en 2026 est un constat de décès : trois dossiers sur six sont dans ce cas.
+7. « Impossible en 2024 » figure dans cinq dossiers sur six alors que les capacités citées sont publiées de 2019 à 2023 : interdire la phrase sans dates.
+8. Un barreau 1 de remplacement doit repasser les interdits : GroundTruth a proposé « le fondateur plonge et valide », interdit textuel, non relu.
+9. Le gabarit « quatre échelles par tendance » force à en écrire quatre : demander une ou deux échelles, sourcées deux fois plus.
+10. Quatre passes, une candidate à 3 sur 5, zéro société : le problème n'est plus le filtre, c'est le point de départ ; partir d'un acheteur qui a déjà payé.
