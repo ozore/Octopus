@@ -28,26 +28,24 @@ github.com/wincowgerDEV). Clarity lui-même importe des spectres externes en .sp
 OPUS, Perkin-Elmer, JCAMP-DX, Grams (vérifiée : agilent.com, knowledge1.thermofisher.com). **Verdict : angle mort**
 — déjà résolu, gratuitement, par deux outils académiques établis, formats d'échange déjà existants.
 
-**B.** Confirme : ISO 24187:2023 fixe les principes d'analyse (microscopie + spectroscopie vibrationnelle,
-classes de taille) mais ne fournit aucun logiciel de rapport (vérifiée : iso.org/standard/78033.html,
+**B.** Confirme : ISO 24187:2023 fixe les principes d'analyse (microscopie + spectroscopie vibrationnelle, classes
+de taille) mais ne fournit aucun logiciel de rapport (vérifiée : iso.org/standard/78033.html,
 plastiverse.org/tools/iso-24187) ; aucune fonction de certificat ISO/IEC 17025 avec piste d'audit repérée dans
-Clarity, siMPle ou Open Specy, tous des outils de classification, pas de conformité d'accréditation (absence
-constatée sur les pages consultées ; absence totale = supposée). Contredit, partiellement : la plupart des labos
-accrédités ont déjà un LIMS (Laboratory Information Management System) générique qui gère certificats et
-traçabilité pour toutes leurs analyses (supposée, non vérifiée cette session) — risque que la couche existe déjà,
-générique, chez le client. **Verdict : retenu sous condition** (question au client, section 7) : la valeur n'est
-pas de remplacer le LIMS mais d'automatiser le lien classification-particule vers preuve défendable, propre aux
-microplastiques, que le LIMS générique ne fait pas nativement.
+Clarity, siMPle ou Open Specy (absence constatée sur les pages consultées, non exhaustive = supposée). Contredit,
+partiellement : la plupart des labos accrédités ont déjà un LIMS (Laboratory Information Management System)
+générique qui gère certificats et traçabilité pour toutes leurs analyses (supposée) — risque que la couche existe
+déjà, générique, chez le client. **Verdict : retenu sous condition** (question au client, section 7) : la valeur
+n'est pas de remplacer le LIMS mais d'automatiser le lien classification-particule vers preuve défendable, propre
+aux microplastiques.
 
-**C.** Confirme, fragmentation réelle et vérifiée séparément : la Californie a sa propre méthode (SB 1422, définie
-et adoptée par le State Water Resources Control Board, programme de test de 4 ans, phase 1 démarrée automne 2023,
-vérifiée : waterboards.ca.gov, kslaw.com) ; l'UE a sa méthodologie harmonisée propre (décision déléguée de la
-Commission du 11 mars 2024, développée par le JRC — Joint Research Centre —, suivi Article 13 de la directive eau
-potable dès 2026, vérifiée : joint-research-centre.ec.europa.eu, agencyiq.com) ; l'ISO propose une troisième base
-(ISO 24187). Contredit : c'est le type de tâche qu'un LLM générique avec gabarit peut couvrir sans produit dédié,
-cas que le filtre du fondateur écarte (Q3, TRI-35.md). **Verdict : non retenu comme produit autonome**, absorbé
-dans B : la difficulté n'est pas de reformater du texte mais de maintenir, particule par particule, le lien
-preuve-vers-méthode en même temps que la piste d'audit.
+**C.** Confirme, fragmentation réelle et vérifiée séparément : la Californie a sa propre méthode (SB 1422, adoptée
+par le State Water Resources Control Board, programme de test de 4 ans, phase 1 dès automne 2023, vérifiée :
+waterboards.ca.gov, kslaw.com) ; l'UE a sa méthodologie propre (décision déléguée de la Commission du 11 mars 2024,
+JRC — Joint Research Centre —, suivi Article 13 dès 2026, vérifiée : joint-research-centre.ec.europa.eu,
+agencyiq.com) ; l'ISO propose une troisième base (ISO 24187). Contredit : tâche qu'un LLM générique avec gabarit
+peut couvrir sans produit dédié, cas que le filtre du fondateur écarte (Q3, TRI-35.md). **Verdict : non retenu
+comme produit autonome**, absorbé dans B : la difficulté est de maintenir, particule par particule, le lien
+preuve-vers-méthode avec la piste d'audit, pas de reformater du texte.
 
 ## 3. Angle retenu
 
