@@ -91,3 +91,21 @@ paie ; le type d'actif (donnée, réseau, standard, flux) est ouvert.
 4. Juge (opus) : pré-mortem 2031 refait avec ses propres recherches, test « fondateur à dix ans », verdict société,
    revenu ou non.
 5. Rapport HTML même design, publié, puis mémoire.
+
+## Règles ajoutées après la passe 5 (7 septembre 2026)
+- Résultat : dix tendances, quarante échelles, six creusées, zéro société ; aucun actif au-dessus de 2 sur 5.
+  Voir `ocean-5/juge/verdict.md` et `ocean-5/claude.md`.
+- Les trois points de départ publics sont épuisés (règlements, acheteurs par obligation, tendances) : ils régénèrent
+  les mêmes idées (18 resucées en passe 5 sans accès aux passes précédentes). Passe 6 : partir d'acheteurs nommés
+  qui paient déjà un logiciel, avec le prix lu.
+- Première recherche d'un creusement : « quel logiciel mon acheteur paie déjà pour ce travail », pas « qui vend le
+  produit que j'imagine » (Ecobot, QYSEA manqués).
+- Un gratuit peut être un manuel ou un protocole (manuel d'huîtres TNC 2014) : chercher « protocole », « handbook »
+  avant d'écrire « standard ».
+- Une réponse conditionnelle à la question 8 compte comme non tant que la condition n'est pas chiffrée.
+- Compter la population d'acheteurs au tri (dix minutes) : sous vingt-cinq, prestation, pas de creusement.
+- Un pré-mortem dont la cause numéro 1 est déjà observable aujourd'hui est un constat de décès : la vérifier au tri.
+- « Impossible en 2024 » interdit sans la date de la publication qui rend la chose possible.
+- Tout barreau 1 de remplacement repasse les interdits du brief avant d'être écrit.
+- Une ou deux échelles par tendance, sourcées deux fois plus, jamais quatre.
+- Réserves fermées : corpus froid (ex-DiveAtlas), ColonyTrack, OffsetTrace. Ne pas rouvrir.

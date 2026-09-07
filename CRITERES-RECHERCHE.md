@@ -48,8 +48,19 @@ Ce que trois passes, 36 idées et cinq retours du fondateur ont établi. À copi
 5. Rapport : cinq fiches maximum, chacune ouverte par la phrase client, la liste des « supposé » à part, le concurrent gratuit nommé, le test.
 6. Tout nouveau critère est réappliqué aux idées précédentes et dit dans le rapport.
 
+## D bis. Où chercher à partir de la passe 6 (après cinq passes, zéro société)
+- Ne plus partir d'un texte, d'une obligation ni d'une tendance : ces trois points de départ publics régénèrent les
+  mêmes idées (18 resucées en passe 5). Partir d'acheteurs océan nommés qui paient déjà un logiciel, avec le prix lu :
+  Ecobot, Mysticetus, Aquabyte, OceanScore, ZeroNorth, Archipelago, NatureMetrics, Green Marine, LIMS, et dix autres à
+  trouver dans les offres d'emploi (« maîtrise de ») et les rapports annuels.
+- Pour chaque logiciel payé : qui paie, combien, ce qu'il ne fait pas, ce que l'IA de 2026 permet dans ce trou, qui
+  détient la donnée qui s'accumule. Première recherche de tout creusement : le logiciel payé aujourd'hui.
+- Compter la population d'acheteurs avant de creuser ; vérifier aujourd'hui la cause numéro 1 du pré-mortem.
+
 ## F. État des pistes
 - BenthicOS (annotation IA de vidéo benthique pour bureaux d'études, gabarits aquaculture et compensation) : passe les questions 1 à 6, faible sur la 7 (deux ans d'avance, dix clients locaux). Revenu de départ, pas société. Test : deux semaines, 200 $, vidéo ouverte d'Ocean Networks Canada, puis un bureau d'études.
-- Corpus d'images froides annotées : actif, à construire avec les clubs.
+- Corpus d'images froides annotées : réserve fermée en passe 5 (FathomNet, BenthicNet gratuits et mondiaux).
 - VesselRisk, ReefInjury : réserve.
-- 33 idées écartées : voir REVISION-36.md.
+- Passe 5 : Atelier d'Annotation (revenu de départ plafonné, trois conditions du juge), Preuve Vivante (module à
+  proposer à Ecobot ou prestation). Voir `ocean-5/juge/verdict.md`.
+- 33 idées écartées : voir REVISION-36.md ; 34 échelles écartées : voir `ocean-5/TRI-40.md`.

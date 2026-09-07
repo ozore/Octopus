@@ -1,0 +1,722 @@
+<title>Atlas Océan V</title>
+<meta name="description" content="Cinquième passe : dix tendances irréversibles de l'océan, quarante échelles d'entreprise à dix ans, six creusées, jugées sur l'actif qui compose, pour un fondateur solo à Vancouver.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#F4F7F9; --surface:#FFFFFF; --surface-2:#EAF0F3;
+  --ink:#0E2233; --ink-2:#44576A; --ink-3:#6E8290;
+  --kelp:#0F7C6E; --kelp-ink:#0B5F55; --kelp-soft:#DDF0EC;
+  --buoy:#C2401B; --buoy-soft:#FBE6DE;
+  --line:#D5DEE4; --line-2:#E6ECF0;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+  --shadow:0 1px 2px rgba(14,34,51,.06),0 8px 24px rgba(14,34,51,.06);
+  --display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0C1A24; --surface:#122431; --surface-2:#182E3D;
+    --ink:#E6EEF2; --ink-2:#A9BAC5; --ink-3:#8296A3;
+    --kelp:#2FB39F; --kelp-ink:#5FD0BF; --kelp-soft:#163A38;
+    --buoy:#FF8A66; --buoy-soft:#3D2118;
+    --line:#26394B; --line-2:#1E3140;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0C1A24; --surface:#122431; --surface-2:#182E3D;
+  --ink:#E6EEF2; --ink-2:#A9BAC5; --ink-3:#8296A3;
+  --kelp:#2FB39F; --kelp-ink:#5FD0BF; --kelp-soft:#163A38;
+  --buoy:#FF8A66; --buoy-soft:#3D2118;
+  --line:#26394B; --line-2:#1E3140;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--kelp-ink);text-decoration-thickness:1px;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--kelp);outline-offset:2px}
+h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:clamp(40px,6vw,72px);font-weight:800;line-height:1;letter-spacing:-.02em}
+h2{font-size:clamp(26px,3.2vw,36px);font-weight:700;letter-spacing:-.015em;line-height:1.15}
+h3{font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1.15}
+h4{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+p{margin:0}
+.mono{font-family:var(--mono);font-size:.86em}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--kelp-ink);font-weight:500}
+.date{font-family:var(--mono);font-weight:600;color:var(--buoy);white-space:nowrap}
+.ref{font-family:var(--mono);font-size:.82em;color:var(--ink-2);background:var(--surface-2);padding:1px 6px;border-radius:3px;white-space:nowrap}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* Hero */
+.hero{border-bottom:1px solid var(--line);background:var(--surface)}
+.hero-inner{max-width:1180px;margin:0 auto;padding:56px 32px 40px;display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:48px;align-items:end}
+.hero p.lead{font-size:20px;color:var(--ink-2);max-width:62ch;margin-top:20px}
+.hero-meta{display:grid;gap:10px;font-family:var(--mono);font-size:13px;color:var(--ink-2)}
+.hero-meta div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line-2);padding-bottom:8px}
+.hero-meta b{color:var(--ink);font-weight:600}
+.kpis{max-width:1180px;margin:0 auto;padding:0 32px 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{border-top:2px solid var(--kelp);padding-top:10px}
+.kpi .v{font-family:var(--display);font-size:34px;font-weight:800;line-height:1;letter-spacing:-.02em}
+.kpi .l{font-size:14px;color:var(--ink-2);margin-top:6px}
+
+/* Page grid */
+.page{max-width:1180px;margin:0 auto;padding:40px 32px 96px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:56px;align-items:start}
+nav.rail{position:sticky;top:24px;font-family:var(--display);font-size:14px}
+nav.rail .group{margin-bottom:22px}
+nav.rail .group-t{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+nav.rail a{display:flex;gap:10px;align-items:baseline;color:var(--ink-2);text-decoration:none;padding:5px 0;border-left:2px solid transparent;padding-left:10px;margin-left:-12px}
+nav.rail a:hover{color:var(--ink)}
+nav.rail a.on{color:var(--ink);border-left-color:var(--kelp)}
+nav.rail a .n{font-family:var(--mono);font-size:11px;color:var(--ink-3);min-width:18px}
+main{min-width:0}
+section.block{margin-bottom:72px}
+section.block > .eyebrow{margin-bottom:10px;display:block}
+section.block > h2{margin-bottom:22px}
+.prose{max-width:66ch}
+.prose p + p{margin-top:14px}
+.prose ul{padding-left:20px;margin:12px 0}
+.prose li{margin:6px 0}
+
+/* Synthèse */
+.reco{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:26px 0 8px}
+.reco a{display:block;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 18px 16px;box-shadow:var(--shadow)}
+.reco a:hover{border-color:var(--kelp)}
+.reco .k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--buoy);font-weight:600}
+.reco .t{font-family:var(--display);font-size:20px;font-weight:700;margin:6px 0 6px;letter-spacing:-.01em}
+.reco .d{font-size:14.5px;color:var(--ink-2)}
+.thesis{background:var(--kelp-soft);border-radius:10px;padding:22px 24px;margin:26px 0;max-width:72ch}
+.thesis p{font-family:var(--display);font-size:19px;font-weight:500;line-height:1.4;color:var(--kelp-ink)}
+:root[data-theme="dark"] .thesis p{color:var(--ink)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .thesis p{color:var(--ink)}}
+
+/* Timeline */
+.tl{position:relative;padding-left:26px;border-left:2px solid var(--line);margin-top:8px}
+.tl-y{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.01em;margin:26px 0 10px;position:relative}
+.tl-y:first-child{margin-top:0}
+.tl-y::before{content:"";position:absolute;left:-33px;top:9px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--ink-3)}
+.tl-e{display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;padding:7px 0;border-bottom:1px solid var(--line-2);font-size:15px;align-items:baseline}
+.tl-e .date{font-size:13px}
+.tl-e .t b{font-family:var(--display);font-weight:700}
+.tl-e .idx{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-left:6px;white-space:nowrap}
+.tl-e.past .date{color:var(--ink-3)}
+.tl-now{position:relative;margin:10px 0;padding:6px 10px;background:var(--buoy-soft);color:var(--buoy);font-family:var(--mono);font-size:12px;font-weight:600;border-radius:4px;display:inline-block}
+.tl-now::before{content:"";position:absolute;left:-33px;top:10px;width:12px;height:12px;border-radius:50%;background:var(--buoy)}
+
+/* Chart */
+.chart-wrap{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 20px 12px;box-shadow:var(--shadow);position:relative}
+.chart-wrap svg{width:100%;height:auto;display:block;font-family:var(--mono)}
+.legend{display:flex;flex-wrap:wrap;gap:18px;font-family:var(--mono);font-size:12px;color:var(--ink-2);margin:10px 4px 0}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;vertical-align:-1px;background:var(--c)}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-family:var(--mono);font-size:12px;padding:8px 10px;border-radius:6px;max-width:260px;line-height:1.4;opacity:0;transition:opacity .12s}
+.tip b{display:block;font-family:var(--display);font-size:14px;margin-bottom:3px}
+.chart-note{font-size:14px;color:var(--ink-2);margin-top:14px;max-width:70ch}
+
+/* Fiche */
+.fiche{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-bottom:34px;overflow:hidden}
+.fiche-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:20px;align-items:start;padding:26px 28px 18px;border-bottom:1px solid var(--line-2)}
+.fiche-head .big{font-family:var(--display);font-size:52px;font-weight:800;line-height:.9;letter-spacing:-.04em;color:var(--kelp);font-variant-numeric:tabular-nums}
+.fam{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:3px;margin-bottom:8px;color:#fff}
+.fam-mer{background:var(--s1)} .fam-peche{background:var(--s2)} .fam-amont{background:var(--s3)}
+.tagline{font-size:17px;color:var(--ink-2);margin-top:6px;font-style:italic}
+.score-badge{text-align:right;font-family:var(--display);font-weight:800;font-size:30px;line-height:1;letter-spacing:-.02em}
+.score-badge span{font-size:13px;color:var(--ink-3);font-weight:500;letter-spacing:0}
+.score-badge small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-top:6px;font-weight:500}
+.trigger{padding:16px 28px;background:var(--surface-2);font-size:15.5px;line-height:1.5;display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.trigger .lab{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--buoy);font-weight:600;white-space:nowrap}
+.fiche-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px 32px;padding:22px 28px 8px}
+.fiche-grid section.wide{grid-column:1/-1}
+.fiche-grid h4{margin-bottom:6px}
+.fiche-grid p,.fiche-grid li{font-size:15.5px}
+.fiche-grid ul{margin:4px 0 0;padding-left:18px}
+.fiche-grid li{margin:3px 0}
+.fiche-grid .kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:15px}
+.fiche-grid .kv dt{font-family:var(--mono);font-size:12px;color:var(--ink-3);padding-top:3px}
+.fiche-grid .kv dd{margin:0}
+.effort{display:inline-block;font-family:var(--mono);font-size:12px;padding:2px 8px;border-radius:3px;background:var(--surface-2);color:var(--ink-2);margin-bottom:6px}
+.scores{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;padding:18px 28px 22px;border-top:1px solid var(--line-2)}
+.sc{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em}
+.sc .bar{height:6px;background:var(--line-2);border-radius:3px;margin:6px 0 5px;overflow:hidden}
+.sc .bar i{display:block;height:100%;background:var(--kelp);width:calc(var(--v) * 20%)}
+.sc b{color:var(--ink);font-weight:600}
+.verdicts{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line-2)}
+.verdicts > div{padding:16px 20px;font-size:14px;border-right:1px solid var(--line-2)}
+.verdicts > div:last-child{border-right:0}
+.verdicts .who{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.verdicts .who b{color:var(--ink);font-weight:600;letter-spacing:0;font-family:var(--display);font-size:13px;text-transform:none;margin-left:6px}
+.verdicts p{color:var(--ink-2)}
+.pill{display:inline-block;font-family:var(--mono);font-size:11px;padding:1px 7px;border-radius:3px;font-weight:600;margin-right:6px}
+.pill-go{background:var(--kelp-soft);color:var(--kelp-ink)} .pill-if{background:#FFF3D6;color:#7A4E00} .pill-no{background:var(--buoy-soft);color:var(--buoy)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pill-if{background:#3A2E12;color:#F2C46B}}
+:root[data-theme="dark"] .pill-if{background:#3A2E12;color:#F2C46B}
+.fam-h{display:flex;align-items:center;gap:12px;margin:40px 0 18px}
+.fam-h .sw{width:14px;height:14px;border-radius:3px}
+.fam-h h3{font-size:20px}
+.fam-h p{color:var(--ink-2);font-size:15px}
+
+/* Table */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;min-width:900px;font-size:14px}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);font-weight:600;white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--line-2);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+td .nm{font-family:var(--display);font-weight:700}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:0}
+
+/* Misc blocks */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.card h3{font-size:18px;margin-bottom:6px}
+.card p{font-size:15px;color:var(--ink-2)}
+.q{border-left:3px solid var(--kelp);padding:4px 0 4px 18px;margin:18px 0}
+.q .qq{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.01em}
+.q .qw{font-size:15px;color:var(--ink-2);margin-top:6px}
+.q .qw b{color:var(--ink);font-weight:600}
+.src{columns:2;column-gap:32px;font-size:14px}
+.src li{break-inside:avoid;margin:0 0 8px;color:var(--ink-2)}
+.src li b{color:var(--ink);font-weight:600;font-family:var(--display)}
+.agents{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.agents div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:14px}
+.agents .a{font-family:var(--mono);font-size:12px;color:var(--kelp-ink);font-weight:600}
+.agents p{color:var(--ink-2);margin-top:4px}
+footer{border-top:1px solid var(--line);padding:28px 32px;font-family:var(--mono);font-size:12px;color:var(--ink-3);text-align:center}
+
+@media (max-width:980px){
+  .hero-inner{grid-template-columns:1fr;gap:28px}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .page{grid-template-columns:1fr;gap:24px;padding:24px 20px 72px}
+  nav.rail{position:static;display:flex;gap:18px;overflow-x:auto;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  nav.rail .group{margin:0;flex:0 0 auto}
+  nav.rail a{border-left:0;padding-left:0;margin-left:0;white-space:nowrap}
+  .reco,.verdicts,.agents{grid-template-columns:1fr}
+  .verdicts > div{border-right:0;border-bottom:1px solid var(--line-2)}
+  .fiche-grid,.grid2{grid-template-columns:1fr}
+  .scores{grid-template-columns:repeat(4,1fr)}
+  .src{columns:1}
+  .fiche-head{grid-template-columns:auto minmax(0,1fr)}
+  .score-badge{grid-column:1/-1;text-align:left}
+}
+
+.chain{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+.chain>div{background:var(--surface-2,var(--surface));border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:13.5px;line-height:1.5}
+.chain .st{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:6px}
+@media(max-width:900px){.chain{grid-template-columns:1fr 1fr}}
+.tbl td.st{white-space:nowrap}
+.ok{color:var(--kelp);font-weight:600}.ko{color:var(--buoy);font-weight:600}.mi{color:var(--ink-3);font-weight:600}
+
+/* Passe 5 : échelles et barreaux */
+.ladder{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px}
+.rung{background:var(--surface-2);border:1px solid var(--line-2);border-radius:8px;padding:10px 12px;font-size:13.5px;line-height:1.45;position:relative}
+.rung .yr{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--kelp-ink);font-weight:600;display:block;margin-bottom:4px}
+.rung .as{display:block;margin-top:6px;font-size:12.5px;color:var(--ink-3)}
+.rung .as b{color:var(--ink-2);font-weight:600}
+.rung.dead{border-style:dashed;opacity:.75}
+@media(max-width:980px){.ladder{grid-template-columns:1fr 1fr}}
+.scores8{grid-template-columns:repeat(8,1fr)}
+.scores8 .sc:first-child{border-right:1px solid var(--line);padding-right:10px}
+.scores8 .sc:first-child b{color:var(--buoy)}
+@media(max-width:980px){.scores8{grid-template-columns:repeat(4,1fr)}}
+.fam-a{background:var(--s3)} .fam-b{background:var(--s2)} .fam-c{background:var(--s1)}
+.trend{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px}
+.trend .tn{font-family:var(--display);font-size:30px;font-weight:800;color:var(--ink-3);line-height:1;letter-spacing:-.03em}
+.trend h3{font-size:18px;margin-bottom:6px}
+.trend p{font-size:14.5px;color:var(--ink-2)}
+.trend p+p{margin-top:6px}
+.trend .st{display:inline-block;font-family:var(--mono);font-size:11px;padding:1px 7px;border-radius:3px;margin-bottom:6px;font-weight:600}
+.st-irr{background:var(--kelp-soft);color:var(--kelp-ink)} .st-part{background:#FFF3D6;color:#7A4E00}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .st-part{background:#3A2E12;color:#F2C46B}}
+:root[data-theme="dark"] .st-part{background:#3A2E12;color:#F2C46B}
+.trend .tally{font-family:var(--mono);font-size:12px;color:var(--ink-3);margin-top:8px}
+.pm{background:var(--buoy-soft);border-radius:8px;padding:12px 14px;font-size:14.5px}
+.pm .lab{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--buoy);font-weight:600;display:block;margin-bottom:4px}
+</style>
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow">Étude d'opportunités · cinquième passe · septembre 2026</span>
+      <h1 style="margin-top:14px">Atlas Océan V</h1>
+      <p class="lead">Cette passe ne cherche plus un revenu en six mois mais une société qui existe encore en 2036. Dix agents ont pris chacun une force irréversible de l'océan, prouvé qu'elle l'est, cherché qui vend déjà, puis proposé des échelles d'entreprise : un premier barreau vendable en mars 2027 à un client nommé, un cinquième barreau en 2036 plus difficile à attaquer qu'au premier. Quarante échelles, six creusées, un juge qui a refait chaque pré-mortem. Même fondateur : seul, technique, plongeur, à Vancouver, financé par son revenu d'abord, écologique sans être militant.</p>
+    </div>
+    <div class="hero-meta">
+      <div><span>Commanditaire</span><b>Fondateur, projet Octopus</b></div>
+      <div><span>Question première</span><b>Quel actif compose en dix ans ?</b></div>
+      <div><span>Méthode</span><b>Tendances, échelles, creusement, juge</b></div>
+      <div><span>Statut</span><b>Idéation, pas d'implémentation</b></div>
+    </div>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><div class="v">10</div><div class="l">forces irréversibles étudiées, chacune avec cinq à huit faits datés, sans accès aux quarante-trois idées mortes des passes précédentes</div></div>
+    <div class="kpi"><div class="v">40</div><div class="l">échelles proposées, barreau 1 en mars 2027 et barreau 5 en 2036, chacune avec son pré-mortem « 2031, la société est morte »</div></div>
+    <div class="kpi"><div class="v">6</div><div class="l">échelles creusées, avec pour première recherche « qui vend déjà cela, et à qui », puis trois acheteurs privés nommés</div></div>
+    <div class="kpi"><div class="v">0</div><div class="l">société à dix ans après le juge : deux échelles gardées comme revenu de départ ou module, quatre mortes, la réserve « corpus froid » fermée, aucun actif noté plus de 2 sur 5</div></div>
+  </div>
+</header>
+
+<div class="page">
+<nav class="rail" aria-label="Sommaire">
+  <div class="group"><div class="group-t">Lecture</div>
+    <a href="#synthese">Synthèse</a>
+    <a href="#question">La question 8</a>
+    <a href="#tendances">Les dix tendances</a>
+    <a href="#echelles">Les 40 échelles</a>
+    <a href="#matrice">Matrice actif et filtre</a>
+  </div>
+  <div class="group"><div class="group-t">Les 6 fiches</div>
+    <a href="#idee-33"><span class="n">33</span>Preuve Vivante</a>
+    <a href="#idee-34"><span class="n">34</span>Lignée Corail</a>
+    <a href="#idee-5"><span class="n">05</span>Cheptel Vérifié</a>
+    <a href="#idee-24"><span class="n">24</span>Atelier d'Annotation</a>
+    <a href="#idee-26"><span class="n">26</span>EchoBaseline</a>
+    <a href="#idee-27"><span class="n">27</span>GroundTruth Ocean</a>
+  </div>
+  <div class="group"><div class="group-t">Décider</div>
+    <a href="#comparatif">Tableau comparatif</a>
+    <a href="#ecartees">Les 34 écartées</a>
+    <a href="#lecons">Ce que la passe enseigne</a>
+    <a href="#plan">Plan à 30 jours</a>
+    <a href="#methode">Méthode et sources</a>
+  </div>
+</nav>
+
+<main>
+
+<section class="block" id="synthese">
+  <span class="eyebrow">Synthèse</span>
+  <h2>Dix tendances, quarante échelles, zéro société : la passe prouve que les tendances publiques donnent des idées publiques, et déplace le point de départ vers l'acheteur qui paie déjà un logiciel</h2>
+  <div class="prose">
+    <p>Quatre passes avaient optimisé pour un revenu rapide et n'avaient retenu que des niches de service, dont une seule survivante faible. Vous avez changé la question : une société à dix ans, financée d'abord par son revenu, écologique sans être militante. La méthode a donc été retournée. Au lieu de partir des règlements ou des acheteurs, dix agents sont partis chacun d'une force qui ne s'inversera pas : éolien en mer, aquaculture, aires marines protégées, crédits nature, décarbonation du transport, robots, donnée ouverte, risque côtier, restauration industrielle, pêche surveillée. Chacun devait d'abord prouver l'irréversibilité, puis nommer qui vend déjà, puis proposer quatre échelles avec un actif qui compose et un pré-mortem. La question 8 a été posée avant les sept anciennes : en année cinq, la société est-elle plus difficile à attaquer qu'en année un ?</p>
+    <p>Le résultat est net, et il est utile. Trente-trois échelles sont mortes au tri, dont seize resucées d'idées tuées aux passes 3 et 4 que les agents n'avaient jamais lues. Six ont été creusées ; le juge n'en retient aucune comme société. Preuve Vivante a un occupant financé que le creusement n'a pas cherché, Ecobot, dont le module de suivi en bêta gratuite annonce mot pour mot ses quatre premiers barreaux ; ce qui reste, le compteur d'huîtres, est un module chez un autre. Atelier d'Annotation, le dossier le plus honnête, survit comme revenu de départ plafonné à 200 000 à 290 000 $ par an, parce que l'IA d'inspection est déjà livrée avec les robots. EchoBaseline s'est réfutée elle-même (le verrou est le laboratoire, qu'elle n'a pas). Cheptel Vérifié refait trois idées mortes en une, Lignée Corail est ColonyTrack trait pour trait, et GroundTruth ferme la réserve « corpus froid » : ce qui était rare en 2024 est gratuit et mondial en 2026. La question 8 n'est réellement répondue nulle part : elle est conditionnelle, nuancée ou autoréfutée, et aucun actif n'atteint 3 sur 5, là où la passe 4 en avait produit un avec quatre fois moins d'idées.</p>
+  </div>
+  <div class="thesis"><p>Aucune des quarante échelles ne devient une société à dix ans. Ce n'est pas un échec du filtre : une tendance est publique, donc les idées qu'elle suggère sont publiques, déjà occupées par un acteur financé, un outil gratuit ou un manuel de 2014. Elle nomme une obligation, jamais un budget, et confond une population contrainte avec un marché. La prochaine passe doit partir d'un acheteur nommé qui paie déjà un logiciel, et sa première recherche doit porter sur ce logiciel.</p></div>
+  <div class="reco">
+    <a href="#idee-24"><div class="k">Revenu de départ, plafonné</div><div class="t">Atelier d'Annotation Partagé</div><div class="d">Le seul dossier où sept questions sur huit passent. Pas une société : un coût de changement chez quinze petites sociétés, 200 à 290 k$ par an au mieux. À ne lancer qu'après trois chiffres de revue vidéo confirmés, un test LIACI réussi hors distribution, et un accord écrit d'usage agrégé.</div></a>
+    <a href="#idee-33"><div class="k">Module à vendre, pas société</div><div class="t">Preuve Vivante</div><div class="d">Ecobot occupe la catégorie et son module de suivi est en bêta gratuite. Ce qui reste, le compteur d'huîtres par vision, vaut une conversation avec Ecobot ou une prestation à des cabinets côtiers, sous réserve de compter d'abord les banques estuariennes dans RIBITS.</div></a>
+    <a href="#lecons"><div class="k">Changer le point de départ</div><div class="t">Passe 6 : l'acheteur et son logiciel</div><div class="d">Cinq passes, une candidate à 3 sur 5, zéro société. Le problème n'est plus le filtre. Partir de vingt acheteurs océan nommés qui paient déjà un logiciel (Ecobot, Mysticetus, Aquabyte, OceanScore, Archipelago), chiffrer ce qu'ils paient, et chercher ce que ce logiciel ne fait pas et que l'IA de 2026 permet.</div></a>
+  </div>
+</section>
+
+<section class="block" id="question">
+  <span class="eyebrow">La question 8</span>
+  <h2>Ce qui a changé : l'actif d'abord, le revenu ensuite, et un pré-mortem avant toute fiche</h2>
+  <div class="prose"><p>Les sept questions des passes précédentes disent si une idée se vend. Elles ne disent pas si elle dure. La question 8 demande quel actif s'accumule entre 2027 et 2036 que personne ne peut racheter ni reconstruire en un an : une série de mesures par site que seul celui qui l'a tenue possède, un réseau où chaque nouveau membre augmente la valeur pour les autres, un standard que d'autres ont adopté, un flux de travail encastré dans une obligation pluriannuelle du client. Sans réponse, une idée est un revenu, jamais une société. Les sept questions restent, comme garde-fous appliqués ensuite.</p></div>
+  <div class="chain">
+    <div><span class="st">1 · Tendances</span>Dix agents, une force chacun. Consigne : prouver l'irréversibilité avec des faits datés, dire honnêtement si elle est réversible, chercher qui vend déjà avant toute idée, puis quatre échelles. Interdit de lire les passes précédentes et d'utiliser la recette « un agent rédige le rapport du régulateur ».</div>
+    <div><span class="st">2 · Tri par l'actif</span>L'orchestrateur applique la question 8 puis les sept garde-fous aux quarante échelles, avec la mémoire des quarante-trois idées mortes que les agents n'avaient pas. Un outil gratuit ou un leader nommé tue à la ligne. Six échelles dont la mort n'est pas certaine passent.</div>
+    <div><span class="st">3 · Creusement</span>Un agent par échelle. Première recherche imposée : qui vend déjà cela, et à qui. Puis trois acheteurs privés nommés à la place de tout port public ou grand compte, l'actif barreau par barreau, le test adverse « 5 M$ en 2031 », le pré-mortem avec son signal avant-coureur observable dès 2027, le test à 2 000 $.</div>
+    <div><span class="st">4 · Juge</span>Un agent indépendant relit les six chaînes, refait la recherche « qui vend déjà », note la question 8 et les sept autres, la force de l'actif sur cinq, refait le pré-mortem 2031, et teste si la société convient à une personne seule à Vancouver sur dix ans. Il est le seul à lire la mémoire des idées mortes.</div>
+  </div>
+</section>
+
+<section class="block" id="tendances">
+  <span class="eyebrow">Les dix tendances</span>
+  <h2>Dix forces, ce qui les rend irréversibles, qui vend déjà, et ce que chacune a donné</h2>
+  <div class="prose" style="margin-bottom:18px"><p>Chaque carte résume le dossier d'un agent : la force en une phrase, son statut d'irréversibilité, qui paie et qui vend déjà, et le sort des quatre échelles proposées. Sept tendances sur dix n'ont produit aucune échelle qui passe le tri : non parce que la force est fausse, mais parce que tout le monde la lit, et que les acteurs financés y sont déjà.</p></div>
+  <div class="grid2">
+    <div class="trend"><div class="tn">01</div><div><span class="st st-part">Irréversible en Europe, freinée aux États-Unis</span><h3>Éolien en mer</h3><p>Un permis accordé impose 25 à 30 ans de suivi (mammifères, oiseaux, benthos, câbles) quel que soit le climat politique. Allemagne 30 GW en 2030, France 10 GW mis en appel d'offres en juin 2026, Provence Grand Large en service depuis juin 2025 ; pause fédérale américaine sur les nouveaux baux en 2025.</p><p>Qui vend déjà : RPS Group (Tetra Tech), Sercel QuietSea, Sinay, Saildrone ; ORJIP distribue gratuitement la recherche sectorielle.</p><p class="tally">4 échelles, 4 mortes au tri : trois resucées (PAM, benthos, calendrier), une sans rien à vendre avant 2030.</p></div></div>
+    <div class="trend"><div class="tn">02</div><div><span class="st st-irr">Irréversible, datée</span><h3>Aquaculture industrielle</h3><p>Fin des cages ouvertes en Colombie-Britannique le 30 juin 2029, système de feux tricolores norvégien, traçabilité numérique européenne 2026 puis 2029 : la mesure déclarative hebdomadaire laisse place à la mesure continue et vérifiable.</p><p>Qui vend déjà : Aquabyte (22 M$ en 2025), Manolin, XpertSea (20 M$), Tidal (250 enclos), Ace Aquatec ; AXA XL évalue déjà les sinistres par satellite.</p><p class="tally">4 échelles, 1 creusée (Cheptel Vérifié), 3 mortes (comptage du pou déjà vendu, tableau de bord, registre).</p></div></div>
+    <div class="trend"><div class="tn">03</div><div><span class="st st-part">Irréversible en droit, lente sur le terrain</span><h3>Aires marines protégées, 30x30</h3><p>Cible 3 du Cadre mondial de Kunming-Montréal, traité de la haute mer en vigueur depuis le 17 janvier 2026, 335 M$ CAD engagés pour la mer du Grand Ours. Mais au rythme actuel, 30 % ne serait atteint qu'en 2107 : l'exécution est le goulot.</p><p>Qui vend déjà : Global Fishing Watch (carte gratuite et analyses aux gouvernements), MERMAID, Reef Support, pilote satellite de l'ESA sur le mouillage.</p><p class="tally">4 échelles, 4 mortes : acheteurs publics, capacité satellite supposée, journal qui accuse le client, tableau de bord.</p></div></div>
+    <div class="trend"><div class="tn">04</div><div><span class="st st-part">Ancienne couche obligatoire, récente en recul</span><h3>Crédits nature et carbone bleu</h3><p>Compensation d'habitat au Canada (1986) et aux États-Unis (Clean Water Act), restauration européenne (2024) : obligatoires et datées. CSRD repoussée de deux ans par l'Omnibus de mars 2026, TNFD volontaire, deux projets carbone bleu VM0033 au monde : réversibles.</p><p>Qui vend déjà : Karbon-X, SeaTrees, EASI (prix de crédits), Ocean Aero ; les agences publient les grilles gratuitement.</p><p class="tally">4 échelles, 4 mortes : marché minuscule, « le fondateur plonge » comme actif, resucée de benthos, reformatage TNFD.</p></div></div>
+    <div class="trend"><div class="tn">05</div><div><span class="st st-irr">Irréversible, tarifée</span><h3>Décarbonation du transport maritime</h3><p>Indicateur CII depuis 2023, quotas européens à 100 % en 2026, FuelEU Maritime depuis 2025, règlement californien à quai ; le cadre mondial de l'OMI a glissé d'un an, à 2028.</p><p>Qui vend déjà : ZeroNorth (plus de 89 M€), OceanScore, Sofar, sociétés de classification (marché captif) ; Blue Whales Blue Skies suit gratuitement le ralentissement.</p><p class="tally">4 échelles, 4 mortes : trois resucées de la passe 4 (ralentissement, encrassement, bruit), une hors champ des quotas.</p></div></div>
+    <div class="trend"><div class="tn">06</div><div><span class="st st-irr">Irréversible, en accélération</span><h3>Robots et navires autonomes</h3><p>Lignes directrices biofouling de l'OMI révisées en 2023, cadre contraignant en chantier depuis avril 2025, Bedrock 25 M$, XOcean 115 M$, pilote de robot payé 131 k$ par an : plus de données que de bras pour les lire.</p><p>Qui vend déjà : XOcean, Saildrone, Bedrock, Tidal, Neptune Robotics, Fugro, DOF, Argeo ; CoralNet, BIIGLE, BenthicNet gratuits pour la science.</p><p class="tally">4 échelles, 1 creusée (Atelier d'Annotation), 3 mortes (encrassement, câbles, score assureur supposé).</p></div></div>
+    <div class="trend"><div class="tn">07</div><div><span class="st st-irr">Irréversible, par mandat public</span><h3>Explosion de la donnée océan</h3><p>SWOT, jumeau numérique européen (14 M€ pour 2025 à 2028), Ocean Networks Canada (115 M$ CAD), modèle de fondation Granite Geospatial Ocean, Saildrone à 345 M$ cumulés : la donnée brute devient gratuite, la rareté se déplace vers l'interprétation.</p><p>Qui vend déjà : Aquabyte, NatureMetrics, ThayerMahan, Sercel ; Whale Report Alert System gratuit ; EDITO, EMODnet, Copernicus gratuits.</p><p class="tally">4 échelles, 2 creusées (EchoBaseline, GroundTruth), 2 mortes (alerte gratuite, données métocéaniques déjà vendues).</p></div></div>
+    <div class="trend"><div class="tn">08</div><div><span class="st st-part">Réglementation irréversible, prix cycliques</span><h3>Risque côtier et retrait des assureurs</h3><p>Loi californienne SB 272 (plans d'adaptation d'ici 2034), FAIR Plan à 650 G$ d'exposition ; mais la réassurance se détend en 2025 et 2026.</p><p>Qui vend déjà : ZestyAI, First Street, Jupiter, Cape Analytics rachetée par Moody's en janvier 2025, S&amp;P Sustainable1 ; cabinets d'ingénierie côtière à l'étude.</p><p class="tally">4 échelles, 4 mortes : matériel posé à l'étranger, villes et ports publics, outils gratuits de l'USGS et de la NOAA, score supposé.</p></div></div>
+    <div class="trend"><div class="tn">09</div><div><span class="st st-irr">Irréversible en Europe, exposée aux États-Unis</span><h3>Restauration à l'échelle industrielle</h3><p>Règlement européen 2024/1991 en vigueur depuis le 18 août 2024, suivi de cinq ans minimum exigé par l'USACE avec caution de performance, 77 350 $ par acre de récif d'huîtres en Chesapeake, RES financée par KKR et Onex.</p><p>Qui vend déjà : RES (ses propres banques), Coral Vita, ReefCloud gratuit (corail), Great American (cautions), EASI.</p><p class="tally">4 échelles, 2 creusées (Preuve Vivante, Lignée Corail), 2 mortes (KelpWatch gratuit, cote assureur supposée).</p></div></div>
+    <div class="trend"><div class="tn">10</div><div><span class="st st-irr">Irréversible, datée</span><h3>Pêche sous surveillance</h3><p>Règlement européen 2023/2842 avec caméras obligatoires par étapes jusqu'en 2028, journal électronique canadien depuis janvier 2025, programme d'import américain en expansion depuis novembre 2024.</p><p>Qui vend déjà : Archipelago (financé pour son IA), Shellcatch, Anchor Lab, Wholechain, Trace Register ; Edge AI de The Nature Conservancy (2 M$ Bezos, 2026) gratuit.</p><p class="tally">4 échelles, 4 mortes : trois resucées de la passe 4, une cote assureur supposée.</p></div></div>
+  </div>
+</section>
+
+<section class="block" id="echelles">
+  <span class="eyebrow">Les 40 échelles</span>
+  <h2>Ce que les dix tendances ont produit, et ce que le tri par l'actif en a fait</h2>
+  <div class="prose" style="margin-bottom:18px"><p>Une ligne par échelle : la tendance, l'actif que l'agent revendique pour 2036, et ce qui la tue à la ligne quand elle meurt. C signale un creusement, R une réserve d'une passe précédente réexaminée, X une mort à la ligne. Seize des trente-trois mortes sont des resucées d'idées tuées aux passes 3 et 4 sous un autre nom, alors que les agents n'y avaient pas accès.</p></div>
+  <div class="tbl"><table>
+    <thead><tr><th>#</th><th>Échelle</th><th>Tendance</th><th>Actif revendiqué pour 2036</th><th>Ce qui la tue à la ligne</th><th>Tri</th></tr></thead>
+    <tbody>
+      <tr><td class="n">1</td><td><span class="nm">Sentinelle Baleine</span></td><td>Éolien</td><td>Bibliothèque acoustique 13 saisons</td><td>Resucée de PSO/PAM Layer et PAM-Miner (passe 4) : Mysticetus, PAMGuard, JASCO, Sinay, Sercel QuietSea ; grand compte Dominion (Q5)</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">2</td><td><span class="nm">Relais Humboldt</span></td><td>Éolien</td><td>Réseau de capteurs inter-baux</td><td>Aucune construction en Californie avant 2030 (pause fédérale) ; fusion DAS et hydrophones supposée ; rien à vendre en mars 2027</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">3</td><td><span class="nm">Repère Benthique</span></td><td>Éolien</td><td>Standard de classification benthique</td><td>Resucée de BenthicOS (passe 3) : BIIGLE, SeaDeep, BENTHIQ ; grand compte Ørsted ; « ORJIP reconnaît le format » supposé</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">4</td><td><span class="nm">Suivi Ancrage</span></td><td>Éolien</td><td>Continuité documentaire du permis</td><td>Recette interdite « un agent orchestre le calendrier et compile le rapport du régulateur » (Q3) ; EDF internalise</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">5</td><td><span class="nm">Cheptel Vérifié</span></td><td>Aquaculture</td><td>Index de mortalité vérifié inter-fermes, vendu à l&#x27;assureur</td><td>Grand compte AXA XL (Q5), caméras de cage détenues par Aquabyte ou Tidal ; mais personne trouvé qui vend la vérification indépendante à l&#x27;assureur : mort incertaine</td><td class="st"><span class="ok">C · creusée</span></td></tr>
+      <tr><td class="n">6</td><td><span class="nm">Compte de Poux</span></td><td>Aquaculture</td><td>Standard de reporting zonal</td><td>Aquabyte, Tidal, Ace Aquatec comptent déjà le pou par caméra (Q4)</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">7</td><td><span class="nm">Veille de Bassin</span></td><td>Aquaculture</td><td>Repère de risque des fermes à terre</td><td>Tableau de bord de capteurs (Q3) ; télémétrie fournie par l&#x27;équipementier ; secteur fragile (Atlantic Sapphire)</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">8</td><td><span class="nm">Registre d&#x27;Algue</span></td><td>Aquaculture</td><td>Registre partagé inter-producteurs</td><td>Registre et formulaire, pas d&#x27;IA (Q3) ; obligation 2029 reportable</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">9</td><td><span class="nm">Veille de mouillage</span></td><td>AMP</td><td>Série de conformité par zone</td><td>Détection satellite de petits bateaux au mouillage supposée (fondamentale) ; proche de PosidoniaProof et Posidonia Charter, mortes</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">10</td><td><span class="nm">Vérification de jalons PFP</span></td><td>AMP</td><td>Bibliothèque de jalons</td><td>Tableau de bord sur rapports existants (Q3) ; un seul acheteur, qui internalise</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">11</td><td><span class="nm">Registre de fermetures Natura 2000</span></td><td>AMP</td><td>Historique VMS croisé par site</td><td>Acheteur public OFB (Q5) ; accès VMS supposé ; Global Fishing Watch fait la conformité d&#x27;AMP gratuitement (Q4)</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">12</td><td><span class="nm">Journal de conformité opérateurs permis</span></td><td>AMP</td><td>Archive multi-opérateurs</td><td>Resucée de WhaleWatch Log (passe 4) : le journal enregistre les infractions du client (Q2)</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">13</td><td><span class="nm">TideLedger</span></td><td>Crédits nature</td><td>Série de canopée mangrove</td><td>Deux projets VM0033 au monde ; Global Mangrove Watch gratuit (Q4) ; marché volontaire en recul</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">14</td><td><span class="nm">OffsetTrace</span></td><td>Crédits nature</td><td>Continuité de plongée du fondateur</td><td>Interdit explicite du brief : l&#x27;actif est « le fondateur plonge » ; prestation, pas société</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">15</td><td><span class="nm">NetGain Vision</span></td><td>Crédits nature</td><td>Bibliothèque d&#x27;annotations benthiques</td><td>Resucée de BenthicOS ; gain net marin britannique sans date ; grand compte Ørsted</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">16</td><td><span class="nm">FarmPulse Nature</span></td><td>Crédits nature</td><td>Format lu par plusieurs banques</td><td>Recette interdite « reformater le suivi existant en indicateurs TNFD » (Q3) ; TNFD volontaire, 6 % d&#x27;adhérents nord-américains</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">17</td><td><span class="nm">Preuve de Ralentissement</span></td><td>Transport</td><td>Série AIS multi-armateur</td><td>Resucée de PreuveBaleine (passe 4) : le rapport documente aussi l&#x27;excès de vitesse (Q2) ; tableau de bord NOAA gratuit (Q4)</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">18</td><td><span class="nm">Registre Carbone Éolien</span></td><td>Transport</td><td>Réseau armateur-affréteur</td><td>OceanScore répartit déjà le coût ETS et FuelEU ; les navires de transfert d&#x27;équipage font moins de 5 000 GT, hors champ ; océan invisible</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">19</td><td><span class="nm">Score Biofouling</span></td><td>Transport</td><td>Série coque × consommation</td><td>Resucée de FoulingScore (passe 4) : Vesselity, HullVAR ; accès aux rapports d&#x27;inspection verrouillé (dit par l&#x27;agent lui-même)</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">20</td><td><span class="nm">Standard Silence</span></td><td>Transport</td><td>Standard de mesure acoustique</td><td>Resucée d&#x27;AcoustiCert (passe 4, tuée par son propre agent) ; notations « silent » de DNV, Bureau Veritas, Lloyd&#x27;s existent déjà (Q4)</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">21</td><td><span class="nm">Passeport Encrassement</span></td><td>Robots</td><td>Registre BFRB par navire</td><td>Même famille que Score Biofouling : Vesselity, applications des sociétés de classification ; le registre documente l&#x27;encrassement du client (Q2)</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">22</td><td><span class="nm">Sentinelle des Câbles</span></td><td>Robots</td><td>Courbe de dégradation par câble</td><td>Resucée de ROV-Integrity (passe 4) : SeaDeep, Vaarst ; Fugro et DOF internalisent ; grand compte</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">23</td><td><span class="nm">Certificat Robot</span></td><td>Robots</td><td>Corrélation robot-sinistres</td><td>Entièrement supposée (dit par l&#x27;agent) ; dépend de l&#x27;échelle 21</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">24</td><td><span class="nm">Atelier d&#x27;Annotation Partagé</span></td><td>Robots</td><td>Réseau de petits opérateurs ROV et corpus</td><td>Adjacent à BenthicOS mais sur l&#x27;inspection d&#x27;infrastructures, vendu comme capacité revendable à de petits opérateurs (exception admise) ; SeaDeep et Vaarst visent les grands comptes : mort incertaine</td><td class="st"><span class="ok">C · creusée</span></td></tr>
+      <tr><td class="n">25</td><td><span class="nm">PodTrace</span></td><td>Donnée</td><td>Historique de risque par route</td><td>Whale Report Alert System gratuit (Q4) ; le score documente les approches du client (Q2) ; petits opérateurs</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">26</td><td><span class="nm">EchoBaseline</span></td><td>Donnée</td><td>Série de référence eDNA par site</td><td>NatureMetrics, eDNAtec, Jonah Ventures vendent déjà l&#x27;interprétation ; grand compte Equinor ; mais la continuité de série par site sous permis est le Q8 le plus solide de la passe : mort incertaine</td><td class="st"><span class="ok">C · creusée</span></td></tr>
+      <tr><td class="n">27</td><td><span class="nm">GroundTruth Ocean</span></td><td>Donnée</td><td>Réseau de contributeurs et standard de validation</td><td>C&#x27;est le « corpus froid » déjà en réserve depuis la passe 3, reformulé en réseau ; acheteurs laboratoires sur subvention (Q1) ; FathomNet, BenthicNet gratuits ; CVision AI vend déjà l&#x27;annotation : à creuser une seule fois pour trancher la réserve</td><td class="st"><span class="ok">C · creusée</span></td></tr>
+      <tr><td class="n">28</td><td><span class="nm">SiteStream</span></td><td>Donnée</td><td>Bibliothèque de calibrations par site</td><td>DHI, Fugro, Tidetech vendent la donnée métocéanique de site ; EDITO gratuit (Q4) ; gain de productivité vendu à qui facture l&#x27;heure</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">29</td><td><span class="nm">Sentinelle des Marinas</span></td><td>Risque côtier</td><td>Série par poste d&#x27;amarrage</td><td>Matériel posé à l&#x27;étranger (Q5) ; port public ; capteurs et modèle supposés</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">30</td><td><span class="nm">Alerte Chaleur des Fermes Marines</span></td><td>Risque côtier</td><td>Réseau de bouées corrélées aux mortalités</td><td>Bouées posées dans l&#x27;État de Washington (Q5) ; prévisions de chaleur marine et d&#x27;algues de la NOAA et de NANOOS gratuites (Q4)</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">31</td><td><span class="nm">Registre d&#x27;Adaptation Côtière</span></td><td>Risque côtier</td><td>Source citée dans les rapports SB 272</td><td>Acheteur ville (marché public, Q5) ; CoSMoS de l&#x27;USGS et visualisateur de la Coastal Commission gratuits (Q4)</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">32</td><td><span class="nm">Score de Résilience des Actifs Côtiers Assurés</span></td><td>Risque côtier</td><td>Standard de score</td><td>Grand compte AXA Climate ; entièrement supposé ; Moody&#x27;s et S&amp;P étendent leurs jeux</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">33</td><td><span class="nm">Preuve Vivante</span></td><td>Restauration</td><td>Base longitudinale de survie sous obligation, standard cité dans les cautions</td><td>Port public au barreau 1 (Q5) à remplacer par un sponsor privé de banque de compensation ; ReefCloud couvre le corail, pas l&#x27;huître ; le suivi est déjà obligatoire et payé : mort incertaine</td><td class="st"><span class="ok">C · creusée</span></td></tr>
+      <tr><td class="n">34</td><td><span class="nm">Lignée Corail</span></td><td>Restauration</td><td>Registre lignée × survie sur plusieurs blanchissements</td><td>Acheteurs pépinières à but non lucratif sur subventions NOAA (Q1) ; bases internes de CRF ; mais Floride, obligation de résultats pluriannuelle et Q8 fort : à trancher sur Q1</td><td class="st"><span class="ok">C · creusée</span></td></tr>
+      <tr><td class="n">35</td><td><span class="nm">Canopée</span></td><td>Restauration</td><td>Bibliothèque de calibration satellite</td><td>Resucée de KelpPulse (passe 3) : KelpWatch gratuit (Q4) ; détection précoce supposée</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">36</td><td><span class="nm">Cote Restauration</span></td><td>Restauration</td><td>Historique actuariel</td><td>Entièrement supposée ; dépend des données de Preuve Vivante : traitée comme barreau 4 de l&#x27;échelle 33</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">37</td><td><span class="nm">QuaiValide</span></td><td>Pêche</td><td>Jeu vidéo étiqueté multi-juridictions</td><td>Resucée d&#x27;EM Review (passe 4) : VIAME, Ai.Fish, Saltwater O2Review ; Archipelago déjà financé pour son IA (FishVue)</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">38</td><td><span class="nm">ProvenanceOuest</span></td><td>Pêche</td><td>Réseau importateurs-courtiers</td><td>Resucée de SeafoodTrace (passe 4) : rapprochement documentaire générique, océan invisible (Q3, Q6)</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">39</td><td><span class="nm">CoteFlotte</span></td><td>Pêche</td><td>Standard façon pointage de crédit</td><td>Entièrement supposée ; données publiques trop lacunaires (dit par l&#x27;agent)</td><td class="st"><span class="ko">X</span></td></tr>
+      <tr><td class="n">40</td><td><span class="nm">PreuveCasier</span></td><td>Pêche</td><td>Flux encastré dans la règle 2028</td><td>Resucée de RopelessMap (passe 4) ; registre sans IA (Q3) ; le journal documente le client (Q2) ; pêcheurs hostiles aux règles</td><td class="st"><span class="ko">X</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="block" id="matrice">
+  <span class="eyebrow">Matrice</span>
+  <h2>Force de l'actif contre passage du filtre, selon le juge</h2>
+  <div class="prose" style="margin-bottom:20px"><p>En abscisse, la force de l'actif qui compose, notée par le juge de 1 (n'importe qui le reconstruit en six mois) à 5 (personne ne le rattrape en 2031). En ordonnée, le nombre de questions auxquelles le juge répond oui, sur huit (la question 8 et les sept garde-fous). La taille du disque suit le revenu mensuel estimé à vingt-quatre mois. Survolez un disque pour le détail.</p></div>
+  <div class="chart-wrap" id="bubble">
+    <svg viewBox="0 0 780 460" role="img" aria-label="Matrice force de l'actif contre filtre des six échelles"></svg>
+    <div class="legend">
+      <span style="--c:var(--s3)">Restauration sous obligation</span>
+      <span style="--c:var(--s2)">Aquaculture et infrastructures</span>
+      <span style="--c:var(--s1)">Donnée du vivant</span>
+    </div>
+    <div class="tip" id="tip"></div>
+  </div>
+  <p class="chart-note">Aucune échelle n'atteint 3 sur 5 en actif. Atelier d'Annotation (24) passe le plus de questions, mais son actif est un coût de changement, pas un corpus ni un standard. Les quatre échelles à 1 sur 5 sont des resucées d'idées déjà mortes ou des actifs déjà gratuits. La passe 4 avait produit un 3 sur 5 (TaxoAssist) avec dix fois moins de candidats creusés par rapport au volume généré.</p>
+</section>
+
+<section class="block" id="fiches">
+  <span class="eyebrow">Les fiches</span>
+  <h2>Six échelles creusées : la force, l'acheteur du premier barreau, l'échelle jusqu'en 2036, l'actif, le pré-mortem, et ce que le juge en dit</h2>
+  <div class="prose"><p>Chaque fiche suit la chaîne : d'où vient la force, qui vend déjà, quel acheteur privé remplace le grand compte ou le port public du dossier initial, comment l'échelle monte de 2027 à 2036 et quel actif s'accumule à chaque barreau, ce qui la tue en 2031 selon l'agent, puis selon le juge. Les huit barres sont la question 8 puis les sept garde-fous, selon le juge : plein pour oui, moitié pour incertain, vide pour non. Le badge est la force de l'actif sur cinq.</p></div>
+
+  <div class="fam-h"><span class="sw" style="background:var(--s3)"></span><div><h3>Restauration sous obligation</h3><p>Là où un permis, une caution ou une subvention pluriannuelle oblige à prouver, année après année, que ce qui a été planté survit.</p></div></div>
+
+  <article class="fiche" id="idee-33">
+    <header class="fiche-head">
+      <div class="big">33</div>
+      <div><span class="fam fam-a">Restauration</span><h3>Preuve Vivante</h3><p class="tagline">Les photos de suivi déjà prises sur un récif d'huîtres ou un rivage vivant, transformées en comptage de survie daté et formaté pour le régulateur, puis en base longitudinale multi-sites</p></div>
+      <div class="score-badge">2<span>/5</span><small>Actif, selon le juge</small></div>
+    </header>
+    <div class="trigger"><span class="lab">La force</span><span class="date">5 ans minimum</span><span class="ref">USACE, 33 CFR (suivi de compensation) · CEMP 2014 (zostère, Californie) · règlement UE 2024/1991</span><span>Le corps des ingénieurs de l'armée américaine exige au moins cinq ans de suivi après toute compensation de zone humide ou côtière, réductible sur deux rapports annuels consécutifs de succès, avec une caution libérée sur demande. En Californie, 77 % des compensations de zostère atteignent leurs jalons : un quart échoue, avec la méthode manuelle. Le comptage se fait aujourd'hui par un technicien plongeur payé 18 à 24 $ de l'heure, quadrat par quadrat.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Qui vend déjà</h4><p>Personne ne vend le comptage automatisé formaté pour un permis américain sur l'huître ou le rivage vivant. Mais Ecological Consulting Services (Pensacola, Floride) fait le geste à la main depuis quinze ans avec drone et rapports de permis, Ocean Consulting FL de même ; CoralNet (gratuit, Scripps) classe le corail avec une corrélation supérieure à 0,97 ; RES et EarthBalance suivent leurs propres banques en interne, en eau douce surtout.</p></section>
+      <section><h4>L'acheteur du barreau 1, corrigé</h4><p>Le port de Tampa Bay du dossier initial est public, donc exclu. Trois remplaçants : Ecological Consulting Services comme maître d'œuvre qui revend une capacité nouvelle (plus de sites, rapport plus rapide) ; Mangrove Point Mitigation Bank, banque estuarienne privée de 469 acres, la plus proche trouvée ; un promoteur riverain sous permis de la Floride avec condition de rivage vivant, nom à trouver dans les permis publiés par comté. Découverte imprévue : sur tout l'annuaire des banques de compensation de Floride, deux seulement touchent au côtier, aucune purement huître.</p></section>
+      <section class="wide"><h4>L'échelle, barreau par barreau</h4><div class="ladder">
+        <div class="rung"><span class="yr">2027 · barreau 1</span>Comptage standardisé chez un ou deux clients privés en Floride, 15 000 à 30 000 $ par site et par an (estimation).<span class="as"><b>Actif :</b> un pipeline qui marche, rien d'autre.</span></div>
+        <div class="rung"><span class="yr">2028 · barreau 2</span>Plusieurs sites Floride et Californie, seuils d'alerte calibrés sur les échecs réels observés.<span class="as"><b>Actif :</b> première série multi-sites comparable.</span></div>
+        <div class="rung"><span class="yr">2030 · barreau 3</span>Premier client européen sous le règlement de restauration, rapport reformaté pour le plan national.<span class="as"><b>Actif :</b> deux cadres réglementaires couverts.</span></div>
+        <div class="rung"><span class="yr">2033 · barreau 4</span>Le protocole de notation cité par nom dans des clauses de caution ou de police, sur recommandation de clients.<span class="as"><b>Actif :</b> standard de fait dans des documents pluriannuels.</span></div>
+        <div class="rung"><span class="yr">2036 · barreau 5</span>Base longitudinale de cinq à neuf ans sur des dizaines de sites, consultée par régulateurs et assureurs.<span class="as"><b>Actif :</b> tiers de confiance sur des obligations réelles pendant une décennie.</span></div>
+      </div></section>
+      <section><h4>Le produit, dans l'ordre de vente</h4><p>Ingestion des photos et vidéos de quadrat déjà prises ; comptage automatisé d'huîtres vivantes ou de pousses avec score de confiance ; série temporelle par site avec alerte interne précoce, jamais envoyée au régulateur ; rapport au format du district USACE ou de la politique californienne ; comparaison multi-sites pour un même client ; accès en lecture pour un tiers choisi par le client, plus tard.</p></section>
+      <section><h4>Faisabilité, étiquetée</h4><p>Vérifié sur des tâches voisines : corail (CoralNet, r supérieur à 0,97), zostère (97 à 98 % sur des sous-tâches, Frontiers 2023), huître japonaise (80 %, méthode de 2019). Supposé : le transfert à l'huître américaine dans un contexte de permis. C'est le principal risque technique. Rien à poser, rien à plonger : les photos viennent du client.</p></section>
+      <section><h4>La preuve contre l'acheteur</h4><p>Un comptage plus fin révèle un échec plus tôt et peut retarder la caution. Réponse de conception : vendu d'abord comme alerte interne, le client choisit quand soumettre. Stratégie supposée, non testée auprès d'un client.</p></section>
+      <section><div class="pm"><span class="lab">Pré-mortem 2031, selon l'agent</span>Un cabinet généraliste déjà en place, du type Ecological Consulting Services, qui détient l'archive de photos et la relation client, construit la même capacité en interne avant que l'outil externe n'ait assez de clients. Signal dès 2027 : un cabinet de suivi côtier annonce un comptage automatisé. Deuxième cause : moins de cinq sites payants fin 2028, marché trop étroit.</div></section>
+      <section><h4>Test à 2 000 $</h4><p>Photoquadrats publics de zostère (jeu du détecteur Frontiers 2023), modèle de vision réentraîné pour moins de 300 $ de calcul, comparé aux comptages humains publiés sur 50 images. Critère : concordance d'au moins 85 %. Vérifier d'abord si les rapports RIBITS annexent des photos brutes. Premier appel, seulement si le test passe : un client capable de fournir un petit lot de photos d'huîtres réelles.</p></section>
+    </div>
+    <div class="scores scores8"><div class="sc">Q8<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q1<div class="bar"><i style="--v:2.5"></i></div><b>incertain</b></div><div class="sc">Q2<div class="bar"><i style="--v:2.5"></i></div><b>incertain</b></div><div class="sc">Q3<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q4<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q5<div class="bar"><i style="--v:2.5"></i></div><b>incertain</b></div><div class="sc">Q6<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q7<div class="bar"><i style="--v:5"></i></div><b>oui</b></div></div>
+    <div class="verdicts"><div><div class="who">Juge<b>Ce qu'il a trouvé</b></div><p>Ecobot, que le creusement n'a pas cherché parce qu'il cherchait « qui compte les huîtres » et non « quel logiciel l'acheteur paie déjà » : 4,48 M$ levés, 150 000 rapports produits par ses clients, vendu aux cabinets et nommément à l'industrie des banques de compensation. Son module Monitoring, en bêta gratuite en 2026, annonce mot pour mot les barreaux 1 à 4 : photos à point fixe, critères de succès, suivi vers la libération de caution, rapport au régulateur. Le standard du barreau 4 existe depuis 2014, gratuit : le manuel d'huîtres de The Nature Conservancy, republié par l'agence de Floride. Le comptage par vision est publié (OysterNet, YOLOv8 à 87,7 % dans le port de New York). Deux banques côtières dans tout l'annuaire de Floride : une file d'attente de dossiers, pas une population.</p></div><div><div class="who">Juge<b>Pré-mortem 2031 refait, et resucées</b></div><p>La société n'est jamais née comme société : quatre à huit dossiers par an facturés à des cabinets côtiers, exactement ReefInjury de la passe 3. Mur structurel au barreau 3, hérité d'OffsetLedger : ou le fondateur livre le rapport et n'accumule rien, ou il exige la base et perd des clients dont ces données sont des pièces juridiques. Resucée de ScarMap, ReefInjury et OffsetLedger transposés à l'huître, sur un marché dix fois plus étroit.</p></div><div><div class="who">Juge<b>Verdict</b></div><p><span class="pill pill-if">Non comme société, oui comme module ou prestation</span></p><p style="margin-top:8px">Trois conditions avant d'y mettre dix ans : obtenir d'Ecobot par écrit qu'elle n'ajoutera pas de comptage d'image, ou lui vendre le module ; compter dans RIBITS les banques à crédits estuariens ou d'huîtres et renoncer sous vingt-cinq ; faire écrire par un sponsor que la base de survie appartient au fournisseur.</p></div></div>
+  </article>
+
+  <article class="fiche" id="idee-34">
+    <header class="fiche-head">
+      <div class="big">34</div>
+      <div><span class="fam fam-a">Restauration</span><h3>Lignée Corail</h3><p class="tagline">Un registre indépendant, partagé entre pépinières de corail concurrentes, qui relie chaque lignée génétique à sa survie selon le site et la température, sur plusieurs blanchissements</p></div>
+      <div class="score-badge">1<span>/5</span><small>Actif, selon le juge</small></div>
+    </header>
+    <div class="trigger"><span class="lab">La force</span><span class="date">2023, 2024</span><span class="ref">Mission: Iconic Reefs (NOAA) · épisode de chaleur marine de 2023 en Floride · subventions Ruth Gates 2025</span><span>Les pépinières de Floride et des Caraïbes replantent des dizaines de milliers de fragments par an et doivent prouver à leurs bailleurs quelle lignée résiste au blanchissement. Le suivi se fait à la main, en feuille de calcul, fragment par fragment. L'actif visé, plusieurs cycles de blanchissement observés lignée par lignée, ne se rejoue pas rétroactivement.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Qui vend déjà</h4><p>La Coral Restoration Foundation, plus grande pépinière à but non lucratif de Floride, tient depuis 2021 le Coral Sample Registry : registre inter-pépinières gratuit, quinze organisations dans cinq pays, financé par des fondations. Il couvre les métadonnées de collecte, pas la survie continue liée à la température. Mote et la Coral Restoration Foundation ont des bases internes ; FragSize (outil ouvert) mesure la croissance des fragments par vision.</p></section>
+      <section><h4>L'acheteur du barreau 1 : la question qui décide</h4><p>Les pépinières visées (Reef Renewal USA, Coral Restoration Foundation, Mote) sont des organisations sur subvention, et en crise : la deuxième phase de financement de Mission: Iconic Reefs a été omise du budget 2026 de la législature de Floride, avec des coupes de personnel envisagées. Aucune ligne budgétaire logicielle. Barreau 1 de remplacement : un opérateur privé à but lucratif du type Coral Vita, qui intègre déjà le suivi dans ses contrats hôteliers, segment étroit.</p></section>
+      <section class="wide"><h4>L'échelle, barreau par barreau</h4><div class="ladder">
+        <div class="rung dead"><span class="yr">2027 · barreau 1</span>Tel que conçu : mort. Aucune pépinière sur subvention n'achète. Remplacement : Coral Vita ou un hôtel qui finance une pépinière sous contrat de résultat.<span class="as"><b>Actif :</b> aucun.</span></div>
+        <div class="rung"><span class="yr">2028 · barreau 2</span>Une deuxième ferme concurrente contribue, anonymisée.<span class="as"><b>Actif :</b> premier registre inter-fermes de performance, si la confiance se construit.</span></div>
+        <div class="rung"><span class="yr">2030 · barreau 3</span>Un programme méditerranéen ajoute un second régime thermique.<span class="as"><b>Actif :</b> deux bassins climatiques.</span></div>
+        <div class="rung"><span class="yr">2033 · barreau 4</span>Les recommandations de lignée citées dans des plans financés par la NOAA.<span class="as"><b>Actif :</b> autorité de référence.</span></div>
+        <div class="rung"><span class="yr">2036 · barreau 5</span>Deux à trois blanchissements observés lignée par lignée sur plusieurs fermes.<span class="as"><b>Actif :</b> le seul palier qui compose vraiment.</span></div>
+      </div></section>
+      <section><h4>Le produit</h4><p>Ingestion des photos de fragments et des capteurs de température ; mesure de croissance par vision (vérifiée sur FragSize) ; lien à la lignée par marquage physique existant (pas de l'IA) ; tableau de bord de performance par lignée et par site ; rapport au format des bailleurs ; comparaison inter-fermes anonymisée.</p></section>
+      <section><h4>Question 8, honnête</h4><p>Les pépinières partagent les métadonnées de collecte, pas la performance : l'article fondateur du registre dit que ces données « sont rarement combinées en une seule base centrale », et le dépôt génétique promis par le Coral Restoration Consortium en 2020 n'a toujours pas de livrable. Incertain, penche vers non.</p></section>
+      <section><div class="pm"><span class="lab">Pré-mortem 2031, selon l'agent</span>La Coral Restoration Foundation étend son registre gratuit vers les données de performance avec une seule subvention philanthropique de plus, sous une marque déjà installée, avant que le registre indépendant n'atteigne une masse critique. Signal dès 2027 : une annonce de fondation nommant l'extension du registre.</div></section>
+      <section><h4>Test à 2 000 $</h4><p>Croiser le jeu ouvert de la NOAA (outplants de Floride, Porto Rico, îles Vierges, 2003 à 2017, génotype par colonie) et le jeu Zenodo de décembre 2024 sur l'extirpation de génotypes d'Acropora cervicornis pendant la chaleur de 2023 : classement de survie de vingt génotypes sur deux sites, reproductible par script, concordant avec l'article source. Moins de 500 $ de calcul. Premier appel, si le test passe : Coral Vita.</p></section>
+    </div>
+    <div class="scores scores8"><div class="sc">Q8<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q1<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q2<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q3<div class="bar"><i style="--v:2.5"></i></div><b>incertain</b></div><div class="sc">Q4<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q5<div class="bar"><i style="--v:2.5"></i></div><b>incertain</b></div><div class="sc">Q6<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q7<div class="bar"><i style="--v:0"></i></div><b>non</b></div></div>
+    <div class="verdicts"><div><div class="who">Juge<b>Ce qu'il a trouvé</b></div><p>Mort confirmé, plus profond que trouvé : la revue Coral Reefs publie déjà en 2026, en accès ouvert, les réponses par génotype d'Acropora cervicornis aux vagues de chaleur après transplantation. Le produit du barreau 5 est en train d'être publié gratuitement par des laboratoires sur subvention. Aucune plateforme commerciale de suivi de pépinière n'existe : ce n'est pas une fenêtre, c'est un marché sans acheteur.</p></div><div><div class="who">Juge<b>Pré-mortem 2031 refait, et resucées</b></div><p>Lignée Corail est ColonyTrack (passe 3) régénérée trait pour trait : mêmes acheteurs sur subvention, même géographie, même défaut d'identité de lignée (une étiquette physique, pas la photo). Trois passes plus tard, mot pour mot le même verdict. Le barreau 1 de remplacement (Coral Vita) vise un acteur unique au monde qui intègre déjà le suivi dans ses contrats : un client, pas un marché.</p></div><div><div class="who">Juge<b>Verdict</b></div><p><span class="pill pill-no">Non, mort confirmé</span></p><p style="margin-top:8px">Resucée exacte de ColonyTrack.</p></div></div>
+  </article>
+
+  <div class="fam-h"><span class="sw" style="background:var(--s2)"></span><div><h3>Aquaculture et infrastructures</h3><p>Là où des caméras et des robots produisent déjà plus d'images que ceux qui les possèdent ne peuvent en lire, et où l'acheteur n'est pas celui qui tient la caméra.</p></div></div>
+
+  <article class="fiche" id="idee-5">
+    <header class="fiche-head">
+      <div class="big">05</div>
+      <div><span class="fam fam-b">Aquaculture</span><h3>Cheptel Vérifié</h3><p class="tagline">Une preuve vidéo horodatée et infalsifiable du nombre de poissons morts dans une cage, pour qu'un sinistre soit réglé en jours plutôt qu'en mois, puis un index de mortalité vérifié inter-fermes</p></div>
+      <div class="score-badge">1<span>/5</span><small>Actif, selon le juge</small></div>
+    </header>
+    <div class="trigger"><span class="lab">La force</span><span class="date">30 juin 2029</span><span class="ref">Fin des cages ouvertes en C.-B. (MPO) · rapport mensuel de mortalité (Norvège, Écosse) · polices de mortalité (AXA XL, Sunderland Marine)</span><span>La mortalité est déjà comptée tous les jours en ferme, mais seule une agrégation mensuelle, déclarative et non vérifiée, remonte au régulateur norvégien, écossais ou canadien. Les assureurs de cheptel règlent les sinistres à partir de photos, de journaux papier et d'experts envoyés sur place. Le scandale eFishery (données de production fabriquées) a montré ce que vaut une donnée déclarative pour un assureur.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Qui vend déjà</h4><p>Personne ne vend la vérification vidéo indépendante à un assureur : négatif vérifié sur les pages sinistres de Sunderland Marine (équipe interne d'anciens fermiers et de biologistes), de Miller, de WTW. Mais la brique technique est publiée : MortCam (2023, bassin fermé), DD-IYOLOv8 et YOLOv10 amélioré (2024) détectent déjà le poisson mort. Aquabyte, Tidal et Ace Aquatec vendent la caméra et la biomasse à la ferme, sans fonction mortalité nommée.</p></section>
+      <section><h4>L'acheteur du barreau 1, corrigé</h4><p>AXA XL, grand compte, remplacé par Sunderland Marine (assureur spécialisé depuis 1986), Convex (ligne aquaculture, positionnement technologique) et Brown &amp; Brown (division aquaculture, Amérique du Nord). Aucun des trois n'a de ligne ouverte pour un outil non éprouvé, et aucun ne peut forcer une ferme à ouvrir sa caméra. D'où le vrai barreau 1 : la ferme elle-même, déjà équipée, qui achète 500 à 1 500 $ par mois et par site un dossier de sinistre qu'elle transmet à son assureur pour être payée plus vite.</p></section>
+      <section class="wide"><h4>L'échelle, barreau par barreau</h4><div class="ladder">
+        <div class="rung"><span class="yr">2027 · barreau 1</span>Un ou deux sites pilotes, à l'initiative de la ferme, avec Sunderland Marine comme assureur pilote.<span class="as"><b>Actif :</b> un historique horodaté, petit et non généralisable.</span></div>
+        <div class="rung"><span class="yr">2028 · barreau 2</span>Plusieurs fermes volontaires.<span class="as"><b>Actif :</b> début d'un index comparable, non garanti sans levier contractuel.</span></div>
+        <div class="rung"><span class="yr">2030 · barreau 3</span>Index agrégé et anonymisé vendu à un réassureur ou courtier, sur consentement des fermes.<span class="as"><b>Actif :</b> l'index, s'il dépasse la poignée de pilotes.</span></div>
+        <div class="rung"><span class="yr">2033 · barreau 4</span>Un consortium d'assureurs accepte le format comme pièce de règlement.<span class="as"><b>Actif :</b> le format, si les fermes y trouvent un avantage constant.</span></div>
+        <div class="rung"><span class="yr">2036 · barreau 5</span>Historique multi-ferme, multi-assureur, non reconstituable.<span class="as"><b>Actif :</b> la référence de tarification du risque de mortalité.</span></div>
+      </div></section>
+      <section><h4>Le produit, dans l'ordre de vente</h4><p>Ingestion du flux des caméras déjà installées (Imenco, Ace Aquatec, Tidal) ; horodatage et empreinte cryptographique à l'ingestion, pour que toute modification soit détectable ; comptage automatique des morts ; rapport structuré sans interprétation de cause, laissée à l'expert ; tableau de bord de sur-mortalité pour la ferme au quotidien ; export signé, transmis par la ferme, jamais par le fondateur.</p></section>
+      <section><h4>La preuve contre l'acheteur</h4><p>Le vice caché du dossier initial : la preuve accuse potentiellement la ferme, or c'est la ferme qui possède la caméra et doit consentir. Le secteur a un antécédent direct de méfiance : Sea Shepherd a filmé secrètement des fermes écossaises en 2019 et utilisé les images contre elles. Réponse : la ferme garde le contrôle de chaque envoi. Réponse supposée, non testée.</p></section>
+      <section><div class="pm"><span class="lab">Pré-mortem 2031, selon l'agent</span>La cause de mort la plus probable n'est pas un concurrent : c'est la ferme qui retire son consentement dès que la vidéo cesse de jouer en sa faveur. Signal dès 2027 : aucun pilote au-delà de deux ou trois fermes, renouvellement qui chute après le premier sinistre défavorable. Deuxième cause : Aquabyte ou Manolin ajoute un module d'export de sinistre à son produit déjà installé.</div></section>
+      <section><h4>Test à 2 000 $</h4><p>Jeu vidéo public de la revue Data (bassin fermé commercial au Mexique, plus de dix heures étiquetées), réentraînement d'un détecteur ouvert à partir de MortCam pour 150 à 400 $ de calcul. Critère : rappel d'au moins 85 % et précision d'au moins 80 % sur un jeu de test à part. Limite assumée : aucun jeu public de vraie cage en mer n'existe. Premier appel, si le test passe : l'équipe aquaculture de Sunderland Marine, pour un pilote avec deux ou trois fermes qu'elle désigne.</p></section>
+    </div>
+    <div class="scores scores8"><div class="sc">Q8<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q1<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q2<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q3<div class="bar"><i style="--v:2.5"></i></div><b>incertain</b></div><div class="sc">Q4<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q5<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q6<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q7<div class="bar"><i style="--v:2.5"></i></div><b>incertain</b></div></div>
+    <div class="verdicts"><div><div class="who">Juge<b>Ce qu'il a trouvé</b></div><p>Recherche indépendante sur la vérification vidéo de sinistre aquacole en 2026 : rien. Miller, WTW, Convex et Sunderland Marine décrivent des équipes humaines et exigent des systèmes de traçabilité chez l'assuré, sans preuve vidéo tierce. La question 4 passe, seule des six, et cela ne sauve rien : un index inter-fermes qui dépend du consentement révocable de celui que la preuve peut accuser n'est pas un actif.</p></div><div><div class="who">Juge<b>Pré-mortem 2031 refait, et resucées</b></div><p>Cause visible dès le premier sinistre défavorable : la ferme coupe l'accès. C'est PelletGuard (passe 1) et FloatWatch (passe 2), tuées pour ce motif exact, plus NetPen Ledger : trois idées mortes en une. Le brief interdisait cette recette ; l'agent l'a reproduite, puis diagnostiquée, sans en tirer la conséquence. Mur immédiat sur la question 5 : accéder aux caméras norvégiennes ou écossaises depuis Vancouver, sans référence ni levier.</p></div><div><div class="who">Juge<b>Verdict</b></div><p><span class="pill pill-no">Non</span></p><p style="margin-top:8px">Aucun chemin proposé vers les caméras, seulement l'espoir qu'un assureur présente des fermes volontaires.</p></div></div>
+  </article>
+
+  <article class="fiche" id="idee-24">
+    <header class="fiche-head">
+      <div class="big">24</div>
+      <div><span class="fam fam-b">Robots</span><h3>Atelier d'Annotation Partagé</h3><p class="tagline">Un logiciel qui lit les vidéos et sonars déjà filmés par de petites sociétés de robots sous-marins, repère dégâts et encrassement sur coques, quais, filets et câbles, et leur fabrique un rapport qu'elles revendent</p></div>
+      <div class="score-badge">2<span>/5</span><small>Actif, selon le juge</small></div>
+    </header>
+    <div class="trigger"><span class="lab">La force</span><span class="date">63 $ / h</span><span class="ref">Pilote ROV offshore, 130 916 $ par an (ZipRecruiter, juin 2025) · OMI biofouling 2023, cadre contraignant en chantier depuis avril 2025 · Dogger Bank, vérification annuelle des câbles</span><span>Les petites sociétés d'inspection sous-marine vendent des jours de plongeur ou de robot et un rapport monté à la main après des heures de visionnage. Les fabricants de robots gardent leurs données dans leur propre silo, et les grands prestataires (Fugro, DOF) internalisent leur analyse. Personne ne vend une couche d'analyse indépendante de la marque du robot à ceux qui n'ont ni analyste ni contrat d'entreprise.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Qui vend déjà</h4><p>Deep Trekker a lancé Qii.AI en septembre 2024 : diagnostic de coque par IA, verrouillé à ses propres robots. Greensea vend OPENSEA Edge, embarqué. Beam (Rovco et Vaarst, 20 M$ levés) vend aux grands développeurs éoliens. SeaDeep (Boston, Tufts) vendait la même promesse d'IA d'inspection à la marine américaine et à Avangrid : société produit fermée en 2025, « les cycles de vente ont dépassé le rythme de combustion de trésorerie ». C'est la preuve la plus directe et la plus inquiétante.</p></section>
+      <section><h4>L'acheteur du barreau 1</h4><p>Trois sociétés nommées qui vendent déjà des rapports à la main sans outil dédié : Integrated Underwater Services (État de Washington, division ROV), Underwater Engineering Services (Floride, ponts et structures portuaires), Enviro Tech Diving (Floride, quais, jetées, coques). Cinq autres repérées ; population estimée à quelques dizaines sur les côtes visées, non recensée. Abonnement de 1 500 à 3 000 $ par mois, contre un analyste sous-traité à l'heure (montant précis introuvable).</p></section>
+      <section class="wide"><h4>L'échelle, barreau par barreau</h4><div class="ladder">
+        <div class="rung"><span class="yr">2027 · barreau 1</span>Un abonnement, pipeline amorcé sur données publiques.<span class="as"><b>Actif :</b> le pipeline, rien d'autre.</span></div>
+        <div class="rung"><span class="yr">2028 · barreau 2</span>Trois à cinq sociétés clientes.<span class="as"><b>Actif :</b> motifs appris sur plusieurs zones et marques de robot, jamais les images brutes.</span></div>
+        <div class="rung"><span class="yr">2030 · barreau 3</span>Quinze à vingt sociétés, modèles spécialisés par cible (câble, filet, coque, quai).<span class="as"><b>Actif :</b> le réseau de sociétés et leur historique par cible.</span></div>
+        <div class="rung"><span class="yr">2033 · barreau 4</span>Le réseau devient un canal de distribution.<span class="as"><b>Actif :</b> contrats, habitudes de facturation, confiance, non rachetables en bloc.</span></div>
+        <div class="rung"><span class="yr">2036 · barreau 5</span>La plus large base privée de motifs d'inspection civile en Amérique du Nord, selon la thèse.<span class="as"><b>Actif :</b> agrégé et anonymisé seulement.</span></div>
+      </div></section>
+      <section><h4>Le produit, dans l'ordre de vente</h4><p>Ingestion vidéo et sonar multi-marque ; détection d'anomalies (corrosion, encrassement, trous de filet, câble exposé) ; rapport structuré horodaté revendable sous la marque du client ; classement par sévérité et export standard ; comparaison dans le temps d'une même cible ; tableau de bord multi-projets.</p></section>
+      <section><h4>Question 8, honnête</h4><p>Les contrats d'inspection réservent le rapport à l'usage exclusif du client final. Le corpus ne compose donc que sous forme agrégée et anonymisée, au niveau des motifs appris, avec une clause de service distincte. Le réseau de sociétés compose vraiment ; le corpus d'images, non. Actif plus faible que dans le dossier de tendance, mais réel.</p></section>
+      <section><div class="pm"><span class="lab">Pré-mortem 2031, selon l'agent</span>Un fabricant déjà présent chez les clients (Deep Trekker, Greensea, Blue Robotics) intègre gratuitement une IA suffisante dans le logiciel qui vient avec le robot. Signal dès 2027 : une extension gratuite de Qii.AI ou d'un équivalent. Troisième cause : le sort de SeaDeep, un cycle de vente plus long que la trésorerie, avec des pilotes qui se désabonnent après trois à six mois.</div></section>
+      <section><h4>Test à 2 000 $</h4><p>Jeu public LIACI : 1 893 images de coques annotées par pixel sur dix catégories. Réentraînement pour 400 à 600 $, séquences achetées hors distribution pour 200 à 400 $. Critère : rappel d'au moins 0,80 et précision d'au moins 0,65 sur 20 % du jeu tenu à part, plus une anomalie visible repérée sur cinq séquences achetées, validée par le fondateur plongeur. Premier appel, si le test passe : l'une des trois sociétés, avec une démonstration sur les images déjà publiques de son propre site.</p></section>
+    </div>
+    <div class="scores scores8"><div class="sc">Q8<div class="bar"><i style="--v:2.5"></i></div><b>incertain</b></div><div class="sc">Q1<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q2<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q3<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q4<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q5<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q6<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q7<div class="bar"><i style="--v:5"></i></div><b>oui</b></div></div>
+    <div class="verdicts"><div><div class="who">Juge<b>Ce qu'il a trouvé</b></div><p>L'IA d'inspection est déjà livrée avec le matériel, et pas seulement chez Deep Trekker : QYSEA (FIFISH, premier fournisseur mondial de petits robots) vend des systèmes avec logiciel assisté par IA pour ponts, barrages et conduites ; Deep Trekker vend BRIDGE ; DeepSkyIQ mesure fissures et corrosion ; EyeROV vend l'inspection assistée par IA. « Aucun concurrent agnostique » est vrai au sens strict et sans importance : le client utilise ce qui vient avec le robot qu'il possède. La cause de mort numéro 1 du pré-mortem, datée 2027, est réalisée en 2026. À créditer : trois acheteurs réels nommés, le cadavre qui compte (SeaDeep), et un actif dégradé par l'agent lui-même. Le dossier le plus honnête des six.</p></div><div><div class="who">Juge<b>Pré-mortem 2031 refait, et resucées</b></div><p>La société n'est pas tuée, elle est plafonnée : huit à douze clients à 2 000 $ par mois font 200 000 à 290 000 $ par an, un bon revenu pour une personne, sans composition. L'actif n'est ni un corpus ni un standard, c'est un coût de changement chez quinze petites sociétés, qui protège d'un concurrent logiciel, pas d'un fabricant qui offre l'équivalent avec la machine. Signal dès 2027 : les prospects répondent « notre robot fait déjà ça ». Cousin de DiveAtlas (passe 3, « actif, pas société »).</p></div><div><div class="who">Juge<b>Verdict</b></div><p><span class="pill pill-if">Non comme société à dix ans, oui comme revenu de départ</span></p><p style="margin-top:8px">Trois conditions : trois des sociétés nommées confirment, chiffre à l'appui, ce qu'elles paient pour la revue vidéo ; le test LIACI atteint un rappel d'au moins 0,80 hors distribution ; un client accepte par écrit l'usage agrégé et anonymisé de ses images avant la première facture.</p></div></div>
+  </article>
+
+  <div class="fam-h"><span class="sw" style="background:var(--s1)"></span><div><h3>Donnée du vivant</h3><p>Là où la donnée brute devient gratuite par mandat public et où l'on espérait que l'interprétation, la série ou la validation resteraient payantes.</p></div></div>
+
+  <article class="fiche" id="idee-26">
+    <header class="fiche-head">
+      <div class="big">26</div>
+      <div><span class="fam fam-c">Donnée</span><h3>EchoBaseline</h3><p class="tagline">Une mémoire annuelle de ce qui vit sur un site marin, fondée sur les traces d'ADN dans l'eau et recoupée avec les courants et la température du même site, livrée au même format année après année</p></div>
+      <div class="score-badge">1<span>/5</span><small>Actif, selon le juge</small></div>
+    </header>
+    <div class="trigger"><span class="lab">La force</span><span class="date">54 contre 26</span><span class="ref">Projet Blyth (EDF Renewables, Natural Power, NatureMetrics) · stratégie fédérale eDNA 2024 · Copernicus Marine gratuit</span><span>Sur le démonstrateur de Blyth, l'ADN environnemental a détecté 54 espèces de poissons contre 26 au chalutage, en quatre campagnes sur dix-huit mois. Les développeurs éoliens, les agences et les instituts financent déjà des campagnes, mais projet par projet, avec un rapport statique. Aucun permis ne l'exige encore à une date.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Qui vend déjà</h4><p>Le barreau 1 initial (vendre l'interprétation à Equinor) est déjà fait de bout en bout : eDNAtec (Terre-Neuve, du prélèvement au rapport, clients énergie et pêches) et NatureMetrics, qui a livré exactement ce geste à EDF Renewables via Natural Power. OBIS fait tourner gratuitement le pipeline PacMAN, des séquences brutes au tableau prêt à publier. Ce qui reste : la fusion continue avec les courants publics, vendue comme série versionnée. Niche plus étroite que prévu.</p></section>
+      <section><h4>L'acheteur du barreau 1, corrigé</h4><p>Le bureau d'études moyen qui prélève et sous-traite déjà le laboratoire projet par projet : Natural Power (Royaume-Uni), INSPIRE Environmental (Rhode Island, Aberdeen). Un aquaculteur (Grieg Seafood BC) et un développeur de compensation (RES) restent des candidats supposés, non vérifiés. Prix : 3 000 à 8 000 $ CAD par mois pour deux à trois sites, nettement sous une campagne de laboratoire (estimation).</p></section>
+      <section class="wide"><h4>L'échelle, barreau par barreau</h4><div class="ladder">
+        <div class="rung"><span class="yr">2027 · barreau 1</span>Séries pilotes sur sites publics rejoués, première série réelle chez un bureau d'études.<span class="as"><b>Actif :</b> un pipeline versionné documenté.</span></div>
+        <div class="rung"><span class="yr">2028 · barreau 2</span>Deux baselines consécutives chez deux clients.<span class="as"><b>Actif :</b> première preuve que les courants expliquent une part de la variance.</span></div>
+        <div class="rung"><span class="yr">2030 · barreau 3</span>Huit à dix sites.<span class="as"><b>Actif :</b> la série, plus longue que celle d'un nouvel entrant.</span></div>
+        <div class="rung"><span class="yr">2033 · barreau 4</span>Accès vendu à des tiers (assureurs, régulateurs).<span class="as"><b>Actif :</b> un format cité hors de l'entreprise.</span></div>
+        <div class="rung"><span class="yr">2036 · barreau 5</span>La plus longue série fusionnée ADN et océan sur les sites suivis.<span class="as"><b>Actif :</b> la série, si le client n'a pas changé de laboratoire.</span></div>
+      </div></section>
+      <section><h4>Le produit, dans l'ordre de vente</h4><p>Ingestion des séquences brutes du laboratoire partenaire ; assignation taxonomique versionnée avec OBITools et bases publiques ; contrôle qualité automatisé ; fusion avec Copernicus Marine pour expliquer la variance par site et saison, seule brique non trouvée ailleurs ; rapport standardisé comparable d'une campagne à l'autre ; accès en lecture pour tiers autorisés.</p></section>
+      <section><h4>Question 8, corrigée à la baisse</h4><p>La littérature montre que ce qui casse la continuité d'un suivi eDNA est le protocole du laboratoire humide, pas la couche d'interprétation. EchoBaseline ne possède pas de laboratoire. Les séquences brutes sont couramment déposées au NCBI : un concurrent les rejoue avec son propre pipeline sur les mêmes bases publiques. Le verrou réel, la relation avec le laboratoire et la connaissance du site, se copie plus vite qu'annoncé.</p></section>
+      <section><div class="pm"><span class="lab">Pré-mortem 2031, selon l'agent</span>eDNAtec ou NatureMetrics, déjà intégrés et déjà vendus au secteur énergie, ajoutent une couche de fusion aux données océaniques publiques à leur offre. Signal dès 2027 : « contextualisation environnementale » ou « courants intégrés » dans leur communication. Troisième cause : aucun mandat daté n'apparaît, et aucun client ne revient signer une deuxième campagne en 2028.</div></section>
+      <section><h4>Test à 2 000 $</h4><p>Rejouer le jeu public de Horns Rev 1 (Danemark) ou des 30 sites belges à l'intérieur et à l'extérieur de deux parcs éoliens (BioProject PRJNA1032405) avec OBITools et BOLD, puis fusionner avec la série Copernicus du même site. Critère : retrouver au moins 80 % des espèces publiées, et une corrélation mesurable entre une variable de courant ou de température et la variance d'une espèce entre saisons. Premier appel, si les deux critères passent : Natural Power ou INSPIRE.</p></section>
+    </div>
+    <div class="scores scores8"><div class="sc">Q8<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q1<div class="bar"><i style="--v:2.5"></i></div><b>incertain</b></div><div class="sc">Q2<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q3<div class="bar"><i style="--v:2.5"></i></div><b>incertain</b></div><div class="sc">Q4<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q5<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q6<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q7<div class="bar"><i style="--v:2.5"></i></div><b>incertain</b></div></div>
+    <div class="verdicts"><div><div class="who">Juge<b>Ce qu'il a trouvé</b></div><p>NatureMetrics ne vend pas que des kits : sa page offshore annonce une plateforme de métriques et d'indicateurs de biodiversité pour la décision et le rapport, avec un échantillonnage autonome conçu pour le large et le projet Blyth en référence. La couche que l'échelle voulait occuper est déjà annoncée par l'acteur qui détient le laboratoire humide. La question 8 est répondue par l'agent lui-même, et la réponse est non : séquences brutes publiques, verrou dans le protocole de laboratoire, pas de laboratoire.</p></div><div><div class="who">Juge<b>Pré-mortem 2031 refait, et resucées</b></div><p>Cause déjà visible : aucune obligation datée n'impose l'ADN environnemental dans un permis (BOEM l'emploie comme outil, le New Jersey a une proposition sans date). Sans obligation, la question 7 s'effondre et le suivi redevient une dépense d'étude ponctuelle. C'est l'erreur numéro 1 de la révision des 36 : une pratique confondue avec une force d'acheteur. Même famille que SedimentIQ et TaxoAssist : accélérateur vendu au bureau d'études, actif détenu par le laboratoire.</p></div><div><div class="who">Juge<b>Verdict</b></div><p><span class="pill pill-no">Non</span></p><p style="margin-top:8px">Il n'y a pas d'actif : un concurrent rejoue l'historique du client avec son propre pipeline sur les mêmes bases publiques.</p></div></div>
+  </article>
+
+  <article class="fiche" id="idee-27">
+    <header class="fiche-head">
+      <div class="big">27</div>
+      <div><span class="fam fam-c">Donnée</span><h3>GroundTruth Ocean</h3><p class="tagline">Un registre d'images et de sons sous-marins vérifiés par des experts et rattachés à un lieu précis, vendu à ceux qui construisent des modèles d'IA de l'océan pour les calibrer</p></div>
+      <div class="score-badge">1<span>/5</span><small>Actif, selon le juge</small></div>
+    </header>
+    <div class="trigger"><span class="lab">La force</span><span class="date">5 M$ NSF</span><span class="ref">FathomNet (MBARI) · Ocean Vision AI · BenthicNet (1,3 million d'images, schéma CATAMI) · Granite Geospatial Ocean (IBM, PML)</span><span>C'est le « corpus d'images froides annotées » gardé en réserve depuis la passe 3, reformulé en réseau de contributeurs et en standard de validation. Il a été creusé une seule fois pour trancher la réserve.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Qui vend déjà, ou donne déjà</h4><p>FathomNet, financé à 5 M$ par la National Science Foundation plus la fondation Packard : plus de 100 000 images géolocalisées, validées par les biologistes de MBARI, 800 contributeurs dans 101 pays, 6,6 millions d'annotations par l'application citoyenne FathomVerse. Ocean Vision AI, financé par la NSF, réunit MBARI, CVision AI (éditeur de Tator, l'outil que l'échelle comptait utiliser), Purdue. BenthicNet impose déjà un standard de taxonomie (CATAMI) à 190 000 images annotées, en licence ouverte.</p></section>
+      <section><h4>L'acheteur du barreau 1 : invalidé</h4><p>Granite Geospatial Ocean (IBM et Plymouth Marine Laboratory), cité comme client, est entraîné sur des images satellite Sentinel 3 et une centaine de mesures de terrain, pas sur des photos de plongée : ce client n'a pas ce besoin. Aucune offre d'emploi, aucun appel d'offres, aucune transaction publiée chez Microsoft, Google ou les fabricants de robots. Seul besoin documenté : un avis de marché du Cefas (agence britannique, novembre 2024) pour l'analyse d'images de fond marin, un marché public.</p></section>
+      <section class="wide"><h4>L'échelle, barreau par barreau</h4><div class="ladder">
+        <div class="rung dead"><span class="yr">2027 · barreau 1</span>Mort tel qu'écrit. Remplacement proposé : un audit récurrent de calibration site par site, vendu à un seul exploitant côtier de Colombie-Britannique déjà équipé d'une caméra avec IA embarquée. Supposé, aucun exploitant nommé.<span class="as"><b>Actif :</b> aucun.</span></div>
+        <div class="rung dead"><span class="yr">2028 · barreau 2</span>Bibliothèque image, son, taxonomie.<span class="as"><b>Actif :</b> déjà gratuit chez FathomNet.</span></div>
+        <div class="rung dead"><span class="yr">2030 · barreau 3</span>Réseau de trente à cinquante contributeurs payés à la tâche.<span class="as"><b>Actif :</b> FathomVerse en a 800, bénévoles.</span></div>
+        <div class="rung dead"><span class="yr">2033 · barreau 4</span>Abonnements des équipes de modèles de fondation.<span class="as"><b>Actif :</b> aucun acheteur prouvé.</span></div>
+        <div class="rung dead"><span class="yr">2036 · barreau 5</span>Jeu de validation de référence.<span class="as"><b>Actif :</b> BenthicNet et CATAMI l'ont déjà, gratuitement.</span></div>
+      </div></section>
+      <section><h4>Ce que la mort tranche</h4><p>La réserve « corpus froid » des passes 3 et 4 est close : un financement public pluriannuel rend gratuit, à l'échelle mondiale et avec validation experte, exactement ce que l'échelle voulait vendre, et son écosystème inclut l'éditeur d'outils pressenti. Le corpus reste utile comme matériau d'entraînement pour d'autres échelles, pas comme société.</p></section>
+      <section><div class="pm"><span class="lab">Pré-mortem 2031, selon l'agent</span>Inutile d'attendre 2031 : l'acteur qui tue l'échelle est l'écosystème Ocean Vision AI et la National Science Foundation, aujourd'hui.</div></section>
+      <section><h4>Test à 2 000 $, version de remplacement</h4><p>Mesurer si un audit de calibration site par site, appliqué à une caméra avec IA embarquée, révèle assez d'erreurs (plus de 80 % de désaccords utiles) pour valoir un abonnement de conformité à un exploitant. 200 à 500 $ de calcul. Premier appel, seulement au-dessus de 80 % : un exploitant de site unique en Colombie-Britannique, pas un laboratoire.</p></section>
+    </div>
+    <div class="scores scores8"><div class="sc">Q8<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q1<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q2<div class="bar"><i style="--v:2.5"></i></div><b>incertain</b></div><div class="sc">Q3<div class="bar"><i style="--v:2.5"></i></div><b>incertain</b></div><div class="sc">Q4<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q5<div class="bar"><i style="--v:0"></i></div><b>non</b></div><div class="sc">Q6<div class="bar"><i style="--v:5"></i></div><b>oui</b></div><div class="sc">Q7<div class="bar"><i style="--v:0"></i></div><b>non</b></div></div>
+    <div class="verdicts"><div><div class="who">Juge<b>Ce qu'il a trouvé</b></div><p>Le creusement a fait le travail : FathomNet (5 M$ de la National Science Foundation, 100 000 images validées, 800 contributeurs), BenthicNet (1,3 million d'images, taxonomie CATAMI adoptée), Ocean Vision AI (consortium incluant CVision AI, l'éditeur pressenti). Seul signal de demande : un avis de marché public du Cefas, exclu par le brief. Aucun acheteur privé nommé.</p></div><div><div class="who">Juge<b>Pré-mortem 2031 refait, et resucées</b></div><p>La réserve « corpus froid » de la passe 3 est tranchée et doit être fermée, pas reportée : ce qui était rare en 2024 est gratuit et mondial en 2026. Le barreau 1 de remplacement (audit de calibration chez un exploitant de Colombie-Britannique) est interdit par le brief : son actif serait « le fondateur plonge et valide à la main », le motif exact qui a tué OffsetTrace au tri. Une mort ne doit pas réintroduire un interdit par la porte de service.</p></div><div><div class="who">Juge<b>Verdict</b></div><p><span class="pill pill-no">Non, mort confirmé, réserve fermée</span></p><p style="margin-top:8px">Le corpus reste un matériau d'entraînement, pas une société ni un actif rare.</p></div></div>
+  </article>
+</section>
+
+<section class="block" id="comparatif">
+  <span class="eyebrow">Comparatif</span>
+  <h2>Les six échelles côte à côte, selon le juge</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Échelle</th><th>Acheteur du barreau 1 (corrigé)</th><th>Actif visé en 2036</th><th>Ce qui existe déjà</th><th>Cause de mort la plus probable</th><th class="n">Filtre /8</th><th class="n">Actif /5</th><th>Verdict du juge</th></tr></thead>
+    <tbody id="cmp-body">
+      <tr><td><span class="nm"><a href="#idee-33">33 · Preuve Vivante</a></span></td><td>Ecological Consulting Services, Mangrove Point Mitigation Bank, promoteur sous permis de Floride</td><td>Base longitudinale de survie, standard cité dans les cautions</td><td>Ecobot (module Monitoring en bêta gratuite), manuel TNC 2014, OysterNet</td><td>Jamais née comme société : quatre à huit dossiers par an, resucée d'OffsetLedger et ReefInjury</td><td class="n">4,5</td><td class="n">2</td><td><span class="pill pill-if">module ou prestation</span></td></tr>
+      <tr><td><span class="nm"><a href="#idee-24">24 · Atelier d'Annotation</a></span></td><td>Integrated Underwater Services, Underwater Engineering Services, Enviro Tech Diving</td><td>Réseau de petites sociétés, corpus agrégé anonymisé</td><td>QYSEA, Deep Trekker BRIDGE et Qii.AI, DeepSkyIQ, EyeROV ; SeaDeep fermée en 2025</td><td>Plafonnée à 200 à 290 k$ par an : le robot fait déjà l'IA</td><td class="n">6,5</td><td class="n">2</td><td><span class="pill pill-if">revenu de départ</span></td></tr>
+      <tr><td><span class="nm"><a href="#idee-26">26 · EchoBaseline</a></span></td><td>Natural Power, INSPIRE Environmental</td><td>Série de référence eDNA par site</td><td>eDNAtec, NatureMetrics (plateforme de métriques annoncée), OBIS PacMAN gratuit</td><td>Aucune obligation datée ; le verrou est le laboratoire, pas le pipeline</td><td class="n">4,5</td><td class="n">1</td><td><span class="pill pill-no">non</span></td></tr>
+      <tr><td><span class="nm"><a href="#idee-5">5 · Cheptel Vérifié</a></span></td><td>La ferme elle-même, Sunderland Marine en assureur pilote</td><td>Index de mortalité vérifié inter-fermes</td><td>Rien à l'assureur ; MortCam et YOLO publiés ; Aquabyte, Tidal à la ferme</td><td>La ferme coupe l'accès au premier sinistre défavorable : PelletGuard, FloatWatch, NetPen Ledger en une</td><td class="n">3</td><td class="n">1</td><td><span class="pill pill-no">non</span></td></tr>
+      <tr><td><span class="nm"><a href="#idee-34">34 · Lignée Corail</a></span></td><td>Coral Vita (client unique au monde)</td><td>Blanchissements observés lignée par lignée</td><td>Coral Sample Registry gratuit (15 organisations), articles ouverts 2026, FragSize</td><td>Pépinières sur subvention en coupe budgétaire : ColonyTrack trait pour trait</td><td class="n">3</td><td class="n">1</td><td><span class="pill pill-no">mort confirmé</span></td></tr>
+      <tr><td><span class="nm"><a href="#idee-27">27 · GroundTruth Ocean</a></span></td><td>Aucun acheteur privé trouvé</td><td>Réseau de contributeurs et standard de validation</td><td>FathomNet (5 M$ NSF), BenthicNet et CATAMI, Ocean Vision AI</td><td>Déjà gratuit et mondial ; le remplacement viole l'interdit « le fondateur plonge »</td><td class="n">2</td><td class="n">1</td><td><span class="pill pill-no">mort confirmé, réserve fermée</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="chart-note">Filtre /8 : nombre de questions (question 8 puis les sept garde-fous) auxquelles le juge répond oui, un incertain comptant pour un demi. Actif /5 : force de l'actif qui compose selon le juge. Verdict : société à dix ans, revenu de départ, actif à construire, ou non.</p>
+</section>
+
+<section class="block" id="ecartees">
+  <span class="eyebrow">Les 34 écartées</span>
+  <h2>Ce que le tri par l'actif a tué avant le creusement, et pourquoi</h2>
+  <div class="grid2">
+    <div class="card"><h3>Resucées d'idées déjà mortes (16)</h3><p>Sans avoir lu les passes précédentes, les agents ont reproduit PSO/PAM Layer et PAM-Miner (Sentinelle Baleine), BenthicOS (Repère Benthique, NetGain Vision), PreuveBaleine (Preuve de Ralentissement), FoulingScore (Score Biofouling, Passeport Encrassement), AcoustiCert (Standard Silence), ROV-Integrity (Sentinelle des Câbles), WhaleWatch Log (Journal de conformité, PodTrace), EM Review (QuaiValide), SeafoodTrace (ProvenanceOuest), RopelessMap (PreuveCasier), KelpPulse (Canopée), PosidoniaProof (Veille de mouillage). Les tendances que tout le monde lit mènent aux idées que tout le monde a.</p></div>
+    <div class="card"><h3>Recette interdite, ou pas d'IA (Q3)</h3><p>Suivi Ancrage (un agent orchestre le calendrier du permis), FarmPulse Nature (reformater le suivi existant en indicateurs TNFD), Registre d'Algue, Vérification de jalons PFP, Veille de Bassin, PreuveCasier : un registre, un tableau de bord ou un reformatage qu'un modèle générique avec la grille publique produit.</p></div>
+    <div class="card"><h3>Gratuit ou déjà vendu (Q4)</h3><p>Compte de Poux (Aquabyte, Tidal, Ace Aquatec), Registre Carbone Éolien (OceanScore, et les navires visés font moins de 5 000 GT), SiteStream (DHI, Fugro, Tidetech, EDITO), Registre de fermetures Natura 2000 (Global Fishing Watch), TideLedger (Global Mangrove Watch, deux projets VM0033 au monde), Alerte Chaleur (prévisions gratuites de la NOAA et de NANOOS), Registre d'Adaptation (CoSMoS de l'USGS).</p></div>
+    <div class="card"><h3>Acheteur public, grand compte, matériel à l'étranger (Q5)</h3><p>Sentinelle des Marinas et Alerte Chaleur (bouées et capteurs posés aux États-Unis), Registre d'Adaptation (ville d'Imperial Beach), Score de Résilience (AXA Climate), Relais Humboldt (rien à surveiller avant 2030), Registre Natura 2000 (Office français de la biodiversité).</p></div>
+    <div class="card"><h3>Entièrement supposées, ou « le fondateur plonge »</h3><p>Certificat Robot, CoteFlotte, Cote Restauration, Score de Résilience : un score vendu aux assureurs dont aucune corrélation n'existe encore. OffsetTrace : l'actif revendiqué est la continuité de plongée du fondateur, l'interdit explicite du brief. Veille de mouillage : détection satellite de petits bateaux au mouillage, supposée.</p></div>
+    <div class="card"><h3>Ce que ces 34 disent de la méthode</h3><p>Trente et une échelles sur quarante affirmaient au barreau 4 que « le format devient le standard », sans dire qui l'adopte, par quel document, ni pourquoi le leur. Sept vendaient un score à des assureurs qui n'ont rien demandé. Le seul motif qui a survécu au tri est une série ou un registre tenu par un tiers de confiance sur des sites soumis à une obligation pluriannuelle, comparé entre acteurs concurrents. C'est aussi le motif le plus difficile à amorcer, parce qu'il exige des clients avant d'exister.</p></div>
+  </div>
+</section>
+
+<section class="block" id="lecons">
+  <span class="eyebrow">Ce que la passe enseigne</span>
+  <h2>Ce que les six creusements et le juge ont en commun, et ce qu'il faut concevoir avant la première ligne de code</h2>
+  <div class="grid2">
+    <div class="card"><h3>Chercher le logiciel que l'acheteur paie déjà, pas le produit imaginé</h3><p>Le creusement de Preuve Vivante a cherché « qui compte les huîtres par vision » et n'a trouvé personne. Il fallait chercher « quel logiciel un sponsor de banque de compensation paie pour son suivi » : Ecobot, 4,48 M$, 150 000 rapports. La première recherche d'un creusement change de forme.</p></div>
+    <div class="card"><h3>Un gratuit peut être un manuel</h3><p>Le standard que Preuve Vivante comptait imposer au barreau 4 existe depuis 2014 : le manuel de suivi des récifs d'huîtres de The Nature Conservancy et ses métriques universelles, republiés par l'agence de Floride. Personne n'a cherché « protocole » avant d'écrire « notre format devient le standard ».</p></div>
+    <div class="card"><h3>Une réponse conditionnelle à la question 8 compte comme non</h3><p>« Oui si la masse critique est atteinte », « oui si le client garde le même laboratoire », « compose sous forme agrégée seulement » : six dossiers sur six. Une condition non chiffrée est une affirmation. Le tri doit exiger le chiffre de la condition avant le creusement.</p></div>
+    <div class="card"><h3>Compter la population prend dix minutes et économise un agent</h3><p>Deux banques côtières dans tout l'annuaire de Floride, un client unique au monde pour Lignée Corail, quelques dizaines de petites sociétés ROV non recensées. Le tri doit compter les acheteurs avant de creuser : sous vingt-cinq, c'est une prestation.</p></div>
+    <div class="card"><h3>Un pré-mortem déjà réalisé est un constat de décès</h3><p>Trois dossiers sur six datent de 2027 une cause de mort déjà observable en 2026 : l'IA livrée avec le robot (QYSEA, Deep Trekker), la plateforme de métriques de NatureMetrics, le registre gratuit de la Coral Restoration Foundation. Vérifier la cause numéro 1 aujourd'hui, pas dans cinq ans.</p></div>
+    <div class="card"><h3>« Impossible en 2024 » est interdit sans dates</h3><p>Cinq dossiers sur six l'écrivent alors que les capacités citées sont publiées de 2019 à 2023 (CoralNet 2021, MortCam 2023, OysterNet). La phrase n'a de sens qu'avec la date de la publication qui rend la chose possible, et cette date tue souvent l'argument.</p></div>
+    <div class="card"><h3>Un barreau de remplacement repasse les interdits</h3><p>GroundTruth, mort, a proposé un remplacement dont l'actif est « le fondateur plonge et valide », l'interdit textuel du brief qui avait tué OffsetTrace au tri. Une mort ne doit pas réintroduire un interdit par la porte de service : chaque remplacement repasse le brief.</p></div>
+    <div class="card"><h3>Les tendances publiques donnent des idées publiques</h3><p>Seize resucées sur trente-trois mortes, deux sur six creusées, sans que les agents aient lu les passes précédentes. Une tendance nomme une obligation, jamais un budget, et confond population contrainte et marché. Le gabarit « quatre échelles par tendance » force à en écrire quatre : la prochaine fois, une ou deux, sourcées deux fois plus.</p></div>
+  </div>
+</section>
+
+<section class="block" id="plan">
+  <span class="eyebrow">Passer à l'action</span>
+  <h2>Trente jours pour trancher, sans un seul courriel avant d'avoir quelque chose à montrer</h2>
+  <div class="prose"><p>Chaque test coûte moins de 2 000 $ et deux semaines, tourne sur des données publiques, et se juge sur un critère chiffré. Vous avez dit ne pas contacter un client sans l'ombre de quelque chose de concret : le plan commence par ce qui se construit seul, et ne passe à l'appel que sur un test réussi.</p></div>
+
+  <div class="q"><div class="qq">Jours 1 à 3 · Décider ce qu'on veut de cette passe</div><div class="qw">Deux échelles restent, ni l'une ni l'autre comme société. <b>Atelier d'Annotation</b> est un revenu de départ plafonné (200 à 290 k$ par an) qui peut financer la suite ; <b>Preuve Vivante</b> est un module à proposer à Ecobot ou une prestation à des cabinets côtiers. Si vous voulez d'abord une société, sautez aux jours 5 à 30. Si vous voulez d'abord du revenu, faites les deux tests ci-dessous, sans courriel.</div></div>
+  <div class="q"><div class="qq">Jours 4 à 14 · Test Atelier d'Annotation, moins de 1 350 $</div><div class="qw">Jeu public LIACI (1 893 images de coques annotées par pixel). Réentraînement d'un modèle de vision, puis test sur des séquences achetées hors distribution. <b>Critère du juge</b> : rappel d'au moins 0,80 hors distribution, pas seulement sur le jeu retenu. Si le test passe : appeler Integrated Underwater Services, Underwater Engineering Services et Enviro Tech Diving avec une démonstration sur leurs propres images publiques, et poser une seule question : combien payez-vous aujourd'hui pour la revue vidéo, et votre robot le fait-il déjà ? Trois chiffres, ou l'échelle s'arrête.</div></div>
+  <div class="q"><div class="qq">Jours 4 à 6 · Preuve Vivante, dix minutes puis une lettre</div><div class="qw">Compter dans RIBITS (registre fédéral des banques de compensation) les banques à crédits estuariens ou d'huîtres en Floride, en Californie et sur le golfe. <b>Sous vingt-cinq, renoncer.</b> Au-dessus, écrire à Ecobot pour savoir si son module Monitoring compte les organismes sur photo, et proposer le compteur comme module plutôt que comme société concurrente. Aucun développement avant la réponse.</div></div>
+  <div class="q"><div class="qq">Jours 5 à 30 · Préparer la passe 6, par l'acheteur et son logiciel</div><div class="qw">Cinq passes, cinquante idées creusées, zéro société : le point de départ est en cause, pas le filtre. La passe 6 part de <b>vingt acheteurs océan nommés qui paient déjà un logiciel</b> : Ecobot, Mysticetus, Aquabyte, OceanScore, ZeroNorth, Archipelago, NatureMetrics, Green Marine, PAMGuard payant, LIMS de laboratoire, et dix autres à trouver dans les offres d'emploi (« expérience de », « maîtrise de ») et les rapports annuels. Pour chacun : qui paie, combien (prix lu, pas estimé), ce que le logiciel ne fait pas, ce que l'IA de 2026 permet dans ce trou, et qui détient la donnée qui s'accumule. La première recherche de tout creusement devient : le logiciel que cet acheteur paie aujourd'hui.</div></div>
+  <div class="q"><div class="qq">À ne pas faire</div><div class="qw">Relancer une passe par les tendances ou par les règlements : trois formes du même point de départ public. Rouvrir la réserve « corpus froid » : fermée par FathomNet et BenthicNet. Accepter un barreau 1 de remplacement sans le repasser dans les interdits. Écrire « notre format devient le standard » sans nommer qui l'adopte et par quel document.</div></div>
+</section>
+
+<section class="block" id="methode">
+  <span class="eyebrow">Méthode et sources</span>
+  <h2>Comment ce cinquième rapport a été produit, et ce qu'il faut vérifier avant d'agir</h2>
+  <div class="prose" style="margin-bottom:22px"><p>Dix agents de thèse de tendance ont travaillé sur un brief qui décrit le fondateur à dix ans et impose de prouver l'irréversibilité, de chercher qui vend déjà avant toute idée, d'étiqueter chaque capacité et chaque montant, et de proposer quatre échelles avec pré-mortem, sans lire aucun autre dossier du dépôt et avec dix recherches web chacun. L'orchestrateur a trié les quarante échelles par la question 8 puis les sept garde-fous, avec la mémoire des quarante-trois idées mortes. Six agents de creusement (huit recherches chacun) ont d'abord cherché qui vend déjà, puis remplacé chaque acheteur public ou grand compte par trois acheteurs privés nommés. Un juge a relu les six chaînes avec ses propres recherches, refait chaque pré-mortem et testé la compatibilité avec un fondateur seul sur dix ans. Dossiers, tri, creusements et verdict sont dans le dépôt sous <span class="mono">ocean-5/</span>.</p></div>
+  <div class="agents">
+    <div><div class="a">eolien-mer</div><p>Cibles allemandes et françaises, pause fédérale américaine, clauses BOEM, RPS, Sercel, Sinay, ORJIP.</p></div>
+    <div><div class="a">aquaculture</div><p>Fin des cages en C.-B., feux tricolores norvégiens, traçabilité européenne, Aquabyte, Manolin, XpertSea, eFishery.</p></div>
+    <div><div class="a">amp-30x30</div><p>Cadre de Kunming-Montréal, traité BBNJ, mer du Grand Ours, Global Fishing Watch, MERMAID.</p></div>
+    <div><div class="a">credits-nature</div><p>Restauration européenne, Omnibus CSRD, TNFD, VM0033, banques de mitigation, gain net britannique.</p></div>
+    <div><div class="a">transport-maritime</div><p>CII, quotas européens, FuelEU, cadre OMI, ZeroNorth, OceanScore, Blue Whales Blue Skies.</p></div>
+    <div><div class="a">robots-autonomes</div><p>Biofouling OMI, Bedrock, XOcean, Tidal, Neptune Robotics, Fugro, salaires de pilotes ROV.</p></div>
+    <div><div class="a">donnee-ocean</div><p>SWOT, EDITO, Ocean Networks Canada, Granite Geospatial Ocean, stratégie eDNA fédérale, Saildrone.</p></div>
+    <div><div class="a">risque-cotier</div><p>SB 272, FAIR Plan, Citizens, ZestyAI, First Street, Cape et Moody's, assurance paramétrique aquacole.</p></div>
+    <div><div class="a">restauration-echelle</div><p>Règlement 2024/1991, USACE, Chesapeake, Mission: Iconic Reefs, RES, Coral Vita, ReefCloud.</p></div>
+    <div><div class="a">peche-surveillee</div><p>Règlement 2023/2842, ELOG canadien, SIMP, Archipelago, Shellcatch, Edge AI de TNC, engins sans corde.</p></div>
+    <div><div class="a">creusement × 6</div><p>Preuve Vivante, Lignée Corail, Cheptel Vérifié, Atelier d'Annotation, EchoBaseline, GroundTruth : première recherche « qui vend déjà ».</p></div>
+    <div><div class="a">juge</div><p>Contre-recherche, question 8 et sept garde-fous, pré-mortem 2031 refait, test fondateur à dix ans, mémoire des idées mortes.</p></div>
+  </div>
+  <h3 style="margin-top:28px">Limites à garder en tête</h3>
+  <ul class="prose">
+    <li>Tous les prix de barreau 1 sont des estimations : aucun fournisseur comparable ne publie de grille, et aucun tarif horaire précis n'a été trouvé pour le comptage manuel d'huîtres, la gestion de sinistre en ferme, la revue vidéo d'inspection ou l'interprétation eDNA.</li>
+    <li>Aucun client nommé n'a été contacté : les acheteurs de barreau 1 sont des cibles plausibles identifiées par leur profil public, à valider par un premier appel qui n'a lieu qu'après un test réussi.</li>
+    <li>Les capacités techniques sont vérifiées sur des tâches voisines (corail, zostère, bassin fermé, coques LIACI), jamais sur la tâche exacte en contexte commercial : c'est le sens des tests à 2 000 $.</li>
+    <li>Les obligations qui justifient les séries sont réelles pour la compensation américaine (cinq ans, USACE) et européenne (2024/1991), volontaires pour l'ADN environnemental et pour la vérification vidéo de sinistre.</li>
+    <li>Le quota de recherche partagé a limité chaque agent à huit ou dix requêtes : « aucun concurrent trouvé » reste une absence de preuve, pas une preuve d'absence, et le juge l'a rappelé à chaque fiche.</li>
+  </ul>
+  <h3 style="margin-top:28px">Sources principales</h3>
+  <ul class="prose">
+    <li><b>Obligations et programmes</b> : usace.army.mil et 33 CFR (suivi de compensation, RIBITS), fisheries.noaa.gov (CEMP 2014, Mission: Iconic Reefs, subventions Ruth Gates, programmes EM), environment.ec.europa.eu (règlement 2024/1991), eur-lex.europa.eu (2023/2842), dfo-mpo.gc.ca (transition C.-B., compensation d'habitat), imo.org (biofouling, CII), boem.gov (clauses, eDNA), highseasalliance.org (BBNJ), coolset.com (Omnibus CSRD).</li>
+    <li><b>Acheteurs et concurrents</b> : ecologicalconsultingservices.com, floridamitigationbanking.org, coralrestoration.org (Coral Sample Registry), sunderlandmarine.com, aceaquatec.com, aquabyte.ai, seadeep.io, oceansciencetechnology.com (Qii.AI), iusdiving.com, uesi.com, etdiving.com, ednatec.com, naturemetrics.com, naturalpower.com, inspireenvironmental.com, fathomnet.org et mbari.org, research.ibm.com, res.us, coralvita.co, zeronorth.com, oceanscore.com, xocean.com, tracxn.com.</li>
+    <li><b>Données ouvertes et faisabilité</b> : catalog.data.gov (outplants coralliens 2003 à 2017), zenodo.org (génotypes 2023), archive.myfwc.com (OIMMP), openaccess.thecvf.com (CoralNet, 2021), frontiersin.org (détecteur de zostère, 2023 ; registre corallien, 2021), sciencedirect.com (MortCam, 2023), mdpi.com (DD-IYOLOv8 ; jeu vidéo RAS), ieeexplore.ieee.org (LIACI), obis.org (PacMAN, jeux eDNA), ncbi.nlm.nih.gov (PRJNA1032405, standardisation eDNA), nature.com (Horns Rev 1), arxiv.org (BenthicNet).</li>
+    <li><b>Marché et financement</b> : wlrn.org (budget corallien de Floride, mars 2026), thefern.org (circuit fermé, mai 2026), ziprecruiter.com (pilotes ROV, techniciens), roboticsandautomationnews.com (XOcean), sacra.com (Saildrone), tech.eu (ZeroNorth), press.spglobal.com, insurance.ca.gov, artemis.bm.</li>
+  </ul>
+</section>
+
+</main>
+</div>
+<footer>Atlas Océan V · cinquième passe d'idéation, septembre 2026 · aucune implémentation · chiffres et dates à revérifier sur les sites officiels avant décision</footer>
+
+<script>
+(function(){
+  var data=[
+    {n:33,name:"Preuve Vivante",fam:1,a:2,q:4.5,price:11,d:"Comptage de survie d'huîtres sur photo · Ecobot occupe la catégorie"},
+    {n:34,name:"Lignée Corail",fam:1,a:1.2,q:2.8,price:3,d:"Registre lignée × survie · ColonyTrack régénérée, acheteurs sur subvention"},
+    {n:5,name:"Cheptel Vérifié",fam:2,a:0.95,q:3.25,price:10,d:"Preuve vidéo de mortalité · la ferme coupe l'accès"},
+    {n:24,name:"Atelier d'Annotation",fam:2,a:2,q:6.5,price:18,d:"IA d'inspection pour petits opérateurs · déjà livrée avec les robots"},
+    {n:26,name:"EchoBaseline",fam:3,a:1,q:4.5,price:17,d:"Série eDNA par site · le verrou est le laboratoire, pas le pipeline"},
+    {n:27,name:"GroundTruth Ocean",fam:3,a:1,q:2,price:7,d:"Registre d'images validées · FathomNet gratuit, réserve fermée"}
+  ];
+  var svg=document.querySelector('#bubble svg');if(!svg)return;
+  var NS='http://www.w3.org/2000/svg';
+  var W=780,H=460,L=64,R=24,T=20,B=56;
+  var x0=0.5,x1=5.5,y0=0,y1=8.5;
+  function X(v){return L+(v-x0)/(x1-x0)*(W-L-R)}
+  function Y(v){return T+(1-(v-y0)/(y1-y0))*(H-T-B)}
+  function el(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e}
+  var g=el('g',{});svg.appendChild(g);
+  var cs=getComputedStyle(document.documentElement);
+  var ink3=cs.getPropertyValue('--ink-3').trim(),line=cs.getPropertyValue('--line').trim(),ink=cs.getPropertyValue('--ink').trim();
+  for(var v=1;v<=5;v+=1){g.appendChild(el('line',{x1:X(v),x2:X(v),y1:T,y2:H-B,stroke:line,'stroke-width':1}));
+    var t=el('text',{x:X(v),y:H-B+18,'text-anchor':'middle','font-size':11,fill:ink3});t.textContent=v;g.appendChild(t);}
+  for(var w=0;w<=8;w+=1){g.appendChild(el('line',{x1:L,x2:W-R,y1:Y(w),y2:Y(w),stroke:line,'stroke-width':1}));
+    var t2=el('text',{x:L-10,y:Y(w)+4,'text-anchor':'end','font-size':11,fill:ink3});t2.textContent=w;g.appendChild(t2);}
+  var ax=el('text',{x:(L+W-R)/2,y:H-14,'text-anchor':'middle','font-size':11,fill:ink3,'letter-spacing':'.08em'});ax.textContent='FORCE DE L\'ACTIF QUI COMPOSE, SELON LE JUGE (1 À 5)';g.appendChild(ax);
+  var ay=el('text',{x:14,y:(T+H-B)/2,'text-anchor':'middle','font-size':11,fill:ink3,'letter-spacing':'.08em',transform:'rotate(-90 14 '+((T+H-B)/2)+')'});ay.textContent='QUESTIONS PASSÉES, SUR 8';g.appendChild(ay);
+  var cols={1:'var(--s3)',2:'var(--s2)',3:'var(--s1)'};
+  var tip=document.getElementById('tip'),wrap=document.getElementById('bubble');
+  var left={}, below={}, above={5:1};
+  data.slice().sort(function(a,b){return b.price-a.price}).forEach(function(d){
+    var r=6+Math.sqrt(d.price)*1.2;
+    var c=el('circle',{cx:X(d.a),cy:Y(d.q),r:r,fill:cols[d.fam],'fill-opacity':.8,stroke:'var(--surface)','stroke-width':2,tabindex:0});
+    var lab=el('text',{x:X(d.a),y:Y(d.q)+4,'text-anchor':'middle','font-size':10,'font-weight':600,fill:'#fff','pointer-events':'none'});
+    lab.textContent=String(d.n).padStart(2,'0');
+    var name=el('text',{x:X(d.a)+r+5,y:Y(d.q)+4,'font-size':11.5,fill:ink,'font-family':'Bricolage Grotesque, Helvetica Neue, Arial, sans-serif','font-weight':600,'pointer-events':'none'});
+    name.textContent=d.name;
+    if(left[d.n]){name.setAttribute('x',X(d.a)-r-5);name.setAttribute('text-anchor','end');}
+    if(below[d.n]){name.setAttribute('x',X(d.a));name.setAttribute('y',Y(d.q)+r+13);name.setAttribute('text-anchor','middle');}
+    if(above[d.n]){name.setAttribute('x',X(d.a));name.setAttribute('y',Y(d.q)-r-6);name.setAttribute('text-anchor','middle');}
+    function show(){tip.innerHTML='<b>'+String(d.n).padStart(2,'0')+' · '+d.name+'</b>'+d.d+'<br>Actif '+Math.round(d.a)+'/5 · filtre '+d.q+'/8<br>Revenu estimé à 24 mois : '+d.price+' k$ par mois';
+      var bb=wrap.getBoundingClientRect(),pt=c.getBoundingClientRect();
+      tip.style.left=Math.min(pt.left-bb.left+r+12,bb.width-280)+'px';tip.style.top=(pt.top-bb.top-10)+'px';tip.style.opacity=1;}
+    function hide(){tip.style.opacity=0}
+    c.addEventListener('mouseenter',show);c.addEventListener('mousemove',show);c.addEventListener('mouseleave',hide);c.addEventListener('focus',show);c.addEventListener('blur',hide);
+    c.addEventListener('click',function(){location.hash='#idee-'+d.n});c.style.cursor='pointer';
+    g.appendChild(c);g.appendChild(lab);g.appendChild(name);
+  });
+  var links=[].slice.call(document.querySelectorAll('nav.rail a'));
+  var map={};links.forEach(function(a){var id=a.getAttribute('href').slice(1);map[id]=a});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.remove('on')});var a=map[e.target.id];if(a)a.classList.add('on');}})},{rootMargin:'-20% 0px -70% 0px'});
+    Object.keys(map).forEach(function(id){var s=document.getElementById(id);if(s)io.observe(s)});
+  }
+})();
+</script>
