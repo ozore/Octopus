@@ -182,3 +182,85 @@ ports-terminaux-marinas et aquaculteurs-transformateurs). Recherches web utilis�
 3. Service ou abonnement de suivi d'envasement de marina entre deux relevés de dragage.
 4. Logiciel d'alerte précoce de proliférations algales nuisibles pour petits conchyliculteurs, abonnement
    commercial (2025).
+
+## Tour 2
+
+Verdict du tueur lu dans tueur.md, section Tour 1. Idée 1 : VIVANTE, à préciser. Idée 2 : MORTE, cause 1.
+Recherche web utilisée pour ce tour : 1 sur 1 autorisée.
+
+### Idée 1, précisée : rapport trimestriel de tendance d'envasement de bassin de marina
+
+Ce que le tueur a trouvé et que le dossier reconnaît : Navionics SonarChart Live et Garmin Quickdraw Contours
+transforment déjà, gratuitement, des passages sonar mono faisceau répétés en carte de profondeur mise à jour pour
+la navigation de plaisance. Le mécanisme technique de base (sonar répété agrégé en carte) n'est donc pas nouveau.
+
+Ce que ces deux outils ne font pas, vérifié cette recherche : leur donnée exige un bateau en mouvement avec un
+sondeur relié à un traceur ou téléphone compatible qui transmet en direct (source : support.garmin.com, page
+« What Devices, Sonar, Plotters Are Needed to Create SonarChart Live », consultée le 7 septembre 2026). Un bassin
+de marina privé est un plan d'eau fermé où la majorité des bateaux sont amarrés à leur poste et ne circulent pas ;
+les seuls passages en mouvement viennent des bateaux qui entrent ou sortent, pas d'une flotte de plaisanciers de
+passage comme sur un lac ou une baie publique. La densité de passages utiles à une carte de tendance fiable par
+quai reste donc probablement faible à l'intérieur d'un bassin fermé, ce qui est supposé (non mesuré directement)
+mais cohérent avec le mécanisme de collecte confirmé ci-dessus. Ni SonarChart Live ni Quickdraw ne produisent une
+date prédite d'atteinte du tirant d'eau minimal par quai, ni un document exploitable dans un dossier de permis de
+dragage aux autorités de Floride, puisque les deux sont des cartes de navigation grand public sans attribution de
+propriété de la donnée ni continuité garantie dans le temps pour un usage réglementaire.
+
+Qui pose le sonar et sur quel bateau, sans matériel posé par le fondateur : le bateau de service du chef de port
+(dockmaster), qui patrouille déjà le bassin chaque semaine pour l'entretien des postes, équipé d'un capteur
+sonar clipsable relié à une application téléphonique ; le personnel de la marina pose et retire lui même ce
+capteur sur son propre bateau de service. Le fondateur ne se déplace jamais en Floride ; il reçoit les journaux de
+passage par téléversement et produit le rapport de tendance et la date prédite à distance.
+
+Le point 4 du dossier (Tour 1) reste tel quel pour la preuve datée du calcul de tendance à partir de passages
+répétés (sphengineering.com, unmannedsystemstechnology.com, 2024 et 2025), en ajoutant que le rapprochement avec
+un usage de navigation de plaisance gratuit (Navionics, Garmin) est maintenant explicite et non plus supposé.
+
+Point 5 (acheteur), point 6 (population), point 7 (prix visé) et point 8 (qui détient la donnée, pourquoi le
+fondateur, coût de départ en année 3) restent ceux du Tour 1, complétés : le fondateur détient en plus la
+continuité d'un capteur posé sur un bateau interne à la marina, jamais sur des passages tiers imprévisibles comme
+Navionics ou Garmin, ce qui rend la couverture par quai fermé garantie plutôt qu'aléatoire.
+
+Point 9, occupant, complété : Navionics SonarChart Live et Garmin Quickdraw Contours s'ajoutent à ConnectedDredge
+et aux sociétés de relevé hydrographique. Les deux premiers font gratuitement le calcul technique pour la
+plaisance en eaux ouvertes et à fort trafic, pas la couverture garantie d'un bassin fermé à faible trafic ni la
+date prédite exploitable pour un dossier de permis.
+
+Point 10, pré mortem, mis à jour : 2031, la société est morte. Cause 1 toujours redoutée en premier, précisée :
+soit un opérateur de drone en service à la demande ajoute un forfait bon marché, soit un opérateur de marina
+utilise déjà SonarChart Live en interne comme proxy gratuit avant de payer 700 $US par trimestre. Vérification que
+cette deuxième variante n'est pas déjà réalisée aujourd'hui : aucune mention trouvée, dans les deux recherches de
+ce tour et du tour précédent, d'un opérateur de marina utilisant SonarChart Live ou Quickdraw comme substitut
+interne à un relevé de dragage ; reste un point à vérifier au tour suivant si le tueur le demande, faute de
+recherche supplémentaire disponible ce tour.
+
+Point 11, dix causes, mise à jour de la cause 1 uniquement (les neuf autres inchangées depuis le Tour 1) :
+1. Partielle, pas pleine : le mécanisme technique existe gratuitement pour la plaisance en eaux ouvertes
+   (Navionics, Garmin), mais pas la couverture garantie d'un bassin fermé à faible trafic, ni la date prédite, ni
+   le document de permis ; c'est la cause la plus proche de tuer l'idée si le tueur trouve qu'un opérateur de
+   marina utilise déjà ces outils en interne à cette fin.
+
+### Idée 2 : non régénérée
+
+Le tueur a raison sur le fait établi : Cefas coordonne pour la FSA et la FSS un programme hebdomadaire de test de
+biotoxines et de phytoplancton qui couvre l'Angleterre, et le Marine Institute d'Irlande publie depuis 2013 un
+bulletin hebdomadaire gratuit avec prévision à 3 à 5 jours pour les eaux irlandaises. Les trois acheteurs nommés
+au Tour 1 sont dans ces zones couvertes.
+
+La piste de régénération proposée par le tueur (affiner concession par concession le bulletin public avec
+l'historique de la sonde du producteur) a été examinée et n'est pas retenue, pour une raison structurelle et non
+seulement concurrentielle : en Angleterre, en Écosse et en Irlande, la fermeture réglementaire d'une exploitation
+conchylicole se décide par zone de production classée (le point de test), pas concession par concession. Un
+producteur ne peut ni continuer à récolter légalement si son risque local calculé est plus bas que la moyenne de
+zone pendant une fermeture de zone décrétée par l'autorité compétente, ni être fermé seul si sa lecture locale est
+pire alors que la zone reste ouverte. Un signal plus fin que le bulletin de zone n'ouvre donc aucune décision
+nouvelle et légale au producteur ; il resterait purement informatif, sans remplacer le test de laboratoire qui
+seul déclenche la fermeture. Cela retombe dans l'interdit du gabarit visant le gain de productivité ou de confort
+sans décision nouvelle, et dans la cause 3 de MEMOIRE-MORTS.md (l'acheteur n'a pas de ligne budgétaire justifiée)
+puisque le bulletin gratuit couvre déjà, au même horizon de 3 à 5 jours, la seule décision que le producteur peut
+réellement prendre. L'idée 2 n'est pas régénérée à ce tour.
+
+## Recherches effectuées ce tour (1 sur 1 autorisée)
+
+1. Navionics SonarChart Live Garmin Quickdraw, exigence de bateau en mouvement, absence de donnée en bassin de
+   marina privé.

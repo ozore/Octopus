@@ -34,5 +34,21 @@ l'idée 2.
   et sept ans d'historique) à un site neuf sans historique long est étiquetée supposée, pas vendue comme acquise ;
   à défendre explicitement si le tueur invoque la cause 5.
 
+## Tour 2 (verdict du tueur reçu, lu dans tueur.md section Tour 1)
+
+Idée 1 : VIVANTE, maintenue et précisée. Le tueur a trouvé que Navionics SonarChart Live et Garmin Quickdraw
+Contours font déjà gratuitement le calcul technique (sonar répété agrégé en carte) pour la navigation de
+plaisance. Précision ajoutée au dossier, recherche du tour (1 sur 1) : ces outils exigent un bateau en mouvement
+avec sondeur connecté, donc probablement peu fiables dans un bassin de marina fermé à faible trafic (supposé, non
+mesuré) ; ils ne donnent ni date prédite de tirant d'eau minimal ni document de permis. Qui pose le sonar :
+le bateau de service du chef de port, jamais le fondateur, qui reste à distance.
+
+Idée 2 : MORTE, cause 1 (Cefas/FSA/FSS en Angleterre, Marine Institute d'Irlande, bulletins hebdomadaires gratuits
+avec prévision à 3 à 5 jours, couvrant les trois acheteurs nommés). Non régénérée : la piste du tueur (affiner
+concession par concession) a été examinée et rejetée pour raison structurelle, pas seulement concurrentielle, la
+fermeture réglementaire se décide par zone de production classée, pas par concession, donc un signal plus fin
+n'ouvre aucune décision nouvelle et légale au producteur, et retombe dans la cause 3 (pas de ligne budgétaire
+justifiée au delà du bulletin gratuit déjà suffisant à l'horizon de décision réel).
+
 ## Attente
-En attente du verdict du tueur pour écrire la section « Tour 2 » (idées régénérées ou maintenues).
+En attente du verdict du tueur sur le Tour 2 (idée 1 seule en jeu désormais).

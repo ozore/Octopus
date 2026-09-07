@@ -130,3 +130,96 @@ Date : 7 septembre 2026. Generateur : modelisation-permis, passe 6.
        pris.
     10. Barreau 1 public ou grand compte : non, les trois acheteurs nommes sont des entreprises privees
         de taille petite a moyenne ; aucun port public, aucune agence, aucun grand compte nomme.
+
+## Tour 2
+
+### Idee 1 : Modeles hydrodynamiques loues, deja cales par site marin, pour dossiers de permis
+
+MAINTENUE, avec corrections sur les trois trous releves par le tueur (verification Deltares USA,
+precedent regulateur pour un calage automatise, source des donnees de terrain).
+
+1. **Ligne d'origine** : inchangee. #8 (registre bureaux-etudes). 31 a 112 $/heure au national, 29 a 75
+   $/heure a Houston en aout 2026, paye a un consultant ou une societe d'ingenierie.
+
+2. **Le trou** : inchange et renforce par la recherche du tour 2 (point 9 ci dessous) : l'ecart d'heures
+   expertes entre MIKE 21 (payant) et TELEMAC ou Delft3D (gratuits mais plus lents a mettre en place, a
+   mailler, a caler et a valider) reste reel, et aucun vendeur trouve, y compris Deltares, ne comble ce
+   trou par un modele deja construit et cale pour un site precis.
+
+3. **Le produit** : inchange. Un acces loue, par site marin precis, a un modele hydrodynamique deja
+   maille, cale et valide, livre avec son dossier de calage pret pour un permis.
+
+4. **Ce que fait l'IA**, corrige : le calage automatise et les modeles de substitution restent internes
+   au fondateur, pour accelerer la construction du modele ; le dossier remis au client et depose aupres
+   du regulateur suit la methode de validation classique deja acceptee dans ce secteur (comparaison des
+   series simulees et mesurees de maree et de courant, indicateurs d'ecart usuels), sans mention de la
+   maniere dont les parametres ont ete trouves. Vérifiée (source), sur la faisabilite technique
+   seulement : « A Fast AI Surrogate for Coastal Ocean Circulation Models » (2024) et la note technique
+   HESS 2025 sur le calage operationnel en zone pauvre en donnees, deja citees au tour 1. Supposée, et
+   dit honnetement comme telle : aucun precedent trouve d'un dossier de permis marin approuve par un
+   regulateur sur la base d'un modele explicitement presente comme cale par apprentissage automatique ;
+   le contournement retenu est de ne jamais presenter le calage comme automatise dans le dossier
+   depose, seulement le resultat valide selon la methode classique, ce qui rend ce point du regulateur
+   sans objet pour le produit vendu.
+
+5. **Acheteur du barreau 1** : inchange. Integral Consulting Inc., Cashman Dredging & Marine
+   Contracting Co., Blue Ocean Mariculture, memes raisons d'achat qu'au tour 1.
+
+6. **Population** : inchangee, au moins 20 entites nommees en trois categories (tour 1, point 6).
+
+7. **Prix vise** : inchange. Verification du tour 2 (point 9) : les pages Deltares USA a 850 et 1 200 $
+   sont des formations a la suite Delft3D FM (cours « Coastal Hydrodynamic Modeling » et « Coastal
+   Sediment Modeling »), pas un service de modelisation au mandat ni un modele deja cale ; elles
+   n'affaiblissent donc pas l'ecart de prix invoque au tour 1, elles ne sont pas un produit comparable.
+
+8. **Question 8 par mecanisme**, complete sur la source des donnees de terrain :
+   - Aujourd'hui, le modele cale reste chez le cabinet qui l'a construit pour un mandat (inchange, tour
+     1). Ajout sur les mesures de validation : les series de maree et de niveau d'eau proviennent, la
+     ou elles existent, des marégraphes permanents de la NOAA (National Oceanic and Atmospheric
+     Administration, agence federale americaine, reseau National Water Level Observation Network) et
+     des stations de courant du systeme PORTS (Physical Oceanographic Real Time System) sur les grands
+     chenaux et ports deja instrumentes ; ces donnees publiques ne couvrent pas un chenal de dragage
+     secondaire ou une zone d'elevage precise, ou une campagne de mesure locale (profileur de courant
+     ADCP pose sur site) est necessaire et n'existe pas au depart chez le fondateur.
+   - Le client louerait, il ne construirait pas (inchange). Ajout : quand aucune donnee publique ne
+     couvre le site, c'est le premier client qui finance la campagne de mesure locale (sous traitee a
+     un prestataire de releves marins, cout deja courant dans un dossier de permis), et le contrat de
+     licence etend la meme clause de propriete du point 7 (tour 1) au jeu de mesures ainsi obtenu : le
+     fondateur le garde, le revend integre au modele aux demandeurs suivants sur ce meme site, ce qui
+     finance le cout de la campagne que chaque nouveau demandeur payait seul jusqu'ici. Un site sans
+     donnee publique et sans premier client pret a payer la campagne reste hors de la population
+     vendable au depart, ce que le dossier reconnait plutot que de le supposer resolu.
+   - En annee 3 (inchange, renforce) : le cout de depart couvre maintenant aussi la perte d'acces aux
+     mesures de terrain deja payees par le client ou son predecesseur sur ce site, en plus du dossier de
+     calage deja accepte par le regulateur.
+   Ajout de vigilance retenu du tueur, hors gabarit strict mais integre a la licence : une clause
+   d'entiercement (escrow) du maillage, des parametres de calage et du jeu de mesures aupres d'un tiers,
+   liberee au client si le fondateur cesse son activite, pour couvrir le precedent SeaDeep (memoire,
+   section B) ou les clients d'un fournisseur ferme perdent l'acces au modele deja accepte.
+
+9. **Occupant le plus proche**, verification du tour 2 : RPS Group reste l'occupant le plus proche
+   (inchange, tour 1). Recherche demandee sur Deltares USA Inc. : les pages « Coastal Hydrodynamic
+   Modeling » (1 200 $) et « Coastal Sediment Modeling » (850 $), deltares-usa.us, sont des cours de
+   formation a la suite Delft3D FM (maillages structures et non structures en 1D, 2D, 3D pour la
+   premiere ; transport sedimentaire et morphodynamique avec le module D Morphology pour la seconde),
+   pas un mandat de modelisation ni un modele deja construit et cale pour un site. Deltares USA n'est
+   donc pas un occupant du barreau 1 ; DHI reste loueur de logiciel (« Hydrodynamics Subscription
+   Package », minimum deux mois), pas fournisseur de modele deja cale.
+
+10. **Pre-mortem** : 2031, la societe est morte. Cause redoutee numero 1, inchangee du tour 1 (memoire,
+    cause A1) : un editeur finance (DHI ou Deltares) lance sa propre bibliotheque de modeles cales en
+    abonnement. Verification tour 1 maintenue et renforcee par la recherche du tour 2 : ni DHI (location
+    de logiciel) ni Deltares (cours de formation) ne vendent aujourd'hui une bibliotheque de modeles
+    deja cales par site revendue a plusieurs clients successifs ; la cause n'est pas realisee
+    aujourd'hui.
+
+11. **Les dix causes de mort**, mises a jour :
+    1 a 4, 6 a 10 : inchangees du tour 1 (point 11), toujours non realisees au vu des recherches du
+    tour 1 et du tour 2.
+    5. Capacite supposee promue en fait, corrige apres le tueur : la faisabilite technique du calage
+       automatise reste vérifiée (source), mais l'acceptation par un regulateur d'un dossier
+       explicitement presente comme cale par apprentissage automatique n'a pas de precedent trouve ;
+       dit honnetement comme « supposée » au point 4, et neutralise par un choix de produit, pas par une
+       promesse : le calage automatise reste un outil interne, le dossier depose suit la methode de
+       validation classique deja acceptee, donc cette cause ne s'applique plus au produit tel que
+       vendu.
