@@ -68,107 +68,62 @@ importante consacrée à ce travail manuel : coordinateur de préparation aux ur
 coordinateur hasmat/réponse d'urgence ~73 668 $US/an en moyenne, technicien de réponse aux
 déversements 43-54 k$US/an (**vérifiée**, ZipRecruiter, Glassdoor, sph.washington.edu).
 
-## (b) Cinq candidats
+## (b) Cinq candidats (12 lignes maximum chacun)
 
-### 1. Copilote de rédaction et de mise à jour des plans d'urgence réglementaires
-Problème : FRP/VRP (OPA90) et plans Polmar-Terre sont volumineux, techniques, soumis à 4 agences
-(EPA/USCG/PHMSA/BSEE) et doivent être tenus à jour en continu (**vérifiée**, jensenhughes.com).
-Acheteur : responsable HSE/conformité d'une raffinerie, d'un terminal ou d'une STEP ; en France,
-Cedre facture déjà la rédaction de tels plans pour des industriels (**vérifiée**, cedre.fr).
-Dépense actuelle : cabinets spécialisés (Witt O'Brien's, Gallagher Marine Systems, Jensen Hughes,
-T&T Salvage) facturent la rédaction/mise à jour ; coûts périphériques déjà chiffrés en (a).
-Produit : un agent qui lit le site, l'historique d'incidents et le règlement en vigueur, puis
-rédige/actualise le plan et signale les écarts avant l'inspection.
-IA : LLM à contexte long combinant texte réglementaire (33 CFR, 40 CFR, Légifrance) et données de
-site pour générer un document structuré et le corriger à chaque changement de règle — impossible
-avant 2024 faute de modèles tenant un raisonnement réglementaire cohérent sur des centaines de
-pages avec une sortie juridiquement structurée (**supposée**).
-Données exploitables : plans déjà déposés, textes réglementaires publics, rapports d'incidents
-(**vérifiée**, sources ci-dessus). Protocole existant : structure imposée par 33 CFR 154/OPA90 et
-l'instruction Polmar de 2006 (**vérifiée**, Légifrance). Existant : cabinets humains (payant, non
-IA) ; logiciels EHS génériques type check-list (Enablon, Intelex, Cority) non génératifs
-(**supposée**, non revérifiée cette session). Retour annuel : recertification triennale + mise à
-jour à chaque changement de règle, d'équipement ou de personnel clé, exercice annuel obligatoire.
+### 1. Copilote de rédaction et de mise à jour des plans d'urgence réglementaires (FRP/VRP/Polmar)
+- Acheteur nommé : responsable HSE/conformité d'une raffinerie, d'un terminal ou d'une STEP ; en France, Cedre facture déjà cette rédaction pour des industriels (**vérifiée**, cedre.fr).
+- Problème : FRP/VRP (OPA90) et plans Polmar-Terre sont volumineux, régis par 4 agences US (EPA/USCG/PHMSA/BSEE), à tenir à jour en continu (**vérifiée**, jensenhughes.com).
+- Dépense actuelle : cabinets spécialisés (Witt O'Brien's, Gallagher Marine Systems, Jensen Hughes, T&T Salvage) facturent la rédaction ; coûts périphériques déjà chiffrés : ~66 102 $US/an de couverture OSRO, ~992 $US/an de drills QI (**vérifiée**, regulations.gov).
+- Produit en une phrase : un agent qui lit le site, l'historique d'incidents et le règlement en vigueur, rédige/actualise le plan et signale les écarts avant l'inspection.
+- IA et pourquoi impossible avant 2024 : LLM à contexte long combinant règlement (33 CFR/40 CFR/Légifrance) et données de site pour générer un document structuré et le corriger à chaque changement de règle — aucun modèle avant 2024 ne tenait un tel raisonnement réglementaire sur des centaines de pages avec sortie structurée (**supposée**).
+- Données exploitables : plans déjà déposés, textes réglementaires publics, rapports d'incidents (**vérifiée**).
+- Protocole/seuil existant : structure imposée par 33 CFR 154/OPA90 et l'instruction Polmar du 11/01/2006 (**vérifiée**, Légifrance).
+- Existant gratuit/payant : cabinets humains (payant, non IA) ; logiciels EHS génériques type check-list — Enablon, Intelex, Cority (**supposée**, non revérifiée cette session).
+- Pourquoi il revient l'année suivante : recertification triennale, mise à jour à chaque changement de règle/équipement/personnel, exercice annuel obligatoire.
 
 ### 2. Générateur de rapports après-exercice (AAR) et suivi des actions correctives
-Problème : les OI/OSRO et exploitants doivent conduire des exercices annuels sous le régime PREP
-(National Preparedness for Response Exercise Program, programme fédéral américain de normes
-d'exercices) — tabletop, déploiement d'équipement, notification — et produire un rapport
-d'évaluation après chacun ; au Canada, exercices annuels/biennaux exigés par Transports Canada
-(**vérifiée** pour le régime canadien et l'existence du programme PREP citée par les cabinets de
-conseil ; **supposée** pour le contenu exact du rapport, PDF PREP illisible par l'outil cette
-session). Acheteur nommé : WCMRC/ECRC (exercice à ~200 participants et 18 navires observé pour
-WCMRC) et tout titulaire de plan FRP/VRP (**vérifiée**, wcmrc.com, spillconsult.com). Dépense
-actuelle : temps interne + cabinets conseil (ex. SpillConsult, observé organisant un exercice
-multi-agences pour WCMRC) (**vérifiée**, spillconsult.com). Produit : une IA qui regarde les
-enregistrements vidéo/audio/journaux radio de l'exercice et rédige le rapport conforme, avec les
-actions correctives. IA : modèles multimodaux transcrivant et croisant vidéo, audio et journaux de
-communication pour produire un rapport structuré référençant les critères réglementaires —
-impossible avant 2024 faute de modèles multimodaux longs capables de ce croisement (**supposée**).
-Données exploitables : enregistrements et journaux d'exercices passés, déjà produits mais peu
-réexploités. Protocole existant : grille PREP (**vérifiée**, existence confirmée, contenu détaillé
-non vérifié). Existant payant : cabinets conseil humains ; pas d'outil IA dédié trouvé (**supposée**,
-absence de résultat ≠ absence de produit). Retour annuel : au moins un exercice obligatoire par an.
+- Acheteur nommé : OI/OSRO (Organisme d'Intervention/Oil Spill Removal Organization) — WCMRC/ECRC (exercice observé à ~200 participants et 18 navires) — et tout titulaire de plan FRP/VRP (**vérifiée**, wcmrc.com).
+- Problème : exercices annuels obligatoires (régime PREP américain — National Preparedness for Response Exercise Program —, exercices annuels/biennaux canadiens) suivis d'un rapport d'évaluation (**vérifiée** pour l'obligation ; **supposée** pour le contenu exact du rapport, PDF PREP illisible par l'outil cette session).
+- Dépense actuelle : temps interne + cabinets conseil (ex. SpillConsult, qui a organisé un exercice multi-agences pour WCMRC) (**vérifiée**, spillconsult.com).
+- Produit en une phrase : une IA qui regarde les enregistrements vidéo/audio/journaux radio de l'exercice et rédige le rapport conforme avec les actions correctives.
+- IA et pourquoi impossible avant 2024 : modèles multimodaux transcrivant et croisant vidéo, audio et journaux de communication pour produire un rapport référençant les critères réglementaires — pas de modèle multimodal assez fiable pour ce croisement avant 2024 (**supposée**).
+- Données exploitables : enregistrements et journaux d'exercices passés, déjà produits mais peu réexploités.
+- Protocole existant : grille PREP (existence **vérifiée** ; contenu détaillé non vérifié cette session).
+- Existant payant/gratuit : cabinets conseil humains ; aucun outil IA dédié trouvé (**supposée**, absence de résultat ≠ absence de produit).
+- Pourquoi il revient l'année suivante : au moins un exercice obligatoire par an, donc un rapport par an minimum.
 
-### 3. Détection et documentation automatique des nappes et rejets
-Problème : la surveillance des rejets d'hydrocarbures repose largement sur des survols et une
-inspection visuelle manuelle. Acheteur : OI/OSRO, autorités portuaires, exploitants de terminaux.
-Dépense actuelle : non chiffrée précisément cette session (**supposée**) ; le marché salarial de
-la réponse aux déversements (43-54 k$US/an par technicien, voir a) suggère un poste de coût humain
-récurrent. Produit : un service de surveillance continue qui détecte une nappe ou un rejet anormal
-et génère automatiquement le rapport d'incident. IA : fusion multimodale d'imagerie satellite SAR
-(Synthetic Aperture Radar), de caméras de quai et de données AIS (Automatic Identification System,
-suivi des navires) par des modèles de vision pré-entraînés adaptables sans réentraînement lourd par
-site — des solutions ponctuelles existent déjà (détection seule), la nouveauté plausible est
-l'intégration bout-en-bout jusqu'au rapport réglementaire rédigé (**supposée**). Données
-exploitables : imagerie satellite et archives de survols déjà collectées par les OI. Protocole
-existant : seuils de déclenchement définis par les plans d'urgence eux-mêmes (candidat 1).
-Existant : OliOil.iO (Finlande, navires autonomes de détection/nettoyage), défi « AI Against Oil
-Spills » de FruitPunch AI avec Rijkswaterstaat (agence néerlandaise des travaux publics et de la
-gestion de l'eau) visant à remplacer l'inspection manuelle, tutoriels/jeux de données ouverts
-Roboflow pour la segmentation par vision — outils de détection existent, peu vont jusqu'au rapport
-de conformité (**vérifiée** pour l'existence de ces initiatives, **supposée** pour l'absence
-d'intégration complète). Retour annuel : abonnement de surveillance continue, pas un projet ponctuel.
+### 3. Détection et documentation automatique des nappes et rejets, jusqu'au rapport de conformité
+- Acheteur : OI/OSRO, autorités portuaires, exploitants de terminaux.
+- Problème : la surveillance des rejets repose largement sur des survols et une inspection visuelle manuelle.
+- Dépense actuelle : non chiffrée précisément cette session (**supposée**) ; le marché salarial de la réponse aux déversements (43-54 k$US/an par technicien, **vérifiée**) suggère un poste de coût humain récurrent.
+- Produit en une phrase : un service de surveillance continue qui détecte une nappe/un rejet anormal et génère automatiquement le rapport d'incident.
+- IA et pourquoi impossible avant 2024 : fusion multimodale d'imagerie satellite SAR (Synthetic Aperture Radar), de caméras de quai et de données AIS (Automatic Identification System) par des modèles de vision adaptables sans réentraînement lourd par site ; la nouveauté plausible est l'intégration bout-en-bout jusqu'au rapport rédigé, la détection seule existant déjà (**supposée**).
+- Données exploitables : imagerie satellite et archives de survols déjà collectées par les OI.
+- Protocole existant : seuils de déclenchement définis par les plans d'urgence eux-mêmes (candidat 1).
+- Existant : OliOil.iO (Finlande, navires autonomes), défi « AI Against Oil Spills » de FruitPunch AI avec Rijkswaterstaat (agence néerlandaise des travaux publics et de la gestion de l'eau), tutoriels/jeux de données ouverts Roboflow — la détection existe, l'intégration au rapport de conformité semble absente (**vérifiée** pour l'existence des initiatives, **supposée** pour l'absence d'intégration).
+- Pourquoi il revient l'année suivante : abonnement de surveillance continue, pas un projet ponctuel.
 
-### 4. Copilote d'instruction des réclamations d'indemnisation (FIPOL / SOPF)
-Problème : chaque sinistre déclenche des dizaines de milliers de réclamations individuelles
-(pêcheurs, commerces, municipalités) instruites en grande partie à la main, sur plusieurs années
-(Princess Empress : 40 807 réclamations, encore actives après ~3 ans ; Bow Jubail : 19/44 payées
-après plus de 7 ans) (**vérifiée**, spillcontrol.org 19/11/2025). Acheteur nommé : secrétariat du
-FIPOL (budget administratif 2026 de £5,9 M) et l'Administrateur du SOPF canadien, ainsi que les
-assureurs P&I (Protection and Indemnity, mutuelles de responsabilité civile maritime) impliqués en
-amont (**vérifiée** pour FIPOL/SOPF, **supposée** pour l'implication P&I non revérifiée). Dépense
-actuelle : effectifs du secrétariat + processus judiciaire pour les dossiers non réglés à l'amiable,
-pouvant durer « plusieurs années » (**vérifiée**, iopcfunds.org). Produit : un copilote qui lit
-chaque dossier de réclamation (factures, preuves de perte) et vérifie sa conformité au manuel de
-réclamations avant transmission à l'évaluateur humain. IA : extraction multimodale de documents
-(OCR + raisonnement) confrontée aux critères du manuel de réclamations — impossible avant 2024
-faute de modèles capables de raisonnement documentaire fiable à ce volume (**supposée**). Données
-exploitables : manuel de réclamations IOPC publié, dossiers historiques par sinistre. Protocole
-existant : IOPC Funds Claims Manual (PDF non lisible par l'outil cette session, voir Lacunes)
-(**vérifiée** pour son existence, **supposée** pour son contenu détaillé). Existant : aucun outil
-IA dédié trouvé (**supposée**). Retour annuel : chaque nouveau sinistre relance un cycle pluriannuel.
+### 4. Copilote d'instruction des réclamations d'indemnisation (FIPOL/SOPF)
+- Acheteur nommé : secrétariat du FIPOL (budget administratif 2026 de £5,9 M) et l'Administrateur du SOPF canadien (**vérifiée**, spillcontrol.org, tc.canada.ca).
+- Problème : chaque sinistre déclenche des dizaines de milliers de réclamations individuelles instruites en grande partie à la main sur plusieurs années — Princess Empress : 40 807 réclamations encore actives après ~3 ans ; Bow Jubail : 19/44 payées après plus de 7 ans (**vérifiée**, spillcontrol.org 19/11/2025).
+- Dépense actuelle : effectifs du secrétariat + procédures judiciaires pour les dossiers non réglés à l'amiable, pouvant durer « plusieurs années » (**vérifiée**, iopcfunds.org).
+- Produit en une phrase : un copilote qui lit chaque dossier (factures, preuves de perte) et vérifie sa conformité au manuel de réclamations avant transmission à l'évaluateur humain.
+- IA et pourquoi impossible avant 2024 : extraction multimodale de documents (OCR + raisonnement) confrontée aux critères du manuel de réclamations — pas de modèle assez fiable pour ce raisonnement documentaire à ce volume avant 2024 (**supposée**).
+- Données exploitables : manuel de réclamations IOPC publié, dossiers historiques par sinistre.
+- Protocole existant : IOPC Funds Claims Manual (existence **vérifiée** ; PDF illisible par l'outil cette session, contenu détaillé **supposée**).
+- Existant : aucun outil IA dédié trouvé (**supposée**).
+- Pourquoi il revient l'année suivante : chaque nouveau sinistre relance un cycle pluriannuel de réclamations.
 
-### 5. Prévision et notification automatique CSO/SSO et HAB pour municipalités côtières
-Problème : obligation de rapport sous 24 h et d'avis public à chaque débordement d'égout, et
-décision de fermeture de plage/zone de pêche lors d'une efflorescence d'algues nuisibles (HAB),
-avec une couverture de prévision NOAA limitée à des « régions sélectionnées » (**vérifiée**, NC
-DEQ, mass.gov, coastalscience.noaa.gov). Acheteur nommé : services d'eau/égouts des villes sous
-décret de consentement (Kansas City 2,5 Md$/25 ans, Houston 9 Md$, Cleveland 3 Md$, voir a) et
-agences de l'eau côtières. Dépense actuelle : essentiellement des infrastructures physiques
-(Md$), la part logicielle/prévision n'est pas isolée dans les sources trouvées (**supposée** pour
-la ventilation). Produit : un service qui prévoit le débordement avant la pluie et rédige/diffuse
-l'avis public conforme dans la langue et le canal requis. IA : modèles de prévision (radar de
-pluie + capteurs réseau) couplés à un LLM générateur qui rédige et diffuse automatiquement l'avis
-réglementaire multicanal (site, presse, SMS) dans le délai légal — impossible avant 2024 faute de
-génération de texte réglementaire fiable en temps réel à partir d'une sortie de modèle prédictif
-(**supposée**). Données exploitables : historiques de débordement, permis NPDES, imagerie
-satellite de couleur de l'eau pour les HAB. Protocole existant : seuils NPDES de déclaration et
-grilles de fermeture sanitaire état par état (**vérifiée**, NC DEQ, mass.gov). Existant : NOAA HAB
-Monitoring System (gratuit, couverture partielle) ; pas d'équivalent trouvé pour la génération
-automatique d'avis CSO/SSO (**vérifiée** pour NOAA, **supposée** pour l'absence côté CSO/SSO).
-Retour annuel : permis NPDES pluriannuel, saison des pluies et saison des algues qui reviennent
-chaque année, jalons de rapport du décret de consentement.
+### 5. Prévision et notification automatique des débordements d'égouts (CSO/SSO) et des HAB pour municipalités côtières
+- Acheteur nommé : services d'eau/égouts des villes sous décret de consentement (Kansas City 2,5 Md$/25 ans, Houston 9 Md$, Cleveland 3 Md$) et agences de l'eau côtières (**vérifiée**, DOJ, NEORSD, Louisville MSD).
+- Problème : rapport sous 24 h et avis public à chaque débordement, décision de fermeture de plage/zone de pêche lors d'une efflorescence d'algues nuisibles (HAB), prévision NOAA limitée à des « régions sélectionnées » (**vérifiée**, NC DEQ, mass.gov, coastalscience.noaa.gov).
+- Dépense actuelle : essentiellement des infrastructures physiques (Md$) ; la part logicielle/prévision n'est pas isolée dans les sources trouvées (**supposée** pour la ventilation).
+- Produit en une phrase : un service qui prévoit le débordement avant la pluie et rédige/diffuse l'avis public conforme dans la langue et le canal requis.
+- IA et pourquoi impossible avant 2024 : modèles de prévision (radar de pluie + capteurs réseau) couplés à un LLM qui rédige et diffuse l'avis réglementaire multicanal (site, presse, SMS) dans le délai légal — pas de génération fiable de texte réglementaire en temps réel à partir d'une sortie prédictive avant 2024 (**supposée**).
+- Données exploitables : historiques de débordement, permis NPDES, imagerie satellite de couleur de l'eau pour les HAB.
+- Protocole existant : seuils NPDES de déclaration et grilles de fermeture sanitaire état par état (**vérifiée**, NC DEQ, mass.gov).
+- Existant : NOAA HAB Monitoring System (gratuit, couverture partielle) ; pas d'équivalent trouvé pour la génération automatique d'avis CSO/SSO (**vérifiée** pour NOAA, **supposée** pour l'absence côté CSO/SSO).
+- Pourquoi il revient l'année suivante : permis NPDES pluriannuel, saison des pluies et saison des algues qui reviennent chaque année, jalons de rapport du décret de consentement.
 
 ## (c) Références (URL, date de consultation : 2026-09-07)
 

@@ -12,7 +12,7 @@ armateurs), assureurs coque (H&M — Hull & Machinery) et cargaison, affréteurs
   de plus de 100 GT (GT = jauge brute) engagés dans le commerce international (chiffre généralement cité
   par le secteur — **estimation, non revérifiée cette session**, quota WebSearch épuisé avant d'avoir pu
   la confirmer). Ce sont eux qui paient droits portuaires, amendes, primes et abonnements ci-dessous.
-- **Sociétés de classification** (DNV, ABS — American Bureau of Shipping, BV — Bureau Veritas,
+- **Sociétés de classification** (DNV — société de classification d'origine norvégienne, ABS — American Bureau of Shipping, BV — Bureau Veritas,
   Lloyd's Register, ClassNK, RINA…) : réunies dans l'IACS (International Association of Classification
   Societies), qui classe environ 90 % du tonnage mondial (**supposée**, connaissance générale du secteur,
   non revérifiée cette session). Elles vendent des notations (ex. bruit sous-marin) et des audits.
@@ -26,7 +26,9 @@ armateurs), assureurs coque (H&M — Hull & Machinery) et cargaison, affréteurs
   modulés jusqu'à -47 %/-23 % pour navires silencieux (Port de Vancouver) ; amendes NOAA (National
   Oceanic and Atmospheric Administration, agence américaine) pour survitesse en zone à baleines, non
   couvertes par l'assurance P&I standard (Gard) ; 300 à 640 €/tonne de CO2e de pénalité FuelEU Maritime
-  et quotas EU ETS (Emissions Trading System, marché carbone européen) à 75-85 €/tonne, soit des
+  (règlement européen imposant une trajectoire annuelle de réduction de l'intensité en gaz à effet de
+  serre — GES — de l'énergie utilisée à bord) et quotas EU ETS (Emissions Trading System, marché carbone
+  européen) à 75-85 €/tonne, soit des
   scénarios de 1,1 à 2,3 M€/an par navire moyen selon deux sources indépendantes ; nettoyages de coque
   non planifiés et refus d'escale liés au biofouling (encrassement biologique de la coque) ; 576
   conteneurs perdus en mer en 2024 et nouvelle obligation de déclaration à l'OMI (Organisation maritime
@@ -37,7 +39,7 @@ armateurs), assureurs coque (H&M — Hull & Machinery) et cargaison, affréteurs
 ### 1. AcoustiCert — certification continue du bruit sous-marin rayonné (URN)
 Problème : la certification « navire silencieux » (notations SILENT de DNV, équivalents BV/LR/ABS) repose sur un essai en mer ponctuel et coûteux (vérifiée : DNV a créé la première notation dès 2010, 5 notations SILENT existent — dnv.com).
 Acheteur nommé : armateurs faisant escale au Port de Vancouver — dépense actuelle : droits portuaires recalculés à chaque escale, écart de -47 % (EcoAction Gold) à -23 % (Bronze) selon le niveau de bruit (vérifiée, portvancouver.com/SAFETY4SEA).
-Produit (1 phrase) : un service qui écoute en continu les navires via les réseaux d'hydrophones déjà en place (JASCO Boundary Pass, Orcasound) et délivre une attestation de niveau de bruit sans essai dédié.
+Produit (1 phrase) : un service qui écoute en continu les navires via les réseaux d'hydrophones déjà en place (station JASCO — société d'acoustique sous-marine — à Boundary Pass, réseau communautaire Orcasound) et délivre une attestation de niveau de bruit sans essai dédié.
 IA : attribution navire↔signature acoustique par recoupement AIS (Automatic Identification System, transpondeur de position) + séparation de sources sonores en milieu multi-navires ; impossible avant 2024 faute de modèles audio multimodaux assez robustes pour désenchevêtrer des signaux en environnement bruité sans jeu d'entraînement dédié.
 Données exploitables : flux hydrophones existants, AIS, bathymétrie.
 Protocole/seuil existant : notations SILENT (DNV) ; grille tarifaire EcoAction (Port de Vancouver).
@@ -79,11 +81,11 @@ Retour annuel : chaque incident déclenche une nouvelle déclaration ; obligatio
 Vérifié : chiffres WSC, date d'entrée en vigueur. Supposé : contenu exact du formulaire, absence réelle de concurrent (recherche non exhaustive).
 
 ### 5. ArbitrageCarbone-IA — copilote agentique CII/EU ETS/FuelEU
-Problème : cumul dès 2026 de trois régimes carbone — CII (Carbon Intensity Indicator, notation annuelle A-E de l'OMI), EU ETS (quotas EUA — European Union Allowance — à 75-85 €/t), FuelEU Maritime (pénalité 300-400 €/tCO2e selon ShipFinex, jusqu'à 640 €/t selon une autre source, méthodologies non harmonisées) ; rapports MRV vérifiés dus au 31 janvier 2026, attestations dues en avril 2026 (vérifiée, OceanScore/ShipFinex).
+Problème : cumul dès 2026 de trois régimes carbone — CII (Carbon Intensity Indicator, notation annuelle A-E de l'OMI), EU ETS (quotas EUA — European Union Allowance — à 75-85 €/t), FuelEU Maritime (pénalité 300-400 €/tCO2e selon ShipFinex, jusqu'à 640 €/t selon une autre source, méthodologies non harmonisées) ; rapports MRV (Monitoring, Reporting, Verification) vérifiés dus au 31 janvier 2026, attestations dues en avril 2026 (vérifiée, OceanScore/ShipFinex).
 Acheteur nommé : armateurs et gestionnaires de flotte trafiquant vers/dans l'UE — dépense actuelle : scénario chiffré à 2,1-2,3 M€/an de pénalités pour un porte-conteneurs moyen, ou 1,1-1,8 M€/an de surcoût biocarburant, ou 1,5-5 M€ de rétrofit amorti en 18-24 mois (deux sources convergentes).
 Produit (1 phrase) : un agent qui lit les chartes-parties (contrats d'affrètement) pour savoir qui paie quoi, simule en continu vitesse/route/carburant/pooling et recommande l'option la moins coûteuse.
 IA : extraction de clauses contractuelles en langage libre (LLM) + prévision/optimisation multi-objectif sur cours EUA et primes biocarburant ; impossible avant les LLM pour lire à grande échelle des charte-parties hétérogènes non structurées.
-Données exploitables : rapports MRV (Monitoring, Reporting, Verification) déjà collectés, charte-parties, cours spot EUA/biocarburant.
+Données exploitables : rapports MRV déjà collectés, charte-parties, cours spot EUA/biocarburant.
 Protocole/seuil existant : CII, EU ETS, FuelEU Maritime — tous déjà écrits par l'OMI/l'UE.
 Existant payant : OceanScore (Compliance Manager/Forecaster/Pooling Marketplace), MarineAware, qaship.net, cse-net.org — marché déjà validé mais surtout des tableaux de bord, pas d'agent décisionnel autonome confirmé (supposé, absence de mention seulement).
 Retour annuel : seuils CII et trajectoire FuelEU se durcissent chaque année ; vérification annuelle obligatoire.
