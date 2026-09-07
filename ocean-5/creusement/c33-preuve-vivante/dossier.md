@@ -28,9 +28,10 @@ Mais le terrain n'est pas vide :
   humain, sur le corail, pas sur l'huître ni le rivage vivant (vérifié, ICCV 2021, openaccess.thecvf.com).
   Aucune extension huître ou rivage vivant identifiée. Des outils académiques de détection de zostère par
   apprentissage profond existent aussi (section 3), publiés en recherche, non commercialisés.
-- ReefCloud (AIMS, agence publique australienne) et Restor (plateforme mondiale de suivi de sites)
-  restent, comme déjà établi dans le dossier de tendance, hors du périmètre huître ou rivage vivant
-  américain : ReefCloud vérifié sur le corail seulement ; Restor non vérifié cette session.
+- ReefCloud (Australian Institute of Marine Science, AIMS, agence publique australienne) et Restor
+  (plateforme mondiale de suivi de sites) restent, comme déjà établi dans le dossier de tendance, hors du
+  périmètre huître ou rivage vivant américain : ReefCloud vérifié sur le corail seulement ; Restor non
+  vérifié cette session.
 - Ecosystem Investment Partners (EIP) et EarthBalance, sponsors cités par la mission, opèrent en Floride
   surtout des banques de zones humides d'eau douce (Boran Ranch, Peace River, Horse Creek), suivi fait en
   interne par leurs écologistes (vérifié, ecosystempartners.com, earthbalance.com). Aucune banque huître
@@ -64,14 +65,15 @@ maître d'œuvre) :
 3. Promoteur privé sous obligation de permis : catégorie confirmée, nom précis non trouvé cette session.
    La Floride impose des conditions de rivage vivant dans l'Environmental Resource Permit (ERP) de la
    Florida Department of Environmental Protection (FDEP, agence d'État), pour des promoteurs riverains
-   privés (mécanisme vérifié, University of Florida IFAS, publication SL481/SS694). Deux requêtes et une
+   privés (mécanisme vérifié, guide de l'University of Florida, publication SL481/SS694). Deux requêtes et une
    tentative sur un plan précis (San Diego, zostère) n'ont pas donné de nom d'entreprise : lacune
    assumée. Premier appel de vente à commencer par une recherche de permis ERP publiés par comté.
 
 Différence de contexte, Canada : le régime comparable (Pêches et Océans Canada, DFO, Fisheries and Fish
 Habitat Protection Program, FFHPP) impose au promoteur de surveiller et rapporter ses mesures de
-compensation, mais sans marché de crédits public comparable à RIBITS ni caution financière obligatoire
-identifiée cette session (vérifié partiellement, dfo-mpo.gc.ca). L'obligation canadienne est plus
+compensation, mais sans marché de crédits public comparable à RIBITS (registre fédéral américain de
+banques de compensation, section 1) ni caution financière obligatoire identifiée cette session
+(vérifié partiellement, dfo-mpo.gc.ca). L'obligation canadienne est plus
 discrétionnaire, moins standardisée, sans marché de prix comparable au marché américain (2700 points de
 prix dans 39 États, dossier de tendance). Cette échelle reste distincte d'une piste antérieure du
 fondateur sur l'habitat de poisson au Canada : elle vise le marché américain, structuré par un standard
@@ -180,9 +182,8 @@ Trois causes, classées par probabilité :
    interne avant que l'outil externe n'ait gagné assez de clients, car il détient déjà l'archive de photos
    et la relation de confiance. Signal avant coureur, dès 2027 : un cabinet de suivi côtier annonce un
    outil de comptage automatisé ou un partenariat vision par ordinateur.
-2. Deuxième cause : le marché des sponsors huître ou rivage vivant reste trop étroit (section 2, deux
-   banques côtières sur l'annuaire FAMB) pour la masse critique nécessaire à un actif difficile à
-   répliquer. Signal avant coureur : fin 2028, moins de cinq sites clients payants au total.
+2. Deuxième cause : le marché des sponsors huître ou rivage vivant reste trop étroit (section 2) pour la
+   masse critique d'un actif difficile à répliquer. Signal : fin 2028, moins de cinq sites clients payants.
 3. Troisième cause : les régulateurs continuent d'accepter les rapports manuels comme suffisants, et
    aucun sponsor ne paie plus cher qu'exigé, surtout si la libération de caution ne s'accélère pas en
    pratique malgré la règle des deux rapports consécutifs (vérifiée en texte, pas en pratique réelle sur
