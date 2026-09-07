@@ -58,3 +58,43 @@ Idée 2, Carnet Côtier :
   éducation, avant toute autre vérification.
 - Aucune question bloquante posée à l'utilisateur, conformément au brief (deux échecs de recherche auraient
   déclenché une reformulation ; non atteint ici).
+
+## Tour 2 (7 septembre 2026, même session)
+
+Lecture ajoutée : section « Tour 2 » de dossier.md uniquement (idée 1 régénérée « Courbe de Récif », idée 2 mise
+à jour « Carnet Côtier »), rien d'autre relu.
+
+Budget de recherche imposé par le coordinateur : au plus 2 WebSearch au total ce tour (une par point de
+vérification demandé). Deux recherches effectuées, aucune reformulation nécessaire.
+
+Requêtes et résultats :
+1. « Blue Flag criteria beach marina environmental education water quality monitoring public authority
+   requirement » : confirme quatre catégories de critères Blue Flag (eau, éducation, gestion environnementale,
+   sécurité/services) et 24 critères marina, mais la seule composante terrain clairement documentée est la
+   qualité de l'eau de baignade, typiquement surveillée et publiée par l'autorité publique et seulement affichée
+   par le site. Rien trouvé ne confirme qu'un critère Blue Flag précis porte sur l'état écologique des habitats
+   (récif, herbier), l'objet du produit. L'affirmation du générateur sur les 33 critères est donc partiellement
+   étayée seulement.
+2. « coral cover bleaching estimation non-standardized recreational diver video angle distance lighting accuracy
+   publication » : retrouve la même étude déjà citée (Mayfield et Dempsey, Oceans, MDPI, 24 décembre 2025) avec un
+   chiffre de précision non cité par le dossier jusqu'ici, 84 pour cent d'exactitude via CoralNet sur images de
+   plongeurs touristes, avec un biais documenté de sous détection du blanchissement. Capacité confirmée, datée,
+   appliquée à la tâche exacte, mais moins parfaite que ce que laissait entendre le dossier.
+
+Verdicts Tour 2 (détail dans tueur.md, section Tour 2) :
+- Idée 1, Courbe de Récif : VIVANTE. La réparation de la cause 4 (retrait de la détection de pratiques, clause de
+  gouvernance) tient. Points ouverts : cause 3 toujours « atténuée, pas éteinte » comme le dossier l'admet
+  lui même ; la partie du mécanisme de rétention fondée sur la densité du pool inter centres reste conditionnée à
+  ce que plusieurs centres du même site soient déjà abonnés, une masse critique non garantie pour les premiers
+  clients (mélange mécanisme/condition, à surveiller sans être une cause 7 pure).
+- Idée 2, Carnet Côtier : VIVANTE. La clause de gouvernance répare la cause 4 et le retrait de la détection de
+  mouillage répare la cause 5, comme le revendique le dossier. En revanche l'affirmation du dossier selon
+  laquelle les critères Blue Flag « exigent un suivi écologique de terrain réel » n'est confirmée que
+  partiellement par la recherche : la composante terrain la plus documentée (qualité de l'eau) semble déjà
+  assurée par l'autorité publique, pas par le site. La cause 3 déclarée « éteinte » par le générateur reste donc
+  ouverte pour moi ; à vérifier au tour 3 par une lecture directe du texte des 33 critères plutôt que des résumés
+  secondaires.
+
+Pour la suite : si un tour 3 régénère à nouveau, prioriser une recherche sur le texte primaire des critères Blue
+Flag (pas des résumés tiers) pour trancher la cause 3 de l'idée 2, et chercher si un cas réel de site à opérateur
+unique montre que le mécanisme de rétention de l'idée 1 tient sans la densité du pool.

@@ -106,3 +106,103 @@ Verdict : vivante faute d'occupant trouvé dans les deux recherches menées, mai
 tranchés par la recherche de ce tour (nature exacte de l'obligation Blue Flag annuelle, capacité de détection de
 l'usure de mouillage) plutôt que tuée par un fait établi. À rouvrir en priorité au tour 2 si le budget de
 recherche le permet.
+
+## Tour 2
+
+Régénérations reçues (dossier.md, section Tour 2) : Idée 1 devenue « Courbe de Récif », détection de pratiques
+retirée, seule reste la tendance récif et blanchissement mutualisée, prix abaissé à 150 à 250 USD/an, tout
+indicateur imputable reste privé à qui a filmé. Idée 2 « Carnet Côtier » confirmée, détection d'usure de mouillage
+retirée (remplacée par un archivage daté sans notation), prix ajusté à 350 à 800 EUR/an, le générateur affirme que
+les 33 critères Blue Flag exigent un suivi écologique annuel réel.
+
+Recherches menées ce tour (2 WebSearch, une par point imposé) :
+1. « Blue Flag criteria beach marina environmental education water quality monitoring public authority
+   requirement » : confirme quatre catégories de critères Blue Flag (qualité de l'eau, information et éducation
+   environnementales, gestion environnementale, sécurité et services), 24 critères pour les marinas. Mais la
+   partie « terrain » la plus concrètement documentée est la qualité de l'eau de baignade, affichée au moins une
+   fois par semaine ; ce indicateur correspond dans la plupart des pays (directive eaux de baignade en Europe) à
+   un suivi déjà réalisé et publié par l'autorité publique, que le site se contente d'afficher, pas à une mesure
+   écologique d'état des habitats (récif, herbier) commandée par le site lui même. La catégorie « gestion
+   environnementale » existe mais aucune source trouvée ne la précise jusqu'au niveau d'une preuve photographique
+   datée de couverture corallienne ou d'herbier. L'affirmation du générateur (« les 33 critères Blue Flag exigent
+   un suivi écologique annuel réel ») est donc partiellement confirmée (il existe bien plus que de l'éducation) et
+   partiellement non étayée (rien ne montre que le suivi exigé porte sur l'état des habitats plutôt que sur la
+   qualité de l'eau déjà surveillée ailleurs).
+2. « coral cover bleaching estimation non-standardized recreational diver video angle distance lighting accuracy
+   publication » : retrouve la même étude déjà citée en Tour 1 (Mayfield et Dempsey, Oceans, MDPI, revue en libre
+   accès du groupe MDPI, 24 décembre 2025, mdpi.com/2673-1924/7/1/1) avec un chiffre de précision non cité par le
+   dossier jusqu'ici : les images de plongeurs touristes traitées par CoralNet (plateforme d'annotation d'images
+   coralliennes assistée par IA) donnent une exactitude de 84 pour cent, avec un biais vers les faux négatifs de
+   blanchissement (le modèle a tendance à sous détecter le blanchissement réel). Autres sources trouvées
+   confirment un problème connu et distinct, propre aux photos prises à distance par des plongeurs non formés :
+   à plusieurs mètres, des structures tridimensionnelles peuvent apparaître comme de larges étendues de corail
+   vivant alors qu'un examen rapproché révèle un mélange de catégories. La capacité existe, est datée et publiée,
+   et s'applique à la tâche exacte (vidéo de plongée de loisir non standardisée), mais avec une précision connue
+   (84 pour cent) et un biais documenté (sous détection du blanchissement), plus précis que ce que citait le
+   dossier jusqu'ici (« comparable aux relevés professionnels » sans chiffre).
+
+### Idée 1, Courbe de Récif
+
+VIVANTE.
+
+- Cause 4 (preuve accusatrice) : réparée par le retrait de la détection de pratiques et par la clause de
+  gouvernance qui garde tout indicateur imputable privé à l'opérateur qui l'a filmé. La tendance neutre restante
+  (couverture, blanchissement) n'isole pas de responsable individuel quand plusieurs centres contribuent au même
+  site ; réserve : pour un site où un seul centre plonge, la courbe reste attribuable à lui seul, mais elle décrit
+  un phénomène écologique (blanchissement climatique notamment), pas une pratique fautive, donc la cause reste
+  largement éteinte.
+- Cause 3 (ligne budgétaire, question du coordinateur) : à 150 à 250 USD/an contre 60 à 140 USD/an payés à Green
+  Fins, le risque de perception de doublon reste réel. Le Green Fins Hub demeure une autoévaluation déclarative
+  sans image (confirmé en Tour 1, non recherché à nouveau ce tour faute de budget), donc le produit apporte une
+  preuve visuelle que Green Fins n'a pas ; mais rien n'oblige un centre à l'acheter, ce n'est ni une exigence de
+  renouvellement ni un critère noté. Le dossier lui même qualifie cette cause d'« atténuée, pas éteinte » (point
+  10 du Tour 2) ; cette recherche ne trouve rien qui l'éteigne davantage.
+- Question 8, mécanisme ou condition (question du coordinateur) : le coût de départ combine deux éléments de
+  nature différente. Perdre sa propre courbe pluriannuelle est un mécanisme, indépendant du nombre d'autres
+  centres abonnés. Perdre « la densité du pool des autres centres du même site » est conditionné à ce que
+  plusieurs centres du même site se soient effectivement abonnés, une masse critique non garantie, surtout pour
+  les premiers clients ou les sites où un seul centre opère commercialement. C'est un mélange mécanisme plus
+  condition, pas une réponse par condition pure comme la cause 7 le sanctionne d'habitude, mais le volet le plus
+  différenciant de l'argumentaire (le pool qui densifie) reste conditionnel.
+- Capacité : confirmée avec un chiffre nouveau, 84 pour cent d'exactitude, biais de sous détection du
+  blanchissement (voir recherche 2 ci dessus) ; publiée, datée, appliquée à la tâche exacte. Nuance à ajouter au
+  dossier : un produit qui sous détecte systématiquement le blanchissement affaiblit légèrement l'argument de
+  preuve de déclin, mais ne casse pas la capacité elle même.
+- Population : inchangée, plus de 6 600 centres PADI seuls, non revérifiée cette session.
+- Interdits du fondateur : aucun franchi, acheteur privé indépendant, pas de bénévolat, pas de grand compte,
+  preuve accusatrice neutralisée par la clause de gouvernance (avec la réserve site mono opérateur ci dessus).
+- Ce qui manque au dossier : un chiffre de conversion (combien de centres abonnés partagent effectivement un
+  même site en pratique, pour vérifier si la densité du pool est un argument disponible dès les premiers clients
+  ou seulement après plusieurs cycles de vente) ; le chiffre de précision à 84 pour cent et son biais, absents du
+  dossier jusqu'ici, à intégrer explicitement au point 4.
+
+### Idée 2, Carnet Côtier (mise à jour)
+
+VIVANTE.
+
+- Point (a) du coordinateur (critères Blue Flag) : voir recherche 1 ci dessus. Ni confirmation propre ni
+  réfutation propre. Les critères Blue Flag dépassent bien la seule éducation (quatre catégories dont gestion
+  environnementale), ce qui soutient partiellement l'affirmation du générateur ; mais la seule composante
+  clairement documentée comme suivi de terrain récurrent, la qualité de l'eau de baignade, correspond dans la
+  plupart des pays à une surveillance déjà assurée et publiée par l'autorité publique, que le site affiche sans
+  la produire lui même, ce qui correspond davantage à l'hypothèse alternative du coordinateur qu'à l'affirmation
+  du dossier. Rien de trouvé ne confirme que la catégorie « gestion environnementale » exige spécifiquement une
+  preuve photographique datée de l'état du récif, de l'herbier ou des mouillages, l'objet précis du produit.
+  Cause 3 : le dossier la déclare « éteinte » au Tour 2 ; cette recherche ne le confirme pas et ne l'infirme pas
+  non plus totalement ; à traiter comme « atténuée, pas éteinte », au même niveau que l'idée 1, tant qu'une
+  lecture directe des 33 critères (pas seulement des résumés) n'a pas isolé un critère précis d'état des habitats
+  côtiers distinct de la qualité de l'eau.
+- Cause 4 : réparée par la même clause de gouvernance que l'idée 1 (mouillage et herbier restent privés par
+  hôtel, jamais mutualisés entre opérateurs de la même baie) ; accord avec le dossier.
+- Cause 5 : réparée, seule la partie récif reste vendue comme capacité d'IA, avec le même chiffre de précision
+  nouvellement trouvé (84 pour cent, biais de sous détection) ; le mouillage et l'herbier sont désormais vendus
+  comme archivage organisé sans notation automatique, donc plus de capacité supposée à ce niveau.
+- Question 8, même réserve que l'idée 1 : la perte de « densité obtenue par les autres opérateurs nautiques de la
+  même baie » (point 8 du Tour 1, non modifié au Tour 2) reste conditionnée à ce que plusieurs opérateurs de la
+  même baie soient déjà clients, une masse critique non garantie pour les premiers clients.
+- Population, capacité récif, dix autres causes : inchangées par rapport au Tour 1 et au Tour 2 du dossier, rien
+  trouvé qui les modifie ce tour.
+- Ce qui manque au dossier : une lecture directe du texte des 33 critères Blue Flag (blueflag.global/criteria ou
+  le PDF WWF cité dans mes résultats) isolant, si elle existe, une exigence spécifique d'état des habitats côtiers
+  distincte de la qualité de l'eau de baignade ; faute de cette lecture précise, la cause 3 reste ouverte malgré
+  la correction apportée par le générateur.

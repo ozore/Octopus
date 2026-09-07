@@ -102,4 +102,83 @@ chiffre de population direct ; une preuve de transfert inter site.
 
 ## Tour 2
 
-En attente des idees du tour 2.
+### Idee fusionnee : Recouvrement
+
+VIVANTE.
+
+Recherche 1 (une delineation manuelle d'habitat cotier est elle deja facturee a l'heure, pour trancher la cause 9) :
+"environmental consulting habitat mapping OR photo interpretation job posting delineation coastal wetland GIS
+hourly". Trouve : des postes "wetland delineation specialist" existent bel et bien chez des cabinets americains, a
+34 a 44 $/heure, dont la description cite explicitement l'usage de "satellite imagery, aerial photography, and GIS"
+pour identifier et cartographier les habitats humides. Ce n'est pas la preuve exacte demandee (aucun rapport de
+suivi trouve qui detaille un pourcentage de couverture facture a l'heure a partir d'une orthomosaique), mais c'est
+la preuve que l'interpretation photo aerienne en SIG, par un salarie facture a l'heure, est deja une tache courante
+et remuneree dans ce type de cabinet. La cause 9 passe donc de "suppose, non verifie" (etat du dossier) a
+"probable mais non confirme sur le livrable exact" : le risque est reel pour le canal abonnement (vendu au cabinet
+qui emploie deja ce type de poste), plus faible pour le canal sous traitant (ligne 10, qui ne fait aujourd'hui
+aucune analyse ecologique, verifie au tour 1).
+
+Recherche 2 (compte direct de cabinets qui produisent des orthomosaiques de suivi d'habitat cotier) : "approved
+consultant list mitigation monitoring drone orthomosaic Florida California coastal habitat". Pas de liste officielle
+de consultants agrees trouvee (ni en Floride ni en Californie), mais la recherche a fait remonter, sans les
+chercher, quatre cabinets supplementaires qui font exactement ce travail : Sequoia Ecological Consulting
+(Californie, orthophotographie drone pour cartographie d'habitat et suivi de restauration), Horner Environmental
+(Floride, drones RTK pour le suivi ecologique et la restauration), AeroTech UAV (Floride, cartographie drone de
+zones humides et cotieres), CSA Ocean Sciences Inc (caracterisation et suivi d'habitat cotier). Avec les trois
+cabinets deja nommes au tour 1 (HANA Resources, UltraSystems, AquaTech), cela fait sept cabinets identifies sans
+effort de recherche exhaustif ni annuaire consulte, ce qui rend la borne basse de 25 du dossier plus credible qu'un
+chiffre invente, sans pour autant constituer le compte direct demande : aucun annuaire (listes USACE de consultants
+agrees, sections locales de l'ACEC) n'a ete consulte, faute de resultat en acces libre dans les deux recherches
+disponibles.
+
+Sans recherche, les points demandes :
+
+L'actif "points de verification terrain" (point 8 du dossier) ne tient que partiellement. Le dossier ne dit pas qui
+va sur le terrain planter les quadrats et photographier les transects. Si c'est l'ecologue du cabinet client lui
+meme (plausible : la recherche 1 montre que ces cabinets emploient deja du personnel qui fait de l'interpretation
+terrain et photo), alors le cabinet est le producteur des points de verification, pas seulement le fondateur ; le
+cabinet peut les remettre a un concurrent au meme titre que l'orthomosaique brute, et l'actif s'effondre comme
+l'avait deja note le tueur pour l'orthomosaique au tour 1. L'actif ne tient que si le fondateur envoie sa propre
+equipe terrain ou controle le format et la chaine de possession des releves de calibrage (ce que le dossier ne
+precise pas). C'est un trou du mecanisme, pas seulement une reserve.
+
+Cause 2, difference avec "la segmentation d'images pour bureaux d'etudes" deja jugee revenu de depart : la carte des
+occupants (memoire, section B) classe le traitement d'image environnementale deja occupe sous "benthos et images"
+(BIIGLE, CoralNet, ReefCloud, FathomNet, BenthicNet, MERMAID), tous batis sur de l'image sous marine ou de plongee.
+L'idee fusionnee porte sur de l'image aerienne (orthomosaique drone), une modalite absente de cette liste, et reste
+ancree sur deux lignes de facture reelles (lignes 2 et 10) plutot que sur un texte, une obligation ou une tendance,
+ce qui est precisement le test formel de la cause 2. Cela ne prouve pas que l'idee anterieure jugee ("segmentation
+d'images pour bureaux d'etudes") portait sur autre chose : ce dossier ne la nomme pas et la consigne interdit de
+lire un autre dossier pour verifier. Le tueur ne peut donc pas trancher avec certitude si le motif qui a tue cette
+idee anterieure s'applique ici aussi ; il note seulement que la modalite aerienne et l'ancrage facture sont deux
+differences verifiables, formellement suffisantes pour que la cause 2 telle que definie (point de depart public) ne
+s'applique pas, sans garantie que la cause reelle de la mort anterieure n'etait pas plus large que sa definition
+formelle.
+
+Les dix causes, mises a jour : cause 1 verifiee deux fois, non realisee, reste la plus redoutee (Esri et Agisoft
+controlent deja l'outil de traitement du client). Cause 2 : ne s'applique pas selon le test formel, reserve
+ci dessus faute d'acces au dossier anterieur. Cause 3 : budget reel des trois acheteurs nommes, ne s'applique pas.
+Cause 4 : la preuve porte sur l'etat du site, jamais sur le sous traitant ou le cabinet qui tient la camera ; ne
+s'applique pas. Cause 5 : le dossier etiquette desormais honnetement le transfert inter site "suppose" et propose un
+test a 2 000 $ ; une etude d'imagerie hyperspectrale cotiere citee au tour 2 du dossier confirme que ce transfert
+n'a pas ete evalue dans la litterature existante ; s'applique en partie, correctement assumee. Cause 6 : la borne de
+25 cabinets est mieux etayee par les quatre cabinets trouves en plus (recherche 2 ci dessus) mais reste une borne,
+pas un compte ; s'applique en partie. Cause 7 : le mecanisme est une validation terrain documentee, pas une masse
+critique ; ne s'applique pas. Cause 8 : le produit reste un calque et une courbe livres, pas un agent qui redige le
+rapport reglementaire ; ne s'applique pas. Cause 9 : elevee par la recherche 1 de "suppose" a "probable pour le
+canal abonnement, faible pour le canal sous traitant" ; le dossier avait deja prevu ce cas de figure (point 11.9) et
+propose de replier sur le seul canal sous traitant si la cause se confirme pleinement ; c'est la recommandation
+principale de ce tour. Cause 10 : trois acheteurs prives confirmes plus quatre cabinets prives trouves en recherche
+2, aucun marche public ni grand compte ; ne s'applique pas.
+
+Interdits du fondateur : aucun des acheteurs trouves (les trois nommes, plus Sequoia Ecological Consulting, Horner
+Environmental, AeroTech UAV, CSA Ocean Sciences) n'est un organisme public, un grand compte ou un benevole ; tous
+facturent des mandats prives. Le seul interdit en jeu est celui deja discute (vendre a qui facture l'heure, cause
+9), qui reste partiellement fonde pour le canal abonnement et est la raison pour laquelle ce canal doit rester
+conditionnel, pas le produit entier.
+
+Ce qui manque encore au dossier : qui va sur le terrain pour les points de verification (le fondateur ou le client)
+; le test a 2 000 $ du transfert inter site, non encore execute ; un compte direct des cabinets (annuaire USACE ou
+ACEC) plutot qu'une borne assumee ; une reponse ferme, faute de rapport de suivi trouve en acces libre, a la
+question de savoir si le pourcentage de couverture est deja un livrable facture a l'heure ou seulement la
+delineation binaire de la limite de zone humide (tache proche mais pas identique).
