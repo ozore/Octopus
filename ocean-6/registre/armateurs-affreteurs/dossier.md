@@ -69,7 +69,7 @@ Sources autorisées lues : BRIEF-REGISTRE.md et MEMOIRE-MORTS.md du dépôt. Auc
 
 ## d. Notes sourcées
 
-**Ligne 1 (nettoyage de coque).** « Total operational cost is estimated to be in the range of $5,000 – $50,000 (USD) »
+**Ligne 1 (nettoyage de coque).** « Total operational cost is estimated to be in the range of $5,000 to $50,000 (USD) »
 et grille détaillée par catégorie de navire (Handysize 5 500 à 8 500 $ US, Capesize 15 000 à 22 000 $ US et plus,
 porte-conteneurs Post Panamax 16 000 à 25 000 $ US et plus). Source : Panama Ship Service, « Cost of Underwater
 Hull Cleaning: A 2026 Pricing Forecast for Commercial Vessels », panamashipservice.com. Impact carburant cité :
@@ -99,7 +99,7 @@ $70,000 and $116,500 ». Source : ZipRecruiter, agrégat de pages « Marine Comp
 Croisé avec ShipReality (shipreality.com/shipforce) qui confirme que les rapports de position quotidiens restent
 soumis par l'équipage même avec un logiciel de conformité.
 
-**Ligne 7 (ralentissement baleines).** « Speed limits increase shipping costs by 1.3%–2.0% ». Source : étude publiée
+**Ligne 7 (ralentissement baleines).** « Speed limits increase shipping costs by 1.3% to 2.0% ». Source : étude publiée
 dans Ocean and Coastal Management, résumée sur ScienceDirect, portant sur la zone des îles Anglo Normandes de
 Californie (« Channel Islands »), citée dans les résultats de recherche sciencedirect.com. Chiffre de participation
 « 76 companies... over 700 individual vessels » : bluewhalesblueskies.org, page « Global shipping companies
