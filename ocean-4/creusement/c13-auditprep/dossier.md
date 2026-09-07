@@ -1,5 +1,4 @@
 # Dossier de creusement, candidat 13 : AuditPrep
-
 Copilote qui lit les journaux d'une ferme aquacole ou d'un navire de pêche et les pré-cartographie
 contre les grilles ASC, MSC ou BAP avant l'auditeur. Vendu aux sites certifiés ou aux organismes
 certificateurs. Rédigé le 7 septembre 2026. Dossiers d'origine : agents/aquaculture-peche
@@ -11,7 +10,6 @@ Assessment Body, organisme certificateur accrédité), **GFSI** (Global Food Saf
 référentiel générique de sécurité alimentaire), **LLM** (grand modèle de langage).
 
 ## 1. Trois angles candidats
-
 A. Gabarit réglementaire versionné : correspondance exacte, tenue à jour à chaque révision de
 norme, entre un journal brut et les indicateurs numérotés d'ASC, MSC ou BAP, qu'un LLM générique
 avec un simple gabarit ne fait pas de lui même.
@@ -21,7 +19,6 @@ C. Position bifronte : vendu à la fois au site et à l'organisme certificateur 
 SCS, Intertek) pour accélérer sa revue documentaire.
 
 ## 2. Confirmation, contradiction, verdict
-
 **A.** Confirme : référentiels publics et détaillés (25 indicateurs MSC, seuils 60/80 ; standards
 BAP Farm 3.1, Hatchery 2.1, Feed Mill 3.3, Processing 6.0), vérifiée msc.org et bapcertification.org
 ; aucun outil commercial dédié trouvé. Contredit : MSC/ASC ont digitalisé leur plateforme d'audit
@@ -41,7 +38,6 @@ la complexité, un outil qui accélère leur revue réduit leurs honoraires, dé
 direct. Verdict : angle qui tombe.
 
 ## 3. Angle retenu
-
 Angle A, avec B comme mécanisme de rétention et non comme différenciateur d'entrée. C tombe pour le
 conflit d'intérêt ci dessus. B tombe en tant qu'angle autonome : n'importe quel logiciel à mémoire
 produit le même effet après un ou deux cycles. Ce qui reste : aucune trace, dans ce budget de
@@ -49,7 +45,6 @@ recherche, d'un gabarit journal vers indicateur pour ASC, MSC et BAP tenu à jou
 exacte du passage source pour chaque case cochée.
 
 ## 4. Acheteur, terre à terre
-
 Le responsable qualité ou durabilité d'un site aquacole certifié ou en voie de certification, ou le
 coordinateur technique d'un CAB local. Dépense actuelle : un audit MSC coûte 15 000 à 120 000 USD
 (jusqu'à 250 000 USD selon d'autres prestataires), chiffre qualifié d'« anecdotique » par le MSC
@@ -60,7 +55,6 @@ GFSI facture 2 500 à 12 000 USD (vérifiée, comparanda seulement). Qui signe u
 consultant habituel.
 
 ## 5. Fonctionnalités, dans l'ordre de vente
-
 1. Le site téléverse ses journaux (traitements, mortalité, registres, PDF scannés, tableurs,
    plusieurs langues).
 2. Cartographie contre la grille cible (25 indicateurs MSC, BAP Farm 3.1 ou équivalent ASC) :
@@ -76,14 +70,12 @@ dégradés multilingues, volonté des sites de partager leurs documents, accepta
 pré-rapport tiers.
 
 ## 6. Prix, modèle, retour l'année suivante
-
 Prix par pré-audit ponctuel (quelques centaines à environ 1 500 USD) ou abonnement annuel incluant
 la mémoire de cycle. Le client revient l'année suivante parce que son historique d'écarts et de
 corrections vit dans le produit : changer d'outil signifie repayer le temps de remise en contexte
 (réponse à Q7, angle B en soutien de l'angle A).
 
 ## 7. Faisabilité depuis Vancouver
-
 Référentiels publics et téléchargeables (asc-aqua.org, msc.org, bapcertification.org, licence de
 consultation non vérifiée précisément). Les journaux de sites ne sont pas publics : il faut un
 client pilote, c'est un problème de confiance commerciale, pas de licence. Matériel : aucun, API LLM
@@ -92,7 +84,6 @@ contractuelle si les journaux contiennent des données sensibles. Vrai blocage :
 site pilote et convaincre un CAB de prendre au sérieux un pré-rapport tiers.
 
 ## 8. La preuve se retourne-t-elle contre l'acheteur
-
 Oui, potentiellement. Un rapport précis des non conformités devient une preuve documentaire que le
 site savait et n'a pas corrigé, exploitable s'il atteint l'auditeur ou un tiers. L'architecture
 garde le rapport strictement privé au site (jamais transmis automatiquement au certificateur),
@@ -100,14 +91,12 @@ laisse le site choisir ses corrections, et permet la suppression du détail des 
 plutôt qu'un historique immuable horodaté.
 
 ## 9. Test à moins de 2 000 dollars, deux semaines
-
 Un site pilote (ferme moyenne, hors majors) prêt à partager un ou deux ans de journaux réels et sa
 dernière grille d'audit. Prototype sur 10 à 15 indicateurs choisis. Critère chiffré : au moins 80 %
 classés correctement (couvert, manquant, ambigu) en accord avec un connaisseur du référentiel (le
 site ou un consultant freelance payé sur le budget restant), coût API sous 200 dollars.
 
 ## 10. Incertitudes et question au client
-
 Incertain : coût réel ASC et BAP (non trouvé, contrairement à MSC) ; volonté des sites de partager
 leurs journaux ; acceptation par les CAB d'un pré-rapport externe ; ampleur du risque de la
 section 8. Question au client : accepteriez vous de partager un échantillon anonymisé de vos

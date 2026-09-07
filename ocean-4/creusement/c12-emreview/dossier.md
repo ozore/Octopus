@@ -98,26 +98,23 @@ impossible de valider la performance réelle, contrairement à Archipelago et Ai
 ## 6. La preuve se retourne-t-elle contre l'acheteur ?
 
 Oui, potentiellement : un rapport EM erroné (espèce mal identifiée, rejet non compté) expose le fournisseur EM ou
-le pêcheur à une non-conformité face au régulateur, avec un risque de sanction ou de perte de permis.
-L'architecture l'évite comme FishVue AI et Catchvision le font déjà : IA « assistée » qui accélère la revue sans
-retirer la validation humaine finale, aucune décision de conformité automatique, export uniquement après signature
-d'un réviseur humain.
+le pêcheur à une non-conformité, avec risque de sanction ou de perte de permis. L'architecture l'évite comme
+FishVue AI et Catchvision le font déjà : IA « assistée » qui accélère la revue sans retirer la validation humaine
+finale, aucune décision de conformité automatique, export après signature d'un réviseur humain.
 
 ## 7. Test à moins de 2 000 $ et deux semaines
 
-Construire un classificateur d'espèces sur un corpus public de substitution (FathomNet ou clips publics NOAA
-Fisheries de démonstration EM, si trouvés) et comparer sa précision aux chiffres publiés de FishVue AI (2,7 %
-d'erreur) et Catchvision (80 % de gain de temps annoncé). Critère chiffré : atteindre une précision de
-classification d'espèces égale ou supérieure à 90 % sur le corpus de test en moins de 40 heures de travail, pour
-moins de 2 000 $ (temps du fondateur, coût de calcul cloud). Limite assumée : ce test ne prouve rien sur la
-performance en conditions réelles de pont de bateau, faute d'accès à de la vraie vidéo EM (voir section 5).
+Construire un classificateur d'espèces sur un corpus public de substitution (FathomNet ou clips publics NOAA de
+démonstration EM, si trouvés) et comparer sa précision aux chiffres publiés de FishVue AI (2,7 % d'erreur) et
+Catchvision (80 % de gain de temps annoncé). Critère chiffré : précision de classification égale ou supérieure à
+90 % sur le corpus de test, en moins de 40 heures et moins de 2 000 $ (temps fondateur, calcul cloud). Limite
+assumée : ce test ne prouve rien sur la performance réelle de pont de bateau, faute d'accès à de la vraie vidéo EM.
 
 ## 8. Incertitudes et question au client
 
-Coût précis en $/heure de revue vidéo humaine introuvable (estimation, à partir du ratio « EM environ un tiers du
-coût observateur, jusqu'à 800 $US/jour »). Existence et statut d'Integrated Monitoring comme entreprise non
-confirmés. Rôle exact de Barnacle Systems Inc. (partenaire du financement FishVue AI, site injoignable cette
-session) non éclairci : IA en sous-traitance ou simple fournisseur matériel. Question à poser au client : un
-fournisseur EM plus petit ou un programme régional hors Alaska/Colombie-Britannique/côte Ouest américaine
-paierait-il pour un outil que ni FishVue AI, ni O2Review, ni Catchvision, ni VIAME (gratuit) ne couvrent
-aujourd'hui, et à quel prix ?
+Coût précis en $/heure de revue vidéo humaine introuvable (estimation, ratio « EM environ un tiers du coût
+observateur, jusqu'à 800 $US/jour »). Existence et statut d'Integrated Monitoring non confirmés. Rôle exact de
+Barnacle Systems Inc. (partenaire du financement FishVue AI, site injoignable cette session) non éclairci : IA en
+sous-traitance ou simple fournisseur matériel. Question à poser au client : un fournisseur EM plus petit ou un
+programme régional hors Alaska/Colombie-Britannique/côte Ouest américaine paierait-il pour un outil que ni
+FishVue AI, ni O2Review, ni Catchvision, ni VIAME (gratuit) ne couvrent aujourd'hui, et à quel prix ?
