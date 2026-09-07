@@ -182,20 +182,17 @@ faciles à copier qu'annoncé.
    suivi eDNA comme une dépense ponctuelle d'étude d'impact plutôt que comme un actif à faire fructifier chaque
    année. Signal avant coureur : aucun client du barreau 1 ne revient signer une deuxième campagne en 2028.
 
-Sur les obligations réglementaires : aucun mandat formel daté n'a été trouvé cette session imposant l'eDNA dans
-un permis. Le BOEM (Bureau of Ocean Energy Management, agence fédérale américaine) utilise l'eDNA dans ses
-études de site et son programme d'études environnementales 2025 à 2026, et des projets concrets (Empire Wind,
-New York) ont mené des campagnes eDNA en 2024 et 2025, mais l'article BOEM consulté le décrit comme un outil,
-pas comme une exigence de permis (vérifié pour l'usage, non vérifié pour un mandat daté). Le New Jersey
-Department of Environmental Protection (NJDEP, agence d'État) a publié une proposition eDNA pour l'éolien en
-mer, signal d'intérêt réglementaire sans date d'entrée en vigueur trouvée (vérifié pour l'existence du
-document). En Norvège, l'Institut vétérinaire norvégien (Norwegian Veterinary Institute) mène une recherche
-active sur l'eDNA en aquaculture salmonicole pour la détection de pathogènes, mais aucune exigence
-réglementaire formée n'a été trouvée (vérifié pour la recherche, non vérifié pour un mandat). Le Ministère des
-Pêches et des Océans (MPO, Canada) n'a pas été recherché directement cette session faute de budget (lacune).
-Correction assumée par rapport au dossier de tendance : l'obligation pluriannuelle qui justifie l'actif
-"série" est aujourd'hui une pratique volontaire en expansion, pas encore un mandat daté et documenté. Cela
-affaiblit, sans l'annuler, l'argument central de continuité imposée par le régulateur.
+Sur les obligations réglementaires : aucun mandat formel daté n'a été trouvé imposant l'eDNA dans un permis. Le
+BOEM (Bureau of Ocean Energy Management, agence fédérale américaine) utilise l'eDNA dans ses études de site et
+son programme 2025 à 2026, et Empire Wind (New York) a mené des campagnes eDNA en 2024 et 2025, mais l'article
+BOEM consulté le décrit comme un outil, pas une exigence de permis (vérifié pour l'usage, pas pour un mandat
+daté). Le New Jersey Department of Environmental Protection (NJDEP, agence d'État) a publié une proposition
+eDNA pour l'éolien en mer, sans date d'entrée en vigueur trouvée. En Norvège, l'Institut vétérinaire norvégien
+mène une recherche active sur l'eDNA en aquaculture salmonicole pour la détection de pathogènes, sans exigence
+réglementaire trouvée. Le Ministère des Pêches et des Océans (MPO, Canada) n'a pas été recherché faute de
+budget (lacune). Correction assumée : l'obligation pluriannuelle qui justifie la "série" est une pratique
+volontaire en expansion, pas encore un mandat daté, ce qui affaiblit sans l'annuler l'argument de continuité
+imposée par le régulateur.
 
 ## 7. Test à moins de 2 000 dollars, deux semaines, données publiques
 

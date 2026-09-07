@@ -18,82 +18,66 @@ protège la ferme plutôt qu'elle ne l'accuse.
 
 ## 1. Qui vend déjà cela
 
-Les assureurs aquacoles ne traitent pas les sinistres de mortalité à vide : ils emploient déjà des experts humains.
-Sunderland Marine (assureur spécialisé aquacole basé au Royaume Uni, actif depuis 1986, assure des fermes dans
-plusieurs pays) confie ses réclamations de stock (mortalité, maladie) à une équipe interne d'anciens fermiers
-aquacoles et de biologistes marins ; vérifié (sunderlandmarine.com/service/aquaculture/claims/aquaculture stock
-claims). Miller Insurance (courtier Lloyd's spécialisé, Royaume Uni) et WTW (Willis Towers Watson, courtier
+Les assureurs aquacoles ne traitent pas les sinistres à vide : ils emploient déjà des experts humains. Sunderland
+Marine (assureur spécialisé aquacole, Royaume Uni, depuis 1986) confie ses réclamations de stock (mortalité,
+maladie) à une équipe interne d'anciens fermiers et de biologistes marins ; vérifié (sunderlandmarine.com/service/
+aquaculture/claims). Miller Insurance (courtier Lloyd's spécialisé) et WTW (Willis Towers Watson, courtier
 mondial) mettent en avant des équipes spécialisées et un rôle d'accélérateur de règlement, sans mention de vidéo ;
-vérifié (miller insurance.com, wtwco.com). AXA XL utilise déjà, pour les gros sinistres de pou de mer, une
-évaluation des pertes assistée par satellite (source déjà citée dans le dossier de tendance, axaxl.com) : la
-tendance vers la donnée à distance existe, mais aucune source ne montre un outil vidéo indépendant vendu à un
-assureur pour la mortalité elle même. Aucune mention de caméra, vidéo ou télémétrie n'apparaît dans la documentation
-publique de claims de Sunderland Marine consultée directement (WebFetch, page FAQ, 2026) : négatif vérifié, pas
-seulement une lacune de recherche.
+vérifié. AXA XL utilise déjà une évaluation par satellite pour les gros sinistres de pou de mer (source citée dans
+le dossier de tendance, axaxl.com), mais aucune source ne montre un outil vidéo indépendant vendu à un assureur
+pour la mortalité elle même. Aucune mention de caméra ou vidéo dans la documentation de claims de Sunderland
+Marine consultée directement (WebFetch, page FAQ, 2026) : négatif vérifié, pas une simple lacune de recherche.
 
-Aquabyte, Manolin (déjà cités dans le dossier de tendance) vendent à la ferme, pas à l'assureur. Ace Aquatec
-(Royaume Uni, caméra 3D de biomasse) vend une caméra sous marine avec IA (intelligence artificielle) qui mesure
-poids et taille, sert d'indicateur précoce de maladie et de pou, mais aucun produit nommé de comptage de mortalité
-n'a été trouvé dans sa gamme publique ; vérifié (aceaquatec.com, thefishsite.com). Le texte de présentation
-d'Ace Aquatec note lui même que deux tiers des mortalités de saumon restent inexpliquées, preuve que même les
-fermes qui possèdent déjà des caméras de croissance ne comptent pas systématiquement leurs morts par vidéo
-aujourd'hui. Tidal (fabricant de caméras sous marines pour cages aquacoles) vend une caméra de nouvelle génération
-pour le comportement et la biomasse des poissons ; vérifié pour l'existence du produit (seafoodsource.com), mais
-aucune fonction de comptage de mortalité nommée trouvée : supposée absente, pas confirmée absente.
+Aquabyte et Manolin (déjà cités dans le dossier de tendance) vendent à la ferme, pas à l'assureur. Ace Aquatec
+(Royaume Uni) vend une caméra 3D de biomasse sous marine qui mesure poids et taille et sert d'indicateur précoce
+de maladie, mais aucun produit nommé de comptage de mortalité dans sa gamme publique ; vérifié. Ace Aquatec note
+elle même que deux tiers des mortalités de saumon restent inexpliquées, preuve qu'une ferme équipée d'une caméra
+de croissance ne compte pas pour autant ses morts par vidéo. Tidal (caméras sous marines pour cages) vend une
+caméra de comportement et de biomasse ; vérifié pour le produit, mais aucune fonction de mortalité nommée
+trouvée : supposée absente.
 
-Fait important qui change l'analyse technique : la brique de vision par ordinateur elle même est déjà publiée
-académiquement. MortCam (système décrit dans ScienceDirect, 2023) détecte et alerte la mortalité de poissons en
-système aquacole à recirculation d'eau (RAS, recirculating aquaculture system) avec un modèle YOLOv7 (You Only
-Look Once, famille de modèles de détection d'objets en temps réel) entraîné à classer chaque poisson vivant ou
-mort. Des papiers 2024 (DD IYOLOv8, amélioration de YOLOv8 pour la détection de poissons morts, doi
-10.3390/fishes9090356 ; une méthode YOLOv10 améliorée pour la détection sur grandes surfaces d'eau, arxiv
-2409.00388) confirment que le problème de détection est déjà résolu dans la littérature, en bassin ou en surface
-d'étang, pas encore documenté en cage ouverte en mer. Conséquence directe : la barrière n'est pas l'algorithme,
-elle est l'accès aux vraies caméras de cage et la confiance de la ferme (sections 4 et 5). L'échelle n'est donc pas
-tuée à l'étape 1, mais son avantage supposé (l'IA comme produit) est plus faible que ce que le dossier de tendance
-laissait entendre.
+Fait qui change l'analyse technique : la brique de vision par ordinateur est déjà publiée académiquement. MortCam
+(ScienceDirect, 2023) détecte la mortalité en système aquacole à recirculation d'eau (RAS, recirculating
+aquaculture system) avec un modèle YOLOv7 (You Only Look Once, famille de modèles de détection d'objets en temps
+réel) classant chaque poisson vivant ou mort. Des papiers 2024 (DD IYOLOv8, doi 10.3390/fishes9090356 ; YOLOv10
+amélioré, arxiv 2409.00388) confirment que la détection est déjà résolue en bassin ou en surface d'étang, pas
+encore en cage ouverte en mer. Conséquence : la barrière n'est pas l'algorithme, c'est l'accès aux vraies caméras
+et la confiance de la ferme (sections 4 et 5). L'échelle n'est pas tuée à l'étape 1, mais son avantage supposé
+(l'IA comme produit) est plus faible que le dossier de tendance ne le laissait entendre.
 
 ## 2. Le client du barreau 1, corrigé
 
-Le dossier de tendance nommait AXA XL comme acheteur du barreau 1. AXA XL est un assureur mondial (filiale du
-groupe AXA) peu susceptible d'acheter un module pilote à une société d'une personne sans référence : trop gros,
-trop de cycles d'achat. Trois acheteurs de taille moyenne, nommés, remplacent AXA XL :
+AXA XL, nommé par le dossier de tendance, est un assureur mondial peu susceptible d'acheter un module pilote à une
+société d'une personne sans référence. Trois acheteurs de taille moyenne, nommés, le remplacent :
 
 1. Sunderland Marine (assureur spécialisé aquacole, Royaume Uni, depuis 1986) : paie déjà à l'heure une équipe
-   interne d'anciens fermiers et de biologistes marins pour vérifier chaque sinistre de stock sur place ; geste
-   manuel vérifié (sunderlandmarine.com/service/aquaculture/claims). Un module qui accélère le tri des dossiers
-   avant l'envoi d'un expert humain, plutôt que de le remplacer, est un gain de temps mesurable pour une petite
-   équipe de claims, sans menacer leur emploi.
-2. Convex Insurance (assureur ou réassureur spécialisé, marché Lloyd's ou Bermudes, ligne dédiée équin, bétail,
-   aquaculture) : plus jeune que Sunderland Marine, positionnement technologique affiché, motif précis
-   d'expérimenter un outil nouveau pour se différencier des acteurs établis ; vérifié pour l'existence de la ligne
-   aquaculture (convexin.com/underwriting/equine livestock aquaculture/aquaculture), raison d'achat supposée.
+   interne d'anciens fermiers et de biologistes marins pour vérifier chaque sinistre sur place ; vérifié. Un
+   module qui accélère le tri des dossiers avant l'expert humain, plutôt que de le remplacer, est un gain de
+   temps mesurable pour une petite équipe, sans menacer leur emploi.
+2. Convex Insurance (assureur ou réassureur spécialisé, Lloyd's ou Bermudes, ligne dédiée équin, bétail,
+   aquaculture) : plus jeune, positionnement technologique affiché, motif d'expérimenter un outil nouveau pour se
+   différencier ; vérifié pour la ligne aquaculture, raison d'achat supposée.
 3. Brown & Brown (courtier ou agent général américain, division aquaculture dédiée) : marché nord américain,
-   proche géographiquement du Pacifique Nord Ouest et de la Floride visés par le fondateur (BRIEF section 2) ;
-   vérifié pour l'existence de la division (us.bbrown.com/industries/marine/aquaculture insurance), raison d'achat
-   supposée par proximité de marché plutôt que documentée directement.
+   proche du Pacifique Nord Ouest et de la Floride visés par le fondateur (BRIEF section 2) ; vérifié pour la
+   division, raison d'achat supposée par proximité de marché.
 
-Aucune mutuelle de producteurs aquacoles nommée n'a été trouvée pour le saumon industriel en Norvège, en Écosse ou
-au Canada dans le budget de recherche disponible : lacune. Un article académique (PMC, pmc.ncbi.nlm.nih.gov,
-article 6169256) décrit des pools d'assurance mutuelle pour la petite aquaculture dans des pays en développement,
-hors du marché ciblé par le fondateur.
+Aucune mutuelle de producteurs nommée pour le saumon industriel en Norvège, en Écosse ou au Canada : lacune. Un
+article académique (PMC 6169256) décrit des pools d'assurance mutuelle pour la petite aquaculture dans des pays
+en développement, hors du marché ciblé.
 
 Raison précise pour laquelle un acheteur de taille moyenne achèterait à une société d'une personne : aucune des
-trois raisons ci dessus n'est forte à elle seule. C'est le signal le plus sérieux trouvé contre le barreau 1 tel
-que conçu à l'origine (vente directe à l'assureur) : un assureur qui vérifie déjà ses sinistres avec des experts
-humains n'a pas de ligne budgétaire ouverte pour un outil non éprouvé de mortalité par vidéo, et n'a aucun moyen
-de forcer une ferme à installer ou partager une caméra (section 4). D'où la correction retenue : au barreau 1, le
-client payeur devient la ferme elle même, pas l'assureur.
+trois n'est forte à elle seule. C'est le signal le plus sérieux contre le barreau 1 tel que conçu à l'origine
+(vente directe à l'assureur) : un assureur qui vérifie déjà ses sinistres avec des experts humains n'a pas de
+ligne budgétaire ouverte pour un outil non éprouvé, et n'a aucun moyen de forcer une ferme à partager sa caméra
+(section 4). D'où la correction : au barreau 1, le client payeur devient la ferme, pas l'assureur.
 
 Barreau 1 corrigé, mars 2027 : vendu à une ferme de saumon nommée déjà équipée de caméras de cage (par exemple un
-site Cermaq Norway ou une ferme écossaise abonnée à un fournisseur de caméra comme Imenco, Ace Aquatec ou Tidal),
-un service qui transforme le flux vidéo déjà installé par la ferme en dossier de sinistre horodaté et vérifiable,
-prêt à être transmis par la ferme elle même à son assureur au moment d'un épisode de mortalité, pour accélérer
-l'encaissement de sa propre indemnité. Prix estimé : 500 à 1 500 $ US par mois et par site (estimation, cohérent
-avec les fourchettes des autres échelles du dossier de tendance). Geste manuel remplacé : la compilation par un
-gestionnaire de ferme de photos, journaux papier et estimations de mortalité pour appuyer sa propre demande
-d'indemnisation, un travail aujourd'hui payé à l'heure de gestion de ferme, tarif horaire précis non trouvé
-(lacune déjà identifiée dans le dossier de tendance).
+site Cermaq Norway ou une ferme écossaise abonnée à Imenco, Ace Aquatec ou Tidal), un service qui transforme le
+flux vidéo déjà installé en dossier de sinistre horodaté et vérifiable, prêt à être transmis par la ferme elle
+même à son assureur pour accélérer l'encaissement de sa propre indemnité. Prix estimé : 500 à 1 500 $ US par mois
+et par site (estimation). Geste manuel remplacé : la compilation par un gestionnaire de ferme de photos, journaux
+papier et estimations de mortalité pour appuyer sa propre demande, tarif horaire précis non trouvé (lacune déjà
+identifiée dans le dossier de tendance).
 
 ## 3. Le produit : six fonctionnalités dans l'ordre de vente
 

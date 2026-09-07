@@ -17,29 +17,27 @@ Mais le terrain n'est pas vide :
 
 - Ecological Consulting Services Inc (ECS, cabinet privé de Pensacola, Floride) fait déjà le geste
   manuel depuis plus de 15 ans : suivi des projets de restauration d'huîtres de Pensacola Bay, relevé
-  drone sous licence de l'Federal Aviation Administration (FAA), cartographie de végétation, montage de
-  rapports pour permis (vérifié, ecologicalconsultingservices.com, consulté le 7 septembre 2026). C'est
-  le concurrent le plus probable si l'automatisation existe : un cabinet qui détient déjà la relation
-  client et l'archive de photos peut l'internaliser plus vite qu'un fondateur externe ne peut la vendre.
+  drone sous licence de l'Federal Aviation Administration (FAA), montage de rapports pour permis
+  (vérifié, ecologicalconsultingservices.com, consulté le 7 septembre 2026). C'est le concurrent le plus
+  probable si l'automatisation existe : un cabinet qui détient déjà la relation client et l'archive de
+  photos peut l'internaliser plus vite qu'un fondateur externe ne peut la vendre.
 - Ocean Consulting FL (cabinet privé, plus de 20 ans d'expérience en relevé environnemental côtier en
   Floride, Caraïbes, Bahamas) fait un travail comparable (lu, oceanconsultingfl.com).
-- CoralNet (outil gratuit maintenu par la Scripps Institution of Oceanography, financé par recherche
-  publique) classe la couverture corallienne par apprentissage automatique avec une corrélation de
-  Pearson supérieure à 0,97 contre un analyste humain, sur le corail, pas sur l'huître ni le rivage
-  vivant (vérifié, papier ICCV 2021 « A New Deep Learning Engine for CoralNet », openaccess.thecvf.com).
-  Aucune extension huître ou rivage vivant identifiée cette session.
-- Des outils académiques de détection de zostère par apprentissage profond existent (voir section 3),
-  publiés en recherche, non commercialisés, non formatés pour un rapport de permis.
+- CoralNet (outil gratuit, Scripps Institution of Oceanography, financé par recherche publique) classe
+  la couverture corallienne par apprentissage automatique avec une corrélation de Pearson supérieure à
+  0,97 contre un analyste humain, sur le corail, pas sur l'huître ni le rivage vivant (vérifié, papier
+  ICCV 2021 « A New Deep Learning Engine for CoralNet », openaccess.thecvf.com). Aucune extension huître
+  ou rivage vivant identifiée cette session. Des outils académiques de détection de zostère par
+  apprentissage profond existent aussi (voir section 3), publiés en recherche, non commercialisés.
 - ReefCloud (Australian Institute of Marine Science, AIMS, agence publique australienne) et Restor
-  (plateforme mondiale de suivi de sites de restauration) restent, comme déjà établi dans le dossier de
-  tendance, hors du périmètre huître ou rivage vivant américain : ReefCloud vérifié sur le corail
-  seulement ; Restor non vérifié cette session, traité comme connaissance générale non confirmée
-  (plateforme de suivi de sites, pas connue pour du comptage de survie automatisé par photo).
+  (plateforme mondiale de suivi de sites) restent, comme déjà établi dans le dossier de tendance, hors du
+  périmètre huître ou rivage vivant américain : ReefCloud vérifié sur le corail seulement ; Restor non
+  vérifié cette session, traité comme connaissance générale non confirmée.
 - Ecosystem Investment Partners (EIP) et EarthBalance, les deux sponsors de banques de compensation
   cités par la mission, opèrent en Floride surtout des banques de zones humides d'eau douce (Boran
-  Ranch, Peace River, Horse Creek), avec suivi à long terme fait en interne par leurs propres
-  écologistes (vérifié, ecosystempartners.com et earthbalance.com, consultés le 7 septembre 2026).
-  Aucune banque huître ou rivage vivant confirmée pour ces deux sponsors précis cette session.
+  Ranch, Peace River, Horse Creek), suivi fait en interne par leurs propres écologistes (vérifié,
+  ecosystempartners.com et earthbalance.com). Aucune banque huître ou rivage vivant confirmée pour ces
+  deux sponsors précis cette session.
 
 Conclusion de l'étape 1 : le barreau 1 n'est pas déjà vendu tel quel, mais le marché de vrais sponsors de
 banques de compensation dédiées à l'huître ou au rivage vivant en Floride est plus étroit que ce que le
@@ -82,17 +80,15 @@ maître d'œuvre) :
    vente pour ce troisième acheteur devra commencer par une recherche de permis ERP publiés par comté en
    Floride (FDEP publie ses permis), pas par une recherche web générale.
 
-Différence de contexte, Canada : le régime canadien comparable (Pêches et Océans Canada, DFO, programme
-de protection du poisson et de son habitat, Fisheries and Fish Habitat Protection Program, FFHPP) impose
-au promoteur de surveiller et de rapporter ses mesures de compensation d'habitat de poisson, mais sans
-marché de crédits public comparable à RIBITS et sans caution financière obligatoire identifiée cette
-session (vérifié partiellement, dfo-mpo.gc.ca, pages sur la politique de compensation et le programme de
-protection). L'obligation canadienne est donc plus discrétionnaire, moins standardisée et sans marché de
-prix comparable au marché américain des crédits (2700 points de prix dans 39 États selon le dossier de
-tendance). Cette échelle reste distincte d'une piste antérieure du fondateur sur la compensation
-d'habitat de poisson au Canada : elle vise un marché américain structuré par un standard national de
-cinq ans minimum de suivi (voir section 3) et un marché de crédits chiffré, que le régime canadien n'a
-pas.
+Différence de contexte, Canada : le régime comparable (Pêches et Océans Canada, DFO, programme de
+protection du poisson et de son habitat, Fisheries and Fish Habitat Protection Program, FFHPP) impose au
+promoteur de surveiller et de rapporter ses mesures de compensation, mais sans marché de crédits public
+comparable à RIBITS ni caution financière obligatoire identifiée cette session (vérifié partiellement,
+dfo-mpo.gc.ca). L'obligation canadienne est plus discrétionnaire, moins standardisée, sans marché de prix
+comparable au marché américain (2700 points de prix dans 39 États, dossier de tendance). Cette échelle
+reste distincte d'une piste antérieure du fondateur sur l'habitat de poisson au Canada : elle vise le
+marché américain, structuré par un standard national de cinq ans minimum de suivi (section 3) et un
+marché de crédits chiffré, que le régime canadien n'a pas.
 
 ## 3. Le produit : six fonctionnalités, ce que fait l'IA, données de départ
 
@@ -125,23 +121,20 @@ Six fonctionnalités, dans l'ordre de vente :
 Pourquoi impossible en 2024 : les modèles de vision par ordinateur à faible coût capables d'atteindre une
 précision proche de l'humain sur des tâches de comptage sous marin fin (corail, zostère) ne sont devenus
 publiquement documentés et reproductibles par un développeur seul qu'à partir de 2021 à 2023 (CoralNet,
-détecteur de zostère). Faisabilité technique, étiquetée avec précision :
-- Comptage de couverture corallienne par CoralNet : vérifié, corrélation de Pearson supérieure à 0,97
-  contre comptage humain (openaccess.thecvf.com, 2021). Tâche adjacente, pas l'huître.
-- Détection et classification de zostère (seagrass) par apprentissage profond sur photoquadrat sous
-  marin : vérifié, 97 à 98% de précision sur certaines sous tâches de classification de densité
-  (Frontiers in Marine Science, 2023, « Subtidal seagrass detector »). Tâche adjacente à l'herbier, pas
-  à l'huître.
-- Classification combinée zostère et ostréiculture (huître) au Japon par apprentissage profond : vérifié,
-  80% de précision globale, 67% sur la végétation totale, avec un modèle pix2pix (arxiv.org/pdf/1909.02747,
-  étude japonaise). C'est la donnée la plus proche trouvée d'un cas huître, mais hors contexte
-  réglementaire américain et sur une méthode ancienne (2019).
-- Relevé de densité d'huîtres intertidales par drone (unoccupied aerial systems, UAS) : vérifié comme
-  méthode existante et publiée (Remote Sensing in Ecology and Conservation, 2025, Bueno et al.), précision
-  chiffrée non récupérée cette session.
-- Transférabilité spécifique à l'huître américaine (Crassostrea virginica) en contexte de permis USACE ou
-  FDEP : supposée, non vérifiée. C'est le principal risque technique de cette échelle : la précision
-  publiée existe sur des tâches voisines, pas sur la tâche exacte.
+détecteur de zostère). Faisabilité technique, étiquetée avec précision : comptage de couverture
+corallienne par CoralNet, vérifié, corrélation de Pearson supérieure à 0,97 contre comptage humain
+(openaccess.thecvf.com, 2021), tâche adjacente, pas l'huître. Détection et classification de zostère par
+apprentissage profond sur photoquadrat sous marin, vérifié, 97 à 98% de précision sur certaines sous
+tâches de classification de densité (Frontiers in Marine Science, 2023, « Subtidal seagrass detector »),
+tâche adjacente à l'herbier, pas à l'huître. Classification combinée zostère et ostréiculture au Japon par
+apprentissage profond, vérifié, 80% de précision globale, 67% sur la végétation totale, modèle pix2pix
+(arxiv.org/pdf/1909.02747), donnée la plus proche trouvée d'un cas huître, mais hors contexte
+réglementaire américain et méthode ancienne (2019). Relevé de densité d'huîtres intertidales par drone,
+vérifié comme méthode existante et publiée (Remote Sensing in Ecology and Conservation, 2025, Bueno et
+al.), précision chiffrée non récupérée cette session. Transférabilité spécifique à l'huître américaine
+(Crassostrea virginica) en contexte de permis USACE ou FDEP : supposée, non vérifiée. C'est le principal
+risque technique de cette échelle, la précision publiée existe sur des tâches voisines, pas sur la tâche
+exacte.
 
 Données existantes pour amorcer sans un seul courriel : rapports de suivi publics via RIBITS (registre
 géré par l'USACE), rapports de l'Oyster Integrated Mapping and Monitoring Program (OIMMP, Florida Fish
@@ -272,18 +265,23 @@ spécifiques à ce projet non chiffrés cette session, faute de budget de recher
 
 ## Résumé en 10 lignes
 
-L'échelle Preuve Vivante est vivante, pas morte, mais son barreau 1 change de forme par rapport au dossier
-de tendance d'origine. Aucun concurrent ne vend déjà exactement ce comptage de survie automatisé et
-formaté pour un permis américain sur l'huître ou le rivage vivant, mais un cabinet déjà en place comme
-Ecological Consulting Services Inc (ECS, Pensacola, Floride) fait le travail à la main depuis quinze ans
-et pourrait l'internaliser en premier. Le port de Tampa Bay, acheteur public interdit, est remplacé par
-trois acheteurs privés plus incertains que prévu : ECS comme maître d'œuvre, la banque estuarienne privée
-Mangrove Point comme sponsor le plus proche trouvé, et un promoteur sous permis Environmental Resource
-Permit dont le nom précis reste à trouver par recherche de permis publiés par comté. La faisabilité
-technique du comptage par vision est vérifiée sur des tâches voisines (corail, zostère) mais pas encore
-sur l'huître américaine en contexte réglementaire précis, ce qui reste le principal risque technique. Le
-barreau 1 corrigé pour mars 2027 : vendre d'abord à un cabinet de suivi comme ECS et à un sponsor
-estuarien privé plutôt qu'à un port, avec un test public à moins de 2000 dollars sur des données de
-zostère avant toute promesse ferme sur l'huître. Si la société meurt en 2031, l'acteur le plus probable
-qui la tue est un cabinet généraliste côtier déjà en place, du type ECS, qui construit la même capacité en
-interne avant que l'outil externe n'ait gagné assez de clients pour compter.
+1. Verdict : l'échelle Preuve Vivante est vivante, pas morte.
+2. Aucun concurrent ne vend déjà ce comptage de survie automatisé formaté pour un permis américain
+   sur l'huître ou le rivage vivant.
+3. Mais un cabinet déjà en place, ECS (Ecological Consulting Services, Pensacola, Floride), fait ce
+   travail à la main depuis quinze ans et pourrait l'internaliser en premier.
+4. Le port de Tampa Bay, acheteur public interdit, est remplacé par trois acheteurs privés, plus
+   incertains que prévu.
+5. Barreau 1 corrigé : ECS comme maître d'œuvre qui revend une capacité nouvelle, la banque estuarienne
+   privée Mangrove Point comme sponsor le plus proche trouvé, un promoteur sous permis ERP en Floride
+   dont le nom précis reste à trouver.
+6. La faisabilité technique du comptage par vision est vérifiée sur des tâches voisines, corail et
+   zostère, pas encore sur l'huître américaine en contexte réglementaire précis.
+7. Ce transfert non vérifié à l'huître reste le principal risque technique de l'échelle.
+8. Le marché de sponsors de banques de compensation dédiées à l'huître ou au rivage vivant en Floride
+   est plus étroit qu'attendu, deux banques côtières sur tout l'annuaire professionnel consulté.
+9. Test à moins de 2000 dollars : comptage automatisé sur des photoquadrats publics de zostère, comparé
+   à des comptages humains déjà publiés, avant toute promesse ferme sur l'huître.
+10. Si la société meurt en 2031, l'acteur le plus probable qui la tue est un cabinet généraliste côtier
+    déjà en place, du type ECS, qui construit la même capacité en interne avant que l'outil externe
+    n'ait gagné assez de clients pour compter.

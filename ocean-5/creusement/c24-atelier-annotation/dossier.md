@@ -36,8 +36,8 @@ cycle de vente court avec de petites sociétés, jamais un cycle de vente d'entr
   classer des objets subsea en temps réel, clients : marine américaine, Avangrid, initiative Seabed 2030 de
   l'Organisation des Nations Unies (ONU). Vérifié (seadeep.io, tufts.edu). Fait clé : société produit fermée en
   2025, son fondateur déclarant que « les cycles de vente ont dépassé le rythme de combustion de trésorerie » ;
-  SeaDeep n'est plus qu'un cabinet conseil. Vérifié (seadeep.io). Preuve directe que vendre de l'IA d'inspection
-  sous marine à de grands comptes tue une petite société avant qu'elle ne perce.
+  SeaDeep n'est plus qu'un cabinet conseil. Vérifié (seadeep.io). Preuve que vendre de l'IA d'inspection sous
+  marine à de grands comptes tue une petite société avant qu'elle ne perce.
 - Voyis, Blue Robotics et Unmanned Survey Solutions non vérifiés en détail (quota de huit WebSearch déjà réparti
   sur les points 1 à 5). Connus par ailleurs comme fabricants de matériel (caméras et scanners laser pour Voyis,
   ROV bas coût pour Blue Robotics, véhicules de surface pour Unmanned Survey Solutions), pas comme éditeurs d'un
@@ -104,17 +104,15 @@ propre projet équivalent qu'en septembre 2024 (vérifié, section 1).
 
 Données existantes pour amorcer sans un seul courriel :
 
-- LIACI (Lifecycle Inspection, Analysis and Condition Information) : 1 893 images d'inspection de coques de
-  navires, annotées par pixel sur dix catégories (défauts, corrosion, écaillage de peinture, encrassement
-  biologique, grille de caisse à mer, vannes de coque, hélice, anodes, quille de roulis), par experts humains.
-  Vérifié (ieeexplore.ieee.org, mdpi.com, researchgate.net). Le plus directement utile pour cette échelle.
-- Jeux synthétiques et virtuels pour l'inspection de filets d'aquaculture (net pens), classes trous de filet,
-  encrassement, végétation. Vérifié (mdpi.com, researchgate.net). Utile sans dépendre de la piste écologique
-  interdite.
-- SUIM, jeu de référence pour la segmentation sous marine générale. Vérifié, cité dans les mêmes recherches
-  (arxiv.org). Utile en pré entraînement générique.
-- BenthicNet, déjà vérifié dans le dossier de tendance (plus de 11,4 millions d'images), utile pour la
-  robustesse générale du modèle, contenu surtout écologique.
+- LIACI (Lifecycle Inspection, Analysis and Condition Information) : 1 893 images de coques de navires, annotées
+  par pixel sur dix catégories (défauts, corrosion, écaillage de peinture, encrassement biologique, grille de
+  caisse à mer, vannes de coque, hélice, anodes, quille de roulis), par experts humains. Vérifié
+  (ieeexplore.ieee.org, mdpi.com, researchgate.net). Le plus utile pour cette échelle.
+- Jeux synthétiques pour l'inspection de filets d'aquaculture (net pens), classes trous de filet, encrassement,
+  végétation. Vérifié (mdpi.com, researchgate.net). Sans dépendre de la piste écologique interdite.
+- SUIM, référence de segmentation sous marine générale, cité dans les mêmes recherches (arxiv.org). Utile en pré
+  entraînement générique. BenthicNet, déjà vérifié dans le dossier de tendance (plus de 11,4 millions d'images),
+  utile pour la robustesse générale, contenu surtout écologique.
 
 Aucun de ces jeux ne nécessite de contacter un client ou un fabricant : tous téléchargeables publiquement. Le
 premier amorçage du modèle est faisable seul, avant toute vente.
@@ -131,11 +129,11 @@ premier amorçage du modèle est faisable seul, avant toute vente.
   la même tendance, chacune profitant du volume déjà annoté.
 - Barreau 5 (2036) : le corpus croisant des dizaines d'opérateurs et de zones devient la plus grande base privée
   d'images d'inspection sous marine civile en Amérique du Nord, selon la thèse du dossier parent.
-- Test adverse : un concurrent avec 5 millions de dollars (M$) en 2031 copie le pipeline de détection en
-  quelques mois, les modèles de vision étant devenus des briques standard. Il échoue à racheter en un an le
-  réseau de quinze à vingt sociétés déjà abonnées et leur historique par cible physique suivie depuis 2027, bâti
-  relation par relation, pas par un chèque : chaque cliente a un contrat, une habitude de facturation et une
-  confiance construite sur plusieurs années, pas rachetable en bloc comme un brevet ou un jeu de données figé.
+- Test adverse : un concurrent avec 5 millions de dollars (M$) en 2031 copie le pipeline en quelques mois, les
+  modèles de vision étant devenus des briques standard. Il échoue à racheter en un an le réseau de quinze à
+  vingt sociétés déjà abonnées et leur historique par cible physique depuis 2027, bâti relation par relation,
+  pas par un chèque : contrat, habitude de facturation et confiance construits sur plusieurs années, non
+  rachetables en bloc comme un brevet ou un jeu de données figé.
 
 ## 5. Question 8 puis les sept questions
 
@@ -153,21 +151,20 @@ sociétés clientes compose vraiment, mais le corpus d'images ne compose que sou
 jamais comme bibliothèque consultable entre clients. Actif plus faible que ce que le dossier de tendance
 laissait entendre, mais réel.
 
-1. Qui signe, quelle ligne budgétaire ? La société de service, avec la ligne qu'elle consacre déjà à la
-   production de rapports (sous traitance d'un analyste ou temps interne non facturable). Oui, une ligne
-   existe, montant précis non trouvé (section 2).
-2. La preuve se retourne t elle contre l'acheteur ? Non dans le cas central : le rapport enrichi est un
-   livrable commercial que la société choisit de vendre, pas un dépôt réglementaire obligatoire comme l'échelle
-   1 du dossier de tendance. Nuance : une anomalie manquée engage la crédibilité de la société de service envers
-   son propre client, risque de réputation en cascade.
+1. Qui signe, quelle ligne budgétaire ? La société de service, avec la ligne déjà consacrée à la production de
+   rapports (sous traitance d'un analyste ou temps interne non facturable). Oui, ligne existante, montant précis
+   non trouvé (section 2).
+2. La preuve se retourne t elle contre l'acheteur ? Non dans le cas central : livrable commercial choisi, pas un
+   dépôt réglementaire obligatoire comme l'échelle 1 du dossier de tendance. Nuance : une anomalie manquée
+   engage la crédibilité de la société de service envers son client, risque de réputation en cascade.
 3. L'IA est elle le produit ? Oui : elle remplace le geste payé à l'heure de visionnage vidéo, usage déjà tenté
    par Deep Trekker en 2024 (section 1), confirmant demande et faisabilité.
-4. Existe t il gratuit ou déjà acheté ? Partiellement. Qii.AI et OPENSEA Edge existent mais liés au matériel de
-   leur fabricant. Beam vend de l'IA d'inspection mais à de grands développeurs éoliens. SeaDeep vendait la même
+4. Existe t il gratuit ou déjà acheté ? Partiellement. Qii.AI et OPENSEA Edge liés au matériel de leur
+   fabricant. Beam vend de l'IA d'inspection mais à de grands développeurs éoliens. SeaDeep vendait la même
    promesse à de grands comptes et a fermé en 2025. Aucun concurrent agnostique vendu à de petites sociétés
-   trouvé : incertain plutôt que non, l'espace pouvant être occupé par un acteur hors du quota de recherche.
-5. Faisable seul depuis Vancouver ? Oui : amorçage sur données publiques (section 3), vente à distance par
-   abonnement, aucune plongée commerciale ni pose de matériel requise.
+   trouvé : incertain plutôt que non, l'espace pouvant être occupé par un acteur hors quota.
+5. Faisable seul depuis Vancouver ? Oui : amorçage sur données publiques (section 3), vente à distance, aucune
+   plongée commerciale ni pose de matériel requise.
 6. Une phrase sans acronyme : un logiciel qui regarde les vidéos et les signaux sonar déjà filmés par de petites
    sociétés de robots sous marins, repère automatiquement les dégâts et l'encrassement sur les coques, les
    quais, les filets et les câbles, et leur fabrique un rapport qu'elles peuvent revendre à leurs clients.
@@ -189,9 +186,9 @@ Nous sommes en 2031, la société est morte. Trois causes, classées par probabi
    l'agrégation, réduisant la société à un simple outil sans l'actif réseau de la section 4. Signal dès 2027 :
    la majorité des premiers clients demandent une clause de retrait de l'agrégation dès la signature.
 3. Le même sort que SeaDeep : le cycle de vente aux petites sociétés se révèle plus long et fragile que prévu
-   (trésorerie saisonnière, faible appétit pour un nouvel outil, désabonnement sans renouvellement), épuisant le
-   budget de moins de 25 000 dollars canadiens du fondateur avant que le volume ne compose. Signal dès 2027 :
-   les premiers clients pilotes se désabonnent après trois à six mois.
+   (trésorerie saisonnière, faible appétit pour un nouvel outil), épuisant le budget de moins de 25 000 dollars
+   canadiens du fondateur avant que le volume ne compose. Signal dès 2027 : les premiers clients pilotes se
+   désabonnent après trois à six mois.
 
 ## 7. Test à moins de 2 000 dollars et deux semaines
 
@@ -218,20 +215,19 @@ avant de proposer un essai payant.
 
 ## 8. Financement
 
-Revenu mensuel plausible, estimations : à 6 mois (septembre 2027), un client à 1 500 à 3 000 dollars par mois.
-À 12 mois, trois clients à environ 2 000 dollars par mois en moyenne, soit environ 6 000 dollars par mois. À 24
-mois, huit à dix clients à environ 2 000 dollars par mois, soit 16 000 à 20 000 dollars par mois. Toutes ces
-estimations restent modestes, cohérentes avec un rythme de développeur solo.
+Revenu mensuel plausible, estimations : 6 mois (septembre 2027), un client à 1 500 à 3 000 dollars par mois. 12
+mois, trois clients à environ 2 000 dollars en moyenne, soit environ 6 000 dollars par mois. 24 mois, huit à dix
+clients à environ 2 000 dollars, soit 16 000 à 20 000 dollars par mois. Estimations modestes, cohérentes avec un
+rythme de développeur solo.
 
-Programme de subvention plausible pour accélérer le barreau 2 sans en faire une condition de survie : le
-Programme d'aide à la recherche industrielle (PARI, souvent cité sous son sigle anglais IRAP, Industrial
-Research Assistance Program) du Conseil national de recherches Canada, guichet permanent pour petites et
-moyennes entreprises technologiques canadiennes avec un conseiller technico-industriel dédié, montant typique
-estimé entre 15 000 et 50 000 dollars canadiens pour un projet de développement de produit. Supposé et
-estimation : programme connu par ailleurs et cité comme accélérateur acceptable dans le brief du projet, montant
-exact non vérifié dans ce quota, lacune assumée. Le Ocean Supercluster canadien (grappe d'innovation océanique
-financée par le gouvernement du Canada) est une autre piste plausible de cofinancement à l'année deux, non
-vérifiée non plus dans ce quota.
+Programme de subvention plausible pour accélérer le barreau 2 sans condition de survie : le Programme d'aide à
+la recherche industrielle (PARI, sigle anglais IRAP, Industrial Research Assistance Program) du Conseil national
+de recherches Canada, guichet permanent pour petites et moyennes entreprises technologiques canadiennes avec
+conseiller technico-industriel dédié, montant typique estimé entre 15 000 et 50 000 dollars canadiens pour un
+projet de développement. Supposé et estimation : programme connu et cité comme accélérateur acceptable dans le
+brief du projet, montant exact non vérifié dans ce quota, lacune assumée. Le Ocean Supercluster canadien (grappe
+d'innovation océanique financée par le gouvernement du Canada) est une autre piste de cofinancement à l'année
+deux, non vérifiée non plus.
 
 ## Sources consultées
 
