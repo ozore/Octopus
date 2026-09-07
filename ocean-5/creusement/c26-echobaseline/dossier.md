@@ -132,21 +132,17 @@ supposait.
 
 ## 5. Question 8, puis les sept questions
 
-Question 8, plus difficile à attaquer en 2031 qu'en 2027 : incertain, en baisse par rapport à l'hypothèse du
-dossier de tendance. La littérature scientifique confirme que changer de protocole de laboratoire pendant un
-suivi longitudinal compromet la comparabilité des résultats, et que le protocole de laboratoire, pas la couche
-d'interprétation, est le facteur qui casse le plus la continuité (vérifié, source PMC, article sur la
-standardisation du metabarcoding eDNA marin au niveau de l'espèce, et synthèse citant les "inconsistances
-substantielles" lors du changement de laboratoire). Or EchoBaseline, telle que décrite, ne possède pas de
-laboratoire humide (les échantillons sont prélevés et séquencés par un partenaire externe) : le verrou
-technique réel, le protocole de laboratoire, échappe donc à la société. De plus, les séquences brutes sont
-couramment déposées dans des dépôts publics comme le NCBI SRA sous forme de BioProject (vérifié, pratique
-standard observée dans les jeux Horns Rev et mer du Nord belge cités en section 3) : un concurrent bien financé
-qui obtient l'accès aux séquences brutes archivées du client, avec le même protocole de laboratoire encore en
-place, peut rejouer l'interprétation avec son propre pipeline sur des bases de référence publiques identiques
-et reproduire une série comparable. Le verrou réel n'est donc pas la continuité d'interprétation en soi, mais
-la relation contractuelle avec le laboratoire de séquençage et la connaissance fine de l'historique du site,
-tous deux plus faciles à copier qu'annoncé.
+Question 8, plus difficile à attaquer en 2031 qu'en 2027 : incertain, en baisse par rapport au dossier de
+tendance. La littérature confirme que changer de protocole de laboratoire pendant un suivi longitudinal
+compromet la comparabilité, et que ce protocole, pas la couche d'interprétation, casse le plus la continuité
+(vérifié, source PMC sur la standardisation du metabarcoding eDNA marin, et synthèse citant des
+"inconsistances substantielles" au changement de laboratoire). EchoBaseline ne possède pas de laboratoire
+humide : le verrou technique réel lui échappe. Les séquences brutes sont couramment déposées au NCBI SRA sous
+forme de BioProject (vérifié, pratique observée dans Horns Rev et mer du Nord belge, section 3) : un
+concurrent qui obtient les séquences archivées du client, avec le même protocole de laboratoire encore en
+place, peut rejouer l'interprétation sur les mêmes bases publiques et reproduire une série comparable. Le
+verrou réel est donc la relation avec le laboratoire de séquençage et la connaissance fine du site, plus
+faciles à copier qu'annoncé.
 
 1. Qui signe, avec quelle ligne budgétaire existante ? Le bureau d'études (Natural Power, INSPIRE) qui refacture
    déjà des services de laboratoire à ses clients développeurs, avec une ligne budgétaire de sous traitance
