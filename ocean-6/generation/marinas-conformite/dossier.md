@@ -124,3 +124,147 @@ pluviales existants (occupant, cause 1) ; exigences de l'examen visuel trimestri
 publications sur l'estimation de turbidite par photo de smartphone (capacite IA, question 4). Aucune reserve
 pour le tour 2 : si l'idee est tuee, la regeneration du tour 2 partira du cadavre et des occupants deja trouves
 sans recherche supplementaire, sauf necessite absolue.
+
+## Tour 2
+
+Verdict du tueur lu dans tueur.md, section Tour 1 : idee 1 MORTE, cause 1 (Mapistry, plateforme financee de
+conformite environnementale, vend deja aux sites sous MSGP un module "monitoring and sampling with discharge
+documentation" avec capture photo mobile, cite par le tueur). Causes aggravantes retenues par le tueur : cause 4
+(le dossier photo permanent et geolocalise est une piece decouvrable contre le site lui meme), cause 5 (la
+turbidite par photo n'est validee dans aucune source sur un rejet de chantier naval, seulement sur de l'eau
+generique), cause 6 (2 000 marinas en Floride surcompte largement le secteur Q, qui ne couvre que les sites a
+activite industrielle : carenage, peinture, avitaillement).
+
+**Recherche autorisee de ce tour (une seule).** Requete : les trois chantiers nommes au tour 1 (Cracker Boy Boat
+Works, Roscioli Yachting Center, Derecktor Fort Lauderdale) utilisent-ils deja Mapistry pour leur conformite eaux
+pluviales ? Resultat : aucune mention publique de Mapistry ni d'aucune plateforme de conformite nommee pour ces
+trois sites ; les resultats ne montrent que des pages d'entreprise generalistes (Facebook, LinkedIn, annuaires
+marins). Les relations fournisseur-client de logiciel de conformite ne sont pas publiques : l'absence de mention
+ne prouve pas l'absence d'usage, mais rien ne confirme non plus que ces trois acheteurs precis soient deja
+occupes par Mapistry. Le trou n'est donc pas confirme occupe chez ces trois acheteurs precis ; regeneration
+tentee plutot que "pas de regeneration".
+
+### Idee 1 regeneree : la couche de decision calibree sur le signal du chantier naval, pas l'archive de preuve
+
+Point de depart du cadavre : Mapistry (l'occupant trouve par le tueur) vend une capture photo generaliste du
+prelevement MSGP a des sites industriels de tous secteurs (aciereries, aeroports, usines), avec redaction de
+rapport annuel et inspections completes. Ce qu'il ne fait pas : il n'aide pas le technicien, au moment meme du
+prelevement, a distinguer un signal habituel de chantier naval (poussiere de peinture antisalissure souvent
+cuivree, mousse de lavage de coque melee a l'ecume marine, irisation d'huile de moteur au ponton carburant) d'un
+vrai signal de pollution a signaler ; il capture et centralise, il ne calibre pas sur ce secteur precis, qui
+represente une part marginale de sa clientele multisectorielle. Ce que les clients de Mapistry paient encore a
+cote, meme equipes de Mapistry : les prelevements et analyses de laboratoire (ligne 8, ligne 11), le conseil
+ponctuel d'un cabinet quand le technicien hesite sur ce qu'il voit (temps facture en plus de l'abonnement
+logiciel), et leur propre jugement d'oeil, non ecrit, non partage d'un site a l'autre.
+
+1. **Ligne de depense d'origine.** Inchangee : ligne 7 (200 a 500 $ par inspection periodique aupres d'un
+   cabinet), avec lignes 5, 8, 11 en contexte, comme au tour 1.
+
+2. **Le trou, revu.** Le trou n'est plus "personne ne capture la photo du prelevement" (Mapistry le fait deja,
+   generiquement, pour les sites MSGP). Le trou est : au moment ou le technicien regarde l'echantillon, aucun
+   outil, ni Mapistry ni le cabinet, ne lui dit si ce qu'il voit est le residu ordinaire d'un chantier naval ou
+   un signal a signaler, avant qu'il ne remplisse la fiche et decide seul. C'est un jugement d'oeil non outille,
+   propre a ce secteur, que le tueur lui meme identifie comme absent chez l'occupant trouve (tueur.md, "ce qui
+   manque au dossier").
+
+3. **Le produit, en une phrase.** Un outil qui, au moment du prelevement trimestriel impose par le permis MSGP,
+   dit tout de suite au technicien du chantier naval si ce qu'il voit ressemble aux residus habituels d'un
+   chantier naval ou a un vrai signal a signaler, avant qu'il ne remplisse la fiche ; rien n'est conserve de
+   force, le site choisit comme aujourd'hui ce qu'il garde ou transmet.
+
+4. **Ce que fait l'IA.** Un modele de classification d'image compare la photo du prelevement a une bibliotheque
+   de signatures visuelles propres au secteur (particules cuivrees de peinture antisalissure, mousse de lavage
+   de coque, irisation d'huile de moteur), calibree site par site au fil des prelevements repetes, pour donner
+   une recommandation immediate. Verifiee (source) pour la technique generale : Lopez-Betancur et al. 2022 (IWA
+   Water Science & Technology, modele CNN sur photo de smartphone pour solides en suspension et turbidite) et
+   l'etude 2023 de l'Arabian Journal for Science and Engineering (classification par reseau de neurones
+   convolutif d'echantillons d'eau trouble selon des normes de qualite). Supposee, et seulement supposee, pour
+   l'application precise au residu de chantier naval : aucune source trouvee, ni par le dossier ni par le
+   tueur, ne valide ce modele sur ce signal specifique ; la calibration doit se construire avec les premiers
+   clients payants avant toute promesse de precision.
+
+5. **Acheteur du barreau 1.** Memes trois chantiers prives de Floride qu'au tour 1 : Cracker Boy Boat Works,
+   Roscioli Yachting Center, Derecktor Fort Lauderdale. Mapistry vise des sites multisectoriels avec un budget
+   EHS complet (usine, aeroport) ; un chantier naval de taille moyenne n'a pas ce budget et n'a pas besoin d'une
+   plateforme complete d'inspections et de rapports annuels, seulement d'aide au moment precis du prelevement.
+   Ils acheteraient a une societe d'une personne plutot qu'a Mapistry parce que le produit est moins cher, plus
+   etroit, et calibre sur leur propre residu plutot que generique a tous les secteurs industriels.
+
+6. **Population, honnetement non resolue.** Le tueur a montre que "plus de 2 000 marinas en Floride" surcompte
+   le secteur Q (seuls les sites a activite industrielle : carenage, peinture, avitaillement, y sont soumis).
+   Sans recherche supplementaire ce tour, ce dossier ne peut pas donner un chiffre corrige defendable ; il ne
+   remplace pas l'erreur par un autre chiffre invente. Ancrage concret disponible : au moins neuf chantiers de
+   reparation et carenage identifiables en Floride du Sud (les trois nommes plus, entre autres, Lauderdale Marine
+   Center, Rybovich, Merrill-Stevens Dry Dock, Bradford Marine, Summerfield Boat Works, Cracker Boy Fort Pierce),
+   sans que cela atteigne le seuil de 25 nommables exige par le gabarit ni un chiffre mondial source. Cause 6 non
+   levee ce tour, voir section causes.
+
+7. **Prix vise.** Revu a la baisse : l'outil ne vend plus une archive permanente mais une aide ponctuelle au
+   moment du prelevement, donc 39 a 79 $US par mois par site (470 a 950 $/an), sous le cout d'une seule visite
+   annuelle de cabinet (200 a 500 $) et tres en dessous du ratio 10 a 30 % par an de la ligne 11.
+
+8. **Question 8, par mecanisme, revue pour ne pas creer d'archive.** Qui detient la donnee aujourd'hui : personne
+   ; le jugement d'oeil du technicien sur ce qui est residu ordinaire de chantier naval reste dans sa tete,
+   propre a chaque site, jamais ecrit ni partage. Pourquoi il laisserait le fondateur en accumuler une version :
+   la photo brute du prelevement n'est pas conservee par defaut au dela de la decision donnee (elle est reduite
+   a une signature numerique, une empreinte de couleur et de texture, non reconstituable en photo du rejet), donc
+   ce n'est pas une preuve du site que le fondateur detiendrait, mais une empreinte statistique calibree pour ce
+   site precis, batie prelevement apres prelevement ; le site accepte cette calibration en echange d'une
+   recommandation plus juste que le defaut generique. Ce qui rend le depart couteux en annee 3 : la calibration
+   accumulee (des dizaines de prelevements passes, propres a la teinte de peinture, a l'eclairage du ponton, a la
+   couleur d'eau habituelle de ce site precis) ne peut pas etre exportee comme un simple fichier ; un nouvel
+   outil ou un retour au jugement d'oeil nu repart de zero et redonne au technicien un taux d'erreur plus eleve
+   des le premier prelevement suivant le changement.
+
+9. **Occupant le plus proche.** Mapistry (trouve par le tueur), plateforme financee de conformite
+   environnementale vendue a des sites MSGP de tous secteurs, avec capture photo mobile, echantillonnage et
+   documentation du rejet, redaction et soumission des rapports annuels, inspections completes de site. Ne fait
+   pas, a la date du 7 septembre 2026, de couche calibree sur le signal visuel propre au secteur Q ni de
+   recommandation en temps reel au moment du prelevement ; rien trouve, ni par le dossier ni par le tueur, ne
+   contredit cela.
+
+10. **Pre-mortem.** 2031, la societe est morte. Cause redoutee : cause 1 encore, mais sous une forme plus
+    precise que le tour 1 : Mapistry ou un concurrent EHS generaliste ajoute un sous module "secteur Q" a son
+    catalogue existant de secteurs MSGP, avec un cout marginal quasi nul pour eux puisque la capture photo et le
+    pipeline de classification d'image existent deja chez eux pour d'autres secteurs, seule la bibliotheque de
+    signatures change. Verification que ce n'est pas deja arrive au 7 septembre 2026 : la recherche du tueur sur
+    Mapistry (tueur.md, recherche 3) decrit ses trois blocs de service sans mention d'une couche calibree par
+    secteur ni d'indicateurs visuels par secteur d'activite ; aucune source, dans les recherches cumulees du
+    dossier et du tueur, ne montre une telle specialisation deja vendue.
+
+### Les dix causes de mort, revues pour l'idee regeneree
+
+1. **Occupant deja present.** S'applique toujours en partie : Mapistry occupe le mecanisme general (capture
+   photo, documentation du rejet) au meme type d'acheteur MSGP. Ne s'applique pas a la couche precise proposee
+   ici (calibration sectorielle, recommandation en temps reel) : rien trouve a ce jour. Cause redoutee, cf.
+   pre-mortem.
+2. **Point de depart public.** Ne s'applique pas : origine ligne de depense privee (ligne 7), inchangee.
+3. **Acheteur sans ligne budgetaire.** Ne s'applique pas : memes trois acheteurs, memes lignes 7/8/11 deja
+   payees, prix revu a la baisse rend l'achat plus facile, pas plus difficile.
+4. **Preuve retournee contre celui qui la detient.** Corrigee : la photo brute n'est plus conservee par defaut,
+   seule une empreinte statistique non reconstituable en image l'est ; rien n'est transmis au regulateur par le
+   produit ; le site garde, comme aujourd'hui, la main sur ce qu'il ecrit et transmet lui meme. Ne s'applique
+   plus au meme degre que releve par le tueur au tour 1.
+5. **Capacite supposee promue en fait.** Corrigee par l'etiquette : la technique generale (photo vers categorie
+   d'eau) est vérifiée (source, deux publications datees) ; l'application au signal de chantier naval est
+   explicitement etiquetee supposee, non promue en fait, avec plan de calibration par les premiers clients avant
+   toute promesse de precision.
+6. **Population non comptee.** S'applique encore, non levee ce tour faute de recherche disponible (budget
+   epuise) : neuf acheteurs concrets nommes, pas vingt cinq, pas de chiffre mondial source. Risque reconnu,
+   reporte a une recherche future si l'idee survit.
+7. **Question 8 repondue par condition.** Ne s'applique pas, renforcee par rapport au tour 1 : la fragilite
+   relevee par le tueur (les fichiers photo peuvent etre exportes ailleurs) ne tient plus, puisque ce qui fait
+   la valeur n'est plus un fichier exportable mais une calibration statistique accumulee, propre a l'outil.
+8. **Monoculture d'agent.** Ne s'applique pas : le produit ne redige aucun rapport ni plan, il donne une
+   recommandation au moment du geste, rien de plus.
+9. **Gain de productivite vendu a qui facture l'heure.** Ne s'applique pas : acheteur toujours le proprietaire
+   du chantier naval, pas le cabinet facture a l'heure.
+10. **Barreau 1 public ou grand compte.** Ne s'applique pas : memes trois chantiers prives independants ; a
+    distinguer explicitement de Mapistry, qui vise plutot de gros sites industriels multisectoriels, jamais visee
+    ici comme acheteur.
+
+### Budget de recherche du tour 2
+
+Une seule recherche autorisee et consommee ce tour (verification de l'usage de Mapistry chez les trois chantiers
+nommes, inconclusive). Aucune recherche restante. Cause 6 (population) reste non resolue et devra etre traitee
+au tour suivant si l'idee survit, en priorite sur toute autre recherche.
