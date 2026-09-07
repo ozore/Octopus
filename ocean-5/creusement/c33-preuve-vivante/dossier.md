@@ -5,9 +5,9 @@ transforme les photos et vidéos de plongée déjà prises par les équipes de s
 datée, géolocalisée et formatée pour le régulateur, pour accélérer la libération des cautions de
 performance des récifs d'huîtres et rivages vivants. Verdict en une ligne : l'échelle est vivante, mais
 son barreau 1 d'origine, un port public (Port de Tampa Bay), doit être remplacé, et le mix d'acheteurs
-privés disponibles en Floride pour de l'huître ou du rivage vivant précisément est plus mince que prévu.
-Aucun outil gratuit ni leader ne fait déjà ce barreau 1 précis : ce n'est pas une raison de mort, mais le
-barreau 1 change de forme (voir section 2).
+privés disponibles en Floride pour l'huître ou le rivage vivant précisément est plus mince que prévu.
+Aucun outil gratuit ni leader ne fait déjà ce barreau 1 précis, ce n'est pas une raison de mort, mais le
+barreau 1 change de forme (section 2).
 
 ## 1. Qui vend déjà cela, et à qui
 
@@ -68,15 +68,14 @@ maître d'œuvre) :
    tentative sur un plan précis (San Diego, zostère) n'ont pas donné de nom d'entreprise : lacune
    assumée. Premier appel de vente à commencer par une recherche de permis ERP publiés par comté.
 
-Différence de contexte, Canada : le régime comparable (Pêches et Océans Canada, DFO, programme de
-protection du poisson et de son habitat, Fisheries and Fish Habitat Protection Program, FFHPP) impose au
-promoteur de surveiller et de rapporter ses mesures de compensation, mais sans marché de crédits public
-comparable à RIBITS ni caution financière obligatoire identifiée cette session (vérifié partiellement,
-dfo-mpo.gc.ca). L'obligation canadienne est plus discrétionnaire, moins standardisée, sans marché de prix
-comparable au marché américain (2700 points de prix dans 39 États, dossier de tendance). Cette échelle
-reste distincte d'une piste antérieure du fondateur sur l'habitat de poisson au Canada : elle vise le
-marché américain, structuré par un standard national de cinq ans minimum de suivi (section 3) et un
-marché de crédits chiffré, que le régime canadien n'a pas.
+Différence de contexte, Canada : le régime comparable (Pêches et Océans Canada, DFO, Fisheries and Fish
+Habitat Protection Program, FFHPP) impose au promoteur de surveiller et rapporter ses mesures de
+compensation, mais sans marché de crédits public comparable à RIBITS ni caution financière obligatoire
+identifiée cette session (vérifié partiellement, dfo-mpo.gc.ca). L'obligation canadienne est plus
+discrétionnaire, moins standardisée, sans marché de prix comparable au marché américain (2700 points de
+prix dans 39 États, dossier de tendance). Cette échelle reste distincte d'une piste antérieure du
+fondateur sur l'habitat de poisson au Canada : elle vise le marché américain, structuré par un standard
+national de cinq ans de suivi (section 3) et un marché de crédits chiffré que le régime canadien n'a pas.
 
 ## 3. Le produit : six fonctionnalités, ce que fait l'IA, données de départ
 
@@ -117,11 +116,11 @@ al.), précision chiffrée non récupérée cette session. Transférabilité sp�
 risque technique de cette échelle, la précision publiée existe sur des tâches voisines, pas sur la tâche
 exacte.
 
-Données existantes pour amorcer sans un seul courriel : rapports de suivi publics via RIBITS (registre
-géré par l'USACE), rapports de l'Oyster Integrated Mapping and Monitoring Program (OIMMP, Florida Fish
-and Wildlife Conservation Commission, FWC), jeux de données académiques de photoquadrats de zostère et
-d'huître déjà cités (vérifié pour leur existence, non vérifié cette session que les images brutes, et pas
-seulement les comptages agrégés, soient publiquement téléchargeables : voir section 7).
+Données existantes pour amorcer sans un seul courriel : rapports RIBITS (registre géré par l'USACE),
+rapports de l'Oyster Integrated Mapping and Monitoring Program (OIMMP, Florida Fish and Wildlife
+Conservation Commission, FWC), jeux de données académiques de photoquadrats déjà cités (vérifié pour leur
+existence, non vérifié que les images brutes, pas seulement les comptages agrégés, soient téléchargeables,
+voir section 7).
 
 ## 4. L'actif qui compose et le test adverse
 
@@ -227,8 +226,6 @@ l'année un pour le pipeline de vision par ordinateur, sans octroi discrétionna
 programmes déjà cités comme accélérateurs dans le brief du fondateur ; montants précis pour ce projet non
 chiffrés cette session).
 
----
-
 ## Résumé en 10 lignes
 
 1. Verdict : l'échelle Preuve Vivante est vivante, pas morte.
@@ -238,14 +235,13 @@ chiffrés cette session).
    travail à la main depuis quinze ans et pourrait l'internaliser en premier.
 4. Le port de Tampa Bay, acheteur public interdit, est remplacé par trois acheteurs privés, plus
    incertains que prévu.
-5. Barreau 1 corrigé : ECS comme maître d'œuvre qui revend une capacité nouvelle, la banque estuarienne
-   privée Mangrove Point comme sponsor le plus proche trouvé, un promoteur sous permis ERP en Floride
-   dont le nom précis reste à trouver.
+5. Barreau 1 corrigé : ECS comme maître d'œuvre qui revend une capacité nouvelle, Mangrove Point comme
+   sponsor estuarien le plus proche trouvé, un promoteur sous permis ERP en Floride à identifier.
 6. La faisabilité technique du comptage par vision est vérifiée sur des tâches voisines, corail et
    zostère, pas encore sur l'huître américaine en contexte réglementaire précis.
 7. Ce transfert non vérifié à l'huître reste le principal risque technique de l'échelle.
-8. Le marché de sponsors de banques de compensation dédiées à l'huître ou au rivage vivant en Floride
-   est plus étroit qu'attendu, deux banques côtières sur tout l'annuaire professionnel consulté.
+8. Le marché de sponsors de banques dédiées à l'huître ou au rivage vivant en Floride est plus étroit
+   qu'attendu, deux banques côtières sur tout l'annuaire professionnel consulté.
 9. Test à moins de 2000 dollars : comptage automatisé sur des photoquadrats publics de zostère, comparé
    à des comptages humains déjà publiés, avant toute promesse ferme sur l'huître.
 10. Si la société meurt en 2031, l'acteur le plus probable qui la tue est un cabinet généraliste côtier
