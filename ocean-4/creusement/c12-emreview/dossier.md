@@ -87,14 +87,13 @@ mécanisme d'accumulation est exactement celui que FishVue AI revendique déjà 
 
 ## 5. Faisabilité depuis Vancouver
 
-Données publiques exploitables : aucune archive vidéo EM publique identifiée cette session (vidéo EM soumise sous
-mandat réglementaire, propriété du fournisseur ou du régulateur, non en libre accès) ; corpus de substitution
-possible via FathomNet (MBARI, licence de code MIT mais licence des images non confirmée) ou VIAME/Kitware
-(gratuit, orienté relevés scientifiques, pas vidéo de pont de bateau). Matériel : aucun nécessaire pour un
-prototype sur données publiques de substitution. Permis : aucun, le fondateur ne fait pas d'observation lui-même.
-Blocage réel : accès à de la vraie vidéo EM de pont de bateau (mauvaise lumière, occlusion, angles fixes) non
-public ; sans partenariat avec un fournisseur ou un programme régional, impossible de valider la performance en
-conditions réelles, contrairement à Archipelago et Ai.Fish qui ont un accès direct à ces flux.
+Données publiques exploitables : aucune archive vidéo EM publique identifiée (vidéo soumise sous mandat
+réglementaire, propriété du fournisseur ou du régulateur) ; corpus de substitution via FathomNet (MBARI, licence
+de code MIT mais licence des images non confirmée) ou VIAME/Kitware (gratuit, orienté relevés scientifiques, pas
+vidéo de pont de bateau). Matériel et permis : aucun nécessaire pour un prototype sur données de substitution, le
+fondateur ne fait pas d'observation lui-même. Blocage réel : accès à de la vraie vidéo EM de pont de bateau
+(mauvaise lumière, occlusion) non public ; sans partenariat avec un fournisseur ou un programme régional,
+impossible de valider la performance réelle, contrairement à Archipelago et Ai.Fish qui y ont un accès direct.
 
 ## 6. La preuve se retourne-t-elle contre l'acheteur ?
 

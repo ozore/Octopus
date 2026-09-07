@@ -64,7 +64,6 @@ Ramboll, WSP) qui doit livrer la section acoustique sans bioacousticien interne.
 d'observateur MMO/PAM entre 200 et 700 $US selon séniorité (vérifiée, crewbase.pro) ; coût précis d'une section
 rédigée non trouvé (estimation). Ce coordinateur signe seul un bon de commande de 2 000 $ pour un test sur un
 rapport ou une fenêtre temporelle.
-
 **Fonctionnalités (ordre de vente)** : 1) charger les journaux de détection déjà produits par PAMGuard ou PAMlab
 pour une fenêtre et une zone ; 2) croiser avec l'archive ONC Oceans 3.0 et Boundary Pass si le site s'y prête
 (vérifié au cas par cas) ; 3) rédiger la section acoustique citant chaque détection, sa source, son horodatage ;
