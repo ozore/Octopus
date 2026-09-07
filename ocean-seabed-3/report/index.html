@@ -1,0 +1,883 @@
+<title>Atlas Fonds Marins</title>
+<meta name="description" content="Troisième passe : douze idées de société logicielle et IA pour préserver les fonds marins (coraux, herbiers, kelp, récifs d'éponges), calibrées pour un fondateur plongeur à Vancouver en bootstrap.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#F4F7F9; --surface:#FFFFFF; --surface-2:#EAF0F3;
+  --ink:#0E2233; --ink-2:#44576A; --ink-3:#6E8290;
+  --kelp:#0F7C6E; --kelp-ink:#0B5F55; --kelp-soft:#DDF0EC;
+  --buoy:#C2401B; --buoy-soft:#FBE6DE;
+  --line:#D5DEE4; --line-2:#E6ECF0;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+  --shadow:0 1px 2px rgba(14,34,51,.06),0 8px 24px rgba(14,34,51,.06);
+  --display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0C1A24; --surface:#122431; --surface-2:#182E3D;
+    --ink:#E6EEF2; --ink-2:#A9BAC5; --ink-3:#8296A3;
+    --kelp:#2FB39F; --kelp-ink:#5FD0BF; --kelp-soft:#163A38;
+    --buoy:#FF8A66; --buoy-soft:#3D2118;
+    --line:#26394B; --line-2:#1E3140;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0C1A24; --surface:#122431; --surface-2:#182E3D;
+  --ink:#E6EEF2; --ink-2:#A9BAC5; --ink-3:#8296A3;
+  --kelp:#2FB39F; --kelp-ink:#5FD0BF; --kelp-soft:#163A38;
+  --buoy:#FF8A66; --buoy-soft:#3D2118;
+  --line:#26394B; --line-2:#1E3140;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--kelp-ink);text-decoration-thickness:1px;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--kelp);outline-offset:2px}
+h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:clamp(40px,6vw,72px);font-weight:800;line-height:1;letter-spacing:-.02em}
+h2{font-size:clamp(26px,3.2vw,36px);font-weight:700;letter-spacing:-.015em;line-height:1.15}
+h3{font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1.15}
+h4{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+p{margin:0}
+.mono{font-family:var(--mono);font-size:.86em}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--kelp-ink);font-weight:500}
+.date{font-family:var(--mono);font-weight:600;color:var(--buoy);white-space:nowrap}
+.ref{font-family:var(--mono);font-size:.82em;color:var(--ink-2);background:var(--surface-2);padding:1px 6px;border-radius:3px;white-space:nowrap}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* Hero */
+.hero{border-bottom:1px solid var(--line);background:var(--surface)}
+.hero-inner{max-width:1180px;margin:0 auto;padding:56px 32px 40px;display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:48px;align-items:end}
+.hero p.lead{font-size:20px;color:var(--ink-2);max-width:62ch;margin-top:20px}
+.hero-meta{display:grid;gap:10px;font-family:var(--mono);font-size:13px;color:var(--ink-2)}
+.hero-meta div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line-2);padding-bottom:8px}
+.hero-meta b{color:var(--ink);font-weight:600}
+.kpis{max-width:1180px;margin:0 auto;padding:0 32px 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{border-top:2px solid var(--kelp);padding-top:10px}
+.kpi .v{font-family:var(--display);font-size:34px;font-weight:800;line-height:1;letter-spacing:-.02em}
+.kpi .l{font-size:14px;color:var(--ink-2);margin-top:6px}
+
+/* Page grid */
+.page{max-width:1180px;margin:0 auto;padding:40px 32px 96px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:56px;align-items:start}
+nav.rail{position:sticky;top:24px;font-family:var(--display);font-size:14px}
+nav.rail .group{margin-bottom:22px}
+nav.rail .group-t{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+nav.rail a{display:flex;gap:10px;align-items:baseline;color:var(--ink-2);text-decoration:none;padding:5px 0;border-left:2px solid transparent;padding-left:10px;margin-left:-12px}
+nav.rail a:hover{color:var(--ink)}
+nav.rail a.on{color:var(--ink);border-left-color:var(--kelp)}
+nav.rail a .n{font-family:var(--mono);font-size:11px;color:var(--ink-3);min-width:18px}
+main{min-width:0}
+section.block{margin-bottom:72px}
+section.block > .eyebrow{margin-bottom:10px;display:block}
+section.block > h2{margin-bottom:22px}
+.prose{max-width:66ch}
+.prose p + p{margin-top:14px}
+.prose ul{padding-left:20px;margin:12px 0}
+.prose li{margin:6px 0}
+
+/* Synthèse */
+.reco{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:26px 0 8px}
+.reco a{display:block;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 18px 16px;box-shadow:var(--shadow)}
+.reco a:hover{border-color:var(--kelp)}
+.reco .k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--buoy);font-weight:600}
+.reco .t{font-family:var(--display);font-size:20px;font-weight:700;margin:6px 0 6px;letter-spacing:-.01em}
+.reco .d{font-size:14.5px;color:var(--ink-2)}
+.thesis{background:var(--kelp-soft);border-radius:10px;padding:22px 24px;margin:26px 0;max-width:72ch}
+.thesis p{font-family:var(--display);font-size:19px;font-weight:500;line-height:1.4;color:var(--kelp-ink)}
+:root[data-theme="dark"] .thesis p{color:var(--ink)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .thesis p{color:var(--ink)}}
+
+/* Timeline */
+.tl{position:relative;padding-left:26px;border-left:2px solid var(--line);margin-top:8px}
+.tl-y{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.01em;margin:26px 0 10px;position:relative}
+.tl-y:first-child{margin-top:0}
+.tl-y::before{content:"";position:absolute;left:-33px;top:9px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--ink-3)}
+.tl-e{display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;padding:7px 0;border-bottom:1px solid var(--line-2);font-size:15px;align-items:baseline}
+.tl-e .date{font-size:13px}
+.tl-e .t b{font-family:var(--display);font-weight:700}
+.tl-e .idx{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-left:6px;white-space:nowrap}
+.tl-e.past .date{color:var(--ink-3)}
+.tl-now{position:relative;margin:10px 0;padding:6px 10px;background:var(--buoy-soft);color:var(--buoy);font-family:var(--mono);font-size:12px;font-weight:600;border-radius:4px;display:inline-block}
+.tl-now::before{content:"";position:absolute;left:-33px;top:10px;width:12px;height:12px;border-radius:50%;background:var(--buoy)}
+
+/* Chart */
+.chart-wrap{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 20px 12px;box-shadow:var(--shadow);position:relative}
+.chart-wrap svg{width:100%;height:auto;display:block;font-family:var(--mono)}
+.legend{display:flex;flex-wrap:wrap;gap:18px;font-family:var(--mono);font-size:12px;color:var(--ink-2);margin:10px 4px 0}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;vertical-align:-1px;background:var(--c)}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-family:var(--mono);font-size:12px;padding:8px 10px;border-radius:6px;max-width:260px;line-height:1.4;opacity:0;transition:opacity .12s}
+.tip b{display:block;font-family:var(--display);font-size:14px;margin-bottom:3px}
+.chart-note{font-size:14px;color:var(--ink-2);margin-top:14px;max-width:70ch}
+
+/* Fiche */
+.fiche{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-bottom:34px;overflow:hidden}
+.fiche-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:20px;align-items:start;padding:26px 28px 18px;border-bottom:1px solid var(--line-2)}
+.fiche-head .big{font-family:var(--display);font-size:52px;font-weight:800;line-height:.9;letter-spacing:-.04em;color:var(--kelp);font-variant-numeric:tabular-nums}
+.fam{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:3px;margin-bottom:8px;color:#fff}
+.fam-mer{background:var(--s1)} .fam-peche{background:var(--s2)} .fam-amont{background:var(--s3)}
+.tagline{font-size:17px;color:var(--ink-2);margin-top:6px;font-style:italic}
+.score-badge{text-align:right;font-family:var(--display);font-weight:800;font-size:30px;line-height:1;letter-spacing:-.02em}
+.score-badge span{font-size:13px;color:var(--ink-3);font-weight:500;letter-spacing:0}
+.score-badge small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-top:6px;font-weight:500}
+.trigger{padding:16px 28px;background:var(--surface-2);font-size:15.5px;line-height:1.5;display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.trigger .lab{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--buoy);font-weight:600;white-space:nowrap}
+.fiche-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px 32px;padding:22px 28px 8px}
+.fiche-grid section.wide{grid-column:1/-1}
+.fiche-grid h4{margin-bottom:6px}
+.fiche-grid p,.fiche-grid li{font-size:15.5px}
+.fiche-grid ul{margin:4px 0 0;padding-left:18px}
+.fiche-grid li{margin:3px 0}
+.fiche-grid .kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:15px}
+.fiche-grid .kv dt{font-family:var(--mono);font-size:12px;color:var(--ink-3);padding-top:3px}
+.fiche-grid .kv dd{margin:0}
+.effort{display:inline-block;font-family:var(--mono);font-size:12px;padding:2px 8px;border-radius:3px;background:var(--surface-2);color:var(--ink-2);margin-bottom:6px}
+.scores{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;padding:18px 28px 22px;border-top:1px solid var(--line-2)}
+.sc{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em}
+.sc .bar{height:6px;background:var(--line-2);border-radius:3px;margin:6px 0 5px;overflow:hidden}
+.sc .bar i{display:block;height:100%;background:var(--kelp);width:calc(var(--v) * 20%)}
+.sc b{color:var(--ink);font-weight:600}
+.verdicts{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line-2)}
+.verdicts > div{padding:16px 20px;font-size:14px;border-right:1px solid var(--line-2)}
+.verdicts > div:last-child{border-right:0}
+.verdicts .who{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.verdicts .who b{color:var(--ink);font-weight:600;letter-spacing:0;font-family:var(--display);font-size:13px;text-transform:none;margin-left:6px}
+.verdicts p{color:var(--ink-2)}
+.pill{display:inline-block;font-family:var(--mono);font-size:11px;padding:1px 7px;border-radius:3px;font-weight:600;margin-right:6px}
+.pill-go{background:var(--kelp-soft);color:var(--kelp-ink)} .pill-if{background:#FFF3D6;color:#7A4E00} .pill-no{background:var(--buoy-soft);color:var(--buoy)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pill-if{background:#3A2E12;color:#F2C46B}}
+:root[data-theme="dark"] .pill-if{background:#3A2E12;color:#F2C46B}
+.fam-h{display:flex;align-items:center;gap:12px;margin:40px 0 18px}
+.fam-h .sw{width:14px;height:14px;border-radius:3px}
+.fam-h h3{font-size:20px}
+.fam-h p{color:var(--ink-2);font-size:15px}
+
+/* Table */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;min-width:900px;font-size:14px}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);font-weight:600;white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--line-2);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+td .nm{font-family:var(--display);font-weight:700}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:0}
+
+/* Misc blocks */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.card h3{font-size:18px;margin-bottom:6px}
+.card p{font-size:15px;color:var(--ink-2)}
+.q{border-left:3px solid var(--kelp);padding:4px 0 4px 18px;margin:18px 0}
+.q .qq{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.01em}
+.q .qw{font-size:15px;color:var(--ink-2);margin-top:6px}
+.q .qw b{color:var(--ink);font-weight:600}
+.src{columns:2;column-gap:32px;font-size:14px}
+.src li{break-inside:avoid;margin:0 0 8px;color:var(--ink-2)}
+.src li b{color:var(--ink);font-weight:600;font-family:var(--display)}
+.agents{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.agents div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:14px}
+.agents .a{font-family:var(--mono);font-size:12px;color:var(--kelp-ink);font-weight:600}
+.agents p{color:var(--ink-2);margin-top:4px}
+footer{border-top:1px solid var(--line);padding:28px 32px;font-family:var(--mono);font-size:12px;color:var(--ink-3);text-align:center}
+
+@media (max-width:980px){
+  .hero-inner{grid-template-columns:1fr;gap:28px}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .page{grid-template-columns:1fr;gap:24px;padding:24px 20px 72px}
+  nav.rail{position:static;display:flex;gap:18px;overflow-x:auto;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  nav.rail .group{margin:0;flex:0 0 auto}
+  nav.rail a{border-left:0;padding-left:0;margin-left:0;white-space:nowrap}
+  .reco,.verdicts,.agents{grid-template-columns:1fr}
+  .verdicts > div{border-right:0;border-bottom:1px solid var(--line-2)}
+  .fiche-grid,.grid2{grid-template-columns:1fr}
+  .scores{grid-template-columns:repeat(4,1fr)}
+  .src{columns:1}
+  .fiche-head{grid-template-columns:auto minmax(0,1fr)}
+  .score-badge{grid-column:1/-1;text-align:left}
+}
+</style>
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow">Étude d'opportunités · troisième passe · septembre 2026</span>
+      <h1 style="margin-top:14px">Atlas Fonds Marins</h1>
+      <p class="lead">Douze idées de société logicielle et IA pour préserver ce qui vit au fond : coraux, herbiers, forêts de kelp, récifs d'éponges siliceuses. Aucune reprise des vingt-quatre idées des deux premières passes. Même fondateur : technique, plongeur, basé à Vancouver, en bootstrap, qui veut un premier revenu vite et une donnée que personne ne peut copier.</p>
+    </div>
+    <div class="hero-meta">
+      <div><span>Commanditaire</span><b>Fondateur, projet Octopus</b></div>
+      <div><span>Méthode</span><b>8 agents de recherche, 3 critiques</b></div>
+      <div><span>Terrains</span><b>Salish Sea, Californie, Floride, Méditerranée, mer du Nord</b></div>
+      <div><span>Statut</span><b>Idéation, pas d'implémentation</b></div>
+    </div>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><div class="v">12</div><div class="l">idées nouvelles, notées sur 7 axes, passées par un investisseur, un écologue gestionnaire d'AMP et un architecte technique</div></div>
+    <div class="kpi"><div class="v">7</div><div class="l">idées sur douze ont un premier client à moins de trois heures de Vancouver, dont vos deux clubs de plongée</div></div>
+    <div class="kpi"><div class="v">2027</div><div class="l">ancrage interdit dans toutes les zones de préservation du sanctuaire des Keys : l'échéance la plus dure du dossier</div></div>
+    <div class="kpi"><div class="v">0 $</div><div class="l">budget 2026 de la Floride pour la restauration corallienne, après 28,5 M$ sur 2023-2025 : la preuve devient la monnaie</div></div>
+  </div>
+</header>
+
+<div class="page">
+<nav class="rail" aria-label="Sommaire">
+  <div class="group"><div class="group-t">Lecture</div>
+    <a href="#synthese">Synthèse</a>
+    <a href="#frise">Frise réglementaire</a>
+    <a href="#matrice">Matrice effort et attrait</a>
+  </div>
+  <div class="group"><div class="group-t">Les 12 idées</div>
+    <a href="#idee-1"><span class="n">01</span>ScarMap</a>
+    <a href="#idee-2"><span class="n">02</span>PosidoniaProof</a>
+    <a href="#idee-3"><span class="n">03</span>PlumeWatch</a>
+    <a href="#idee-4"><span class="n">04</span>ReefInjury</a>
+    <a href="#idee-5"><span class="n">05</span>SedimentIQ</a>
+    <a href="#idee-6"><span class="n">06</span>KelpPulse</a>
+    <a href="#idee-7"><span class="n">07</span>BenthicPipe</a>
+    <a href="#idee-8"><span class="n">08</span>SpongeSentinel</a>
+    <a href="#idee-9"><span class="n">09</span>DiveAtlas</a>
+    <a href="#idee-10"><span class="n">10</span>OffsetLedger</a>
+    <a href="#idee-11"><span class="n">11</span>ColonyTrack</a>
+    <a href="#idee-12"><span class="n">12</span>SeafloorLedger</a>
+  </div>
+  <div class="group"><div class="group-t">Décider</div>
+    <a href="#comparatif">Tableau comparatif</a>
+    <a href="#passes">Face aux deux premières passes</a>
+    <a href="#ecartees">Idées écartées</a>
+    <a href="#pieges">Pièges juridiques</a>
+    <a href="#plan">Plan à 30 jours</a>
+    <a href="#methode">Méthode et sources</a>
+  </div>
+</nav>
+
+<main>
+
+<section class="block" id="synthese">
+  <span class="eyebrow">Synthèse</span>
+  <h2>Le plastique se ramasse. Un herbier, un récif d'éponges ou une colonie de corail ne se ramassent pas : ils se protègent, se mesurent et se prouvent.</h2>
+  <div class="prose">
+    <p>Cette troisième passe change d'objet sans changer de méthode. Les deux premiers atlas cherchaient qui est obligé de payer pour le plastique ; celui-ci cherche qui est obligé de payer pour ne pas abîmer le fond, pour surveiller ce qu'il abîme, et pour prouver qu'il l'a réparé. Trois populations se dégagent. Ceux qui ancrent, draguent ou échouent : plaisanciers des Keys sous bouées obligatoires en 2027, yachts méditerranéens visés par le décret espagnol de mars 2026 et le jugement de Marseille de novembre 2024, ports dont le dragage finit au tribunal. Ceux qui doivent surveiller : fermes de saumon sous vidéo obligatoire jusqu'en 2029, bureaux d'études de l'éolien en mer sous la norme britannique de juillet 2025, gestionnaires d'aires marines protégées qui n'ont ni budget ni alerte. Ceux qui doivent prouver : promoteurs sous compensation d'habitat au Canada, organisations de restauration corallienne de Floride privées de budget d'État en 2026, États européens en retard sur leurs plans de restauration depuis le 1er septembre 2026.</p>
+    <p>Le matériel n'a jamais été aussi accessible : un ROV à 4 900 $, un hydrophone à 50 €, Sentinel-2 gratuit, l'API de Global Fishing Watch gratuite, cinq millions d'images annotées sur CoralNet, un modèle de segmentation de coraux publié à CVPR 2024. Ce qui manque partout, c'est la donnée locale et froide : les jeux ouverts sont tropicaux, et personne n'a annoté le kelp, la zostère et les éponges de la Salish Sea. C'est là que votre bouteille et vos deux clubs valent plus qu'un tour de table.</p>
+  </div>
+  <div class="thesis"><p>Thèse : vendre à ceux qui ont déjà une obligation datée ou une caution à défendre (parcs et marinas sous bouées obligatoires, aquaculteurs sous surveillance benthique, bureaux d'études sous norme, promoteurs sous compensation, ONG sous bailleurs) un instrument de mesure construit sur du matériel du commerce et un modèle affiné sur des images que vous prenez vous-même, puis faire de chaque relevé une série temporelle que le client ne peut plus quitter.</p></div>
+  <!--RECOS-->
+</section>
+
+<section class="block" id="frise">
+  <span class="eyebrow">Frise réglementaire</span>
+  <h2>Les échéances qui portent ces douze idées, de 2022 à 2050</h2>
+  <div class="prose" style="margin-bottom:22px"><p>Le numéro entre crochets renvoie à l'idée qui exploite l'échéance. Les dates en couleur bouée sont devant nous. Chaque ligne distingue texte adopté, programme voté et proposition : les critiques ont rejeté toute idée dont le levier n'était qu'une intention.</p></div>
+  <div class="tl">
+    <div class="tl-y">2022 à 2023</div>
+    <div class="tl-e past"><span class="date">03/2022</span><div class="t"><b>Washington SB 5619</b> (RCW 79.135.440) : 10 000 acres de kelp et de zostère à conserver ou restaurer d'ici 2040, rapport biennal au législateur.<span class="idx">[06]</span></div></div>
+    <div class="tl-e past"><span class="date">15/09/2022</span><div class="t"><b>UE, règlement d'exécution 2022/1614</b> : zones d'écosystèmes marins vulnérables fermées au chalutage de fond sous 400 m.<span class="idx">[08]</span></div></div>
+    <div class="tl-e past"><span class="date">12/2022</span><div class="t"><b>Coral Reef Conservation Act</b> réautorisé (P.L. 117-263) : jusqu'à 45 M$ par an FY2023-2027, bascule vers des block grants.<span class="idx">[11]</span></div></div>
+    <div class="tl-e past"><span class="date">02/2023</span><div class="t"><b>Plan d'action UE pêche</b> (communication, non contraignante) : chalutage de fond hors des AMP protégeant les fonds dès mars 2024, hors de toutes les AMP en 2030.<span class="idx">[08] [12]</span></div></div>
+    <div class="tl-e past"><span class="date">2023</span><div class="t"><b>Roberts Bank Terminal 2</b> approuvé : 370 conditions fédérales, 177 ha détruits, 86 ha compensés hors site.<span class="idx">[10]</span></div></div>
+    <div class="tl-e past"><span class="date">06/2023</span><div class="t"><b>DCSMM, descripteur D6</b> : seuil de perte d'habitat benthique D6C4 (2 %) adopté ; le seuil de perturbation D6C5 ne l'est toujours pas.<span class="idx">[12]</span></div></div>
+    <div class="tl-e past"><span class="date">09/08/2023</span><div class="t"><b>ESA, habitat essentiel</b> des coraux caraïbes élargi (règle finale) : consultation Section 7 pour tout dragage, câble ou port fédéral.<span class="idx">[03]</span></div></div>
+    <div class="tl-y">2024</div>
+    <div class="tl-e past"><span class="date">22/03/2024</span><div class="t"><b>Royaume-Uni, MMO</b> : premiers arrêtés interdisant le chalutage de fond dans 13 AMP (4 000 km²) ; 38 AMP protégées sur 377.<span class="idx">[08]</span></div></div>
+    <div class="tl-e past"><span class="date">24/05/2024</span><div class="t"><b>Canada</b> : amende de 33 596 $ pour pêche illégale dans l'AMP des récifs d'éponges de Hecate Strait.<span class="idx">[08]</span></div></div>
+    <div class="tl-e past"><span class="date">01/07/2024</span><div class="t"><b>Floride</b> : Kristin Jacobs Coral Aquatic Preserve établie sur 105 miles, de St Lucie Inlet à Biscayne.<span class="idx">[04]</span></div></div>
+    <div class="tl-e past"><span class="date">18/08/2024</span><div class="t"><b>UE, règlement 2024/1991</b> sur la restauration de la nature en vigueur : 20 % des habitats marins dégradés restaurés en 2030, 60 % en 2040, 90 % en 2050.<span class="idx">[12]</span></div></div>
+    <div class="tl-e past"><span class="date">29/10/2024</span><div class="t"><b>Verra Nature Framework</b> lancé en version test ; crédits nature éligibles à partir du 01/04/2025 (deux pilotes marins sur vingt).<span class="idx">[10]</span></div></div>
+    <div class="tl-e past"><span class="date">22/11/2024</span><div class="t"><b>Tribunal maritime de Marseille</b> : présomption de préjudice écologique dès qu'un mouillage illégal sur posidonie est constaté.<span class="idx">[02]</span></div></div>
+    <div class="tl-y">2025</div>
+    <div class="tl-e past"><span class="date">17/01/2025</span><div class="t"><b>Florida Keys NMS, Restoration Blueprint</b> (règle finale) : ancrage interdit dans toutes les Sanctuary Preservation Areas d'ici 2027, bouées obligatoires, périmètre étendu de 20 %.<span class="idx">[01] [04]</span></div></div>
+    <div class="tl-e past"><span class="date">2025</span><div class="t"><b>MPO, politique de compensation d'habitat</b> republiée (mise à jour 25/05/2026) : aucune perte nette, suivi documenté, garanties financières saisissables.<span class="idx">[10]</span></div></div>
+    <div class="tl-e past"><span class="date">07/2025</span><div class="t"><b>BOEM</b> suspend les nouveaux baux éoliens en mer et résilie les Wind Energy Areas : le marché américain de l'éolien se fige.<span class="idx">[07]</span></div></div>
+    <div class="tl-e past"><span class="date">15/07/2025</span><div class="t"><b>ESA</b> : habitat essentiel de cinq coraux indo-pacifiques (Hawaï, Guam).<span class="idx">[03] [04]</span></div></div>
+    <div class="tl-e past"><span class="date">16/07/2025</span><div class="t"><b>Royaume-Uni, MMO</b> : norme de standardisation du suivi environnemental post-consentement des parcs éoliens (mise à jour 09/03/2026), 11,7 GW en construction.<span class="idx">[07]</span></div></div>
+    <div class="tl-e past"><span class="date">07/2025</span><div class="t"><b>Port Everglades</b> : dragage suspendu ; procès Earthjustice déposé le 06/08/2026, reprise prévue à l'automne 2026.<span class="idx">[03]</span></div></div>
+    <div class="tl-e past"><span class="date">09/09/2025</span><div class="t"><b>Royaume-Uni</b> rejette l'interdiction totale du chalutage en AMP ; restriction ciblée sur 30 000 km².<span class="idx">[08]</span></div></div>
+    <div class="tl-e past"><span class="date">2025</span><div class="t"><b>Réseau d'AMP du plateau Nord</b> (C.-B.) : zones de catégorie 1 établies ; 30 493 km² visés, 16 Premières Nations.<span class="idx">[08] [09]</span></div></div>
+    <div class="tl-y">2026</div>
+    <div class="tl-e past"><span class="date">17/01/2026</span><div class="t"><b>Traité BBNJ</b> en vigueur : évaluations d'impact obligatoires en haute mer.<span class="idx">[07]</span></div></div>
+    <div class="tl-e past"><span class="date">03/2026</span><div class="t"><b>Espagne, Real Decreto 191/2026</b> : interdiction générale d'ancrer sur posidonie et Cymodocea dans toutes les eaux méditerranéennes espagnoles.<span class="idx">[02]</span></div></div>
+    <div class="tl-e past"><span class="date">06/2026</span><div class="t"><b>Bloomberg Ocean Initiative</b> : 260 M$ tournés vers l'efficacité de gestion des AMP (3,3 % de l'océan effectivement géré contre 9,9 % désigné).<span class="idx">[09]</span></div></div>
+    <div class="tl-e past"><span class="date">01/09/2026</span><div class="t"><b>UE</b> : projets de plans nationaux de restauration dus ; 7 États sur 27 à jour, 20 en retard au 2 septembre.<span class="idx">[12]</span></div></div>
+    <div class="tl-e past"><span class="date">06/09/2026</span><div class="t"><b>Floride</b> : budget FCR3 de restauration corallienne ramené à 0 $ pour 2026 après 28,5 M$ distribués à 14 organisations.<span class="idx">[04] [11]</span></div></div>
+    <div class="tl-y">2027 à 2030</div>
+    <div class="tl-e"><span class="date">2027</span><div class="t"><b>Florida Keys NMS</b> : fin de la période de transition, ancrage interdit dans toutes les SPA, plus de 500 bouées en place.<span class="idx">[01]</span></div></div>
+    <div class="tl-e"><span class="date">01/04/2027</span><div class="t"><b>Grande Barrière</b> : redevance environnementale portée à 9,00 $ AU par jour de visite.<span class="idx">[09]</span></div></div>
+    <div class="tl-e"><span class="date">2027</span><div class="t"><b>UE, feuille de route crédits nature</b> (proposition, 07/07/2025) : pilotes jusqu'en 2027, cadre ensuite.<span class="idx">[10] [12]</span></div></div>
+    <div class="tl-e"><span class="date">30/06/2029</span><div class="t"><b>Colombie-Britannique</b> : fin annoncée des licences de cages ouvertes pour le saumon (politique ministérielle) ; suivi de récupération des sites démantelés.<span class="idx">[05]</span></div></div>
+    <div class="tl-e"><span class="date">2029</span><div class="t"><b>Mars Sustainable Solutions</b> : 185 000 m² de récif à restaurer sur 72 sites.<span class="idx">[11]</span></div></div>
+    <div class="tl-e"><span class="date">2030</span><div class="t"><b>Canada 30x30</b> : 30 % des océans protégés ; réseau du plateau Nord catégorie 2 ; <b>UE</b> : chalutage hors de toutes les AMP, 20 % des habitats marins restaurés.<span class="idx">[08] [12]</span></div></div>
+    <div class="tl-y">2040 et au-delà</div>
+    <div class="tl-e"><span class="date">2040</span><div class="t"><b>Washington</b> : objectif de 10 000 acres de kelp et de zostère ; <b>UE</b> : 60 % des habitats marins restaurés.<span class="idx">[06] [12]</span></div></div>
+    <div class="tl-e"><span class="date">2050</span><div class="t"><b>UE</b> : 90 % des habitats marins dégradés restaurés.<span class="idx">[12]</span></div></div>
+  </div>
+</section>
+
+<section class="block" id="matrice">
+  <span class="eyebrow">Matrice</span>
+  <h2>Effort de développement en solo contre score global</h2>
+  <div class="prose" style="margin-bottom:20px"><p>Le score additionne sept notes sur cinq : urgence, cible captive, prix, facilité technique, vide concurrentiel, rôle de l'IA et de la donnée, impact sur les fonds marins. L'effort est le point médian en mois-ingénieur pour un fondateur seul avec Claude. La taille du disque suit le revenu annuel maximal estimé par client. Survolez un disque pour le détail.</p></div>
+  <div class="chart-wrap" id="bubble">
+    <svg viewBox="0 0 780 460" role="img" aria-label="Matrice effort contre score des douze idées"></svg>
+    <div class="legend">
+      <span style="--c:var(--s1)">Mouillage, dragage et échouements</span>
+      <span style="--c:var(--s2)">Surveillance des habitats</span>
+      <span style="--c:var(--s3)">Restauration et preuve</span>
+    </div>
+    <div class="tip" id="tip"></div>
+  </div>
+  <p class="chart-note"><!--CHARTNOTE--></p>
+</section>
+
+<section class="block" id="fiches">
+  <span class="eyebrow">Les fiches</span>
+  <h2>Douze idées, un format : le déclencheur, le problème, la cible, le produit, le prix, l'effort, la concurrence, pourquoi maintenant, et le premier client depuis Vancouver</h2>
+  <div class="prose"><p>Les notes vont de 1 à 5 sur sept axes : urgence réglementaire ou budgétaire, cible captive, prix et volonté de payer, facilité technique en solo (5 = facile), vide concurrentiel, rôle réel de l'IA et de la donnée, impact sur les fonds marins. Sous chaque fiche, les verdicts des trois critiques : l'investisseur, l'écologue gestionnaire d'aire marine protégée, et l'architecte technique.</p></div>
+
+  <div class="fam-h"><span class="sw" style="background:var(--s1)"></span><div><h3>Mouillage, dragage et échouements</h3><p>Prévenir le dégât mécanique : l'ancre qui racle un herbier, le panache qui étouffe un récif, la coque qui broie une colonie. Ce sont les seules obligations du dossier assorties d'un barème en dollars par mètre carré.</p></div></div>
+
+  <article class="fiche" id="idee-1">
+    <header class="fiche-head">
+      <div class="big">01</div>
+      <div><span class="fam fam-mer">Mouillage et dragage</span><h3>ScarMap</h3><p class="tagline">Les cicatrices d'ancre mesurées d'un relevé à l'autre, et le geofencing des herbiers et récifs pour les plaisanciers</p></div>
+      <div class="score-badge">26<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">2027</span><span class="ref">FKNMS Restoration Blueprint (règle finale 17/01/2025) · Gulf Islands · Mayne Island Conservancy · Californie MLPA</span><span>Le sanctuaire des Keys interdit l'ancrage dans toutes ses zones de préservation d'ici 2027, avec bouées obligatoires (plus de 500 déjà posées) et des centaines d'opérateurs de charter concernés. Côté Salish Sea, rien n'oblige encore le plaisancier canadien (recommandations PSF et Northwest Straits seulement), mais les mouillages des îles Gulf font la une depuis le 26 juin 2026 et le suivi de la zostère y est manuel et bénévole.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Un gestionnaire de parc ou de marina ne sait pas où les ancres raclent ni si les cicatrices se referment. La surveillance repose sur des patrouilles et sur des plongées de bénévoles une fois par an. À l'échéance de 2027, la NOAA devra démontrer une application crédible sur des centaines de kilomètres de récif.</p></section>
+      <section><h4>La cible</h4><p>Parcs Canada (Gulf Islands National Park Reserve), Islands Trust, 30 à 50 marinas et autorités de mouillage des îles Gulf et de Puget Sound (estimation), le FKNMS et ses opérateurs, les parcs marins californiens du réseau de 124 AMP. En Méditerranée, le même besoin est traité par l'idée 02.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Carte des herbiers et récifs peu profonds à partir de Sentinel-2 et Planet (10 m et 3 m ; composition benthique vérifiée jusqu'à 10 m de profondeur en eau claire, dégradée en eau turbide, donc validée par drone et plongée dans la Salish Sea).</li>
+        <li>Détection de changement sur images de plongée et de drone : un détecteur sous licence permissive (RF-DETR, Apache 2.0) affiné sur un jeu de cicatrices d'ancre annotées par substrat, qui mesure surface et fermeture d'un relevé à l'autre. Ce jeu est l'actif.</li>
+        <li>Application plaisancier gratuite (geofencing des zones sensibles, bouées disponibles), financée par le gestionnaire ; tableau de bord et rapport annuel automatique qui remplace le relevé bénévole.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Gestionnaires</dt><dd>300 à 800 $ CAD par mois</dd><dt>Rapport annuel</dt><dd>3 000 à 8 000 $</dd><dt>Données</dt><dd>licence PSF, MPO, NOAA</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen · 4 à 6 mois-ingénieur</span><p>Drone grand public, GoPro, BlueROV2 à 4 900 $ US. La cartographie satellite est une brique ouverte ; la valeur est dans le détecteur de cicatrices et la série temporelle.</p></section>
+      <section><h4>Concurrence</h4><p>Donia (Andromède, Méditerranée, grand public), applications de navigation ; aucune application de mesure de cicatrices identifiée. Risque : la NOAA équipe le sanctuaire avec ses propres moyens ; au Canada, pas d'obligation, donc pas d'acheteur captif.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>Deux ans avant l'échéance des Keys, et un débat public ouvert dans les îles Gulf. Premier client : Mayne Island Conservancy ou Islands Trust, à moins de deux heures en traversier, puis Parcs Canada.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Impact fonds marins<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+    </div>
+    <!--VERDICT:1-->
+  </article>
+
+  <article class="fiche" id="idee-2">
+    <header class="fiche-head">
+      <div class="big">02</div>
+      <div><span class="fam fam-mer">Mouillage et dragage</span><h3>PosidoniaProof</h3><p class="tagline">La preuve horodatée du mouillage sur posidonie, pour les zones de mouillage, les ports et les assureurs de Méditerranée</p></div>
+      <div class="score-badge">24<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">03/2026</span><span class="ref">Real Decreto 191/2026 · TM Marseille 22/11/2024 · arrêté-cadre 123/2019 · ZMEL du Var et des Bouches-du-Rhône</span><span>L'Espagne interdit depuis mars 2026 tout ancrage sur posidonie et Cymodocea dans ses eaux méditerranéennes ; en France, l'interdiction vise les navires de 24 m et plus (20 m localement) avec 15 000 à 150 000 € d'amende, et le Tribunal maritime de Marseille a créé le 22 novembre 2024 une présomption de préjudice écologique dès qu'un mouillage illégal est constaté. Plus de 179 000 bateaux ont mouillé sur des herbiers méditerranéens en 2024, dont environ 45 % de plus de 24 m (WWF).</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Le gestionnaire d'une zone de mouillage et d'équipements légers, le port de plaisance ou l'assureur d'un yacht n'ont aucune preuve horodatée distinguant mouillage sur bouée et mouillage sauvage : ni pour sanctionner, ni pour se défendre quand la présomption de préjudice joue contre le propriétaire.</p></section>
+      <section><h4>La cible</h4><p>Plusieurs centaines de ports, AMP et ZMEL de Méditerranée occidentale (France, Baléares avec neuf champs de bouées, Italie), les assureurs de plaisance et les sociétés de charter. Vente à distance, en français.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Récepteur AIS du commerce (100 à 300 $) et caméra marine fixe sur le site, croisés en continu avec la cartographie officielle des herbiers (Donia, Medtrix, cartes Natura 2000).</li>
+        <li>Détection IA de la position d'ancrage et de la durée, constat horodaté, géolocalisé et signé, avec chaîne de conservation pensée pour le Tribunal maritime ; option drone en haute saison.</li>
+        <li>Rapport de conformité pour le gestionnaire (taux d'occupation des bouées, incidents), dossier de preuve à la demande pour un assureur ou un affréteur. Aucune identification de personne : la coque, la position, l'heure.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Sites</dt><dd>300 à 1 500 $ par mois selon le nombre de bouées</dd><dt>Dossier de preuve</dt><dd>500 à 2 000 $</dd><dt>Assureurs</dt><dd>abonnement annuel</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen à élevé · 4 à 6 mois-ingénieur</span><p>Briques connues (AIS, vision), difficulté dans la recevabilité juridique, le RGPD et la maintenance de caméras en milieu marin. Pilote technique possible sur les marinas de Vancouver avant la première vente à distance.</p></section>
+      <section><h4>Concurrence</h4><p>Donia (cartographie et alerte grand public, 24,99 € par an), bureaux d'études (Andromède, GIS Posidonie) qui cartographient mais ne prouvent pas ; aucune couche preuve B2B identifiée. Risque : la surveillance filmée de personnes à bord, et la préférence des préfectures pour leurs propres constats.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>Un nouveau marché national (Espagne, mars 2026) et un précédent judiciaire français de moins de deux ans. Premier client : le gestionnaire d'une ZMEL du Var ou une compagnie d'assurance plaisance, à distance.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Impact fonds marins<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+    </div>
+    <!--VERDICT:2-->
+  </article>
+
+  <article class="fiche" id="idee-3">
+    <header class="fiche-head">
+      <div class="big">03</div>
+      <div><span class="fam fam-mer">Mouillage et dragage</span><h3>PlumeWatch</h3><p class="tagline">Le panache de dragage comparé au seuil du permis, en continu, avant que le tribunal ne le fasse</p></div>
+      <div class="score-badge">23<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">06/08/2026</span><span class="ref">Port Everglades (Earthjustice) · ESA critical habitat 09/08/2023 et 15/07/2025 · USACE seuils de turbidité · Loi sur les pêches (Fraser)</span><span>Le dragage de Port Everglades a été suspendu en juillet 2025 et fait l'objet d'un procès déposé le 6 août 2026, avec reprise prévue à l'automne. L'habitat essentiel élargi des coraux caraïbes (2023) et indo-pacifiques (2025) déclenche la consultation Section 7 pour tout dragage fédéral. Les seuils USACE (9 NTU au-dessus du bruit de fond, 5 à 10 NTU près des coraux et herbiers) sont encore suivis sur des formulaires manuels, et les plaignants utilisent déjà Sentinel-2.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Le maître d'ouvrage et le dragueur découvrent le dépassement après coup, dans la plainte. Le régulateur n'a ni alerte ni journal continu. Chaque arrêt de chantier coûte des semaines de location de drague.</p></section>
+      <section><h4>La cible</h4><p>Quelques dizaines de grands projets de dragage par an aux États-Unis (districts USACE de Jacksonville, San Francisco, Los Angeles), les entrepreneurs de dragage, les autorités portuaires (Everglades, Miami, Canaveral, Long Beach) et leurs assureurs de chantier. Le Port de Vancouver (dragage d'entretien du Fraser) comme site pilote.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Bouées de turbidité du commerce (500 à 2 000 $ pièce) en réseau autour du chantier, télémétrie, calibration contre le bruit de fond.</li>
+        <li>Détection de panache sur Sentinel-2 et Planet, fusion in situ et satellite, comparaison automatique au seuil du permis et au panache modélisé dans l'étude d'impact.</li>
+        <li>Alerte temps réel au capitaine de la drague, journal horodaté, rapport exportable au format USACE et NMFS, et base de panaches par site qui améliore la prévision.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Chantier</dt><dd>1 000 à 5 000 $ par mois pendant les travaux</dd><dt>Capteurs</dt><dd>location</dd><dt>Assureurs</dt><dd>licence de données</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen · 4 à 6 mois-ingénieur</span><p>Capteurs et imagerie existants ; la valeur est dans la fusion, la calibration et le gabarit réglementaire. Sentinel-2 passe tous les cinq jours et voit un panache de surface, pas la turbidité au fond : les bouées restent indispensables.</p></section>
+      <section><h4>Concurrence</h4><p>Sofar Ocean (bouées Spotter, turbidité citée dans ses cas d'usage, prix non public), bureaux d'études facturés au projet. Risque : le dragueur ne veut pas d'une preuve contre lui ; vendre au port, au régulateur ou à l'assureur.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>Un procès en cours qui fera jurisprudence sur la preuve satellite. Premier client : Vancouver Fraser Port Authority pour un pilote technique, puis un consultant EFH ou un cabinet en Floride.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Impact fonds marins<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+    </div>
+    <!--VERDICT:3-->
+  </article>
+
+  <article class="fiche" id="idee-4">
+    <header class="fiche-head">
+      <div class="big">04</div>
+      <div><span class="fam fam-mer">Mouillage et dragage</span><h3>ReefInjury</h3><p class="tagline">La surface de récif détruite par un échouement, mesurée en 3D et convertie au barème légal de la Floride</p></div>
+      <div class="score-badge">25<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">06/09/2026</span><span class="ref">Fla. Stat. §403.93345 (Coral Reef Protection Act) · Kristin Jacobs Coral Aquatic Preserve 01/07/2024 · FCR3 à 0 $ en 2026</span><span>La loi floridienne fixe un barème civil par mètre carré de récif endommagé (150 $ jusqu'à 1 m², 300 $ par m² de 1 à 10 m², 1 000 $ par m² au-delà, doublé, triplé, quadruplé en récidive, plafond 250 000 $ par incident), avec notification sous 24 h et retrait du navire sous 72 h, dans cinq comtés. Le budget d'État de restauration est tombé à 0 $ en 2026 après 28,5 M$ sur 2023-2025 : les recettes de pénalités deviennent une source de financement à sécuriser.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>La surface détruite est mesurée en plongée, à la chaîne d'arpenteur, lentement et de façon contestable ; les assureurs (P&amp;I) et les avocats maritimes n'ont pas de référentiel, et l'État perd des pénalités dans les recours.</p></section>
+      <section><h4>La cible</h4><p>Le FDEP et les cinq comtés concernés (Monroe, Miami-Dade, Broward, Palm Beach, Martin), le sanctuaire des Keys, les P&amp;I clubs et une dizaine de cabinets d'avocats maritimes de Floride ; plus tard Hawaï, Porto Rico et les Îles Vierges, où l'habitat essentiel des coraux vient d'être étendu.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Kit caméra 360 ou GoPro plus BlueROV2, capture guidée en plongée, reconstruction 3D par photogrammétrie (COLMAP, Meshroom ; splatting sous-marin 2025 en option) avec mise à l'échelle par cible calibrée.</li>
+        <li>Segmentation IA corail vivant, corail mort, substrat cassé (CoralSCOP, CVPR 2024, affiné sur les images d'incidents), mesure de surface reproductible, incertitude affichée.</li>
+        <li>Rapport standardisé avec calcul automatique du barème et des majorations, base d'incidents comparables ; chaîne de conservation pour l'expertise contradictoire.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Expertise</dt><dd>2 000 à 6 000 $ par incident</dd><dt>Agences</dt><dd>5 000 à 15 000 $ par an</dd><dt>Assureurs</dt><dd>abonnement</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen à élevé · 5 à 7 mois-ingénieur</span><p>La photogrammétrie sous-marine est une brique mûre ; la mesure de surface doit être validée contre un relevé manuel sur un site connu. La compétence de plongeur du fondateur est directement utile. Lacune : le nombre annuel d'incidents sanctionnés en Floride n'est pas public.</p></section>
+      <section><h4>Concurrence</h4><p>Évaluateurs mandatés au cas par cas par le FDEP, laboratoires universitaires (Nova Southeastern) ; aucun logiciel dédié identifié. Risque : l'agence produit sa propre méthode et impose un expert agréé.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>La coupe budgétaire de 2026 rend chaque dollar de pénalité précieux. Premier client : un cabinet d'avocats maritimes ou un P&amp;I club, à distance ; validation technique sur une épave connue près de Vancouver.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Impact fonds marins<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+    </div>
+    <!--VERDICT:4-->
+  </article>
+
+  <div class="fam-h"><span class="sw" style="background:var(--s2)"></span><div><h3>Surveillance des habitats</h3><p>Ceux qui doivent regarder le fond parce qu'un permis, une licence ou une norme l'exige, et qui le font encore à l'œil sur des heures de vidéo ; et ceux qui devraient le faire et n'ont pas les moyens.</p></div></div>
+
+  <article class="fiche" id="idee-5">
+    <header class="fiche-head">
+      <div class="big">05</div>
+      <div><span class="fam fam-peche">Surveillance</span><h3>SedimentIQ</h3><p class="tagline">La vidéo réglementaire sous les cages de saumon annotée par IA, et la récupération des sites démantelés suivie jusqu'en 2029</p></div>
+      <div class="score-badge">26<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">30/06/2029</span><span class="ref">Aquaculture Activities Regulations (MPO) · fin annoncée des cages ouvertes en C.-B. · SEPA (Écosse) · NS 9410 (Norvège) · réforme chilienne 2026</span><span>Le MPO impose une surveillance benthique à l'apogée de chaque cycle de production : sur fonds durs, vidéo ROV notée pour la couverture de Beggiatoa et d'espèces opportunistes (seuil dépassé au-delà de 10 % sur plus de 4 des 6 segments, zone 100 à 124 m) ; sur fonds meubles, sulfures libres (1 300 et 700 µmol). Quarante à cinquante fermes par an, 80 à 90 % sous les seuils, et interdiction de remise en charge tant que la récupération n'est pas démontrée. Les licences courent jusqu'au 30 juin 2029 ; la fin des cages ouvertes est une politique ministérielle, pas un règlement.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>L'annotation de la vidéo est manuelle, lente et peu comparable d'un bureau d'études à l'autre. Un site bloqué faute de preuve de récupération coûte un cycle de production. De 2026 à 2029, le suivi des sites démantelés s'ajoute au suivi courant.</p></section>
+      <section><h4>La cible</h4><p>Mowi, Grieg et Cermaq et leurs bureaux d'études en Colombie-Britannique (Hatfield, Dynamic Ocean Consulting à Port Moody), puis l'Écosse (plus de 200 fermes, SEPA), la Norvège et le Chili (1 398 concessions, 367 en évaluation). Clientèle concentrée, mais obligation ferme et récurrente.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Segmentation IA de la couverture bactérienne et des opportunistes sur la vidéo ROV existante du client (aucun matériel neuf), par segment et par station, avec incertitude affichée et relecture humaine des cas limites.</li>
+        <li>Génération du rapport au format MPO (puis SEPA), journal d'audit, comparaison avec les cycles précédents.</li>
+        <li>Base longitudinale par site : trajectoire de récupération après démantèlement, qui devient l'argument de remise en charge ou de fermeture propre.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Fermes</dt><dd>300 à 800 $ CAD par mois</dd><dt>Ou</dt><dd>500 à 1 500 $ par rapport</dd><dt>MPO</dt><dd>licence de données</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen · 4 à 5 mois-ingénieur</span><p>Jeu d'entraînement Beggiatoa à constituer avec un bureau d'études (vidéos d'archives), modèle de segmentation affiné, pipeline de rapport. Coût de poche faible : pas de terrain à financer.</p></section>
+      <section><h4>Concurrence</h4><p>Aucun logiciel dédié identifié ; les bureaux d'études annotent en interne. Risque : trois clients finaux seulement au Canada et un marché qui se ferme en 2029, d'où l'Écosse dès la première année.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>Une vague de démantèlement et de suivi de récupération sur 2026-2029, en plus du suivi courant. Premier client : Dynamic Ocean Consulting, à trente minutes de Vancouver, ou Hatfield.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Impact fonds marins<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+    </div>
+    <!--VERDICT:5-->
+  </article>
+
+  <article class="fiche" id="idee-6">
+    <header class="fiche-head">
+      <div class="big">06</div>
+      <div><span class="fam fam-peche">Surveillance</span><h3>KelpPulse</h3><p class="tagline">Le kelp et la zostère suivis par satellite, drone et plongée, avec les barrens d'oursins détectés avant qu'il ne soit trop tard</p></div>
+      <div class="score-badge">26<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">2040</span><span class="ref">Washington SB 5619 (RCW 79.135.440) · Oregon Kelp Alliance 2,521 M$ · OPC Californie 5,94 M$ · Help Our Kelp Act (proposition)</span><span>Washington doit conserver ou restaurer 10 000 acres de kelp et de zostère d'ici 2040 avec rapport biennal, et n'avait identifié que 5 500 acres prioritaires en décembre 2024. L'Oregon a perdu 900 acres de bull kelp depuis 2010 et a obtenu 2,521 M$ (FY2024) pour trois sites en 2025 et trois en 2026 ; la Californie a mis jusqu'à 5,94 M$ sur le kelp en 2023-2025. Le Help Our Kelp Act (5 M$ par an) reste une proposition. Aucune méthodologie carbone n'accepte le kelp (Frontiers 2026) : la donnée de référence est le goulot.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Le suivi repose sur des plongées scientifiques manuelles (Kelp Rescue Initiative) et des cartes annuelles bénévoles ; les barrens d'oursins violets ne sont détectés qu'une fois la forêt disparue ; les rapports biennaux manquent de séries comparables.</p></section>
+      <section><h4>La cible</h4><p>Washington DNR, Oregon Kelp Alliance, Kelp Rescue Initiative (Bamfield), Ocean Wise, SeaChange, Project Watershed, l'OPC et les ONG californiennes ; 30 à 80 sites de restauration actifs dans le Pacifique Nord-Ouest (estimation), et les futurs porteurs de projets BCSRIF et Fonds de restauration côtière.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Détection de la canopée de surface sur Sentinel-2 et Planet (capacité vérifiée pour le kelp émergent ; limitée en eau turbide et pour la zostère profonde, d'où le drone et la plongée).</li>
+        <li>Protocole de plongée standardisé pour les zones profondes, IA de classification kelp, zostère, barrens d'oursins, affinée sur Nereocystis, Macrocystis et Zostera locales (les jeux ouverts sont tropicaux : ce jeu est l'actif).</li>
+        <li>Base longitudinale partagée entre organismes, tableau de tendance année sur année, rapport biennal automatique au format de Washington.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Organismes</dt><dd>500 à 1 500 $ CAD par mois</dd><dt>Pilote régional</dt><dd>20 à 50 k$ pour un rapport biennal</dd><dt>Données</dt><dd>licence de série temporelle</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Élevé · 5 à 7 mois-ingénieur</span><p>Fusion multi-capteurs, calibration locale de la turbidité, jeu d'images à constituer en plongée. Barrière réelle, mais deux saisons de terrain avant une série exploitable.</p></section>
+      <section><h4>Concurrence</h4><p>KelpWatch (Landsat, académique, site inaccessible cette session), Hakai Institute (recherche), aucun produit commercial identifié. Risque : les ONG paient peu ; l'agence d'État est le vrai client et son cycle est biennal.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>Un rapport biennal en retard sur ses objectifs, des budgets fédéraux et d'État déjà votés sur trois États. Premier client : SeaChange ou Project Watershed (moins de trois heures), puis Washington DNR avant le prochain rapport.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">Impact fonds marins<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+    </div>
+    <!--VERDICT:6-->
+  </article>
+
+  <article class="fiche" id="idee-7">
+    <header class="fiche-head">
+      <div class="big">07</div>
+      <div><span class="fam fam-peche">Surveillance</span><h3>BenthicPipe</h3><p class="tagline">L'annotation IA de la vidéo benthique des parcs éoliens et des câbles, exportée au format que la norme britannique impose depuis 2025</p></div>
+      <div class="score-badge">25<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">09/03/2026</span><span class="ref">MMO, Standardisation of Post-Consent Environmental Monitoring (16/07/2025, màj 09/03/2026) · BOEM Benthic Habitat Guidelines · BBNJ 17/01/2026</span><span>La norme britannique standardise la collecte, l'enregistrement et le stockage des données de suivi post-consentement sur six récepteurs dont l'habitat benthique, et s'inscrit dans chaque Marine Licence des 11,7 GW en construction. BOEM recommande deux ans de données pré-construction, mais a suspendu les nouveaux baux et résilié les zones éoliennes en juillet 2025 : le marché américain est gelé. Un relevé benthique complet pour 1 GW coûte environ 1,2 M£ (estimation sectorielle).</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>La vidéo tractée et ROV est annotée à la main chez les bureaux d'études ; la norme impose un format sans fournir d'outil ; la comparaison avant, pendant, après reste artisanale.</p></section>
+      <section><h4>La cible</h4><p>Fugro, APEM, Ocean Ecology, Gardline, ABPmer, Natural Power et leurs équivalents (dizaines de bureaux d'études au Royaume-Uni, en mer du Nord et en France), développeurs de parcs, poseurs de câbles ; Hatfield à Vancouver comme point d'entrée nord-américain.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Plateforme d'annotation semi-automatique de vidéo DDV et ROV : détection d'espèces indicatrices et de substrat, modèles affinés sur BenthicNet (887 533 annotations) et sur les archives du premier client.</li>
+        <li>Export au format MMO et BOEM, contrôle qualité, relecture par le biologiste avec traçabilité de chaque décision.</li>
+        <li>Module de comparaison inter-relevés pour objectiver la récupération post-construction ; marque blanche pour les bureaux d'études.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Vidéo</dt><dd>2 à 5 $ par minute annotée</dd><dt>Relevé</dt><dd>2 000 à 8 000 $</dd><dt>Marque blanche</dt><dd>licence annuelle</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Élevé · 5 à 7 mois-ingénieur</span><p>Données d'entraînement à négocier avec un premier bureau d'études ; classes de substrat et d'espèces spécifiques à la mer du Nord ; interface d'annotation exigeante.</p></section>
+      <section><h4>Concurrence</h4><p>BIIGLE (gratuit, académique), VIAME (gratuit, boîte à outils), SQUIDLE+ ; aucun n'est positionné sur la conformité MMO. Risque : Fugro et APEM développent en interne, et un bureau d'études n'externalise pas son cœur de métier facilement.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>Une norme de moins d'un an, mise à jour en mars, applicable à tous les parcs sous licence britannique. Premier client : un bureau d'études britannique à distance ; Hatfield pour l'Amérique du Nord.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">Impact fonds marins<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+    </div>
+    <!--VERDICT:7-->
+  </article>
+
+  <article class="fiche" id="idee-8">
+    <header class="fiche-head">
+      <div class="big">08</div>
+      <div><span class="fam fam-peche">Surveillance</span><h3>SpongeSentinel</h3><p class="tagline">Les alertes de chalutage et de mouillage dans les petites aires protégées, les récifs d'éponges et les zones vulnérables, à partir de l'AIS gratuit</p></div>
+      <div class="score-badge">23<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">2030</span><span class="ref">AMP Hecate Strait (amende 24/05/2024) · réseau du plateau Nord 2025-2030 · MMO byelaws 2024-2025 · règlement 2022/1614 · API Global Fishing Watch</span><span>Un capitaine a payé 33 596 $ en mai 2024 pour avoir pêché dans l'AMP des récifs d'éponges siliceuses ; le réseau du plateau Nord porte la surface à surveiller à 30 493 km² avec 16 Premières Nations. Au Royaume-Uni, 38 AMP sur 377 sont protégées du chalutage et une restriction ciblée sur 30 000 km² a été annoncée le 9 septembre 2025 ; l'UE vise le chalutage hors de toutes les AMP en 2030 et a fermé les zones vulnérables en 2022. L'API de Global Fishing Watch est gratuite et couvre 70 000 navires.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Les petits gestionnaires d'AMP, les gardiens autochtones et les organisations de producteurs n'ont pas d'alerte locale exploitable ; OceanMind et Skylight visent les gouvernements ; les incursions courtes échappent au VMS et les navires sans AIS restent invisibles.</p></section>
+      <section><h4>La cible</h4><p>Le bureau régional Pacifique du MPO (à Vancouver), les programmes de gardiens des Premières Nations, les parcs marins provinciaux, les Rockfish Conservation Areas près de Steveston, les ONG européennes de contentieux (Oceana, ClientEarth) et les organisations de producteurs de pêche profonde ; 15 à 25 organismes en Amérique du Nord (estimation).</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Couche sur l'API Global Fishing Watch plus un récepteur AIS local (AISHub, 100 à 300 $), polygones validés des zones fermées, des récifs d'éponges et des herbiers.</li>
+        <li>Modèle de comportement (vitesse et trajectoire de chalutage, mouillage prolongé), alertes par zone, journal exportable pour le rapport annuel de conformité ; option SAR commercial (ICEYE, prix non public) pour les navires silencieux.</li>
+        <li>Flux de preuve horodaté vendu en licence aux assureurs et certificateurs de crédits.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Zones</dt><dd>150 à 800 $ CAD par mois</dd><dt>Consortium</dt><dd>40 à 80 k$ par an</dd><dt>Preuve</dt><dd>licence assureurs</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Faible à moyen · 2 à 4 mois-ingénieur</span><p>Surtout du data engineering ; barrière dans les polygones validés et l'historique. La plus rapide à livrer des douze, et la plus facile à copier.</p></section>
+      <section><h4>Concurrence</h4><p>Global Fishing Watch (gratuit, généraliste), Skylight (gratuit pour certains gestionnaires), OceanMind, le VMS propre du MPO. Risque : substitution par le bien public, et un chalutier de fond en zone interdite coupe son AIS.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>La surface protégée double d'ici 2030 sans budget de surveillance annoncé. Premier client : MPO Pacifique ou une association de gestion de parc marin provincial.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Impact fonds marins<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+    </div>
+    <!--VERDICT:8-->
+  </article>
+
+  <article class="fiche" id="idee-9">
+    <header class="fiche-head">
+      <div class="big">09</div>
+      <div><span class="fam fam-peche">Surveillance</span><h3>DiveAtlas</h3><p class="tagline">Vos clubs de plongée comme réseau de capteurs : reconnaissance d'espèces, hydrophones à 50 € et atlas benthique de la Salish Sea</p></div>
+      <div class="score-badge">24<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">06/2026</span><span class="ref">Bloomberg Ocean Initiative 260 M$ · réseau du plateau Nord · politique de compensation 2025 · crabe vert européen · Green Fins 346 opérations</span><span>Les bailleurs financent désormais l'efficacité de gestion des AMP plutôt que leur désignation (3,3 % de l'océan effectivement géré contre 9,9 % désigné) ; la politique de compensation d'habitat et le réseau du plateau Nord réclament des données benthiques indépendantes et bon marché ; le crabe vert européen et les tuniciers envahissants progressent sur la côte Pacifique. Dans le monde, 6 600 centres PADI et 346 opérations Green Fins cherchent une mesure d'impact.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Les plongeurs de loisir produisent des milliers de photos sans protocole ; les gestionnaires n'ont rien entre deux relevés scientifiques ; Reef Check demande des bénévoles formés et des sorties dédiées, et iNaturalist ne déclenche aucune alerte.</p></section>
+      <section><h4>La cible</h4><p>Vos deux clubs, une dizaine de clubs et boutiques du Grand Vancouver et de Puget Sound, puis Ocean Wise, Hakai, le MPO et BC Parks comme acheteurs de données ; à terme les centres PADI Eco Center de Californie et de Floride.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Application de saisie post-plongée avec photo-quadrat guidé (GoPro ou smartphone en caisson déjà possédés), reconnaissance d'espèces indicatrices et envahissantes affinée sur données locales (RF-DETR ; CoralSCOP pour les tropiques), validation communautaire.</li>
+        <li>Hydrophones bas coût (50 € pièce, capacité vérifiée sauf sous 200 Hz) sur les bouées de club, indice de complexité acoustique quotidien, alerte en cas de chute.</li>
+        <li>Atlas régional, alertes aux gestionnaires en cas d'espèce à surveiller, licence de données ; badge et rapport trimestriel pour le club.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Clubs</dt><dd>100 à 300 $ CAD par mois, gratuit pour le plongeur</dd><dt>Agences</dt><dd>licence 10 à 40 k$ par an</dd><dt>Programme</dt><dd>15 à 40 k$ par an</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen à élevé · 4 à 6 mois-ingénieur</span><p>Le jeu de données local est à constituer soi-même, plongée après plongée : c'est lent, et c'est l'actif. Pas de diagnostic de maladie par photo : non démontré scientifiquement.</p></section>
+      <section><h4>Concurrence</h4><p>iNaturalist, Reef Check (protocole EcoDiver lourd), ReefCloud et CoralNet (tropicaux, gratuits) ; rien de régional avec alertes réglementaires. Risque : des clubs bénévoles peu solvables, et une licence de données qui met deux ans à se signer.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>L'argent des bailleurs bascule vers la preuve de gestion en 2026. Premier client : vos deux clubs de plongée, à zéro heure de route.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">Impact fonds marins<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+    </div>
+    <!--VERDICT:9-->
+  </article>
+
+  <div class="fam-h"><span class="sw" style="background:var(--s3)"></span><div><h3>Restauration et preuve</h3><p>Ceux qui doivent démontrer qu'un habitat a été compensé, qu'une colonie a survécu ou qu'un État a restauré ce qu'il a promis : la mesure devient la monnaie quand les subventions se retirent.</p></div></div>
+
+  <article class="fiche" id="idee-10">
+    <header class="fiche-head">
+      <div class="big">10</div>
+      <div><span class="fam fam-amont">Restauration et preuve</span><h3>OffsetLedger</h3><p class="tagline">Le suivi vérifiable des sites de compensation d'habitat, pour les promoteurs qui ont une caution à défendre et les banques d'habitat qui ont des crédits à vendre</p></div>
+      <div class="score-badge">26<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">25/05/2026</span><span class="ref">Politique de compensation, Loi sur les pêches (republiée 2025) · Roberts Bank Terminal 2 · mitigation banks de Floride · Verra Nature Framework 01/04/2025</span><span>Le MPO exige « aucune perte nette », un suivi documenté et des garanties financières saisissables si le plan de compensation échoue. Roberts Bank Terminal 2, approuvé en 2023 avec 370 conditions, détruit 177 ha d'estuaire pour 86 ha compensés hors site, avec une construction jusqu'en 2030. En Floride, un crédit de mitigation bank se vend 30 000 à 360 000 $ par acre, un prix qui reflète le coût et le risque de la preuve pluriannuelle.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>La reprise d'un site de compensation se prouve par des relevés manuels pluriannuels, chers et peu comparables ; le promoteur risque sa caution, l'opérateur de bank retarde ses crédits, le régulateur manque de preuve indépendante.</p></section>
+      <section><h4>La cible</h4><p>Quinze à trente projets actifs par an en Colombie-Britannique nécessitant un suivi pluriannuel (estimation), leurs bureaux d'études (Dynamic Ocean, Hemmera, Stantec), le Port de Vancouver, puis les dizaines d'opérateurs de mitigation banks de Floride et de Californie. Lacune : la politique des banques d'habitat (2021) est introuvable et le nombre de banques actives inconnu.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Caméras fixes et ROV du commerce, protocole de plongée, eDNA sous-traité à un laboratoire (150 à 500 $ CAD par échantillon, estimation) pour les espèces indicatrices.</li>
+        <li>IA de couverture de zostère et de classification d'habitat par parcelle, série temporelle, photos horodatées et géoréférencées.</li>
+        <li>Registre des crédits d'habitat et rapports au format MPO, USACE ou Verra (Qha), avec la trajectoire de reprise opposable au régulateur.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Pilote</dt><dd>15 à 80 k$ CAD par site pluriannuel</dd><dt>Bureaux et banks</dt><dd>500 à 2 000 $ par mois</dd><dt>MPO, PSF</dt><dd>licence agrégée</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen à élevé · 5 à 7 mois-ingénieur</span><p>Vision sous-marine en eau turbide, intégration eDNA, connaissance fine du cadre MPO. Le ticket est le plus élevé des douze, le cycle de vente aussi.</p></section>
+      <section><h4>Concurrence</h4><p>Bureaux d'études au service ; aucune plateforme MRV marine canadienne identifiée. Risque : le bureau d'études voit un concurrent, pas un outil ; passer par lui plutôt que contre lui.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>Une politique republiée en 2025 et le plus gros chantier de compensation du port en cours. Premier client : Dynamic Ocean Consulting (Port Moody) ou Project Watershed (Comox), bénéficiaire du Fonds de restauration côtière.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Impact fonds marins<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+    </div>
+    <!--VERDICT:10-->
+  </article>
+
+  <article class="fiche" id="idee-11">
+    <header class="fiche-head">
+      <div class="big">11</div>
+      <div><span class="fam fam-amont">Restauration et preuve</span><h3>ColonyTrack</h3><p class="tagline">Chaque corail transplanté reconnu d'une campagne à l'autre : survie, croissance et blanchissement mesurés en 3D pour les bailleurs et les sponsors</p></div>
+      <div class="score-badge">26<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">06/09/2026</span><span class="ref">FCR3 à 0 $ (Floride) · NFWF Coral Reef Stewardship Fund · CRCA block grants · Mars 72 sites · Coral Gardeners (Rolex)</span><span>La Floride a ramené à zéro son budget de restauration corallienne pour 2026 après 28,5 M$ distribués à 14 organisations en 2023-2025 : chaque dollar restant doit être justifié. Le NFWF (3,5 M$ par cycle, 80 à 600 k$ par projet) exige des plans de suivi et des données spatiales géoréférencées ; la CRCA réautorisée (45 M$ par an autorisés) bascule vers des block grants. Mars vise 185 000 m² restaurés d'ici 2029 sur 72 sites, Coral Gardeners un million de coraux. Après l'été 2023, 89 à 100 % des elkhorn sauvages et restaurés des Keys sont morts.</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>La survie et la croissance des colonies transplantées sont comptées à la main, une par une, dans des tableurs ; les bailleurs et sponsors n'ont pas de preuve tierce comparable entre sites ; MERMAID, ReefCloud et CoralNet, gratuits, ne suivent pas une colonie dans le temps.</p></section>
+      <section><h4>La cible</h4><p>Les 14 organisations floridiennes ex-FCR3 (Reef Institute, Reef Renewal USA, I.CARE, Mote, CRF), quelques centaines d'organisations de restauration dans le monde, les sponsors (Mars, Rolex, hôtels, croisiéristes) et les bailleurs qui financent plusieurs sites.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Capture vidéo en plongée (GoPro, caméra 360) sur trajectoire guidée, photogrammétrie (COLMAP) et, en option, splatting sous-marin (littérature 2025), mise à l'échelle par cibles fixes.</li>
+        <li>Re-identification visuelle des colonies entre campagnes, survie, croissance de surface, proportion pâlie (segmentation CoralSCOP) ; pas de diagnostic de maladie par photo, faute de base scientifique.</li>
+        <li>Rapports au format NFWF, CRCP et sponsor, registre par colonie, comparaison inter-sites pour le bailleur.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>Sites</dt><dd>150 à 600 $ par mois</dd><dt>Rapport annuel</dt><dd>2 000 à 5 000 $</dd><dt>Sponsors</dt><dd>500 à 2 000 $ par mois par site</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Élevé · 5 à 7 mois-ingénieur</span><p>La mesure de croissance par 3D est une capacité supposée : à valider par pilote contre mesure manuelle avant toute vente. Le plongeur du fondateur compte, le terrain est en Floride.</p></section>
+      <section><h4>Concurrence</h4><p>Coral Vita et Reefgen (restauration, pas preuve tierce), Agisoft et Pix4D (génériques, 3 499 $ et 3 990 $ par an), MERMAID (gratuit, pas de colonie). Différent de GrantMRV : la valeur est dans la mesure, pas dans le formulaire. Risque : les ONG sans budget d'État n'achètent rien en 2026.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>La preuve remplace la subvention automatique. Premier client : I.CARE (Islamorada) à distance, ou Coral Gardeners via le réseau de plongée.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:2"></i></div><b>2</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:5"></i></div><b>5</b></div>
+      <div class="sc">Impact fonds marins<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+    </div>
+    <!--VERDICT:11-->
+  </article>
+
+  <article class="fiche" id="idee-12">
+    <header class="fiche-head">
+      <div class="big">12</div>
+      <div><span class="fam fam-amont">Restauration et preuve</span><h3>SeafloorLedger</h3><p class="tagline">L'intégrité des fonds marins mesurée zone par zone, pour les vingt États européens en retard et les ONG qui les attaquent</p></div>
+      <div class="score-badge">23<span>/35</span><small>Score orchestrateur</small></div>
+    </header>
+    <div class="trigger"><span class="lab">Déclencheur</span><span class="date">01/09/2026</span><span class="ref">Règlement (UE) 2024/1991 · DCSMM décision 2017/848, descripteur D6 · plan d'action pêche 2023 · Natura 2000 (plus de 3 000 sites marins)</span><span>Les projets de plans nationaux de restauration étaient dus le 1er septembre 2026 : sept États sur vingt-sept les ont remis, vingt sont en retard, dont l'Italie. Les objectifs sont fermes (20 % des habitats marins dégradés restaurés en 2030, 60 % en 2040, 90 % en 2050, annexe II : posidonie, maërl, récifs, fonds meubles). Le seuil de perte D6C4 (2 %) est adopté depuis juin 2023 ; le seuil de perturbation D6C5 ne l'est toujours pas. Le chalutage doit sortir de toutes les AMP en 2030 (communication non contraignante).</span></div>
+    <div class="fiche-grid">
+      <section><h4>Le problème</h4><p>Les administrations et les ONG de contentieux n'ont pas de mesure indépendante et comparable de la perte et de la perturbation des habitats benthiques par zone d'évaluation ; chaque État compile à la main des cartes d'âges différents.</p></section>
+      <section><h4>La cible</h4><p>Oceana Europe, ClientEarth, Seas At Risk (rapports de contentieux), les bureaux d'études mandatés par les 20 États en retard, les agences nationales (OFB, JNCC), la Commission. Vente à distance, en anglais et en français.</p></section>
+      <section class="wide"><h4>Le produit</h4><ul>
+        <li>Empreinte du chalutage de fond dérivée de l'AIS (Global Fishing Watch) croisée avec les cartes d'habitats EMODnet et EUNIS, indicateurs D6C3 et D6C4 par zone d'évaluation, avec l'incertitude des navires sans AIS affichée.</li>
+        <li>Détection de changement satellite pour les habitats peu profonds (posidonie), intégration des relevés sonar publics, suivi des objectifs 2030 à 2050 par habitat annexe II.</li>
+        <li>Rapport au format de la Commission, exports pour un dossier de contentieux, tableau de bord par État.</li>
+      </ul></section>
+      <section><h4>Prix et modèle</h4><dl class="kv"><dt>ONG</dt><dd>10 à 30 k$ par rapport</dd><dt>Administrations</dt><dd>800 à 3 000 $ par mois par zone</dd><dt>Pilote pays</dt><dd>15 à 80 k$ avec un bureau d'études</dd></dl></section>
+      <section><h4>Effort technologique</h4><span class="effort">Moyen à élevé · 5 à 7 mois-ingénieur</span><p>Données publiques, valeur dans la méthode et la comparabilité ; aucun matériel. Le risque est méthodologique : un indicateur contesté par un État vaut zéro.</p></section>
+      <section><h4>Concurrence</h4><p>JRC et ICES (publics), ERM, Ramboll, RSK (conseil), Marine Conservation Institute (rapports ponctuels). Risque : cycle de vente public long ; vendre d'abord aux ONG, dont les budgets de contentieux sont votés.</p></section>
+      <section><h4>Pourquoi maintenant, premier client</h4><p>Une échéance dépassée il y a une semaine par vingt États. Premier client : Oceana Europe ou ClientEarth, rapport pilote sur une zone britannique ou espagnole.</p></section>
+    </div>
+    <div class="scores">
+      <div class="sc">Urgence<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+      <div class="sc">Cible<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Prix<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Facilité<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Vide concurrentiel<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">IA et donnée<div class="bar"><i style="--v:3"></i></div><b>3</b></div>
+      <div class="sc">Impact fonds marins<div class="bar"><i style="--v:4"></i></div><b>4</b></div>
+    </div>
+    <!--VERDICT:12-->
+  </article>
+</section>
+
+<section class="block" id="comparatif">
+  <span class="eyebrow">Comparatif</span>
+  <h2>Les douze idées côte à côte</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Idée</th><th>Déclencheur</th><th>Cible captive</th><th>Prix par client et par an</th><th>Effort solo</th><th>Premier client</th><th class="n">Score /35</th><th class="n">VC /30</th><th class="n">Secteur /25</th><th class="n">Tech /25</th></tr></thead>
+    <tbody id="cmp-body">
+<!--CMP-->
+    </tbody>
+  </table></div>
+  <p class="chart-note">Score /35 : orchestrateur, sept axes après corrections des critiques. VC /30 : investisseur (acheteur, douleur budgétée, vitesse, défendabilité, marché, fondateur). Secteur /25 : écologue gestionnaire d'AMP (besoin, acceptabilité, impact, substitution, exactitude). Tech /25 : architecte (faisabilité, maturité, coût, barrière, risque masqué). Prix en dollars US sauf mention CAD.</p>
+</section>
+
+<section class="block" id="passes">
+  <span class="eyebrow">Face aux deux premières passes</span>
+  <h2>Ce qui change quand l'objet n'est plus un déchet mais un habitat</h2>
+  <div class="grid2">
+    <div class="card"><h3>Passe 1 : l'obligation la plus dure</h3><p>PelletGuard, RiverEye et GearTrace gagnaient sur la force du texte européen ou californien. Le plastique avait un avantage : il se compte, se pèse et se retire, et le bailleur paie au kilogramme.</p></div>
+    <div class="card"><h3>Passe 2 : le premier client à trois heures</h3><p>GhostSonar, FloatWatch et VesselRisk se testaient depuis Steveston avec un sondeur ou un drone. Le levier n'était plus la sanction mais le budget déjà voté, et la donnée sonar vérifiée en plongée faisait la barrière.</p></div>
+    <div class="card"><h3>Passe 3 : la mesure comme monnaie</h3><p>Un herbier ne se ramasse pas. Ceux qui paient sont ceux qui doivent prouver : qu'ils n'ont pas ancré (Keys 2027, Espagne 2026), qu'ils n'ont pas étouffé (Port Everglades), que la ferme récupère (MPO), que la colonie a survécu (Floride sans budget), que l'État restaure (UE, 20 retardataires). La série temporelle remplace le tonnage.</p></div>
+    <div class="card"><h3>Ce que les trois passes partagent</h3><p>La même méthode (texte, date, obligé, prix, effort, trois critiques) et la même conviction : le matériel est en vente libre, les modèles sont ouverts, la barrière est la donnée locale que le fondateur collecte lui-même. Ici, elle est froide et turbide, et personne ne l'a annotée.</p></div>
+  </div>
+</section>
+
+<section class="block" id="ecartees">
+  <span class="eyebrow">Écartées ou fusionnées</span>
+  <h2>Ce que nous avons vu et laissé de côté</h2>
+  <div class="grid2">
+    <div class="card"><h3>ReefTrigger</h3><p>Couche de données pour l'assurance paramétrique de récif et de kelp : classe d'actif réelle (MAR Fund, sixième placement 2026-2027 sur douze aires ; Hawaï doublé en 2025) mais deux ou trois acheteurs dans le monde, aucun programme américain ni kelp. Trop lent pour un bootstrap ; piste de licence pour SpongeSentinel et KelpPulse.</p></div>
+    <div class="card"><h3>PosidoniaCarbon</h3><p>MRV du carbone bleu de la posidonie (label bas-carbone approuvé en avril 2023, premiers crédits ARCHIPEL en 2025) : une dizaine de projets, standard non verrouillé. Module possible de PosidoniaProof ou de SeafloorLedger.</p></div>
+    <div class="card"><h3>MPA Proof</h3><p>Suite de preuve d'efficacité pour gestionnaires d'AMP (Bloomberg 260 M$, GFCR 400 organisations « reef-positive ») : besoin réel, volonté de payer faible, et produit trop proche de DiveAtlas plus SpongeSentinel.</p></div>
+    <div class="card"><h3>Coastal Nature Score</h3><p>Scoring TNFD de portefeuilles côtiers pour banques (733 organisations engagées, blue bond Banco Bolivariano lié à des KPI) : vente longue, donnée de fond trop indirecte pour un fondateur seul.</p></div>
+    <div class="card"><h3>TaxeRécif Verify et ReefFundOS</h3><p>Audit des redevances récifales (douzaine de juridictions, sous-déclaration non documentée) et veille de subventions pour ONG post-FCR3 (trop proche de GrantMRV, sans matériel ni donnée de terrain).</p></div>
+    <div class="card"><h3>ProtocolBridge, ESRS E4 marin, capteurs sur éoliennes</h3><p>Traduction AGRRA, GCRMN, Natura 2000 (pas de date, MERMAID couvre déjà) ; reporting biodiversité CSRD (Omnibus réduit le champ d'environ 80 %, texte non stabilisé) ; capteurs sur protections anti-affouillement (logistique en mer hors budget, couvert par BenthicPipe). SplatReef et SoundReef sont intégrés à ColonyTrack et DiveAtlas.</p></div>
+  </div>
+</section>
+
+<section class="block" id="pieges">
+  <span class="eyebrow">Pièges juridiques et éthiques</span>
+  <h2>Dix pièges à traiter avant la première ligne de code</h2>
+  <div class="prose" style="margin-bottom:22px"><p>Relevés par l'écologue et confirmés par l'architecte. Plusieurs touchent à la surveillance de personnes, aux territoires autochtones et à la recevabilité d'une preuve : ce sont des choix d'architecture, pas des détails.</p></div>
+  <div class="grid2">
+<!--PIEGES-->
+  </div>
+</section>
+
+<section class="block" id="plan">
+  <span class="eyebrow">Passer à l'action</span>
+  <h2>Trente jours à Vancouver pour trancher entre trois idées</h2>
+  <div class="prose"><p>Pas de développement avant d'avoir entendu des clients. Chaque semaine cible une idée du haut du classement et un test que vous pouvez faire seul, avec moins de 1 000 $ de matériel loué ou emprunté, et votre bouteille.</p></div>
+<!--PLAN-->
+</section>
+
+<section class="block" id="methode">
+  <span class="eyebrow">Méthode et sources</span>
+  <h2>Comment ce troisième rapport a été produit, et ce qu'il faut vérifier avant d'agir</h2>
+  <div class="prose" style="margin-bottom:22px"><p>Huit agents de recherche ont travaillé en parallèle sur un brief commun qui décrit votre situation et exclut les vingt-quatre idées précédentes, avec un budget de douze recherches web chacun, les sources officielles en priorité et l'obligation d'étiqueter chaque capacité matérielle « vérifiée » ou « supposée ». L'orchestrateur a consolidé douze idées, puis trois critiques les ont notées, corrigées et confrontées. Dossiers, liste longue et verdicts sont dans le dépôt sous <span class="mono">ocean-seabed-3/</span>.</p></div>
+  <div class="agents">
+    <div><div class="a">reg-coral-usa</div><p>CRCA, NOAA CRCP, Mission: Iconic Reefs, ESA critical habitat, §403.93345, Restoration Blueprint, FCR3, MLPA, BOEM, USACE, Port Everglades.</p></div>
+    <div><div class="a">reg-europe-benthic</div><p>Règlement 2024/1991, DCSMM D6, plan d'action pêche, Natura 2000, VME, posidonie (France, Espagne, Italie), UK MMO, carbone bleu, FEAMPA, LIFE.</p></div>
+    <div><div class="a">canada-pnw-benthic</div><p>Récifs d'éponges, plateau Nord, compensation d'habitat, Roberts Bank, îles Gulf, kelp, Washington SB 5619, Oregon, Alaska, fonds de restauration.</p></div>
+    <div><div class="a">dive-restoration-market</div><p>Coûts de restauration, ReefCloud, CoralNet, MERMAID, Reef Check, Green Fins, PADI, redevances récifales, photogrammétrie, ROV.</p></div>
+    <div><div class="a">blue-carbon-mrv</div><p>VM0033, Nature Framework, kelp sans méthodologie, crédits nature UE, Nature Repair Market, CSRD, assurance paramétrique, mitigation banking.</p></div>
+    <div><div class="a">industry-benthic-surveys</div><p>BOEM, MMO, câbles, dragage USACE, mouillages, aquaculture (MPO, SEPA, NS 9410, Chili), pêche de fond, prestataires et logiciels d'annotation.</p></div>
+    <div><div class="a">tech-underwater-ai</div><p>CoralNet, FathomNet, BenthicNet, CoralSCOP, RF-DETR, splatting sous-marin, SCTLD, eDNA, acoustique passive, Allen Coral Atlas, Sentinel-2, ROV, GFW, concurrents.</p></div>
+    <div><div class="a">finance-biodiversity</div><p>Bezos, Bloomberg, GFCR, PROBLUE, Blue Action Fund, 30x30, BBNJ, Mars, Rolex, NFWF, TNFD, blue bonds.</p></div>
+  </div>
+  <h3 style="margin-top:28px">Limites à garder en tête</h3>
+  <ul class="prose">
+    <li>Les prix et les tailles de cible sont des estimations raisonnées à partir de sources publiques ; aucun client n'a été interrogé. Les fourchettes sont larges à dessein.</li>
+    <li>Plusieurs pages officielles ont bloqué la collecte (Federal Register, OPC, Port de Vancouver, EFRAG, TNFD, KelpWatch, Reef Life Survey, NatureMetrics) ; les faits concernés viennent de miroirs ou de sources secondaires et sont signalés dans les dossiers.</li>
+    <li>Trois capacités restent supposées et doivent être prouvées avant toute vente : la mesure de croissance corallienne par 3D, la distinction d'habitats par sonar de pêche, la détection de maladie par photo (celle-ci n'est pas démontrée dans la littérature 2024-2026).</li>
+    <li>La fin des cages ouvertes en Colombie-Britannique en 2029 est une politique de licence, réversible ; le Help Our Kelp Act et le Marine Net Gain britannique sont des propositions ; la feuille de route européenne des crédits nature n'est pas un règlement.</li>
+    <li>Un chalutier en zone interdite coupe souvent son AIS : toute alerte fondée sur l'AIS seul sous-estime les incursions.</li>
+  </ul>
+  <h3 style="margin-top:28px">Sources principales</h3>
+  <ul class="prose">
+    <li><b>Réglementation américaine</b> : GAO-24-106692, NOAA CRCP FY2024 Grants Portfolio, coralreef.noaa.gov, sanctuaries.noaa.gov, floridakeys.noaa.gov/blueprint, Federal Register 2023-16556 et 2025-13238, flsenate.gov §403.93345, floridadep.gov, myfwc.com, WGCU et floridatrib (06/09/2026), boem.gov, saj.usace.army.mil, earthjustice.org.</li>
+    <li><b>Europe</b> : eur-lex (2024/1991, 2016/2336, 2022/1614, 2017/848), environment.ec.europa.eu (01/09/2026), eunews.it (02/09/2026), JRC D6, ICES WKBENTH4, premar-mediterranee.gouv.fr, ICOMIA (RD 191/2026), medtrix.fr, gov.uk (MMO 16/07/2025), wildlifetrusts.org, cinea.ec.europa.eu.</li>
+    <li><b>Canada et Pacifique Nord-Ouest</b> : dfo-mpo.gc.ca (AMP Hecate Strait, plateau Nord, politique de compensation, AAR benthique), canada.ca (amende 24/05/2024), iaac-aeic.gc.ca (Roberts Bank), dnr.wa.gov (kelp), wdfw.wa.gov, opb.org, mayneconservancy.ca, kelprescue.org, psf.ca.</li>
+    <li><b>Technologies</b> : coralnet.ucsd.edu, fathomnet.org, BenthicNet (Scientific Data 2025), CoralSCOP (CVPR 2024), github.com/roboflow/rf-detr, arXiv 2502.20154, 2505.15737, 2508.09610 (splatting sous-marin), PMC12694390 (hydrophone bas coût), allencoralatlas.org, Nature 2026 (herbiers Sentinel-2), bluerobotics.com, globalfishingwatch.org/our-apis.</li>
+    <li><b>Marchés et finance</b> : verra.org, frontiersin.org (kelp 2026), marfund.org, nature.org, mitigationbankinginc.com, bloomberg.org, globalfundcoralreefs.org, nfwf.org, protectedplanet.net, marine-conservation.org, aims.gov.au, datamermaid.org, greenfins.net, padi.com, agisoft.com.</li>
+  </ul>
+</section>
+
+</main>
+</div>
+<footer>Atlas Fonds Marins · troisième passe d'idéation, septembre 2026 · aucune implémentation · chiffres et dates à revérifier sur les sites officiels avant décision</footer>
+
+<script>
+(function(){
+  var data=[
+    {n:1,name:"ScarMap",fam:1,effort:5,score:26,price:18,d:"Cicatrices d'ancre et geofencing · Keys 2027, îles Gulf"},
+    {n:2,name:"PosidoniaProof",fam:1,effort:5.2,score:24,price:20,d:"Preuve de mouillage · Méditerranée, RD 191/2026"},
+    {n:3,name:"PlumeWatch",fam:1,effort:5,score:23,price:60,d:"Panaches de dragage · Port Everglades, USACE"},
+    {n:4,name:"ReefInjury",fam:1,effort:6,score:25,price:15,d:"Dommages d'échouement en 3D · §403.93345"},
+    {n:5,name:"SedimentIQ",fam:2,effort:4.5,score:26,price:18,d:"Vidéo benthique aquacole · MPO, 2029"},
+    {n:6,name:"KelpPulse",fam:2,effort:6.2,score:26,price:50,d:"Kelp et zostère · Washington SB 5619"},
+    {n:7,name:"BenthicPipe",fam:2,effort:6,score:25,price:40,d:"Annotation vidéo éolien en mer · norme MMO 2025"},
+    {n:8,name:"SpongeSentinel",fam:2,effort:3,score:23,price:80,d:"Alertes AIS dans les AMP · récifs d'éponges"},
+    {n:9,name:"DiveAtlas",fam:2,effort:5,score:24,price:40,d:"Clubs de plongée, IA d'espèces, hydrophones"},
+    {n:10,name:"OffsetLedger",fam:3,effort:6,score:26,price:80,d:"MRV de compensation d'habitat · MPO, Roberts Bank"},
+    {n:11,name:"ColonyTrack",fam:3,effort:6,score:26,price:24,d:"Re-identification de colonies · Floride sans budget"},
+    {n:12,name:"SeafloorLedger",fam:3,effort:6,score:23,price:36,d:"Intégrité des fonds · UE 2024/1991, D6"}
+  ];
+  var svg=document.querySelector('#bubble svg');if(!svg)return;
+  var NS='http://www.w3.org/2000/svg';
+  var W=780,H=460,L=64,R=24,T=20,B=56;
+  var x0=2,x1=8,y0=17,y1=31;
+  function X(v){return L+(v-x0)/(x1-x0)*(W-L-R)}
+  function Y(v){return T+(1-(v-y0)/(y1-y0))*(H-T-B)}
+  function el(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e}
+  var g=el('g',{});svg.appendChild(g);
+  var cs=getComputedStyle(document.documentElement);
+  var ink3=cs.getPropertyValue('--ink-3').trim(),line=cs.getPropertyValue('--line').trim(),ink=cs.getPropertyValue('--ink').trim();
+  for(var v=2;v<=8;v+=1){g.appendChild(el('line',{x1:X(v),x2:X(v),y1:T,y2:H-B,stroke:line,'stroke-width':1}));
+    var t=el('text',{x:X(v),y:H-B+18,'text-anchor':'middle','font-size':11,fill:ink3});t.textContent=v;g.appendChild(t);}
+  for(var w=17;w<=31;w+=2){g.appendChild(el('line',{x1:L,x2:W-R,y1:Y(w),y2:Y(w),stroke:line,'stroke-width':1}));
+    var t2=el('text',{x:L-10,y:Y(w)+4,'text-anchor':'end','font-size':11,fill:ink3});t2.textContent=w;g.appendChild(t2);}
+  var ax=el('text',{x:(L+W-R)/2,y:H-14,'text-anchor':'middle','font-size':11,fill:ink3,'letter-spacing':'.08em'});ax.textContent='EFFORT MVP EN SOLO (MOIS-INGÉNIEUR, POINT MÉDIAN)';g.appendChild(ax);
+  var ay=el('text',{x:14,y:(T+H-B)/2,'text-anchor':'middle','font-size':11,fill:ink3,'letter-spacing':'.08em',transform:'rotate(-90 14 '+((T+H-B)/2)+')'});ay.textContent='SCORE ORCHESTRATEUR (7 AXES) /35';g.appendChild(ay);
+  var cols={1:'var(--s1)',2:'var(--s2)',3:'var(--s3)'};
+  var tip=document.getElementById('tip'),wrap=document.getElementById('bubble');
+  var left={}, below={}, above={};
+  data.slice().sort(function(a,b){return b.price-a.price}).forEach(function(d){
+    var r=6+Math.sqrt(d.price)*1.2;
+    var c=el('circle',{cx:X(d.effort),cy:Y(d.score),r:r,fill:cols[d.fam],'fill-opacity':.8,stroke:'var(--surface)','stroke-width':2,tabindex:0});
+    var lab=el('text',{x:X(d.effort),y:Y(d.score)+4,'text-anchor':'middle','font-size':10,'font-weight':600,fill:'#fff','pointer-events':'none'});
+    lab.textContent=String(d.n).padStart(2,'0');
+    var name=el('text',{x:X(d.effort)+r+5,y:Y(d.score)+4,'font-size':11.5,fill:ink,'font-family':'Bricolage Grotesque, Helvetica Neue, Arial, sans-serif','font-weight':600,'pointer-events':'none'});
+    name.textContent=d.name;
+    if(left[d.n]){name.setAttribute('x',X(d.effort)-r-5);name.setAttribute('text-anchor','end');}
+    if(below[d.n]){name.setAttribute('x',X(d.effort));name.setAttribute('y',Y(d.score)+r+13);name.setAttribute('text-anchor','middle');}
+    if(above[d.n]){name.setAttribute('x',X(d.effort));name.setAttribute('y',Y(d.score)-r-6);name.setAttribute('text-anchor','middle');}
+    function show(){tip.innerHTML='<b>'+String(d.n).padStart(2,'0')+' · '+d.name+'</b>'+d.d+'<br>Effort ~'+d.effort+' m-i · score '+d.score+'/35<br>Revenu max estimé '+d.price+' k$ par client et par an';
+      var bb=wrap.getBoundingClientRect(),pt=c.getBoundingClientRect();
+      tip.style.left=Math.min(pt.left-bb.left+r+12,bb.width-280)+'px';tip.style.top=(pt.top-bb.top-10)+'px';tip.style.opacity=1;}
+    function hide(){tip.style.opacity=0}
+    c.addEventListener('mouseenter',show);c.addEventListener('mousemove',show);c.addEventListener('mouseleave',hide);c.addEventListener('focus',show);c.addEventListener('blur',hide);
+    c.addEventListener('click',function(){location.hash='#idee-'+d.n});c.style.cursor='pointer';
+    g.appendChild(c);g.appendChild(lab);g.appendChild(name);
+  });
+  var links=[].slice.call(document.querySelectorAll('nav.rail a'));
+  var map={};links.forEach(function(a){var id=a.getAttribute('href').slice(1);map[id]=a});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.remove('on')});var a=map[e.target.id];if(a)a.classList.add('on');}})},{rootMargin:'-20% 0px -70% 0px'});
+    Object.keys(map).forEach(function(id){var s=document.getElementById(id);if(s)io.observe(s)});
+  }
+})();
+</script>
