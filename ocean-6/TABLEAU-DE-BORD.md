@@ -1,0 +1,21 @@
+# Tableau de bord de l'idéation (juge fixe, idéation mesurée)
+
+| Mesure | Passes 1 à 3 | Passe 4 | Passe 5 | Cible passe 6 | Passe 6 |
+|---|---|---|---|---|---|
+| Idées générées | 36 | 35 | 40 | 12 à 16 | |
+| Survivantes au tri | (pas de tri) | 8 | 6 | 5 | |
+| Survivantes au juge (société, ou actif 3/5 et plus) | 1 puis 0 | 1 (3/5) | 0 (max 2/5) | au moins 1 à 3/5 | |
+| Idées avec prix lu à la naissance | 0 % | ~20 % | 0 % | 100 % | |
+| Idées avec occupant nommé avant le tri | faible | faible | faible | 100 % | |
+| Resucées d'idées mortes | non mesuré | 5 fusions | 18/40 | moins de 10 % | |
+| Capacité supposée au cœur de l'angle, au creusement | fréquent | 3/8 | 5/6 | 0 | |
+| Cause numéro 1 du pré-mortem déjà réalisée, au creusement | non mesuré | non mesuré | 3/6 | 0 | |
+
+## Changements testés en passe 6
+- C1 : idéation interdite avant le registre des dépenses. Mesure : prix lu et occupant nommé, de 0 % à 100 %.
+- C2 : tueur apparié, deux tours. Mesure : resucées et occupants manqués au juge, de 18/40 à moins de 10 %.
+- C3 : question 8 par mécanisme, seuils chiffrés au tri. Mesure : capacités supposées et pré-mortems déjà réalisés au
+  creusement, de 5/6 et 3/6 à 0.
+
+## Journal
+- 7 septembre 2026 : phase 0 et phase 1 lancées (8 cartographes).
