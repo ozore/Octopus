@@ -82,29 +82,22 @@ marché de crédits chiffré, que le régime canadien n'a pas.
 
 L'obligation qui encadre le produit, vérifiée cette session : le règlement fédéral de l'USACE (Army Corps
 of Engineers, agence fédérale qui délivre les permis au titre de l'article 404 du Clean Water Act) exige
-un plan de compensation dont la période de suivi n'est pas inférieure à cinq ans, plus longue pour les
-habitats à développement lent. La période peut être réduite si au moins deux rapports de suivi annuels
-consécutifs démontrent que les critères de succès sont atteints. La caution financière (financial
-assurance) est libérée sur demande du titulaire du permis lorsqu'il estime que les exigences de
-compensation sont remplies (vérifié, USACE, texte réglementaire 33 CFR et guides de district cités en
-section 7). En Californie, la California Eelgrass Mitigation Policy (CEMP, NOAA Fisheries, 2014) fixe un
-ratio de compensation d'au moins 1,2 pour 1 et un suivi par rapports réguliers ; sur les projets examinés,
-77% atteignaient leurs jalons de compensation, ce qui signifie qu'environ un quart n'y arrivait pas encore
-au moment mesuré (vérifié, NOAA Fisheries, fisheries.noaa.gov, CEMP 2014). C'est la preuve directe qu'un
-comptage plus fin peut révéler un échec de site : le taux d'échec existe déjà, à l'échelle d'un quart des
-projets, avec la méthode manuelle actuelle.
+un suivi non inférieur à cinq ans, plus long pour les habitats à développement lent, réductible si deux
+rapports annuels consécutifs démontrent le succès. La caution financière (financial assurance) est
+libérée sur demande du titulaire quand il estime les exigences remplies (vérifié, USACE, 33 CFR). En
+Californie, la California Eelgrass Mitigation Policy (CEMP, NOAA Fisheries, 2014) fixe un ratio d'au
+moins 1,2 pour 1 et un suivi régulier ; 77% des projets examinés atteignaient leurs jalons, donc environ
+un quart n'y arrivait pas encore (vérifié, NOAA Fisheries, CEMP 2014). Preuve directe qu'un comptage plus
+fin peut révéler un échec de site : le taux d'échec existe déjà avec la méthode manuelle actuelle.
 
-Six fonctionnalités, dans l'ordre de vente :
-1. Ingestion des photos et vidéos de quadrat déjà prises par l'équipe de suivi du client (aucune
-   nouvelle collecte de terrain requise au démarrage).
-2. Comptage automatisé d'huîtres vivantes ou de pousses par quadrat, avec score de confiance par image.
-3. Agrégation en série temporelle par site, avec seuils d'alerte précoce internes au client (pas encore
-   envoyés au régulateur), pour détecter un site en difficulté avant le rapport annuel officiel.
-4. Génération du rapport dans le format attendu par le district USACE ou par la CEMP californienne, prêt
-   à déposer.
-5. Suivi cumulatif multi-sites pour un même client, comparant ses sites entre eux.
-6. Accès en lecture, plus tard, pour un tiers de confiance choisi par le client (assureur, acheteur de
-   crédits), uniquement si le client l'autorise.
+Six fonctionnalités, dans l'ordre de vente : (1) ingestion des photos et vidéos de quadrat déjà prises par
+l'équipe de suivi du client, aucune nouvelle collecte requise au démarrage ; (2) comptage automatisé
+d'huîtres vivantes ou de pousses par quadrat, score de confiance par image ; (3) agrégation en série
+temporelle par site, seuils d'alerte précoce internes, pas encore envoyés au régulateur, pour détecter un
+site en difficulté avant le rapport annuel officiel ; (4) génération du rapport dans le format attendu par
+le district USACE ou la CEMP californienne, prêt à déposer ; (5) suivi cumulatif multi-sites pour un même
+client, comparant ses sites entre eux ; (6) accès en lecture, plus tard, pour un tiers de confiance choisi
+par le client (assureur, acheteur de crédits), uniquement si le client l'autorise.
 
 Pourquoi impossible en 2024 : les modèles de vision par ordinateur à faible coût capables d'atteindre une
 précision proche de l'humain sur des tâches de comptage sous marin fin (corail, zostère) ne sont devenus

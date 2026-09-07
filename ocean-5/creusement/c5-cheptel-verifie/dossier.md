@@ -211,29 +211,24 @@ fraîche ici : supposée, cohérent avec la mention du PARI dans le BRIEF sectio
 
 ## Références
 
-Assurance et courtage : sunderlandmarine.com/service/aquaculture/claims (claims) et /faqs (WebFetch direct, 2026,
-aucune mention de caméra ou vidéo) ; miller insurance.com/sectors/bloodstock livestock aquaculture and exotic
-animals/aquaculture insurance ; wtwco.com/en us/solutions/services/aquaculture insurance ; axaxl.com/insurance/
-products/aquaculture insurance et /fast fast forward/articles/fish farming moves onshore ; convexin.com/
-underwriting/equine livestock aquaculture/aquaculture ; us.bbrown.com/industries/marine/aquaculture insurance ;
-pmc.ncbi.nlm.nih.gov/articles/PMC6169256 (mutuelles en petite aquaculture, hors marché visé).
+Assurance et courtage : sunderlandmarine.com/service/aquaculture/claims et /faqs (WebFetch direct, 2026, aucune
+mention de caméra) ; miller insurance.com ; wtwco.com/en us/solutions/services/aquaculture insurance ;
+axaxl.com/insurance/products/aquaculture insurance ; convexin.com/underwriting/equine livestock aquaculture ;
+us.bbrown.com/industries/marine/aquaculture insurance ; pmc.ncbi.nlm.nih.gov/articles/PMC6169256 (mutuelles,
+hors marché visé).
 
-Caméras et vision par ordinateur en ferme : aceaquatec.com/our story ; thefishsite.com/articles/the importance of
-biomass introducing ace aquatecs 3d biomass camera ; aquaculturenorthamerica.com/ace aquatec releases new modules
-for ai powered underwater camera ; seafoodsource.com/news/processing equipment/tidal launches newest generation
-of underwater camera for aquaculture pens ; fishfarmingexpert.com/4k resolution cage cameras imenco aquaculture ;
-revlightsecurity.com/blog/best underwater cameras for aquaculture sites ; seashepherd.org/2019/06/17/wild salmon
-recorded for first time inside fish farms ; donstaniford.typepad.com/my blog/2019/10/the go pro camera never lies
-unlike salmon farmers.
+Caméras en ferme : aceaquatec.com/our story ; thefishsite.com (biomass camera) ; seafoodsource.com (Tidal) ;
+fishfarmingexpert.com (caméras Imenco) ; revlightsecurity.com/blog/best underwater cameras for aquaculture sites ;
+seashepherd.org/2019/06/17/wild salmon recorded for first time inside fish farms ; donstaniford.typepad.com (Go
+Pro camera never lies).
 
 Détection de mortalité et données publiques : sciencedirect.com/science/article/pii/S0144860923000286 (MortCam) ;
 doi.org/10.3390/fishes9090356 (DD IYOLOv8) ; arxiv.org/pdf/2409.00388 (YOLOv10 amélioré) ; doi.org/10.3390/
-data10120211 (jeu de données vidéo public RAS, Mexique) ; academic.oup.com/icesjms/article/82/4/fsaf039/8105847.
+data10120211 (données vidéo public RAS, Mexique) ; academic.oup.com/icesjms/article/82/4/fsaf039/8105847.
 
 Obligations de déclaration : sciencedirect.com/science/article/pii/S016758772200232X et /S0167587725000972
-(fréquence Norvège, Écosse, Irlande) ; fishfarmingexpert.com/farmed salmon fish health mortality rate/norway
-farmed salmon mortality rate fell below 15 last year ; nature.com/articles/s41598 024 83876 5 (données publiques
-de mortalité, Colombie Britannique) ; nature.com/articles/s41598 024 54033 9 (mortalité massive, mondial).
+(fréquence Norvège, Écosse) ; fishfarmingexpert.com (mortalité Norvège 2025) ; nature.com/articles/
+s41598 024 83876 5 (mortalité publique, Colombie Britannique) ; nature.com/articles/s41598 024 54033 9 (mondial).
 
 Lacunes : aucun tarif horaire précis pour le travail de gestion de sinistre en ferme ; aucune source primaire sur
 la fréquence exacte de déclaration de mortalité au Canada ; aucun jeu de données vidéo public d'une vraie cage en
