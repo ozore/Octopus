@@ -38,3 +38,41 @@ maregraphes NOAA deja en place.
 ## Ce qui n'a pas ete cherche
 Le contenu detaille des pages de service Deltares USA (au dela du titre et du prix affiches dans les
 resultats de recherche) ; le budget limite a 3 WebSearch pour cette idee et ce tour est atteint.
+
+## Tour 2
+
+### Lecture faite
+Section « Tour 2 » de dossier.md, rien d'autre du depot.
+
+### Recherches (1 WebFetch, 1 WebSearch, budget 2 WebSearch respecte)
+1. Lecture directe de deltares-usa.us/service-page/coastal-hydrodynamic-modeling-1200 : confirme une
+   formation Delft3D FM (modules autonomes plus trois seances en ligne, mars 2026, licence de cours de
+   3 mois, 10 participants maximum, inscriptions closes), pas un mandat de modelisation ni un modele
+   deja cale. L'affirmation du generateur (« Deltares vend des cours, pas des modeles ») tient.
+2. « coastal calibrated regional ocean model licensed model as a service Oceanum OR Sofar OR Bluecast
+   OR Tidetech OR university permit 2026 » : aucun resultat ne montre un tiers vendant un modele
+   regional cale en licence pour un dossier de permis marin en 2026 ; seuls des modeles de recherche
+   publique (ROMS, CROCO, IOOS) remontent, deja couverts par le tour 1.
+
+### Verdict
+MORTE (cause 7, clause de propriete de la campagne ADCP repondue par une condition deguisee en
+mecanisme, pour les sites non couverts par NOAA ou PORTS, le coeur de cible revendique par le dossier).
+Voir tueur.md, section Tour 2, pour le detail.
+
+### Ce qui a pese dans le verdict
+Les deux corrections verifiees par recherche tiennent (Deltares vend des cours, aucun tiers ne loue de
+modele regional cale). La troisieme reponse du dossier (campagne ADCP financee par le premier client,
+propriete etendue au fondateur, entiercement en cas de fermeture) tient seulement pour les sites deja
+couverts par les maregraphes NOAA et les stations PORTS, majoritairement de grands chenaux et ports
+amenages. Pour les chenaux de dragage secondaires et les zones d'elevage, la niche que le dossier
+revendique comme non servie par l'occupant RPS, la clause demande a un client de financer 20 000 a
+40 000 $ sans exclusivite ni remise, pendant que le fondateur revend ensuite le meme jeu de donnees a
+un concurrent du meme site ; rien dans le dossier ne montre qu'un cabinet negociant deja ce type de
+contrat accepterait ces termes. Le barreau 1 sur ce sous ensemble depend d'un client qui finance une
+depense hors de la ligne budgetaire habituelle avant la premiere facture, ce qui reouvre aussi la cause
+9 (gain de productivite vendu a qui facture l'heure) pour ce sous ensemble precis.
+
+### Ce qui n'a pas ete cherche
+Le detail des contrats types d'entiercement logiciel dans ce secteur et un chiffrage du sous ensemble
+de sites deja couverts par NOAA et PORTS parmi les entites nommees au tour 1 ; les deux verifications
+demandees etaient sans recherche par consigne du coordinateur.

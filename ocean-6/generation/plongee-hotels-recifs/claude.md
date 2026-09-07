@@ -37,3 +37,42 @@ Lu dans l'ordre : BRIEF-GENERATION.md, MEMOIRE-MORTS.md, lignes.md de ce lot. Ri
 Idée 2 : le cycle Travelife est bisannuel, donc la ligne budgétaire annuelle réelle vient surtout de Blue Flag ;
 si le tueur montre que la cotisation Blue Flag ne finance pas ce type d'outil, regénérer à partir de l'occupant
 Blue Flag/FEE trouvé plutôt que de retenter Travelife seul.
+
+## Tour 2 (verdict du tueur reçu)
+
+Lu : tueur.md, section Tour 1 (seul fichier neuf lu ce tour, avec les fichiers déjà lus au Tour 1).
+
+Verdict : Idée 1 (Journal de Récif) morte, cause 4, la détection de dégâts d'ancrage et de palmes mutualisée entre
+centres qui plongent le même site devient une preuve datée contre le centre qui l'a filmée. Idée 2 (Carnet
+Côtier) vivante mais non tranchée sur deux points : (a) nature exacte de l'obligation écologique annuelle Blue
+Flag, (b) capacité de détection d'usure de mouillage non sourcée.
+
+## Recherche (1/1 autorisée ce tour, budget total désormais épuisé)
+« Blue Flag criteria annual renewal environmental education requirements ecological field monitoring FEE marina
+beach » : confirme que les 33 critères Blue Flag combinent éducation environnementale (affichage, cinq activités
+par saison) ET suivi écologique réel (« sites must monitor environmental conditions to reduce the impact of human
+activity at the beaches, marinas and boating operators »), avec contrôle et affichage public de la qualité de
+l'eau, renouvelé chaque année. Résout le point (a) : la ligne budgétaire annuelle du Tour 1 tient, et le critère
+nomme explicitement marinas et opérateurs nautiques, pas seulement les hôtels.
+
+## Décisions du tour 2
+- Correction commune aux deux idées, à partir du trou de gouvernance que le tueur signale deux fois : le pool
+  inter opérateurs ne contient plus jamais que la tendance écologique neutre (couverture corallienne,
+  blanchissement, seule capacité sourcée par Mayfield et Dempsey, Oceans MDPI, 24 décembre 2025). Tout indicateur
+  imputable à un opérateur (dégâts d'ancrage, usure de mouillage, cicatrices sur herbier) reste privé à qui l'a
+  filmé, jamais mutualisé, jamais transmis sans son geste explicite.
+- Idée 1 régénérée en « Courbe de Récif » : détection de pratiques retirée entièrement du produit vendu. Réponse
+  honnête à la question du donneur d'ordre : l'acheteur ne paie plus 300 à 600 USD/an pour cette version amputée,
+  le comparable discrétionnaire valable (Green Fins, 60 à 140 USD/an, l'assurance DAN étant obligatoire donc hors
+  comparaison, point relevé par le tueur) ne le justifie pas ; nouveau prix 150 à 250 USD/an. L'idée survit,
+  diminuée, plutôt que d'être redéclarée morte, parce que le produit reste la seule preuve visuelle indépendante
+  disponible pour le volet « parcours de durabilité » du Green Fins Hub (donnée de résultat de conservation,
+  confirmée par les propres recherches du tueur comme absente de l'autoévaluation déclarative actuelle).
+- Idée 2 mise à jour : point (a) résolu par la recherche ci dessus, cause 3 éteinte. Point (b) résolu par retrait
+  de la détection d'usure de mouillage et de cicatrices d'ancrage comme capacité d'IA ; ce volet redevient un
+  archivage organisé et daté des photos, sans notation automatique, toujours vendable pour l'entretien et le
+  critère marina/opérateur nautique de Blue Flag. Prix ajusté à la baisse (350 à 800 EUR/an) pour refléter le
+  périmètre réduit. Clause de gouvernance ajoutée en réponse au risque de mutualisation inter opérateurs de baie
+  relevé par le tueur pour cette idée aussi.
+- Budget de recherche total (brief) désormais à 5 WebSearch cumulées sur ce lot (4 au tour 1, 1 au tour 2), la
+  seule recherche autorisée par le donneur d'ordre pour ce tour ayant été utilisée sur le point (a) comme demandé.
