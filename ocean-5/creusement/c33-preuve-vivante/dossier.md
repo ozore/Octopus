@@ -144,27 +144,25 @@ seulement les comptages agrégés, soient publiquement téléchargeables : voir 
 
 ## 4. L'actif qui compose et le test adverse
 
-- Barreau 1 (2027) : première série de comptages standardisés chez un ou deux clients privés (ECS et un
-  sponsor de banque estuarienne type Mangrove Point). Actif : aucun encore, juste un pipeline qui marche.
-- Barreau 2 (2028) : plusieurs sites en Floride et en Californie. Actif : première série multi-sites
-  comparables, avec des seuils d'alerte calibrés sur des cas réels d'échec observés (le chiffre de 77% de
-  réussite CEMP donne un point de comparaison externe crédible dès ce stade).
-- Barreau 3 (2030) : premier client européen (règlement 2024/1991 déjà cité dans le dossier de tendance).
-  Actif : couverture de deux cadres réglementaires.
+- Barreau 1 (2027) : premiers comptages standardisés chez un ou deux clients privés (ECS, un sponsor type
+  Mangrove Point). Actif : aucun encore, juste un pipeline qui marche.
+- Barreau 2 (2028) : plusieurs sites Floride et Californie. Actif : première série multi-sites
+  comparables, seuils d'alerte calibrés sur des échecs réels observés (77% de réussite CEMP, point de
+  comparaison externe dès ce stade).
+- Barreau 3 (2030) : premier client européen (règlement 2024/1991, dossier de tendance). Actif :
+  couverture de deux cadres réglementaires.
 - Barreau 4 (2033) : le protocole de notation est cité par nom dans des clauses de caution ou de police.
   Actif : standard de facto référencé dans des documents légaux pluriannuels.
 - Barreau 5 (2036) : base longitudinale de cinq à neuf ans sur des dizaines de sites. Actif : tiers de
   confiance sur des obligations réelles pendant près d'une décennie, non rachetable en un an.
 
-Test adverse : un concurrent avec 5 millions de dollars (M$) en 2031 peut acheter de la puissance de
-calcul, embaucher des spécialistes en vision par ordinateur et répliquer le pipeline technique en
-quelques mois. Il ne peut pas acheter cinq ans d'historique de survie réelle sur des sites sous obligation
-réelle, ni la confiance déjà construite avec des cabinets comme ECS qui ont mis leur nom professionnel sur
-des rapports générés par l'outil. Le point faible du test adverse : si le marché des sponsors de banques
-huître ou rivage vivant reste aussi étroit qu'observé en section 2, il n'y a peut être pas assez de sites
-sous obligation aux États Unis pour qu'un historique de cinq ans devienne un actif difficile à répliquer,
-comparé à un concurrent qui viserait un habitat plus courant (zones humides d'eau douce, marché bien plus
-large mais aussi bien plus disputé par des acteurs comme RES).
+Test adverse : un concurrent avec 5 millions de dollars (M$) en 2031 achète du calcul et des spécialistes
+en vision par ordinateur, réplique le pipeline en quelques mois. Il ne peut pas acheter cinq ans
+d'historique de survie réelle ni la confiance déjà construite avec des cabinets comme ECS. Point faible du
+test adverse : si le marché des sponsors huître ou rivage vivant reste aussi étroit qu'observé en section
+2, il n'y a peut être pas assez de sites sous obligation aux États Unis pour qu'un historique de cinq ans
+devienne difficile à répliquer, comparé à un habitat plus courant (zones humides d'eau douce, marché plus
+large mais plus disputé, par exemple par RES).
 
 ## 5. Question 8 puis les sept questions
 

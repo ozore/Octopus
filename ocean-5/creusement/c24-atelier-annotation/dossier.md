@@ -84,17 +84,16 @@ Trois sociétés nommées, ce qu'elles vendent aujourd'hui, et pourquoi elles ac
 Six fonctionnalités, dans l'ordre de vente :
 
 1. Ingestion vidéo et sonar brute, multi format et multi marque de robot (ROV, USV, plongeur, caméra fixe de
-   quai), sans dépendre d'une intégration propriétaire d'un seul fabricant.
-2. Détection automatique d'anomalies visuelles génériques (corrosion, encrassement biologique, défauts de
-   peinture, trous de filet, exposition de câble) par un modèle de vision amorcé sur données publiques, affiné
-   sur les premières livraisons clients.
-3. Génération automatique d'un rapport structuré, horodaté, avec captures d'écran des anomalies, revendable tel
-   quel par la société cliente sous sa propre marque.
-4. Classement des anomalies par sévérité et export dans un format standard, réutilisable quel que soit le robot
-   ou la caméra de la mission suivante.
-5. Comparaison dans le temps d'une même cible physique au fil des campagnes successives d'un même client, la
-   société de service gardant le contrôle de ses propres livraisons.
-6. Tableau de bord multi projets pour suivre plusieurs contrats clients en parallèle et facturer chaque projet
+   quai), sans intégration propriétaire d'un seul fabricant.
+2. Détection automatique d'anomalies visuelles génériques (corrosion, encrassement, défauts de peinture, trous
+   de filet, exposition de câble) par un modèle amorcé sur données publiques, affiné sur les livraisons clients.
+3. Génération automatique d'un rapport structuré, horodaté, avec captures d'écran, revendable tel quel sous la
+   propre marque de la société cliente.
+4. Classement des anomalies par sévérité, export en format standard, réutilisable quel que soit le robot de la
+   mission suivante.
+5. Comparaison dans le temps d'une même cible physique au fil des campagnes d'un même client, la société de
+   service gardant le contrôle de ses livraisons.
+6. Tableau de bord multi projets pour suivre plusieurs contrats en parallèle et facturer chaque projet
    séparément.
 
 Pourquoi impossible en 2024 : des modèles de vision capables de détecter et décrire des anomalies génériques sur

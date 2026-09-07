@@ -83,31 +83,26 @@ identifiée dans le dossier de tendance).
 
 1. Ingestion du flux vidéo des caméras de cage déjà installées par la ferme (Imenco, Ace Aquatec, Tidal ou
    équivalent), sans nouveau matériel à poser : condition de faisabilité solo depuis Vancouver.
-2. Horodatage et empreinte numérique (hachage cryptographique) de chaque segment vidéo au moment de l'ingestion,
-   pour rendre toute modification a posteriori détectable : c'est la brique qui rend la preuve indépendante de la
-   ferme, condition centrale de la vente à un assureur en aval.
-3. Détection et comptage automatique des poissons morts par un modèle de vision par ordinateur, entraîné à partir
-   des méthodes publiées (MortCam, DD IYOLOv8, YOLOv10 amélioré) et affiné avec les images propres à chaque site
-   une fois le pilote démarré.
-4. Génération d'un rapport de sinistre structuré : nombre de morts, date, comparaison au taux de mortalité de
-   référence de la cage, sans interprétation de la cause (la cause reste un jugement d'expert humain, pas de
-   l'IA), pour éviter que l'outil ne prétende remplacer l'expertise de Sunderland Marine plutôt que l'accélérer.
-5. Tableau de bord de suivi continu pour la ferme elle même (historique, alerte de sur mortalité) : c'est le motif
-   d'achat quotidien qui justifie l'abonnement mensuel en dehors des épisodes de sinistre.
-6. Export signé numériquement, transmis par la ferme (pas automatiquement par le fondateur) à son assureur ou
-   courtier, avec consentement documenté à chaque envoi : la ferme garde le contrôle de ce qui part, ce qui répond
-   directement au problème de consentement de la section 5.
+2. Horodatage et empreinte numérique (hachage cryptographique) de chaque segment au moment de l'ingestion, pour
+   rendre toute modification a posteriori détectable : la brique qui rend la preuve indépendante de la ferme.
+3. Détection et comptage automatique des poissons morts par vision par ordinateur, entraîné à partir des méthodes
+   publiées (MortCam, DD IYOLOv8, YOLOv10 amélioré) et affiné site par site une fois le pilote démarré.
+4. Rapport de sinistre structuré (nombre de morts, date, comparaison au taux de référence de la cage) sans
+   interprétation de cause, laissée à l'expert humain, pour ne pas prétendre remplacer Sunderland Marine.
+5. Tableau de bord de suivi continu pour la ferme (historique, alerte de sur mortalité) : motif d'achat quotidien
+   hors des épisodes de sinistre.
+6. Export signé numériquement, transmis par la ferme, pas automatiquement par le fondateur, à son assureur ou
+   courtier, avec consentement documenté à chaque envoi : la ferme garde le contrôle, réponse au problème de la
+   section 5.
 
-Pourquoi impossible en 2024 : les modèles de détection d'objets sous marins publiés qui atteignent une précision
-utilisable sur poisson mort en image dégradée (turbidité, poissons empilés) datent de 2023 à 2024 (MortCam,
-DD IYOLOv8) ; l'horodatage vérifiable combiné à la détection n'existait pas comme produit assemblé avant.
+Pourquoi impossible en 2024 : les modèles de détection de poisson mort en image sous marine dégradée qui atteignent
+une précision utilisable datent de 2023 à 2024 (MortCam, DD IYOLOv8) ; l'horodatage vérifiable combiné à la
+détection n'existait pas comme produit assemblé avant.
 
-Données existantes pour amorcer sans un seul courriel : le jeu de données vidéo public décrit dans un article de
-la revue Data (MDPI, doi 10.3390/data10120211), tourné dans un système RAS commercial au Mexique, plus de dix
-heures d'enregistrement sous marin réparties en 31 clips de 30 secondes avec images étiquetées et métadonnées de
-qualité d'eau ; les méthodes publiées de DD IYOLOv8 et de la détection YOLOv10 améliorée, dont le code est
-généralement documenté dans l'article ou son dépôt associé. Lacune sérieuse : aucun de ces jeux de données ne vient
-d'une vraie cage ouverte en mer, l'environnement réel du barreau 1 (eau trouble, courant, lumière naturelle
+Données existantes pour amorcer sans un seul courriel : le jeu de données vidéo public de la revue Data (MDPI, doi
+10.3390/data10120211), tourné dans un système RAS commercial au Mexique, plus de dix heures réparties en 31 clips
+de 30 secondes, images étiquetées et métadonnées de qualité d'eau ; les méthodes publiées DD IYOLOv8 et YOLOv10
+amélioré. Lacune : aucun de ces jeux ne vient d'une vraie cage ouverte en mer (eau trouble, courant, lumière
 variable), donc l'entraînement initial reste un point de départ, pas une preuve finale.
 
 ## 4. L'actif qui compose, et le test adverse
