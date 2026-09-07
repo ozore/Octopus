@@ -28,9 +28,9 @@ Californie), imposent un coût à l'émission ou à l'inaction. Aucun de ces tex
    2050, par rapport à une valeur de référence de 91,16 g CO2 équivalent par mégajoule. La pénalité de
    non conformité est de l'ordre de 2 400 euros par tonne d'équivalent fioul lourd à faible teneur en soufre
    (lu, source EMSA, Agence européenne pour la sécurité maritime).
-4. Le cadre net zéro de l'OMI (Net Zero Framework) a été agréé en principe en avril 2026... non, en avril
-   2025 lors du comité MEPC 83 (Marine Environment Protection Committee, comité de la protection du milieu
-   marin de l'OMI). Il combine une norme mondiale de carburant (Global Fuel Standard, réduisant l'intensité
+4. Le cadre net zéro de l'OMI (Net Zero Framework) a été agréé en principe en avril 2025 lors du comité
+   MEPC 83 (Marine Environment Protection Committee, comité de la protection du milieu marin de l'OMI). Il
+   combine une norme mondiale de carburant (Global Fuel Standard, réduisant l'intensité
    GES des carburants marins) et un mécanisme mondial de tarification du carbone. RÉSERVE HONNÊTE : la
    réunion extraordinaire du MEPC en octobre 2025 a ajourné l'adoption formelle d'un an. Le texte, s'il est
    adopté tel quel en 2026, entrerait en vigueur en 2028 (au lieu de 2027) pour un effet en 2029. C'est un
