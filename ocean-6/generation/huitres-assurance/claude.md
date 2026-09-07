@@ -30,9 +30,32 @@ ferme ostreicole avec suivi de stock, et Mussel App revendique deja des "insuran
 module de comptage automatise par photo et un rapprochement avec les declencheurs de comte RMA, l'idee meurt. Ce
 n'est pas encore le cas au 7 septembre 2026 (verifie), mais c'est le risque le plus proche, pas un risque lointain.
 
-## Ce qui n'a pas ete verifie, a surveiller au tour 2
-Le nombre exact de fermes assurees dans le programme pilote coquillages n'a pas ete trouve (deja note dans
-lignes.md). La population retenue au point 6 s'appuie donc sur le reseau d'agents et de courtiers agrees plutot que
-sur le compte de fermes elles memes ; si le tueur exige un chiffre de fermes precis, il faudra soit trouver un
-comptage publie (Census of Aquaculture USDA, ou donnees d'un etat comme la Virginie ou le Maryland), soit assumer
-la population par agents comme reponse principale.
+## Etat apres tueur, tour 2
+Verdict tueur sur tour 1 : VIVANTE, idee maintenue (pas de regeneration), corrigee sur trois points, vigilance sur
+deux autres. Tour 2 ecrit dans dossier.md sans nouvelle recherche (budget de 4 WebSearch epuise au tour 1, le tueur
+a utilise ses propres requetes separement, citees dans tueur.md).
+
+Corrections faites au tour 2 :
+1. La reforme CIROC 2022 (Crop Insurance Reporting and Other Changes) permet l'auto declaration du producteur sans
+   registre tiers depuis 2022 : le produit ne se vend plus sur une obligation reglementaire de preuve tierce, mais
+   sur l'historique de production (couverture assurable), la rapidite d'indemnisation et la resistance a un audit
+   ou un litige. Prix ferme baisse de 240 a 480 $US/an vers 180 a 360 $US/an en consequence (achat discretionnaire,
+   pas de conformite).
+2. SmartOysters corrige : c'est l'ancien nom d'Oceanfarmr (source The Fish Site, citee par le tueur), pas un
+   quatrieme occupant. Carte des occupants au point 9 nettoyee.
+3. Population de fermes assurees toujours non chiffree. Compte sourced retenu : reseau d'agents RMA, plus de 200
+   sur les seize etats pilotes. Borne honnete non sourcee cette session pour le compte de fermes elles memes,
+   marquee supposee, premiere chose a verifier avec un futur budget de recherche (Census of Aquaculture USDA, ou
+   donnees d'un etat comme la Virginie ou le Maryland).
+
+Vigilance non levee (pas de nouvelle recherche possible ce tour) :
+- Ce que ProAg, NAU Country et Rain and Hail exigent en pratique au dela du minimum RMA reste suppose, pas
+  verifie ; raisonnement donne au point 5 du tour 2 (exposition financiere de l'AIP prive meme quand
+  l'auto declaration formelle suffit), a confirmer aupres de leurs manuels de souscription publics.
+- L'exactitude du comptage par vision sur des photos de telephone en conditions reelles de cage (pas seulement en
+  laboratoire) reste suppose, l'etude source rate deux comptages sur dix meme en test controle (point 4 du tour 2).
+
+## Ce qui n'a pas ete verifie, a surveiller ensuite
+Deux points supposes (vigilance ci dessus) et le compte de fermes assurees (population) restent a verifier des
+qu'un budget de recherche est de nouveau disponible ; sinon, si un tour 3 est demande sans nouvelle recherche, les
+maintenir marques supposee plutot que de les faire passer a vérifiée sans source fraiche.
