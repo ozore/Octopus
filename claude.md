@@ -3,7 +3,7 @@
 Trois passes (`ocean-plastic/`, `ocean-plastic-2/`, `ocean-seabed-3/`), 36 idées, une société survivante
 (BenthicOS, voir `REVISION-36.md`). Ce fichier fixe le processus pour toute passe suivante.
 
-## Le filtre en six questions (obligatoire avant toute note)
+## Le filtre en sept questions (obligatoire avant toute note)
 1. Qui signe ? Nom, ligne budgétaire existante, pas de subvention.
 2. La preuve se retourne-t-elle contre l'acheteur, alors qu'une méthode officielle moins exigeante lui suffit ?
 3. L'IA est-elle le produit, ou un formulaire avec un modèle à côté ?
@@ -11,7 +11,10 @@ Trois passes (`ocean-plastic/`, `ocean-plastic-2/`, `ocean-seabed-3/`), 36 idée
 5. Faisable seul depuis Vancouver : pas de matériel posé à l'étranger, pas de plongée commerciale ailleurs,
    pas de marché public, pas de bénévoles à recruter.
 6. Le produit tient-il en une phrase sans acronyme ?
-Une réponse non = pas une société (module, prestation ou actif, à dire tel quel).
+7. Le client doit-il revenir chaque année avec ses propres données ? Une série temporelle par site, sous
+   obligation pluriannuelle, que le client ne peut pas reconstituer ailleurs. Les modèles et les images sont
+   ouverts : c'est la seule barrière qui existe dans ce secteur. Sans elle, l'idée est un revenu, pas une société.
+Une réponse non = pas une société (module, prestation, revenu de départ ou actif, à dire tel quel).
 
 ## Règles pour les agents de recherche (à copier dans chaque BRIEF.md)
 - Première tâche, avant la réglementation : lister les outils gratuits et les programmes internes qui font déjà
